@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>inc/BasicLogger.hpp</itemPath>
+      <itemPath>inc/Exceptions.hpp</itemPath>
+      <itemPath>inc/HashMapTrie.hpp</itemPath>
+      <itemPath>inc/ITrie.hpp</itemPath>
+      <itemPath>inc/NGram.hpp</itemPath>
+      <itemPath>inc/NGramBuilder.hpp</itemPath>
+      <itemPath>inc/StatisticsMonitor.hpp</itemPath>
+      <itemPath>inc/TextNGramReader.hpp</itemPath>
+      <itemPath>inc/TrieBuilder.hpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>src/BasicLogger.cpp</itemPath>
+      <itemPath>src/HashMapTrie.cpp</itemPath>
+      <itemPath>src/NGram.cpp</itemPath>
+      <itemPath>src/NGramBuilder.cpp</itemPath>
+      <itemPath>src/StatisticsMonitor.cpp</itemPath>
+      <itemPath>src/TextNGramReader.cpp</itemPath>
+      <itemPath>src/TrieBuilder.cpp</itemPath>
+      <itemPath>src/main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <commandlineTool>g++-4.4</commandlineTool>
+          <incDir>
+            <pElem>inc</pElem>
+          </incDir>
+          <warningLevel>3</warningLevel>
+        </ccTool>
+      </compileType>
+      <item path="inc/BasicLogger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ITrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/NGram.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/NGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextNGramReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/BasicLogger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/NGram.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/TextNGramReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <incFile>
+            <pElem>inc</pElem>
+          </incFile>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="inc/BasicLogger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ITrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/NGram.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/NGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextNGramReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/BasicLogger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/NGram.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/TextNGramReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
