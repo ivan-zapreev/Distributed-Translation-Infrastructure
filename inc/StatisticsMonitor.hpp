@@ -44,6 +44,14 @@ public:
      */
     static void getMemoryStatistics(TMemotyUsage & memStat) throw (Exception);
     
+    /**
+     * This function returns the current CPU time as given in the article
+     * http://nadeausoftware.com/articles/2012/03/c_c_tip_how_measure_cpu_time_benchmarking
+     * @return Returns the amount of CPU time used by the current process,
+     *         in seconds, or -1.0 if an error occurred.
+     */
+    static double getCPUTime();
+    
 private:
     StatisticsMonitor(){}
     StatisticsMonitor(const StatisticsMonitor& orig){}

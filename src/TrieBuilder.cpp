@@ -21,7 +21,7 @@ TrieBuilder::~TrieBuilder() {
 }
 
 void TrieBuilder::build() {
-    BasicLogger::printInfo("Starting to read the file and build the trie ...");
+    BasicLogger::printDebug("Starting to read the file and build the trie ...");
 
     //Initialize the NGram builder and give it the trie as an argument
     NGramBuilder ngBuilder(_trie,_delim);
@@ -34,7 +34,7 @@ void TrieBuilder::build() {
         ngBuilder.processString(line);
     }
             
-    BasicLogger::printInfo("Done reading the file and building the trie.");
+    BasicLogger::printDebug("Done reading the file and building the trie.");
 }
 
 

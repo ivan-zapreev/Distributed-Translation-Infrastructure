@@ -85,7 +85,6 @@ template<unsigned int N> void HashMapTrie<N>::addNGram(vector<string> &tokens, c
     }
 }
 
-
 template<unsigned int N> HashMapTrie<N>::HashMapTrie(const HashMapTrie& orig) {
 }
 

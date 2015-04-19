@@ -143,7 +143,7 @@ private:
      * This function will combine two word references to get one hash map
      * N-gram level reference. This is a cantor function used for pairing.
      * http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
-     * WARNING: does not work good with big numbers! Owerflows!
+     * WARNING: does not work good with big numbers! Overflows!
      * @param x the key word reference
      * @param y the previous context
      * @return the context reference for the next N-gram level
@@ -156,7 +156,7 @@ private:
      * This function will invert the cuntor encoded context and split it into two things
      * The previous word and the previous context.  This is an inverse cantor function used for unpairing.
      * http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
-     * WARNING: does not work good with big numbers! Owerflows!
+     * WARNING: does not work good with big numbers! Overflows!
      * @param z the current context id
      * @param x the previous word in the context
      * @param y the context of the previous word
@@ -172,7 +172,7 @@ private:
      * This function will combine two word references to get one hash map
      * N-gram level reference. This is a Szudzik's function used for pairing.
      * http://szudzik.com/ElegantPairing.pdf
-     * This function is more efficient that than of cuntor as it uses indexes densely
+     * This function is more efficient that than of Cantor as it uses indexes densely
      * the result of szudzik(N,M) is <= 2*max(M,N), so the risk of owerflows is much smaller!
      * @param x the key word reference
      * @param y the previous context
