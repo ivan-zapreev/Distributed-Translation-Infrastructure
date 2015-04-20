@@ -4,14 +4,14 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/BasicLogger.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
+      <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/HashMapTrie.hpp</itemPath>
-      <itemPath>inc/ITrie.hpp</itemPath>
-      <itemPath>inc/NGram.hpp</itemPath>
+      <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/NGramBuilder.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
-      <itemPath>inc/TextNGramReader.hpp</itemPath>
       <itemPath>inc/TrieBuilder.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -23,10 +23,8 @@
                    projectFiles="true">
       <itemPath>src/BasicLogger.cpp</itemPath>
       <itemPath>src/HashMapTrie.cpp</itemPath>
-      <itemPath>src/NGram.cpp</itemPath>
       <itemPath>src/NGramBuilder.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
-      <itemPath>src/TextNGramReader.cpp</itemPath>
       <itemPath>src/TrieBuilder.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
@@ -56,28 +54,30 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <developmentMode>5</developmentMode>
           <commandlineTool>g++-4.4</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
+          <commandLine>-O3 -std=c++0x</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
       </compileType>
+      <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/BasicLogger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/ITrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/NGram.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/NGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/TextNGramReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -85,13 +85,9 @@
       </item>
       <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/NGram.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/TextNGramReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -121,21 +117,21 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/BasicLogger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/ITrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/NGram.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/NGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/TextNGramReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -143,13 +139,9 @@
       </item>
       <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/NGram.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/TextNGramReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>

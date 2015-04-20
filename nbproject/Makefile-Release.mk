@@ -37,10 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/BasicLogger.o \
 	${OBJECTDIR}/src/HashMapTrie.o \
-	${OBJECTDIR}/src/NGram.o \
 	${OBJECTDIR}/src/NGramBuilder.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
-	${OBJECTDIR}/src/TextNGramReader.o \
 	${OBJECTDIR}/src/TrieBuilder.o \
 	${OBJECTDIR}/src/main.o
 
@@ -79,11 +77,6 @@ ${OBJECTDIR}/src/HashMapTrie.o: src/HashMapTrie.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/HashMapTrie.o src/HashMapTrie.cpp
 
-${OBJECTDIR}/src/NGram.o: src/NGram.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NGram.o src/NGram.cpp
-
 ${OBJECTDIR}/src/NGramBuilder.o: src/NGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -93,11 +86,6 @@ ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
-
-${OBJECTDIR}/src/TextNGramReader.o: src/TextNGramReader.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/TextNGramReader.o src/TextNGramReader.cpp
 
 ${OBJECTDIR}/src/TrieBuilder.o: src/TrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

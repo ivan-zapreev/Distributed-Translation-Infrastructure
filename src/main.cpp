@@ -13,19 +13,14 @@
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
 #include "BasicLogger.hpp"
-#include "ITrie.hpp"
+#include "ATrie.hpp"
 #include "HashMapTrie.hpp"
 #include "TrieBuilder.hpp"
+#include "Globals.hpp"
 
 using namespace std;
-
-#define PATH_SEPARATION_SYMBOLS "/\\"
-#define TOKEN_DELIMITER_CHAR ' '
-#define N_GRAM_PARAM 5u
-#define EXPECTED_NUMBER_OF_ARGUMENTS 3
-#define EXPECTED_USER_NUMBER_OF_ARGUMENTS (EXPECTED_NUMBER_OF_ARGUMENTS - 1)
-#define BYTES_ONE_MB 1024
-
+using namespace tries;
+    
 /**
  * This structure is needed to store the application parameters
  */
@@ -125,12 +120,11 @@ static string getMemoryUsageString(unsigned int const & vmsize,
         unsigned int const & vmrss,
         unsigned int const & vmhwm) {
     stringstream msg;
+    
     msg << "vmsize=" << vmsize << " Kb, vmpeak=" <<
             vmpeak << " Kb, vmrss=" << vmrss <<
             " Kb, vmhwm=" << vmhwm << " Kb";
-
-
-
+    
     return msg.str();
 }
 
@@ -141,7 +135,6 @@ static string getMemoryUsageString(unsigned int const & vmsize,
  * @param msEnd the end memory usage statistics
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
-
     BasicLogger::printInfo("Action: \'%s\' memory increase:", action);
     BasicLogger::printDebug("memory before: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
             msStart.vmsize, msStart.vmpeak, msStart.vmrss, msStart.vmhwm);
@@ -157,14 +150,27 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param fstr the file to read data from
  * @param trie the trie to put the data into
  */
-static void fillInTrie(ifstream & fstr, ITrie & trie) {
+template<TTrieSize N, bool doCache>
+static void fillInTrie(ifstream & fstr, ATrie<N,doCache> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
-    TrieBuilder builder(trie, fstr, TOKEN_DELIMITER_CHAR);
+    TrieBuilder<N,doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
 
     //A.2. Build the trie
     builder.build();
+}
+
+/**
+ * Allows to read and execute test queries from the given file on the given trie.
+ * @param trie the given trie, filled in with some data
+ * @param testFile the file containing the N-Gram (5-Gram queries)
+ * @return the CPU seconds used to run the queries, without time needed to read the test file
+ */
+template<TTrieSize N, bool doCache>
+static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile) {
+    
+    return 0.0;
 }
 
 /**
@@ -184,7 +190,7 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Create a trie and pass it to the algorithm method
-    HashMapTrie<N_GRAM_PARAM> trie;
+    TFiveCacheHashMapTrie trie;
     BasicLogger::printInfo("Start reading the text corpus and filling in the Trie ...");
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(trainFile, trie);
@@ -198,12 +204,9 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
     reportMemotyUsage("Loading of the text corpus Trie", memStatStart, memStatInterm);
 
     BasicLogger::printInfo("Reading and executing the test queries ...");
-    //ToDo: Think through how to work with test data, in principle we
-    //      can read the file consequently (get 5-gram's) and then query
-    //      the tire for the resulting frequences:
-    //      Create the NGramReader for the file, give it to the NGramBuilder
-    //      Ask the NGramBuilder for subsequent
-
+    const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
+    BasicLogger::printInfo("Executing the test queries is done, it took %lf CPU seconds.", queryCPUTimes);
+  
     BasicLogger::printInfo("Done");
 }
 
