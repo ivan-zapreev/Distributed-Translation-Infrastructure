@@ -169,8 +169,39 @@ static void fillInTrie(ifstream & fstr, ATrie<N,doCache> & trie) {
  */
 template<TTrieSize N, bool doCache>
 static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile) {
+    //Declare time variables for CPU times in seconds
+    double totalTime, startTime, endTime;
     
-    return 0.0;
+    //Read the test file line by line
+    string line;
+    while( getline(testFile, line) )
+    {
+        //Get the last word of the 5-gram
+        unsigned idx = line.find_last_of(TOKEN_DELIMITER_CHAR);
+        string word = line.substr(idx+1);
+        
+        stringstream message;
+        message << "Query for the word: \'" << word << "\'";
+        BasicLogger::printInfo( message.str() );
+
+        //Run the query for the given word
+        startTime = StatisticsMonitor::getCPUTime();
+        SFrequencyResult<N> & resWrap = trie.queryWordFreqs(word);
+        endTime = StatisticsMonitor::getCPUTime();
+        
+        //Print the results:
+        stringstream result;
+        result << "Frequencies are: ";
+        for(int i=0;i<N;i++){
+            result << (i+1) << "-gram = " << resWrap.result[i] << ", ";
+        }
+        BasicLogger::printInfo(result.str());
+
+        //update total time
+        totalTime += (endTime - startTime);
+    }
+
+    return totalTime;
 }
 
 /**
