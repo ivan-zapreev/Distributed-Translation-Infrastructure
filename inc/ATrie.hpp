@@ -19,8 +19,9 @@ using namespace std;
 namespace tries {
 
     //The amount of memory dedicated for storing frequency
-    typedef unsigned short int TFrequencySize;
-
+    //WARNING: Do not use smaller size as I get overflows
+    //for "unsigned short int" on a text large corpus!
+    typedef unsigned int TFrequencySize;
 
     //This typedef defines a frequency result type, which is a reference to
     //an array of N frequency values. Note that the value with index [0] will
