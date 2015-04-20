@@ -35,6 +35,12 @@ public:
      * Prints a result message to the stdout
      * @param data the message to be print
      */
+    static void printResultSafe( const string & data );
+     
+    /**
+     * Prints a result message to the stdout
+     * @param data the message to be print
+     */
     static void printResult( const string & data, ... );
     
     /**
@@ -89,7 +95,7 @@ public:
      * Prints an debug message to the stdlog
      * @param data the message to be print
      */
-    static void printUnsafeDebug( const string & data );
+    static void printDebugSafe( const string & data );
     
     /**
      * Prints an debug message to the stdlog
@@ -119,6 +125,7 @@ private:
     static const string WARNING_PREFIX_STR;
     static const string INFO_PREFIX_STR;
     static const string DEBUG_PREFIX_STR;
+    static const string DEBUG_UNSAFE_PREFIX_STR;
     
     //Stores the current debug level
     static DebugLevel currLEvel;

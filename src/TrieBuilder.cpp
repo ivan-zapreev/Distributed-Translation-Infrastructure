@@ -40,7 +40,7 @@ namespace tries {
         string line;
         while( getline(_fstr, line) )
         {
-            BasicLogger::printUnsafeDebug(line);
+            BasicLogger::printDebugSafe(line);
             ngBuilder.processString(line);
         }
 

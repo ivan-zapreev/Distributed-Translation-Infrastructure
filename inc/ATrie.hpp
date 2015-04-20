@@ -60,7 +60,7 @@ namespace tries {
          * Returns the maximum length of the considered N-Grams
          * @return the maximum length of the considered N-Grams
          */
-        unsigned int getNGramLevel() const {return N;}
+        TTrieSize getNGramLevel() const {return N;}
 
         /**
          * Allows to test if the given Trie implementation has internal query caches

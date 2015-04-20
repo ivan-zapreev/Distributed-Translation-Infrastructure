@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 
 #include "BasicLogger.hpp"
 
@@ -17,30 +18,15 @@ namespace tries {
     HashMapTrie<N,doCache>::HashMapTrie() {
     }
 
-    //ToDo: This implementation is a little unflexible and ugly :) It could be
-    //optimized to be made recursive and dynamic but this is extra work, for 
-    //now this implementation is fine, after all it is just debugging
     template<TTrieSize N, bool doCache>
     void HashMapTrie<N,doCache>::printDebugNGram(vector<string> &tokens, const int idx, const int n ) {
-            switch(n) {
-                case 1:
-                    BasicLogger::printDebug("Adding 1-gram: [%s]", tokens[idx].c_str());
-                    break;
-                case 2:
-                    BasicLogger::printDebug("Adding 2-gram: [%s %s]", tokens[idx].c_str(), tokens[idx+1].c_str());
-                    break;
-                case 3:
-                    BasicLogger::printDebug("Adding 3-gram: [%s %s %s]", tokens[idx].c_str(), tokens[idx+1].c_str(), tokens[idx+2].c_str());
-                    break;
-                case 4:
-                    BasicLogger::printDebug("Adding 4-gram: [%s %s %s %s]", tokens[idx].c_str(), tokens[idx+1].c_str(), tokens[idx+2].c_str(), tokens[idx+3].c_str());
-                    break;
-                case 5:
-                    BasicLogger::printDebug("Adding 5-gram: [%s %s %s %s %s]", tokens[idx].c_str(), tokens[idx+1].c_str(), tokens[idx+2].c_str(), tokens[idx+3].c_str(), tokens[idx+4].c_str());
-                    break;
-                default:
-                    break;
-            }
+        stringstream message;
+        message << "Adding " << n << "-gram: [ ";
+        for(int i=idx;i<(idx+n);i++){
+            message << tokens[i] << " ";
+        }
+        message << "]";
+        BasicLogger::printDebugSafe(message.str());
     }
 
     template<TTrieSize N, bool doCache>
@@ -60,6 +46,7 @@ namespace tries {
             }
             //Update/increase the frequency
             entry.second++;
+            BasicLogger::printDebug("freq( %u ) = %u" , hash, entry.second);
         }
     }
 
@@ -71,7 +58,7 @@ namespace tries {
 
         TReferenceHashSize context = computeHash(tokens[base_idx]);
 
-        //Put the Ngrams into the trie with N >= 2
+        //Put the N-grams into the trie with N >= 2
         for(int idx=1; idx < n; idx++) {
             string & token = tokens[base_idx+idx];
             TWordHashSize wordHash = computeHash(token);
@@ -86,9 +73,12 @@ namespace tries {
             if( idx == n-1) {
                 //Increase the frequency of the N-gram
                 ngramFreq++;
+                BasicLogger::printDebug("%u-gram: freq( %u, %u ) = %u", n, wordHash, context, ngramFreq);
             } else {
                 //Otherwise compute the next context
-                context = createContext(wordHash,context);
+                TReferenceHashSize n_context = createContext(wordHash,context);
+                BasicLogger::printDebug("%u-gram: Cn( %u, %u ) = %u", n, wordHash,context, n_context);
+                context = n_context;
             }
         }
     }
@@ -107,9 +97,11 @@ namespace tries {
             //searching already as there are definitely no occurrences of this word
             //as the last one in higher level N-grams.
             for(int idx = 1; idx < N; idx++){
+                //Now go through all of the N-grams ending with
+                //the given word and sum-up their frequencies
                 TNTrieEntryPairsMap & entry = data[idx-1].at(hash);
                 for( auto it = entry.cbegin(); it != entry.cend(); ++it){
-                    wrap.result[idx] = it->second;
+                    wrap.result[idx] += it->second;
                 }
             }
             

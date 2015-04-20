@@ -7,6 +7,7 @@
 #include "NGramBuilder.hpp"
 
 #include <sstream>
+#include <algorithm>
 
 #include "BasicLogger.hpp"
 #include "Globals.hpp"
@@ -34,9 +35,13 @@ namespace ngrams {
         //First add all the words to the trie
         _trie.addWords(tokens);
 
-        //Create and record all of the N-grams starting from 2.
-        for(int n=2; n <= _trie.getNGramLevel(); n++) {
-            for(int idx=0; idx <= tokens.size()- n; idx++){
+        //Create and record all of the N-grams starting from 2 and 
+        //limited either by Trie or by the available number of Tokens
+        const TTrieSize ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
+        BasicLogger::printDebug("N-gram level = %u", ngLevel);
+        for(int n=2; n <= ngLevel; n++) {
+            for(int idx=0; idx <= (tokens.size() - n); idx++){
+                BasicLogger::printDebug("adding N-grams (#tokens=%u) idx = %u, len = %u", tokens.size(), idx, n);
                 _trie.addNGram(tokens, idx, n );
             }
         }

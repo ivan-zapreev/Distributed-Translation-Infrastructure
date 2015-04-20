@@ -9,6 +9,7 @@
 #include <iostream>     // std::cout
 #include <sstream>      // std::stringstream, std::stringbuf
 #include <fstream>      // std::ifstream
+#include <algorithm>    //std::transform
 
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
@@ -58,15 +59,16 @@ static void printUsage(const string name) {
     const string shortName = name.substr(lastSlashBeforeFileName + 1);
 
     BasicLogger::printUsage("Running: ");
-    BasicLogger::printUsage("  %s <train_file> <test_file>", shortName.c_str());
-    BasicLogger::printUsage("     <train_file> - a text file containing the training text corpus.");
-    BasicLogger::printUsage("                    This corpus should bealready tokenized, i.e.,");
-    BasicLogger::printUsage("                    all words are already separated by white spaces,");
-    BasicLogger::printUsage("                    including punctuation marks. Also, each line in ");
-    BasicLogger::printUsage("                    this, file corresponds to one sentence.");
-    BasicLogger::printUsage("     <test_file>  - a text file containing test data.");
-    BasicLogger::printUsage("                    The test file consists of a number of 5-grams,");
-    BasicLogger::printUsage("                    where each line in the file consists of one 5-gram.");
+    BasicLogger::printUsage("  %s <train_file> <test_file> [debug-level]", shortName.c_str());
+    BasicLogger::printUsage("      <train_file> - a text file containing the training text corpus.");
+    BasicLogger::printUsage("                     This corpus should bealready tokenized, i.e.,");
+    BasicLogger::printUsage("                     all words are already separated by white spaces,");
+    BasicLogger::printUsage("                     including punctuation marks. Also, each line in ");
+    BasicLogger::printUsage("                     this, file corresponds to one sentence.");
+    BasicLogger::printUsage("      <test_file>  - a text file containing test data.");
+    BasicLogger::printUsage("                     The test file consists of a number of 5-grams,");
+    BasicLogger::printUsage("                     where each line in the file consists of one 5-gram.");
+    BasicLogger::printUsage("     [debug-level] - the optional debug flag from ");
 
     BasicLogger::printUsage("Output: ");
     BasicLogger::printUsage("    The programm reads in the test file and say for each 5-gram of the");
@@ -86,13 +88,34 @@ static void printUsage(const string name) {
  * @param params the structure that will be filled in with the parsed program arguments
  */
 static void extractArguments(const int argc, char const * const * const argv, TAppParams & params) {
-    if (argc != EXPECTED_NUMBER_OF_ARGUMENTS) {
+    if (argc < EXPECTED_NUMBER_OF_ARGUMENTS) {
         stringstream msg;
-        msg << "Incorrect number of arguments, expected " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
+        msg << "Incorrect number of arguments, expected >= " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
         throw Exception(msg.str());
     } else {
         params.trainFileName = argv[1];
         params.testFileName = argv[2];
+        
+        //This here is a fast hack, it is not a really the
+        //nicest way to handle the program parameters but
+        //this is ok for a test software.
+        if( argc > EXPECTED_NUMBER_OF_ARGUMENTS ) {
+            string data = argv[3];
+            transform(data.begin(), data.end(), data.begin(), ::tolower);
+            if(!data.compare( INFO_PARAM_VALUE )) {
+                BasicLogger::setLoggingLevel(BasicLogger::INFO);
+                BasicLogger::printInfo("Setting the debugging level to \'%s\'", INFO_PARAM_VALUE);
+            } else {
+                if(!data.compare( DEBUG_PARAM_VALUE )){
+                    BasicLogger::setLoggingLevel(BasicLogger::DEBUG);
+                    BasicLogger::printInfo("Setting the debugging level to \'%s\'", DEBUG_PARAM_VALUE);
+                } else {
+                    stringstream msg;
+                    msg << "Ignoring an unknown value of [debug-level] parameter: '" << argv[3] << "'" ;
+                    BasicLogger::printWarning(msg.str());
+                }
+            }
+        }
     }
 }
 
@@ -135,14 +158,18 @@ static string getMemoryUsageString(unsigned int const & vmsize,
  * @param msEnd the end memory usage statistics
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
-    BasicLogger::printInfo("Action: \'%s\' memory increase:", action);
+    BasicLogger::printResult("Action: \'%s\' memory increase:", action);
     BasicLogger::printDebug("memory before: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
             msStart.vmsize, msStart.vmpeak, msStart.vmrss, msStart.vmhwm);
     BasicLogger::printDebug("memory after: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
             msEnd.vmsize, msEnd.vmpeak, msEnd.vmrss, msEnd.vmhwm);
-    BasicLogger::printInfo("memory delta: vmsize=%lf Mb, vmpeak=%lf Mb, vmrss=%lf Mb, vmhwm=%lf Mb",
+    BasicLogger::printResult("vmsize=%lf Mb, vmpeak=%lf Mb, vmrss=%lf Mb, vmhwm=%lf Mb",
             double(msEnd.vmsize - msStart.vmsize)/BYTES_ONE_MB, double(msEnd.vmpeak - msStart.vmpeak)/BYTES_ONE_MB,
             double(msEnd.vmrss - msStart.vmrss)/BYTES_ONE_MB, double(msEnd.vmhwm - msStart.vmhwm)/BYTES_ONE_MB);
+    BasicLogger::printInfo("  vmsize - Virtual memory size; vmpeak - Peak virtual memory size");
+    BasicLogger::printInfo("    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)");
+    BasicLogger::printInfo("  vmrss  - Resident set size; vmhwm  - Peak resident set size");
+    BasicLogger::printInfo("    Resident set size is how much memory this process currently has in main memory (RAM)");
 }
 
 /**
@@ -182,7 +209,7 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         
         stringstream message;
         message << "Query for the word: \'" << word << "\'";
-        BasicLogger::printInfo( message.str() );
+        BasicLogger::printResultSafe( message.str() );
 
         //Run the query for the given word
         startTime = StatisticsMonitor::getCPUTime();
@@ -195,7 +222,7 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         for(int i=0;i<N;i++){
             result << (i+1) << "-gram = " << resWrap.result[i] << ", ";
         }
-        BasicLogger::printInfo(result.str());
+        BasicLogger::printResultSafe(result.str());
 
         //update total time
         totalTime += (endTime - startTime);
@@ -222,11 +249,11 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
 
     //Create a trie and pass it to the algorithm method
     TFiveCacheHashMapTrie trie;
-    BasicLogger::printInfo("Start reading the text corpus and filling in the Trie ...");
+    BasicLogger::printResult("Start reading the text corpus and filling in the Trie ...");
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(trainFile, trie);
     endTime = StatisticsMonitor::getCPUTime();
-    BasicLogger::printInfo("Reading the text corpus is done, it took %lf CPU seconds.", endTime - startTime);
+    BasicLogger::printResult("Reading the text corpus is done, it took %lf CPU seconds.", endTime - startTime);
 
     BasicLogger::printDebug("Getting the intermediate memory statistics ...");
     StatisticsMonitor::getMemoryStatistics(memStatInterm);
@@ -234,11 +261,11 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
     BasicLogger::printDebug("Reporting on the memory consumption");
     reportMemotyUsage("Loading of the text corpus Trie", memStatStart, memStatInterm);
 
-    BasicLogger::printInfo("Reading and executing the test queries ...");
+    BasicLogger::printResult("Reading and executing the test queries ...");
     const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-    BasicLogger::printInfo("Executing the test queries is done, it took %lf CPU seconds.", queryCPUTimes);
+    BasicLogger::printResult("Executing the test queries is done, it took %lf CPU seconds.", queryCPUTimes);
   
-    BasicLogger::printInfo("Done");
+    BasicLogger::printResult("Done");
 }
 
 /**

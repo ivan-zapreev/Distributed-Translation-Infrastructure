@@ -30,8 +30,9 @@ const string BasicLogger::ERROR_PREFIX_STR = "ERROR";
 const string BasicLogger::WARNING_PREFIX_STR = "WARNING";
 const string BasicLogger::INFO_PREFIX_STR = "INFO";
 const string BasicLogger::DEBUG_PREFIX_STR = "DEBUG";
+const string BasicLogger::DEBUG_UNSAFE_PREFIX_STR = "DEBUG-UNSAFE";
 
-BasicLogger::DebugLevel BasicLogger::currLEvel = INFO;
+BasicLogger::DebugLevel BasicLogger::currLEvel = WARNING;
 
 void BasicLogger::printError( Exception const & data, ... ) {
     PRINT(ERROR, const string &, ERROR_PREFIX_STR, data, cerr, data.getMessage());
@@ -51,6 +52,10 @@ void BasicLogger::printWarning( const string & data, ... ) {
 
 void BasicLogger::printWarning( const char * data, ... ) {
     PRINT(WARNING, const char *, WARNING_PREFIX_STR, data, cerr, data);
+}
+
+void BasicLogger::printResultSafe( const string & data ) {
+    print<RESULT, const string &, RESULT_PREFIX_STR, cout>(data);
 }
 
 void BasicLogger::printResult( const string & data, ... ) {
@@ -77,8 +82,8 @@ void BasicLogger::printInfo( const char * data, ... ) {
     PRINT(INFO, const char *, INFO_PREFIX_STR, data, cout, data);
 }
 
-void BasicLogger::printUnsafeDebug( const string & data ) {
-    print<DEBUG, const string &, DEBUG_PREFIX_STR, clog>(data);
+void BasicLogger::printDebugSafe( const string & data ) {
+    print<DEBUG, const string &, DEBUG_UNSAFE_PREFIX_STR, clog>(data);
 }
 
 void BasicLogger::printDebug( const string & data, ... ) {
