@@ -58,7 +58,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandlineTool>g++-4.4</commandlineTool>
+          <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
@@ -72,7 +72,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
-          <commandlineTool>g++-4.4</commandlineTool>
+          <commandlineTool>g++</commandlineTool>
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
@@ -116,7 +116,7 @@
       <compileType>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandlineTool>g++-4.4</commandlineTool>
+          <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
@@ -124,7 +124,7 @@
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
-          <commandlineTool>g++-4.4</commandlineTool>
+          <commandlineTool>g++</commandlineTool>
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>

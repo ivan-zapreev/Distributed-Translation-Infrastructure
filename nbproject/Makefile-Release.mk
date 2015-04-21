@@ -15,8 +15,8 @@ NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
 CC=gcc
-CCC=g++-4.4
-CXX=g++-4.4
+CCC=g++
+CXX=g++
 FC=gfortran
 AS=as
 
@@ -65,7 +65,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	g++-4.4 -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
 
 ${OBJECTDIR}/src/BasicLogger.o: nbproject/Makefile-${CND_CONF}.mk src/BasicLogger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
