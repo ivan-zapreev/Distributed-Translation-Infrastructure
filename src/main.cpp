@@ -79,7 +79,7 @@ static void printUsage(const string name) {
     BasicLogger::printUsage("Running: ");
     BasicLogger::printUsage("  %s <train_file> <test_file> [debug-level]", shortName.c_str());
     BasicLogger::printUsage("      <train_file> - a text file containing the training text corpus.");
-    BasicLogger::printUsage("                     This corpus should bealready tokenized, i.e.,");
+    BasicLogger::printUsage("                     This corpus should be already tokenized, i.e.,");
     BasicLogger::printUsage("                     all words are already separated by white spaces,");
     BasicLogger::printUsage("                     including punctuation marks. Also, each line in ");
     BasicLogger::printUsage("                     this, file corresponds to one sentence.");

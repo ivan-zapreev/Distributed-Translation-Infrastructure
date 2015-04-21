@@ -1,5 +1,5 @@
 /* 
- * File:   HashMapTrie.h
+ * File:   HashMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

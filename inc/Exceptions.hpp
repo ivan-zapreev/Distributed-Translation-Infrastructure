@@ -1,5 +1,5 @@
 /* 
- * File:   Exceptions.h
+ * File:   Exceptions.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
