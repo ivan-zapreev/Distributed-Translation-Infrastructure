@@ -54,17 +54,22 @@ typedef struct {
  * This functions does nothing more but printing the program header information
  */
 static void printInfo() {
-    BasicLogger::printInfo(" ------------------------------------------------------------------ ");
-    BasicLogger::printInfo("|                    Automated Translation Tires                   |");
-    BasicLogger::printInfo("|                     Test software version 1.0                    |");
-    BasicLogger::printInfo("|               Copyright (C) Fontys Hogescholen, 2015.            |");
-    BasicLogger::printInfo("|                            Authors:                              |");
-    BasicLogger::printInfo("|                  Ivan S Zapreev (since 2015),                    |");
-    BasicLogger::printInfo("|        This software is distributed under GPL 2.0 license        |");
-    BasicLogger::printInfo("|          (GPL stands for GNU General Public License)             |");
-    BasicLogger::printInfo("|          The product comes with ABSOLUTELY NO WARRANTY.          |");
-    BasicLogger::printInfo("| This is a free software, and you are welcome to redistribute it. |");
-    BasicLogger::printInfo(" ------------------------------------------------------------------ ");
+    BasicLogger::printUsage(" ------------------------------------------------------------------ ");
+    BasicLogger::printUsage("|                    Automated Translation Tires         :)\\___/(: |");
+    BasicLogger::printUsage("|                     Test software version 1.1          {(@)v(@)} |");
+    BasicLogger::printUsage("|                                                        {|~- -~|} |");
+    BasicLogger::printUsage("|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |");
+    BasicLogger::printUsage("|  ═════════════════════════════════════════════════════════m-m══  |");
+    BasicLogger::printUsage("|        This software is distributed under GPL 2.0 license        |");
+    BasicLogger::printUsage("|          (GPL stands for GNU General Public License)             |");
+    BasicLogger::printUsage("|          The product comes with ABSOLUTELY NO WARRANTY.          |");
+    BasicLogger::printUsage("|   This is a free software, you are welcome to redistribute it.   |");
+    BasicLogger::printUsage(" ------------------------------------------------------------------ ");
+    
+    
+    
+    
+    
 }
 
 /**
