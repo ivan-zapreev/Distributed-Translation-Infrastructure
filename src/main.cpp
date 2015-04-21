@@ -89,14 +89,15 @@ static void printUsage(const string name) {
     BasicLogger::printUsage("     [debug-level] - the optional debug flag from ");
 
     BasicLogger::printUsage("Output: ");
-    BasicLogger::printUsage("    The programm reads in the test file and say for each 5-gram of the");
-    BasicLogger::printUsage("    form word 1 word 2 word 3 word 4 word 5 what the frequencies");
-    BasicLogger::printUsage("    for all n-grams (1 <= n <= 5) ending in word 5, i.e.:");
-    BasicLogger::printUsage("    frequency(word1 word2 word 3 word 4 word 5)=?");
-    BasicLogger::printUsage("    frequency(word2 word 3 word 4 word 5)=?");
-    BasicLogger::printUsage("    frequency(word3 word 4 word 5)=?");
-    BasicLogger::printUsage("    frequency(word4 word 5)=?");
-    BasicLogger::printUsage("    frequency(word5)=?");
+    BasicLogger::printUsage("    The program reads in the test file and for each 5-gram, of the");
+    BasicLogger::printUsage("    form (word1 word2 word3 word4 word5), and every N in {1,2,3,4,5},");
+    BasicLogger::printUsage("    gives the total number of occurrences for all N-grams, ending");
+    BasicLogger::printUsage("    with word5. For example, for a 5-gram (I do not come from) the");
+    BasicLogger::printUsage("    program can produce the following output");
+    BasicLogger::printUsage("       RESULT: # N-grams ending with: 'from'");
+    BasicLogger::printUsage("       RESULT: 	1-gram = 6, 2-gram = 5, 3-gram = 5, 4-gram = 2, 5-gram = 0");
+    BasicLogger::printUsage("    Here for each N-gram, we get the number of N-grams in the read text");
+    BasicLogger::printUsage("    corpus ending with the word 'from'.");
 }
 
 /**

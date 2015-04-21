@@ -155,15 +155,16 @@ from the command line, the output of the program is supposed to be as follows:
         USAGE:                      where each line in the file consists of one 5-gram.
         USAGE:      [debug-level] - the optional debug flag from 
         USAGE: Output: 
-        USAGE:     The program reads in the test file and say for each 5-gram of the
-        USAGE:     form word 1 word 2 word 3 word 4 word 5 what the frequencies
-        USAGE:     for all n-grams (1 <= n <= 5) ending in word 5, i.e.:
-        USAGE:     frequency(word1 word2 word 3 word 4 word 5)=?
-        USAGE:     frequency(word2 word 3 word 4 word 5)=?
-        USAGE:     frequency(word3 word 4 word 5)=?
-        USAGE:     frequency(word4 word 5)=?
-        USAGE:     frequency(word5)=?
-         
+        USAGE:     The program reads in the test file and for each 5-gram, of the
+        USAGE:     form (word1 word2 word3 word4 word5), and every N in {1,2,3,4,5},
+        USAGE:     gives the total number of occurrences for all N-grams, ending
+        USAGE:     with word5. For example, for a 5-gram (I do not come from) the
+        USAGE:     program can produce the following output
+        USAGE:        RESULT: # N-grams ending with: 'from'
+        USAGE:        RESULT: 	1-gram = 6, 2-gram = 5, 3-gram = 5, 4-gram = 2, 5-gram = 0
+        USAGE:     Here for each N-gram, we get the number of N-grams in the read text
+        USAGE:     corpus ending with the word 'from'.
+                
 
 ##Implementation Details
 
