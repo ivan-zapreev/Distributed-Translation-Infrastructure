@@ -24,8 +24,11 @@
  */
 
 #include "BasicLogger.hpp"
-#include <iostream>     // std::cout
-#include <sstream>     // std::stringstream
+
+#include <iostream>  // std::cout
+#include <sstream>   // std::stringstream
+
+#include "StatisticsMonitor.hpp"
 
 //This macro is used to spare some space in printing functions bodies
 #define PRINT(MSG_TYPE, ARG_TYPE, MSG_PREFIX, LAST_ARG, OSTREAM, ARG_VALUE)  \
@@ -126,9 +129,48 @@ template<BasicLogger::DebugLevel L, const string & P, ostream & S> void BasicLog
     }
 }
 
-
 template<BasicLogger::DebugLevel L, typename T, const string & P, ostream & S> void BasicLogger::print(T data) {
     if( L <= currLEvel ) {
         S << P << ": " << data << endl;
+    }
+}
+
+//Initialize the progress bar chars array
+const vector<string> BasicLogger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r" });
+
+//It is the number of characters minus one as the last one is backspace
+const unsigned short int BasicLogger::numProgChars = progressChars.size()-1;
+
+//Set the initial index to zerro
+unsigned short int BasicLogger::currProgCharIdx = 0;
+
+//Set the initial update time to zero
+double BasicLogger::lastProgressUpdate = 0.0;
+
+void BasicLogger::startProgressBar(){
+    if( currLEvel <= INFO ) {
+        currProgCharIdx = 0;
+        cout << progressChars[currProgCharIdx];
+        lastProgressUpdate = StatisticsMonitor::getCPUTime();
+    }
+}
+
+void BasicLogger::updateProgressBar(){
+    if( currLEvel <= INFO ) {
+        const double currProgressUpdate = StatisticsMonitor::getCPUTime();
+        if( (currProgressUpdate - lastProgressUpdate ) > PROGRESS_UPDATE_PERIOD ) {
+            currProgCharIdx = (currProgCharIdx + 1) % numProgChars;
+            cout << progressChars[progressChars.size()-1] << progressChars[currProgCharIdx];
+            cout.flush();
+            lastProgressUpdate = currProgressUpdate;
+        }
+    }
+}
+
+void BasicLogger::stopProgressBar(){
+    if( currLEvel <= INFO ) {
+        currProgCharIdx = 0;
+        lastProgressUpdate = 0.0;
+        cout << progressChars[numProgChars];
     }
 }

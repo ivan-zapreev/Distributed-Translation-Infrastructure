@@ -52,13 +52,19 @@ namespace tries {
         //Initialize the NGram builder and give it the trie as an argument
         NGramBuilder<N,doCache> ngBuilder(_trie,_delim);
 
+        //Do the progress bard indicator
+        BasicLogger::startProgressBar();
+        
         //Iterate through the file and build n-grams per line and fill in the trie
         string line;
         while( getline(_fstr, line) )
         {
             BasicLogger::printDebugSafe(line);
             ngBuilder.processString(line);
+            BasicLogger::updateProgressBar();
         }
+
+        BasicLogger::stopProgressBar();
 
         BasicLogger::printDebug("Done reading the file and building the trie.");
     }

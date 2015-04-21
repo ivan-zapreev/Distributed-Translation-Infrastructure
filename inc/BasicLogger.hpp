@@ -28,7 +28,11 @@
 
 #include "Exceptions.hpp"
 
-#include <cstdarg> //va_list
+#include <cstdarg>  //va_list
+#include <vector>   //vector
+
+//Defines the progress bar update period in CPU seconds
+#define PROGRESS_UPDATE_PERIOD 0.1
 
 /**
  * This is a trivial logging facility that exchibits a singleton
@@ -37,6 +41,24 @@
 class BasicLogger {
 public:
     enum DebugLevel{USAGE=0, RESULT=USAGE+1, ERROR=RESULT+1, WARNING=ERROR+1, INFO=WARNING+1, DEBUG=INFO+1};
+
+    /**
+     * The function that start progress bar
+     * Works if the current debug level is <= INFO
+     */
+    static void startProgressBar();
+
+    /**
+     * The function that updates progress bar
+     * Works if the current debug level is <= INFO
+     */
+    static void updateProgressBar();
+
+    /**
+     * The function that stops progress bar
+     * Works if the current debug level is <= INFO
+     */
+    static void stopProgressBar();
 
     /**
      * Prints a usage message to the stdout
@@ -149,10 +171,22 @@ private:
     //Stores the current debug level
     static DebugLevel currLEvel;
     
+    //Stores the progress bar characters
+    static const vector<string> progressChars;
+    
+    //Stores the number of progress characters
+    static const unsigned short int numProgChars;
+    
+    //Stores the current progress element idx
+    static unsigned short int currProgCharIdx;
+    
+    //Stores the last progress update in CPU seconds
+    static double lastProgressUpdate;
+    
     //Stores the buffer for printing
     static char buffer[];
 
-    BasicLogger(){}
+    BasicLogger();
     BasicLogger(const BasicLogger& orig){}
     virtual ~BasicLogger(){}
 

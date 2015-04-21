@@ -46,22 +46,29 @@
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1">
+    <conf name="Release" type="1">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
+        <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandlineTool>g++-4.4</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-O3 -std=c++0x</commandLine>
-          <warningLevel>3</warningLevel>
         </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
       </compileType>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -94,28 +101,22 @@
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
-    <conf name="Release" type="1">
+    <conf name="Debug" type="1">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
-        <cTool>
-          <developmentMode>5</developmentMode>
-        </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <incFile>
+          <commandlineTool>g++-4.4</commandlineTool>
+          <incDir>
             <pElem>inc</pElem>
-          </incFile>
+          </incDir>
+          <commandLine>-std=c++0x</commandLine>
+          <warningLevel>3</warningLevel>
         </ccTool>
-        <fortranCompilerTool>
-          <developmentMode>5</developmentMode>
-        </fortranCompilerTool>
-        <asmTool>
-          <developmentMode>5</developmentMode>
-        </asmTool>
       </compileType>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

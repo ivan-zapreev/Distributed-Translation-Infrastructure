@@ -47,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-O3 -std=c++0x
+CXXFLAGS=-O3 -std=c++0x
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -67,35 +67,35 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries: ${OBJECT
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/src/BasicLogger.o: src/BasicLogger.cpp 
+${OBJECTDIR}/src/BasicLogger.o: nbproject/Makefile-${CND_CONF}.mk src/BasicLogger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BasicLogger.o src/BasicLogger.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BasicLogger.o src/BasicLogger.cpp
 
-${OBJECTDIR}/src/HashMapTrie.o: src/HashMapTrie.cpp 
+${OBJECTDIR}/src/HashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/HashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/HashMapTrie.o src/HashMapTrie.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/HashMapTrie.o src/HashMapTrie.cpp
 
-${OBJECTDIR}/src/NGramBuilder.o: src/NGramBuilder.cpp 
+${OBJECTDIR}/src/NGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/NGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NGramBuilder.o src/NGramBuilder.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/NGramBuilder.o src/NGramBuilder.cpp
 
-${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
+${OBJECTDIR}/src/StatisticsMonitor.o: nbproject/Makefile-${CND_CONF}.mk src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
 
-${OBJECTDIR}/src/TrieBuilder.o: src/TrieBuilder.cpp 
+${OBJECTDIR}/src/TrieBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/TrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/TrieBuilder.o src/TrieBuilder.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/TrieBuilder.o src/TrieBuilder.cpp
 
-${OBJECTDIR}/src/main.o: src/main.cpp 
+${OBJECTDIR}/src/main.o: nbproject/Makefile-${CND_CONF}.mk src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -include inc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -O2 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:
