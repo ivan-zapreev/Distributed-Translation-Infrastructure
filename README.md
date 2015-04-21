@@ -196,4 +196,4 @@ The code contains the following important source files:
 * <big>Code</big> - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
  
 ##History
-    * <big>21.04.2015</big> - Created
+* <big>21.04.2015</big> - Created
