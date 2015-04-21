@@ -226,7 +226,7 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         string word = line.substr(idx+1);
         
         stringstream message;
-        message << "Query for the word: \'" << word << "\'";
+        message << "# N-grams ending with: \'" << word << "\'";
         BasicLogger::printResultSafe( message.str() );
 
         //Run the query for the given word
@@ -236,7 +236,7 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         
         //Print the results:
         stringstream result;
-        result << "Frequencies are: ";
+        result << "\t";
         for(int i=0;i<N;i++){
             result << (i+1) << "-gram = " << resWrap.result[i] << ", ";
         }
