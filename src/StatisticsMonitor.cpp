@@ -28,12 +28,12 @@
 #include "BasicLogger.hpp"
 
 #if defined(_WIN32)
-#include <Windows.h>
+    #include <Windows.h>
 
 #elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
-#include <unistd.h>
-#include <sys/resource.h>
-#include <sys/times.h>
+    #include <unistd.h>
+    #include <sys/resource.h>
+    #include <sys/times.h>
 #include <time.h>
 
 #else

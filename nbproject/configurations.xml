@@ -58,10 +58,12 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <commandlineTool>g++-4.4</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-O3 -std=c++0x</commandLine>
+          <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -69,6 +71,10 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <commandlineTool>g++-4.4</commandlineTool>
+          <commandLine>-lrt</commandLine>
+        </linkerTool>
       </compileType>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -117,6 +123,10 @@
           <commandLine>-std=c++0x</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
+        <linkerTool>
+          <commandlineTool>g++-4.4</commandlineTool>
+          <commandLine>-lrt</commandLine>
+        </linkerTool>
       </compileType>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
