@@ -34,9 +34,9 @@ using namespace std;
 namespace hashing {
 
     //This is the smallest size which I've tested and it works for the hash without collisions
-    typedef int TWordHashSize;
+    typedef unsigned int TWordHashSize;
     //This is the hash reference size which should be twice as long as the TWordHashSize
-    typedef long int TReferenceHashSize;
+    typedef unsigned long int TReferenceHashSize;
 
     /**
      * This is one of the best known hashing function algorithms (djb2) for the C 

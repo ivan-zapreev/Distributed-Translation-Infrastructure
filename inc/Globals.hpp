@@ -44,7 +44,24 @@
 #define DEBUG_PARAM_VALUE "debug"
 #define DEBUG_OPTION_VALUES "{" INFO_PARAM_VALUE ", " DEBUG_PARAM_VALUE "}"
 
-typedef unsigned short int TTrieSize;
+//The following type definitions are important for storing the Tries information
+namespace tries {
+    //This typedef if used in the tries in order to specify the type of the N-gram level N
+    typedef unsigned short int TTrieSize;
+    
+    //The amount of memory dedicated for storing frequency
+    //WARNING: Do not use smaller size as I get overflows
+    //for "unsigned short int" on a text large corpus!
+    typedef unsigned int TFrequencySize;
+}
+
+//The following type definitions are important for creating hashes
+namespace hashing {
+    //This is the smallest size which I've tested and it works for the hash without collisions
+    typedef unsigned int TWordHashSize;
+    //This is the hash reference size which should be twice as long as the TWordHashSize
+    typedef unsigned long int TReferenceHashSize;
+}
 
 #endif	/* GLOBALS_HPP */
 

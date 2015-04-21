@@ -65,11 +65,6 @@ static void printInfo() {
     BasicLogger::printUsage("|          The product comes with ABSOLUTELY NO WARRANTY.          |");
     BasicLogger::printUsage("|   This is a free software, you are welcome to redistribute it.   |");
     BasicLogger::printUsage(" ------------------------------------------------------------------ ");
-    
-    
-    
-    
-    
 }
 
 /**
