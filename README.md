@@ -110,8 +110,8 @@ Further, we give a few explanations of the structure above
     * README.md - this document
 
 ##Supported platforms
-Currently there is only one supported platform: <big>Linux</big>
-This project was build and tested on Ubuntu 14.10 64-bit. 
+Currently there is only one supported platform: <big>Linux</big><br/>
+This project was built and tested on Ubuntu 14.10 64-bit. 
 
 ##Building the project
 
