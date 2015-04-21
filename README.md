@@ -153,7 +153,7 @@ from the command line, the output of the program is supposed to be as follows:
         USAGE:       <test_file>  - a text file containing test data.
         USAGE:                      The test file consists of a number of 5-grams,
         USAGE:                      where each line in the file consists of one 5-gram.
-        USAGE:      [debug-level] - the optional debug flag from 
+        USAGE:      [debug-level] - the optional debug flag from {info, debug}
         USAGE: Output: 
         USAGE:     The program reads in the test file and for each 5-gram, of the
         USAGE:     form (word1 word2 word3 word4 word5), and every N in {1,2,3,4,5},

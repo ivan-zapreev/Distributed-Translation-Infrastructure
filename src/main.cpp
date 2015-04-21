@@ -86,7 +86,7 @@ static void printUsage(const string name) {
     BasicLogger::printUsage("      <test_file>  - a text file containing test data.");
     BasicLogger::printUsage("                     The test file consists of a number of 5-grams,");
     BasicLogger::printUsage("                     where each line in the file consists of one 5-gram.");
-    BasicLogger::printUsage("     [debug-level] - the optional debug flag from ");
+    BasicLogger::printUsage("     [debug-level] - the optional debug flag from %s", DEBUG_OPTION_VALUES);
 
     BasicLogger::printUsage("Output: ");
     BasicLogger::printUsage("    The program reads in the test file and for each 5-gram, of the");
