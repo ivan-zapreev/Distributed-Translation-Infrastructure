@@ -46,11 +46,13 @@
 #include <unordered_map>  // std::unordered_map
 
 #include "HashingUtils.hpp"
+#include "BasicLogger.hpp"
 
 using namespace std;
 using namespace hashing;
 
 namespace tries {
+   
     /**
      * This is a HashMpa based ITrie interface implementation class.
      * Note 1: This implementation uses the unsigned long for the hashes it is not optimal
@@ -111,9 +113,17 @@ namespace tries {
          */
         virtual SFrequencyResult<N> & queryWordFreqs(const string & word ) throw (Exception);
 
+        /**
+         * For more details @see ITrie
+         */
+        virtual void queryNGramFreqs( const vector<string> & ngram, SFrequencyResult<N> & freqs );
+        
         virtual ~HashMapTrie();
 
     private:
+        //Stores the minimum context level
+        static const TTrieSize MINIMUM_CONTEXT_LEVEL;
+        
         //A tuple storing a word and its frequency
         typedef pair<string, TFrequencySize> TWordEntryPair;
 
@@ -159,6 +169,49 @@ namespace tries {
          */
         void queryWordFreqs( TWordHashSize hash, SFrequencyResult<N> & result);
 
+        /**
+         * This is a recursive method for querying the N-gram frequencies
+         * @param endWordHash the hash of the last word in the N-grams
+         * @param L the currently considered level of the N-Gram: 0 <= 2 <= N
+         * @param ngram the N-gram words
+         * @param hashes the hashes of the N-gram words
+         * @param freqs the array to put the resulting frequency of the N-gram word_(nStart) .. word_(nEnd) from ngram
+         *              the computed frequency is to be put @ position nStart in the array
+         */
+        void queryNGramFreqs(const TWordHashSize endWordHash, const TTrieSize L,
+                             const vector<string> & ngram, vector<TWordHashSize> & hashes,
+                             SFrequencyResult<N> & freqs) const ;
+        
+        /**
+         * Computes the context for the given Words.
+         * For example for hashes =  [w4 w3 w2 w1] and L = 3 this method will compute
+         * context(w4, context(w3,w2))
+         * @param hashes the pre-computed word's hashes on which the context can be computed
+         * @param L the current context level, is <= the number of shash values in hashes
+         * @return the computed context for the N-gram defined by hashes and L
+         */
+        static inline TReferenceHashSize createContext( vector<TWordHashSize> & hashes, const TTrieSize cLevel ) throw(Exception){
+            const TTrieSize currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
+            //Define and default initialize the context value
+            TReferenceHashSize context = hashes.at(currMaxIdx);
+            BasicLogger::printDebug("initializing context = %u", context );
+            
+            if( currMaxIdx > 0 ) {
+                BasicLogger::printDebug("There is more than one element to create context from!" );
+                //If there is more than one element we need to create a hash for then iterate
+                for(TTrieSize idx = currMaxIdx; idx > 0; idx-- ) {
+                    BasicLogger::printDebug("context( %u, %u ) = ", hashes.at(idx-1), context );
+                    context = createContext(hashes.at(idx-1), context);
+                    BasicLogger::printDebug("                 = %u", context );
+                }
+            } else {
+                if( currMaxIdx < 0 ) {
+                    throw Exception("Unable to compute context of level <=1. It does not exist!");
+                }
+            }
+            
+            return context;
+        }
         
         /**
          * This function computes the hash of the word

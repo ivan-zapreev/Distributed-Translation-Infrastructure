@@ -103,6 +103,20 @@ namespace tries {
         virtual SFrequencyResult<N> & queryWordFreqs(const string & word ) throw (Exception) = 0;
 
         /**
+         * This method will get the N-gram in a form of a vector, e.g.:
+         *      [word1 word2 word3 word4 word5]
+         * and will compute and return the frequencies of the sub n-grams computed as:
+         * freqs[0] = frequency( [word1 word2 word3 word4 word5] )
+         * freqs[1] = frequency( [word2 word3 word4 word5] )
+         * freqs[2] = frequency( [word3 word4 word5] )
+         * freqs[3] = frequency( [word4 word5] )
+         * freqs[4] = frequency( [word5] )
+         * @param ngram the given N-gram vector is expected to have exactly N elements (see the template parameters)
+         * @param freqs the array into which the frequencies will be placed.
+         */
+        virtual void queryNGramFreqs( const vector<string> & ngram, SFrequencyResult<N> & freqs ) = 0;
+
+        /**
          * Allows to force reset of internal query caches, if they exist
          */
         virtual void resetQueryCache() = 0;

@@ -26,10 +26,14 @@
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
+#include <algorithm>      //std::fill
 
 #include "BasicLogger.hpp"
 
 namespace tries {
+    
+    template<TTrieSize N, bool doCache>
+    const TTrieSize HashMapTrie<N,doCache>::MINIMUM_CONTEXT_LEVEL=2;
     
     template<TTrieSize N, bool doCache>
     HashMapTrie<N,doCache>::HashMapTrie() {
@@ -58,7 +62,9 @@ namespace tries {
                 entry.first = token;
             } else {
                 if( entry.first.compare(token) ) {
-                    BasicLogger::printError("Hash collision: \'%s\' and \'%s\' both have hash %d ", token.c_str(), entry.first.c_str(), hash);
+                    stringstream message;
+                    message << "Hash collision: '" << token << "' and '" << entry.first << "' both have hash " << hash;
+                    BasicLogger::printErrorSafe(message.str());
                 }
             }
             //Update/increase the frequency
@@ -91,6 +97,7 @@ namespace tries {
                 //Increase the frequency of the N-gram
                 ngramFreq++;
                 BasicLogger::printDebug("%u-gram: freq( %u, %u ) = %u", n, wordHash, context, ngramFreq);
+                //BasicLogger::printDebug("data[%u][%u][%u] = %u", idx-1, wordHash, context, data[idx-1][wordHash][context]);
             } else {
                 //Otherwise compute the next context
                 TReferenceHashSize n_context = createContext(wordHash,context);
@@ -121,7 +128,6 @@ namespace tries {
                     wrap.result[idx] += it->second;
                 }
             }
-            
         } catch ( out_of_range e ) {
             //DO NOTHING! This just means that the NGram is not found so we can simply stop searching
         }
@@ -159,7 +165,66 @@ namespace tries {
             throw Exception("This function is not applicable when query result caching is OFF!");
         }
     }
+    
+    template<TTrieSize N, bool doCache>
+    void HashMapTrie<N,doCache>::queryNGramFreqs(const TWordHashSize endWordHash, const TTrieSize L,
+                                                 const vector<string> & ngram, vector<TWordHashSize> & hashes,
+                                                 SFrequencyResult<N> & freqs) const {
+        BasicLogger::printDebug(">> End word hash: %u, level %u", endWordHash, L );
+        //Get this level's mapping corresponding to the start word
+        const TNTrieEntryPairsMap & entry = data[L-MINIMUM_CONTEXT_LEVEL].at(endWordHash);
 
+        BasicLogger::printDebug("-- The level %u data entry is found", L );
+        
+        //Compute the hash of the first word in the Ngram
+        TWordHashSize startWordHash = computeHash(ngram[N-L]);
+        //Put it inside the hash
+        hashes.push_back(startWordHash);
+
+        BasicLogger::printDebug("-- Computed the level's %u next %u-gram level word hash %u ", L, N-L, startWordHash );
+        
+        //Compute the context of the startWord on this level for this level's N-gram (L-gram))
+        TReferenceHashSize context = createContext( hashes, L );
+
+        BasicLogger::printDebug("-- The level %u context is %u", L, context );
+
+        //BasicLogger::printDebug("Getting data[%u][%u][%u] = %u", L-1, endWordHash, context, data[L-MINIMUM_CONTEXT_LEVEL][endWordHash][context]);
+        
+        //Get the L-gram's frequency
+        freqs.result[N-L] = entry.at(context);
+
+        BasicLogger::printDebug("-- The level %u frequency %u is found and stored at index %u", context, freqs.result[N-L], N-L );
+        
+        //In case the maximum level N is not reached, do recursion
+        if(L < N) {
+            queryNGramFreqs(endWordHash, L+1, ngram, hashes, freqs);
+        }
+        BasicLogger::printDebug("<< End word hash: %u, level %u", endWordHash, L );
+    }
+
+    template<TTrieSize N, bool doCache>
+    void HashMapTrie<N,doCache>::queryNGramFreqs( const vector<string> & ngram, SFrequencyResult<N> & freqs ) {
+        //First just clean the array
+        fill(freqs.result, freqs.result+N, 0);
+        //This vector will store the N-gram's word hashes
+        //for being re-used in the recursive calls
+        vector<TWordHashSize> hashes;
+        
+        try{
+            //Compute the hash of the last word in the Ngram
+            TWordHashSize endWordHash = computeHash(ngram[N-1]);
+
+            //Get the last 1-gram's word frequency
+            freqs.result[N-1] = words.at(endWordHash).second;
+
+            //Now perform a recursive procedure for finding
+            //frequencies of all longer N-grams with N >= 2
+            queryNGramFreqs(endWordHash, MINIMUM_CONTEXT_LEVEL, ngram, hashes, freqs);
+        } catch ( out_of_range e ) {
+            //DO NOTHING! This just means that the NGram is not found so we can simply stop searching
+        }
+    }
+    
     template<TTrieSize N, bool doCache>
     HashMapTrie<N,doCache>::HashMapTrie(const HashMapTrie& orig) {
     }

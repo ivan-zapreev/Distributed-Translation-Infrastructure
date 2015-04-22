@@ -61,6 +61,10 @@ void BasicLogger::printError( const string & data, ... ) {
     PRINT(ERROR, const string &, ERROR_PREFIX_STR, data, cerr, data);
 }
 
+void BasicLogger::printErrorSafe( const string & data ) {
+    print<ERROR, const string &, RESULT_PREFIX_STR, cerr>(data);
+}
+
 void BasicLogger::printError( const char * data, ... ) {
     PRINT(ERROR, const char *, ERROR_PREFIX_STR, data, cerr, data);
 }

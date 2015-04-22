@@ -155,16 +155,20 @@ from the command line, the output of the program is supposed to be as follows:
         USAGE:                      where each line in the file consists of one 5-gram.
         USAGE:      [debug-level] - the optional debug flag from {info, debug}
         USAGE: Output: 
-        USAGE:     The program reads in the test file and for each 5-gram, of the
-        USAGE:     form (word1 word2 word3 word4 word5), and every N in {1,2,3,4,5},
-        USAGE:     gives the total number of occurrences for all N-grams, ending
-        USAGE:     with word5. For example, for a 5-gram (I do not come from) the
-        USAGE:     program can produce the following output
-        USAGE:        RESULT: # N-grams ending with: 'from'
-        USAGE:        RESULT: 	1-gram = 6, 2-gram = 5, 3-gram = 5, 4-gram = 2, 5-gram = 0
-        USAGE:     Here for each N-gram, we get the number of N-grams in the read text
-        USAGE:     corpus ending with the word 'from'.
-                
+        USAGE:     The program reads in the test lines from the <test_file>. 
+        USAGE:     Each of these lines is a 5-gram of the following form: 
+        USAGE:        word1 word2 word3 word4 word5
+        USAGE:     For each of such 5-grams the frequency information is 
+        USAGE:     computed, based on the data from the <train_file>. For
+        USAGE:     example, for a 5-gram such as:
+        USAGE:        mortgages had lured borrowers and
+        USAGE:     the program may give the following output:
+        USAGE:         frequency( mortgages had lured borrowers and ) = 0
+        USAGE:         frequency( had lured borrowers and ) = 2
+        USAGE:         frequency( lured borrowers and ) = 4
+        USAGE:         frequency( borrowers and ) = 56
+        USAGE:         frequency( and ) = 6453
+                        
 
 ##Implementation Details
 

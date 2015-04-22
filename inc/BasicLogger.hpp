@@ -106,6 +106,12 @@ public:
      * Prints an error message to the stderr
      * @param data the message to be print
      */
+    static void printErrorSafe( const string & data );
+    
+    /**
+     * Prints an error message to the stderr
+     * @param data the message to be print
+     */
     static void printError( const char * data, ... );
 
     /**

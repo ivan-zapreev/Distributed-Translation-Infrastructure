@@ -36,6 +36,7 @@
 #include "HashMapTrie.hpp"
 #include "TrieBuilder.hpp"
 #include "Globals.hpp"
+#include "NGramBuilder.hpp"
 
 using namespace std;
 using namespace tries;
@@ -89,15 +90,19 @@ static void printUsage(const string name) {
     BasicLogger::printUsage("     [debug-level] - the optional debug flag from %s", DEBUG_OPTION_VALUES);
 
     BasicLogger::printUsage("Output: ");
-    BasicLogger::printUsage("    The program reads in the test file and for each 5-gram, of the");
-    BasicLogger::printUsage("    form (word1 word2 word3 word4 word5), and every N in {1,2,3,4,5},");
-    BasicLogger::printUsage("    gives the total number of occurrences for all N-grams, ending");
-    BasicLogger::printUsage("    with word5. For example, for a 5-gram (I do not come from) the");
-    BasicLogger::printUsage("    program can produce the following output");
-    BasicLogger::printUsage("       RESULT: # N-grams ending with: 'from'");
-    BasicLogger::printUsage("       RESULT: 	1-gram = 6, 2-gram = 5, 3-gram = 5, 4-gram = 2, 5-gram = 0");
-    BasicLogger::printUsage("    Here for each N-gram, we get the number of N-grams in the read text");
-    BasicLogger::printUsage("    corpus ending with the word 'from'.");
+    BasicLogger::printUsage("    The program reads in the test lines from the <test_file>. ");
+    BasicLogger::printUsage("    Each of these lines is a 5-gram of the following form: ");
+    BasicLogger::printUsage("       word1 word2 word3 word4 word5");
+    BasicLogger::printUsage("    For each of such 5-grams the frequency information is ");
+    BasicLogger::printUsage("    computed, based on the data from the <train_file>. For");
+    BasicLogger::printUsage("    example, for a 5-gram such as:");
+    BasicLogger::printUsage("       mortgages had lured borrowers and");
+    BasicLogger::printUsage("    the program may give the following output:");
+    BasicLogger::printUsage("        frequency( mortgages had lured borrowers and ) = 0");
+    BasicLogger::printUsage("        frequency( had lured borrowers and ) = 2");
+    BasicLogger::printUsage("        frequency( lured borrowers and ) = 4");
+    BasicLogger::printUsage("        frequency( borrowers and ) = 56");
+    BasicLogger::printUsage("        frequency( and ) = 6453");
 }
 
 /**
@@ -217,31 +222,43 @@ template<TTrieSize N, bool doCache>
 static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime, startTime, endTime;
-    
-    //Read the test file line by line
+    //Will store the read line (word1 word2 word3 word4 word5)
     string line;
+    //Will store the N-gram [word1 word2 word3 word4 word5] corresponding to the line
+    vector<string> ngram;
+    //Will store the N-gram frequencies for N-gram:
+    //freqs[0] = frequency( [word1 word2 word3 word4 word5] )
+    //freqs[1] = frequency( [word2 word3 word4 word5] )
+    //freqs[2] = frequency( [word3 word4 word5] )
+    //freqs[3] = frequency( [word4 word5] )
+    //freqs[4] = frequency( [word5] )
+    SFrequencyResult<N> freqs;
+        
+    //Read the test file line by line
     while( getline(testFile, line) )
     {
-        //Get the last word of the 5-gram
-        unsigned idx = line.find_last_of(TOKEN_DELIMITER_CHAR);
-        string word = line.substr(idx+1);
+        //First get the complete N-gram
+        ngrams::NGramBuilder<N,doCache>::buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
         
-        stringstream message;
-        message << "# N-grams ending with: \'" << word << "\'";
-        BasicLogger::printResultSafe( message.str() );
-
-        //Run the query for the given word
+        BasicLogger::printDebugSafe( line + ":" );
+        
+        //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();
-        SFrequencyResult<N> & resWrap = trie.queryWordFreqs(word);
+        trie.queryNGramFreqs( ngram, freqs );
         endTime = StatisticsMonitor::getCPUTime();
         
         //Print the results:
-        stringstream result;
-        result << "\t";
+        ;
+        unsigned idx = -1;
         for(int i=0;i<N;i++){
-            result << (i+1) << "-gram = " << resWrap.result[i] << ", ";
+            stringstream result;
+            result << "frequency( " + line + " ) = " << freqs.result[i];
+            BasicLogger::printResultSafe(result.str());
+            
+            idx = line.find_first_of(TOKEN_DELIMITER_CHAR);
+            line = line.substr(idx+1);
         }
-        BasicLogger::printResultSafe(result.str());
+        BasicLogger::printResult("CPU Time needed: %lf sec.\n", (endTime - startTime));
 
         //update total time
         totalTime += (endTime - startTime);
@@ -282,7 +299,7 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
 
     BasicLogger::printResult("Reading and executing the test queries ...");
     const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-    BasicLogger::printResult("Executing the test queries is done, it took %lf CPU seconds.", queryCPUTimes);
+    BasicLogger::printResult("Total query execution time is %lf CPU seconds.", queryCPUTimes);
   
     BasicLogger::printResult("Done");
 }

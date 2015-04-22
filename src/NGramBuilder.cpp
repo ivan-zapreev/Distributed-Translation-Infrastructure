@@ -24,10 +24,7 @@
  */
 #include "NGramBuilder.hpp"
 
-#include <sstream>  //std::stringstream
-
 #include "BasicLogger.hpp"
-#include "Globals.hpp"
 
 namespace tries {
 namespace ngrams {
@@ -61,20 +58,6 @@ namespace ngrams {
                 BasicLogger::printDebug("adding N-grams (#tokens=%u) idx = %u, len = %u", tokens.size(), idx, n);
                 _trie.addNGram(tokens, idx, n );
             }
-        }
-    }
-
-    template<TTrieSize N, bool doCache>
-    void NGramBuilder<N,doCache>::tokenize(const std::string &data, const char delim, vector<string> & elems) {
-        stringstream stream(data);
-        string token;
-
-        //Clear the array first
-        result.clear();
-
-        //Read from the string stream
-        while(getline(stream, token, delim)) {
-            elems.push_back(token);
         }
     }
     
