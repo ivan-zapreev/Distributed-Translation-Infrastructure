@@ -90,10 +90,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##Project structure
 This is a Netbeans 8.0.2 project, and its' top-level structure is as follows:
 
->     <big>./doc/</big>
->     <big>./inc/</big>
->     <big>./src/</big>
->     <big>./nbproject/</big>
+>     ./doc/
+>     ./inc/
+>     ./src/
+>     ./nbproject/
 >     ./LICENSE
 >     ./Makefile
 >     ./README.md
