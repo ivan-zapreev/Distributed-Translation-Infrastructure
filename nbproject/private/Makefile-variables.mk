@@ -5,3 +5,4 @@
 #
 # Release configuration
 # Debug configuration
+# Release-MacOs configuration

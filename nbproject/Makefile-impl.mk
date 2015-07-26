@@ -31,7 +31,7 @@ DEFAULTCONF=Release
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Release Debug 
+ALLCONFS=Release Debug Release-MacOs 
 
 
 # build

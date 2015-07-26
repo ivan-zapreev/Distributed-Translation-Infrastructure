@@ -31,7 +31,7 @@
 
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
-#include "BasicLogger.hpp"
+#include "Logger.hpp"
 #include "ATrie.hpp"
 #include "HashMapTrie.hpp"
 #include "TrieBuilder.hpp"
@@ -55,17 +55,17 @@ typedef struct {
  * This functions does nothing more but printing the program header information
  */
 static void printInfo() {
-    BasicLogger::printUsage(" ------------------------------------------------------------------ ");
-    BasicLogger::printUsage("|                    Automated Translation Tires         :)\\___/(: |");
-    BasicLogger::printUsage("|                     Test software version 1.1          {(@)v(@)} |");
-    BasicLogger::printUsage("|                                                        {|~- -~|} |");
-    BasicLogger::printUsage("|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |");
-    BasicLogger::printUsage("|  ═════════════════════════════════════════════════════════m-m══  |");
-    BasicLogger::printUsage("|        This software is distributed under GPL 2.0 license        |");
-    BasicLogger::printUsage("|          (GPL stands for GNU General Public License)             |");
-    BasicLogger::printUsage("|          The product comes with ABSOLUTELY NO WARRANTY.          |");
-    BasicLogger::printUsage("|   This is a free software, you are welcome to redistribute it.   |");
-    BasicLogger::printUsage(" ------------------------------------------------------------------ ");
+    LOGGER(Logger::USAGE) << " ------------------------------------------------------------------ " << endl;
+    LOGGER(Logger::USAGE) << "|                    Automated Translation Tires         :)\\___/(: |" << endl;
+    LOGGER(Logger::USAGE) << "|                     Test software version 1.1          {(@)v(@)} |" << endl;
+    LOGGER(Logger::USAGE) << "|                                                        {|~- -~|} |" << endl;
+    LOGGER(Logger::USAGE) << "|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |" << endl;
+    LOGGER(Logger::USAGE) << "|  ═════════════════════════════════════════════════════════m-m══  |" << endl;
+    LOGGER(Logger::USAGE) << "|        This software is distributed under GPL 2.0 license        |" << endl;
+    LOGGER(Logger::USAGE) << "|          (GPL stands for GNU General Public License)             |" << endl;
+    LOGGER(Logger::USAGE) << "|          The product comes with ABSOLUTELY NO WARRANTY.          |" << endl;
+    LOGGER(Logger::USAGE) << "|   This is a free software, you are welcome to redistribute it.   |" << endl;
+    LOGGER(Logger::USAGE) << " ------------------------------------------------------------------ " << endl;
 }
 
 /**
@@ -77,32 +77,32 @@ static void printUsage(const string name) {
     const unsigned int lastSlashBeforeFileName = name.find_last_of(PATH_SEPARATION_SYMBOLS);
     const string shortName = name.substr(lastSlashBeforeFileName + 1);
 
-    BasicLogger::printUsage("Running: ");
-    BasicLogger::printUsage("  %s <train_file> <test_file> [debug-level]", shortName.c_str());
-    BasicLogger::printUsage("      <train_file> - a text file containing the training text corpus.");
-    BasicLogger::printUsage("                     This corpus should be already tokenized, i.e.,");
-    BasicLogger::printUsage("                     all words are already separated by white spaces,");
-    BasicLogger::printUsage("                     including punctuation marks. Also, each line in ");
-    BasicLogger::printUsage("                     this, file corresponds to one sentence.");
-    BasicLogger::printUsage("      <test_file>  - a text file containing test data.");
-    BasicLogger::printUsage("                     The test file consists of a number of 5-grams,");
-    BasicLogger::printUsage("                     where each line in the file consists of one 5-gram.");
-    BasicLogger::printUsage("     [debug-level] - the optional debug flag from %s", DEBUG_OPTION_VALUES);
+    LOGGER(Logger::USAGE) << "Running: " << endl;
+    LOGGER(Logger::USAGE) << "  " << shortName.c_str() << " <train_file> <test_file> [debug-level]" << endl;
+    LOGGER(Logger::USAGE) << "      <train_file> - a text file containing the training text corpus." << endl;
+    LOGGER(Logger::USAGE) << "                     This corpus should be already tokenized, i.e.," << endl;
+    LOGGER(Logger::USAGE) << "                     all words are already separated by white spaces," << endl;
+    LOGGER(Logger::USAGE) << "                     including punctuation marks. Also, each line in " << endl;
+    LOGGER(Logger::USAGE) << "                     this, file corresponds to one sentence." << endl;
+    LOGGER(Logger::USAGE) << "      <test_file>  - a text file containing test data." << endl;
+    LOGGER(Logger::USAGE) << "                     The test file consists of a number of 5-grams," << endl;
+    LOGGER(Logger::USAGE) << "                     where each line in the file consists of one 5-gram." << endl;
+    LOGGER(Logger::USAGE) << "     [debug-level] - the optional debug flag from " << DEBUG_OPTION_VALUES << endl;
 
-    BasicLogger::printUsage("Output: ");
-    BasicLogger::printUsage("    The program reads in the test lines from the <test_file>. ");
-    BasicLogger::printUsage("    Each of these lines is a 5-gram of the following form: ");
-    BasicLogger::printUsage("       word1 word2 word3 word4 word5");
-    BasicLogger::printUsage("    For each of such 5-grams the frequency information is ");
-    BasicLogger::printUsage("    computed, based on the data from the <train_file>. For");
-    BasicLogger::printUsage("    example, for a 5-gram such as:");
-    BasicLogger::printUsage("       mortgages had lured borrowers and");
-    BasicLogger::printUsage("    the program may give the following output:");
-    BasicLogger::printUsage("        frequency( mortgages had lured borrowers and ) = 0");
-    BasicLogger::printUsage("        frequency( had lured borrowers and ) = 2");
-    BasicLogger::printUsage("        frequency( lured borrowers and ) = 4");
-    BasicLogger::printUsage("        frequency( borrowers and ) = 56");
-    BasicLogger::printUsage("        frequency( and ) = 6453");
+    LOGGER(Logger::USAGE) << "Output: " << endl;
+    LOGGER(Logger::USAGE) << "    The program reads in the test lines from the <test_file>. " << endl;
+    LOGGER(Logger::USAGE) << "    Each of these lines is a 5-gram of the following form: " << endl;
+    LOGGER(Logger::USAGE) << "       word1 word2 word3 word4 word5" << endl;
+    LOGGER(Logger::USAGE) << "    For each of such 5-grams the frequency information is " << endl;
+    LOGGER(Logger::USAGE) << "    computed, based on the data from the <train_file>. For" << endl;
+    LOGGER(Logger::USAGE) << "    example, for a 5-gram such as:" << endl;
+    LOGGER(Logger::USAGE) << "       mortgages had lured borrowers and" << endl;
+    LOGGER(Logger::USAGE) << "    the program may give the following output:" << endl;
+    LOGGER(Logger::USAGE) << "        frequency( mortgages had lured borrowers and ) = 0" << endl;
+    LOGGER(Logger::USAGE) << "        frequency( had lured borrowers and ) = 2" << endl;
+    LOGGER(Logger::USAGE) << "        frequency( lured borrowers and ) = 4" << endl;
+    LOGGER(Logger::USAGE) << "        frequency( borrowers and ) = 56" << endl;
+    LOGGER(Logger::USAGE) << "        frequency( and ) = 6453" << endl;
 }
 
 /**
@@ -127,16 +127,14 @@ static void extractArguments(const int argc, char const * const * const argv, TA
             string data = argv[3];
             transform(data.begin(), data.end(), data.begin(), ::tolower);
             if(!data.compare( INFO_PARAM_VALUE )) {
-                BasicLogger::setLoggingLevel(BasicLogger::INFO);
-                BasicLogger::printInfo("Setting the debugging level to \'%s\'", INFO_PARAM_VALUE);
+                Logger::ReportingLevel() = Logger::INFO;
+                LOGGER(Logger::INFO) << "Setting the debugging level to \'" << INFO_PARAM_VALUE << "\'" << endl;
             } else {
                 if(!data.compare( DEBUG_PARAM_VALUE )){
-                    BasicLogger::setLoggingLevel(BasicLogger::DEBUG);
-                    BasicLogger::printInfo("Setting the debugging level to \'%s\'", DEBUG_PARAM_VALUE);
+                    Logger::ReportingLevel() = Logger::DEBUG;
+                    LOGGER(Logger::INFO) << "Setting the debugging level to \'" << DEBUG_PARAM_VALUE << "\'" << endl;
                 } else {
-                    stringstream msg;
-                    msg << "Ignoring an unknown value of [debug-level] parameter: '" << argv[3] << "'" ;
-                    BasicLogger::printWarning(msg.str());
+                    LOGGER(Logger::WARNING) << "Ignoring an unknown value of [debug-level] parameter: '" << argv[3] << "'" << endl;
                 }
             }
         }
@@ -182,18 +180,21 @@ static string getMemoryUsageString(unsigned int const & vmsize,
  * @param msEnd the end memory usage statistics
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
-    BasicLogger::printResult("Action: \'%s\' memory increase:", action);
-    BasicLogger::printDebug("memory before: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
-            msStart.vmsize, msStart.vmpeak, msStart.vmrss, msStart.vmhwm);
-    BasicLogger::printDebug("memory after: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
-            msEnd.vmsize, msEnd.vmpeak, msEnd.vmrss, msEnd.vmhwm);
-    BasicLogger::printResult("vmsize=%lf Mb, vmpeak=%lf Mb, vmrss=%lf Mb, vmhwm=%lf Mb",
-            double(msEnd.vmsize - msStart.vmsize)/BYTES_ONE_MB, double(msEnd.vmpeak - msStart.vmpeak)/BYTES_ONE_MB,
-            double(msEnd.vmrss - msStart.vmrss)/BYTES_ONE_MB, double(msEnd.vmhwm - msStart.vmhwm)/BYTES_ONE_MB);
-    BasicLogger::printInfo("  vmsize - Virtual memory size; vmpeak - Peak virtual memory size");
-    BasicLogger::printInfo("    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)");
-    BasicLogger::printInfo("  vmrss  - Resident set size; vmhwm  - Peak resident set size");
-    BasicLogger::printInfo("    Resident set size is how much memory this process currently has in main memory (RAM)");
+    LOGGER(Logger::RESULT) << "Action: \'" << action << "\' memory increase:" << endl;
+    LOGGER(Logger::DEBUG) << "memory before: vmsize=" << msStart.vmsize << " Kb, vmpeak="
+                               << msStart.vmpeak << " Kb, vmrss=" << msStart.vmrss
+                               << " Kb, vmhwm=" << msStart.vmhwm << " Kb" << endl;
+    LOGGER(Logger::DEBUG) << "memory after: vmsize=" << msEnd.vmsize << " Kb, vmpeak="
+                               << msEnd.vmpeak << " Kb, vmrss=" << msEnd.vmrss
+                               << " Kb, vmhwm=" << msEnd.vmhwm << " Kb" << endl;
+    LOGGER(Logger::RESULT) << "vmsize=" << double(msEnd.vmsize - msStart.vmsize)/BYTES_ONE_MB
+                                << " Mb, vmpeak=" << double(msEnd.vmpeak - msStart.vmpeak)/BYTES_ONE_MB
+                                << " Mb, vmrss=" << double(msEnd.vmrss - msStart.vmrss)/BYTES_ONE_MB
+                                << " Mb, vmhwm=" << double(msEnd.vmhwm - msStart.vmhwm)/BYTES_ONE_MB << " Mb" << endl;
+    LOGGER(Logger::INFO) << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << endl;
+    LOGGER(Logger::INFO) << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << endl;
+    LOGGER(Logger::INFO) << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << endl;
+    LOGGER(Logger::INFO) << "    Resident set size is how much memory this process currently has in main memory (RAM)" << endl;
 }
 
 /**
@@ -240,7 +241,7 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         //First get the complete N-gram
         ngrams::NGramBuilder<N,doCache>::buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
         
-        BasicLogger::printDebugSafe( line + ":" );
+        LOGGER(Logger::DEBUG) <<  line << ":" << endl;
         
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();
@@ -251,14 +252,12 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
         ;
         unsigned idx = -1;
         for(int i=0;i<N;i++){
-            stringstream result;
-            result << "frequency( " + line + " ) = " << freqs.result[i];
-            BasicLogger::printResultSafe(result.str());
+            LOGGER(Logger::RESULT) << "frequency( " << line << " ) = " << freqs.result[i] << endl;
             
             idx = line.find_first_of(TOKEN_DELIMITER_CHAR);
             line = line.substr(idx+1);
         }
-        BasicLogger::printResult("CPU Time needed: %lf sec.\n", (endTime - startTime));
+        LOGGER(Logger::RESULT) << "CPU Time needed: " << (endTime - startTime) << " sec." << endl;
 
         //update total time
         totalTime += (endTime - startTime);
@@ -278,30 +277,30 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
 
-    BasicLogger::printDebug("Getting the initial memory statistics ...");
+    LOGGER(Logger::DEBUG) << "Getting the initial memory statistics ..." << endl;
     //Declare the statistics monitor and its data
     TMemotyUsage memStatStart = {}, memStatInterm = {};
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Create a trie and pass it to the algorithm method
     TFiveCacheHashMapTrie trie;
-    BasicLogger::printResult("Start reading the text corpus and filling in the Trie ...");
+    LOGGER(Logger::RESULT) << "Start reading the text corpus and filling in the Trie ..." << endl;
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(trainFile, trie);
     endTime = StatisticsMonitor::getCPUTime();
-    BasicLogger::printResult("Reading the text corpus is done, it took %lf CPU seconds.", endTime - startTime);
+    LOGGER(Logger::RESULT) << "Reading the text corpus is done, it took " << (endTime - startTime) << " CPU seconds." << endl;
 
-    BasicLogger::printDebug("Getting the intermediate memory statistics ...");
+    LOGGER(Logger::DEBUG) << "Getting the intermediate memory statistics ..." << endl;
     StatisticsMonitor::getMemoryStatistics(memStatInterm);
 
-    BasicLogger::printDebug("Reporting on the memory consumption");
+    LOGGER(Logger::DEBUG) << "Reporting on the memory consumption" << endl;
     reportMemotyUsage("Loading of the text corpus Trie", memStatStart, memStatInterm);
 
-    BasicLogger::printResult("Reading and executing the test queries ...");
+    LOGGER(Logger::RESULT) << "Reading and executing the test queries ..." << endl;
     const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-    BasicLogger::printResult("Total query execution time is %lf CPU seconds.", queryCPUTimes);
+    LOGGER(Logger::RESULT) << "Total query execution time is " << queryCPUTimes << " CPU seconds." << endl;
   
-    BasicLogger::printResult("Done");
+    LOGGER(Logger::RESULT) << "Done" << endl;
 }
 
 /**
@@ -315,20 +314,21 @@ int main(int argc, char** argv) {
     printInfo();
 
     try {
-        BasicLogger::printInfo("Checking on the program arguments ...");
+        LOGGER(Logger::INFO) << "Checking on the program arguments ..." << endl;
         //Attempt to extract the program arguments
         TAppParams params = {};
         extractArguments(argc, argv, params);
 
-        BasicLogger::printInfo("Checking on the provided files \'%s\' and \'%s\' ...",
-                params.trainFileName.c_str(), params.testFileName.c_str());
+        LOGGER(Logger::INFO) << "Checking on the provided files \'"
+                                  << params.trainFileName << "\' and \'"
+                                  << params.testFileName << "\' ..." << endl;
 
         //Attempt to open the files
         ifstream trainFile(params.trainFileName.c_str());
         ifstream testFile(params.testFileName.c_str());
 
         //If the files could be opened then proceed with training and then testing
-        if ((trainFile != NULL) && (testFile != NULL)) {
+        if ((trainFile.is_open()) && (testFile.is_open())) {
             //Do the actual work, read the text corpse, create trie and do queries
             performTasks(trainFile, testFile);
         } else {
@@ -341,7 +341,7 @@ int main(int argc, char** argv) {
         }
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
-        BasicLogger::printError(ex);
+        LOGGER(Logger::ERROR) << ex.getMessage();
         printUsage((string) argv[0]);
         returnCode = 1;
     }

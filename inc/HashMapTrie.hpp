@@ -23,12 +23,6 @@
  * Created on April 18, 2015, 11:42 AM
  */
 
-#ifndef HASHMAPTRIE_HPP
-#define	HASHMAPTRIE_HPP
-
-#include "ATrie.hpp"
-#include "Globals.hpp"
-
 /**
  * We actually have several choices:
  * 
@@ -41,12 +35,16 @@
  * We will need to test which one runs better, it is an unordered_map for now.
  * http://www.cplusplus.com/reference/unordered_map/unordered_map/
  */
-
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
 
+#include "ATrie.hpp"
+#include "Globals.hpp"
 #include "HashingUtils.hpp"
-#include "BasicLogger.hpp"
+#include "Logger.hpp"
+
+#ifndef HASHMAPTRIE_HPP
+#define	HASHMAPTRIE_HPP
 
 using namespace std;
 using namespace hashing;
@@ -138,6 +136,8 @@ namespace tries {
         unordered_map<TWordHashSize, TWordEntryPair> words;
 
         //The map storing n-tires for n>=2 and <= N
+        //ToDo: That does nog have to be a map, a simple array should suffice!
+        //ToDo: The key can be just of type byte as we typically consider up to 6-Grams
         unordered_map<TWordHashSize, TNTrieEntryPairsMap > data[N-1];
 
         //The internal query results cache
@@ -194,15 +194,15 @@ namespace tries {
             const TTrieSize currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
             //Define and default initialize the context value
             TReferenceHashSize context = hashes.at(currMaxIdx);
-            BasicLogger::printDebug("initializing context = %u", context );
+            LOGGER(Logger::DEBUG) << "initializing context = " << context << endl;
             
             if( currMaxIdx > 0 ) {
-                BasicLogger::printDebug("There is more than one element to create context from!" );
+                LOGGER(Logger::DEBUG) << "There is more than one element to create context from!";
                 //If there is more than one element we need to create a hash for then iterate
                 for(TTrieSize idx = currMaxIdx; idx > 0; idx-- ) {
-                    BasicLogger::printDebug("context( %u, %u ) = ", hashes.at(idx-1), context );
+                    LOGGER(Logger::DEBUG) << "context( " << hashes.at(idx-1) << ", " << context << " )" << endl;
                     context = createContext(hashes.at(idx-1), context);
-                    BasicLogger::printDebug("                 = %u", context );
+                    LOGGER(Logger::DEBUG) << "                 = " << context << endl;
                 }
             } else {
                 if( currMaxIdx < 0 ) {

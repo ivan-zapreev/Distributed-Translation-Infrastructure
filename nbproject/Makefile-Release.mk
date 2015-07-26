@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -35,8 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/BasicLogger.o \
 	${OBJECTDIR}/src/HashMapTrie.o \
+	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/NGramBuilder.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/TrieBuilder.o \
@@ -67,15 +67,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries: ${OBJECT
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/automated-translation-tries ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
 
-${OBJECTDIR}/src/BasicLogger.o: nbproject/Makefile-${CND_CONF}.mk src/BasicLogger.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BasicLogger.o src/BasicLogger.cpp
-
 ${OBJECTDIR}/src/HashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/HashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/HashMapTrie.o src/HashMapTrie.cpp
+
+${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
 ${OBJECTDIR}/src/NGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/NGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

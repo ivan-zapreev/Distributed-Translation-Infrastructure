@@ -41,6 +41,8 @@ namespace hashing {
     /**
      * This is one of the best known hashing function algorithms (djb2) for the C 
      * strings as reported and described in http://www.cse.yorku.ca/~oz/hash.html
+     * Note: It turned to be not as good as the PrimesHash as resulted in collisions on the test data.
+     * Note: The time complexity of this algorithm is also linear in the length of the input word.
      * @param str the string to hash
      * @return the resulting hash
      */
@@ -50,7 +52,7 @@ namespace hashing {
         int c;
         const char * c_str = str.c_str();
 
-        while (c = *c_str++) {
+        while ( (c = *c_str++) ) {
             hashVal = ((hashVal << 5) + hashVal) + c; /* hash * 33 + c */
         }
 
@@ -63,6 +65,9 @@ namespace hashing {
      * It's origin is unknown but it proves to work perfect (without collisions)
      * on both test sets! So I do not need to complicate a hash map to a
      * multi-map for now!
+     * Note: The time complexity is linear in the length of the word.
+     * Note: There are no observed collisions up until now.
+     * Note: But it is not yet known if this hash is collision free.
      * @param str the word to hash
      * @return the resulting hash
      */    

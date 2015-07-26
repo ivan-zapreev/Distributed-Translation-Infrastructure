@@ -25,7 +25,7 @@
 
 #include "TrieBuilder.hpp"
 
-#include "BasicLogger.hpp"
+#include "Logger.hpp"
 #include "NGramBuilder.hpp"
 #include "Globals.hpp"
 
@@ -47,26 +47,26 @@ namespace tries {
 
     template<TTrieSize N, bool doCache>
     void TrieBuilder<N,doCache>::build() {
-        BasicLogger::printDebug("Starting to read the file and build the trie ...");
+        LOGGER(Logger::DEBUG) << "Starting to read the file and build the trie ..." << endl;
         
         //Initialize the NGram builder and give it the trie as an argument
         NGramBuilder<N,doCache> ngBuilder(_trie,_delim);
 
         //Do the progress bard indicator
-        BasicLogger::startProgressBar();
+        Logger::startProgressBar();
         
         //Iterate through the file and build n-grams per line and fill in the trie
         string line;
         while( getline(_fstr, line) )
         {
-            BasicLogger::printDebugSafe(line);
+            LOGGER(Logger::DEBUG) << line << endl;
             ngBuilder.processString(line);
-            BasicLogger::updateProgressBar();
+            Logger::updateProgressBar();
         }
 
-        BasicLogger::stopProgressBar();
+        Logger::stopProgressBar();
 
-        BasicLogger::printDebug("Done reading the file and building the trie.");
+        LOGGER(Logger::DEBUG) << "Done reading the file and building the trie." << endl;
     }
     
     //Make sure that there will be templates instantiated, at least for the given parameter values

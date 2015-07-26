@@ -25,7 +25,7 @@
 
 #include "StatisticsMonitor.hpp"
 #include "Exceptions.hpp"
-#include "BasicLogger.hpp"
+#include "Logger.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>
@@ -112,9 +112,8 @@ void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Excep
     memStat.vmhwm = atoi(vmhwm);
 
     /* Print some info and debug information */
-    BasicLogger::printDebug("read: vmsize=%s Kb, vmpeak=%s Kb, vmrss=%s Kb, vmhwm=%s Kb", vmsize, vmpeak, vmrss, vmhwm);
-    BasicLogger::printDebug("parsed: vmsize=%d Kb, vmpeak=%d Kb, vmrss=%d Kb, vmhwm=%d Kb",
-            memStat.vmsize, memStat.vmpeak, memStat.vmrss, memStat.vmhwm);
+    LOGGER(Logger::DEBUG) << "read: vmsize=" << vmsize << " Kb, vmpeak=" << vmpeak << " Kb, vmrss=" << vmrss << " Kb, vmhwm=" << vmhwm << " Kb" << endl;
+    LOGGER(Logger::DEBUG) << "parsed: vmsize=" << memStat.vmsize << " Kb, vmpeak=" << memStat.vmpeak << " Kb, vmrss=" << memStat.vmrss << " Kb, vmhwm=" << memStat.vmhwm << " Kb" << endl;
 
     /* Free the allocated memory */
     free(vmpeak);
