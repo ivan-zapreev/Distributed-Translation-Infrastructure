@@ -197,7 +197,7 @@ namespace tries {
             LOGGER(Logger::DEBUG) << "initializing context = " << context << endl;
             
             if( currMaxIdx > 0 ) {
-                LOGGER(Logger::DEBUG) << "There is more than one element to create context from!";
+                LOGGER(Logger::DEBUG) << "There is more than one element to create context from!" << endl;
                 //If there is more than one element we need to create a hash for then iterate
                 for(TTrieSize idx = currMaxIdx; idx > 0; idx-- ) {
                     LOGGER(Logger::DEBUG) << "context( " << hashes.at(idx-1) << ", " << context << " )" << endl;
