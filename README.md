@@ -117,6 +117,7 @@ Further, we give a few explanations of the structure above
 Currently there are two supported platforms:
 * <big>Linux</big> - Complete functionality.
 * <big>Mac OS</big> - Limited by inability to collect memory-usage statistics.
+
 This project was built and tested on Ubuntu 14.10 64-bit and OS X Yosemite, version 10.10.4.
 
 ##Building the project
