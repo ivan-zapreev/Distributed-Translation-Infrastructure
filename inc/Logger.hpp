@@ -26,6 +26,9 @@
  * Created on July 26, 2015, 3:49 PM
  */
 
+#ifndef LOGGER_HPP
+#define	LOGGER_HPP
+
 #include <iostream>  // std::cout
 #include <sstream>   // std::stringstream
 #include <vector>    // std::vector
@@ -34,25 +37,26 @@
 
 using namespace std;
 
-#ifndef LOGGER_HPP
-#define	LOGGER_HPP
+namespace uva {
+    namespace smt {
+        namespace logging {
 
-//Defines the progress bar update period in CPU seconds
+            //Defines the progress bar update period in CPU seconds
 #define PROGRESS_UPDATE_PERIOD 0.1
 
-//The logging macros to be used that allows for compile-time as well as runtime optimization
+            //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-    #define LOGER_MAX_LEVEL Logger::DEBUG2
+#define LOGER_MAX_LEVEL Logger::DEBUG2
 #endif
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level)
 
-//The Macro commands to be used for logging data with different log levels,
-//For example, to log a warning one can use:
-//      LOG_WARNING << "This is a warning message!" << END_LOG;
-//Here, the END_LOG is optional and is currently used for a new line only.
+            //The Macro commands to be used for logging data with different log levels,
+            //For example, to log a warning one can use:
+            //      LOG_WARNING << "This is a warning message!" << END_LOG;
+            //Here, the END_LOG is optional and is currently used for a new line only.
 #define LOG_USAGE   LOGGER(Logger::USAGE)
 #define LOG_RESULT  LOGGER(Logger::RESULT)
 #define LOG_ERROR   LOGGER(Logger::ERROR)
@@ -63,77 +67,91 @@ using namespace std;
 #define LOG_DEBUG2  LOGGER(Logger::DEBUG2)
 #define END_LOG     endl
 
-/**
- * This is a trivial logging facility that exchibits a singleton
- * behavior and does output to stderr and stdout.
- */
-class Logger {
-public:
+            /**
+             * This is a trivial logging facility that exchibits a singleton
+             * behavior and does output to stderr and stdout.
+             */
+            class Logger {
+            public:
 
-    //This enumeration stores all the available logging levels.
-    enum DebugLevel {
-        USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1
-    };
+                //This enumeration stores all the available logging levels.
 
-    //Stores the the string representation of the sthe DebugLeven enumeration elements
-    static const char * DebugLevelStr[];
-    
-    virtual ~Logger(){};
+                enum DebugLevel {
+                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1
+                };
 
-    /**
-     * This methods allows to get the output stream for the given log-level
-     * @param level the log level for the messages to print
-     * @return the output stream object
-     */
-    static std::ostream& Get(DebugLevel level = INFO);
-    
-    /**
-     * Returns the reference to the internal log level variable
-     * @return the reference to the internal log level variable
-     */
-    static inline DebugLevel& ReportingLevel() { return currLEvel; };
+                //Stores the the string representation of the sthe DebugLeven enumeration elements
+                static const char * DebugLevelStr[];
 
-    /**
-     * The function that start progress bar
-     * Works if the current debug level is <= INFO
-     */
-    static void startProgressBar();
+                virtual ~Logger() {
+                };
 
-    /**
-     * The function that updates progress bar
-     * Works if the current debug level is <= INFO
-     */
-    static void updateProgressBar();
+                /**
+                 * This methods allows to get the output stream for the given log-level
+                 * @param level the log level for the messages to print
+                 * @return the output stream object
+                 */
+                static std::ostream& Get(DebugLevel level = INFO);
 
-    /**
-     * The function that stops progress bar
-     * Works if the current debug level is <= INFO
-     */
-    static void stopProgressBar();
-    
-private:
-    //The class constructor, copy constructor and assign operator
-    //are made private as they are not to be used.
-    Logger(){};
-    Logger(const Logger&) {};
-    Logger& operator=(const Logger&) { return *this;};
+                /**
+                 * Returns the reference to the internal log level variable
+                 * @return the reference to the internal log level variable
+                 */
+                static inline DebugLevel& ReportingLevel() {
+                    return currLEvel;
+                };
 
-    //Stores the current used message level
-    static DebugLevel currLEvel;
-    
-    //Stores the progress bar characters
-    static const vector<string> progressChars;
-    
-    //Stores the number of progress characters
-    static const unsigned short int numProgChars;
-    
-    //Stores the current progress element idx
-    static unsigned short int currProgCharIdx;
-    
-    //Stores the last progress update in CPU seconds
-    static double lastProgressUpdate;
-    
-};
+                /**
+                 * The function that start progress bar
+                 * Works if the current debug level is <= INFO
+                 */
+                static void startProgressBar();
 
+                /**
+                 * The function that updates progress bar
+                 * Works if the current debug level is <= INFO
+                 */
+                static void updateProgressBar();
+
+                /**
+                 * The function that stops progress bar
+                 * Works if the current debug level is <= INFO
+                 */
+                static void stopProgressBar();
+
+            private:
+                //The class constructor, copy constructor and assign operator
+                //are made private as they are not to be used.
+
+                Logger() {
+                };
+
+                Logger(const Logger&) {
+                };
+
+                Logger& operator=(const Logger&) {
+                    return *this;
+                };
+
+                //Stores the current used message level
+                static DebugLevel currLEvel;
+
+                //Stores the progress bar characters
+                static const vector<string> progressChars;
+
+                //Stores the number of progress characters
+                static const unsigned short int numProgChars;
+
+                //Stores the current progress element idx
+                static unsigned short int currProgCharIdx;
+
+                //Stores the last progress update in CPU seconds
+                static double lastProgressUpdate;
+
+            };
+
+        }
+    }
+}
 #endif	/* LOGGER_HPP */
 

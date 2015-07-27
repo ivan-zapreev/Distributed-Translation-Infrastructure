@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
@@ -12,7 +13,7 @@
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/NGramBuilder.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
-      <itemPath>inc/TrieBuilder.hpp</itemPath>
+      <itemPath>inc/StringUtils.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,11 +22,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/HashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/NGramBuilder.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
-      <itemPath>src/TrieBuilder.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -76,6 +77,8 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -92,7 +95,9 @@
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -101,8 +106,6 @@
       <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -128,6 +131,8 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -144,7 +149,9 @@
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -153,8 +160,6 @@
       <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -188,6 +193,8 @@
           <commandlineTool>g++</commandlineTool>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -204,7 +211,9 @@
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -213,8 +222,6 @@
       <item path="src/NGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="src/TrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>

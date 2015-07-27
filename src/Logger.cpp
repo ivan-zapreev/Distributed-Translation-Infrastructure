@@ -29,55 +29,63 @@
 #include "Logger.hpp"
 #include "StatisticsMonitor.hpp"
 
-Logger::DebugLevel Logger::currLEvel;
+using uva::smt::monitore::StatisticsMonitor;
 
-const char * Logger::DebugLevelStr[] = { "USAGE", "ERROR", "WARNING", "RESULT", "INFO", "DEBUG", "DEBUG1", "DEBUG2" };
+namespace uva {
+    namespace smt {
+        namespace logging {
+            Logger::DebugLevel Logger::currLEvel;
 
-std::ostream& Logger::Get(DebugLevel level) {
-    std::ostream & os = cout;
-    
-    os << DebugLevelStr[level] << ": ";
+            const char * Logger::DebugLevelStr[] = {"USAGE", "ERROR", "WARNING", "RESULT", "INFO", "DEBUG", "DEBUG1", "DEBUG2"};
 
-    return os;
-}
+            std::ostream& Logger::Get(DebugLevel level) {
+                std::ostream & os = cout;
 
-//Initialize the progress bar chars array
-const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r" });
+                os << DebugLevelStr[level] << ": ";
 
-//It is the number of characters minus one as the last one is backspace
-const unsigned short int Logger::numProgChars = progressChars.size()-1;
+                return os;
+            }
 
-//Set the initial index to zerro
-unsigned short int Logger::currProgCharIdx = 0;
+            //Initialize the progress bar chars array
+            const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
 
-//Set the initial update time to zero
-double Logger::lastProgressUpdate = 0.0;
+            //It is the number of characters minus one as the last one is backspace
+            const unsigned short int Logger::numProgChars = progressChars.size() - 1;
 
-void Logger::startProgressBar(){
-    if( currLEvel <= INFO ) {
-        currProgCharIdx = 0;
-        cout << progressChars[currProgCharIdx];
-        lastProgressUpdate = StatisticsMonitor::getCPUTime();
-    }
-}
+            //Set the initial index to zerro
+            unsigned short int Logger::currProgCharIdx = 0;
 
-void Logger::updateProgressBar(){
-    if( currLEvel <= INFO ) {
-        const double currProgressUpdate = StatisticsMonitor::getCPUTime();
-        if( (currProgressUpdate - lastProgressUpdate ) > PROGRESS_UPDATE_PERIOD ) {
-            currProgCharIdx = (currProgCharIdx + 1) % numProgChars;
-            cout << progressChars[progressChars.size()-1] << progressChars[currProgCharIdx];
-            cout.flush();
-            lastProgressUpdate = currProgressUpdate;
+            //Set the initial update time to zero
+            double Logger::lastProgressUpdate = 0.0;
+
+            void Logger::startProgressBar() {
+                if (currLEvel <= INFO) {
+                    currProgCharIdx = 0;
+                    cout << progressChars[currProgCharIdx];
+                    lastProgressUpdate = StatisticsMonitor::getCPUTime();
+                }
+            }
+
+            void Logger::updateProgressBar() {
+                if (currLEvel <= INFO) {
+                    const double currProgressUpdate = StatisticsMonitor::getCPUTime();
+                    if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
+                        currProgCharIdx = (currProgCharIdx + 1) % numProgChars;
+                        cout << progressChars[progressChars.size() - 1] << progressChars[currProgCharIdx];
+                        cout.flush();
+                        lastProgressUpdate = currProgressUpdate;
+                    }
+                }
+            }
+
+            void Logger::stopProgressBar() {
+                if (currLEvel <= INFO) {
+                    currProgCharIdx = 0;
+                    lastProgressUpdate = 0.0;
+                    cout << progressChars[numProgChars];
+                }
+            }
+
         }
     }
 }
-
-void Logger::stopProgressBar(){
-    if( currLEvel <= INFO ) {
-        currProgCharIdx = 0;
-        lastProgressUpdate = 0.0;
-        cout << progressChars[numProgChars];
-    }
-}
-

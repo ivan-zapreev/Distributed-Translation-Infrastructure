@@ -34,12 +34,15 @@
 #include "Logger.hpp"
 #include "ATrie.hpp"
 #include "HashMapTrie.hpp"
-#include "TrieBuilder.hpp"
+#include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "NGramBuilder.hpp"
 
 using namespace std;
-using namespace tries;
+using namespace uva::smt::tries;
+using namespace uva::smt::logging;
+using namespace uva::smt::exceptions;
+using namespace uva::smt::monitore;
 
 /**
  * This structure is needed to store the application parameters
@@ -215,7 +218,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
 }
 
 /**
- * THis method is used to read from the corpus and initialize the Trie
+ * This method is used to read from the corpus and initialize the Trie
  * @param fstr the file to read data from
  * @param trie the trie to put the data into
  */
@@ -224,7 +227,7 @@ static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
-    TrieBuilder<N, doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
+    ARPATrieBuilder<N, doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
 
     //A.2. Build the trie
     builder.build();

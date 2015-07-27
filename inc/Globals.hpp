@@ -23,10 +23,13 @@
  * Created on April 20, 2015, 8:58 PM
  */
 
-#include "Logger.hpp"
-
 #ifndef GLOBALS_HPP
 #define	GLOBALS_HPP
+
+#include "Logger.hpp"
+
+namespace uva {
+    namespace smt {
 
 //This is the pattern used for file path separation
 #define PATH_SEPARATION_SYMBOLS "/\\"
@@ -54,23 +57,26 @@
 //The string representation values for debug levels
 #define DEBUG_OPTION_VALUES "{" USAGE_PARAM_VALUE ", " ERROR_PARAM_VALUE ", " WARNING_PARAM_VALUE ", " RESULT_PARAM_VALUE ", " INFO_PARAM_VALUE ", " DEBUG_PARAM_VALUE ", " DEBUG1_PARAM_VALUE ", " DEBUG2_PARAM_VALUE "}"
 
-//The following type definitions are important for storing the Tries information
-namespace tries {
-    //This typedef if used in the tries in order to specify the type of the N-gram level N
-    typedef unsigned short int TTrieSize;
-    
-    //The amount of memory dedicated for storing frequency
-    //WARNING: Do not use smaller size as I get overflows
-    //for "unsigned short int" on a text large corpus!
-    typedef unsigned int TFrequencySize;
-}
+        //The following type definitions are important for storing the Tries information
+        namespace tries {
+            //This typedef if used in the tries in order to specify the type of the N-gram level N
+            typedef unsigned short int TTrieSize;
 
-//The following type definitions are important for creating hashes
-namespace hashing {
-    //This is the smallest size which I've tested and it works for the hash without collisions
-    typedef unsigned int TWordHashSize;
-    //This is the hash reference size which should be twice as long as the TWordHashSize
-    typedef unsigned long int TReferenceHashSize;
+            //The amount of memory dedicated for storing frequency
+            //WARNING: Do not use smaller size as I get overflows
+            //for "unsigned short int" on a text large corpus!
+            typedef unsigned int TFrequencySize;
+        }
+
+        //The following type definitions are important for creating hashes
+        namespace hashing {
+            //This is the smallest size which I've tested and it works for the hash without collisions
+            typedef unsigned int TWordHashSize;
+            //This is the hash reference size which should be twice as long as the TWordHashSize
+            typedef unsigned long int TReferenceHashSize;
+        }
+
+    }
 }
 
 #endif	/* GLOBALS_HPP */

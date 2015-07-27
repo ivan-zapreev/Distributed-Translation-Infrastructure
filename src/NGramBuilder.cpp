@@ -26,43 +26,50 @@
 
 #include "Logger.hpp"
 
-namespace tries {
-namespace ngrams {
-    template<TTrieSize N, bool doCache>
-    NGramBuilder<N,doCache>::NGramBuilder(ATrie<N,doCache> & trie, const char delim) : _trie(trie), _delim(delim) {
-    }
+using namespace uva::smt::logging;
 
-    template<TTrieSize N, bool doCache>
-    NGramBuilder<N,doCache>::NGramBuilder(const NGramBuilder<N,doCache>& orig) : _trie(orig._trie), _delim(orig._delim) {
-    }
+namespace uva {
+    namespace smt {
+        namespace tries {
+            namespace ngrams {
 
-    template<TTrieSize N, bool doCache>
-    NGramBuilder<N,doCache>::~NGramBuilder() {
-    }
+                template<TTrieSize N, bool doCache>
+                NGramBuilder<N, doCache>::NGramBuilder(ATrie<N, doCache> & trie, const char delim) : _trie(trie), _delim(delim) {
+                }
 
-    template<TTrieSize N, bool doCache>
-    void NGramBuilder<N,doCache>::processString(const string & data ) {
-        //Tokenise the line of text into a vector first
-        vector<string> tokens;
-        tokenize(data, _delim, tokens);
+                template<TTrieSize N, bool doCache>
+                NGramBuilder<N, doCache>::NGramBuilder(const NGramBuilder<N, doCache>& orig) : _trie(orig._trie), _delim(orig._delim) {
+                }
 
-        //First add all the words to the trie
-        _trie.addWords(tokens);
+                template<TTrieSize N, bool doCache>
+                NGramBuilder<N, doCache>::~NGramBuilder() {
+                }
 
-        //Create and record all of the N-grams starting from 2 and 
-        //limited either by Trie or by the available number of Tokens
-        const TTrieSize ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
-        LOG_DEBUG << "N-gram level = " << ngLevel << END_LOG;
-        for(int n=2; n <= ngLevel; n++) {
-            for(int idx=0; idx <= (tokens.size() - n); idx++){
-                LOG_DEBUG << "adding N-grams (#tokens=" << tokens.size() << ") idx = " << idx << ", len = " << n << END_LOG;
-                _trie.addNGram(tokens, idx, n );
+                template<TTrieSize N, bool doCache>
+                void NGramBuilder<N, doCache>::processString(const string & data) {
+                    //Tokenise the line of text into a vector first
+                    vector<string> tokens;
+                    tokenize(data, _delim, tokens);
+
+                    //First add all the words to the trie
+                    _trie.addWords(tokens);
+
+                    //Create and record all of the N-grams starting from 2 and 
+                    //limited either by Trie or by the available number of Tokens
+                    const TTrieSize ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
+                    LOG_DEBUG << "N-gram level = " << ngLevel << END_LOG;
+                    for (int n = 2; n <= ngLevel; n++) {
+                        for (int idx = 0; idx <= (tokens.size() - n); idx++) {
+                            LOG_DEBUG << "adding N-grams (#tokens=" << tokens.size() << ") idx = " << idx << ", len = " << n << END_LOG;
+                            _trie.addNGram(tokens, idx, n);
+                        }
+                    }
+                }
+
+                //Make sure that there will be templates instantiated, at least for the given parameter values
+                template class NGramBuilder<N_GRAM_PARAM, true>;
+                template class NGramBuilder<N_GRAM_PARAM, false>;
             }
         }
     }
-    
-    //Make sure that there will be templates instantiated, at least for the given parameter values
-    template class NGramBuilder<N_GRAM_PARAM,true>;
-    template class NGramBuilder<N_GRAM_PARAM,false>;
-}
 }
