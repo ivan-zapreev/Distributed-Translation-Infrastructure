@@ -42,7 +42,6 @@ namespace tries {
     template<TTrieSize N> struct SFrequencyResult {
         TFrequencySize result[N];
     };
-   
     
     /**
      * This is a common abstract class for all possible Trie implementations

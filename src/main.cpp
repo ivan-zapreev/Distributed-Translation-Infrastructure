@@ -40,7 +40,7 @@
 
 using namespace std;
 using namespace tries;
-    
+
 /**
  * This structure is needed to store the application parameters
  */
@@ -78,31 +78,27 @@ static void printUsage(const string name) {
     const string shortName = name.substr(lastSlashBeforeFileName + 1);
 
     LOG_USAGE << "Running: " << END_LOG;
-    LOG_USAGE << "  " << shortName.c_str() << " <train_file> <test_file> [debug-level]" << END_LOG;
-    LOG_USAGE << "      <train_file> - a text file containing the training text corpus." << END_LOG;
-    LOG_USAGE << "                     This corpus should be already tokenized, i.e.," << END_LOG;
-    LOG_USAGE << "                     all words are already separated by white spaces," << END_LOG;
-    LOG_USAGE << "                     including punctuation marks. Also, each line in " << END_LOG;
-    LOG_USAGE << "                     this, file corresponds to one sentence." << END_LOG;
+    LOG_USAGE << "  " << shortName.c_str() << " <model_file> <test_file> [debug-level]" << END_LOG;
+    LOG_USAGE << "      <model_file> - a text file containing the back-off language model." << END_LOG;
+    LOG_USAGE << "                     This file is supposed to be in ARPA format, see: " << END_LOG;
+    LOG_USAGE << "                          http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html" << END_LOG;
+    LOG_USAGE << "                     for more details. We also allow doe tags listed here:" << END_LOG;
+    LOG_USAGE << "                          https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx" << END_LOG;
     LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
-    LOG_USAGE << "                     The test file consists of a number of 5-grams," << END_LOG;
-    LOG_USAGE << "                     where each line in the file consists of one 5-gram." << END_LOG;
+    LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
+    LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
     LOG_USAGE << "     [debug-level] - the optional debug flag from " << DEBUG_OPTION_VALUES << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
     LOG_USAGE << "    The program reads in the test lines from the <test_file>. " << END_LOG;
-    LOG_USAGE << "    Each of these lines is a 5-gram of the following form: " << END_LOG;
+    LOG_USAGE << "    Each of these lines is a N-grams of the following form, e.g: " << END_LOG;
     LOG_USAGE << "       word1 word2 word3 word4 word5" << END_LOG;
-    LOG_USAGE << "    For each of such 5-grams the frequency information is " << END_LOG;
-    LOG_USAGE << "    computed, based on the data from the <train_file>. For" << END_LOG;
-    LOG_USAGE << "    example, for a 5-gram such as:" << END_LOG;
+    LOG_USAGE << "    For each of such N-grams the probability information is " << END_LOG;
+    LOG_USAGE << "    computed, based on the data from the <model_file>. For" << END_LOG;
+    LOG_USAGE << "    example, for a N-gram such as:" << END_LOG;
     LOG_USAGE << "       mortgages had lured borrowers and" << END_LOG;
     LOG_USAGE << "    the program may give the following output:" << END_LOG;
-    LOG_USAGE << "        frequency( mortgages had lured borrowers and ) = 0" << END_LOG;
-    LOG_USAGE << "        frequency( had lured borrowers and ) = 2" << END_LOG;
-    LOG_USAGE << "        frequency( lured borrowers and ) = 4" << END_LOG;
-    LOG_USAGE << "        frequency( borrowers and ) = 56" << END_LOG;
-    LOG_USAGE << "        frequency( and ) = 6453" << END_LOG;
+    LOG_USAGE << "        probability( mortgages had lured borrowers and ) = 0.00024" << END_LOG;
 }
 
 /**
@@ -119,26 +115,46 @@ static void extractArguments(const int argc, char const * const * const argv, TA
     } else {
         params.trainFileName = argv[1];
         params.testFileName = argv[2];
-        Logger::ReportingLevel() = Logger::ERROR;
-        
+        string errorLevelStr = ERROR_PARAM_VALUE;
+        Logger::ReportingLevel() = Logger::RESULT;
+
         //This here is a fast hack, it is not a really the
         //nicest way to handle the program parameters but
         //this is ok for a test software.
-        if( argc > EXPECTED_NUMBER_OF_ARGUMENTS ) {
-            string data = argv[3];
-            transform(data.begin(), data.end(), data.begin(), ::tolower);
-            if(!data.compare( INFO_PARAM_VALUE )) {
-                Logger::ReportingLevel() = Logger::INFO;
-                LOG_INFO << "Setting the debugging level to \'" << INFO_PARAM_VALUE << "\'" << END_LOG;
+        if (argc > EXPECTED_NUMBER_OF_ARGUMENTS) {
+            errorLevelStr = argv[3];
+            transform(errorLevelStr.begin(), errorLevelStr.end(), errorLevelStr.begin(), ::tolower);
+            if (!errorLevelStr.compare(USAGE_PARAM_VALUE)) {
+                Logger::ReportingLevel() = Logger::USAGE;
             } else {
-                if(!data.compare( DEBUG_PARAM_VALUE )){
-                    Logger::ReportingLevel() = Logger::DEBUG;
-                    LOG_INFO << "Setting the debugging level to \'" << DEBUG_PARAM_VALUE << "\'" << END_LOG;
+                if (!errorLevelStr.compare(RESULT_PARAM_VALUE)) {
+                    Logger::ReportingLevel() = Logger::RESULT;
                 } else {
-                    LOG_WARNING << "Ignoring an unknown value of [debug-level] parameter: '" << argv[3] << "'" << END_LOG;
+                    if (!errorLevelStr.compare(WARNING_PARAM_VALUE)) {
+                        Logger::ReportingLevel() = Logger::WARNING;
+                    } else {
+                        if (!errorLevelStr.compare(INFO_PARAM_VALUE)) {
+                            Logger::ReportingLevel() = Logger::INFO;
+                        } else {
+                            if (!errorLevelStr.compare(DEBUG_PARAM_VALUE)) {
+                                Logger::ReportingLevel() = Logger::DEBUG;
+                            } else {
+                                if (!errorLevelStr.compare(DEBUG1_PARAM_VALUE)) {
+                                    Logger::ReportingLevel() = Logger::DEBUG1;
+                                } else {
+                                    if (!errorLevelStr.compare(DEBUG2_PARAM_VALUE)) {
+                                        Logger::ReportingLevel() = Logger::DEBUG2;
+                                    } else {
+                                        LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << argv[3] << "'" << END_LOG;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+        LOG_USAGE << "The debugging level is set to: \'" << errorLevelStr << "\'" << END_LOG;
     }
 }
 
@@ -166,11 +182,11 @@ static string getMemoryUsageString(unsigned int const & vmsize,
         unsigned int const & vmrss,
         unsigned int const & vmhwm) {
     stringstream msg;
-    
+
     msg << "vmsize=" << vmsize << " Kb, vmpeak=" <<
             vmpeak << " Kb, vmrss=" << vmrss <<
             " Kb, vmhwm=" << vmhwm << " Kb";
-    
+
     return msg.str();
 }
 
@@ -181,17 +197,17 @@ static string getMemoryUsageString(unsigned int const & vmsize,
  * @param msEnd the end memory usage statistics
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
-    LOG_RESULT << "Action: \'" << action << "\' memory increase:" << END_LOG;
+    LOG_USAGE << "Action: \'" << action << "\' memory increase:" << END_LOG;
     LOG_DEBUG << "memory before: vmsize=" << msStart.vmsize << " Kb, vmpeak="
-                               << msStart.vmpeak << " Kb, vmrss=" << msStart.vmrss
-                               << " Kb, vmhwm=" << msStart.vmhwm << " Kb" << END_LOG;
+            << msStart.vmpeak << " Kb, vmrss=" << msStart.vmrss
+            << " Kb, vmhwm=" << msStart.vmhwm << " Kb" << END_LOG;
     LOG_DEBUG << "memory after: vmsize=" << msEnd.vmsize << " Kb, vmpeak="
-                               << msEnd.vmpeak << " Kb, vmrss=" << msEnd.vmrss
-                               << " Kb, vmhwm=" << msEnd.vmhwm << " Kb" << END_LOG;
-    LOG_RESULT << "vmsize=" << double(msEnd.vmsize - msStart.vmsize)/BYTES_ONE_MB
-                                << " Mb, vmpeak=" << double(msEnd.vmpeak - msStart.vmpeak)/BYTES_ONE_MB
-                                << " Mb, vmrss=" << double(msEnd.vmrss - msStart.vmrss)/BYTES_ONE_MB
-                                << " Mb, vmhwm=" << double(msEnd.vmhwm - msStart.vmhwm)/BYTES_ONE_MB << " Mb" << END_LOG;
+            << msEnd.vmpeak << " Kb, vmrss=" << msEnd.vmrss
+            << " Kb, vmhwm=" << msEnd.vmhwm << " Kb" << END_LOG;
+    LOG_USAGE << "vmsize=" << double(msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB
+            << " Mb, vmpeak=" << double(msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB
+            << " Mb, vmrss=" << double(msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB
+            << " Mb, vmhwm=" << double(msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB << " Mb" << END_LOG;
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
     LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
     LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
@@ -204,11 +220,11 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param trie the trie to put the data into
  */
 template<TTrieSize N, bool doCache>
-static void fillInTrie(ifstream & fstr, ATrie<N,doCache> & trie) {
+static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
-    TrieBuilder<N,doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
+    TrieBuilder<N, doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
 
     //A.2. Build the trie
     builder.build();
@@ -221,7 +237,7 @@ static void fillInTrie(ifstream & fstr, ATrie<N,doCache> & trie) {
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
 template<TTrieSize N, bool doCache>
-static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile) {
+static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime, startTime, endTime;
     //Will store the read line (word1 word2 word3 word4 word5)
@@ -235,28 +251,27 @@ static double readAndExecuteQueries( ATrie<N,doCache> & trie, ifstream &testFile
     //freqs[3] = frequency( [word4 word5] )
     //freqs[4] = frequency( [word5] )
     SFrequencyResult<N> freqs;
-        
+
     //Read the test file line by line
-    while( getline(testFile, line) )
-    {
+    while (getline(testFile, line)) {
         //First get the complete N-gram
-        ngrams::NGramBuilder<N,doCache>::buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
-        
-        LOG_DEBUG <<  line << ":" << END_LOG;
-        
+        ngrams::NGramBuilder<N, doCache>::buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
+
+        LOG_DEBUG << line << ":" << END_LOG;
+
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();
-        trie.queryNGramFreqs( ngram, freqs );
+        trie.queryNGramFreqs(ngram, freqs);
         endTime = StatisticsMonitor::getCPUTime();
-        
+
         //Print the results:
         ;
         unsigned idx = -1;
-        for(int i=0;i<N;i++){
+        for (int i = 0; i < N; i++) {
             LOG_RESULT << "frequency( " << line << " ) = " << freqs.result[i] << END_LOG;
-            
+
             idx = line.find_first_of(TOKEN_DELIMITER_CHAR);
-            line = line.substr(idx+1);
+            line = line.substr(idx + 1);
         }
         LOG_RESULT << "CPU Time needed: " << (endTime - startTime) << " sec." << END_LOG;
 
@@ -285,11 +300,11 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
 
     //Create a trie and pass it to the algorithm method
     TFiveCacheHashMapTrie trie;
-    LOG_RESULT << "Start reading the text corpus and filling in the Trie ..." << END_LOG;
+    LOG_INFO << "Start reading the text corpus and filling in the Trie ..." << END_LOG;
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(trainFile, trie);
     endTime = StatisticsMonitor::getCPUTime();
-    LOG_RESULT << "Reading the text corpus is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+    LOG_INFO << "Reading the text corpus is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
     LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatInterm);
@@ -297,11 +312,11 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
     LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
     reportMemotyUsage("Loading of the text corpus Trie", memStatStart, memStatInterm);
 
-    LOG_RESULT << "Reading and executing the test queries ..." << END_LOG;
+    LOG_INFO << "Reading and executing the test queries ..." << END_LOG;
     const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-    LOG_RESULT << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
-  
-    LOG_RESULT << "Done" << END_LOG;
+    LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+
+    LOG_INFO << "Done" << END_LOG;
 }
 
 /**
@@ -321,8 +336,8 @@ int main(int argc, char** argv) {
         extractArguments(argc, argv, params);
 
         LOG_INFO << "Checking on the provided files \'"
-                                  << params.trainFileName << "\' and \'"
-                                  << params.testFileName << "\' ..." << END_LOG;
+                << params.trainFileName << "\' and \'"
+                << params.testFileName << "\' ..." << END_LOG;
 
         //Attempt to open the files
         ifstream trainFile(params.trainFileName.c_str());
@@ -349,4 +364,3 @@ int main(int argc, char** argv) {
 
     return returnCode;
 }
-

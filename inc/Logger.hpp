@@ -42,13 +42,17 @@ using namespace std;
 
 //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::DEBUG2
+    #define LOGER_MAX_LEVEL Logger::DEBUG2
 #endif
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level)
 
+//The Macro commands to be used for logging data with different log levels,
+//For example, to log a warning one can use:
+//      LOG_WARNING << "This is a warning message!" << END_LOG;
+//Here, the END_LOG is optional and is currently used for a new line only.
 #define LOG_USAGE   LOGGER(Logger::USAGE)
 #define LOG_RESULT  LOGGER(Logger::RESULT)
 #define LOG_ERROR   LOGGER(Logger::ERROR)
@@ -68,7 +72,7 @@ public:
 
     //This enumeration stores all the available logging levels.
     enum DebugLevel {
-        USAGE = 0, RESULT = USAGE + 1, ERROR = RESULT + 1, WARNING = ERROR + 1, INFO = WARNING + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1
+        USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1
     };
 
     //Stores the the string representation of the sthe DebugLeven enumeration elements
