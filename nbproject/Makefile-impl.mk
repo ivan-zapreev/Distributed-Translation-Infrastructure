@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Automated-Translation-Tries
+PROJECTNAME=Back-Off-Language-Model-SMT
 
 # Active Configuration
 DEFAULTCONF=Release

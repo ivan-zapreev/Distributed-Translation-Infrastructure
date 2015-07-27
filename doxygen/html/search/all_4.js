@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['end_5flog',['END_LOG',['../_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db',1,'Logger.hpp']]],
   ['error',['ERROR',['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932a3ce1bbeb15a3d8e29e4c5e75492a781b',1,'Logger']]],
   ['exception',['Exception',['../class_exception.html',1,'Exception'],['../class_exception.html#ac541ead5c20548813d7dea73c28c7fab',1,'Exception::Exception(const char *message)'],['../class_exception.html#aad1be11dc85840f8a7fac731057ab715',1,'Exception::Exception(const string &amp;message)'],['../class_exception.html#a3623ce1b8b6435348d98c415b7a40d44',1,'Exception::Exception(Exception const &amp;other)']]],
   ['exceptions_2ehpp',['Exceptions.hpp',['../_exceptions_8hpp.html',1,'']]],

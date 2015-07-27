@@ -16,8 +16,7 @@ var searchData=
   ['triebuilder',['TrieBuilder',['../classtries_1_1_trie_builder.html',1,'tries']]],
   ['triebuilder_2ecpp',['TrieBuilder.cpp',['../_trie_builder_8cpp.html',1,'']]],
   ['triebuilder_2ehpp',['TrieBuilder.hpp',['../_trie_builder_8hpp.html',1,'']]],
-  ['triebuilder_2eo_2ed',['TrieBuilder.o.d',['../_mac_os_2_g_n_u-_mac_o_s_x_2src_2_trie_builder_8o_8d.html',1,'']]],
-  ['triebuilder_2eo_2ed',['TrieBuilder.o.d',['../_g_n_u-_mac_o_s_x_2src_2_trie_builder_8o_8d.html',1,'']]],
+  ['triebuilder_2eo_2ed',['TrieBuilder.o.d',['../_trie_builder_8o_8d.html',1,'']]],
   ['tries',['tries',['../namespacetries.html',1,'']]],
   ['ttriesize',['TTrieSize',['../namespacetries.html#a621e8987880c3e13fa029a65336b920c',1,'tries']]],
   ['twordhashsize',['TWordHashSize',['../namespacehashing.html#aa08467967a260f22e9dcf6983aa38c81',1,'hashing']]]

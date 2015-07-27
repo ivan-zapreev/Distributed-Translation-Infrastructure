@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Automated Translation Tries: inc/HashMapTrie.hpp Source File</title>
+<title>Back Off Language Model(s) for SMT: inc/HashMapTrie.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,7 +31,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Automated Translation Tries
+   <div id="projectname">Back Off Language Model(s) for SMT
    </div>
   </td>
  </tr>
@@ -212,15 +212,15 @@ $(document).ready(function(){initNavTree('_hash_map_trie_8hpp_source.html','');}
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keyword">const</span> <a class="code" href="namespacetries.html#a621e8987880c3e13fa029a65336b920c">TTrieSize</a> currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="comment">//Define and default initialize the context value</span></div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            <a class="code" href="namespacehashing.html#a0c0f51ea23331c249e570f323e48056c">TReferenceHashSize</a> context = hashes.at(currMaxIdx);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;initializing context = &quot;</span> &lt;&lt; context &lt;&lt; endl;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;initializing context = &quot;</span> &lt;&lt; context &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            </div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">if</span>( currMaxIdx &gt; 0 ) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;There is more than one element to create context from!&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;There is more than one element to create context from!&quot;</span> &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                <span class="comment">//If there is more than one element we need to create a hash for then iterate</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                <span class="keywordflow">for</span>(<a class="code" href="namespacetries.html#a621e8987880c3e13fa029a65336b920c">TTrieSize</a> idx = currMaxIdx; idx &gt; 0; idx-- ) {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                    <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;context( &quot;</span> &lt;&lt; hashes.at(idx-1) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; context &lt;&lt; <span class="stringliteral">&quot; )&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                    <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;context( &quot;</span> &lt;&lt; hashes.at(idx-1) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; context &lt;&lt; <span class="stringliteral">&quot; )&quot;</span> &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                    context = createContext(hashes.at(idx-1), context);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                    <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;                 = &quot;</span> &lt;&lt; context &lt;&lt; endl;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                    <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;                 = &quot;</span> &lt;&lt; context &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                <span class="keywordflow">if</span>( currMaxIdx &lt; 0 ) {</div>
@@ -273,9 +273,9 @@ $(document).ready(function(){initNavTree('_hash_map_trie_8hpp_source.html','');}
 <div class="ttc" id="structtries_1_1_s_frequency_result_html"><div class="ttname"><a href="structtries_1_1_s_frequency_result.html">tries::SFrequencyResult</a></div><div class="ttdef"><b>Definition:</b> <a href="_a_trie_8hpp_source.html#l00042">ATrie.hpp:42</a></div></div>
 <div class="ttc" id="namespacehashing_html_ae6401f4d7cf46aff6f9f5171593433ca"><div class="ttname"><a href="namespacehashing.html#ae6401f4d7cf46aff6f9f5171593433ca">hashing::computePrimesHash</a></div><div class="ttdeci">TWordHashSize computePrimesHash(const string &amp;str)</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00077">HashingUtils.hpp:77</a></div></div>
 <div class="ttc" id="_globals_8hpp_html"><div class="ttname"><a href="_globals_8hpp.html">Globals.hpp</a></div></div>
-<div class="ttc" id="class_logger_html_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e"><div class="ttname"><a href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a></div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00061">Logger.hpp:61</a></div></div>
-<div class="ttc" id="_logger_8hpp_html_a8909731db6798bb18ac697c179b4dedd"><div class="ttname"><a href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a></div><div class="ttdeci">#define LOGGER(level)                                                </div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00047">Logger.hpp:47</a></div></div>
+<div class="ttc" id="_logger_8hpp_html_a80f2223fb302398deb65324a1543b8db"><div class="ttname"><a href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a></div><div class="ttdeci">#define END_LOG</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00060">Logger.hpp:60</a></div></div>
 <div class="ttc" id="_a_trie_8hpp_html"><div class="ttname"><a href="_a_trie_8hpp.html">ATrie.hpp</a></div></div>
+<div class="ttc" id="_logger_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00057">Logger.hpp:57</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

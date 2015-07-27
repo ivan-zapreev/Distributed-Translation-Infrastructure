@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Automated Translation Tries: src/NGramBuilder.cpp Source File</title>
+<title>Back Off Language Model(s) for SMT: src/NGramBuilder.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,7 +31,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Automated Translation Tries
+   <div id="projectname">Back Off Language Model(s) for SMT
    </div>
   </td>
  </tr>
@@ -162,10 +162,10 @@ $(document).ready(function(){initNavTree('_n_gram_builder_8cpp_source.html','');
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="comment">//Create and record all of the N-grams starting from 2 and </span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="comment">//limited either by Trie or by the available number of Tokens</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespacetries.html#a621e8987880c3e13fa029a65336b920c">TTrieSize</a> ngLevel = min&lt;unsigned int&gt;(_trie.getNGramLevel(), tokens.size());</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;N-gram level = &quot;</span> &lt;&lt; ngLevel &lt;&lt; endl;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;N-gram level = &quot;</span> &lt;&lt; ngLevel &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> n=2; n &lt;= ngLevel; n++) {</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> idx=0; idx &lt;= (tokens.size() - n); idx++){</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <a class="code" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a>(<a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a>) &lt;&lt; <span class="stringliteral">&quot;adding N-grams (#tokens=&quot;</span> &lt;&lt; tokens.size() &lt;&lt; <span class="stringliteral">&quot;) idx = &quot;</span> &lt;&lt; idx &lt;&lt; <span class="stringliteral">&quot;, len = &quot;</span> &lt;&lt; n &lt;&lt; endl;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <a class="code" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a> &lt;&lt; <span class="stringliteral">&quot;adding N-grams (#tokens=&quot;</span> &lt;&lt; tokens.size() &lt;&lt; <span class="stringliteral">&quot;) idx = &quot;</span> &lt;&lt; idx &lt;&lt; <span class="stringliteral">&quot;, len = &quot;</span> &lt;&lt; n &lt;&lt; <a class="code" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                _trie.addNGram(tokens, idx, n );</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
@@ -183,9 +183,9 @@ $(document).ready(function(){initNavTree('_n_gram_builder_8cpp_source.html','');
 <div class="ttc" id="classtries_1_1ngrams_1_1_n_gram_builder_html_a0301b1e6415228d4a81e858b40ad4a94"><div class="ttname"><a href="classtries_1_1ngrams_1_1_n_gram_builder.html#a0301b1e6415228d4a81e858b40ad4a94">tries::ngrams::NGramBuilder::processString</a></div><div class="ttdeci">void processString(const string &amp;data)</div><div class="ttdoc">For the given text will split it into the number of n-grams that will be then put into the trie...</div><div class="ttdef"><b>Definition:</b> <a href="_n_gram_builder_8cpp_source.html#l00044">NGramBuilder.cpp:44</a></div></div>
 <div class="ttc" id="classtries_1_1_a_trie_html"><div class="ttname"><a href="classtries_1_1_a_trie.html">tries::ATrie</a></div><div class="ttdoc">This is a common abstract class for all possible Trie implementations The purpose of having this as a...</div><div class="ttdef"><b>Definition:</b> <a href="_a_trie_8hpp_source.html#l00056">ATrie.hpp:56</a></div></div>
 <div class="ttc" id="_logger_8hpp_html"><div class="ttname"><a href="_logger_8hpp.html">Logger.hpp</a></div></div>
-<div class="ttc" id="class_logger_html_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e"><div class="ttname"><a href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e">Logger::DEBUG</a></div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00061">Logger.hpp:61</a></div></div>
-<div class="ttc" id="_logger_8hpp_html_a8909731db6798bb18ac697c179b4dedd"><div class="ttname"><a href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">LOGGER</a></div><div class="ttdeci">#define LOGGER(level)                                                </div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00047">Logger.hpp:47</a></div></div>
 <div class="ttc" id="classtries_1_1ngrams_1_1_n_gram_builder_html"><div class="ttname"><a href="classtries_1_1ngrams_1_1_n_gram_builder.html">tries::ngrams::NGramBuilder</a></div><div class="ttdoc">This class is responsible for splitting a piece of text in a number of ngrams and place it into the t...</div><div class="ttdef"><b>Definition:</b> <a href="_n_gram_builder_8hpp_source.html#l00046">NGramBuilder.hpp:46</a></div></div>
+<div class="ttc" id="_logger_8hpp_html_a80f2223fb302398deb65324a1543b8db"><div class="ttname"><a href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a></div><div class="ttdeci">#define END_LOG</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00060">Logger.hpp:60</a></div></div>
+<div class="ttc" id="_logger_8hpp_html_a6ff63e8955665c4a58b1598f2b07c51a"><div class="ttname"><a href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a></div><div class="ttdeci">#define LOG_DEBUG</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00057">Logger.hpp:57</a></div></div>
 <div class="ttc" id="classtries_1_1ngrams_1_1_n_gram_builder_html_a694f8a3a7e8fc07aefe5fba45ff4f31f"><div class="ttname"><a href="classtries_1_1ngrams_1_1_n_gram_builder.html#a694f8a3a7e8fc07aefe5fba45ff4f31f">tries::ngrams::NGramBuilder::NGramBuilder</a></div><div class="ttdeci">NGramBuilder(ATrie&lt; N, doCache &gt; &amp;trie, const char delim)</div><div class="ttdef"><b>Definition:</b> <a href="_n_gram_builder_8cpp_source.html#l00032">NGramBuilder.cpp:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

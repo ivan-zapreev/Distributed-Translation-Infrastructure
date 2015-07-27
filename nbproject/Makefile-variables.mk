@@ -9,11 +9,11 @@ CND_DISTDIR=dist
 # Release configuration
 CND_PLATFORM_Release=GNU-MacOSX
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-MacOSX
-CND_ARTIFACT_NAME_Release=automated-translation-tries
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/automated-translation-tries
+CND_ARTIFACT_NAME_Release=back-off-language-model-smt
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/back-off-language-model-smt
 CND_PACKAGE_DIR_Release=dist/Release/GNU-MacOSX/package
-CND_PACKAGE_NAME_Release=automated-translation-tries.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/automated-translation-tries.tar
+CND_PACKAGE_NAME_Release=back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/back-off-language-model-smt.tar
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux-x86
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
@@ -25,11 +25,11 @@ CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/automated-translation-tr
 # Release-MacOs configuration
 CND_PLATFORM_Release-MacOs=GNU-MacOSX
 CND_ARTIFACT_DIR_Release-MacOs=dist/Release-MacOs/GNU-MacOSX
-CND_ARTIFACT_NAME_Release-MacOs=automated-translation-tries
-CND_ARTIFACT_PATH_Release-MacOs=dist/Release-MacOs/GNU-MacOSX/automated-translation-tries
+CND_ARTIFACT_NAME_Release-MacOs=back-off-language-model-smt
+CND_ARTIFACT_PATH_Release-MacOs=dist/Release-MacOs/GNU-MacOSX/back-off-language-model-smt
 CND_PACKAGE_DIR_Release-MacOs=dist/Release-MacOs/GNU-MacOSX/package
-CND_PACKAGE_NAME_Release-MacOs=automated-translation-tries.tar
-CND_PACKAGE_PATH_Release-MacOs=dist/Release-MacOs/GNU-MacOSX/package/automated-translation-tries.tar
+CND_PACKAGE_NAME_Release-MacOs=back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Release-MacOs=dist/Release-MacOs/GNU-MacOSX/package/back-off-language-model-smt.tar
 #
 # include compiler specific variables
 #

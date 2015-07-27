@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "Automated Translation Tries", "index.html", [
+  [ "Back Off Language Model(s) for SMT", "index.html", [
     [ "Automated-Translation-Tries", "md__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
