@@ -194,15 +194,15 @@ namespace tries {
             const TTrieSize currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
             //Define and default initialize the context value
             TReferenceHashSize context = hashes.at(currMaxIdx);
-            LOGGER(Logger::DEBUG) << "initializing context = " << context << endl;
+            LOG_DEBUG << "initializing context = " << context << END_LOG;
             
             if( currMaxIdx > 0 ) {
-                LOGGER(Logger::DEBUG) << "There is more than one element to create context from!" << endl;
+                LOG_DEBUG << "There is more than one element to create context from!" << END_LOG;
                 //If there is more than one element we need to create a hash for then iterate
                 for(TTrieSize idx = currMaxIdx; idx > 0; idx-- ) {
-                    LOGGER(Logger::DEBUG) << "context( " << hashes.at(idx-1) << ", " << context << " )" << endl;
+                    LOG_DEBUG << "context( " << hashes.at(idx-1) << ", " << context << " )" << END_LOG;
                     context = createContext(hashes.at(idx-1), context);
-                    LOGGER(Logger::DEBUG) << "                 = " << context << endl;
+                    LOG_DEBUG << "                 = " << context << END_LOG;
                 }
             } else {
                 if( currMaxIdx < 0 ) {

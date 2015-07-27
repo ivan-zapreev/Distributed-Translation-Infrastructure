@@ -1,0 +1,63 @@
+\hypertarget{_logger_8hpp}{}\section{inc/\+Logger.hpp File Reference}
+\label{_logger_8hpp}\index{inc/\+Logger.\+hpp@{inc/\+Logger.\+hpp}}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include \char`\"{}Exceptions.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_logger}{Logger}
+\begin{DoxyCompactList}\small\item\em This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_logger_8hpp_a46c5641c9a0192f415a133917f57b01a}{L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P}
+\item 
+\#define \hyperlink{_logger_8hpp_a6a29bf797538ea7ba250e7ccbc0f9082}{P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D}~0.\+1
+\item 
+\#define \hyperlink{_logger_8hpp_ac44bfa0883a8e25bcc4b05d7b5835054}{L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L}~\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564}{Logger\+::\+D\+E\+B\+U\+G2}
+\item 
+\#define \hyperlink{_logger_8hpp_a8909731db6798bb18ac697c179b4dedd}{L\+O\+G\+G\+E\+R}(level)                                                
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_logger_8hpp_ac44bfa0883a8e25bcc4b05d7b5835054}{}\index{Logger.\+hpp@{Logger.\+hpp}!L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L@{L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L}}
+\index{L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L@{L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L}!Logger.\+hpp@{Logger.\+hpp}}
+\subsubsection[{L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L~{\bf Logger\+::\+D\+E\+B\+U\+G2}}\label{_logger_8hpp_ac44bfa0883a8e25bcc4b05d7b5835054}
+
+
+Definition at line 45 of file Logger.\+hpp.
+
+\hypertarget{_logger_8hpp_a8909731db6798bb18ac697c179b4dedd}{}\index{Logger.\+hpp@{Logger.\+hpp}!L\+O\+G\+G\+E\+R@{L\+O\+G\+G\+E\+R}}
+\index{L\+O\+G\+G\+E\+R@{L\+O\+G\+G\+E\+R}!Logger.\+hpp@{Logger.\+hpp}}
+\subsubsection[{L\+O\+G\+G\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+G\+G\+E\+R(
+\begin{DoxyParamCaption}
+\item[{}]{level}
+\end{DoxyParamCaption}
+)}\label{_logger_8hpp_a8909731db6798bb18ac697c179b4dedd}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (level > \hyperlink{_logger_8hpp_ac44bfa0883a8e25bcc4b05d7b5835054}{LOGER\_MAX\_LEVEL}) ;               \(\backslash\)
+  else \textcolor{keywordflow}{if} (level > \hyperlink{class_logger_a8b07a26d2b5896a239e3b834ff4e9024}{Logger::ReportingLevel}()) ; \(\backslash\)
+       else \hyperlink{class_logger_ae2b3102712f501c8a87306b242c6e85f}{Logger::Get}(level)
+\end{DoxyCode}
+
+
+Definition at line 47 of file Logger.\+hpp.
+
+\hypertarget{_logger_8hpp_a46c5641c9a0192f415a133917f57b01a}{}\index{Logger.\+hpp@{Logger.\+hpp}!L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P@{L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P}}
+\index{L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P@{L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P}!Logger.\+hpp@{Logger.\+hpp}}
+\subsubsection[{L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+G\+G\+E\+R\+\_\+\+H\+P\+P}\label{_logger_8hpp_a46c5641c9a0192f415a133917f57b01a}
+
+
+Definition at line 38 of file Logger.\+hpp.
+
+\hypertarget{_logger_8hpp_a6a29bf797538ea7ba250e7ccbc0f9082}{}\index{Logger.\+hpp@{Logger.\+hpp}!P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D@{P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D}}
+\index{P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D@{P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D}!Logger.\+hpp@{Logger.\+hpp}}
+\subsubsection[{P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+G\+R\+E\+S\+S\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+P\+E\+R\+I\+O\+D~0.\+1}\label{_logger_8hpp_a6a29bf797538ea7ba250e7ccbc0f9082}
+
+
+Definition at line 41 of file Logger.\+hpp.
+

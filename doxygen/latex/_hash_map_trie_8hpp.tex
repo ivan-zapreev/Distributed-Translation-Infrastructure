@@ -1,0 +1,50 @@
+\hypertarget{_hash_map_trie_8hpp}{}\section{inc/\+Hash\+Map\+Trie.hpp File Reference}
+\label{_hash_map_trie_8hpp}\index{inc/\+Hash\+Map\+Trie.\+hpp@{inc/\+Hash\+Map\+Trie.\+hpp}}
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\\*
+{\ttfamily \#include \char`\"{}A\+Trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Hashing\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classtries_1_1_hash_map_trie}{tries\+::\+Hash\+Map\+Trie$<$ N, do\+Cache $>$}
+\begin{DoxyCompactList}\small\item\em This is a Hash\+Mpa based I\+Trie interface implementation class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacetries}{tries}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_hash_map_trie_8hpp_a44555afdc39259ebd960834e39096cee}{H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P}
+\begin{DoxyCompactList}\small\item\em We actually have several choices\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef Hash\+Map\+Trie$<$ \hyperlink{_globals_8hpp_a5f3826bb70e91d12acce8d68c346c07b}{N\+\_\+\+G\+R\+A\+M\+\_\+\+P\+A\+R\+A\+M}, true $>$ \hyperlink{namespacetries_a0d8fcb4509e845f8686ffa270e347fe0}{tries\+::\+T\+Five\+Cache\+Hash\+Map\+Trie}
+\item 
+typedef Hash\+Map\+Trie$<$ \hyperlink{_globals_8hpp_a5f3826bb70e91d12acce8d68c346c07b}{N\+\_\+\+G\+R\+A\+M\+\_\+\+P\+A\+R\+A\+M}, false $>$ \hyperlink{namespacetries_ae939879f99b16d403aacda01ec1adf42}{tries\+::\+T\+Five\+No\+Cache\+Hash\+Map\+Trie}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_hash_map_trie_8hpp_a44555afdc39259ebd960834e39096cee}{}\index{Hash\+Map\+Trie.\+hpp@{Hash\+Map\+Trie.\+hpp}!H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P@{H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P}}
+\index{H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P@{H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P}!Hash\+Map\+Trie.\+hpp@{Hash\+Map\+Trie.\+hpp}}
+\subsubsection[{H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define H\+A\+S\+H\+M\+A\+P\+T\+R\+I\+E\+\_\+\+H\+P\+P}\label{_hash_map_trie_8hpp_a44555afdc39259ebd960834e39096cee}
+
+
+We actually have several choices\+: 
+
+Continue to use $<$ext/hash\+\_\+map.\+h$>$ and use -\/\+Wno-\/deprecated to stop the warning
+
+Use $<$tr1/unordered\+\_\+map$>$ and std\+::tr1\+::unordered\+\_\+map
+
+Use $<$unordered\+\_\+map$>$ and std\+::unordered\+\_\+map and -\/std=c++0x
+
+We will need to test which one runs better, it is an unordered\+\_\+map for now. \href{http://www.cplusplus.com/reference/unordered_map/unordered_map/}{\tt http\+://www.\+cplusplus.\+com/reference/unordered\+\_\+map/unordered\+\_\+map/} 
+
+Definition at line 47 of file Hash\+Map\+Trie.\+hpp.
+

@@ -52,10 +52,10 @@ namespace ngrams {
         //Create and record all of the N-grams starting from 2 and 
         //limited either by Trie or by the available number of Tokens
         const TTrieSize ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
-        LOGGER(Logger::DEBUG) << "N-gram level = " << ngLevel << endl;
+        LOG_DEBUG << "N-gram level = " << ngLevel << END_LOG;
         for(int n=2; n <= ngLevel; n++) {
             for(int idx=0; idx <= (tokens.size() - n); idx++){
-                LOGGER(Logger::DEBUG) << "adding N-grams (#tokens=" << tokens.size() << ") idx = " << idx << ", len = " << n << endl;
+                LOG_DEBUG << "adding N-grams (#tokens=" << tokens.size() << ") idx = " << idx << ", len = " << n << END_LOG;
                 _trie.addNGram(tokens, idx, n );
             }
         }

@@ -1,0 +1,206 @@
+\hypertarget{class_logger}{}\section{Logger Class Reference}
+\label{class_logger}\index{Logger@{Logger}}
+
+
+This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout.  
+
+
+
+
+{\ttfamily \#include $<$Logger.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932}{Debug\+Level} \{ \\*
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a83b5b4f40d4be307f9f26550c91cf3d5}{U\+S\+A\+G\+E} = 0, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932af5da0215b58667cc5314fc1bdc7a81e3}{R\+E\+S\+U\+L\+T} = U\+S\+A\+G\+E + 1, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a3ce1bbeb15a3d8e29e4c5e75492a781b}{E\+R\+R\+O\+R} = R\+E\+S\+U\+L\+T + 1, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932afb1bf96f41b282521d9438106ea11bca}{W\+A\+R\+N\+I\+N\+G} = E\+R\+R\+O\+R + 1, 
+\\*
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a61a9b6fc1e9babc448984b8a34ca2ed2}{I\+N\+F\+O} = W\+A\+R\+N\+I\+N\+G + 1, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e}{D\+E\+B\+U\+G} = I\+N\+F\+O + 1, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a5f7718483e39a028518b90f969b41771}{D\+E\+B\+U\+G1} = D\+E\+B\+U\+G + 1, 
+\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564}{D\+E\+B\+U\+G2} = D\+E\+B\+U\+G1 + 1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{class_logger_ae93f62ca3e47716b7120acb032a260f3}{$\sim$\+Logger} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::ostream \& \hyperlink{class_logger_ae2b3102712f501c8a87306b242c6e85f}{Get} (\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932}{Debug\+Level} level=\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a61a9b6fc1e9babc448984b8a34ca2ed2}{I\+N\+F\+O})
+\begin{DoxyCompactList}\small\item\em This methods allows to get the output stream for the given log-\/level. \end{DoxyCompactList}\item 
+static \hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932}{Debug\+Level} \& \hyperlink{class_logger_a8b07a26d2b5896a239e3b834ff4e9024}{Reporting\+Level} ()
+\begin{DoxyCompactList}\small\item\em Returns the reference to the internal log level variable. \end{DoxyCompactList}\item 
+static void \hyperlink{class_logger_aa0bf3fb521a27a3d343c4f16523e3669}{start\+Progress\+Bar} ()
+\begin{DoxyCompactList}\small\item\em The function that start progress bar Works if the current debug level is $<$= I\+N\+F\+O. \end{DoxyCompactList}\item 
+static void \hyperlink{class_logger_a2b95916da99c2f3298bafabc61340262}{update\+Progress\+Bar} ()
+\begin{DoxyCompactList}\small\item\em The function that updates progress bar Works if the current debug level is $<$= I\+N\+F\+O. \end{DoxyCompactList}\item 
+static void \hyperlink{class_logger_a684c36c7810276214a0b3592ee907baf}{stop\+Progress\+Bar} ()
+\begin{DoxyCompactList}\small\item\em The function that stops progress bar Works if the current debug level is $<$= I\+N\+F\+O. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const char $\ast$ \hyperlink{class_logger_a30344984f1f6d2a5896a52a4788e8b72}{Debug\+Level\+Str} \mbox{[}$\,$\mbox{]} = \{ \char`\"{}R\+E\+S\+U\+L\+T\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a83b5b4f40d4be307f9f26550c91cf3d5}{U\+S\+A\+G\+E}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a3ce1bbeb15a3d8e29e4c5e75492a781b}{E\+R\+R\+O\+R}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932afb1bf96f41b282521d9438106ea11bca}{W\+A\+R\+N\+I\+N\+G}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a61a9b6fc1e9babc448984b8a34ca2ed2}{I\+N\+F\+O}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e}{D\+E\+B\+U\+G}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a5f7718483e39a028518b90f969b41771}{D\+E\+B\+U\+G1}\char`\"{}, \char`\"{}\hyperlink{class_logger_a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564}{D\+E\+B\+U\+G2}\char`\"{} \}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout. 
+
+Definition at line 56 of file Logger.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932}{}\index{Logger@{Logger}!Debug\+Level@{Debug\+Level}}
+\index{Debug\+Level@{Debug\+Level}!Logger@{Logger}}
+\subsubsection[{Debug\+Level}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Logger\+::\+Debug\+Level}}\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{U\+S\+A\+G\+E@{U\+S\+A\+G\+E}!Logger@{Logger}}\index{Logger@{Logger}!U\+S\+A\+G\+E@{U\+S\+A\+G\+E}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932a83b5b4f40d4be307f9f26550c91cf3d5}{}U\+S\+A\+G\+E\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932a83b5b4f40d4be307f9f26550c91cf3d5}
+}]\index{R\+E\+S\+U\+L\+T@{R\+E\+S\+U\+L\+T}!Logger@{Logger}}\index{Logger@{Logger}!R\+E\+S\+U\+L\+T@{R\+E\+S\+U\+L\+T}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932af5da0215b58667cc5314fc1bdc7a81e3}{}R\+E\+S\+U\+L\+T\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932af5da0215b58667cc5314fc1bdc7a81e3}
+}]\index{E\+R\+R\+O\+R@{E\+R\+R\+O\+R}!Logger@{Logger}}\index{Logger@{Logger}!E\+R\+R\+O\+R@{E\+R\+R\+O\+R}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932a3ce1bbeb15a3d8e29e4c5e75492a781b}{}E\+R\+R\+O\+R\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932a3ce1bbeb15a3d8e29e4c5e75492a781b}
+}]\index{W\+A\+R\+N\+I\+N\+G@{W\+A\+R\+N\+I\+N\+G}!Logger@{Logger}}\index{Logger@{Logger}!W\+A\+R\+N\+I\+N\+G@{W\+A\+R\+N\+I\+N\+G}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932afb1bf96f41b282521d9438106ea11bca}{}W\+A\+R\+N\+I\+N\+G\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932afb1bf96f41b282521d9438106ea11bca}
+}]\index{I\+N\+F\+O@{I\+N\+F\+O}!Logger@{Logger}}\index{Logger@{Logger}!I\+N\+F\+O@{I\+N\+F\+O}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932a61a9b6fc1e9babc448984b8a34ca2ed2}{}I\+N\+F\+O\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932a61a9b6fc1e9babc448984b8a34ca2ed2}
+}]\index{D\+E\+B\+U\+G@{D\+E\+B\+U\+G}!Logger@{Logger}}\index{Logger@{Logger}!D\+E\+B\+U\+G@{D\+E\+B\+U\+G}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e}{}D\+E\+B\+U\+G\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e}
+}]\index{D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}!Logger@{Logger}}\index{Logger@{Logger}!D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932a5f7718483e39a028518b90f969b41771}{}D\+E\+B\+U\+G1\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932a5f7718483e39a028518b90f969b41771}
+}]\index{D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}!Logger@{Logger}}\index{Logger@{Logger}!D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}}\item[{\em 
+\hypertarget{class_logger_a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564}{}D\+E\+B\+U\+G2\label{class_logger_a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 60 of file Logger.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_logger_ae93f62ca3e47716b7120acb032a260f3}{}\index{Logger@{Logger}!````~Logger@{$\sim$\+Logger}}
+\index{````~Logger@{$\sim$\+Logger}!Logger@{Logger}}
+\subsubsection[{$\sim$\+Logger()}]{\setlength{\rightskip}{0pt plus 5cm}virtual Logger\+::$\sim$\+Logger (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_logger_ae93f62ca3e47716b7120acb032a260f3}
+
+
+Definition at line 67 of file Logger.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_logger_ae2b3102712f501c8a87306b242c6e85f}{}\index{Logger@{Logger}!Get@{Get}}
+\index{Get@{Get}!Logger@{Logger}}
+\subsubsection[{Get(\+Debug\+Level level=\+I\+N\+F\+O)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream \& Logger\+::\+Get (
+\begin{DoxyParamCaption}
+\item[{{\bf Debug\+Level}}]{level = {\ttfamily {\bf I\+N\+F\+O}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{class_logger_ae2b3102712f501c8a87306b242c6e85f}
+
+
+This methods allows to get the output stream for the given log-\/level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & the log level for the messages to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream object 
+\end{DoxyReturn}
+
+
+Definition at line 36 of file Logger.\+cpp.
+
+\hypertarget{class_logger_a8b07a26d2b5896a239e3b834ff4e9024}{}\index{Logger@{Logger}!Reporting\+Level@{Reporting\+Level}}
+\index{Reporting\+Level@{Reporting\+Level}!Logger@{Logger}}
+\subsubsection[{Reporting\+Level()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf Debug\+Level}\& Logger\+::\+Reporting\+Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_logger_a8b07a26d2b5896a239e3b834ff4e9024}
+
+
+Returns the reference to the internal log level variable. 
+
+\begin{DoxyReturn}{Returns}
+the reference to the internal log level variable 
+\end{DoxyReturn}
+
+
+Definition at line 80 of file Logger.\+hpp.
+
+\hypertarget{class_logger_aa0bf3fb521a27a3d343c4f16523e3669}{}\index{Logger@{Logger}!start\+Progress\+Bar@{start\+Progress\+Bar}}
+\index{start\+Progress\+Bar@{start\+Progress\+Bar}!Logger@{Logger}}
+\subsubsection[{start\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void Logger\+::start\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{class_logger_aa0bf3fb521a27a3d343c4f16523e3669}
+
+
+The function that start progress bar Works if the current debug level is $<$= I\+N\+F\+O. 
+
+
+
+Definition at line 56 of file Logger.\+cpp.
+
+\hypertarget{class_logger_a684c36c7810276214a0b3592ee907baf}{}\index{Logger@{Logger}!stop\+Progress\+Bar@{stop\+Progress\+Bar}}
+\index{stop\+Progress\+Bar@{stop\+Progress\+Bar}!Logger@{Logger}}
+\subsubsection[{stop\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void Logger\+::stop\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{class_logger_a684c36c7810276214a0b3592ee907baf}
+
+
+The function that stops progress bar Works if the current debug level is $<$= I\+N\+F\+O. 
+
+
+
+Definition at line 76 of file Logger.\+cpp.
+
+\hypertarget{class_logger_a2b95916da99c2f3298bafabc61340262}{}\index{Logger@{Logger}!update\+Progress\+Bar@{update\+Progress\+Bar}}
+\index{update\+Progress\+Bar@{update\+Progress\+Bar}!Logger@{Logger}}
+\subsubsection[{update\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void Logger\+::update\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{class_logger_a2b95916da99c2f3298bafabc61340262}
+
+
+The function that updates progress bar Works if the current debug level is $<$= I\+N\+F\+O. 
+
+
+
+Definition at line 64 of file Logger.\+cpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_logger_a30344984f1f6d2a5896a52a4788e8b72}{}\index{Logger@{Logger}!Debug\+Level\+Str@{Debug\+Level\+Str}}
+\index{Debug\+Level\+Str@{Debug\+Level\+Str}!Logger@{Logger}}
+\subsubsection[{Debug\+Level\+Str}]{\setlength{\rightskip}{0pt plus 5cm}const char $\ast$ Logger\+::\+Debug\+Level\+Str = \{ \char`\"{}R\+E\+S\+U\+L\+T\char`\"{}, \char`\"{}{\bf U\+S\+A\+G\+E}\char`\"{}, \char`\"{}{\bf E\+R\+R\+O\+R}\char`\"{}, \char`\"{}{\bf W\+A\+R\+N\+I\+N\+G}\char`\"{}, \char`\"{}{\bf I\+N\+F\+O}\char`\"{}, \char`\"{}{\bf D\+E\+B\+U\+G}\char`\"{}, \char`\"{}{\bf D\+E\+B\+U\+G1}\char`\"{}, \char`\"{}{\bf D\+E\+B\+U\+G2}\char`\"{} \}\hspace{0.3cm}{\ttfamily [static]}}\label{class_logger_a30344984f1f6d2a5896a52a4788e8b72}
+
+
+Definition at line 65 of file Logger.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_logger_8hpp}{Logger.\+hpp}\item 
+src/\hyperlink{_logger_8cpp}{Logger.\+cpp}\end{DoxyCompactItemize}

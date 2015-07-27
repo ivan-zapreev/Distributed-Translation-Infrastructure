@@ -1,0 +1,123 @@
+\hypertarget{classtries_1_1ngrams_1_1_n_gram_builder}{}\section{tries\+:\+:ngrams\+:\+:N\+Gram\+Builder$<$ N, do\+Cache $>$ Class Template Reference}
+\label{classtries_1_1ngrams_1_1_n_gram_builder}\index{tries\+::ngrams\+::\+N\+Gram\+Builder$<$ N, do\+Cache $>$@{tries\+::ngrams\+::\+N\+Gram\+Builder$<$ N, do\+Cache $>$}}
+
+
+This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie.  
+
+
+
+
+{\ttfamily \#include $<$N\+Gram\+Builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtries_1_1ngrams_1_1_n_gram_builder_a694f8a3a7e8fc07aefe5fba45ff4f31f}{N\+Gram\+Builder} (\hyperlink{classtries_1_1_a_trie}{A\+Trie}$<$ N, do\+Cache $>$ \&trie, const char delim)
+\item 
+void \hyperlink{classtries_1_1ngrams_1_1_n_gram_builder_a0301b1e6415228d4a81e858b40ad4a94}{process\+String} (const string \&data)
+\begin{DoxyCompactList}\small\item\em For the given text will split it into the number of n-\/grams that will be then put into the trie. \end{DoxyCompactList}\item 
+virtual \hyperlink{classtries_1_1ngrams_1_1_n_gram_builder_aa36389b96940e8a21771ad095b9d7a0b}{$\sim$\+N\+Gram\+Builder} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classtries_1_1ngrams_1_1_n_gram_builder_a631371b5643e2222c2303b6163fdfd24}{build\+N\+Gram} (const string \&line, const \hyperlink{namespacetries_a621e8987880c3e13fa029a65336b920c}{T\+Trie\+Size} n, const char delim, vector$<$ string $>$ \&ngram)  throw (\+Exception)
+\begin{DoxyCompactList}\small\item\em This method build an N-\/\+Gram from a string, which is nothing more than just taking a string and tokenizing it with the given delimiter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Trie\+Size N, bool do\+Cache$>$class tries\+::ngrams\+::\+N\+Gram\+Builder$<$ N, do\+Cache $>$}
+
+This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie. 
+
+Definition at line 46 of file N\+Gram\+Builder.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtries_1_1ngrams_1_1_n_gram_builder_a694f8a3a7e8fc07aefe5fba45ff4f31f}{}\index{tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}!N\+Gram\+Builder@{N\+Gram\+Builder}}
+\index{N\+Gram\+Builder@{N\+Gram\+Builder}!tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}}
+\subsubsection[{N\+Gram\+Builder(\+A\+Trie$<$ N, do\+Cache $>$ \&trie, const char delim)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::ngrams\+::\+N\+Gram\+Builder}$<$ N, do\+Cache $>$\+::{\bf N\+Gram\+Builder} (
+\begin{DoxyParamCaption}
+\item[{{\bf A\+Trie}$<$ N, do\+Cache $>$ \&}]{trie, }
+\item[{const char}]{delim}
+\end{DoxyParamCaption}
+)}\label{classtries_1_1ngrams_1_1_n_gram_builder_a694f8a3a7e8fc07aefe5fba45ff4f31f}
+
+
+Definition at line 32 of file N\+Gram\+Builder.\+cpp.
+
+\hypertarget{classtries_1_1ngrams_1_1_n_gram_builder_aa36389b96940e8a21771ad095b9d7a0b}{}\index{tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}!````~N\+Gram\+Builder@{$\sim$\+N\+Gram\+Builder}}
+\index{````~N\+Gram\+Builder@{$\sim$\+N\+Gram\+Builder}!tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}}
+\subsubsection[{$\sim$\+N\+Gram\+Builder()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::ngrams\+::\+N\+Gram\+Builder}$<$ N, do\+Cache $>$\+::$\sim${\bf N\+Gram\+Builder} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1ngrams_1_1_n_gram_builder_aa36389b96940e8a21771ad095b9d7a0b}
+
+
+Definition at line 40 of file N\+Gram\+Builder.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtries_1_1ngrams_1_1_n_gram_builder_a631371b5643e2222c2303b6163fdfd24}{}\index{tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}!build\+N\+Gram@{build\+N\+Gram}}
+\index{build\+N\+Gram@{build\+N\+Gram}!tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}}
+\subsubsection[{build\+N\+Gram(const string \&line, const T\+Trie\+Size n, const char delim, vector$<$ string $>$ \&ngram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ static void {\bf tries\+::ngrams\+::\+N\+Gram\+Builder}$<$ N, do\+Cache $>$\+::build\+N\+Gram (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{line, }
+\item[{const {\bf T\+Trie\+Size}}]{n, }
+\item[{const char}]{delim, }
+\item[{vector$<$ string $>$ \&}]{ngram}
+\end{DoxyParamCaption}
+) throw  {\bf Exception}) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classtries_1_1ngrams_1_1_n_gram_builder_a631371b5643e2222c2303b6163fdfd24}
+
+
+This method build an N-\/\+Gram from a string, which is nothing more than just taking a string and tokenizing it with the given delimiter. 
+
+In addition this method will test if the resulting N-\/gram has exactly the specified number of elements. Will also clean the ngram vector before filling it in. The order in which the N-\/gram elements are stored are the same in which they are present in the given line. 
+\begin{DoxyParams}{Parameters}
+{\em line} & the line of code to convert into an N-\/gram \\
+\hline
+{\em n} & the expected value of N \\
+\hline
+{\em delim} & the delimiter to parse the string into \\
+\hline
+{\em ngram} & the output parameter that will be filled in with the N-\/gram values \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_exception}{Exception}} & in case the resulting N-\/gram has the number elements other than expected \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 69 of file N\+Gram\+Builder.\+hpp.
+
+\hypertarget{classtries_1_1ngrams_1_1_n_gram_builder_a0301b1e6415228d4a81e858b40ad4a94}{}\index{tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}!process\+String@{process\+String}}
+\index{process\+String@{process\+String}!tries\+::ngrams\+::\+N\+Gram\+Builder@{tries\+::ngrams\+::\+N\+Gram\+Builder}}
+\subsubsection[{process\+String(const string \&data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::ngrams\+::\+N\+Gram\+Builder}$<$ N, do\+Cache $>$\+::process\+String (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{data}
+\end{DoxyParamCaption}
+)}\label{classtries_1_1ngrams_1_1_n_gram_builder_a0301b1e6415228d4a81e858b40ad4a94}
+
+
+For the given text will split it into the number of n-\/grams that will be then put into the trie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & the string to process, has to be space a separated sequence of tokens \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file N\+Gram\+Builder.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_n_gram_builder_8hpp}{N\+Gram\+Builder.\+hpp}\item 
+src/\hyperlink{_n_gram_builder_8cpp}{N\+Gram\+Builder.\+cpp}\end{DoxyCompactItemize}

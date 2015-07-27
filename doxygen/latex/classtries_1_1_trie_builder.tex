@@ -1,0 +1,93 @@
+\hypertarget{classtries_1_1_trie_builder}{}\section{tries\+:\+:Trie\+Builder$<$ N, do\+Cache $>$ Class Template Reference}
+\label{classtries_1_1_trie_builder}\index{tries\+::\+Trie\+Builder$<$ N, do\+Cache $>$@{tries\+::\+Trie\+Builder$<$ N, do\+Cache $>$}}
+
+
+This is the Trie builder class that reads an input file stream and creates n-\/grams and then records them into the provided Trie.  
+
+
+
+
+{\ttfamily \#include $<$Trie\+Builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtries_1_1_trie_builder_a65c0882287c94452b6720bf956252b60}{Trie\+Builder} (\hyperlink{classtries_1_1_a_trie}{A\+Trie}$<$ N, do\+Cache $>$ \&trie, ifstream \&\+\_\+fstr, const char delim)
+\begin{DoxyCompactList}\small\item\em The basic constructor that accepts a trie to be build up and the file stream to read from. \end{DoxyCompactList}\item 
+void \hyperlink{classtries_1_1_trie_builder_ac6960b180d338d5c72dfb19bf49db8ee}{build} ()
+\begin{DoxyCompactList}\small\item\em This function will read from the file and build the trie. \end{DoxyCompactList}\item 
+virtual \hyperlink{classtries_1_1_trie_builder_a3081582b5f85b2bdce4a98021e3b7100}{$\sim$\+Trie\+Builder} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Trie\+Size N, bool do\+Cache$>$class tries\+::\+Trie\+Builder$<$ N, do\+Cache $>$}
+
+This is the Trie builder class that reads an input file stream and creates n-\/grams and then records them into the provided Trie. 
+
+Definition at line 41 of file Trie\+Builder.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtries_1_1_trie_builder_a65c0882287c94452b6720bf956252b60}{}\index{tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}!Trie\+Builder@{Trie\+Builder}}
+\index{Trie\+Builder@{Trie\+Builder}!tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}}
+\subsubsection[{Trie\+Builder(\+A\+Trie$<$ N, do\+Cache $>$ \&trie, ifstream \&\+\_\+fstr, const char delim)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::\+Trie\+Builder}$<$ N, do\+Cache $>$\+::{\bf Trie\+Builder} (
+\begin{DoxyParamCaption}
+\item[{{\bf A\+Trie}$<$ N, do\+Cache $>$ \&}]{trie, }
+\item[{ifstream \&}]{\+\_\+fstr, }
+\item[{const char}]{delim}
+\end{DoxyParamCaption}
+)}\label{classtries_1_1_trie_builder_a65c0882287c94452b6720bf956252b60}
+
+
+The basic constructor that accepts a trie to be build up and the file stream to read from. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trie} & the trie to fill in with data from the text corpus \\
+\hline
+{\em \+\_\+fstr} & the file stream to read from \\
+\hline
+{\em delim} & the delimiter for the line elements \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 37 of file Trie\+Builder.\+cpp.
+
+\hypertarget{classtries_1_1_trie_builder_a3081582b5f85b2bdce4a98021e3b7100}{}\index{tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}!````~Trie\+Builder@{$\sim$\+Trie\+Builder}}
+\index{````~Trie\+Builder@{$\sim$\+Trie\+Builder}!tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}}
+\subsubsection[{$\sim$\+Trie\+Builder()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::\+Trie\+Builder}$<$ N, do\+Cache $>$\+::$\sim${\bf Trie\+Builder} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_trie_builder_a3081582b5f85b2bdce4a98021e3b7100}
+
+
+Definition at line 45 of file Trie\+Builder.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtries_1_1_trie_builder_ac6960b180d338d5c72dfb19bf49db8ee}{}\index{tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}!build@{build}}
+\index{build@{build}!tries\+::\+Trie\+Builder@{tries\+::\+Trie\+Builder}}
+\subsubsection[{build()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::\+Trie\+Builder}$<$ N, do\+Cache $>$\+::build (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classtries_1_1_trie_builder_ac6960b180d338d5c72dfb19bf49db8ee}
+
+
+This function will read from the file and build the trie. 
+
+
+
+Definition at line 49 of file Trie\+Builder.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_trie_builder_8hpp}{Trie\+Builder.\+hpp}\item 
+src/\hyperlink{_trie_builder_8cpp}{Trie\+Builder.\+cpp}\end{DoxyCompactItemize}

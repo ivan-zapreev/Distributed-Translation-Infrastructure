@@ -49,6 +49,16 @@ using namespace std;
   else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level)
 
+#define LOG_USAGE   LOGGER(Logger::USAGE)
+#define LOG_RESULT  LOGGER(Logger::RESULT)
+#define LOG_ERROR   LOGGER(Logger::ERROR)
+#define LOG_WARNING LOGGER(Logger::WARNING)
+#define LOG_INFO    LOGGER(Logger::INFO)
+#define LOG_DEBUG   LOGGER(Logger::DEBUG)
+#define LOG_DEBUG1  LOGGER(Logger::DEBUG1)
+#define LOG_DEBUG2  LOGGER(Logger::DEBUG2)
+#define END_LOG     endl
+
 /**
  * This is a trivial logging facility that exchibits a singleton
  * behavior and does output to stderr and stdout.

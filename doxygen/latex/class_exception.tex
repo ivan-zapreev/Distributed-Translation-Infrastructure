@@ -1,0 +1,143 @@
+\hypertarget{class_exception}{}\section{Exception Class Reference}
+\label{class_exception}\index{Exception@{Exception}}
+
+
+This is an application exception class that is capable of storing an error message.  
+
+
+
+
+{\ttfamily \#include $<$Exceptions.\+hpp$>$}
+
+Inheritance diagram for Exception\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_exception}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_exception_ac541ead5c20548813d7dea73c28c7fab}{Exception} (const char $\ast$message)
+\item 
+\hyperlink{class_exception_aad1be11dc85840f8a7fac731057ab715}{Exception} (const string \&message)
+\item 
+\hyperlink{class_exception_a3623ce1b8b6435348d98c415b7a40d44}{Exception} (\hyperlink{class_exception}{Exception} const \&other)
+\begin{DoxyCompactList}\small\item\em The copy constructor. \end{DoxyCompactList}\item 
+string const \& \hyperlink{class_exception_af7b8adbf8470f04f2bd6313af3b877de}{get\+Message} () const   throw ()
+\begin{DoxyCompactList}\small\item\em This method returns the stored message. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_exception_ad1ba411de295ef2eeb02ba26284a829a}{$\sim$\+Exception} ()  throw ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+virtual const char $\ast$ \hyperlink{class_exception_a78154a31544a609cbd226d32574f52cd}{what} () const   throw ()
+\begin{DoxyCompactList}\small\item\em Returns a pointer to the (constant) error description. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is an application exception class that is capable of storing an error message. 
+
+Definition at line 36 of file Exceptions.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_exception_ac541ead5c20548813d7dea73c28c7fab}{}\index{Exception@{Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!Exception@{Exception}}
+\subsubsection[{Exception(const char $\ast$message)}]{\setlength{\rightskip}{0pt plus 5cm}Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{message}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{class_exception_ac541ead5c20548813d7dea73c28c7fab}
+
+
+Definition at line 43 of file Exceptions.\+hpp.
+
+\hypertarget{class_exception_aad1be11dc85840f8a7fac731057ab715}{}\index{Exception@{Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!Exception@{Exception}}
+\subsubsection[{Exception(const string \&message)}]{\setlength{\rightskip}{0pt plus 5cm}Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{message}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{class_exception_aad1be11dc85840f8a7fac731057ab715}
+
+
+Definition at line 46 of file Exceptions.\+hpp.
+
+\hypertarget{class_exception_a3623ce1b8b6435348d98c415b7a40d44}{}\index{Exception@{Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!Exception@{Exception}}
+\subsubsection[{Exception(\+Exception const \&other)}]{\setlength{\rightskip}{0pt plus 5cm}Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{{\bf Exception} const \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_exception_a3623ce1b8b6435348d98c415b7a40d44}
+
+
+The copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the other exception to copy from \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 53 of file Exceptions.\+hpp.
+
+\hypertarget{class_exception_ad1ba411de295ef2eeb02ba26284a829a}{}\index{Exception@{Exception}!````~Exception@{$\sim$\+Exception}}
+\index{````~Exception@{$\sim$\+Exception}!Exception@{Exception}}
+\subsubsection[{$\sim$\+Exception()}]{\setlength{\rightskip}{0pt plus 5cm}virtual Exception\+::$\sim$\+Exception (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_exception_ad1ba411de295ef2eeb02ba26284a829a}
+
+
+Destructor. 
+
+Virtual to allow for subclassing. 
+
+Definition at line 68 of file Exceptions.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_exception_af7b8adbf8470f04f2bd6313af3b877de}{}\index{Exception@{Exception}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!Exception@{Exception}}
+\subsubsection[{get\+Message() const }]{\setlength{\rightskip}{0pt plus 5cm}string const\& Exception\+::get\+Message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{class_exception_af7b8adbf8470f04f2bd6313af3b877de}
+
+
+This method returns the stored message. 
+
+\begin{DoxyReturn}{Returns}
+the reference to a constant error message string 
+\end{DoxyReturn}
+
+
+Definition at line 61 of file Exceptions.\+hpp.
+
+\hypertarget{class_exception_a78154a31544a609cbd226d32574f52cd}{}\index{Exception@{Exception}!what@{what}}
+\index{what@{what}!Exception@{Exception}}
+\subsubsection[{what() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual const char$\ast$ Exception\+::what (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_exception_a78154a31544a609cbd226d32574f52cd}
+
+
+Returns a pointer to the (constant) error description. 
+
+\begin{DoxyReturn}{Returns}
+A pointer to a {\ttfamily const} {\ttfamily char$\ast$}. The underlying memory is in posession of the {\ttfamily \hyperlink{class_exception}{Exception}} object. Callers {\itshape must} not attempt to free the memory. 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file Exceptions.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_exceptions_8hpp}{Exceptions.\+hpp}\end{DoxyCompactItemize}

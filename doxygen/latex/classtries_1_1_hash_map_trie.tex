@@ -1,0 +1,228 @@
+\hypertarget{classtries_1_1_hash_map_trie}{}\section{tries\+:\+:Hash\+Map\+Trie$<$ N, do\+Cache $>$ Class Template Reference}
+\label{classtries_1_1_hash_map_trie}\index{tries\+::\+Hash\+Map\+Trie$<$ N, do\+Cache $>$@{tries\+::\+Hash\+Map\+Trie$<$ N, do\+Cache $>$}}
+
+
+This is a Hash\+Mpa based I\+Trie interface implementation class.  
+
+
+
+
+{\ttfamily \#include $<$Hash\+Map\+Trie.\+hpp$>$}
+
+Inheritance diagram for tries\+:\+:Hash\+Map\+Trie$<$ N, do\+Cache $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtries_1_1_hash_map_trie}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtries_1_1_hash_map_trie_a93d7512778a272845598ce8863c1eec4}{Hash\+Map\+Trie} ()
+\begin{DoxyCompactList}\small\item\em The basic class constructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classtries_1_1_hash_map_trie_ae1f930f846bf91418bc9f295756506d9}{add\+Words} (vector$<$ string $>$ \&tokens)
+\begin{DoxyCompactList}\small\item\em Does not re-\/set the internal query cache For more details. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classtries_1_1_hash_map_trie_a163ec5519b0b1842e65fbb77ed53fe1a}{add\+N\+Gram} (vector$<$ string $>$ \&tokens, const int idx, const int n)
+\begin{DoxyCompactList}\small\item\em Does not re-\/set the internal query cache For more details. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classtries_1_1_hash_map_trie_acd9d79668a9ceb0093bb42aa43eb6546}{reset\+Query\+Cache} ()
+\begin{DoxyCompactList}\small\item\em Does re-\/set the internal query cache For more details. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classtries_1_1_hash_map_trie_a7754f7cda3e36d740d9853dcef47338f}{query\+Word\+Freqs} (const string \&word, \hyperlink{structtries_1_1_s_frequency_result}{S\+Frequency\+Result}$<$ N $>$ \&result)  throw (\+Exception)
+\begin{DoxyCompactList}\small\item\em For more details. \end{DoxyCompactList}\item 
+virtual \hyperlink{structtries_1_1_s_frequency_result}{S\+Frequency\+Result}$<$ N $>$ \& \hyperlink{classtries_1_1_hash_map_trie_af2bdd70e8c6a211afd2ed931047b0ce2}{query\+Word\+Freqs} (const string \&word)  throw (\+Exception)
+\begin{DoxyCompactList}\small\item\em For more details. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classtries_1_1_hash_map_trie_a3ba50321b600229fb81bd1d13303f487}{query\+N\+Gram\+Freqs} (const vector$<$ string $>$ \&ngram, \hyperlink{structtries_1_1_s_frequency_result}{S\+Frequency\+Result}$<$ N $>$ \&freqs)
+\begin{DoxyCompactList}\small\item\em For more details. \end{DoxyCompactList}\item 
+virtual \hyperlink{classtries_1_1_hash_map_trie_a1d6c72eb8c432e1aad968c847a7b331f}{$\sim$\+Hash\+Map\+Trie} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Trie\+Size N, bool do\+Cache$>$class tries\+::\+Hash\+Map\+Trie$<$ N, do\+Cache $>$}
+
+This is a Hash\+Mpa based I\+Trie interface implementation class. 
+
+Note 1\+: This implementation uses the unsigned long for the hashes it is not optimal Note 2\+: the unordered\+\_\+map might be not as efficient as a hash\+\_\+map with respect to memory usage but it is supposed to be faster
+
+This implementation is chosen because it resembles the ordered array implementation from\+: \char`\"{}\+Faster and Smaller N -\/\+Gram Language Models\char`\"{} Adam Pauls Dan Klein Computer Science Division University of California, Berkeley
+
+and unordered\+\_\+maps showed good performance in\+: \char`\"{}\+Efficient in-\/memory data structures for n-\/grams indexing\char`\"{} Daniel Robenek, Jan Platoˇs, and V ́aclav Sn ́aˇsel Department of Computer Science, F\+E\+I, V\+S\+B – Technical University of Ostrava
+\begin{DoxyEnumerate}
+\item listopadu 15, 708 33, Ostrava-\/\+Poruba, Czech Republic \{daniel.\+robenek.\+st, jan.\+platos, vaclav.\+snasel\}.cz 
+\end{DoxyEnumerate}
+
+Definition at line 74 of file Hash\+Map\+Trie.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classtries_1_1_hash_map_trie_a93d7512778a272845598ce8863c1eec4}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!Hash\+Map\+Trie@{Hash\+Map\+Trie}}
+\index{Hash\+Map\+Trie@{Hash\+Map\+Trie}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{Hash\+Map\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::{\bf Hash\+Map\+Trie} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classtries_1_1_hash_map_trie_a93d7512778a272845598ce8863c1eec4}
+
+
+The basic class constructor. 
+
+
+
+Definition at line 39 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_a1d6c72eb8c432e1aad968c847a7b331f}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!````~Hash\+Map\+Trie@{$\sim$\+Hash\+Map\+Trie}}
+\index{````~Hash\+Map\+Trie@{$\sim$\+Hash\+Map\+Trie}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{$\sim$\+Hash\+Map\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::$\sim${\bf Hash\+Map\+Trie} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_a1d6c72eb8c432e1aad968c847a7b331f}
+
+
+Definition at line 230 of file Hash\+Map\+Trie.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtries_1_1_hash_map_trie_a163ec5519b0b1842e65fbb77ed53fe1a}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!add\+N\+Gram@{add\+N\+Gram}}
+\index{add\+N\+Gram@{add\+N\+Gram}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{add\+N\+Gram(vector$<$ string $>$ \&tokens, const int idx, const int n)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::add\+N\+Gram (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{tokens, }
+\item[{const int}]{idx, }
+\item[{const int}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_a163ec5519b0b1842e65fbb77ed53fe1a}
+
+
+Does not re-\/set the internal query cache For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_a4969240cf320883567c59df02efee9bb}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 74 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_ae1f930f846bf91418bc9f295756506d9}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!add\+Words@{add\+Words}}
+\index{add\+Words@{add\+Words}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{add\+Words(vector$<$ string $>$ \&tokens)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::add\+Words (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{tokens}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_ae1f930f846bf91418bc9f295756506d9}
+
+
+Does not re-\/set the internal query cache For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_a337e8d59dcc31c7dc32a9e2c336c1007}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 53 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_a3ba50321b600229fb81bd1d13303f487}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!query\+N\+Gram\+Freqs@{query\+N\+Gram\+Freqs}}
+\index{query\+N\+Gram\+Freqs@{query\+N\+Gram\+Freqs}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{query\+N\+Gram\+Freqs(const vector$<$ string $>$ \&ngram, S\+Frequency\+Result$<$ N $>$ \&freqs)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::query\+N\+Gram\+Freqs (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ string $>$ \&}]{ngram, }
+\item[{{\bf S\+Frequency\+Result}$<$ N $>$ \&}]{freqs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_a3ba50321b600229fb81bd1d13303f487}
+
+
+For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_af61c5b7d5b457ce246e5a96553e2075d}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 203 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_a7754f7cda3e36d740d9853dcef47338f}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!query\+Word\+Freqs@{query\+Word\+Freqs}}
+\index{query\+Word\+Freqs@{query\+Word\+Freqs}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{query\+Word\+Freqs(const string \&word, S\+Frequency\+Result$<$ N $>$ \&result)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ void {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::query\+Word\+Freqs (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{word, }
+\item[{{\bf S\+Frequency\+Result}$<$ N $>$ \&}]{result}
+\end{DoxyParamCaption}
+) throw  {\bf Exception}) \hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_a7754f7cda3e36d740d9853dcef47338f}
+
+
+For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_a3231651cbb5921e2b374ee5fd1260667}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 134 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_af2bdd70e8c6a211afd2ed931047b0ce2}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!query\+Word\+Freqs@{query\+Word\+Freqs}}
+\index{query\+Word\+Freqs@{query\+Word\+Freqs}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{query\+Word\+Freqs(const string \&word)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ {\bf S\+Frequency\+Result}$<$ N $>$ \& {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::query\+Word\+Freqs (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{word}
+\end{DoxyParamCaption}
+) throw  {\bf Exception}) \hspace{0.3cm}{\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_af2bdd70e8c6a211afd2ed931047b0ce2}
+
+
+For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_ab6826c87fd6dd5037bd562e62fe94e9a}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 146 of file Hash\+Map\+Trie.\+cpp.
+
+\hypertarget{classtries_1_1_hash_map_trie_acd9d79668a9ceb0093bb42aa43eb6546}{}\index{tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}!reset\+Query\+Cache@{reset\+Query\+Cache}}
+\index{reset\+Query\+Cache@{reset\+Query\+Cache}!tries\+::\+Hash\+Map\+Trie@{tries\+::\+Hash\+Map\+Trie}}
+\subsubsection[{reset\+Query\+Cache()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Trie\+Size N, bool do\+Cache$>$ virtual void {\bf tries\+::\+Hash\+Map\+Trie}$<$ N, do\+Cache $>$\+::reset\+Query\+Cache (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classtries_1_1_hash_map_trie_acd9d79668a9ceb0093bb42aa43eb6546}
+
+
+Does re-\/set the internal query cache For more details. 
+
+\begin{DoxySeeAlso}{See also}
+I\+Trie 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classtries_1_1_a_trie_a029b5c975cf279d569ab948ab7fd87f0}{tries\+::\+A\+Trie$<$ N, do\+Cache $>$}.
+
+
+
+Definition at line 98 of file Hash\+Map\+Trie.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_hash_map_trie_8hpp}{Hash\+Map\+Trie.\+hpp}\item 
+src/\hyperlink{_hash_map_trie_8cpp}{Hash\+Map\+Trie.\+cpp}\end{DoxyCompactItemize}

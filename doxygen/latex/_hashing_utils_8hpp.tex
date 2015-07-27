@@ -1,0 +1,69 @@
+\hypertarget{_hashing_utils_8hpp}{}\section{inc/\+Hashing\+Utils.hpp File Reference}
+\label{_hashing_utils_8hpp}\index{inc/\+Hashing\+Utils.\+hpp@{inc/\+Hashing\+Utils.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacehashing}{hashing}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}{A}~54059 /$\ast$ a prime $\ast$/
+\begin{DoxyCompactList}\small\item\em This is a hash function found online \href{http://stackoverflow.com/questions/8317508/hash-function-for-a-string}{\tt http\+://stackoverflow.\+com/questions/8317508/hash-\/function-\/for-\/a-\/string} It\textquotesingle{}s origin is unknown but it proves to work perfect (without collisions) on both test sets! So I do not need to complicate a hash map to a multi-\/map for now! Note\+: The time complexity is linear in the length of the word. \end{DoxyCompactList}\item 
+\#define \hyperlink{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}{B}~76963 /$\ast$ another prime $\ast$/
+\item 
+\#define \hyperlink{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}{C}~86969 /$\ast$ yet another prime $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+T\+Word\+Hash\+Size \hyperlink{namespacehashing_a25e4ac309ffbe4b908d1613f4dfcd3a2}{hashing\+::compute\+Djb2\+Hash} (const string \&str)
+\begin{DoxyCompactList}\small\item\em This is one of the best known hashing function algorithms (djb2) for the C strings as reported and described in \href{http://www.cse.yorku.ca/~oz/hash.html}{\tt http\+://www.\+cse.\+yorku.\+ca/$\sim$oz/hash.\+html} Note\+: It turned to be not as good as the Primes\+Hash as resulted in collisions on the test data. \end{DoxyCompactList}\item 
+T\+Word\+Hash\+Size \hyperlink{namespacehashing_ae6401f4d7cf46aff6f9f5171593433ca}{hashing\+::compute\+Primes\+Hash} (const string \&str)
+\item 
+T\+Reference\+Hash\+Size \hyperlink{namespacehashing_af05a30bd014cabba826f4ad3c03d68dc}{hashing\+::cantor} (T\+Word\+Hash\+Size x, T\+Reference\+Hash\+Size y)
+\begin{DoxyCompactList}\small\item\em This function will combine two word references to get one hash map N-\/gram level reference. \end{DoxyCompactList}\item 
+void \hyperlink{namespacehashing_a22b46cd16001aabaa5212b223a028c4d}{hashing\+::uncantor} (const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)
+\begin{DoxyCompactList}\small\item\em This function will invert the cuntor encoded context and split it into two things The previous word and the previous context. \end{DoxyCompactList}\item 
+T\+Reference\+Hash\+Size \hyperlink{namespacehashing_a14faa1694242a5c0980b79bd8ea32f59}{hashing\+::szudzik} (T\+Word\+Hash\+Size x, T\+Reference\+Hash\+Size y)
+\begin{DoxyCompactList}\small\item\em This function will combine two word references to get one hash map N-\/gram level reference. \end{DoxyCompactList}\item 
+void \hyperlink{namespacehashing_adc6c8d839598eb1016caf13010a9034e}{hashing\+::unszudzik} (const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)
+\begin{DoxyCompactList}\small\item\em This function will invert the Szudzik\textquotesingle{}s encoded context and split it into two things The previous word and the previous context. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!A@{A}}
+\index{A@{A}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{A}]{\setlength{\rightskip}{0pt plus 5cm}\#define A~54059 /$\ast$ a prime $\ast$/}\label{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}
+
+
+This is a hash function found online \href{http://stackoverflow.com/questions/8317508/hash-function-for-a-string}{\tt http\+://stackoverflow.\+com/questions/8317508/hash-\/function-\/for-\/a-\/string} It\textquotesingle{}s origin is unknown but it proves to work perfect (without collisions) on both test sets! So I do not need to complicate a hash map to a multi-\/map for now! Note\+: The time complexity is linear in the length of the word. 
+
+Note\+: There are no observed collisions up until now. Note\+: But it is not yet known if this hash is collision free. 
+\begin{DoxyParams}{Parameters}
+{\em str} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+
+
+Definition at line 74 of file Hashing\+Utils.\+hpp.
+
+\hypertarget{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!B@{B}}
+\index{B@{B}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{B}]{\setlength{\rightskip}{0pt plus 5cm}\#define B~76963 /$\ast$ another prime $\ast$/}\label{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}
+
+
+Definition at line 75 of file Hashing\+Utils.\+hpp.
+
+\hypertarget{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!C@{C}}
+\index{C@{C}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{C}]{\setlength{\rightskip}{0pt plus 5cm}\#define C~86969 /$\ast$ yet another prime $\ast$/}\label{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}
+
+
+Definition at line 76 of file Hashing\+Utils.\+hpp.
+

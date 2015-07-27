@@ -1,0 +1,81 @@
+\hypertarget{class_statistics_monitor}{}\section{Statistics\+Monitor Class Reference}
+\label{class_statistics_monitor}\index{Statistics\+Monitor@{Statistics\+Monitor}}
+
+
+This class is responsible for monitoring the program statistics, such as the used memory and C\+P\+U times.  
+
+
+
+
+{\ttfamily \#include $<$Statistics\+Monitor.\+hpp$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_statistics_monitor_a00243d75edfd193a258cbd49af37e021}{get\+Memory\+Statistics} (\hyperlink{struct_t_memoty_usage}{T\+Memoty\+Usage} \&mem\+Stat)  throw (\+Exception)
+\begin{DoxyCompactList}\small\item\em Allows to get the current memory usage of the process. \end{DoxyCompactList}\item 
+static double \hyperlink{class_statistics_monitor_ac953ddc655f3354a5b63bbdbe9c74179}{get\+C\+P\+U\+Time} ()
+\begin{DoxyCompactList}\small\item\em This function returns the current C\+P\+U time as given in the article \href{http://nadeausoftware.com/articles/2012/03/c_c_tip_how_measure_cpu_time_benchmarking}{\tt http\+://nadeausoftware.\+com/articles/2012/03/c\+\_\+c\+\_\+tip\+\_\+how\+\_\+measure\+\_\+cpu\+\_\+time\+\_\+benchmarking}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is responsible for monitoring the program statistics, such as the used memory and C\+P\+U times. 
+
+This class is a trivial singleton 
+
+Definition at line 55 of file Statistics\+Monitor.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_statistics_monitor_ac953ddc655f3354a5b63bbdbe9c74179}{}\index{Statistics\+Monitor@{Statistics\+Monitor}!get\+C\+P\+U\+Time@{get\+C\+P\+U\+Time}}
+\index{get\+C\+P\+U\+Time@{get\+C\+P\+U\+Time}!Statistics\+Monitor@{Statistics\+Monitor}}
+\subsubsection[{get\+C\+P\+U\+Time()}]{\setlength{\rightskip}{0pt plus 5cm}double Statistics\+Monitor\+::get\+C\+P\+U\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{class_statistics_monitor_ac953ddc655f3354a5b63bbdbe9c74179}
+
+
+This function returns the current C\+P\+U time as given in the article \href{http://nadeausoftware.com/articles/2012/03/c_c_tip_how_measure_cpu_time_benchmarking}{\tt http\+://nadeausoftware.\+com/articles/2012/03/c\+\_\+c\+\_\+tip\+\_\+how\+\_\+measure\+\_\+cpu\+\_\+time\+\_\+benchmarking}. 
+
+\begin{DoxyReturn}{Returns}
+Returns the amount of C\+P\+U time used by the current process, in seconds, or -\/1.\+0 if an error occurred. 
+\end{DoxyReturn}
+
+
+Definition at line 134 of file Statistics\+Monitor.\+cpp.
+
+\hypertarget{class_statistics_monitor_a00243d75edfd193a258cbd49af37e021}{}\index{Statistics\+Monitor@{Statistics\+Monitor}!get\+Memory\+Statistics@{get\+Memory\+Statistics}}
+\index{get\+Memory\+Statistics@{get\+Memory\+Statistics}!Statistics\+Monitor@{Statistics\+Monitor}}
+\subsubsection[{get\+Memory\+Statistics(\+T\+Memoty\+Usage \&mem\+Stat)}]{\setlength{\rightskip}{0pt plus 5cm}void Statistics\+Monitor\+::get\+Memory\+Statistics (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Memoty\+Usage} \&}]{mem\+Stat}
+\end{DoxyParamCaption}
+) throw  {\bf Exception}) \hspace{0.3cm}{\ttfamily [static]}}\label{class_statistics_monitor_a00243d75edfd193a258cbd49af37e021}
+
+
+Allows to get the current memory usage of the process. 
+
+This implementation is derived from \href{http://locklessinc.com/articles/memory_usage/}{\tt http\+://locklessinc.\+com/articles/memory\+\_\+usage/} This here is actually C-\/style code and also pretty ugly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mem\+Stat} & this is an out parameter that will store the obtained data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{class_exception}{Exception}} & in case the memory statistics can not be obtained.\\
+\hline
+\end{DoxyExceptions}
+To\+Do\+: Refactor this code into C++ 
+
+Definition at line 55 of file Statistics\+Monitor.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_statistics_monitor_8hpp}{Statistics\+Monitor.\+hpp}\item 
+src/\hyperlink{_statistics_monitor_8cpp}{Statistics\+Monitor.\+cpp}\end{DoxyCompactItemize}

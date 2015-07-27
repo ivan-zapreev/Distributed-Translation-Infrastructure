@@ -46,7 +46,7 @@ namespace tries {
         for (int i = idx; i < (idx + n); i++) {
             log << tokens[i] << " ";
         }
-        log << "]" << endl;
+        log << "]" << END_LOG;
     }
 
     template<TTrieSize N, bool doCache>
@@ -61,12 +61,12 @@ namespace tries {
                 entry.first = token;
             } else {
                 if (entry.first.compare(token)) {
-                    LOGGER(Logger::ERROR) << "Hash collision: '" << token << "' and '" << entry.first << "' both have hash " << hash << endl;
+                    LOG_ERROR << "Hash collision: '" << token << "' and '" << entry.first << "' both have hash " << hash << END_LOG;
                 }
             }
             //Update/increase the frequency
             entry.second++;
-            LOGGER(Logger::DEBUG) << "freq( " << hash << " ) = " << entry.second << endl;
+            LOG_DEBUG << "freq( " << hash << " ) = " << entry.second << END_LOG;
         }
     }
 
@@ -93,12 +93,12 @@ namespace tries {
             if (idx == n - 1) {
                 //Increase the frequency of the N-gram
                 ngramFreq++;
-                LOGGER(Logger::DEBUG) << n << "-gram: freq( " << wordHash << ", " << context << " ) = " << ngramFreq << endl;
+                LOG_DEBUG << n << "-gram: freq( " << wordHash << ", " << context << " ) = " << ngramFreq << END_LOG;
                 //BasicLogger::printDebug("data[%u][%u][%u] = %u", idx-1, wordHash, context, data[idx-1][wordHash][context]);
             } else {
                 //Otherwise compute the next context
                 TReferenceHashSize n_context = createContext(wordHash, context);
-                LOGGER(Logger::DEBUG) << n << "-gram: Cn( " << wordHash << ", " << context << " ) = " << n_context << endl;
+                LOG_DEBUG << n << "-gram: Cn( " << wordHash << ", " << context << " ) = " << n_context << END_LOG;
                 context = n_context;
             }
         }
@@ -167,36 +167,36 @@ namespace tries {
     void HashMapTrie<N, doCache>::queryNGramFreqs(const TWordHashSize endWordHash, const TTrieSize L,
             const vector<string> & ngram, vector<TWordHashSize> & hashes,
             SFrequencyResult<N> & freqs) const {
-        LOGGER(Logger::DEBUG) << ">> End word hash: " << endWordHash << ", level " << L << endl;
+        LOG_DEBUG << ">> End word hash: " << endWordHash << ", level " << L << END_LOG;
         //Get this level's mapping corresponding to the start word
         const TNTrieEntryPairsMap & entry = data[L - MINIMUM_CONTEXT_LEVEL].at(endWordHash);
 
-        LOGGER(Logger::DEBUG) << "-- The level " << L << " data entry is found" << endl;
+        LOG_DEBUG << "-- The level " << L << " data entry is found" << END_LOG;
 
         //Compute the hash of the first word in the Ngram
         TWordHashSize startWordHash = computeHash(ngram[N - L]);
         //Put it inside the hash
         hashes.push_back(startWordHash);
 
-        LOGGER(Logger::DEBUG) << "-- Computed the level's " << L << " next " << N - L << "-gram level word hash " << startWordHash << endl;
+        LOG_DEBUG << "-- Computed the level's " << L << " next " << N - L << "-gram level word hash " << startWordHash << END_LOG;
 
         //Compute the context of the startWord on this level for this level's N-gram (L-gram))
         TReferenceHashSize context = createContext(hashes, L);
 
-        LOGGER(Logger::DEBUG) << "-- The level " << L << " context is " << context << endl;
+        LOG_DEBUG << "-- The level " << L << " context is " << context << END_LOG;
 
         //BasicLogger::printDebug("Getting data[%u][%u][%u] = %u", L-1, endWordHash, context, data[L-MINIMUM_CONTEXT_LEVEL][endWordHash][context]);
 
         //Get the L-gram's frequency
         freqs.result[N - L] = entry.at(context);
 
-        LOGGER(Logger::DEBUG) << "-- The level " << context << " frequency " << freqs.result[N - L] << " is found and stored at index " << N - L << endl;
+        LOG_DEBUG << "-- The level " << context << " frequency " << freqs.result[N - L] << " is found and stored at index " << N - L << END_LOG;
 
         //In case the maximum level N is not reached, do recursion
         if (L < N) {
             queryNGramFreqs(endWordHash, L + 1, ngram, hashes, freqs);
         }
-        LOGGER(Logger::DEBUG) << "<< End word hash: " << endWordHash << ", level " << L << endl;
+        LOG_DEBUG << "<< End word hash: " << endWordHash << ", level " << L << END_LOG;
     }
 
     template<TTrieSize N, bool doCache>

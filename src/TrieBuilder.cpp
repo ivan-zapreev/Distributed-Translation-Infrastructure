@@ -47,7 +47,7 @@ namespace tries {
 
     template<TTrieSize N, bool doCache>
     void TrieBuilder<N,doCache>::build() {
-        LOGGER(Logger::DEBUG) << "Starting to read the file and build the trie ..." << endl;
+        LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
         
         //Initialize the NGram builder and give it the trie as an argument
         NGramBuilder<N,doCache> ngBuilder(_trie,_delim);
@@ -59,14 +59,14 @@ namespace tries {
         string line;
         while( getline(_fstr, line) )
         {
-            LOGGER(Logger::DEBUG) << line << endl;
+            LOG_DEBUG << line << END_LOG;
             ngBuilder.processString(line);
             Logger::updateProgressBar();
         }
 
         Logger::stopProgressBar();
 
-        LOGGER(Logger::DEBUG) << "Done reading the file and building the trie." << endl;
+        LOG_DEBUG << "Done reading the file and building the trie." << END_LOG;
     }
     
     //Make sure that there will be templates instantiated, at least for the given parameter values

@@ -52,6 +52,12 @@
  * 
  * ToDo: Refactor this code into C++ 
  */
+#ifdef __APPLE__
+void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Exception) {
+    LOG_WARNING << "Unable to obtain memory usage statistics on Mac OS yet!";
+    memStat = {0,};
+}
+#else
 void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Exception) {
     char *line;
     char *vmsize = NULL;
@@ -71,7 +77,7 @@ void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Excep
     while (!vmsize || !vmpeak || !vmrss || !vmhwm) {
         if (getline(&line, &len, f) == -1) {
             /* Some of the information isn't there, die */
-            throw Exception("Unable to read memoty statistics data from /proc/self/status");
+            throw Exception("Unable to read memory statistics data from /proc/self/status");
         }
 
         /* Find VmPeak */
@@ -112,8 +118,8 @@ void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Excep
     memStat.vmhwm = atoi(vmhwm);
 
     /* Print some info and debug information */
-    LOGGER(Logger::DEBUG) << "read: vmsize=" << vmsize << " Kb, vmpeak=" << vmpeak << " Kb, vmrss=" << vmrss << " Kb, vmhwm=" << vmhwm << " Kb" << endl;
-    LOGGER(Logger::DEBUG) << "parsed: vmsize=" << memStat.vmsize << " Kb, vmpeak=" << memStat.vmpeak << " Kb, vmrss=" << memStat.vmrss << " Kb, vmhwm=" << memStat.vmhwm << " Kb" << endl;
+    LOG_DEBUG << "read: vmsize=" << vmsize << " Kb, vmpeak=" << vmpeak << " Kb, vmrss=" << vmrss << " Kb, vmhwm=" << vmhwm << " Kb" << END_LOG;
+    LOG_DEBUG << "parsed: vmsize=" << memStat.vmsize << " Kb, vmpeak=" << memStat.vmpeak << " Kb, vmrss=" << memStat.vmrss << " Kb, vmhwm=" << memStat.vmhwm << " Kb" << END_LOG;
 
     /* Free the allocated memory */
     free(vmpeak);
@@ -121,6 +127,7 @@ void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Excep
     free(vmrss);
     free(vmhwm);
 }
+#endif
 
 /*
  * Author:  David Robert Nadeau
