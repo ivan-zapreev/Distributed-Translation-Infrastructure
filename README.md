@@ -1,12 +1,11 @@
-# Automated-Translation-Tries
+# Back-Off-Language-Model-SMT
 
 <big>Author: Dr. Ivan S. Zapreev</big>: <https://nl.linkedin.com/in/zapreevis>
 
 <big>Git-Hub</big>: <https://github.com/ivan-zapreev/Automated-Translation-Tries>
 
 ## Introduction
-This is a project made as a test exercise for automated machine translation which is
-aiming at automated translation of text in different languages.
+This is a fork project from the Automated-Translation-Tries project, made as a test exercise for automated machine translation (aiming at automated translation of text in different languages).
 
 For machine translation it is important to estimate and compare the fluency of different possible
 translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using
@@ -127,6 +126,10 @@ This project can be build in two ways:
 
 In order to clean the project from the command line run <i>"make clean"</i>
 
+One can limit the debug-level printing of the code by defining the <i>LOGER_MAX_LEVEL<i> compile-time macros.
+The possible range of values, with increasing logging level is:
+Logger::USAGE, Logger::RESULT, Logger::ERROR, Logger::WARNING, Logger::INFO, Logger::DEBUG, Logger::DEBUG1, Logger::DEBUG2
+
 ##Usage
 In order to get the program usage information please run <i>./automated-translation-tries</i>
 from the command line, the output of the program is supposed to be as follows:
@@ -193,11 +196,12 @@ The code contains the following important source files:
 * <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - the current implementation of HashMapTrie is error prone to hash collisions. The build in checks are supposed to detect them and report an error message, but this is not enough. Yet the code was tested on data sets of up to 200.000 lines of text and no hash collisions were detected, so the hashing algorithms are currently sufficient good.
 * <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - the memory usage is not optimal, perhaps it is possible to provide a smarter implementation that will reduce the hash reference sizes so that less memory is used.
 * <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - When storing frequencies or generating word hashes and N-gram references one can easily get overflows resulting in wrong results, it would be nice to build in overflow checks into the code for safe executions.
-* <big>BasicLogger.hpp/BasicLogger.cpp</big> - by using compile time debug flags one can improve the applications performance by ensuring that the debug statements of higher order are compiled out. This is possible if the debugging is done using macros. Yet there will be no way to get finer debugging after the program is compiled.
-* <big>BasicLogger.hpp/BasicLogger.cpp</big> - currently uses <code>vsprintf(buffer, data, args);</code> for printing parameterized debug statements. Therefore, when printing arbitrary text from the corpus or test file one can get a segmentation fault if such a text contains un-escaped special control characters. Currently this problem is solved by not using <code>vsprintf(buffer, data, args);</code> for unsafe debug statements, but in general the implementation of the logging facility has to be robust enough to handle that.
+* ~~<big>BasicLogger.hpp/BasicLogger.cpp</big> - by using compile time debug flags one can improve the applications performance by ensuring that the debug statements of higher order are compiled out. This is possible if the debugging is done using macros. Yet there will be no way to get finer debugging after the program is compiled.~~
+* ~~<big>BasicLogger.hpp/BasicLogger.cpp</big> - currently uses <code>vsprintf(buffer, data, args);</code> for printing parameterized debug statements. Therefore, when printing arbitrary text from the corpus or test file one can get a segmentation fault if such a text contains un-escaped special control characters. Currently this problem is solved by not using <code>vsprintf(buffer, data, args);</code> for unsafe debug statements, but in general the implementation of the logging facility has to be robust enough to handle that.~~
 * <big>Profiling</big> - although one takes case of not using dynamic allocated memory for the sake of performance improvements and avoiding memory leaks, it would be great to run <i>Valgrind</i> <http://valgrind.org/> and <i>Gprof</i> <https://sourceware.org/binutils/docs/gprof/> profiling to detect memory leaks, performance bottlenecks etc.
 * <big>Testing</big> - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
 * <big>Code</big> - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
  
 ##History
 * <big>21.04.2015</big> - Created
+* <big>27.07.2015</big> - Changed project name and some to-do's
