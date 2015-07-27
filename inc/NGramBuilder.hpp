@@ -45,7 +45,7 @@ namespace uva {
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
-                template<TTrieSize N, bool doCache>
+                template<TModelLevel N, bool doCache>
                 class NGramBuilder {
                 public:
                     NGramBuilder(ATrie<N, doCache> & trie, const char delim);
@@ -69,7 +69,7 @@ namespace uva {
                      * @param ngram the output parameter that will be filled in with the N-gram values
                      * @throws Exception in case the resulting N-gram has the number elements other than expected
                      */
-                    static inline void buildNGram(const string & line, const TTrieSize n, const char delim, vector<string> & ngram) throw (Exception) {
+                    static inline void buildNGram(const string & line, const TModelLevel n, const char delim, vector<string> & ngram) throw (Exception) {
                         //First clean the vector
                         ngram.clear();
                         //Tokenise the line

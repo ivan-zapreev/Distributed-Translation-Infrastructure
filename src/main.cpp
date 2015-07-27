@@ -223,7 +223,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param fstr the file to read data from
  * @param trie the trie to put the data into
  */
-template<TTrieSize N, bool doCache>
+template<TModelLevel N, bool doCache>
 static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
@@ -240,7 +240,7 @@ static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
  * @param testFile the file containing the N-Gram (5-Gram queries)
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
-template<TTrieSize N, bool doCache>
+template<TModelLevel N, bool doCache>
 static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime, startTime, endTime;

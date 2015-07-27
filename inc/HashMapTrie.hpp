@@ -73,7 +73,7 @@ namespace uva {
              *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
              * 
              */
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             class HashMapTrie : public ATrie<N, doCache> {
             public:
 
@@ -123,7 +123,7 @@ namespace uva {
 
             private:
                 //Stores the minimum context level
-                static const TTrieSize MINIMUM_CONTEXT_LEVEL;
+                static const TModelLevel MINIMUM_CONTEXT_LEVEL;
 
                 //A tuple storing a word and its frequency
                 typedef pair<string, TFrequencySize> TWordEntryPair;
@@ -181,7 +181,7 @@ namespace uva {
                  * @param freqs the array to put the resulting frequency of the N-gram word_(nStart) .. word_(nEnd) from ngram
                  *              the computed frequency is to be put @ position nStart in the array
                  */
-                void queryNGramFreqs(const TWordHashSize endWordHash, const TTrieSize L,
+                void queryNGramFreqs(const TWordHashSize endWordHash, const TModelLevel L,
                         const vector<string> & ngram, vector<TWordHashSize> & hashes,
                         SFrequencyResult<N> & freqs) const;
 
@@ -193,8 +193,8 @@ namespace uva {
                  * @param L the current context level, is <= the number of shash values in hashes
                  * @return the computed context for the N-gram defined by hashes and L
                  */
-                static inline TReferenceHashSize createContext(vector<TWordHashSize> & hashes, const TTrieSize cLevel) throw (Exception) {
-                    const TTrieSize currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
+                static inline TReferenceHashSize createContext(vector<TWordHashSize> & hashes, const TModelLevel cLevel) throw (Exception) {
+                    const TModelLevel currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
                     //Define and default initialize the context value
                     TReferenceHashSize context = hashes.at(currMaxIdx);
                     LOG_DEBUG << "initializing context = " << context << END_LOG;
@@ -202,7 +202,7 @@ namespace uva {
                     if (currMaxIdx > 0) {
                         LOG_DEBUG << "There is more than one element to create context from!" << END_LOG;
                         //If there is more than one element we need to create a hash for then iterate
-                        for (TTrieSize idx = currMaxIdx; idx > 0; idx--) {
+                        for (TModelLevel idx = currMaxIdx; idx > 0; idx--) {
                             LOG_DEBUG << "context( " << hashes.at(idx - 1) << ", " << context << " )" << END_LOG;
                             context = createContext(hashes.at(idx - 1), context);
                             LOG_DEBUG << "                 = " << context << END_LOG;

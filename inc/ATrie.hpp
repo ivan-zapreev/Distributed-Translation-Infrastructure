@@ -43,7 +43,7 @@ namespace uva {
             //an array of N frequency values. Note that the value with index [0] will
             //contain the frequency for the 1-gram en so forth.
 
-            template<TTrieSize N> struct SFrequencyResult {
+            template<TModelLevel N> struct SFrequencyResult {
                 TFrequencySize result[N];
             };
 
@@ -55,7 +55,7 @@ namespace uva {
              * @param doCache - the indicative flag that asks the child class to, if possible,
              *                  cache the queries.
              */
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             class ATrie {
             public:
 
@@ -77,7 +77,7 @@ namespace uva {
                  * Returns the maximum length of the considered N-Grams
                  * @return the maximum length of the considered N-Grams
                  */
-                TTrieSize getNGramLevel() const {
+                TModelLevel getNGramLevel() const {
                     return N;
                 }
 

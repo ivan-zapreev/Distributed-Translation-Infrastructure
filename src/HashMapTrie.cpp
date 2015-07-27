@@ -34,14 +34,14 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TTrieSize N, bool doCache>
-            const TTrieSize HashMapTrie<N, doCache>::MINIMUM_CONTEXT_LEVEL = 2;
+            template<TModelLevel N, bool doCache>
+            const TModelLevel HashMapTrie<N, doCache>::MINIMUM_CONTEXT_LEVEL = 2;
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             HashMapTrie<N, doCache>::HashMapTrie() {
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::printDebugNGram(vector<string> &tokens, const int idx, const int n) {
                 ostream &log = Logger::Get(Logger::DEBUG);
                 log << "Adding " << n << "-gram: [ ";
@@ -51,7 +51,7 @@ namespace uva {
                 log << "]" << END_LOG;
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::addWords(vector<string> &tokens) {
                 //Add the words to the trie and update frequencies;
                 for (vector<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
@@ -72,7 +72,7 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::addNGram(vector<string> &tokens, const int base_idx, const int n) {
                 if (Logger::ReportingLevel() >= Logger::DEBUG) {
                     printDebugNGram(tokens, base_idx, n);
@@ -106,7 +106,7 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::queryWordFreqs(TWordHashSize hash, SFrequencyResult<N> & wrap) {
                 TFrequencySize wordFreq = 0;
                 //First check if the given word is present at all, i.e. consider the 1-grams
@@ -132,7 +132,7 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::queryWordFreqs(const string & word, SFrequencyResult<N> & result) throw (Exception) {
                 if (HashMapTrie<N, doCache>::doesQueryCache()) {
                     throw Exception("This function is not applicable when query result caching is ON!");
@@ -144,7 +144,7 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             SFrequencyResult<N> & HashMapTrie<N, doCache>::queryWordFreqs(const string & word) throw (Exception) {
                 if (HashMapTrie<N, doCache>::doesQueryCache()) {
                     //Convert the word into it's cache
@@ -165,8 +165,8 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
-            void HashMapTrie<N, doCache>::queryNGramFreqs(const TWordHashSize endWordHash, const TTrieSize L,
+            template<TModelLevel N, bool doCache>
+            void HashMapTrie<N, doCache>::queryNGramFreqs(const TWordHashSize endWordHash, const TModelLevel L,
                     const vector<string> & ngram, vector<TWordHashSize> & hashes,
                     SFrequencyResult<N> & freqs) const {
                 LOG_DEBUG << ">> End word hash: " << endWordHash << ", level " << L << END_LOG;
@@ -201,7 +201,7 @@ namespace uva {
                 LOG_DEBUG << "<< End word hash: " << endWordHash << ", level " << L << END_LOG;
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::queryNGramFreqs(const vector<string> & ngram, SFrequencyResult<N> & freqs) {
                 //First just clean the array
                 fill(freqs.result, freqs.result + N, 0);
@@ -224,11 +224,11 @@ namespace uva {
                 }
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             HashMapTrie<N, doCache>::HashMapTrie(const HashMapTrie& orig) {
             }
 
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             HashMapTrie<N, doCache>::~HashMapTrie() {
             }
 

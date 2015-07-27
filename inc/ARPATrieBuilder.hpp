@@ -41,7 +41,7 @@ namespace uva {
              * This is the Trie builder class that reads an input file stream
              * and creates n-grams and then records them into the provided Trie.
              */
-            template<TTrieSize N, bool doCache>
+            template<TModelLevel N, bool doCache>
             class ARPATrieBuilder {
             public:
                 /**
@@ -65,8 +65,10 @@ namespace uva {
                 ifstream & _fstr;
                 //The delimiter for the line elements
                 const char _delim;
-                //The regular expression for matching the ngram amount entry of the data section
-                const regex _ngaRegExp;
+                //The regular expression for matching the n-gram amount entry of the data section
+                const regex _ngAmountRegExp;
+                //The regular expression for matching the n-grams section
+                const regex _ngSectionRegExp;
 
                 /**
                  * The copy constructor

@@ -33,19 +33,19 @@ namespace uva {
         namespace tries {
             namespace ngrams {
 
-                template<TTrieSize N, bool doCache>
+                template<TModelLevel N, bool doCache>
                 NGramBuilder<N, doCache>::NGramBuilder(ATrie<N, doCache> & trie, const char delim) : _trie(trie), _delim(delim) {
                 }
 
-                template<TTrieSize N, bool doCache>
+                template<TModelLevel N, bool doCache>
                 NGramBuilder<N, doCache>::NGramBuilder(const NGramBuilder<N, doCache>& orig) : _trie(orig._trie), _delim(orig._delim) {
                 }
 
-                template<TTrieSize N, bool doCache>
+                template<TModelLevel N, bool doCache>
                 NGramBuilder<N, doCache>::~NGramBuilder() {
                 }
 
-                template<TTrieSize N, bool doCache>
+                template<TModelLevel N, bool doCache>
                 void NGramBuilder<N, doCache>::processString(const string & data) {
                     //Tokenise the line of text into a vector first
                     vector<string> tokens;
@@ -56,7 +56,7 @@ namespace uva {
 
                     //Create and record all of the N-grams starting from 2 and 
                     //limited either by Trie or by the available number of Tokens
-                    const TTrieSize ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
+                    const TModelLevel ngLevel = min<unsigned int>(_trie.getNGramLevel(), tokens.size());
                     LOG_DEBUG << "N-gram level = " << ngLevel << END_LOG;
                     for (int n = 2; n <= ngLevel; n++) {
                         for (int idx = 0; idx <= (tokens.size() - n); idx++) {
