@@ -123,8 +123,8 @@ namespace uva {
                 memStat.vmhwm = atoi(vmhwm);
 
                 /* Print some info and debug information */
-                LOG_DEBUG << "read: vmsize=" << vmsize << " Kb, vmpeak=" << vmpeak << " Kb, vmrss=" << vmrss << " Kb, vmhwm=" << vmhwm << " Kb" << END_LOG;
-                LOG_DEBUG << "parsed: vmsize=" << memStat.vmsize << " Kb, vmpeak=" << memStat.vmpeak << " Kb, vmrss=" << memStat.vmrss << " Kb, vmhwm=" << memStat.vmhwm << " Kb" << END_LOG;
+                LOG_DEBUG2 << "read: vmsize=" << vmsize << " Kb, vmpeak=" << vmpeak << " Kb, vmrss=" << vmrss << " Kb, vmhwm=" << vmhwm << " Kb" << END_LOG;
+                LOG_DEBUG2 << "parsed: vmsize=" << memStat.vmsize << " Kb, vmpeak=" << memStat.vmpeak << " Kb, vmrss=" << memStat.vmrss << " Kb, vmhwm=" << memStat.vmhwm << " Kb" << END_LOG;
 
                 /* Free the allocated memory */
                 free(vmpeak);

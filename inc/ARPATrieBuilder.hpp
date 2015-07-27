@@ -27,6 +27,7 @@
 #define	TRIEBUILDER_HPP
 
 #include <fstream>      // std::ifstream
+#include <regex>        // std::regexp, std::regex_match
 
 #include "ATrie.hpp"
 
@@ -64,12 +65,32 @@ namespace uva {
                 ifstream & _fstr;
                 //The delimiter for the line elements
                 const char _delim;
+                //The regular expression for matching the ngram amount entry of the data section
+                const regex _ngaRegExp;
 
                 /**
                  * The copy constructor
                  * @param orig the other builder to copy
                  */
                 ARPATrieBuilder(const ARPATrieBuilder& orig);
+                
+                /**
+                 * This method is used to read and process the ARPA headers
+                 * @param line the in/out parameter storing the last read line
+                 */
+                void readHeaders(string &line);
+
+                /**
+                 * This method is used to read and process the ARPA data section
+                 * @param line the in/out parameter storing the last read line
+                 */
+                void readData(string &line);
+
+                /**
+                 * This recursive method is used to read and process the ARPA N-Grams.
+                 * @param line the in/out parameter storing the last read line
+                 */
+                void readNGrams(string &line, const int level);
             };
         }
     }

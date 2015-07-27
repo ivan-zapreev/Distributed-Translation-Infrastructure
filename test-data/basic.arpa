@@ -1,0 +1,44 @@
+<header - information ignored by applications>
+
+<b
+
+<
+
+<bullshit - information ignored by applications>
+
+\data\
+ngram 1=9
+ngram 2=11
+ngram 3=3
+
+\1-grams:
+-0.8953 <unk>        -0.7373
+-0.7404 </s> -0.6515
+-0.7861 <s>   -0.1764
+-1.0414 When -0.4754
+-1.0414 will -0.1315
+-0.9622 the   0.0080
+-1.4393 Stock        -0.3100
+-1.0414 Go    -0.3852
+-0.9622 Up    -0.1286
+
+\2-grams:
+-0.3626 <s> When     0.1736
+-1.2765 <s> the      0.0000
+-1.2765 <s> Up       0.0000
+-0.2359 When will    0.1011
+-1.0212 will </s>    0.0000
+-0.4191 will the     0.0000
+-1.1004 the </s>     0.0000
+-1.1004 the Go       0.0000
+-0.6232 Stock Go     0.0000
+-0.2359 Go Up        0.0587
+-0.4983 Up </s>      
+
+\3-grams:
+-0.4260 <s> When will      
+-0.6601 When will the      
+-0.6601 Go Up </s>   
+
+\end\
+

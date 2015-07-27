@@ -26,6 +26,11 @@
 #ifndef STRINGUTILS_HPP
 #define	STRINGUTILS_HPP
 
+#include "Logger.hpp"
+
+
+using uva::smt::logging::Logger;
+
 namespace uva {
     namespace smt {
         namespace utils {
@@ -36,17 +41,21 @@ namespace uva {
                  * @param str the string to be trimmed, it is an in/out parameter
                  * @param whitespace the white spaces to be trimmed, the default value is " \t" 
                  */
-                inline void trim(const std::string& str,
+                inline void trim(std::string& str,
                                  const std::string& whitespace = " \t") {
-                    const auto strBegin = str.find_first_not_of(whitespace);
-                    if (strBegin == std::string::npos) {
-                        str = ""; // no content
-                    } else {
-                        const auto strEnd = str.find_last_not_of(whitespace);
-                        const auto strRange = strEnd - strBegin + 1;
+                    LOG_DEBUG2 << "Trimming the string '" << str << "', with white spaces '" << whitespace << "'" << END_LOG;
+                    if( str != "" ) {
+                        const auto strBegin = str.find_first_not_of(whitespace);
+                        if (strBegin == std::string::npos) {
+                            str = ""; // no content
+                        } else {
+                            const auto strEnd = str.find_last_not_of(whitespace);
+                            const auto strRange = strEnd - strBegin + 1;
 
-                        str = str.substr(strBegin, strRange);
+                            str = str.substr(strBegin, strRange);
+                        }
                     }
+                    LOG_DEBUG2 << "The trimmed result is '" << str << "'" << END_LOG;
                 }
 
                 /**
@@ -56,23 +65,27 @@ namespace uva {
                  * @param fill the filling symbol to be used within the string instead of ranges, by default " "
                  * @param whitespace the white spaces to be reduced, by default " \t"
                  */
-                inline void reduce(const std::string& str,
+                inline void reduce(std::string& str,
                                    const std::string& fill = " ",
                                    const std::string& whitespace = " \t") {
-                    // trim first
-                    trim(str, whitespace);
+                    LOG_DEBUG2 << "Reducing the string '" << str << "', with white spaces '" << whitespace << "'" << END_LOG;
+                    if( str != "") {
+                        // trim first
+                        trim(str, whitespace);
 
-                    // replace sub ranges
-                    auto beginSpace = str.find_first_of(whitespace);
-                    while (beginSpace != std::string::npos) {
-                        const auto endSpace = str.find_first_not_of(whitespace, beginSpace);
-                        const auto range = endSpace - beginSpace;
+                        // replace sub ranges
+                        auto beginSpace = str.find_first_of(whitespace);
+                        while (beginSpace != std::string::npos) {
+                            const auto endSpace = str.find_first_not_of(whitespace, beginSpace);
+                            const auto range = endSpace - beginSpace;
 
-                        str.replace(beginSpace, range, fill);
+                            str.replace(beginSpace, range, fill);
 
-                        const auto newStart = beginSpace + fill.length();
-                        beginSpace = str.find_first_of(whitespace, newStart);
+                            const auto newStart = beginSpace + fill.length();
+                            beginSpace = str.find_first_of(whitespace, newStart);
+                        }
                     }
+                    LOG_DEBUG2 << "The reduced result is '" << str << "'" << END_LOG;
                 }
             }
         }

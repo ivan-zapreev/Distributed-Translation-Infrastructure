@@ -118,7 +118,8 @@ static void extractArguments(const int argc, char const * const * const argv, TA
     } else {
         params.trainFileName = argv[1];
         params.testFileName = argv[2];
-        string errorLevelStr = ERROR_PARAM_VALUE;
+        //Set the default reporting level information for the logger
+        string errorLevelStr = RESULT_PARAM_VALUE;
         Logger::ReportingLevel() = Logger::RESULT;
 
         //This here is a fast hack, it is not a really the
