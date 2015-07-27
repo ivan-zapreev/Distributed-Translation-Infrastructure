@@ -40,6 +40,7 @@
 
 using namespace std;
 using namespace uva::smt::tries;
+using namespace uva::smt::tries::arpa;
 using namespace uva::smt::logging;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::monitore;

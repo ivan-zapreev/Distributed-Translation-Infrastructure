@@ -36,64 +36,66 @@ using namespace std;
 namespace uva {
     namespace smt {
         namespace tries {
-
-            /**
-             * This is the Trie builder class that reads an input file stream
-             * and creates n-grams and then records them into the provided Trie.
-             */
-            template<TModelLevel N, bool doCache>
-            class ARPATrieBuilder {
-            public:
-                /**
-                 * The basic constructor that accepts a trie to be build up and the file stream to read from
-                 * @param trie the trie to fill in with data from the text corpus
-                 * @param _fstr the file stream to read from
-                 * @param delim the delimiter for the line elements
-                 */
-                ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & _fstr, const char delim);
+            namespace arpa {
 
                 /**
-                 * This function will read from the file and build the trie
+                 * This is the Trie builder class that reads an input file stream
+                 * and creates n-grams and then records them into the provided Trie.
                  */
-                void build();
+                template<TModelLevel N, bool doCache>
+                class ARPATrieBuilder {
+                public:
+                    /**
+                     * The basic constructor that accepts a trie to be build up and the file stream to read from
+                     * @param trie the trie to fill in with data from the text corpus
+                     * @param _fstr the file stream to read from
+                     * @param delim the delimiter for the line elements
+                     */
+                    ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & _fstr, const char delim);
 
-                virtual ~ARPATrieBuilder();
-            private:
-                //The reference to the trie to be build
-                ATrie<N, doCache> & _trie;
-                //The reference to the input file with text corpus
-                ifstream & _fstr;
-                //The delimiter for the line elements
-                const char _delim;
-                //The regular expression for matching the n-gram amount entry of the data section
-                const regex _ngAmountRegExp;
-                //The regular expression for matching the n-grams section
-                const regex _ngSectionRegExp;
+                    /**
+                     * This function will read from the file and build the trie
+                     */
+                    void build();
 
-                /**
-                 * The copy constructor
-                 * @param orig the other builder to copy
-                 */
-                ARPATrieBuilder(const ARPATrieBuilder& orig);
-                
-                /**
-                 * This method is used to read and process the ARPA headers
-                 * @param line the in/out parameter storing the last read line
-                 */
-                void readHeaders(string &line);
+                    virtual ~ARPATrieBuilder();
+                private:
+                    //The reference to the trie to be build
+                    ATrie<N, doCache> & _trie;
+                    //The reference to the input file with text corpus
+                    ifstream & _fstr;
+                    //The delimiter for the line elements
+                    const char _delim;
+                    //The regular expression for matching the n-gram amount entry of the data section
+                    const regex _ngAmountRegExp;
+                    //The regular expression for matching the n-grams section
+                    const regex _ngSectionRegExp;
 
-                /**
-                 * This method is used to read and process the ARPA data section
-                 * @param line the in/out parameter storing the last read line
-                 */
-                void readData(string &line);
+                    /**
+                     * The copy constructor
+                     * @param orig the other builder to copy
+                     */
+                    ARPATrieBuilder(const ARPATrieBuilder& orig);
 
-                /**
-                 * This recursive method is used to read and process the ARPA N-Grams.
-                 * @param line the in/out parameter storing the last read line
-                 */
-                void readNGrams(string &line, const int level);
-            };
+                    /**
+                     * This method is used to read and process the ARPA headers
+                     * @param line the in/out parameter storing the last read line
+                     */
+                    void readHeaders(string &line);
+
+                    /**
+                     * This method is used to read and process the ARPA data section
+                     * @param line the in/out parameter storing the last read line
+                     */
+                    void readData(string &line);
+
+                    /**
+                     * This recursive method is used to read and process the ARPA N-Grams.
+                     * @param line the in/out parameter storing the last read line
+                     */
+                    void readNGrams(string &line, const int level);
+                };
+            }
         }
     }
 }

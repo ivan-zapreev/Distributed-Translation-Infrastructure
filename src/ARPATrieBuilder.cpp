@@ -39,222 +39,224 @@ using uva::smt::tries::ngrams::NGramBuilder;
 namespace uva {
     namespace smt {
         namespace tries {
+            namespace arpa {
 
 #define END_OF_ARPA_FILE "\\end\\"
-            
-            template<TModelLevel N, bool doCache>
-            ARPATrieBuilder<N, doCache>::ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & fstr, const char delim) :
-            _trie(trie), _fstr(fstr), _delim(delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
-            }
 
-            template<TModelLevel N, bool doCache>
-            ARPATrieBuilder<N, doCache>::ARPATrieBuilder(const ARPATrieBuilder<N, doCache>& orig) :
-            _trie(orig._trie), _fstr(orig._fstr), _delim(orig._delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
-            }
-
-            template<TModelLevel N, bool doCache>
-            ARPATrieBuilder<N, doCache>::~ARPATrieBuilder() {
-            }
-
-            template<TModelLevel N, bool doCache>
-            void ARPATrieBuilder<N, doCache>::readHeaders(string &line) {
-                LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
-
-                while (true) {
-                    LOG_DEBUG1 << "Reading header (?) line: '" << line << "'" << END_LOG;
-                    reduce(line);
-
-                    //If the line is empty then we keep reading
-                    if (line != "") {
-                        //If the line begins with "<" then it could be a header
-                        //or something else that we do not need to read or
-                        //interpret! Therefore we skip it and read on, otherwise
-                        //it is potentially a meaningful data so we should stop
-                        //and go on to the next section, namely" data
-                        if (line.substr(0, 1) != "<") {
-                            LOG_DEBUG1 << "Read something meaningful, moving to data section!" << END_LOG;
-                            break;
-                        } else {
-                            LOG_DEBUG1 << "Read something meaningless, starting with <, skipping forward" << END_LOG;
-                        }
-                    } else {
-                        LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
-                    }
-
-                    //Update the progress bar status
-                    Logger::updateProgressBar();
-
-                    //Read the next line from the file if it is there
-                    if (!getline(_fstr, line)) {
-                        throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
-                    }
+                template<TModelLevel N, bool doCache>
+                ARPATrieBuilder<N, doCache>::ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & fstr, const char delim) :
+                _trie(trie), _fstr(fstr), _delim(delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
-            }
+                template<TModelLevel N, bool doCache>
+                ARPATrieBuilder<N, doCache>::ARPATrieBuilder(const ARPATrieBuilder<N, doCache>& orig) :
+                _trie(orig._trie), _fstr(orig._fstr), _delim(orig._delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                }
 
-            template<TModelLevel N, bool doCache>
-            void ARPATrieBuilder<N, doCache>::readData(string &line) {
-                LOG_DEBUG << "Start reading ARPA data." << END_LOG;
+                template<TModelLevel N, bool doCache>
+                ARPATrieBuilder<N, doCache>::~ARPATrieBuilder() {
+                }
 
-                //If we are here then it means we just finished reading the
-                //ARPA headers and we stumbled upon something meaningful,
-                //that actually must be the begin of the data section
-                if (line != END_OF_ARPA_FILE) {
+                template<TModelLevel N, bool doCache>
+                void ARPATrieBuilder<N, doCache>::readHeaders(string &line) {
+                    LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
+
                     while (true) {
-                        if (getline(_fstr, line)) {
-                            LOG_DEBUG1 << "Reading data (?) line: '" << line << "'" << END_LOG;
-                            reduce(line);
+                        LOG_DEBUG1 << "Reading header (?) line: '" << line << "'" << END_LOG;
+                        reduce(line);
 
-                            //Update the progress bar status
-                            Logger::updateProgressBar();
-
-                            //If the line is empty then we keep reading
-                            if (line != "") {
-                                //Check that the next line contains the meaningful N-gram amount information!
-                                if (regex_match(line, _ngAmountRegExp)) {
-                                    //This is a valid data section entry, there is no need to do anything with it.
-                                    //Later we might want to read the numbers and then check them against the
-                                    //actual number of provided n-grams but for now it is not needed. 
-                                    LOG_DEBUG1 << "Read the n-gram amount: '" << line << "', ignoring!" << END_LOG;
-                                } else {
-                                    LOG_DEBUG1 << "Read something other than n-gram amount, moving to n-gram sections!" << END_LOG;
-                                    break;
-                                }
+                        //If the line is empty then we keep reading
+                        if (line != "") {
+                            //If the line begins with "<" then it could be a header
+                            //or something else that we do not need to read or
+                            //interpret! Therefore we skip it and read on, otherwise
+                            //it is potentially a meaningful data so we should stop
+                            //and go on to the next section, namely" data
+                            if (line.substr(0, 1) != "<") {
+                                LOG_DEBUG1 << "Read something meaningful, moving to data section!" << END_LOG;
+                                break;
                             } else {
-                                LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
+                                LOG_DEBUG1 << "Read something meaningless, starting with <, skipping forward" << END_LOG;
                             }
-
                         } else {
-                            throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
+                            LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
+                        }
+
+                        //Update the progress bar status
+                        Logger::updateProgressBar();
+
+                        //Read the next line from the file if it is there
+                        if (!getline(_fstr, line)) {
+                            throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                         }
                     }
-                } else {
-                    stringstream msg;
-                    msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
-                    throw Exception(msg.str());
+
+                    LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
                 }
 
-                LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
-            }
+                template<TModelLevel N, bool doCache>
+                void ARPATrieBuilder<N, doCache>::readData(string &line) {
+                    LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
-            template<TModelLevel N, bool doCache>
-            void ARPATrieBuilder<N, doCache>::readNGrams(string &line, const int level) {
-                LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
-                //The regular expression for matching the n-grams section
-                stringstream regexpStr;
-                regexpStr << "\\\\" << level << "\\-grams\\:";
-                LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
-                const regex ngSectionRegExp(regexpStr.str());
+                    //If we are here then it means we just finished reading the
+                    //ARPA headers and we stumbled upon something meaningful,
+                    //that actually must be the begin of the data section
+                    if (line != END_OF_ARPA_FILE) {
+                        while (true) {
+                            if (getline(_fstr, line)) {
+                                LOG_DEBUG1 << "Reading data (?) line: '" << line << "'" << END_LOG;
+                                reduce(line);
 
-                //Check if the line that was input is the header of the N-grams section for N=level
-                if (regex_match(line, ngSectionRegExp)) {
-                    //ToDo: Get the N-Gram builder for the given N-gram level
-                    //NGramBuilder<N,doCache> ngBuilder = 
-                    
-                    //Read the current level N-grams and add them to the trie
-                    while(true) {
-                        //Try to read the next line
-                        if(getline(_fstr, line)) {
-                            LOG_DEBUG1 << "Current line: " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
-                            reduce(line);
+                                //Update the progress bar status
+                                Logger::updateProgressBar();
 
-                            //ToDo: Pass the given N-gram string to the N-Gram Builder. If the
-                            //N-gram is not matched then stop the loop and move on
-                            
-                            
-                            //Update the progress bar status
-                            Logger::updateProgressBar();
-                        } else {
-                            //If the next line does not exist then it an error as we expect the end of data section any way
-                            stringstream msg;
-                            msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
-                            throw Exception(msg.str());
-                        }
-                    }
+                                //If the line is empty then we keep reading
+                                if (line != "") {
+                                    //Check that the next line contains the meaningful N-gram amount information!
+                                    if (regex_match(line, _ngAmountRegExp)) {
+                                        //This is a valid data section entry, there is no need to do anything with it.
+                                        //Later we might want to read the numbers and then check them against the
+                                        //actual number of provided n-grams but for now it is not needed. 
+                                        LOG_DEBUG1 << "Read the n-gram amount: '" << line << "', ignoring!" << END_LOG;
+                                    } else {
+                                        LOG_DEBUG1 << "Read something other than n-gram amount, moving to n-gram sections!" << END_LOG;
+                                        break;
+                                    }
+                                } else {
+                                    LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
+                                }
 
-                    LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
-
-                    //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                    LOG_DEBUG2 << "The currently read N-grams level is " << level << "the maximum level is " << N
-                               << ", the current line is '" << line << "'" << END_LOG;
-                    
-                    //Test if we need to move on or we are done or an error is detected
-                    if( level < N ) {
-                        //There are still N-Gram levels to read
-                        if( line != END_OF_ARPA_FILE ) {
-                            //We did not encounter the \end\ tag yet so do recursion to the next level
-                            readNGrams(line, level+1);
-                        } else {
-                            //We did encounter the \end\ tag, this is not really expected, but it is not fatal
-                            LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                        << "nothing more to read. The maximum allowed N-gram level is " << N;
+                            } else {
+                                throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
+                            }
                         }
                     } else {
-                        //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
-                        if( line != END_OF_ARPA_FILE ) {
-                            stringstream msg;
-                            msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
-                                << "' when reading " << level << "-grams section!";
-                            throw Exception(msg.str());
-                        }
-                    }
-                } else {
-                    //The obtained string is something else than the next n-grams section header
-                    //So the only thing it is allowed to be is the end of file, let's check on
-                    //it and otherwise report an error
-                    if( line != END_OF_ARPA_FILE ) {
                         stringstream msg;
-                        msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
-                            << "' when reading " << level << "-grams section!";
+                        msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
                         throw Exception(msg.str());
                     }
+
+                    LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
-            }
 
-            //Iterate through the ARPA file and fill in the back-off model of the trie
-            //Note that, this file reader will be made ads flexible as possible,
-            //in other words is will ignore as much data as possible and will report
-            //as few errors as possible, mostly warnings. Also the Maximum N-Gram Level
-            //will be limited by the N parameter provided to the class template and not
-            //the maximum N-gram level present in the file.
+                template<TModelLevel N, bool doCache>
+                void ARPATrieBuilder<N, doCache>::readNGrams(string &line, const int level) {
+                    LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
+                    //The regular expression for matching the n-grams section
+                    stringstream regexpStr;
+                    regexpStr << "\\\\" << level << "\\-grams\\:";
+                    LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
+                    const regex ngSectionRegExp(regexpStr.str());
 
-            template<TModelLevel N, bool doCache>
-            void ARPATrieBuilder<N, doCache>::build() {
-                LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
+                    //Check if the line that was input is the header of the N-grams section for N=level
+                    if (regex_match(line, ngSectionRegExp)) {
+                        //ToDo: Get the N-Gram builder for the given N-gram level
+                        //NGramBuilder<N,doCache> ngBuilder = 
 
-                //Do the progress bard indicator
-                Logger::startProgressBar();
+                        //Read the current level N-grams and add them to the trie
+                        while (true) {
+                            //Try to read the next line
+                            if (getline(_fstr, line)) {
+                                LOG_DEBUG1 << "Current line: " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                                reduce(line);
 
-                try {
-                    //This is the variable that will store the last read line of ARPA file
-                    string line = "";
-                    //Read the first line from the file
-                    getline(_fstr, line);
+                                //ToDo: Pass the given N-gram string to the N-Gram Builder. If the
+                                //N-gram is not matched then stop the loop and move on
 
-                    //Skip on ARPA headers
-                    readHeaders(line);
 
-                    //Read the DATA section of ARPA
-                    readData(line);
+                                //Update the progress bar status
+                                Logger::updateProgressBar();
+                            } else {
+                                //If the next line does not exist then it an error as we expect the end of data section any way
+                                stringstream msg;
+                                msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
+                                throw Exception(msg.str());
+                            }
+                        }
 
-                    //Read the N-grams
-                    readNGrams(line, 1);
-                } catch (...) {
-                    //Stop the progress bar in case of an exception
+                        LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
+
+                        //If we expect more N-grams then make a recursive call to read the higher order N-gram
+                        LOG_DEBUG2 << "The currently read N-grams level is " << level << "the maximum level is " << N
+                                << ", the current line is '" << line << "'" << END_LOG;
+
+                        //Test if we need to move on or we are done or an error is detected
+                        if (level < N) {
+                            //There are still N-Gram levels to read
+                            if (line != END_OF_ARPA_FILE) {
+                                //We did not encounter the \end\ tag yet so do recursion to the next level
+                                readNGrams(line, level + 1);
+                            } else {
+                                //We did encounter the \end\ tag, this is not really expected, but it is not fatal
+                                LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
+                                        << "nothing more to read. The maximum allowed N-gram level is " << N;
+                            }
+                        } else {
+                            //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
+                            if (line != END_OF_ARPA_FILE) {
+                                stringstream msg;
+                                msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
+                                        << "' when reading " << level << "-grams section!";
+                                throw Exception(msg.str());
+                            }
+                        }
+                    } else {
+                        //The obtained string is something else than the next n-grams section header
+                        //So the only thing it is allowed to be is the end of file, let's check on
+                        //it and otherwise report an error
+                        if (line != END_OF_ARPA_FILE) {
+                            stringstream msg;
+                            msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
+                                    << "' when reading " << level << "-grams section!";
+                            throw Exception(msg.str());
+                        }
+                    }
+                }
+
+                //Iterate through the ARPA file and fill in the back-off model of the trie
+                //Note that, this file reader will be made ads flexible as possible,
+                //in other words is will ignore as much data as possible and will report
+                //as few errors as possible, mostly warnings. Also the Maximum N-Gram Level
+                //will be limited by the N parameter provided to the class template and not
+                //the maximum N-gram level present in the file.
+
+                template<TModelLevel N, bool doCache>
+                void ARPATrieBuilder<N, doCache>::build() {
+                    LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
+
+                    //Do the progress bard indicator
+                    Logger::startProgressBar();
+
+                    try {
+                        //This is the variable that will store the last read line of ARPA file
+                        string line = "";
+                        //Read the first line from the file
+                        getline(_fstr, line);
+
+                        //Skip on ARPA headers
+                        readHeaders(line);
+
+                        //Read the DATA section of ARPA
+                        readData(line);
+
+                        //Read the N-grams
+                        readNGrams(line, 1);
+                    } catch (...) {
+                        //Stop the progress bar in case of an exception
+                        Logger::stopProgressBar();
+                        throw;
+                    }
+
+                    //Stop the progress bar in case of no exception
                     Logger::stopProgressBar();
-                    throw;
+
+                    LOG_DEBUG << "Done reading the file and building the trie." << END_LOG;
                 }
 
-                //Stop the progress bar in case of no exception
-                Logger::stopProgressBar();
-
-                LOG_DEBUG << "Done reading the file and building the trie." << END_LOG;
+                //Make sure that there will be templates instantiated, at least for the given parameter values
+                template class ARPATrieBuilder< N_GRAM_PARAM, true >;
+                template class ARPATrieBuilder< N_GRAM_PARAM, false >;
             }
-
-            //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ARPATrieBuilder< N_GRAM_PARAM, true >;
-            template class ARPATrieBuilder< N_GRAM_PARAM, false >;
         }
     }
 }

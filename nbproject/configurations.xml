@@ -4,6 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/ARPANGramBuilder.hpp</itemPath>
+      <itemPath>inc/ARPANGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
@@ -22,6 +24,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>src/ARPANGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/HashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
@@ -77,6 +80,10 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPANGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPANGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
@@ -96,6 +103,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPANGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -131,6 +140,10 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPANGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPANGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
@@ -150,6 +163,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPANGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -193,6 +208,10 @@
           <commandlineTool>g++</commandlineTool>
         </linkerTool>
       </compileType>
+      <item path="inc/ARPANGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPANGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
@@ -212,6 +231,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPANGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
