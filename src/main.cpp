@@ -286,10 +286,10 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
  * This method will perform the main tasks of this application:
  * Read the text corpus and create a trie and then read the test
  * file and query the trie for frequencies.
- * @param trainFile the text corpus file
+ * @param modelFile the Back-Off model file in the ARPA format
  * @param testFile the test file with queries
  */
-static void performTasks(ifstream &trainFile, ifstream &testFile) {
+static void performTasks(ifstream &modelFile, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
 
@@ -300,19 +300,19 @@ static void performTasks(ifstream &trainFile, ifstream &testFile) {
 
     //Create a trie and pass it to the algorithm method
     TFiveCacheHashMapTrie trie;
-    LOG_INFO << "Start reading the text corpus and filling in the Trie ..." << END_LOG;
+    LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
     startTime = StatisticsMonitor::getCPUTime();
-    fillInTrie(trainFile, trie);
+    fillInTrie(modelFile, trie);
     endTime = StatisticsMonitor::getCPUTime();
-    LOG_INFO << "Reading the text corpus is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+    LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
     LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatInterm);
 
     LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-    reportMemotyUsage("Loading of the text corpus Trie", memStatStart, memStatInterm);
+    reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
 
-    LOG_INFO << "Reading and executing the test queries ..." << END_LOG;
+    LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
     const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
     LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
 
@@ -340,17 +340,17 @@ int main(int argc, char** argv) {
                 << params.testFileName << "\' ..." << END_LOG;
 
         //Attempt to open the files
-        ifstream trainFile(params.trainFileName.c_str());
+        ifstream modelFile(params.trainFileName.c_str());
         ifstream testFile(params.testFileName.c_str());
 
         //If the files could be opened then proceed with training and then testing
-        if ((trainFile.is_open()) && (testFile.is_open())) {
+        if ((modelFile.is_open()) && (testFile.is_open())) {
             //Do the actual work, read the text corpse, create trie and do queries
-            performTasks(trainFile, testFile);
+            performTasks(modelFile, testFile);
         } else {
             stringstream msg;
             msg << "One of the input files does not exist: " +
-                    getFileExistsString(params.trainFileName, trainFile)
+                    getFileExistsString(params.trainFileName, modelFile)
                     + " , " +
                     getFileExistsString(params.testFileName, testFile);
             throw Exception(msg.str());
