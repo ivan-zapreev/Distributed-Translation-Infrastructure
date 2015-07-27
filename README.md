@@ -5,7 +5,8 @@
 <big>Git-Hub</big>: <https://github.com/ivan-zapreev/Automated-Translation-Tries>
 
 ## Introduction
-This is a fork project from the Automated-Translation-Tries project, made as a test exercise for automated machine translation (aiming at automated translation of text in different languages).
+This is a fork project from the Automated-Translation-Tries project, made as a test exercise for
+automated machine translation (aiming at automated translation of text in different languages).
 
 For machine translation it is important to estimate and compare the fluency of different possible
 translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using
@@ -176,9 +177,9 @@ from the command line, the output of the program is supposed to be as follows:
 ##Implementation Details
 
 In this section we mention a few implementation details, for more details see the source code documentation.
-At present the documentation is done in the Java-Doc style and not in the Doxygen format. The reason for that
-is that Netbeans is mainly devoted to Java programming. Yet, this is sufficiently good if you are not planning
-to generate HTML documentation from the code.
+At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the
+Doxygen option <i>JAVADOC_AUTOBRIEF</i> set to <i>YES</i>. The generated documentation is located in the
+<big>./doxygen/</big> folder of the project.
 
 The code contains the following important source files:
 * <big>ATries.hpp</big> - contains the common abstract class parent for all possible Trie classes
