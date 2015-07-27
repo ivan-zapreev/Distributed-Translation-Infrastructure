@@ -56,8 +56,8 @@ typedef struct {
  */
 static void printInfo() {
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
-    LOG_USAGE << "|                    Automated Translation Tires         :)\\___/(: |" << END_LOG;
-    LOG_USAGE << "|                     Test software version 1.1          {(@)v(@)} |" << END_LOG;
+    LOG_USAGE << "|                 Back Off Language Model(s) for SMT     :)\\___/(: |" << END_LOG;
+    LOG_USAGE << "|                       Software version 1.0             {(@)v(@)} |" << END_LOG;
     LOG_USAGE << "|                                                        {|~- -~|} |" << END_LOG;
     LOG_USAGE << "|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |" << END_LOG;
     LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;
@@ -119,6 +119,7 @@ static void extractArguments(const int argc, char const * const * const argv, TA
     } else {
         params.trainFileName = argv[1];
         params.testFileName = argv[2];
+        Logger::ReportingLevel() = Logger::ERROR;
         
         //This here is a fast hack, it is not a really the
         //nicest way to handle the program parameters but

@@ -31,7 +31,7 @@
 
 Logger::DebugLevel Logger::currLEvel;
 
-const char * Logger::DebugLevelStr[] = { "RESULT", "USAGE", "ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2" };
+const char * Logger::DebugLevelStr[] = { "USAGE", "RESULT", "ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2" };
 
 std::ostream& Logger::Get(DebugLevel level) {
     std::ostream & os = cout;

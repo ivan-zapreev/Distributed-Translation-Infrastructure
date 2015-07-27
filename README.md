@@ -1,8 +1,8 @@
-# Back-Off-Language-Model-SMT
+# Back Off Language Model(s) for SMT
 
 <big>Author: Dr. Ivan S. Zapreev</big>: <https://nl.linkedin.com/in/zapreevis>
 
-<big>Git-Hub</big>: <https://github.com/ivan-zapreev/Automated-Translation-Tries>
+<big>Git-Hub</big>: <https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT>
 
 ## Introduction
 This is a fork project from the Automated-Translation-Tries project, made as a test exercise for
@@ -143,7 +143,7 @@ In order to get the program usage information please run <i>./automated-translat
 from the command line, the output of the program is supposed to be as follows:
         
         USAGE:  ------------------------------------------------------------------ 
-        USAGE: |                    Automated Translation Tires         :)\___/(: |
+        USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
         USAGE: |                     Test software version 1.1          {(@)v(@)} |
         USAGE: |                                                        {|~- -~|} |
         USAGE: |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\} |
