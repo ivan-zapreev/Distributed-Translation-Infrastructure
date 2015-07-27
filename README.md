@@ -94,9 +94,11 @@ This is a Netbeans 8.0.2 project, and its' top-level structure is as follows:
 >     ./inc/
 >     ./src/
 >     ./nbproject/
+>     ./doxygen/
 >     ./LICENSE
 >     ./Makefile
 >     ./README.md
+>     ./Doxyfile
 
 Further, we give a few explanations of the structure above
 
@@ -105,13 +107,17 @@ Further, we give a few explanations of the structure above
     * inc/ - stores the C++ header files used in the implementation
     * src/ - stores the C++ source files used in the implementation
     * nbproject/ - stores the Netbeans project data
+    * doxygen/ - stores the Doxygen-generated code documentation
     * LICENSE - the code license (GPL 2.0)
     * Makefile - the Makefile used to build the project
     * README.md - this document
+    * Doxyfile - the Doxygen configuration file
 
 ##Supported platforms
-Currently there is only one supported platform: <big>Linux</big><br/>
-This project was built and tested on Ubuntu 14.10 64-bit. 
+Currently there are two supported platforms:
+* <big>Linux</big> - Complete functionality.
+* <big>Mac OS</big> - Limited by inability to collect memory-usage statistics.
+This project was built and tested on Ubuntu 14.10 64-bit and OS X Yosemite, version 10.10.4.
 
 ##Building the project
 
