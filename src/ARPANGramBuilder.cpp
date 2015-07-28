@@ -74,7 +74,6 @@ namespace uva {
                 : _trie(trie), _delim(delim), _level(level),
                 _ngramFullRegExp(getNGramFullRegExp(level)),
                 _ngramProbOnlyRegExp(getNGramProbOnlyRegExp(level)) {
-                    //ToDo: Prepare general regular expressions for an ARPA file N-gram of level N
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder<" << N << ", " << doCache << ">(" << level << ", trie," << delim << ")" << END_LOG;
                 }
 
@@ -96,10 +95,10 @@ namespace uva {
 
                     //First check if we have a match, and this is indeed a proper N-gram
                     if (regex_match(data, _ngramFullRegExp)) {
-                        //This is a complete N-gram with Probability and Back-off weight
+                        //ToDo: This is a complete N-gram with Probability and Back-off weight
                     } else {
                         if (regex_match(data, _ngramProbOnlyRegExp)) {
-                            //This is a partial N-gram with Probability but without the Back-off weight
+                            //ToDo: This is a partial N-gram with Probability but without the Back-off weight
                         } else {
                             //This is something else, so we should stop building
                             result = true;
