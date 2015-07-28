@@ -37,11 +37,13 @@
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "NGramBuilder.hpp"
+#include "StringUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::tries;
 using namespace uva::smt::tries::arpa;
 using namespace uva::smt::logging;
+using namespace uva::smt::utils::text;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::monitore;
 
@@ -260,7 +262,7 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
     //Read the test file line by line
     while (getline(testFile, line)) {
         //First get the complete N-gram
-        ngrams::NGramBuilder<N, doCache>::buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
+        buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
 
         LOG_DEBUG << line << ":" << END_LOG;
 

@@ -28,10 +28,6 @@
 
 #include <ATrie.hpp>
 
-#include <string>  //std::string
-#include <vector>  //std::vector
-#include <sstream> //std::stringstream
-
 #include "Globals.hpp"
 #include <Exceptions.hpp>
 
@@ -40,15 +36,15 @@ using namespace std;
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace ngrams {
+            namespace arpa {
 
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
                 template<TModelLevel N, bool doCache>
-                class NGramBuilder {
+                class ARPANGramBuilder {
                 public:
-                    NGramBuilder(ATrie<N, doCache> & trie, const char delim);
+                    ARPANGramBuilder(ATrie<N, doCache> & trie, const char delim);
 
                     /**
                      * For the given text will split it into the number of n-grams that will be then put into the trie
@@ -56,33 +52,7 @@ namespace uva {
                      */
                     void processString(const string & data);
 
-                    /**
-                     * This method build an N-Gram from a string, which is nothing more than
-                     * just taking a string and tokenizing it with the given delimiter. In
-                     * addition this method will test if the resulting N-gram has exactly
-                     * the specified number of elements. Will also clean the ngram vector
-                     * before filling it in. The order in which the N-gram elements are stored
-                     * are the same in which they are present in the given line.
-                     * @param line the line of code to convert into an N-gram
-                     * @param n the expected value of N
-                     * @param delim the delimiter to parse the string into
-                     * @param ngram the output parameter that will be filled in with the N-gram values
-                     * @throws Exception in case the resulting N-gram has the number elements other than expected
-                     */
-                    static inline void buildNGram(const string & line, const TModelLevel n, const char delim, vector<string> & ngram) throw (Exception) {
-                        //First clean the vector
-                        ngram.clear();
-                        //Tokenise the line
-                        tokenize(line, delim, ngram);
-                        //Check that the number of words in the N-gram is proper
-                        if (ngram.size() != n) {
-                            stringstream msg;
-                            msg << "The line '" << line << "' is not a " << n << "-gram as expected!";
-                            throw Exception(msg.str());
-                        }
-                    }
-
-                    virtual ~NGramBuilder();
+                    virtual ~ARPANGramBuilder();
                 private:
                     //The trie to store the n-grams 
                     ATrie<N, doCache> & _trie;
@@ -93,23 +63,8 @@ namespace uva {
                      * The copy constructor
                      * @param orig the other builder to copy
                      */
-                    NGramBuilder(const NGramBuilder& orig);
+                    ARPANGramBuilder(const ARPANGramBuilder& orig);
 
-                    /**
-                     * Tokenise a given string into avector of strings
-                     * @param s the string to tokenise
-                     * @param delim the delimiter
-                     * @param elems the output array
-                     */
-                    static inline void tokenize(const std::string &data, const char delim, vector<string> & elems) {
-                        stringstream stream(data);
-                        string token;
-
-                        //Read from the string stream
-                        while (getline(stream, token, delim)) {
-                            elems.push_back(token);
-                        }
-                    }
                 };
             }
         }

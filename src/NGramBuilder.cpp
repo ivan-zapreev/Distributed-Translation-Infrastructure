@@ -24,29 +24,34 @@
  */
 #include "NGramBuilder.hpp"
 
+#include <string>  //std::string
+#include <vector>  //std::vector
+
 #include "Logger.hpp"
+#include "StringUtils.hpp"
 
 using namespace uva::smt::logging;
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace ngrams {
+            namespace arpa {
 
                 template<TModelLevel N, bool doCache>
-                NGramBuilder<N, doCache>::NGramBuilder(ATrie<N, doCache> & trie, const char delim) : _trie(trie), _delim(delim) {
+                ARPANGramBuilder<N, doCache>::ARPANGramBuilder(ATrie<N, doCache> & trie, const char delim) : _trie(trie), _delim(delim) {
                 }
 
                 template<TModelLevel N, bool doCache>
-                NGramBuilder<N, doCache>::NGramBuilder(const NGramBuilder<N, doCache>& orig) : _trie(orig._trie), _delim(orig._delim) {
+                ARPANGramBuilder<N, doCache>::ARPANGramBuilder(const ARPANGramBuilder<N, doCache>& orig) : _trie(orig._trie), _delim(orig._delim) {
                 }
 
                 template<TModelLevel N, bool doCache>
-                NGramBuilder<N, doCache>::~NGramBuilder() {
+                ARPANGramBuilder<N, doCache>::~ARPANGramBuilder() {
                 }
 
                 template<TModelLevel N, bool doCache>
-                void NGramBuilder<N, doCache>::processString(const string & data) {
+                void ARPANGramBuilder<N, doCache>::processString(const string & data) {
                     //Tokenise the line of text into a vector first
                     vector<string> tokens;
                     tokenize(data, _delim, tokens);
@@ -67,8 +72,8 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class NGramBuilder<N_GRAM_PARAM, true>;
-                template class NGramBuilder<N_GRAM_PARAM, false>;
+                template class ARPANGramBuilder<N_GRAM_PARAM, true>;
+                template class ARPANGramBuilder<N_GRAM_PARAM, false>;
             }
         }
     }

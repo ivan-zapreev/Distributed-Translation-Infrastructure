@@ -43,6 +43,8 @@ namespace uva {
 #define BYTES_ONE_MB 1024
 //The considered maximum length of the N-gram
 #define N_GRAM_PARAM 5u
+//Defined the minimum possible N-gram level
+#define MIN_NGRAM_LEVEL 1
 
 //The string representation values for debug levels
 #define USAGE_PARAM_VALUE "usage"

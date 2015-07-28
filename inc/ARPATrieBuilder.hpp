@@ -93,7 +93,7 @@ namespace uva {
                      * This recursive method is used to read and process the ARPA N-Grams.
                      * @param line the in/out parameter storing the last read line
                      */
-                    void readNGrams(string &line, const int level);
+                    void readNGrams(string &line, const TModelLevel level);
                 };
             }
         }

@@ -33,8 +33,7 @@
 #include "NGramBuilder.hpp"
 
 using namespace uva::smt::logging;
-using namespace uva::smt::utils::string;
-using uva::smt::tries::ngrams::NGramBuilder;
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
@@ -140,7 +139,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::readNGrams(string &line, const int level) {
+                void ARPATrieBuilder<N, doCache>::readNGrams(string &line, const TModelLevel level) {
                     LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
