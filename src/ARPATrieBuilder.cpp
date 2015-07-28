@@ -30,7 +30,7 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
-#include "NGramBuilder.hpp"
+#include "ARPANGramBuilder.hpp"
 
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;

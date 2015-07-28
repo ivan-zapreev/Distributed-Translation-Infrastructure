@@ -22,7 +22,7 @@
  *
  * Created on April 18, 2015, 12:02 PM
  */
-#include "NGramBuilder.hpp"
+#include "ARPANGramBuilder.hpp"
 
 #include <string>  //std::string
 #include <vector>  //std::vector
