@@ -62,7 +62,7 @@ namespace uva {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
-                        LOG_DEBUG1 << "Reading header (?) line: '" << line << "'" << END_LOG;
+                        LOG_DEBUG1 << "Read header (?) line: '" << line << "'" << END_LOG;
                         reduce(line);
 
                         //If the line is empty then we keep reading
@@ -73,13 +73,13 @@ namespace uva {
                             //it is potentially a meaningful data so we should stop
                             //and go on to the next section, namely" data
                             if (line.substr(0, 1) != "<") {
-                                LOG_DEBUG1 << "Read something meaningful, moving to data section!" << END_LOG;
+                                LOG_DEBUG1 << "Is something meaningful, moving to data section!" << END_LOG;
                                 break;
                             } else {
-                                LOG_DEBUG1 << "Read something meaningless, starting with <, skipping forward" << END_LOG;
+                                LOG_DEBUG1 << "Is something meaningless, starting with <, skipping forward" << END_LOG;
                             }
                         } else {
-                            LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
+                            LOG_DEBUG1 << "Is an empty line, skipping forward" << END_LOG;
                         }
 
                         //Update the progress bar status
@@ -104,7 +104,7 @@ namespace uva {
                     if (line != END_OF_ARPA_FILE) {
                         while (true) {
                             if (getline(_fstr, line)) {
-                                LOG_DEBUG1 << "Reading data (?) line: '" << line << "'" << END_LOG;
+                                LOG_DEBUG1 << "Read data (?) line: '" << line << "'" << END_LOG;
                                 reduce(line);
 
                                 //Update the progress bar status
@@ -117,13 +117,13 @@ namespace uva {
                                         //This is a valid data section entry, there is no need to do anything with it.
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
-                                        LOG_DEBUG1 << "Read the n-gram amount: '" << line << "', ignoring!" << END_LOG;
+                                        LOG_DEBUG1 << "Is the n-gram amount: '" << line << "', ignoring!" << END_LOG;
                                     } else {
-                                        LOG_DEBUG1 << "Read something other than n-gram amount, moving to n-gram sections!" << END_LOG;
+                                        LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
                                         break;
                                     }
                                 } else {
-                                    LOG_DEBUG1 << "Read an empty line, skipping forward" << END_LOG;
+                                    LOG_DEBUG1 << "Is an empty line, skipping forward" << END_LOG;
                                 }
 
                             } else {
@@ -157,7 +157,7 @@ namespace uva {
                         while (true) {
                             //Try to read the next line
                             if (getline(_fstr, line)) {
-                                LOG_DEBUG1 << "Current line: " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                                LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
                                 reduce(line);
 
                                 //ToDo: Pass the given N-gram string to the N-Gram Builder. If the
