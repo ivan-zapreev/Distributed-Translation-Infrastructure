@@ -35,7 +35,7 @@ ngram 3=3
 -0.2359 Go Up        0.0587
 -0.4983 Up </s>      
 
-\3-grams:
+\3-grams:   
 -0.4260 <s> When will      
 -0.6601 When will the      
 -0.6601 Go Up </s>   

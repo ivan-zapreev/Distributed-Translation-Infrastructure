@@ -41,6 +41,11 @@ namespace uva {
     namespace smt {
         namespace logging {
 
+            //The macros needed to get the line sting for proper printing in cout
+#define STRINGIZE(x) STRINGIZE2(x)
+#define STRINGIZE2(x) #x
+#define LINE_STRING STRINGIZE(__LINE__)
+
             //Defines the progress bar update period in CPU seconds
 #define PROGRESS_UPDATE_PERIOD 0.1
 
@@ -51,7 +56,7 @@ namespace uva {
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \
-       else Logger::Get(level)
+       else Logger::Get(level, __FILE__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
@@ -91,7 +96,13 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static std::ostream& Get(DebugLevel level = INFO);
+                static inline std::ostream& Get(DebugLevel level, const char * file, const char * func, const char * line ) {
+                    cout << DebugLevelStr[level] ;
+                    if( level >= DEBUG ) {
+                        cout << " \t<" << file << "::" << func << "(...):" << line << ">"; 
+                    }
+                    return cout << ":\t";
+                }
 
                 /**
                  * Returns the reference to the internal log level variable

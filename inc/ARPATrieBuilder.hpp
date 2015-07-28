@@ -27,7 +27,7 @@
 #define	TRIEBUILDER_HPP
 
 #include <fstream>      // std::ifstream
-#include <regex>        // std::regexp, std::regex_match
+#include <regex>        // std::regex, std::regex_match
 
 #include "ATrie.hpp"
 

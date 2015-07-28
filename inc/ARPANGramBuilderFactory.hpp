@@ -27,10 +27,12 @@
 #define	ARPANGRAMBUILDERFACTORY_HPP
 
 #include <string> // std::stringstream
+#include <ios>    //std::hex
 
 #include "Globals.hpp"
 #include "ARPANGramBuilder.hpp"
 #include "Exceptions.hpp"
+#include "Logger.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
@@ -67,34 +69,43 @@ namespace uva {
                      * 
                      * @param level the level of the N-gram
                      * @param trie the trie to be filled in with the N-grams
+                     * @param delim the delimiter for the ARPA N-Gram string
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
                     template<TModelLevel N, bool doCache>
-                    static inline void getBuilder(const TModelLevel level, ATrie<N, doCache> & trie, ARPANGramBuilder *pBuilder) {
+                    static inline void getBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim, ARPANGramBuilder<N, doCache> **ppBuilder) {
                         //First reset the pointer to NULL
-                        pBuilder = NULL;
+                        *ppBuilder = NULL;
+                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
                         //Then check that the level values are correct!
                         if (level < MIN_NGRAM_LEVEL || level > N) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
-                                << "', but it must be within [" << MIN_NGRAM_LEVEL << ", " << N << "]!";
+                                    << "', but it must be within [" << MIN_NGRAM_LEVEL << ", " << N << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
-                            
-                            if(level == MIN_NGRAM_LEVEL ) {
-                                //If the level is at minimum it means we are filling in the dictionary
-                                
+
+                            if (level == MIN_NGRAM_LEVEL) {
+                                //ToDo: If the level is at minimum it means we are filling in the dictionary
+                                LOG_DEBUG1 << "Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder..." << END_LOG;
+                                *ppBuilder = new ARPANGramBuilder<N, doCache>(level, trie, delim);
+                                LOG_DEBUG2 << "DONE Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
-                                if( level == N ) {
-                                    //If the minimum is at maximum it means we are filling in the top N-gram level
-                                    
+                                if (level == N) {
+                                    //ToDo: If the minimum is at maximum it means we are filling in the top N-gram level
+                                    LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
+                                    *ppBuilder = new ARPANGramBuilder<N, doCache>(level, trie, delim);
+                                    LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
-                                    
+                                    LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
+                                    *ppBuilder = new ARPANGramBuilder<N, doCache>(level, trie, delim);
+                                    LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }
                             }
                         }
+                        LOG_DEBUG << "The " << level << "-Gram builder (" << hex << long(*ppBuilder) << ") is produced!" << END_LOG;
                     }
 
                     virtual ~ARPANGramBuilderFactory() {

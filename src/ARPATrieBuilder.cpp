@@ -31,6 +31,7 @@
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 #include "ARPANGramBuilder.hpp"
+#include "ARPANGramBuilderFactory.hpp"
 
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
@@ -149,34 +150,51 @@ namespace uva {
 
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(line, ngSectionRegExp)) {
-                        //ToDo: Get the N-Gram builder for the given N-gram level
-                        //NGramBuilder<N,doCache> ngBuilder = 
+                        //Declare the pointer to the N-Grma builder
+                        ARPANGramBuilder<N, doCache> *pNGBuilder = NULL;
+                        ARPANGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
 
-                        //Read the current level N-grams and add them to the trie
-                        while (true) {
-                            //Try to read the next line
-                            if (getline(_fstr, line)) {
-                                LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
-                                reduce(line);
+                        try {
+                            //Read the current level N-grams and add them to the trie
+                            while (true) {
+                                //Try to read the next line
+                                if (getline(_fstr, line)) {
+                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                                    reduce(line);
 
-                                //ToDo: Pass the given N-gram string to the N-Gram Builder. If the
-                                //N-gram is not matched then stop the loop and move on
+                                    //Empty lines will just be skipped
+                                    if( line != "") {
+                                        //Pass the given N-gram string to the N-Gram Builder. If the
+                                        //N-gram is not matched then stop the loop and move on
+                                        if( pNGBuilder->processString(line) ) {
+                                            //If there was no match then it is something else
+                                            //than the given level N-gram so we move on
+                                            break;
+                                        }
+                                    }
 
-
-                                //Update the progress bar status
-                                Logger::updateProgressBar();
-                            } else {
-                                //If the next line does not exist then it an error as we expect the end of data section any way
-                                stringstream msg;
-                                msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
-                                throw Exception(msg.str());
+                                    //Update the progress bar status
+                                    Logger::updateProgressBar();
+                                } else {
+                                    //If the next line does not exist then it an error as we expect the end of data section any way
+                                    stringstream msg;
+                                    msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
+                                    throw Exception(msg.str());
+                                }
                             }
+                        } catch (...) {
+                            //Free the allocated N-gram builder in case of an exception 
+                            delete pNGBuilder;
+                            //Re-throw the exception
+                            throw;
                         }
+                        //Free the allocated N-gram builder in case of no exception 
+                        delete pNGBuilder; pNGBuilder = NULL;
 
                         LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
 
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                        LOG_DEBUG2 << "The currently read N-grams level is " << level << "the maximum level is " << N
+                        LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
                                 << ", the current line is '" << line << "'" << END_LOG;
 
                         //Test if we need to move on or we are done or an error is detected
@@ -188,7 +206,7 @@ namespace uva {
                             } else {
                                 //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                                 LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                        << "nothing more to read. The maximum allowed N-gram level is " << N;
+                                        << "nothing more to read. The maximum allowed N-gram level is " << N << END_LOG;
                             }
                         } else {
                             //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
@@ -205,8 +223,9 @@ namespace uva {
                         //it and otherwise report an error
                         if (line != END_OF_ARPA_FILE) {
                             stringstream msg;
-                            msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
-                                    << "' when reading " << level << "-grams section!";
+                            msg << "Incorrect ARPA format: Got '" << line
+                                << "' when trying to read the " << level
+                                << "-grams section!";
                             throw Exception(msg.str());
                         }
                     }

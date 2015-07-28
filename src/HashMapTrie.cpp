@@ -43,7 +43,7 @@ namespace uva {
 
             template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::printDebugNGram(vector<string> &tokens, const int idx, const int n) {
-                ostream &log = Logger::Get(Logger::DEBUG);
+                ostream &log = Logger::Get(Logger::DEBUG, __FILE__, __FUNCTION__, LINE_STRING);
                 log << "Adding " << n << "-gram: [ ";
                 for (int i = idx; i < (idx + n); i++) {
                     log << tokens[i] << " ";

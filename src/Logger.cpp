@@ -38,14 +38,6 @@ namespace uva {
 
             const char * Logger::DebugLevelStr[] = {"USAGE", "ERROR", "WARNING", "RESULT", "INFO", "DEBUG", "DEBUG1", "DEBUG2"};
 
-            std::ostream& Logger::Get(DebugLevel level) {
-                std::ostream & os = cout;
-
-                os << DebugLevelStr[level] << ": ";
-
-                return os;
-            }
-
             //Initialize the progress bar chars array
             const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
 

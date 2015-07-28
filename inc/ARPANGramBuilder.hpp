@@ -26,6 +26,8 @@
 #ifndef NGRAMBUILDER_HPP
 #define	NGRAMBUILDER_HPP
 
+#include <regex>        // std::regex, std::regex_match
+
 #include <ATrie.hpp>
 
 #include "Globals.hpp"
@@ -44,20 +46,42 @@ namespace uva {
                 template<TModelLevel N, bool doCache>
                 class ARPANGramBuilder {
                 public:
-                    ARPANGramBuilder(ATrie<N, doCache> & trie, const char delim);
+                    
+                    /**
+                     * The constructor to be used in order to instantiate a N-Gram builder
+                     * @param level the level of the N-grams to be processed
+                     * @param trie the trie to be filled in with the N-gram
+                     * @param delim the delimiter for the N-gram string
+                     */
+                    ARPANGramBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim);
 
                     /**
-                     * For the given text will split it into the number of n-grams that will be then put into the trie
-                     * @param data the string to process, has to be space a separated sequence of tokens
+                     * This pure virtual method is supposed to parse the N-Gram
+                     * string from the ARPA file format of a Back-Off language
+                     * model and then add the obtained data to the Trie.
+                     * This method has a default implementation that should work
+                     * for N-grams with level > MIN_NGRAM_LEVEL and level < N
+                     * @param data the string to process, has to be space a
+                     *             separated sequence of tokens
+                     * @result returns true if the provided line is NOT recognized
+                     *         as the N-Gram of the specified level.
                      */
-                    void processString(const string & data);
+                    virtual bool processString(const string & data);
 
                     virtual ~ARPANGramBuilder();
-                private:
+                protected:
                     //The trie to store the n-grams 
                     ATrie<N, doCache> & _trie;
                     //The tokens delimiter in the string to parse
                     const char _delim;
+                    //The level of the N-grams to be processed by the given builder
+                    const TModelLevel _level;
+                    //This is a regular expression for recognizing a full N-Gram
+                    //of the given level: with probability and back-off weight
+                    const regex _ngramFullRegExp;
+                    //This is a regular expression for recognizing a partial N-Gram
+                    //of the given level: with probability but without back-off weight
+                    const regex _ngramProbOnlyRegExp;
 
                     /**
                      * The copy constructor
