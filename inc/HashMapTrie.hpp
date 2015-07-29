@@ -83,6 +83,13 @@ namespace uva {
                 HashMapTrie();
 
                 /**
+                 * This method can be used to provide the N-gram count information
+                 * That should allow for pre-allocation of the memory
+                 * For more details @see ITrie
+                 */
+                virtual void preAllocate(uint counts[N]);
+                
+                /**
                  * This method adds a 1-Gram (word) to the trie.
                  * For more details @see ITrie
                  */
@@ -111,28 +118,18 @@ namespace uva {
                 }
 
                 /**
+                 * This method will get the N-gram in a form of a vector, e.g.:
+                 *      [word1 word2 word3 word4 word5]
+                 * and will compute and return the Language Model Probability for it
                  * For more details @see ITrie
                  */
-                virtual void queryWordFreqs(const string & word, SFrequencyResult<N> & result) throw (Exception);
-
-                /**
-                 * For more details @see ITrie
-                 */
-                virtual SFrequencyResult<N> & queryWordFreqs(const string & word) throw (Exception);
-
-                /**
-                 * For more details @see ITrie
-                 */
-                virtual void queryNGramFreqs(const vector<string> & ngram, SFrequencyResult<N> & freqs);
+                virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
                 virtual ~HashMapTrie();
 
             private:
                 //Stores the minimum context level
                 static const TModelLevel MINIMUM_CONTEXT_LEVEL;
-
-                //The type used for storing log probabilities and back-off values
-                typedef float TLogProbBackOff;
 
                 //The entry pair to store the N-gram probability and back off
                 typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
@@ -148,7 +145,7 @@ namespace uva {
 
                 //This is the cache entry type the first value is true if the caching 
                 //of this result was done, the second contains the cached results.
-                typedef pair<bool, SFrequencyResult<N>> TCacheEntry;
+                typedef pair<bool, SProbResult> TCacheEntry;
 
                 //The map storing the One-Grams: I.e. the dictionary
                 unordered_map<TWordHashSize, TWordEntryPair> oGrams;
@@ -167,7 +164,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 HashMapTrie(const HashMapTrie& orig);
-
+                
                 /**
                  * This function just takes the N-Gram tokens and puts them together in one string.
                  * @param tokens the tokens to put together
@@ -176,32 +173,11 @@ namespace uva {
                 string ngramToString(const vector<string> &tokens);
 
                 /**
-                 * This function computes the result for the given word's hash query:
-                 * It gets the frequencies of all the stored N-grams ending with the given word
-                 * @param hash the hash of the word we are after
-                 * @param result the N-Gram frequency values array, @see RFrequencyResult for more details
-                 */
-                void queryWordFreqs(TWordHashSize hash, SFrequencyResult<N> & result);
-
-                /**
-                 * This is a recursive method for querying the N-gram frequencies
-                 * @param endWordHash the hash of the last word in the N-grams
-                 * @param L the currently considered level of the N-Gram: 0 <= 2 <= N
-                 * @param ngram the N-gram words
-                 * @param hashes the hashes of the N-gram words
-                 * @param freqs the array to put the resulting frequency of the N-gram word_(nStart) .. word_(nEnd) from ngram
-                 *              the computed frequency is to be put @ position nStart in the array
-                 */
-                void queryNGramFreqs(const TWordHashSize endWordHash, const TModelLevel L,
-                        const vector<string> & ngram, vector<TWordHashSize> & hashes,
-                        SFrequencyResult<N> & freqs) const;
-
-                /**
                  * Computes the context for the given Words.
                  * For example for hashes =  [w4 w3 w2 w1] and L = 3 this method will compute
                  * context(w4, context(w3,w2))
                  * @param hashes the pre-computed word's hashes on which the context can be computed
-                 * @param L the current context level, is <= the number of shash values in hashes
+                 * @param L the current context level, is <= the number of hash values in hashes
                  * @return the computed context for the N-gram defined by hashes and L
                  */
                 static inline TReferenceHashSize createContext(vector<TWordHashSize> & hashes, const TModelLevel cLevel) throw (Exception) {
@@ -290,7 +266,6 @@ namespace uva {
             typedef HashMapTrie<MAX_NGRAM_LEVEL, false> TFiveNoCacheHashMapTrie;
 
         }
-
     }
 }
 #endif	/* HASHMAPTRIE_HPP */

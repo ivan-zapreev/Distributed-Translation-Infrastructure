@@ -95,8 +95,10 @@ namespace uva {
                 }
 
                 template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::readData(string &line) {
+                void ARPATrieBuilder<N, doCache>::readData(string &line, uint counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
+                    
+                    LOG_WARNING << "The N-Gram Counts provided in the data section of ARPA are not read yet!" << END_LOG;
 
                     //If we are here then it means we just finished reading the
                     //ARPA headers and we stumbled upon something meaningful,
@@ -118,12 +120,11 @@ namespace uva {
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
                                         LOG_DEBUG1 << "Is the n-gram amount: '" << line << "', ignoring!" << END_LOG;
-                                        
+
                                         //ToDo: Read the number of N-grams in order to have enough data
                                         //      for the pre-allocation of the memory in the trie! For
                                         //      large language models that should both improve the memory
                                         //      usage and the performance of adding new N-Grams!
-                                        
                                     } else {
                                         LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
                                         break;
@@ -169,10 +170,10 @@ namespace uva {
                                     reduce(line);
 
                                     //Empty lines will just be skipped
-                                    if( line != "") {
+                                    if (line != "") {
                                         //Pass the given N-gram string to the N-Gram Builder. If the
                                         //N-gram is not matched then stop the loop and move on
-                                        if( pNGBuilder->processString(line) ) {
+                                        if (pNGBuilder->processString(line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
                                             break;
@@ -195,7 +196,8 @@ namespace uva {
                             throw;
                         }
                         //Free the allocated N-gram builder in case of no exception 
-                        delete pNGBuilder; pNGBuilder = NULL;
+                        delete pNGBuilder;
+                        pNGBuilder = NULL;
 
                         LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
 
@@ -230,8 +232,8 @@ namespace uva {
                         if (line != END_OF_ARPA_FILE) {
                             stringstream msg;
                             msg << "Incorrect ARPA format: Got '" << line
-                                << "' when trying to read the " << level
-                                << "-grams section!";
+                                    << "' when trying to read the " << level
+                                    << "-grams section!";
                             throw Exception(msg.str());
                         }
                     }
@@ -260,8 +262,14 @@ namespace uva {
                         //Skip on ARPA headers
                         readHeaders(line);
 
+                        //Declare an array of N-Gram counts, that is to be filled from the
+                        //headers. This data will be used to pre-allocate memory for the Trie 
+                        uint counts[N];
+
                         //Read the DATA section of ARPA
-                        readData(line);
+                        readData(line, counts);
+
+                        //Provide the N-Gram counts data to the Trie
 
                         //Read the N-grams
                         readNGrams(line, 1);

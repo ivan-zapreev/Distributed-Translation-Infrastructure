@@ -43,6 +43,9 @@ namespace uva {
 #define UNKNOWN_LOG_PROBABILITY -10.0f
 #define ZERRO_LOG_PROBABILITY -99.0f
 
+            //The type used for storing log probabilities and back-off values
+            typedef float TLogProbBackOff;
+
             /**
              * This structure is used to store the N-Gram data
              * of the back-off Language Model.
@@ -54,18 +57,19 @@ namespace uva {
              *        defines the N-gram level.
              */
             struct SBackOffNGram {
-                float prob;
-                float back_off;
+                TLogProbBackOff prob;
+                TLogProbBackOff back_off;
                 vector<string> tokens;
             };
 
             /**
-             * This typedef defines a frequency result type, which is a reference to
-             * an array of N frequency values. Note that the value with index [0] will
-             * contain the frequency for the 1-gram en so forth.
+             * This data structure is to be used to return the N-Gram query result.
+             * It contains the computed Back-Off language model probability and
+             * potentially additional meta data for the decoder
+             * @param prob the computed Back-Off language model probability
              */
-            template<TModelLevel N> struct SFrequencyResult {
-                TFrequencySize result[N];
+            struct SProbResult {
+                double prob;
             };
 
             /**
@@ -79,6 +83,13 @@ namespace uva {
             template<TModelLevel N, bool doCache>
             class ATrie {
             public:
+
+                /**
+                 * This method can be used to provide the N-gram count information
+                 * That should allow for pre-allocation of the memory
+                 * @param counts the array of N-Gram counts counts[0] is for 1-Gram
+                 */
+                virtual void preAllocate(uint counts[N]) = 0;
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
@@ -118,38 +129,16 @@ namespace uva {
                 }
 
                 /**
-                 * This function will query the trie for all the n-grams finishing with the given word.
-                 * This function is to be used when no query result caching is done.
-                 * @param word the word that is begin queued
-                 * @param wrap the reference of an array into which the result values will 
-                 *               be put. The result[0] will contain frequency for 0-gram etc.
-                 * @throws Exception in case this function is used when query result caching is done.
-                 */
-                virtual void queryWordFreqs(const string & word, SFrequencyResult<N> & result) throw (Exception) = 0;
-
-                /**
-                 * This function will query the trie for all the n-grams finishing with the given word.
-                 * This function is to be used when result caching is done.
-                 * @param word the word that is begin queued
-                 * @return the reference to a cached array into which the result values will
-                 *         be put. The result[0] will contain frequency for 1-gram etc.
-                 * @throws Exception in case this function is used when query result caching is not done.
-                 */
-                virtual SFrequencyResult<N> & queryWordFreqs(const string & word) throw (Exception) = 0;
-
-                /**
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the frequencies of the sub n-grams computed as:
-                 * freqs[0] = frequency( [word1 word2 word3 word4 word5] )
-                 * freqs[1] = frequency( [word2 word3 word4 word5] )
-                 * freqs[2] = frequency( [word3 word4 word5] )
-                 * freqs[3] = frequency( [word4 word5] )
-                 * freqs[4] = frequency( [word5] )
-                 * @param ngram the given N-gram vector is expected to have exactly N elements (see the template parameters)
-                 * @param freqs the array into which the frequencies will be placed.
+                 * and will compute and return the Language Model Probability for it
+                 * @param ngram the given N-gram vector is expected to have
+                 *              exactly N elements (see the template parameters)
+                 * @param result the output parameter containing the the result
+                 *               probability and possibly some additional meta
+                 *               data for the decoder.
                  */
-                virtual void queryNGramFreqs(const vector<string> & ngram, SFrequencyResult<N> & freqs) = 0;
+                virtual void queryNGram(const vector<string> & ngram, SProbResult & result) = 0;
 
                 /**
                  * Allows to force reset of internal query caches, if they exist

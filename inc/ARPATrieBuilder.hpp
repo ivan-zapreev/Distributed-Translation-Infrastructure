@@ -86,12 +86,15 @@ namespace uva {
                     /**
                      * This method is used to read and process the ARPA data section
                      * @param line the in/out parameter storing the last read line
+                     * @param counts the out parameters to store the retrieved
+                     *               N-Gram counts from the data descriptions
                      */
-                    void readData(string &line);
+                    void readData(string &line, uint counts[N]);
 
                     /**
                      * This recursive method is used to read and process the ARPA N-Grams.
                      * @param line the in/out parameter storing the last read line
+                     * @param level the level we are to read
                      */
                     void readNGrams(string &line, const TModelLevel level);
                 };

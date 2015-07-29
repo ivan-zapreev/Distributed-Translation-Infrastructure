@@ -251,13 +251,8 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
     string line;
     //Will store the N-gram [word1 word2 word3 word4 word5] corresponding to the line
     vector<string> ngram;
-    //Will store the N-gram frequencies for N-gram:
-    //freqs[0] = frequency( [word1 word2 word3 word4 word5] )
-    //freqs[1] = frequency( [word2 word3 word4 word5] )
-    //freqs[2] = frequency( [word3 word4 word5] )
-    //freqs[3] = frequency( [word4 word5] )
-    //freqs[4] = frequency( [word5] )
-    SFrequencyResult<N> freqs;
+    //Will store the queue result for one N-Gram
+    SProbResult result;
 
     //Read the test file line by line
     while (getline(testFile, line)) {
@@ -268,18 +263,11 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
 
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();
-        trie.queryNGramFreqs(ngram, freqs);
+        trie.queryNGram(ngram, result);
         endTime = StatisticsMonitor::getCPUTime();
 
         //Print the results:
-        ;
-        unsigned idx = -1;
-        for (int i = 0; i < N; i++) {
-            LOG_RESULT << "frequency( " << line << " ) = " << freqs.result[i] << END_LOG;
-
-            idx = line.find_first_of(TOKEN_DELIMITER_CHAR);
-            line = line.substr(idx + 1);
-        }
+        LOG_RESULT << "Prob( '" << line << "' ) = " << result.prob << END_LOG;
         LOG_RESULT << "CPU Time needed: " << (endTime - startTime) << " sec." << END_LOG;
 
         //update total time

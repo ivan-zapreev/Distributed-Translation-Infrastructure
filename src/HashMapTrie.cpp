@@ -51,6 +51,14 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
+            void HashMapTrie<N, doCache>::preAllocate(uint counts[N]) {
+                //ToDo: Implement this method once we know what are the
+                //approximate % values for the number of N-Grams ending
+                //with the same word for each specific N.
+                LOG_WARNING << "The Trie memory is not allocated efficiently yet! Try using the N-Gram Counts!" << END_LOG;
+            }
+
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::add1Gram(const SBackOffNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const string & token = oGram.tokens[0];
@@ -179,121 +187,8 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::queryWordFreqs(TWordHashSize hash, SFrequencyResult<N> & wrap) {
-                TFrequencySize wordFreq = 0;
-                //First check if the given word is present at all, i.e. consider the 1-grams
-                try {
-                    //Set the word's frequency, 0-gram
-                    TWordEntryPair & entry = oGrams.at(hash);
-                    //wrap.result[0] = entry.second;
-
-                    //Set the N-gram frequencies for N > 0, once an exception occurs this
-                    //means the the next level's N-gram is not present, so we can stop
-                    //searching already as there are definitely no occurrences of this word
-                    //as the last one in higher level N-grams.
-                    for (int idx = 1; idx < N; idx++) {
-                        //Now go through all of the N-grams ending with
-                        //the given word and sum-up their frequencies
-                        TMGramEntryMap & entry = mGrams[idx - 1].at(hash);
-                        for (auto it = entry.cbegin(); it != entry.cend(); ++it) {
-                            //wrap.result[idx] += it->second;
-                        }
-                    }
-                } catch (out_of_range e) {
-                    //DO NOTHING! This just means that the NGram is not found so we can simply stop searching
-                }
-            }
-
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::queryWordFreqs(const string & word, SFrequencyResult<N> & result) throw (Exception) {
-                if (HashMapTrie<N, doCache>::doesQueryCache()) {
-                    throw Exception("This function is not applicable when query result caching is ON!");
-                } else {
-                    //Convert the word into it's cache
-                    TWordHashSize hash = computeHash(word);
-                    //Compute the result
-                    queryWordFreqs(hash, result);
-                }
-            }
-
-            template<TModelLevel N, bool doCache>
-            SFrequencyResult<N> & HashMapTrie<N, doCache>::queryWordFreqs(const string & word) throw (Exception) {
-                if (HashMapTrie<N, doCache>::doesQueryCache()) {
-                    //Convert the word into it's cache
-                    TWordHashSize hash = computeHash(word);
-                    //Get/Create the cache entry
-                    TCacheEntry & cache = queryCache[hash];
-                    //Check if the caching was done
-                    if (!cache.first) {
-                        //If not then compute the result, this will be automatically cached
-                        queryWordFreqs(hash, cache.second);
-                        //Set the flag to true as caching is done
-                        cache.first = true;
-                    }
-                    //return the cached result
-                    return cache.second;
-                } else {
-                    throw Exception("This function is not applicable when query result caching is OFF!");
-                }
-            }
-
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::queryNGramFreqs(const TWordHashSize endWordHash, const TModelLevel L,
-                    const vector<string> & ngram, vector<TWordHashSize> & hashes,
-                    SFrequencyResult<N> & freqs) const {
-                LOG_DEBUG << ">> End word hash: " << endWordHash << ", level " << L << END_LOG;
-                //Get this level's mapping corresponding to the start word
-                const TMGramEntryMap & entry = mGrams[L - MINIMUM_CONTEXT_LEVEL].at(endWordHash);
-
-                LOG_DEBUG << "-- The level " << L << " data entry is found" << END_LOG;
-
-                //Compute the hash of the first word in the Ngram
-                TWordHashSize startWordHash = computeHash(ngram[N - L]);
-                //Put it inside the hash
-                hashes.push_back(startWordHash);
-
-                LOG_DEBUG << "-- Computed the level's " << L << " next " << N - L << "-gram level word hash " << startWordHash << END_LOG;
-
-                //Compute the context of the startWord on this level for this level's N-gram (L-gram))
-                TReferenceHashSize context = createContext(hashes, L);
-
-                LOG_DEBUG << "-- The level " << L << " context is " << context << END_LOG;
-
-                //BasicLogger::printDebug("Getting data[%u][%u][%u] = %u", L-1, endWordHash, context, data[L-MINIMUM_CONTEXT_LEVEL][endWordHash][context]);
-
-                //Get the L-gram's frequency
-                //freqs.result[N - L] = entry.at(context);
-
-                LOG_DEBUG << "-- The level " << context << " frequency " << freqs.result[N - L] << " is found and stored at index " << N - L << END_LOG;
-
-                //In case the maximum level N is not reached, do recursion
-                if (L < N) {
-                    queryNGramFreqs(endWordHash, L + 1, ngram, hashes, freqs);
-                }
-                LOG_DEBUG << "<< End word hash: " << endWordHash << ", level " << L << END_LOG;
-            }
-
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::queryNGramFreqs(const vector<string> & ngram, SFrequencyResult<N> & freqs) {
-                //First just clean the array
-                fill(freqs.result, freqs.result + N, 0);
-                //This vector will store the N-gram's word hashes
-                //for being re-used in the recursive calls
-                vector<TWordHashSize> hashes;
-
-                try {
-                    //Compute the hash of the last word in the Ngram
-                    TWordHashSize endWordHash = computeHash(ngram[N - 1]);
-
-                    //Get the last 1-gram's word frequency
-                    //freqs.result[N - 1] = words.at(endWordHash).second;
-
-                    //Now perform a recursive procedure for finding
-                    //frequencies of all longer N-grams with N >= 2
-                    queryNGramFreqs(endWordHash, MINIMUM_CONTEXT_LEVEL, ngram, hashes, freqs);
-                } catch (out_of_range e) {
-                    //DO NOTHING! This just means that the NGram is not found so we can simply stop searching
-                }
+            void HashMapTrie<N, doCache>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+                //ToDo: implement!
             }
 
             template<TModelLevel N, bool doCache>
