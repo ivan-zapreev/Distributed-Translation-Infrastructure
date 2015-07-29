@@ -73,7 +73,7 @@ namespace uva {
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
                     template<TModelLevel N, bool doCache>
-                    static inline void getBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim, ARPAGramBuilder<N, doCache> **ppBuilder) {
+                    static inline void getBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
@@ -90,7 +90,7 @@ namespace uva {
                                 //ToDo: If the level is at minimum it means we are filling in the dictionary
                                 LOG_DEBUG1 << "Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
-                                *ppBuilder = new ARPAGramBuilder<N, doCache>(level,
+                                *ppBuilder = new ARPAGramBuilder(level,
                                         [&] (const SBackOffNGram & gram) {
                                             trie.add1Gram(gram); },
                                 delim);
@@ -100,7 +100,7 @@ namespace uva {
                                     //ToDo: If the minimum is at maximum it means we are filling in the top N-gram level
                                     LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<N, doCache>(level,
+                                    *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const SBackOffNGram & gram) {
                                                 trie.addNGram(gram); },
                                     delim);
@@ -109,7 +109,7 @@ namespace uva {
                                     //Here we are to get the builder for the intermediate N-gram levels
                                     LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<N, doCache>(level,
+                                    *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const SBackOffNGram & gram) {
                                                 trie.addMGram(gram); },
                                     delim);

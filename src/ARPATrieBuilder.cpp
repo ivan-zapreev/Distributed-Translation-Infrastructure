@@ -151,7 +151,7 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(line, ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
-                        ARPAGramBuilder<N, doCache> *pNGBuilder = NULL;
+                        ARPAGramBuilder *pNGBuilder = NULL;
                         ARPAGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
 
                         try {

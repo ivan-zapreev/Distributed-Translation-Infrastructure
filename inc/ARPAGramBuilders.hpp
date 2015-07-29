@@ -46,7 +46,6 @@ namespace uva {
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
-                template<TModelLevel N, bool doCache>
                 class ARPAGramBuilder {
                 public:
 
