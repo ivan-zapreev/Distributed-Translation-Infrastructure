@@ -39,10 +39,31 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            //This typedef defines a frequency result type, which is a reference to
-            //an array of N frequency values. Note that the value with index [0] will
-            //contain the frequency for the 1-gram en so forth.
-
+#define UNDEFINED_LOG_PROB_WEIGHT 0.0f;
+#define UNKNOWN_LOG_PROBABILITY -10.0f;
+#define ZERRO_LOG_PROBABILITY -99.0f;
+            
+            /**
+             * This structure is used to store the N-Gram data
+             * of the back-off Language Model.
+             * @param prob stores the log_10 probability of the N-Gram Must be
+             *             a negative value
+             * @param back_off stores the log_10 back-off weight (probability)
+             *        of the N-gram can be 0 is the probability is not available
+             * @param tokens stores the N-gram words the size of this vector
+             *        defines the N-gram level.
+             */
+            struct SBackOffNGram {
+                float prob;
+                float back_off;
+                vector<string> tokens;
+            };
+            
+            /**
+             * This typedef defines a frequency result type, which is a reference to
+             * an array of N frequency values. Note that the value with index [0] will
+             * contain the frequency for the 1-gram en so forth.
+             */
             template<TModelLevel N> struct SFrequencyResult {
                 TFrequencySize result[N];
             };
@@ -58,6 +79,27 @@ namespace uva {
             template<TModelLevel N, bool doCache>
             class ATrie {
             public:
+
+                /**
+                 * This method adds a 1-Gram (word) to the trie.
+                 * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
+                 * @param oneGram the 1-Gram data
+                 */
+                virtual void add1Gram(const SBackOffNGram &oneGram) = 0;
+                
+                /**
+                 * This method adds a M-Gram (word) to the trie where 1 < M < N
+                 * @param oneGram the M-Gram data
+                 * @throws Exception if the level of this M-gram is not such that  1 < M < N
+                 */
+                virtual void addMGram(const SBackOffNGram &oneGram) = 0;
+                
+                /**
+                 * This method adds a N-Gram (word) to the trie where
+                 * It it snot guaranteed that the parameter will be checked to be a N-Gram!
+                 * @param oneGram the N-Gram data
+                 */
+                virtual void addNGram(const SBackOffNGram &oneGram) = 0;
 
                 /**
                  * This method adds a words to the trie

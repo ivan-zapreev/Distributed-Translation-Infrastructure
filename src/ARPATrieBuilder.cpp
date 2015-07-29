@@ -30,8 +30,8 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
-#include "ARPANGramBuilder.hpp"
-#include "ARPANGramBuilderFactory.hpp"
+#include "ARPAGramBuilders.hpp"
+#include "ARPAGramBuilderFactory.hpp"
 
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
@@ -151,8 +151,8 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(line, ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
-                        ARPANGramBuilder<N, doCache> *pNGBuilder = NULL;
-                        ARPANGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
+                        ARPAGramBuilder<N, doCache> *pNGBuilder = NULL;
+                        ARPAGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
 
                         try {
                             //Read the current level N-grams and add them to the trie

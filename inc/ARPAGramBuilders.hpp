@@ -26,7 +26,8 @@
 #ifndef NGRAMBUILDER_HPP
 #define	NGRAMBUILDER_HPP
 
-#include <regex>        // std::regex, std::regex_match
+#include <regex>      // std::regex, std::regex_match
+#include <functional> // std::function 
 
 #include <ATrie.hpp>
 
@@ -40,20 +41,22 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
+                typedef std::function<void (const SBackOffNGram&)> TAddGramFunct;
+                
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
                 template<TModelLevel N, bool doCache>
-                class ARPANGramBuilder {
+                class ARPAGramBuilder {
                 public:
-                    
+
                     /**
                      * The constructor to be used in order to instantiate a N-Gram builder
                      * @param level the level of the N-grams to be processed
                      * @param trie the trie to be filled in with the N-gram
                      * @param delim the delimiter for the N-gram string
                      */
-                    ARPANGramBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim);
+                    ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc, const char delim);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -66,28 +69,27 @@ namespace uva {
                      * @result returns true if the provided line is NOT recognized
                      *         as the N-Gram of the specified level.
                      */
-                    virtual bool processString(const string & data);
+                    bool processString(const string & data);
 
-                    virtual ~ARPANGramBuilder();
+                    virtual ~ARPAGramBuilder();
                 protected:
-                    //The trie to store the n-grams 
-                    ATrie<N, doCache> & _trie;
+                    //The function that is to be used to add an N-gram to a trie
+                    TAddGramFunct _addGarmFunc;
                     //The tokens delimiter in the string to parse
                     const char _delim;
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel _level;
-                    //This is a regular expression for recognizing a full N-Gram
-                    //of the given level: with probability and back-off weight
-                    const regex _ngramFullRegExp;
-                    //This is a regular expression for recognizing a partial N-Gram
-                    //of the given level: with probability but without back-off weight
-                    const regex _ngramProbOnlyRegExp;
-
+                    //This is the N-Gram container to store the parsed N-gram data
+                    SBackOffNGram _ngram;
+                    //The minimum and maximum number of tokens in the N-Gram string
+                    const int MIN_NUM_TOKENS_NGRAM_STR;
+                    const int MAX_NUM_TOKENS_NGRAM_STR;
+                    
                     /**
                      * The copy constructor
                      * @param orig the other builder to copy
                      */
-                    ARPANGramBuilder(const ARPANGramBuilder& orig);
+                    ARPAGramBuilder(const ARPAGramBuilder& orig);
 
                 };
             }

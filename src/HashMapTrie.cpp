@@ -52,6 +52,21 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
+            void HashMapTrie<N, doCache>::add1Gram(const SBackOffNGram &oneGram) {
+                //ToDo: Implement
+            }
+
+            template<TModelLevel N, bool doCache>
+            void HashMapTrie<N, doCache>::addMGram(const SBackOffNGram &oneGram) {
+                //ToDo: Implement
+            }
+
+            template<TModelLevel N, bool doCache>
+            void HashMapTrie<N, doCache>::addNGram(const SBackOffNGram &oneGram) {
+                //ToDo: Implement
+            }
+
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::addWords(vector<string> &tokens) {
                 //Add the words to the trie and update frequencies;
                 for (vector<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {

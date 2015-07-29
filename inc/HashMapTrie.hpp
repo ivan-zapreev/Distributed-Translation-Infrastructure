@@ -83,6 +83,24 @@ namespace uva {
                 HashMapTrie();
 
                 /**
+                 * This method adds a 1-Gram (word) to the trie.
+                 * For more details @see ITrie
+                 */
+                virtual void add1Gram(const SBackOffNGram &oneGram);
+                
+                /**
+                 * This method adds a M-Gram (word) to the trie where 1 < M < N
+                 * For more details @see ITrie
+                 */
+                virtual void addMGram(const SBackOffNGram &oneGram);
+                
+                /**
+                 * This method adds a N-Gram (word) to the trie where
+                 * For more details @see ITrie
+                 */
+                virtual void addNGram(const SBackOffNGram &oneGram);
+
+                /**
                  * Does not re-set the internal query cache
                  * For more details @see ITrie
                  */

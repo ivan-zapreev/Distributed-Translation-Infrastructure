@@ -36,7 +36,7 @@
 #include "HashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
-#include "ARPANGramBuilder.hpp"
+#include "ARPAGramBuilders.hpp"
 #include "StringUtils.hpp"
 
 using namespace std;
