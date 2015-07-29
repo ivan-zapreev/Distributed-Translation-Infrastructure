@@ -39,10 +39,10 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-#define UNDEFINED_LOG_PROB_WEIGHT 0.0f;
-#define UNKNOWN_LOG_PROBABILITY -10.0f;
-#define ZERRO_LOG_PROBABILITY -99.0f;
-            
+#define UNDEFINED_LOG_PROB_WEIGHT 0.0f
+#define UNKNOWN_LOG_PROBABILITY -10.0f
+#define ZERRO_LOG_PROBABILITY -99.0f
+
             /**
              * This structure is used to store the N-Gram data
              * of the back-off Language Model.
@@ -58,7 +58,7 @@ namespace uva {
                 float back_off;
                 vector<string> tokens;
             };
-            
+
             /**
              * This typedef defines a frequency result type, which is a reference to
              * an array of N frequency values. Note that the value with index [0] will
@@ -83,37 +83,23 @@ namespace uva {
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @param oneGram the 1-Gram data
+                 * @param oGram the 1-Gram data
                  */
-                virtual void add1Gram(const SBackOffNGram &oneGram) = 0;
-                
+                virtual void add1Gram(const SBackOffNGram &oGram) = 0;
+
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * @param oneGram the M-Gram data
+                 * @param mGram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void addMGram(const SBackOffNGram &oneGram) = 0;
-                
+                virtual void addMGram(const SBackOffNGram &mGram) = 0;
+
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
-                 * @param oneGram the N-Gram data
+                 * @param nGram the N-Gram data
                  */
-                virtual void addNGram(const SBackOffNGram &oneGram) = 0;
-
-                /**
-                 * This method adds a words to the trie
-                 * @param tokens the array of tokens/words to add the trie from
-                 */
-                virtual void addWords(vector<string> &tokens) = 0;
-
-                /**
-                 * This method adds a new n-gram into the trie
-                 * @param tokens the array of tokens to add the trie from
-                 * @param idx the index to start with
-                 * @param n the value of "n" for the n-gram (the number of elements in the n-gram).
-                 */
-                virtual void addNGram(vector<string> &tokens, const int idx, const int n) = 0;
+                virtual void addNGram(const SBackOffNGram &nGram) = 0;
 
                 /**
                  * Returns the maximum length of the considered N-Grams
@@ -172,12 +158,12 @@ namespace uva {
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches
-            typedef ATrie<N_GRAM_PARAM, true> TFiveCacheTrie;
-            typedef ATrie<N_GRAM_PARAM, false> TFiveNoCacheTrie;
+            typedef ATrie<MAX_NGRAM_LEVEL, true> TFiveCacheTrie;
+            typedef ATrie<MAX_NGRAM_LEVEL, false> TFiveNoCacheTrie;
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ATrie<N_GRAM_PARAM, true>;
-            template class ATrie<N_GRAM_PARAM, false>;
+            template class ATrie<MAX_NGRAM_LEVEL, true>;
+            template class ATrie<MAX_NGRAM_LEVEL, false>;
         }
     }
 }

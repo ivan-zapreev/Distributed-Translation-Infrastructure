@@ -44,7 +44,7 @@ namespace uva {
             namespace text {
 
                 //All the possible Whitespaces, including unicode, to be imagined, are to be used for trimming and reduce
-#define WHITESPACES string("\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r")
+#define WHITESPACES string("\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r")
                 
                 /**
                  * Tokenise a given string into avector of strings

@@ -22,7 +22,7 @@
  *
  * Created on April 18, 2015, 12:02 PM
  */
-#include "ARPAGramBuilders.hpp"
+#include "ARPAGramBuilder.hpp"
 
 #include <string>    // std::string
 #include <vector>    // std::vector
@@ -41,21 +41,26 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc, const char delim)
-                : _addGarmFunc(addGarmFunc), _delim(delim), _level(level),
+                template<TModelLevel N, bool doCache>
+                ARPAGramBuilder<N, doCache>::ARPAGramBuilder(const TModelLevel level, AddGramStrategy<N, doCache> *pAddGarmStrat, const char delim)
+                : _pAddGarmStrat(pAddGarmStrat), _delim(delim), _level(level),
                 MIN_NUM_TOKENS_NGRAM_STR(_level + 1), MAX_NUM_TOKENS_NGRAM_STR(_level + 2) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie," << delim << ")" << END_LOG;
                 }
 
-                ARPAGramBuilder::ARPAGramBuilder(const ARPAGramBuilder& orig)
-                : _addGarmFunc(orig._addGarmFunc), _delim(orig._delim), _level(orig._level),
+                template<TModelLevel N, bool doCache>
+                ARPAGramBuilder<N, doCache>::ARPAGramBuilder(const ARPAGramBuilder& orig)
+                : _pAddGarmStrat(orig._pAddGarmStrat), _delim(orig._delim), _level(orig._level),
                 MIN_NUM_TOKENS_NGRAM_STR(_level + 1), MAX_NUM_TOKENS_NGRAM_STR(_level + 2) {
                 }
 
-                ARPAGramBuilder::~ARPAGramBuilder() {
+                template<TModelLevel N, bool doCache>
+                ARPAGramBuilder<N, doCache>::~ARPAGramBuilder() {
+                    if (_pAddGarmStrat != NULL) delete _pAddGarmStrat;
                 }
 
-                bool ARPAGramBuilder::processString(const string & data) {
+                template<TModelLevel N, bool doCache>
+                bool ARPAGramBuilder<N, doCache>::processString(const string & data) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
@@ -71,7 +76,7 @@ namespace uva {
                     const size_t size = _ngram.tokens.size();
 
                     LOG_DEBUG1 << "The number of tokens is: " << size
-                            << ", is expected to be within ["
+                            << ", it is expected to be within ["
                             << MIN_NUM_TOKENS_NGRAM_STR << ","
                             << MAX_NUM_TOKENS_NGRAM_STR << "]" << END_LOG;
 
@@ -86,7 +91,7 @@ namespace uva {
                             _ngram.tokens.erase(_ngram.tokens.begin());
 
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
- 
+
                             if (size == MAX_NUM_TOKENS_NGRAM_STR) {
                                 //If there is two extra tokens then it must be a
                                 //probability and a back-off weight. The back-off is
@@ -99,9 +104,9 @@ namespace uva {
 
                                 LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
                             }
-                            
+
                             //Add the obtained N-gram data to the Trie
-                            _addGarmFunc( _ngram );
+                            _pAddGarmStrat->addGram(_ngram);
                         } catch (invalid_argument) {
                             stringstream msg;
                             msg << "The probability or back-off value of the "
@@ -120,6 +125,19 @@ namespace uva {
 
                     return result;
                 }
+
+                //Make sure that there will be templates instantiated, at least for the given parameter values
+                template class ARPAGramBuilder< 1, true >;
+                template class ARPAGramBuilder< 1, false >;
+                template class ARPAGramBuilder< 2, true >;
+                template class ARPAGramBuilder< 2, false >;
+                template class ARPAGramBuilder< 3, true >;
+                template class ARPAGramBuilder< 3, false >;
+                template class ARPAGramBuilder< 4, true >;
+                template class ARPAGramBuilder< 4, false >;
+                template class ARPAGramBuilder< 5, true >;
+                template class ARPAGramBuilder< 5, false >;
+
             }
         }
     }

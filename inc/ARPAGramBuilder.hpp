@@ -41,21 +41,79 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                typedef std::function<void (const SBackOffNGram&)> TAddGramFunct;
-                
+                template<TModelLevel N, bool doCache>
+                class AddGramStrategy {
+                public:
+
+                    AddGramStrategy(ATrie<N, doCache> & trie) : _trie(trie) {
+                    }
+                    virtual void addGram(const SBackOffNGram &gram) = 0;
+
+                    virtual ~AddGramStrategy() {
+                    };
+                protected:
+                    ATrie<N, doCache> &_trie;
+                };
+
+                template<TModelLevel N, bool doCache>
+                class Add1GramStrategy : public AddGramStrategy<N, doCache> {
+                public:
+
+                    Add1GramStrategy(ATrie<N, doCache> &trie) : AddGramStrategy<N, doCache>(trie) {
+                    }
+
+                    virtual void addGram(const SBackOffNGram &gram) {
+                        AddGramStrategy<N, doCache>::_trie.add1Gram(gram);
+                    }
+
+                    virtual ~Add1GramStrategy() {
+                    };
+                };
+
+                template<TModelLevel N, bool doCache>
+                class AddMGramStrategy : public AddGramStrategy<N, doCache> {
+                public:
+
+                    AddMGramStrategy(ATrie<N, doCache> &trie) : AddGramStrategy<N, doCache>(trie) {
+                    }
+
+                    virtual void addGram(const SBackOffNGram &gram) {
+                        AddGramStrategy<N, doCache>::_trie.addMGram(gram);
+                    }
+
+                    virtual ~AddMGramStrategy() {
+                    };
+                };
+
+                template<TModelLevel N, bool doCache>
+                class AddNGramStrategy : public AddGramStrategy<N, doCache> {
+                public:
+
+                    AddNGramStrategy(ATrie<N, doCache> &trie) : AddGramStrategy<N, doCache>(trie) {
+                    }
+
+                    virtual void addGram(const SBackOffNGram &gram) {
+                        AddGramStrategy<N, doCache>::_trie.addNGram(gram);
+                    }
+
+                    virtual ~AddNGramStrategy() {
+                    };
+                };
+
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
+                template<TModelLevel N, bool doCache>
                 class ARPAGramBuilder {
                 public:
 
                     /**
                      * The constructor to be used in order to instantiate a N-Gram builder
                      * @param level the level of the N-grams to be processed
-                     * @param trie the trie to be filled in with the N-gram
+                     * @param pAddGarmStrat the pointer to the strategy for adding the N-grams
                      * @param delim the delimiter for the N-gram string
                      */
-                    ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc, const char delim);
+                    ARPAGramBuilder(const TModelLevel level, AddGramStrategy<N, doCache> *pAddGarmStrat, const char delim);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -72,8 +130,8 @@ namespace uva {
 
                     virtual ~ARPAGramBuilder();
                 protected:
-                    //The function that is to be used to add an N-gram to a trie
-                    TAddGramFunct _addGarmFunc;
+                    //The wrapper class around the function for adding N-gram strategy
+                    AddGramStrategy<N, doCache> *_pAddGarmStrat;
                     //The tokens delimiter in the string to parse
                     const char _delim;
                     //The level of the N-grams to be processed by the given builder
@@ -83,7 +141,7 @@ namespace uva {
                     //The minimum and maximum number of tokens in the N-Gram string
                     const int MIN_NUM_TOKENS_NGRAM_STR;
                     const int MAX_NUM_TOKENS_NGRAM_STR;
-                    
+
                     /**
                      * The copy constructor
                      * @param orig the other builder to copy

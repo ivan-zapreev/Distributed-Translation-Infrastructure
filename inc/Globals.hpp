@@ -40,11 +40,11 @@ namespace uva {
 //The expected number of user arguments
 #define EXPECTED_USER_NUMBER_OF_ARGUMENTS (EXPECTED_NUMBER_OF_ARGUMENTS - 1)
 //The number of bytes in one Mb
-#define BYTES_ONE_MB 1024
+#define BYTES_ONE_MB 1024u
 //The considered maximum length of the N-gram
-#define N_GRAM_PARAM 5u
+#define MAX_NGRAM_LEVEL 5u
 //Defined the minimum possible N-gram level
-#define MIN_NGRAM_LEVEL 1
+#define MIN_NGRAM_LEVEL 1u
 
 //The string representation values for debug levels
 #define USAGE_PARAM_VALUE "usage"

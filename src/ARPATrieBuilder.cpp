@@ -30,7 +30,7 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
-#include "ARPAGramBuilders.hpp"
+#include "ARPAGramBuilder.hpp"
 #include "ARPAGramBuilderFactory.hpp"
 
 using namespace uva::smt::logging;
@@ -118,6 +118,12 @@ namespace uva {
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
                                         LOG_DEBUG1 << "Is the n-gram amount: '" << line << "', ignoring!" << END_LOG;
+                                        
+                                        //ToDo: Read the number of N-grams in order to have enough data
+                                        //      for the pre-allocation of the memory in the trie! For
+                                        //      large language models that should both improve the memory
+                                        //      usage and the performance of adding new N-Grams!
+                                        
                                     } else {
                                         LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
                                         break;
@@ -151,7 +157,7 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(line, ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
-                        ARPAGramBuilder *pNGBuilder = NULL;
+                        ARPAGramBuilder<N, doCache> *pNGBuilder = NULL;
                         ARPAGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
 
                         try {
@@ -272,8 +278,8 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder< N_GRAM_PARAM, true >;
-                template class ARPATrieBuilder< N_GRAM_PARAM, false >;
+                template class ARPATrieBuilder< MAX_NGRAM_LEVEL, true >;
+                template class ARPATrieBuilder< MAX_NGRAM_LEVEL, false >;
             }
         }
     }

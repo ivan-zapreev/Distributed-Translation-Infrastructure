@@ -4,8 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/ARPAGramBuilder.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
-      <itemPath>inc/ARPAGramBuilders.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
@@ -23,7 +23,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/ARPAGramBuilders.cpp</itemPath>
+      <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/HashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
@@ -78,9 +78,9 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
-      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/ARPAGramBuilders.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -100,7 +100,7 @@
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/ARPAGramBuilders.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -134,9 +134,9 @@
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
-      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/ARPAGramBuilders.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -156,7 +156,7 @@
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/ARPAGramBuilders.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -181,11 +181,11 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandlineTool>g++</commandlineTool>
+          <commandlineTool>g++ -std=c++0x</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x</commandLine>
+          <commandLine>-O3</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -198,9 +198,9 @@
           <commandlineTool>g++</commandlineTool>
         </linkerTool>
       </compileType>
-      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/ARPAGramBuilders.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -220,7 +220,7 @@
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/ARPAGramBuilders.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>

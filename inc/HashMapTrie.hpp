@@ -86,31 +86,19 @@ namespace uva {
                  * This method adds a 1-Gram (word) to the trie.
                  * For more details @see ITrie
                  */
-                virtual void add1Gram(const SBackOffNGram &oneGram);
-                
+                virtual void add1Gram(const SBackOffNGram &oGram);
+
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * For more details @see ITrie
                  */
-                virtual void addMGram(const SBackOffNGram &oneGram);
-                
+                virtual void addMGram(const SBackOffNGram &mGram);
+
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * For more details @see ITrie
                  */
-                virtual void addNGram(const SBackOffNGram &oneGram);
-
-                /**
-                 * Does not re-set the internal query cache
-                 * For more details @see ITrie
-                 */
-                virtual void addWords(vector<string> &tokens);
-
-                /**
-                 * Does not re-set the internal query cache
-                 * For more details @see ITrie
-                 */
-                virtual void addNGram(vector<string> &tokens, const int idx, const int n);
+                virtual void addNGram(const SBackOffNGram &nGram);
 
                 /**
                  * Does re-set the internal query cache
@@ -143,23 +131,33 @@ namespace uva {
                 //Stores the minimum context level
                 static const TModelLevel MINIMUM_CONTEXT_LEVEL;
 
-                //A tuple storing a word and its frequency
-                typedef pair<string, TFrequencySize> TWordEntryPair;
+                //The type used for storing log probabilities and back-off values
+                typedef float TLogProbBackOff;
 
-                //The N-trie level entry tuple for a word
-                typedef unordered_map<TReferenceHashSize, TFrequencySize> TNTrieEntryPairsMap;
+                //The entry pair to store the N-gram probability and back off
+                typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
+
+                //A tuple storing a word and its frequency
+                typedef pair<string, TProbBackOffEntryPair> TWordEntryPair;
+
+                //The M-trie level entry for 1 < M < N, for with probability and back-off weights
+                typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair> TMGramEntryMap;
+
+                //The N-trie level entry for the highest level M-Grams, there are no back-off weights
+                typedef unordered_map<TReferenceHashSize, TLogProbBackOff> TNGramEntryMap;
 
                 //This is the cache entry type the first value is true if the caching 
                 //of this result was done, the second contains the cached results.
                 typedef pair<bool, SFrequencyResult<N>> TCacheEntry;
 
-                //The map storing the dictionary
-                unordered_map<TWordHashSize, TWordEntryPair> words;
+                //The map storing the One-Grams: I.e. the dictionary
+                unordered_map<TWordHashSize, TWordEntryPair> oGrams;
 
-                //The map storing n-tires for n>=2 and <= N
-                //ToDo: That does nog have to be a map, a simple array should suffice!
-                //ToDo: The key can be just of type byte as we typically consider up to 6-Grams
-                unordered_map<TWordHashSize, TNTrieEntryPairsMap > data[N - 1];
+                //The array of maps map storing n-tires for n>1 and < N
+                unordered_map<TWordHashSize, TMGramEntryMap > mGrams[N - 2];
+
+                //The map storing the N-Grams, they do not have back-off values
+                unordered_map<TWordHashSize, TNGramEntryMap > nGrams;
 
                 //The internal query results cache
                 unordered_map<TWordHashSize, TCacheEntry > queryCache;
@@ -171,16 +169,11 @@ namespace uva {
                 HashMapTrie(const HashMapTrie& orig);
 
                 /**
-                 * This function has pure debug purpose, so its impl is ugly
-                 * This implementation delivers quite a few hash collisions!
-                 * This is not something I want to have at the moment as then
-                 * the data structure will need to be more complex. So this
-                 * function will not be used.
-                 * @param tokens the tokens to print
-                 * @param hash the begin of the n-gram
-                 * @param n the number of elements in the n-gram
+                 * This function just takes the N-Gram tokens and puts them together in one string.
+                 * @param tokens the tokens to put together
+                 * @return the resulting string
                  */
-                void printDebugNGram(vector<string> &tokens, const int hash, const int n);
+                string ngramToString(const vector<string> &tokens);
 
                 /**
                  * This function computes the result for the given word's hash query:
@@ -235,6 +228,31 @@ namespace uva {
                 }
 
                 /**
+                 * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * @param tokens alls of the N-gram tokens
+                 * @return the resulting hash of the context(w1 w2 w3)
+                 */
+                static inline TWordHashSize computeHashContext(const vector<string> & tokens) {
+                    //Get the start iterator
+                    vector<string>::const_iterator it = tokens.begin();
+                    //Get the iterator we are going to iterate until
+                    const vector<string>::const_iterator end = --tokens.end();
+
+                    TReferenceHashSize contextHash = computeHash(*it);
+                    LOG_DEBUG2 << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
+
+                    //Iterate and compute the hash:
+                    for (++it; it < end; ++it) {
+                        TWordHashSize wordHash = computeHash(*it);
+                        LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
+                        contextHash = createContext(wordHash, contextHash);
+                        LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
+                    }
+
+                    return contextHash;
+                }
+
+                /**
                  * This function computes the hash of the word
                  * @param str the word to hash
                  * @return the resulting hash
@@ -268,8 +286,8 @@ namespace uva {
                 }
             };
 
-            typedef HashMapTrie<N_GRAM_PARAM, true> TFiveCacheHashMapTrie;
-            typedef HashMapTrie<N_GRAM_PARAM, false> TFiveNoCacheHashMapTrie;
+            typedef HashMapTrie<MAX_NGRAM_LEVEL, true> TFiveCacheHashMapTrie;
+            typedef HashMapTrie<MAX_NGRAM_LEVEL, false> TFiveNoCacheHashMapTrie;
 
         }
 
