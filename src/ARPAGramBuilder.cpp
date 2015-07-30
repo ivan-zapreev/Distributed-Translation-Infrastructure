@@ -27,6 +27,7 @@
 #include <string>    // std::string
 #include <vector>    // std::vector
 #include <stdexcept> // std::invalid_argument
+#include <algorithm> // std::min
 
 #include "Logger.hpp"
 #include "StringUtils.hpp"

@@ -26,7 +26,8 @@
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
-#include <algorithm>      //std::fill
+#include <algorithm> //std::fill
+#include <math.h>    //std::pow
 
 #include "Logger.hpp"
 
@@ -39,15 +40,6 @@ namespace uva {
 
             template<TModelLevel N, bool doCache>
             HashMapTrie<N, doCache>::HashMapTrie() {
-            }
-
-            template<TModelLevel N, bool doCache>
-            string HashMapTrie<N, doCache>::ngramToString(const vector<string> &tokens) {
-                string str = "[ ";
-                for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                    str += *it + " ";
-                }
-                return str + "]";
             }
 
             template<TModelLevel N, bool doCache>
@@ -73,7 +65,7 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = wordData.second;
 
                 //If the probability is zero then this word has not been seen yet
-                if (pbData.first == UNDEFINED_LOG_PROB_WEIGHT) {
+                if (pbData.first == ZERO_LOG_PROB_WEIGHT) {
                     wordData.first = token;
                 } else {
                     //If the word probability is set then it is either
@@ -124,7 +116,7 @@ namespace uva {
                     TProbBackOffEntryPair& pbData = ngamEntry[contextHash];
 
                     //Check that the probability data is not set yet, otherwise a warning!
-                    if (pbData.first != UNDEFINED_LOG_PROB_WEIGHT) {
+                    if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //The M-Gram has been seen already, this is a potential error, so we report a warning!
                         LOG_WARNING << "The " << level << "-Gram : '" << ngramToString(mGram.tokens) << "' has been already seen! "
                                 << "Changing the (prob,back-off) data from ("
@@ -170,7 +162,7 @@ namespace uva {
                 TLogProbBackOff& pData = ngamEntry[contextHash];
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (pData != UNDEFINED_LOG_PROB_WEIGHT) {
+                if (pData != ZERO_LOG_PROB_WEIGHT) {
                     //The M-Gram has been seen already, this is a potential error, so we report a warning!
                     LOG_WARNING << "The " << level << "-Gram : '" << ngramToString(nGram.tokens)
                             << "' has been already seen! "
@@ -187,8 +179,173 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
+            double HashMapTrie<N, doCache>::getBackOffWeight(const TModelLevel contextLength) {
+                //Get the word hash for the en word of the back-off N-Gram
+                const TWordHashSize & endWordHash = _wordHashes[N - 2];
+                const TModelLevel backOfContextLength = contextLength - 1;
+                //Set the initial back-off weight value to undefined!
+                TLogProbBackOff back_off = UNDEFINED_LOG_PROB_WEIGHT;
+
+                if (backOfContextLength > 0) {
+                    //Compute the context hash
+                    TReferenceHashSize contextHash = computeHashContext(backOfContextLength, true);
+                    //Attempt to retrieve back-off weights
+                    try {
+                        //The context length plus one is M value of the M-Gram
+                        //All the M-grams for 1 < M < N are stored in a mGrams
+                        //array, so this M-Gram is stored under index M-1;
+                        const TModelLevel mGramIdx = ((backOfContextLength + 1) - 1);
+                        TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
+
+                        //Obtained the stored back-off weight
+                        back_off = entry.second;
+
+                        LOG_DEBUG2 << "Found the " << contextLength << "-Gram back-off weight for a (word, context)=("
+                                << endWordHash << ", " << contextHash << "), it is: 10^" << back_off << END_LOG;
+                    } catch (out_of_range e) {
+                        LOG_DEBUG << "Unable to find the " << (contextLength)
+                                << "-Gram entry for a (word, context)=("
+                                << endWordHash << ", " << contextHash << "), need to back off!" << END_LOG;
+                    }
+
+                    //If the back-off is undefined then recurse
+                    if (back_off == UNDEFINED_LOG_PROB_WEIGHT) {
+                        LOG_DEBUG << "Undefined back-off weight for " << (contextLength)
+                                << "-Gram defined by (word, context)=("
+                                << endWordHash << ", " << contextHash << "), going recursive!" << END_LOG;
+
+                        //In case the back-off weight is not know then we move down to the lower level
+                        back_off = getBackOffWeight(contextLength - 1);
+                    }
+                } else {
+                    //We came to a zero context, which means we have an
+                    //1-Gram to try to get the back-off weight from
+                    
+                    //Attempt to retrieve back-off weights
+                    try {
+                        TWordEntryPair & entry = oGrams.at(endWordHash);
+                        //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
+                        back_off = entry.second.second;
+
+                        LOG_DEBUG2 << "Found the 1-Gram back-off weight for a word: "
+                                << endWordHash << ", it is: 10^" << back_off << END_LOG;
+                    } catch (out_of_range e) {
+                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
+                    }
+
+                    //If the back-off is still undefined then just it to zero - no penalty
+                    if( back_off == UNDEFINED_LOG_PROB_WEIGHT ) {
+                        back_off = ZERO_LOG_PROB_WEIGHT;
+                    }
+                }
+
+                LOG_DEBUG2 << "The chosen log back-off weight is: " << back_off << END_LOG;
+                
+                //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
+                return back_off;
+            }
+
+            template<TModelLevel N, bool doCache>
+            double HashMapTrie<N, doCache>::computeLogProbability(const TModelLevel contextLength) {
+                //Get the last word in the N-gram
+                TWordHashSize & endWordHash = _wordHashes[N - 1];
+
+                //Consider different variants based no the length of the context
+                if (contextLength > 0) {
+                    //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
+
+                    //Compute the context hash based on what is stored in _wordHashes and context length
+                    TReferenceHashSize contextHash = computeHashContext(contextLength, false);
+
+                    //Attempt to retrieve probabilities
+                    try {
+                        if (contextLength == (N - 1)) {
+                            //If we are looking for a N-Gram probability
+                            TLogProbBackOff & prob = nGrams.at(endWordHash).at(contextHash);
+
+                            LOG_DEBUG2 << "Found the " << N << "-Gram prob for a (word,context) = ("
+                                    << endWordHash << ", " << contextHash << "), it is: 10^"
+                                    << prob << END_LOG;
+
+                            //Return the stored probability
+                            return prob;
+                        } else {
+                            //If we are looking for a M-Gram probability with 1 < M < N
+
+                            //The context length plus one is M value of the M-Gram
+                            //All the M-grams for 1 < M < N are stored in a mGrams
+                            //array, so this M-Gram is stored under index M-1;
+                            const TModelLevel mGramIdx = ((contextLength + 1) - 1);
+                            //Get the probability/back-off entry for the given M-gram
+                            TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
+
+                            LOG_DEBUG2 << "Found the " << (contextLength + 1)
+                                    << "-Gram prob for a (word,context) = ("
+                                    << endWordHash << ", " << contextHash
+                                    << "), it is: 10^"
+                                    << entry.first << END_LOG;
+
+                            //Return the stored probability
+                            return entry.first;
+                        }
+                    } catch (out_of_range e) {
+                        LOG_DEBUG1 << "Unable to find the " << (contextLength + 1)
+                                << "-Gram  prob for a (word,context) = ("
+                                << endWordHash << ", " << contextHash
+                                << "), need to back off!" << END_LOG;
+
+                        const double back_off = getBackOffWeight(contextLength);
+                        const double probability = computeLogProbability(contextLength - 1);
+
+                        LOG_DEBUG2 << "getBackOffWeight(" << contextLength << ") = " << back_off
+                                << ", computeLogProbability(" << (contextLength - 1) << ") = "
+                                << probability << END_LOG;
+
+                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
+                        return back_off + probability;
+                    }
+                } else {
+                    //If we are looking for a 1-Gram probability, no need to compute the context
+                    try {
+                        TWordEntryPair & entry = oGrams.at(endWordHash);
+
+                        LOG_DEBUG2 << "Found the 1-Gram prob for a word: "
+                                << endWordHash << ", it is: 10^"
+                                << entry.second.first << END_LOG;
+
+                        //Return the stored probability
+                        return entry.second.first;
+                    } catch (out_of_range e) {
+                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
+                                << endWordHash << " returning: 10^"
+                                << MINIMAL_LOG_PROB_WEIGHT << " prob." << END_LOG;
+
+                        //Return the default minimal probability for an unknown word
+                        return MINIMAL_LOG_PROB_WEIGHT;
+                    }
+                }
+            }
+
+            template<TModelLevel N, bool doCache>
             void HashMapTrie<N, doCache>::queryNGram(const vector<string> & ngram, SProbResult & result) {
-                //ToDo: implement!
+                const TModelLevel mGramLength = ngram.size();
+                //Check the number of elements in the N-Gram
+                if ((1 <= mGramLength) && (mGramLength <= N)) {
+                    //First transform the given M-gram into word hashes.
+                    tokensToHashes(ngram, _wordHashes);
+
+                    //Go on with a recursive procedure of computing the N-Gram probabilities
+                    const double logProb = computeLogProbability(mGramLength - 1);
+                    result.prob = pow(LOG_PROB_WEIGHT_BASE, logProb);
+                    
+                    LOG_DEBUG << "The computed log probability is: " << logProb
+                              << ", the resulting probability is: "<< result.prob
+                              << END_LOG;
+                } else {
+                    stringstream msg;
+                    msg << "An improper N-Gram size, got " << mGramLength << ", must be between [1, " << N << "]!";
+                    throw Exception(msg.str());
+                }
             }
 
             template<TModelLevel N, bool doCache>

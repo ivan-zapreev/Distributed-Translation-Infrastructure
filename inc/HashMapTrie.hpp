@@ -88,7 +88,7 @@ namespace uva {
                  * For more details @see ITrie
                  */
                 virtual void preAllocate(uint counts[N]);
-                
+
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * For more details @see ITrie
@@ -159,56 +159,111 @@ namespace uva {
                 //The internal query results cache
                 unordered_map<TWordHashSize, TCacheEntry > queryCache;
 
+                //The temporary data structure to store the N-gram query word hashes
+                TWordHashSize _wordHashes[N];
+
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
                 HashMapTrie(const HashMapTrie& orig);
-                
+
+                /**
+                 * This recursive function implements the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model. The
+                 * N-Gram hashes are obtained from the _wordHashes member
+                 * variable of the class. So it must be pre-set with proper
+                 * word hash values first!
+                 * @param contextLength this is the length of the considered context.
+                 * @return the computed probability value
+                 */
+                double computeLogProbability(const TModelLevel contextLength);
+
                 /**
                  * This function just takes the N-Gram tokens and puts them together in one string.
                  * @param tokens the tokens to put together
                  * @return the resulting string
                  */
-                string ngramToString(const vector<string> &tokens);
+                static inline string ngramToString(const vector<string> &tokens) {
+                    string str = "[ ";
+                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
+                        str += *it + " ";
+                    }
+                    return str + "]";
+                }
 
                 /**
-                 * Computes the context for the given Words.
-                 * For example for hashes =  [w4 w3 w2 w1] and L = 3 this method will compute
-                 * context(w4, context(w3,w2))
-                 * @param hashes the pre-computed word's hashes on which the context can be computed
-                 * @param L the current context level, is <= the number of hash values in hashes
-                 * @return the computed context for the N-gram defined by hashes and L
+                 * This method converts the M-Gram tokens into hashes and stores
+                 * them in an array. Note that, M is the size of the tokens array.
+                 * It is not checked, for the sake of performance but is assumed
+                 * that M is <= N!
+                 * @param tokens the tokens to be transformed into word hashes must have size <=N
+                 * @param wordHashes the out array parameter to store the hashes.
                  */
-                static inline TReferenceHashSize createContext(vector<TWordHashSize> & hashes, const TModelLevel cLevel) throw (Exception) {
-                    const TModelLevel currMaxIdx = (cLevel - MINIMUM_CONTEXT_LEVEL);
-                    //Define and default initialize the context value
-                    TReferenceHashSize context = hashes.at(currMaxIdx);
-                    LOG_DEBUG << "initializing context = " << context << END_LOG;
-
-                    if (currMaxIdx > 0) {
-                        LOG_DEBUG << "There is more than one element to create context from!" << END_LOG;
-                        //If there is more than one element we need to create a hash for then iterate
-                        for (TModelLevel idx = currMaxIdx; idx > 0; idx--) {
-                            LOG_DEBUG << "context( " << hashes.at(idx - 1) << ", " << context << " )" << END_LOG;
-                            context = createContext(hashes.at(idx - 1), context);
-                            LOG_DEBUG << "                 = " << context << END_LOG;
-                        }
-                    } else {
-                        if (currMaxIdx < 0) {
-                            throw Exception("Unable to compute context of level <=1. It does not exist!");
-                        }
+                static inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
+                    //The start index depends on the value M of the given M-Gram
+                    TModelLevel idx = N - tokens.size();
+                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
+                        wordHashes[idx] = computeHash(*it);
+                        idx++;
                     }
-
-                    return context;
                 }
+
+                /**
+                 * Compute the context hash for the M-Gram prefix, example:
+                 * 
+                 *  N = 5
+                 * 
+                 *   0  1  2  3  4
+                 *  w1 w2 w3 w4 w5
+                 * 
+                 *  contextLength = 2
+                 * 
+                 *    0  1  2  3  4
+                 *   w1 w2 w3 w4 w5
+                 *          ^  ^
+                 * Hash will be computed for the 3-gram prefix w3 w4.
+                 * 
+                 * @param contextLength the length of the context to compute
+                 * @param isBackOff is the boolean flag that determines whether
+                 *                  we compute the context for the entire M-Gram
+                 *                  or for the back-off sub-M-gram. For the latter
+                 *                  we consider w1 w2 w3 w4 only
+                 * @return the computed hash context
+                 */
+                inline TReferenceHashSize computeHashContext(const TModelLevel contextLength, bool isBackOff) {
+                    const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1) );
+                    const TModelLevel eIdx = mGramEndIdx;
+                    const TModelLevel bIdx = mGramEndIdx - contextLength;
+                    TModelLevel idx = bIdx;
+
+                    //Compute the first words' hash
+                    TReferenceHashSize contextHash = _wordHashes[idx];
+                    idx++;
+
+                    //Compute the subsequent hashes
+                    for (; idx < eIdx;) {
+                        contextHash = createContext(_wordHashes[idx], contextHash);
+                        idx++;
+                    }
+                    
+                    return contextHash;
+                }
+
+                /**
+                 * This recursive function allows to get the back-off weight for the current context.
+                 * The N-Gram hashes are obtained from the pre-computed data memeber array _wordHashes
+                 * @param contextLength the current context length
+                 * @return the resulting back-off weight probability
+                 */
+                double getBackOffWeight(const TModelLevel contextLength);
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
                  * @param tokens alls of the N-gram tokens
                  * @return the resulting hash of the context(w1 w2 w3)
                  */
-                static inline TWordHashSize computeHashContext(const vector<string> & tokens) {
+                static inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
                     //Get the start iterator
                     vector<string>::const_iterator it = tokens.begin();
                     //Get the iterator we are going to iterate until
@@ -256,7 +311,7 @@ namespace uva {
                  * @param subWord the sub-work
                  * @param subContext the sub-context
                  */
-                static inline void dessolveContext(const TReferenceHashSize context, TWordHashSize &subWord, TReferenceHashSize &subContext) {
+                static inline void dessolveContext(const TReferenceHashSize context, TWordHashSize &subWord, TReferenceHashSize & subContext) {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     unszudzik(context, subWord, subContext);
                 }

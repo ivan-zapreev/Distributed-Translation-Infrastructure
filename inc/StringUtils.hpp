@@ -70,7 +70,7 @@ namespace uva {
                  * before filling it in. The order in which the N-gram elements are stored
                  * are the same in which they are present in the given line.
                  * @param line the line of code to convert into an N-gram
-                 * @param n the expected value of N
+                 * @param n the expected maximum value of N
                  * @param delim the delimiter to parse the string into
                  * @param ngram the output parameter that will be filled in with the N-gram values
                  * @throws Exception in case the resulting N-gram has the number elements other than expected
@@ -81,9 +81,9 @@ namespace uva {
                     //Tokenise the line
                     tokenize(line, delim, ngram);
                     //Check that the number of words in the N-gram is proper
-                    if (ngram.size() != n) {
+                    if ( ngram.size() < 0 || ngram.size() > n) {
                         stringstream msg;
-                        msg << "The line '" << line << "' is not a " << n << "-gram as expected!";
+                        msg << "The line '" << line << "' is not with in [0, " << n << "] as expected!";
                         throw Exception(msg.str());
                     }
                 }

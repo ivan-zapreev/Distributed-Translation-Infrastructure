@@ -39,9 +39,16 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-#define UNDEFINED_LOG_PROB_WEIGHT 0.0f
-#define UNKNOWN_LOG_PROBABILITY -10.0f
-#define ZERRO_LOG_PROBABILITY -99.0f
+            //The base of the logarithm for stored probabilities/back-off weights
+#define LOG_PROB_WEIGHT_BASE 10.0d
+            //The zero value for probability/back-off weight
+#define ZERO_LOG_PROB_WEIGHT 0.0f
+            //The value indicating an undefined probability/back-off weight
+#define UNDEFINED_LOG_PROB_WEIGHT 99.0f
+            //The value of the minimal probability/back-off weight
+#define MINIMAL_LOG_PROB_WEIGHT -10.0f
+            //The zerro like value for probability/back-off weight
+#define ZERRO_LOG_PROB_WEIGHT -99.0f
 
             //The type used for storing log probabilities and back-off values
             typedef float TLogProbBackOff;
