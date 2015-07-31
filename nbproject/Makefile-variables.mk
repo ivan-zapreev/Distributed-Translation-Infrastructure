@@ -7,13 +7,13 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Release configuration
-CND_PLATFORM_Release=GNU-Linux-x86
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
+CND_PLATFORM_Release=GNU-MacOSX
+CND_ARTIFACT_DIR_Release=dist/Release/GNU-MacOSX
 CND_ARTIFACT_NAME_Release=back-off-language-model-smt
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/back-off-language-model-smt
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/back-off-language-model-smt
+CND_PACKAGE_DIR_Release=dist/Release/GNU-MacOSX/package
 CND_PACKAGE_NAME_Release=back-off-language-model-smt.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/back-off-language-model-smt.tar
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux-x86
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
