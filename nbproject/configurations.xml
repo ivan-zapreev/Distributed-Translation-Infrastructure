@@ -74,7 +74,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
-          <commandlineTool>g++</commandlineTool>
+          <commandlineTool>g++ -lrt</commandlineTool>
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>

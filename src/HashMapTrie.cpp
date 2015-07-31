@@ -289,7 +289,7 @@ namespace uva {
                             return entry.first;
                         }
                     } catch (out_of_range e) {
-                        LOG_DEBUG1 << "Unable to find the " << (contextLength + 1)
+                        LOG_DEBUG << "Unable to find the " << (contextLength + 1)
                                 << "-Gram  prob for a (word,context) = ("
                                 << endWordHash << ", " << contextHash
                                 << "), need to back off!" << END_LOG;
@@ -297,7 +297,7 @@ namespace uva {
                         const double back_off = getBackOffWeight(contextLength);
                         const double probability = computeLogProbability(contextLength - 1);
 
-                        LOG_DEBUG2 << "getBackOffWeight(" << contextLength << ") = " << back_off
+                        LOG_DEBUG1 << "getBackOffWeight(" << contextLength << ") = " << back_off
                                 << ", computeLogProbability(" << (contextLength - 1) << ") = "
                                 << probability << END_LOG;
 
