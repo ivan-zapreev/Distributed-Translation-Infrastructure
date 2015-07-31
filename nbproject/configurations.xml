@@ -64,7 +64,7 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x</commandLine>
+          <commandLine>-O3 -std=c++0x -lrt</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -74,7 +74,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
-          <commandlineTool>g++ -lrt</commandlineTool>
+          <commandlineTool>g++</commandlineTool>
           <commandLine>-lrt</commandLine>
         </linkerTool>
       </compileType>
