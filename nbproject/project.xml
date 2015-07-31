@@ -15,7 +15,7 @@
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Release</name>
+                    <name>Release__Linux_</name>
                     <type>1</type>
                 </confElem>
                 <confElem>
@@ -23,7 +23,11 @@
                     <type>1</type>
                 </confElem>
                 <confElem>
-                    <name>Release-MacOs</name>
+                    <name>Release__MacOs_</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Release__Centos_</name>
                     <type>1</type>
                 </confElem>
             </confList>

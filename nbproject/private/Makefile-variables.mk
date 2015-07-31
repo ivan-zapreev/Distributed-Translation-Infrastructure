@@ -3,6 +3,5 @@
 #
 # NOCDDL
 #
-# Release configuration
 # Debug configuration
-# Release-MacOs configuration
+# Release__Centos_ configuration

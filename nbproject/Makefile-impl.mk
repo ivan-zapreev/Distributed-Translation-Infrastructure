@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=Back-Off-Language-Model-SMT
 
 # Active Configuration
-DEFAULTCONF=Release
+DEFAULTCONF=Release__Linux_
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Release Debug Release-MacOs 
+ALLCONFS=Release__Linux_ Debug Release__MacOs_ Release__Centos_ 
 
 
 # build
