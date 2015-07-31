@@ -40,7 +40,7 @@ namespace uva {
         namespace tries {
 
             //The base of the logarithm for stored probabilities/back-off weights
-#define LOG_PROB_WEIGHT_BASE 10.0d
+#define LOG_PROB_WEIGHT_BASE 10.0
             //The zero value for probability/back-off weight
 #define ZERO_LOG_PROB_WEIGHT 0.0f
             //The value indicating an undefined probability/back-off weight
