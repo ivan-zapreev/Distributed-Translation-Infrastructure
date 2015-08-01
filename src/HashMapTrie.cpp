@@ -199,8 +199,9 @@ namespace uva {
                         //Obtained the stored back-off weight
                         back_off = entry.second;
 
-                        LOG_DEBUG2 << "Found the " << contextLength << "-Gram back-off weight for a (word, context)=("
-                                << endWordHash << ", " << contextHash << "), it is: 10^" << back_off << END_LOG;
+                        LOG_DEBUG2 << "The " << contextLength << "-Gram log_"
+                                   << LOG_PROB_WEIGHT_BASE << "( back-off ) for (word, context)=("
+                                   << endWordHash << ", " << contextHash << "), is: " << back_off << END_LOG;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the " << (contextLength)
                                 << "-Gram entry for a (word, context)=("
@@ -211,7 +212,7 @@ namespace uva {
                     if (back_off == UNDEFINED_LOG_PROB_WEIGHT) {
                         LOG_DEBUG << "Undefined back-off weight for " << (contextLength)
                                 << "-Gram defined by (word, context)=("
-                                << endWordHash << ", " << contextHash << "), going recursive!" << END_LOG;
+                                << endWordHash << ", " << contextHash << "), backing off!" << END_LOG;
 
                         //In case the back-off weight is not know then we move down to the lower level
                         back_off = getBackOffWeight(contextLength - 1);
@@ -226,8 +227,9 @@ namespace uva {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
                         back_off = entry.second.second;
 
-                        LOG_DEBUG2 << "Found the 1-Gram back-off weight for a word: "
-                                << endWordHash << ", it is: 10^" << back_off << END_LOG;
+                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                   << "( back-off ) for word: " << endWordHash
+                                   << ", is: " << back_off << END_LOG;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
                     }
@@ -262,9 +264,9 @@ namespace uva {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff & prob = nGrams.at(endWordHash).at(contextHash);
 
-                            LOG_DEBUG2 << "Found the " << N << "-Gram prob for a (word,context) = ("
-                                    << endWordHash << ", " << contextHash << "), it is: 10^"
-                                    << prob << END_LOG;
+                            LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                    << "( prob. ) for (word,context) = (" << endWordHash << ", "
+                                    << contextHash << "), is: " << prob << END_LOG;
 
                             //Return the stored probability
                             return prob;
@@ -278,11 +280,11 @@ namespace uva {
                             //Get the probability/back-off entry for the given M-gram
                             TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
 
-                            LOG_DEBUG2 << "Found the " << (contextLength + 1)
-                                    << "-Gram prob for a (word,context) = ("
+                            LOG_DEBUG2 << "The " << (contextLength + 1)
+                                    << "-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                    << "( prob. ) for (word,context) = ("
                                     << endWordHash << ", " << contextHash
-                                    << "), it is: 10^"
-                                    << entry.first << END_LOG;
+                                    << "), is: " << entry.first << END_LOG;
 
                             //Return the stored probability
                             return entry.first;
@@ -308,16 +310,16 @@ namespace uva {
                     try {
                         TWordEntryPair & entry = oGrams.at(endWordHash);
 
-                        LOG_DEBUG2 << "Found the 1-Gram prob for a word: "
-                                << endWordHash << ", it is: 10^"
-                                << entry.second.first << END_LOG;
+                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                   << "( prob. ) for word: " << endWordHash
+                                   << ", is: " << entry.second.first << END_LOG;
 
                         //Return the stored probability
                         return entry.second.first;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
-                                << endWordHash << " returning: 10^"
-                                << MINIMAL_LOG_PROB_WEIGHT << " prob." << END_LOG;
+                                << endWordHash << " returning:" << MINIMAL_LOG_PROB_WEIGHT
+                                << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
                         return MINIMAL_LOG_PROB_WEIGHT;
