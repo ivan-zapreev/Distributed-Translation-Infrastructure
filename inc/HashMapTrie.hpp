@@ -177,7 +177,7 @@ namespace uva {
                  * @param contextLength this is the length of the considered context.
                  * @return the computed probability value
                  */
-                double computeLogProbability(const TModelLevel contextLength);
+                float computeLogProbability(const TModelLevel contextLength);
 
                 /**
                  * This function just takes the N-Gram tokens and puts them together in one string.
@@ -256,7 +256,7 @@ namespace uva {
                  * @param contextLength the current context length
                  * @return the resulting back-off weight probability
                  */
-                double getBackOffWeight(const TModelLevel contextLength);
+                float getBackOffWeight(const TModelLevel contextLength);
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]

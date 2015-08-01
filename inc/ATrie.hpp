@@ -73,10 +73,10 @@ namespace uva {
              * This data structure is to be used to return the N-Gram query result.
              * It contains the computed Back-Off language model probability and
              * potentially additional meta data for the decoder
-             * @param prob the computed Back-Off language model probability
+             * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
              */
             struct SProbResult {
-                double prob;
+                float prob;
             };
 
             /**

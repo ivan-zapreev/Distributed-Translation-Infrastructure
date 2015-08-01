@@ -28,6 +28,7 @@
 #include <sstream>      // std::stringstream, std::stringbuf
 #include <fstream>      // std::ifstream
 #include <algorithm>    // std::transform
+#include <math.h>    //std::pow
 
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
@@ -267,7 +268,8 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
         endTime = StatisticsMonitor::getCPUTime();
 
         //Print the results:
-        LOG_RESULT << "Prob( '" << line << "' ) = " << result.prob << END_LOG;
+        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( '" << line << "' ) ) = " << result.prob << END_LOG;
+        LOG_INFO   << "Prob( '" << line << "' ) = " << pow(LOG_PROB_WEIGHT_BASE, result.prob) << END_LOG;
         LOG_RESULT << "CPU Time needed: " << (endTime - startTime) << " sec." << END_LOG;
 
         //update total time

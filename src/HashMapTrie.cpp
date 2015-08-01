@@ -27,7 +27,6 @@
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
 #include <algorithm> //std::fill
-#include <math.h>    //std::pow
 
 #include "Logger.hpp"
 
@@ -179,7 +178,7 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
-            double HashMapTrie<N, doCache>::getBackOffWeight(const TModelLevel contextLength) {
+            float HashMapTrie<N, doCache>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TWordHashSize & endWordHash = _wordHashes[N - 2];
                 const TModelLevel backOfContextLength = contextLength - 1;
@@ -246,7 +245,7 @@ namespace uva {
             }
 
             template<TModelLevel N, bool doCache>
-            double HashMapTrie<N, doCache>::computeLogProbability(const TModelLevel contextLength) {
+            float HashMapTrie<N, doCache>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
                 TWordHashSize & endWordHash = _wordHashes[N - 1];
 
@@ -294,8 +293,8 @@ namespace uva {
                                 << endWordHash << ", " << contextHash
                                 << "), need to back off!" << END_LOG;
 
-                        const double back_off = getBackOffWeight(contextLength);
-                        const double probability = computeLogProbability(contextLength - 1);
+                        const float back_off = getBackOffWeight(contextLength);
+                        const float probability = computeLogProbability(contextLength - 1);
 
                         LOG_DEBUG1 << "getBackOffWeight(" << contextLength << ") = " << back_off
                                 << ", computeLogProbability(" << (contextLength - 1) << ") = "
@@ -335,12 +334,9 @@ namespace uva {
                     tokensToHashes(ngram, _wordHashes);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
-                    const double logProb = computeLogProbability(mGramLength - 1);
-                    result.prob = pow(LOG_PROB_WEIGHT_BASE, logProb);
+                   result.prob = computeLogProbability(mGramLength - 1);
                     
-                    LOG_DEBUG << "The computed log probability is: " << logProb
-                              << ", the resulting probability is: "<< result.prob
-                              << END_LOG;
+                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 } else {
                     stringstream msg;
                     msg << "An improper N-Gram size, got " << mGramLength << ", must be between [1, " << N << "]!";
