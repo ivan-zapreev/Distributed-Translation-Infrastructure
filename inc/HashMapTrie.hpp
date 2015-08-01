@@ -203,8 +203,10 @@ namespace uva {
                 static inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << tokens.size() << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
                         wordHashes[idx] = computeHash(*it);
+                        LOG_DEBUG1 << "hash('" << *it << "') = " << wordHashes[idx] << END_LOG;
                         idx++;
                     }
                 }
