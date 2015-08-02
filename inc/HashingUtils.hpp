@@ -77,7 +77,7 @@ namespace uva {
 #define C 86969 /* yet another prime */
 
             inline TWordHashSize computePrimesHash(const string & str) {
-                TWordHashSize h = 31 /* also prime */;
+                TWordHashSize h = 181 /* also prime */;
                 const char * c_str = str.c_str();
                 while (*c_str) {
                     h = (h * A) ^ (c_str[0] * B);
