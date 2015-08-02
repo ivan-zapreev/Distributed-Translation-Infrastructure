@@ -46,19 +46,6 @@ namespace uva {
 //Defined the minimum possible N-gram level
 #define MIN_NGRAM_LEVEL 1u
 
-//The string representation values for debug levels
-#define USAGE_PARAM_VALUE "usage"
-#define RESULT_PARAM_VALUE "result"
-#define ERROR_PARAM_VALUE "error"
-#define WARNING_PARAM_VALUE "warning"
-#define INFO_PARAM_VALUE "info"
-#define DEBUG_PARAM_VALUE "debug"
-#define DEBUG1_PARAM_VALUE "debug1"
-#define DEBUG2_PARAM_VALUE "debug2"
-
-//The string representation values for debug levels
-#define DEBUG_OPTION_VALUES "{" USAGE_PARAM_VALUE ", " ERROR_PARAM_VALUE ", " WARNING_PARAM_VALUE ", " RESULT_PARAM_VALUE ", " INFO_PARAM_VALUE ", " DEBUG_PARAM_VALUE ", " DEBUG1_PARAM_VALUE ", " DEBUG2_PARAM_VALUE "}"
-
         //The following type definitions are important for storing the Tries information
         namespace tries {
             //This typedef if used in the tries in order to specify the type of the N-gram level N

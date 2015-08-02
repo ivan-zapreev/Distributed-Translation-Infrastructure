@@ -185,6 +185,9 @@ namespace uva {
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = UNDEFINED_LOG_PROB_WEIGHT;
 
+                LOG_DEBUG1 << "Computing back-off for an " << (backOfContextLength+1)
+                           << "-gram the context length is " << backOfContextLength << END_LOG;
+
                 if (backOfContextLength > 0) {
                     //Compute the context hash
                     TReferenceHashSize contextHash = computeHashContext(backOfContextLength, true);
@@ -251,6 +254,9 @@ namespace uva {
                 //Get the last word in the N-gram
                 TWordHashSize & endWordHash = _wordHashes[N - 1];
 
+                LOG_DEBUG1 << "Computing probability for an " << (contextLength+1)
+                           << "-gram the context length is " << contextLength << END_LOG;
+                
                 //Consider different variants based no the length of the context
                 if (contextLength > 0) {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram

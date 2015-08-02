@@ -51,7 +51,7 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::DEBUG2
+#define LOGER_MAX_LEVEL Logger::DEBUG3
 #endif
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
@@ -70,7 +70,20 @@ namespace uva {
 #define LOG_DEBUG   LOGGER(Logger::DEBUG)
 #define LOG_DEBUG1  LOGGER(Logger::DEBUG1)
 #define LOG_DEBUG2  LOGGER(Logger::DEBUG2)
+#define LOG_DEBUG3  LOGGER(Logger::DEBUG3)
 #define END_LOG     endl
+
+
+            //The string representation values for debug levels
+#define USAGE_PARAM_VALUE "USAGE"
+#define ERROR_PARAM_VALUE "ERROR"
+#define WARNING_PARAM_VALUE "WARNING"
+#define RESULT_PARAM_VALUE "RESULT"
+#define INFO_PARAM_VALUE "INFO"
+#define DEBUG_PARAM_VALUE "DEBUG"
+#define DEBUG1_PARAM_VALUE "DEBUG1"
+#define DEBUG2_PARAM_VALUE "DEBUG2"
+#define DEBUG3_PARAM_VALUE "DEBUG3"
 
             /**
              * This is a trivial logging facility that exchibits a singleton
@@ -82,24 +95,34 @@ namespace uva {
                 //This enumeration stores all the available logging levels.
 
                 enum DebugLevel {
-                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1
+                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1,
+                    DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1
                 };
-
-                //Stores the the string representation of the sthe DebugLeven enumeration elements
-                static const char * DebugLevelStr[];
 
                 virtual ~Logger() {
                 };
+
+                /**
+                 * Returns a string containing all the possible reporting levels
+                 * @return a string containing all the possible reporting levels
+                 */
+                static string getReportingLevels();
+                
+                /**
+                 * Allows to set the logging level from a string, if not recognized - reports a warning!
+                 * @param level the string level to set
+                 */
+                static void setReportingLevel(const string level);
 
                 /**
                  * This methods allows to get the output stream for the given log-level
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& Get(DebugLevel level, const char * file, const char * func, const char * line ) {
-                    cout << DebugLevelStr[level] ;
-                    if( level >= DEBUG ) {
-                        cout << " \t<" << file << "::" << func << "(...):" << line << ">"; 
+                static inline std::ostream& Get(DebugLevel level, const char * file, const char * func, const char * line) {
+                    cout << _debugLevelStr[level];
+                    if (level >= DEBUG) {
+                        cout << " \t<" << file << "::" << func << "(...):" << line << ">";
                     }
                     return cout << ":\t";
                 }
@@ -133,6 +156,9 @@ namespace uva {
             private:
                 //The class constructor, copy constructor and assign operator
                 //are made private as they are not to be used.
+
+                //Stores the the string representation of the sthe DebugLeven enumeration elements
+                static const char * _debugLevelStr[];
 
                 Logger() {
                 };

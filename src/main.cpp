@@ -27,7 +27,6 @@
 #include <iostream>     // std::cout
 #include <sstream>      // std::stringstream, std::stringbuf
 #include <fstream>      // std::ifstream
-#include <algorithm>    // std::transform
 #include <math.h>    //std::pow
 
 #include "Exceptions.hpp"
@@ -94,7 +93,7 @@ static void printUsage(const string name) {
     LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
     LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
     LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
-    LOG_USAGE << "     [debug-level] - the optional debug flag from " << DEBUG_OPTION_VALUES << END_LOG;
+    LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
     LOG_USAGE << "    The program reads in the test lines from the <test_file>. " << END_LOG;
@@ -124,45 +123,12 @@ static void extractArguments(const int argc, char const * const * const argv, TA
         params.testFileName = argv[2];
         //Set the default reporting level information for the logger
         string errorLevelStr = RESULT_PARAM_VALUE;
-        Logger::ReportingLevel() = Logger::RESULT;
 
-        //This here is a fast hack, it is not a really the
-        //nicest way to handle the program parameters but
-        //this is ok for a test software.
+        //The third argument should be a debug level, get it and try to set.
         if (argc > EXPECTED_NUMBER_OF_ARGUMENTS) {
             errorLevelStr = argv[3];
-            transform(errorLevelStr.begin(), errorLevelStr.end(), errorLevelStr.begin(), ::tolower);
-            if (!errorLevelStr.compare(USAGE_PARAM_VALUE)) {
-                Logger::ReportingLevel() = Logger::USAGE;
-            } else {
-                if (!errorLevelStr.compare(RESULT_PARAM_VALUE)) {
-                    Logger::ReportingLevel() = Logger::RESULT;
-                } else {
-                    if (!errorLevelStr.compare(WARNING_PARAM_VALUE)) {
-                        Logger::ReportingLevel() = Logger::WARNING;
-                    } else {
-                        if (!errorLevelStr.compare(INFO_PARAM_VALUE)) {
-                            Logger::ReportingLevel() = Logger::INFO;
-                        } else {
-                            if (!errorLevelStr.compare(DEBUG_PARAM_VALUE)) {
-                                Logger::ReportingLevel() = Logger::DEBUG;
-                            } else {
-                                if (!errorLevelStr.compare(DEBUG1_PARAM_VALUE)) {
-                                    Logger::ReportingLevel() = Logger::DEBUG1;
-                                } else {
-                                    if (!errorLevelStr.compare(DEBUG2_PARAM_VALUE)) {
-                                        Logger::ReportingLevel() = Logger::DEBUG2;
-                                    } else {
-                                        LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << argv[3] << "'" << END_LOG;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
-        LOG_USAGE << "The debugging level is set to: \'" << errorLevelStr << "\'" << END_LOG;
+        Logger::setReportingLevel(errorLevelStr);
     }
 }
 
@@ -269,7 +235,7 @@ static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile
 
         //Print the results:
         LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( '" << line << "' ) ) = " << result.prob << END_LOG;
-        LOG_INFO   << "Prob( '" << line << "' ) = " << pow(LOG_PROB_WEIGHT_BASE, result.prob) << END_LOG;
+        LOG_INFO << "Prob( '" << line << "' ) = " << pow(LOG_PROB_WEIGHT_BASE, result.prob) << END_LOG;
         LOG_RESULT << "CPU Time needed: " << (endTime - startTime) << " sec." << END_LOG;
 
         //update total time

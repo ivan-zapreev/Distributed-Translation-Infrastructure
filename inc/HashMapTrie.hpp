@@ -234,21 +234,30 @@ namespace uva {
                  * @return the computed hash context
                  */
                 inline TReferenceHashSize computeHashContext(const TModelLevel contextLength, bool isBackOff) {
-                    const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1) );
+                    const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
                     const TModelLevel bIdx = mGramEndIdx - contextLength;
                     TModelLevel idx = bIdx;
 
+                    LOG_DEBUG3 << "Computing context hash for context length " << contextLength
+                               << " for a  " << (isBackOff ? "back-off" : "probability")
+                               << " computation" << END_LOG;
+
                     //Compute the first words' hash
                     TReferenceHashSize contextHash = _wordHashes[idx];
+                    LOG_DEBUG3 << "Word: " << idx << " hash == initial context hash: " << contextHash << END_LOG;
                     idx++;
 
                     //Compute the subsequent hashes
                     for (; idx < eIdx;) {
                         contextHash = createContext(_wordHashes[idx], contextHash);
+                        LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << _wordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
                         idx++;
                     }
-                    
+                    LOG_DEBUG3 << "Resulting context hash for context length " << contextLength
+                               << " of a  " << (isBackOff ? "back-off" : "probability")
+                               << " computation is: " << contextHash << END_LOG;
+
                     return contextHash;
                 }
 

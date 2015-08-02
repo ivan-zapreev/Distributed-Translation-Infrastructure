@@ -29,14 +29,19 @@
 #include "Logger.hpp"
 #include "StatisticsMonitor.hpp"
 
+#include <algorithm>    // std::transform
+
 using uva::smt::monitore::StatisticsMonitor;
 
 namespace uva {
     namespace smt {
         namespace logging {
-            Logger::DebugLevel Logger::currLEvel;
+            Logger::DebugLevel Logger::currLEvel = Logger::RESULT;
 
-            const char * Logger::DebugLevelStr[] = {"USAGE", "ERROR", "WARNING", "RESULT", "INFO", "DEBUG", "DEBUG1", "DEBUG2"};
+            const char * Logger::_debugLevelStr[] = {USAGE_PARAM_VALUE,
+                ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
+                INFO_PARAM_VALUE, DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE,
+                DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE};
 
             //Initialize the progress bar chars array
             const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
@@ -49,6 +54,62 @@ namespace uva {
 
             //Set the initial update time to zero
             double Logger::lastProgressUpdate = 0.0;
+
+            string Logger::getReportingLevels(){
+                string result = "{ ";
+
+                for(int idx = 0; idx < sizeof(_debugLevelStr); idx++) {
+                    string level = _debugLevelStr[idx];
+                    transform(level.begin(), level.end(), level.begin(), ::toupper);
+                    result += level + ", ";
+                }
+                
+                return result + " }";
+            }
+            
+            void Logger::setReportingLevel(string level) {
+                bool isGoodLevel = true;
+                transform(level.begin(), level.end(), level.begin(), ::toupper);
+
+                if (!level.compare(USAGE_PARAM_VALUE)) {
+                    Logger::ReportingLevel() = Logger::USAGE;
+                } else {
+                    if (!level.compare(RESULT_PARAM_VALUE)) {
+                        Logger::ReportingLevel() = Logger::RESULT;
+                    } else {
+                        if (!level.compare(WARNING_PARAM_VALUE)) {
+                            Logger::ReportingLevel() = Logger::WARNING;
+                        } else {
+                            if (!level.compare(INFO_PARAM_VALUE)) {
+                                Logger::ReportingLevel() = Logger::INFO;
+                            } else {
+                                if (!level.compare(DEBUG_PARAM_VALUE)) {
+                                    Logger::ReportingLevel() = Logger::DEBUG;
+                                } else {
+                                    if (!level.compare(DEBUG1_PARAM_VALUE)) {
+                                        Logger::ReportingLevel() = Logger::DEBUG1;
+                                    } else {
+                                        if (!level.compare(DEBUG2_PARAM_VALUE)) {
+                                            Logger::ReportingLevel() = Logger::DEBUG2;
+                                        } else {
+                                            if (!level.compare(DEBUG3_PARAM_VALUE)) {
+                                                Logger::ReportingLevel() = Logger::DEBUG2;
+                                            } else {
+                                                isGoodLevel = false;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (isGoodLevel) {
+                    LOG_USAGE << "The debugging level is set to: \'" << level << "\'" << END_LOG;
+                } else {
+                    LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << level << "'" << END_LOG;
+                }
+            }
 
             void Logger::startProgressBar() {
                 if (currLEvel <= INFO) {
