@@ -58,6 +58,8 @@ namespace uva {
             string Logger::getReportingLevels(){
                 string result = "{ ";
 
+                LOG_INFO << "sizeof(_debugLevelStr) = " << sizeof(_debugLevelStr) << END_LOG;
+                
                 for(int idx = 0; idx < sizeof(_debugLevelStr); idx++) {
                     string level = _debugLevelStr[idx];
                     transform(level.begin(), level.end(), level.begin(), ::toupper);
