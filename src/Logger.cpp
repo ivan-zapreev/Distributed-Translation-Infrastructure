@@ -93,7 +93,7 @@ namespace uva {
                                             Logger::ReportingLevel() = Logger::DEBUG2;
                                         } else {
                                             if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                Logger::ReportingLevel() = Logger::DEBUG2;
+                                                Logger::ReportingLevel() = Logger::DEBUG3;
                                             } else {
                                                 isGoodLevel = false;
                                             }
