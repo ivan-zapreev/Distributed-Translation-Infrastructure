@@ -38,7 +38,8 @@ namespace uva {
         namespace logging {
             Logger::DebugLevel Logger::currLEvel = Logger::RESULT;
 
-            const char * Logger::_debugLevelStr[] = {USAGE_PARAM_VALUE,
+            #define NUM_DEBUG_FLAGS 9
+            const char * Logger::_debugLevelStr[NUM_DEBUG_FLAGS] = {USAGE_PARAM_VALUE,
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE,
                 DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE};
@@ -58,7 +59,7 @@ namespace uva {
             string Logger::getReportingLevels(){
                 string result = "{ ";
                 
-                for(int idx = 0; idx < 9; idx++) {
+                for(int idx = 0; idx < NUM_DEBUG_FLAGS; idx++) {
                     string level = _debugLevelStr[idx];
                     transform(level.begin(), level.end(), level.begin(), ::toupper);
                     result += level + ", ";
