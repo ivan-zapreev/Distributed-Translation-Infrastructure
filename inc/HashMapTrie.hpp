@@ -301,7 +301,8 @@ namespace uva {
                  */
                 static inline TWordHashSize computeHash(const string & str) {
                     //Use the Prime numbers hashing algorithm as it outperforms djb2
-                    return computePrimesHash(str);
+                    //return computePrimesHash(str);
+                    return computeRSHash(str);
                 }
 
                 /**

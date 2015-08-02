@@ -77,13 +77,26 @@ namespace uva {
 #define C 86969 /* yet another prime */
 
             inline TWordHashSize computePrimesHash(const string & str) {
-                TWordHashSize h = 181 /* also prime */;
+                TWordHashSize h = 31 /* also prime */;
                 const char * c_str = str.c_str();
                 while (*c_str) {
                     h = (h * A) ^ (c_str[0] * B);
                     c_str++;
                 }
                 return h; // or return h % C;
+            }
+
+            inline TWordHashSize computeRSHash(const string & str) {
+                TWordHashSize b = 378551;
+                TWordHashSize a = 63689;
+                TWordHashSize hash = 0;
+
+                for (std::size_t i = 0; i < str.length(); i++) {
+                    hash = hash * a + str[i];
+                    a = a * b;
+                }
+
+                return hash;
             }
 
             /**
