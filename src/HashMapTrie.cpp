@@ -35,10 +35,26 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N, bool doCache>
+            const TWordHashSize HashMapTrie<N, doCache>::UNDEFINED_WORD_HASH = 0;
+            template<TModelLevel N, bool doCache>
+            const TWordHashSize HashMapTrie<N, doCache>::UNKNOWN_WORD_HASH = HashMapTrie<N, doCache>::UNDEFINED_WORD_HASH + 1;
+            template<TModelLevel N, bool doCache>
+            const TWordHashSize HashMapTrie<N, doCache>::MIN_KNOWN_WORD_HASH = HashMapTrie<N, doCache>::UNKNOWN_WORD_HASH + 1;
+
+
+            template<TModelLevel N, bool doCache>
             const TModelLevel HashMapTrie<N, doCache>::MINIMUM_CONTEXT_LEVEL = 2;
 
             template<TModelLevel N, bool doCache>
-            HashMapTrie<N, doCache>::HashMapTrie() {
+            HashMapTrie<N, doCache>::HashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+                //First register the unknown word with the first available hash value
+                TWordHashSize& hash = wordIndex[UNKNOWN_WORD_STR];
+                hash = UNKNOWN_WORD_HASH;
+
+                //Then record the dummy probability and back-off values for the unknown word
+                TProbBackOffEntryPair & pbData = oGrams[hash];
+                pbData.first = MINIMAL_LOG_PROB_WEIGHT;
+                pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
             }
 
             template<TModelLevel N, bool doCache>
@@ -57,29 +73,19 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordHashSize wordHash = computeHash(token);
-                //Get the word data storing structure from the list of words
-                TWordEntryPair & wordData = oGrams[wordHash];
+                TWordHashSize wordHash = createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
-                TProbBackOffEntryPair & pbData = wordData.second;
+                TProbBackOffEntryPair & pbData = oGrams[wordHash];
 
-                //If the probability is zero then this word has not been seen yet
-                if (pbData.first == ZERO_LOG_PROB_WEIGHT) {
-                    wordData.first = token;
-                } else {
-                    //If the word probability is set then it is either
-                    if (wordData.first.compare(token)) {
-                        stringstream msg;
-                        msg << "Hash collision: '" << token << "' and '" << wordData.first << "' both have hash: " << wordHash;
-                        throw Exception(msg.str());
-                    } else {
-                        //The word has been seen already, this is a potential error, so we report a warning!
-                        LOG_WARNING << "The 1-Gram/Word: '" << token << "' has been already seen! "
-                                << "Changing the (prob,back-off) data from ("
-                                << pbData.first << "," << pbData.second << ") to ("
-                                << oGram.prob << "," << oGram.back_off << ")" << END_LOG;
-                    }
+                //If the probability is not zero then this word has been already seen!
+                if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
+                    //The word has been seen already, this is a potential error, so we report a warning!
+                    LOG_WARNING << "The 1-Gram/Word: '" << token << "' has been already seen! "
+                            << "Changing the (prob,back-off) data from ("
+                            << pbData.first << "," << pbData.second << ") to ("
+                            << oGram.prob << "," << oGram.back_off << ")" << END_LOG;
                 }
+
                 //Set/Update the probability and back-off values for the word
                 pbData.first = oGram.prob;
                 pbData.second = oGram.back_off;
@@ -104,7 +110,7 @@ namespace uva {
 
                     // 2. Compute the hash of w4
                     const string & endWord = *(--mGram.tokens.end());
-                    TWordHashSize wordHash = computeHash(endWord);
+                    TWordHashSize wordHash = getUniqueIdHash(endWord);
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -150,7 +156,7 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const string & endWord = *(--nGram.tokens.end());
-                TWordHashSize wordHash = computeHash(endWord);
+                TWordHashSize wordHash = getUniqueIdHash(endWord);
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
@@ -180,13 +186,13 @@ namespace uva {
             template<TModelLevel N, bool doCache>
             float HashMapTrie<N, doCache>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TWordHashSize & endWordHash = _wordHashes[N - 2];
+                const TWordHashSize & endWordHash = mGramWordHashes[N - 2];
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = UNDEFINED_LOG_PROB_WEIGHT;
 
-                LOG_DEBUG1 << "Computing back-off for an " << (backOfContextLength+1)
-                           << "-gram the context length is " << backOfContextLength << END_LOG;
+                LOG_DEBUG1 << "Computing back-off for an " << (backOfContextLength + 1)
+                        << "-gram the context length is " << backOfContextLength << END_LOG;
 
                 if (backOfContextLength > 0) {
                     //Compute the context hash
@@ -203,8 +209,8 @@ namespace uva {
                         back_off = entry.second;
 
                         LOG_DEBUG2 << "The " << contextLength << "-Gram log_"
-                                   << LOG_PROB_WEIGHT_BASE << "( back-off ) for (word, context)=("
-                                   << endWordHash << ", " << contextHash << "), is: " << back_off << END_LOG;
+                                << LOG_PROB_WEIGHT_BASE << "( back-off ) for (word, context)=("
+                                << endWordHash << ", " << contextHash << "), is: " << back_off << END_LOG;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the " << (contextLength)
                                 << "-Gram entry for a (word, context)=("
@@ -223,28 +229,28 @@ namespace uva {
                 } else {
                     //We came to a zero context, which means we have an
                     //1-Gram to try to get the back-off weight from
-                    
+
                     //Attempt to retrieve back-off weights
                     try {
-                        TWordEntryPair & entry = oGrams.at(endWordHash);
+                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                        back_off = entry.second.second;
+                        back_off = pbData.second;
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                                   << "( back-off ) for word: " << endWordHash
-                                   << ", is: " << back_off << END_LOG;
+                                << "( back-off ) for word: " << endWordHash
+                                << ", is: " << back_off << END_LOG;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
                     }
 
                     //If the back-off is still undefined then just it to zero - no penalty
-                    if( back_off == UNDEFINED_LOG_PROB_WEIGHT ) {
+                    if (back_off == UNDEFINED_LOG_PROB_WEIGHT) {
                         back_off = ZERO_LOG_PROB_WEIGHT;
                     }
                 }
 
                 LOG_DEBUG2 << "The chosen log back-off weight is: " << back_off << END_LOG;
-                
+
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
                 return back_off;
             }
@@ -252,11 +258,11 @@ namespace uva {
             template<TModelLevel N, bool doCache>
             float HashMapTrie<N, doCache>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
-                TWordHashSize & endWordHash = _wordHashes[N - 1];
+                TWordHashSize & endWordHash = mGramWordHashes[N - 1];
 
-                LOG_DEBUG1 << "Computing probability for an " << (contextLength+1)
-                           << "-gram the context length is " << contextLength << END_LOG;
-                
+                LOG_DEBUG1 << "Computing probability for an " << (contextLength + 1)
+                        << "-gram the context length is " << contextLength << END_LOG;
+
                 //Consider different variants based no the length of the context
                 if (contextLength > 0) {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
@@ -314,14 +320,14 @@ namespace uva {
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
                     try {
-                        TWordEntryPair & entry = oGrams.at(endWordHash);
+                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                                   << "( prob. ) for word: " << endWordHash
-                                   << ", is: " << entry.second.first << END_LOG;
+                                << "( prob. ) for word: " << endWordHash
+                                << ", is: " << pbData.first << END_LOG;
 
                         //Return the stored probability
-                        return entry.second.first;
+                        return pbData.first;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
                                 << endWordHash << " returning:" << MINIMAL_LOG_PROB_WEIGHT
@@ -339,11 +345,11 @@ namespace uva {
                 //Check the number of elements in the N-Gram
                 if ((1 <= mGramLength) && (mGramLength <= N)) {
                     //First transform the given M-gram into word hashes.
-                    tokensToHashes(ngram, _wordHashes);
+                    tokensToHashes(ngram, mGramWordHashes);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
-                   result.prob = computeLogProbability(mGramLength - 1);
-                    
+                    result.prob = computeLogProbability(mGramLength - 1);
+
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 } else {
                     stringstream msg;

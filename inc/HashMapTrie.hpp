@@ -131,6 +131,13 @@ namespace uva {
                 //Stores the minimum context level
                 static const TModelLevel MINIMUM_CONTEXT_LEVEL;
 
+                //Stores the word hash for an unknown word
+                const static TWordHashSize UNDEFINED_WORD_HASH;
+                //Stores the word hash for an unknown word
+                const static TWordHashSize UNKNOWN_WORD_HASH;
+                //Stores the minimum known word hash
+                const static TWordHashSize MIN_KNOWN_WORD_HASH;
+
                 //The entry pair to store the N-gram probability and back off
                 typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
 
@@ -147,8 +154,11 @@ namespace uva {
                 //of this result was done, the second contains the cached results.
                 typedef pair<bool, SProbResult> TCacheEntry;
 
-                //The map storing the One-Grams: I.e. the dictionary
-                unordered_map<TWordHashSize, TWordEntryPair> oGrams;
+                //This map stores the word index, i.e. assigns each unique word a unique id
+                unordered_map<string, TWordHashSize> wordIndex;
+
+                //The map storing the One-Grams: I.e. the word indexes and the word probabilities
+                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
 
                 //The array of maps map storing n-tires for n>1 and < N
                 unordered_map<TWordHashSize, TMGramEntryMap > mGrams[N - 2];
@@ -160,7 +170,10 @@ namespace uva {
                 unordered_map<TWordHashSize, TCacheEntry > queryCache;
 
                 //The temporary data structure to store the N-gram query word hashes
-                TWordHashSize _wordHashes[N];
+                TWordHashSize mGramWordHashes[N];
+
+                //Stores the last allocated word hash
+                TWordHashSize nextNewWordHash;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -200,12 +213,12 @@ namespace uva {
                  * @param tokens the tokens to be transformed into word hashes must have size <=N
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                static inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
+                inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << tokens.size() << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = computeHash(*it);
+                        wordHashes[idx] = getUniqueIdHash(*it);
                         LOG_DEBUG1 << "hash('" << *it << "') = " << wordHashes[idx] << END_LOG;
                         idx++;
                     }
@@ -240,23 +253,23 @@ namespace uva {
                     TModelLevel idx = bIdx;
 
                     LOG_DEBUG3 << "Computing context hash for context length " << contextLength
-                               << " for a  " << (isBackOff ? "back-off" : "probability")
-                               << " computation" << END_LOG;
+                            << " for a  " << (isBackOff ? "back-off" : "probability")
+                            << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    TReferenceHashSize contextHash = _wordHashes[idx];
+                    TReferenceHashSize contextHash = mGramWordHashes[idx];
                     LOG_DEBUG3 << "Word: " << idx << " hash == initial context hash: " << contextHash << END_LOG;
                     idx++;
 
                     //Compute the subsequent hashes
                     for (; idx < eIdx;) {
-                        contextHash = createContext(_wordHashes[idx], contextHash);
-                        LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << _wordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
+                        contextHash = createContext(mGramWordHashes[idx], contextHash);
+                        LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << mGramWordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
                         idx++;
                     }
                     LOG_DEBUG3 << "Resulting context hash for context length " << contextLength
-                               << " of a  " << (isBackOff ? "back-off" : "probability")
-                               << " computation is: " << contextHash << END_LOG;
+                            << " of a  " << (isBackOff ? "back-off" : "probability")
+                            << " computation is: " << contextHash << END_LOG;
 
                     return contextHash;
                 }
@@ -274,18 +287,18 @@ namespace uva {
                  * @param tokens alls of the N-gram tokens
                  * @return the resulting hash of the context(w1 w2 w3)
                  */
-                static inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
+                inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
                     //Get the start iterator
                     vector<string>::const_iterator it = tokens.begin();
                     //Get the iterator we are going to iterate until
                     const vector<string>::const_iterator end = --tokens.end();
 
-                    TReferenceHashSize contextHash = computeHash(*it);
+                    TReferenceHashSize contextHash = getUniqueIdHash(*it);
                     LOG_DEBUG2 << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
 
                     //Iterate and compute the hash:
                     for (++it; it < end; ++it) {
-                        TWordHashSize wordHash = computeHash(*it);
+                        TWordHashSize wordHash = getUniqueIdHash(*it);
                         LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
                         contextHash = createContext(wordHash, contextHash);
                         LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
@@ -295,14 +308,40 @@ namespace uva {
                 }
 
                 /**
-                 * This function computes the hash of the word
+                 * This function gets a hash for the given word word based no the stored 1-Grams.
+                 * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
                  * @param str the word to hash
                  * @return the resulting hash
                  */
-                static inline TWordHashSize computeHash(const string & str) {
+                inline TWordHashSize getUniqueIdHash(const string & str) {
+                    try{
+                        return wordIndex.at(str);
+                    } catch (out_of_range e) {
+                        LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
+                                    << UNKNOWN_WORD_STR << "', hash: " << UNKNOWN_WORD_HASH << END_LOG; 
+                    }
+                    return UNKNOWN_WORD_HASH;
+                }
+
+                /**
+                 * This function creates/gets a hash for the given word.
+                 * Note: The hash id will be unique!
+                 * @param str the word to hash
+                 * @return the resulting hash
+                 */
+                inline TWordHashSize createUniqueIdHash(const string & str) {
+                    //First get/create an existing/new word entry from from/in the word index
+                    TWordHashSize& hash = wordIndex[str];
+
+                    if (hash == UNDEFINED_WORD_HASH) {
+                        //If the word hash is not defined yet, then issue it a new hash id
+                        hash = nextNewWordHash;
+                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << hash << END_LOG; 
+                        nextNewWordHash++;
+                    }
+
                     //Use the Prime numbers hashing algorithm as it outperforms djb2
-                    //return computePrimesHash(str);
-                    return computeRSHash(str);
+                    return hash;
                 }
 
                 /**

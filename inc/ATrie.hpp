@@ -39,6 +39,8 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            //Stores the string representation of an unknown word
+#define UNKNOWN_WORD_STR "<unk>"
             //The base of the logarithm for stored probabilities/back-off weights
 #define LOG_PROB_WEIGHT_BASE 10.0
             //The zero value for probability/back-off weight
