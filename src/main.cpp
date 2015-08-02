@@ -93,7 +93,7 @@ static void printUsage(const string name) {
     LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
     LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
     LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
-    //LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
+    LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
     LOG_USAGE << "    The program reads in the test lines from the <test_file>. " << END_LOG;
