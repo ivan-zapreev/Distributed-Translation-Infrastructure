@@ -113,7 +113,15 @@ namespace uva {
                     } else {
                         //This is a possible situation, there is an unexpected
                         //number of tokens, so we should stop with this level N-grams
-                        result = true;
+                        if( size > MAX_NUM_TOKENS_NGRAM_STR ) {
+                            LOG_WARNING << "There is too many tokens in '" << data
+                                        << "' we are expecting a " << _level
+                                        << "-gram, IGNORING!" << END_LOG;
+                        } else {
+                            //If there is less than the minimum number of tokens then
+                            //it should be the beginning of the next m-gram section
+                            result = true;
+                        }
                     }
 
                     LOG_DEBUG << "Finished processing the " << _level << "-Gram (?) line: '"
