@@ -249,7 +249,7 @@ namespace uva {
                     }
                 }
 
-                LOG_DEBUG2 << "The chosen log back-off weight is: " << back_off << END_LOG;
+                LOG_DEBUG2 << "The chosen log back-off weight for context: " << contextLength << " is: " << back_off << END_LOG;
 
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
                 return back_off;
