@@ -313,6 +313,9 @@ namespace uva {
                         LOG_DEBUG1 << "getBackOffWeight(" << contextLength << ") = " << back_off
                                 << ", computeLogProbability(" << (contextLength - 1) << ") = "
                                 << probability << END_LOG;
+                        
+                        LOG_DEBUG2 << "The " << contextLength << " probability = " << back_off
+                                << " + " << probability << " = " << (back_off + probability) << END_LOG;
 
                         //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
                         return back_off + probability;
