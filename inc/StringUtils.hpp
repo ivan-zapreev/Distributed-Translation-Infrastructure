@@ -44,8 +44,9 @@ namespace uva {
             namespace text {
 
                 //All the possible Whitespaces, including unicode, to be imagined, are to be used for trimming and reduce
-#define WHITESPACES string("\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r")
-                
+                //#define WHITESPACES string("\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r")
+#define WHITESPACES string("\t\f\v\n\r ")
+
                 /**
                  * Tokenise a given string into avector of strings
                  * @param s the string to tokenise
@@ -81,7 +82,7 @@ namespace uva {
                     //Tokenise the line
                     tokenize(line, delim, ngram);
                     //Check that the number of words in the N-gram is proper
-                    if ( ngram.size() < 1 || ngram.size() > n) {
+                    if (ngram.size() < 1 || ngram.size() > n) {
                         stringstream msg;
                         msg << "The line '" << line << "' is not with in [0, " << n << "] as expected!";
                         throw Exception(msg.str());
@@ -94,19 +95,19 @@ namespace uva {
                  * @param whitespace the white spaces to be trimmed, the default value is " \t" 
                  */
                 inline void trim(std::string& str,
-                                 const std::string& whitespace = WHITESPACES) {
+                        const std::string& whitespace = WHITESPACES) {
                     LOG_DEBUG3 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
                     if (str != "") {
                         const size_t strBegin = str.find_first_not_of(whitespace);
                         LOG_DEBUG3 << "First not of whitespaces pos: " << strBegin << END_LOG;
-                        
+
                         if (strBegin == std::string::npos) {
                             str = ""; // no content
                         } else {
                             const size_t strEnd = str.find_last_not_of(whitespace);
                             LOG_DEBUG3 << "Last not of whitespaces pos: " << strEnd << END_LOG;
                             const size_t strRange = strEnd - strBegin + 1;
-                            LOG_DEBUG3 << "Need a substring: [" << strBegin << ", " << (strBegin+strRange-1) << "]" << END_LOG;
+                            LOG_DEBUG3 << "Need a substring: [" << strBegin << ", " << (strBegin + strRange - 1) << "]" << END_LOG;
 
                             str = str.substr(strBegin, strRange);
                         }
@@ -122,8 +123,8 @@ namespace uva {
                  * @param whitespace the white spaces to be reduced, by default " \t"
                  */
                 inline void reduce(std::string& str,
-                                   const std::string& fill = " ",
-                                   const std::string& whitespace = WHITESPACES) {
+                        const std::string& fill = " ",
+                        const std::string& whitespace = WHITESPACES) {
                     LOG_DEBUG3 << "Reducing the string '" << str << "', with white spaces" << END_LOG;
                     if (str != "") {
                         // trim first

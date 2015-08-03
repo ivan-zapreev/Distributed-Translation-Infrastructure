@@ -189,7 +189,7 @@ namespace uva {
                 const TWordHashSize & endWordHash = mGramWordHashes[N - 2];
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
-                TLogProbBackOff back_off = UNDEFINED_LOG_PROB_WEIGHT;
+                TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
 
                 LOG_DEBUG1 << "Computing back-off for an " << (backOfContextLength + 1)
                         << "-gram the context length is " << backOfContextLength << END_LOG;
@@ -216,16 +216,6 @@ namespace uva {
                                 << "-Gram entry for a (word, context)=("
                                 << endWordHash << ", " << contextHash << "), need to back off!" << END_LOG;
                     }
-
-                    //If the back-off is undefined then recurse
-                    if (back_off == UNDEFINED_LOG_PROB_WEIGHT) {
-                        LOG_DEBUG << "Undefined back-off weight for " << (contextLength)
-                                << "-Gram defined by (word, context)=("
-                                << endWordHash << ", " << contextHash << "), backing off!" << END_LOG;
-
-                        //In case the back-off weight is not know then we move down to the lower level
-                        back_off = getBackOffWeight(contextLength - 1);
-                    }
                 } else {
                     //We came to a zero context, which means we have an
                     //1-Gram to try to get the back-off weight from
@@ -242,13 +232,8 @@ namespace uva {
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
                     }
-
-                    //If the back-off is still undefined then just it to zero - no penalty
-                    if (back_off == UNDEFINED_LOG_PROB_WEIGHT) {
-                        back_off = ZERO_LOG_PROB_WEIGHT;
-                    }
                 }
-
+                
                 LOG_DEBUG2 << "The chosen log back-off weight for context: " << contextLength << " is: " << back_off << END_LOG;
 
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
@@ -313,7 +298,7 @@ namespace uva {
                         LOG_DEBUG1 << "getBackOffWeight(" << contextLength << ") = " << back_off
                                 << ", computeLogProbability(" << (contextLength - 1) << ") = "
                                 << probability << END_LOG;
-                        
+
                         LOG_DEBUG2 << "The " << contextLength << " probability = " << back_off
                                 << " + " << probability << " = " << (back_off + probability) << END_LOG;
 

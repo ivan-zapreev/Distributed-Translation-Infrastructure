@@ -61,10 +61,10 @@ namespace uva {
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
-                    //Clear the current data
+                    //Clear the current data, set the probability and weight to zero
                     _ngram.tokens.clear();
-                    _ngram.prob = UNDEFINED_LOG_PROB_WEIGHT;
-                    _ngram.back_off = UNDEFINED_LOG_PROB_WEIGHT;
+                    _ngram.prob = ZERO_LOG_PROB_WEIGHT;
+                    _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
 
                     //Tokenise the line of text into a vector
                     tokenize(data, _delim, _ngram.tokens);
