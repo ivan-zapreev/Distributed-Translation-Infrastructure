@@ -163,7 +163,7 @@ namespace uva {
 
                         try {
                             //The counter of the N-grams
-                            uint numNgrams = 0;
+                            int numNgrams = 0;
                             //Read the current level N-grams and add them to the trie
                             while (true) {
                                 //Try to read the next line
@@ -190,6 +190,7 @@ namespace uva {
                                             //Now stop reading this level N-grams and move on
                                             break;
                                         }
+                                        numNgrams++;
                                     }
 
                                     //Update the progress bar status
