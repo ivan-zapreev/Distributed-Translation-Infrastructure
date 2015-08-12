@@ -29,6 +29,8 @@
 #include <string> //std::string
 #include <cmath>  //floor, sqrt 
 
+#include "Logger.hpp"
+
 using namespace std;
 
 namespace uva {

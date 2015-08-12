@@ -300,7 +300,12 @@ namespace uva {
                     for (++it; it < end; ++it) {
                         TWordHashSize wordHash = getUniqueIdHash(*it);
                         LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
+                        const TReferenceHashSize prevContextHash = contextHash;
                         contextHash = createContext(wordHash, contextHash);
+                        if ((contextHash < wordHash) && (contextHash < prevContextHash)) {
+                            LOG_WARNING << "Owerflow?: szudzik( " << wordHash << ", " << prevContextHash << ") = " << contextHash << END_LOG;
+                        }
+
                         LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
                     }
 
@@ -314,11 +319,11 @@ namespace uva {
                  * @return the resulting hash
                  */
                 inline TWordHashSize getUniqueIdHash(const string & str) {
-                    try{
+                    try {
                         return wordIndex.at(str);
                     } catch (out_of_range e) {
                         LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
-                                    << UNKNOWN_WORD_STR << "', hash: " << UNKNOWN_WORD_HASH << END_LOG; 
+                                << UNKNOWN_WORD_STR << "', hash: " << UNKNOWN_WORD_HASH << END_LOG;
                     }
                     return UNKNOWN_WORD_HASH;
                 }
@@ -336,7 +341,7 @@ namespace uva {
                     if (hash == UNDEFINED_WORD_HASH) {
                         //If the word hash is not defined yet, then issue it a new hash id
                         hash = nextNewWordHash;
-                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << hash << END_LOG; 
+                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << hash << END_LOG;
                         nextNewWordHash++;
                     }
 
