@@ -163,7 +163,7 @@ namespace uva {
 
                         try {
                             //The counter of the N-grams
-                            int numNgrams = 0;
+                            uint numNgrams = 0;
                             //Read the current level N-grams and add them to the trie
                             while (true) {
                                 //Try to read the next line
@@ -182,7 +182,7 @@ namespace uva {
                                             //First log the actual amount of read N-grams
                                             const bool wasPBOn = Logger::isProgressBarOn();
                                             Logger::stopProgressBar();
-                                            LOG_INFO << "The number of read " << level << "-grams is: " + numNgrams << END_LOG;
+                                            LOG_INFO << "The number of read " << level << "-grams is: " + numNgrams << "." << END_LOG;
                                             if( wasPBOn ) {
                                                 Logger::startProgressBar();
                                             }
