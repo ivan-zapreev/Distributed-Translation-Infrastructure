@@ -48,7 +48,7 @@ namespace uva {
 
         //The following type definitions are important for storing the Tries information
         namespace tries {
-            //This typedef if used in the tries in order to specify the type of the N-gram level N
+            //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef unsigned short int TModelLevel;
 
             //The amount of memory dedicated for storing frequency
@@ -62,7 +62,7 @@ namespace uva {
             //This is the smallest size which I've tested and it works for the hash without collisions
             typedef unsigned int TWordHashSize;
             //This is the hash reference size which should be twice as long as the TWordHashSize
-            typedef unsigned long int TReferenceHashSize;
+            typedef unsigned long long TReferenceHashSize;
         }
 
     }
