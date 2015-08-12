@@ -124,6 +124,7 @@ namespace uva {
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //The M-Gram has been seen already, this is a potential error, so we report a warning!
                         LOG_WARNING << "The " << level << "-Gram : '" << ngramToString(mGram.tokens) << "' has been already seen! "
+                                << "wordHash: " << wordHash << ", contextHash: " << contextHash << ". "
                                 << "Changing the (prob,back-off) data from ("
                                 << pbData.first << "," << pbData.second << ") to ("
                                 << mGram.prob << "," << mGram.back_off << ")" << END_LOG;
