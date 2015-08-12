@@ -152,13 +152,22 @@ namespace uva {
                  * Works if the current debug level is <= INFO
                  */
                 static void stopProgressBar();
+                
+                /**
+                 * The function allows to check if the progress bar is running or not
+                 * @return true if the progress bar is running, otherwise case;
+                 */
+                static inline bool isProgressBarOn() { return isPBOn; };
 
             private:
                 //The class constructor, copy constructor and assign operator
                 //are made private as they are not to be used.
 
-                //Stores the the string representation of the sthe DebugLeven enumeration elements
+                //Stores the the string representation of the the DebugLevel enumeration elements
                 static const char * _debugLevelStr[];
+                
+                //Stores the flag indicating if the progress bar is running or not
+                static bool isPBOn;
 
                 Logger() {
                 };

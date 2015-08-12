@@ -162,6 +162,8 @@ namespace uva {
                         ARPAGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
 
                         try {
+                            //The counter of the N-grams
+                            uint numNgrams = 0;
                             //Read the current level N-grams and add them to the trie
                             while (true) {
                                 //Try to read the next line
@@ -176,6 +178,16 @@ namespace uva {
                                         if (pNGBuilder->processString(line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
+                                            
+                                            //First log the actual amount of read N-grams
+                                            const bool wasPBOn = Logger::isProgressBarOn();
+                                            Logger::stopProgressBar();
+                                            LOG_INFO << "The number of read " << level << "-grams is: " + numNgrams << END_LOG;
+                                            if( wasPBOn ) {
+                                                Logger::startProgressBar();
+                                            }
+                                            
+                                            //Now stop reading this level N-grams and move on
                                             break;
                                         }
                                     }

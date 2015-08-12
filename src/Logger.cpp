@@ -56,6 +56,10 @@ namespace uva {
             //Set the initial update time to zero
             double Logger::lastProgressUpdate = 0.0;
 
+            //The progress bar is not running first
+            bool Logger::isPBOn = false;
+
+            
             string Logger::getReportingLevels(){
                 string result = "{ ";
                 
@@ -113,15 +117,16 @@ namespace uva {
             }
 
             void Logger::startProgressBar() {
-                if (currLEvel <= INFO) {
+                if (currLEvel <= INFO && !isPBOn) {
                     currProgCharIdx = 0;
                     cout << progressChars[currProgCharIdx];
                     lastProgressUpdate = StatisticsMonitor::getCPUTime();
+                    isPBOn = true;
                 }
             }
 
             void Logger::updateProgressBar() {
-                if (currLEvel <= INFO) {
+                if (currLEvel <= INFO && isPBOn) {
                     const double currProgressUpdate = StatisticsMonitor::getCPUTime();
                     if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
                         currProgCharIdx = (currProgCharIdx + 1) % numProgChars;
@@ -133,10 +138,11 @@ namespace uva {
             }
 
             void Logger::stopProgressBar() {
-                if (currLEvel <= INFO) {
+                if (currLEvel <= INFO && isPBOn) {
                     currProgCharIdx = 0;
                     lastProgressUpdate = 0.0;
                     cout << progressChars[numProgChars];
+                    isPBOn = false;
                 }
             }
 
