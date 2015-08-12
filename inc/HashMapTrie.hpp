@@ -300,12 +300,7 @@ namespace uva {
                     for (++it; it < end; ++it) {
                         TWordHashSize wordHash = getUniqueIdHash(*it);
                         LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
-                        const TReferenceHashSize prevContextHash = contextHash;
                         contextHash = createContext(wordHash, contextHash);
-                        if ((contextHash < wordHash) || (contextHash < prevContextHash)) {
-                            LOG_WARNING << "Owerflow?: szudzik( " << wordHash << ", " << prevContextHash << ") = " << contextHash << END_LOG;
-                        }
-
                         LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
                     }
 

@@ -30,17 +30,13 @@
 #include <cmath>  //floor, sqrt 
 
 #include "Logger.hpp"
+#include "Globals.hpp"
 
 using namespace std;
 
 namespace uva {
     namespace smt {
         namespace hashing {
-
-            //This is the smallest size which I've tested and it works for the hash without collisions
-            typedef unsigned int TWordHashSize;
-            //This is the hash reference size which should be twice as long as the TWordHashSize
-            typedef unsigned long int TReferenceHashSize;
 
             /**
              * This is one of the best known hashing function algorithms (djb2) for the C 
