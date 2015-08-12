@@ -302,7 +302,7 @@ namespace uva {
                         LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
                         const TReferenceHashSize prevContextHash = contextHash;
                         contextHash = createContext(wordHash, contextHash);
-                        if ((contextHash < wordHash) && (contextHash < prevContextHash)) {
+                        if ((contextHash < wordHash) || (contextHash < prevContextHash)) {
                             LOG_WARNING << "Owerflow?: szudzik( " << wordHash << ", " << prevContextHash << ") = " << contextHash << END_LOG;
                         }
 
