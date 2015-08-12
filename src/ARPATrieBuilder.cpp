@@ -182,7 +182,7 @@ namespace uva {
                                             //First log the actual amount of read N-grams
                                             const bool wasPBOn = Logger::isProgressBarOn();
                                             Logger::stopProgressBar();
-                                            LOG_INFO << "The number of read " << level << "-grams is: " + numNgrams << "." << END_LOG;
+                                            LOG_INFO << "The number of read " << level << "-grams is: " + static_cast<uint>(numNgrams) << END_LOG;
                                             if( wasPBOn ) {
                                                 Logger::startProgressBar();
                                             }
