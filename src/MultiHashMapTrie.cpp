@@ -38,7 +38,7 @@ namespace uva {
         namespace tries {
 
             //The following is to be used for additional monitoring of collisions
-#define MONITORE_COLLISIONS false
+#define MONITORE_COLLISIONS true
 #if MONITORE_COLLISIONS
             static unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> ngRecorder;
 
@@ -51,13 +51,10 @@ namespace uva {
                     //Second try to get the entries for the given context
                     try {
                         string entry = entries.at(contextHash);
-                        //Compare the gram stored for the given word and context
-                        if (!entry.compare(gramStr)) {
-                            //If they are not the same then we have a collision!
-                            LOG_WARNING << "N-gram collision " << entry << " with "
-                                    << gramStr << "! wordHash= " << wordHash
+
+                        LOG_WARNING << "N-gram collision/duplicates: '" << entry << "' with '"
+                                    << gramStr << "'! wordHash= " << wordHash
                                     << ", contextHash= " << contextHash << END_LOG;
-                        }
                     } catch (out_of_range e) {
                         //If no entries for the context, add a new one
                         entries[contextHash] = gramStr;
