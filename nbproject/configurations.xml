@@ -96,6 +96,8 @@
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -107,6 +109,8 @@
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -154,6 +158,8 @@
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -165,6 +171,8 @@
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -220,6 +228,8 @@
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -231,6 +241,8 @@
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -276,6 +288,8 @@
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -287,6 +301,8 @@
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -334,6 +350,8 @@
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -345,6 +363,8 @@
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>

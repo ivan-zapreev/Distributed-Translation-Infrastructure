@@ -34,6 +34,7 @@
 #include "Logger.hpp"
 #include "ATrie.hpp"
 #include "MultiHashMapTrie.hpp"
+#include "SingleHashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
@@ -262,7 +263,8 @@ static void performTasks(ifstream &modelFile, ifstream &testFile) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Create a trie and pass it to the algorithm method
-    TFiveHashMapTrie trie;
+    //TFiveMultiHashMapTrie trie;
+    TFiveSingleHashMapTrie trie;
     LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(modelFile, trie);

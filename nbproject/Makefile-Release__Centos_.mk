@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/MultiHashMapTrie.o \
+	${OBJECTDIR}/src/SingleHashMapTrie.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/main.o
 
@@ -86,6 +87,11 @@ ${OBJECTDIR}/src/MultiHashMapTrie.o: src/MultiHashMapTrie.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MultiHashMapTrie.o src/MultiHashMapTrie.cpp
+
+${OBJECTDIR}/src/SingleHashMapTrie.o: src/SingleHashMapTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SingleHashMapTrie.o src/SingleHashMapTrie.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

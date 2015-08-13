@@ -54,6 +54,15 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            //This macro is needed to report the collision detection warnings!
+#define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
+            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << ngramToString(tokens)                   \
+                        << "' has been already seen! "  << "wordHash: " << wordHash                          \
+                        << ", contextHash: " << contextHash << ". "                                          \
+                        << "Changing the (prob,back-off) data from ("                                        \
+                        << prevProb << "," << prevBackOff << ") to ("                                        \
+                        << newProb << "," << newBackOff << ")" << END_LOG;
+
             //The entry pair to store the N-gram probability and back off
             typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
 
@@ -110,7 +119,7 @@ namespace uva {
                 inline const TWordHashSize & getNGramEndWordHash() {
                     return mGramWordHashes[N - 1];
                 }
-                
+
                 /**
                  * This method converts the M-Gram tokens into hashes and stores
                  * them in an array. Note that, M is the size of the tokens array.
@@ -129,7 +138,7 @@ namespace uva {
                         idx++;
                     }
                 }
-                
+
                 /**
                  * Converts the given tokens to hashes and stores it in mGramWordHashes
                  * @param ngram the n-gram tokens to convert to hashes
@@ -193,23 +202,28 @@ namespace uva {
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
                  * @param tokens alls of the N-gram tokens
-                 * @return the resulting hash of the context(w1 w2 w3)
+                 * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
                  */
                 inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
-                    //Get the start iterator
-                    vector<string>::const_iterator it = tokens.begin();
-                    //Get the iterator we are going to iterate until
-                    const vector<string>::const_iterator end = --tokens.end();
+                    TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
+                    
+                    //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
+                    if( tokens.size() > MIN_NGRAM_LEVEL ) {
+                        //Get the start iterator
+                        vector<string>::const_iterator it = tokens.begin();
+                        //Get the iterator we are going to iterate until
+                        const vector<string>::const_iterator end = --tokens.end();
 
-                    TReferenceHashSize contextHash = getUniqueIdHash(*it);
-                    LOG_DEBUG2 << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
+                        contextHash = getUniqueIdHash(*it);
+                        LOG_DEBUG2 << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
 
-                    //Iterate and compute the hash:
-                    for (++it; it < end; ++it) {
-                        TWordHashSize wordHash = getUniqueIdHash(*it);
-                        LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
-                        contextHash = createContext(wordHash, contextHash);
-                        LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
+                        //Iterate and compute the hash:
+                        for (++it; it < end; ++it) {
+                            TWordHashSize wordHash = getUniqueIdHash(*it);
+                            LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
+                            contextHash = createContext(wordHash, contextHash);
+                            LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
+                        }
                     }
 
                     return contextHash;

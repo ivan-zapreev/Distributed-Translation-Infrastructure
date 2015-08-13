@@ -1,5 +1,5 @@
 /* 
- * File:   HashMapTrie.hpp
+ * File:   SingleHashMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on April 18, 2015, 11:42 AM
+ * Created on August 13, 2015, 11:42 AM
  */
 
-#ifndef MULTIHASHMAPTRIE_HPP
-#define	MULTIHASHMAPTRIE_HPP
+#ifndef SINGLEHASHMAPTRIE_HPP
+#define	SINGLEHASHMAPTRIE_HPP
 
 /**
  * We actually have several choices:
@@ -45,10 +45,12 @@
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
+#include "StringUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
@@ -56,14 +58,14 @@ namespace uva {
 
             /**
              * This is a HashMpa based ITrie interface implementation class.
-             * Note 1: This implementation uses the unsigned long for the hashes it is not optimal
-             * Note 2: the unordered_map might be not as efficient as a hash_map with respect to memory usage but it is supposed to be faster
              * 
-             * This implementation is chosen because it resembles the ordered array implementation from:
-             *      "Faster and Smaller N -Gram Language Models"
-             *      Adam Pauls Dan Klein
-             *      Computer Science Division
-             *      University of California, Berkeley
+             * This implementation is chosen because it resembles the single hashmap implementation mentioned in:
+             *      "KenLM: Faster and Smaller Language Model Queries"
+             *      Kenneth Heafield
+             *      Carnegie Mellon University
+             *      5000 Forbes Ave
+             *      Pittsburgh, PA 15213 USA
+             *      heafield@cs.cmu.edu
              * 
              * and unordered_maps showed good performance in:
              *      "Efficient in-memory data structures for n-grams indexing"
@@ -74,13 +76,13 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class MultiHashMapTrie : public AHashMapTrie<N> {
+            class SingleHashMapTrie : public AHashMapTrie<N> {
             public:
 
                 /**
                  * The basic class constructor
                  */
-                MultiHashMapTrie();
+                SingleHashMapTrie();
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -115,24 +117,69 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
-                virtual ~MultiHashMapTrie();
+                virtual ~SingleHashMapTrie();
 
             private:
+                //Stores all the available N-grams, note that we also use TMGramEntryMap
+                //for the N-gram although there is no back-off weight! This is not optimal!
+                unordered_map<TWordHashSize, TMGramEntryMap> ngRecorder[N];
 
-                //The map storing the One-Grams: I.e. the word indexes and the word probabilities
-                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
+                /**
+                /**
+                 * Allows to add a new M-Gram with  1< M <= N
+                 * @param wordHash the end M-gram word hash
+                 * @param contextHash the M-Gram context hash
+                 * @param gram the M-gram to add
+                 */
+                inline void addGram(const TWordHashSize wordHash,
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                    const TModelLevel levelIdx = gram.tokens.size()-1;
+                    //Obtain the entry for the given N-gram
+                    TProbBackOffEntryPair & pbData = ngRecorder[levelIdx][wordHash][contextHash];
 
-                //The array of maps map storing n-tires for n>1 and < N
-                unordered_map<TWordHashSize, TMGramEntryMap > mGrams[N - 2];
+                    if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
+                        //If they are not the same then we have a collision!
+                        REPORT_COLLISION_WARNING(gram.tokens, wordHash, contextHash,
+                                pbData.first, pbData.second,
+                                gram.prob, gram.back_off);
+                    }
 
-                //The map storing the N-Grams, they do not have back-off values
-                unordered_map<TWordHashSize, TNGramEntryMap > nGrams;
+                    //Store the probability and back-off values
+                    pbData.first = gram.prob;
+                    pbData.second = gram.back_off;
+
+                    LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                            << pbData.first << "," << pbData.second << ") for "
+                            << ngramToString(gram.tokens) << " wordHash = "
+                            << wordHash << END_LOG;
+                }
+
+                /**
+                 * Allows to add a new M-Gram with  1< M <= N
+                 * @param gram the M-gram to add
+                 */
+                template<bool isCreate>
+                inline void addGram(const SBackOffNGram &gram) {
+                    const size_t level = gram.tokens.size();
+                    LOG_DEBUG << "Adding a " << level << "-Gram '" << ngramToString(gram.tokens) << "' to the Trie" << END_LOG;
+
+                    // 1. Compute the context hash defined by w1 w2 w3
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(gram.tokens);
+
+                    // 2. Compute the hash of w4
+                    const string & endWord = *(--gram.tokens.end());
+                    TWordHashSize wordHash = ( isCreate ? AHashMapTrie<N>::createUniqueIdHash(endWord ) : AHashMapTrie<N>::getUniqueIdHash(endWord));
+                    LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
+
+                    // 3. Insert the probability data into the trie
+                    addGram(wordHash, contextHash, gram);
+                }
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                MultiHashMapTrie(const MultiHashMapTrie& orig);
+                SingleHashMapTrie(const SingleHashMapTrie& orig);
 
                 /**
                  * This recursive function implements the computation of the
@@ -154,7 +201,7 @@ namespace uva {
                 TLogProbBackOff getBackOffWeight(const TModelLevel contextLength);
             };
 
-            typedef MultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveMultiHashMapTrie;
+            typedef SingleHashMapTrie<MAX_NGRAM_LEVEL> TFiveSingleHashMapTrie;
         }
     }
 }

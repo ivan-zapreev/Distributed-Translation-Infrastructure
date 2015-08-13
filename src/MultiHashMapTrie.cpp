@@ -37,16 +37,6 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
-            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << ngramToString(tokens)                   \
-                        << "' has been already seen! "  << "wordHash: " << wordHash                          \
-                        << ", contextHash: " << contextHash << ". "                                          \
-                        << "Changing the (prob,back-off) data from ("                                        \
-                        << prevProb << "," << prevBackOff << ") to ("                                        \
-                        << newProb << "," << newBackOff << ")" << END_LOG;
-
-
             //The following is to be used for additional monitoring of collisions
 #define MONITORE_COLLISIONS false
 #if MONITORE_COLLISIONS
@@ -226,7 +216,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            float MultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
+            TLogProbBackOff MultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TWordHashSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
@@ -283,7 +273,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            float MultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
+            TLogProbBackOff MultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
                 const TWordHashSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
 
@@ -334,8 +324,8 @@ namespace uva {
                                 << endWordHash << ", " << contextHash
                                 << "), need to back off!" << END_LOG;
 
-                        const float back_off = getBackOffWeight(contextLength);
-                        const float probability = computeLogProbability(contextLength - 1);
+                        const TLogProbBackOff back_off = getBackOffWeight(contextLength);
+                        const TLogProbBackOff probability = computeLogProbability(contextLength - 1);
 
                         LOG_DEBUG1 << "getBackOffWeight(" << contextLength << ") = " << back_off
                                 << ", computeLogProbability(" << (contextLength - 1) << ") = "
