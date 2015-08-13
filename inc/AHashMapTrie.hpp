@@ -333,10 +333,12 @@ namespace uva {
                                 AHashMapTrie<N>::tokensToHashes(entry, old);
                                 AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
                                 for (int i = 0; i < size; i++) {
-                                    LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N - size + i] << END_LOG;
-                                    LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N - size + i] << END_LOG;
+                                    LOG_INFO << i << ") wordHash('" << entry[i] << "') = " << old[N - size + i] << END_LOG;
+                                    LOG_INFO << i << ") wordHash('" << gram.tokens[i] << "') = " << fresh[N - size + i] << END_LOG;
                                 }
+                                LOG_INFO << "First context computation: " << END_LOG;
                                 AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
+                                LOG_INFO << "Second context computation: " << END_LOG;
                                 AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
                             }
                         } catch (out_of_range e) {
