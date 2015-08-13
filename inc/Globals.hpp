@@ -33,19 +33,19 @@
 namespace uva {
     namespace smt {
 
-//This is the pattern used for file path separation
+        //This is the pattern used for file path separation
 #define PATH_SEPARATION_SYMBOLS "/\\"
-//This is a delimiter used in the text corpus and test files
+        //This is a delimiter used in the text corpus and test files
 #define TOKEN_DELIMITER_CHAR ' '
-//The expected number of program arguments
+        //The expected number of program arguments
 #define EXPECTED_NUMBER_OF_ARGUMENTS 3
-//The expected number of user arguments
+        //The expected number of user arguments
 #define EXPECTED_USER_NUMBER_OF_ARGUMENTS (EXPECTED_NUMBER_OF_ARGUMENTS - 1)
-//The number of bytes in one Mb
+        //The number of bytes in one Mb
 #define BYTES_ONE_MB 1024u
-//The considered maximum length of the N-gram
+        //The considered maximum length of the N-gram
 #define MAX_NGRAM_LEVEL 5u
-//Defined the minimum possible N-gram level
+        //Defined the minimum possible N-gram level
 #define MIN_NGRAM_LEVEL 1u
 
         //The following type definitions are important for storing the Tries information
@@ -64,7 +64,9 @@ namespace uva {
             //This is the smallest size which I've tested and it works for the hash without collisions
             typedef uint32_t TWordHashSize;
             //This is the hash reference size which should be twice as long as the TWordHashSize
+#if __x86_64__
             typedef uint64_t TReferenceHashSize;
+#endif
         }
 
     }
