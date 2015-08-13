@@ -152,6 +152,11 @@ namespace uva {
                  * @return the resulting back-off weight probability
                  */
                 TLogProbBackOff getBackOffWeight(const TModelLevel contextLength);
+
+                unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, vector<string>>> ngRecorder;
+
+                void recordAndCheck(const TWordHashSize wordHash,
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram);
             };
 
             typedef MultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveMultiHashMapTrie;

@@ -38,35 +38,47 @@ namespace uva {
         namespace tries {
 
             //The following is to be used for additional monitoring of collisions
-#define MONITORE_COLLISIONS true
-#if MONITORE_COLLISIONS
-            static unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> ngRecorder;
+#define MONITORE_COLLISIONS
+#ifdef MONITORE_COLLISIONS
 
-            static inline void recordAndCheck(const TWordHashSize wordHash,
+            template<TModelLevel N>
+            void MultiHashMapTrie<N>::recordAndCheck(const TWordHashSize wordHash,
                     const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
-                string gramStr = ngramToString(gram.tokens);
                 //First try to get the entries for the given word
                 try {
-                    unordered_map<TReferenceHashSize, string> & entries = ngRecorder.at(wordHash);
+                    unordered_map<TReferenceHashSize, vector < string>> &entries = ngRecorder.at(wordHash);
                     //Second try to get the entries for the given context
                     try {
-                        string entry = entries.at(contextHash);
+                        vector<string> entry = entries.at(contextHash);
 
-                        LOG_WARNING << "N-gram collision/duplicates: '" << entry << "' with '"
-                                    << gramStr << "'! wordHash= " << wordHash
-                                    << ", contextHash= " << contextHash << END_LOG;
+                        LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
+                                << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
+                                << ", contextHash= " << contextHash << END_LOG;
+
+                        //Get the tokens and debug the hashes if the sizes are the same
+                        const TModelLevel size = entry.size();
+                        if (size == gram.tokens.size()) {
+                            TWordHashSize old[N], fresh[N];
+                            AHashMapTrie<N>::tokensToHashes(entry, old);
+                            AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
+                            for( int i = 0; i < size; i++ ) {
+                                LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N-size+i] << END_LOG;
+                                LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N-size+i] << END_LOG;
+                            }
+                        }
                     } catch (out_of_range e) {
                         //If no entries for the context, add a new one
-                        entries[contextHash] = gramStr;
+                        entries[contextHash] = gram.tokens;
                     }
                 } catch (out_of_range e) {
                     //If no entries for the given word and thus context add a new one
-                    ngRecorder[wordHash][contextHash] = gramStr;
+                    ngRecorder[wordHash][contextHash] = gram.tokens;
                 }
             }
 #else
 
-            static inline void recordAndCheck(const TWordHashSize wordHash,
+            template<TModelLevel N>
+            void MultiHashMapTrie<N>::recordAndCheck(const TWordHashSize wordHash,
                     const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
             }
 #endif
@@ -77,7 +89,7 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = oGrams[UNKNOWN_WORD_HASH];
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
-                
+
                 LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
             }
 
