@@ -336,9 +336,9 @@ namespace uva {
                                     LOG_INFO << i << ") wordHash('" << entry[i] << "') = " << old[N - size + i] << END_LOG;
                                     LOG_INFO << i << ") wordHash('" << gram.tokens[i] << "') = " << fresh[N - size + i] << END_LOG;
                                 }
-                                LOG_INFO << "First context computation: " << END_LOG;
+                                LOG_INFO << "-- First context computation: " << END_LOG;
                                 AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
-                                LOG_INFO << "Second context computation: " << END_LOG;
+                                LOG_INFO << "-- Second context computation: " << END_LOG;
                                 AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
                             }
                         } catch (out_of_range e) {

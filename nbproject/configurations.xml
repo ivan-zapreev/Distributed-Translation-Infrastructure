@@ -67,7 +67,7 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x -lrt</commandLine>
+          <commandLine>-O3 -std=c++0x -lrt -m64</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -78,7 +78,7 @@
         </asmTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-lrt</commandLine>
+          <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -135,12 +135,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-g -O0 -lrt</commandLine>
+          <commandLine>-g -O0 -lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -196,7 +196,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <commandlineTool>g++ -std=c++0x</commandlineTool>
+          <commandlineTool>g++ -std=c++0x -m64</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
@@ -211,6 +211,7 @@
         </asmTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
+          <commandLine>-m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -266,11 +267,11 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x -lrt</commandLine>
+          <commandLine>-O3 -std=c++0x -lrt -m64</commandLine>
         </ccTool>
         <linkerTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-lrt</commandLine>
+          <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -327,12 +328,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-g -O0 -lrt</commandLine>
+          <commandLine>-g -O0 -lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
