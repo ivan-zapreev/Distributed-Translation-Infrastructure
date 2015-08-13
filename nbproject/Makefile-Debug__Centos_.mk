@@ -37,8 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
-	${OBJECTDIR}/src/HashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
+	${OBJECTDIR}/src/MultiHashMapTrie.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/main.o
 
@@ -77,15 +77,15 @@ ${OBJECTDIR}/src/ARPATrieBuilder.o: src/ARPATrieBuilder.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
-${OBJECTDIR}/src/HashMapTrie.o: src/HashMapTrie.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/HashMapTrie.o src/HashMapTrie.cpp
-
 ${OBJECTDIR}/src/Logger.o: src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
+
+${OBJECTDIR}/src/MultiHashMapTrie.o: src/MultiHashMapTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MultiHashMapTrie.o src/MultiHashMapTrie.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

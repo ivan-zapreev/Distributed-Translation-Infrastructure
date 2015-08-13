@@ -34,6 +34,8 @@
 
 using namespace std;
 using namespace uva::smt::exceptions;
+using namespace uva::smt::hashing;
+using namespace uva::smt::tries;
 
 namespace uva {
     namespace smt {
@@ -51,6 +53,15 @@ namespace uva {
 #define MINIMAL_LOG_PROB_WEIGHT -10.0f
             //The zerro like value for probability/back-off weight
 #define ZERRO_LOG_PROB_WEIGHT -99.0f
+
+            //Stores the word hash for an unknown word
+#define UNDEFINED_WORD_HASH static_cast<TWordHashSize>(0)
+            //Stores the word hash for an unknown word
+#define UNKNOWN_WORD_HASH static_cast<TWordHashSize>(UNDEFINED_WORD_HASH + 1)
+            //Stores the minimum known word hash
+#define MIN_KNOWN_WORD_HASH static_cast<TWordHashSize>(UNKNOWN_WORD_HASH + 1)
+            //Stores the minimum context level
+#define  MINIMUM_CONTEXT_LEVEL static_cast<TModelLevel>(2)
 
             //The type used for storing log probabilities and back-off values
             typedef float TLogProbBackOff;

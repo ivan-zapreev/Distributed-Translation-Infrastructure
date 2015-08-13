@@ -1,5 +1,5 @@
 /* 
- * File:   HashMapTrie.hpp
+ * File:   SingleHashMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on April 18, 2015, 11:42 AM
  */
 
-#ifndef HASHMAPTRIE_HPP
-#define	HASHMAPTRIE_HPP
+#ifndef AHASHMAPTRIE_HPP
+#define	AHASHMAPTRIE_HPP
 
 /**
  * We actually have several choices:
@@ -54,134 +54,63 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            //The entry pair to store the N-gram probability and back off
+            typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
+
+            //The M-trie level entry for 1 < M < N, for with probability and back-off weights
+            typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair> TMGramEntryMap;
+
+            //The N-trie level entry for the highest level M-Grams, there are no back-off weights
+            typedef unordered_map<TReferenceHashSize, TLogProbBackOff> TNGramEntryMap;
+
             /**
-             * This is a HashMpa based ITrie interface implementation class.
-             * Note 1: This implementation uses the unsigned long for the hashes it is not optimal
-             * Note 2: the unordered_map might be not as efficient as a hash_map with respect to memory usage but it is supposed to be faster
-             * 
-             * This implementation is chosen because it resembles the ordered array implementation from:
-             *      "Faster and Smaller N -Gram Language Models"
-             *      Adam Pauls Dan Klein
-             *      Computer Science Division
-             *      University of California, Berkeley
-             * 
-             * and unordered_maps showed good performance in:
-             *      "Efficient in-memory data structures for n-grams indexing"
-             *       Daniel Robenek, Jan Platoˇs, and V ́aclav Sn ́aˇsel
-             *       Department of Computer Science, FEI, VSB – Technical University of Ostrava
-             *       17. listopadu 15, 708 33, Ostrava-Poruba, Czech Republic
-             *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
-             * 
+             * This is a base abstract class for the Trie implementation using hash tables.
+             * The class only contains a few basic features, such as hashing functions and
+             * methods for working with the queued M-gram.
              */
             template<TModelLevel N>
-            class HashMapTrie : public ATrie<N> {
+            class AHashMapTrie : public ATrie<N> {
             public:
 
                 /**
                  * The basic class constructor
                  */
-                HashMapTrie();
+                AHashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+                    //Register the unknown word with the first available hash value
+                    TWordHashSize& hash = AHashMapTrie<N>::wordIndex[UNKNOWN_WORD_STR];
+                    hash = UNKNOWN_WORD_HASH;
+                };
 
                 /**
-                 * This method can be used to provide the N-gram count information
-                 * That should allow for pre-allocation of the memory
-                 * For more details @see ITrie
+                 * The basic class destructor
                  */
-                virtual void preAllocate(uint counts[N]);
+                virtual ~AHashMapTrie() {
+                };
 
-                /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * For more details @see ITrie
-                 */
-                virtual void add1Gram(const SBackOffNGram &oGram);
-
-                /**
-                 * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * For more details @see ITrie
-                 */
-                virtual void addMGram(const SBackOffNGram &mGram);
-
-                /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * For more details @see ITrie
-                 */
-                virtual void addNGram(const SBackOffNGram &nGram);
-
-                /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * For more details @see ITrie
-                 */
-                virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
-
-                virtual ~HashMapTrie();
-
-            private:
-                //Stores the minimum context level
-                static const TModelLevel MINIMUM_CONTEXT_LEVEL;
-
-                //Stores the word hash for an unknown word
-                const static TWordHashSize UNDEFINED_WORD_HASH;
-                //Stores the word hash for an unknown word
-                const static TWordHashSize UNKNOWN_WORD_HASH;
-                //Stores the minimum known word hash
-                const static TWordHashSize MIN_KNOWN_WORD_HASH;
-
-                //The entry pair to store the N-gram probability and back off
-                typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
-
-                //A tuple storing a word and its frequency
-                typedef pair<string, TProbBackOffEntryPair> TWordEntryPair;
-
-                //The M-trie level entry for 1 < M < N, for with probability and back-off weights
-                typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair> TMGramEntryMap;
-
-                //The N-trie level entry for the highest level M-Grams, there are no back-off weights
-                typedef unordered_map<TReferenceHashSize, TLogProbBackOff> TNGramEntryMap;
-
-                //This is the cache entry type the first value is true if the caching 
-                //of this result was done, the second contains the cached results.
-                typedef pair<bool, SProbResult> TCacheEntry;
-
-                //This map stores the word index, i.e. assigns each unique word a unique id
-                unordered_map<string, TWordHashSize> wordIndex;
-
-                //The map storing the One-Grams: I.e. the word indexes and the word probabilities
-                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
-
-                //The array of maps map storing n-tires for n>1 and < N
-                unordered_map<TWordHashSize, TMGramEntryMap > mGrams[N - 2];
-
-                //The map storing the N-Grams, they do not have back-off values
-                unordered_map<TWordHashSize, TNGramEntryMap > nGrams;
-
-                //The internal query results cache
-                unordered_map<TWordHashSize, TCacheEntry > queryCache;
-
-                //The temporary data structure to store the N-gram query word hashes
-                TWordHashSize mGramWordHashes[N];
-
-                //Stores the last allocated word hash
-                TWordHashSize nextNewWordHash;
+            protected:
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                HashMapTrie(const HashMapTrie& orig);
+                AHashMapTrie(const AHashMapTrie& orig);
 
                 /**
-                 * This recursive function implements the computation of the
-                 * N-Gram probabilities in the Back-Off Language Model. The
-                 * N-Gram hashes are obtained from the _wordHashes member
-                 * variable of the class. So it must be pre-set with proper
-                 * word hash values first!
-                 * @param contextLength this is the length of the considered context.
-                 * @return the computed probability value
+                 * Gets the word hash for the end word of the back-off N-Gram
+                 * @return the word hash for the end word of the back-off N-Gram
                  */
-                float computeLogProbability(const TModelLevel contextLength);
+                inline const TWordHashSize & getBackOffNGramEndWordHash() {
+                    return mGramWordHashes[N - 2];
+                }
 
+                /**
+                 * Gets the word hash for the last word in the N-gram
+                 * @return the word hash for the last word in the N-gram
+                 */
+                inline const TWordHashSize & getNGramEndWordHash() {
+                    return mGramWordHashes[N - 1];
+                }
+                
                 /**
                  * This method converts the M-Gram tokens into hashes and stores
                  * them in an array. Note that, M is the size of the tokens array.
@@ -199,6 +128,15 @@ namespace uva {
                         LOG_DEBUG1 << "hash('" << *it << "') = " << wordHashes[idx] << END_LOG;
                         idx++;
                     }
+                }
+                
+                /**
+                 * Converts the given tokens to hashes and stores it in mGramWordHashes
+                 * @param ngram the n-gram tokens to convert to hashes
+                 */
+                inline void storeNGramHashes(const vector<string> & ngram) {
+                    //First transform the given M-gram into word hashes.
+                    tokensToHashes(ngram, mGramWordHashes);
                 }
 
                 /**
@@ -244,21 +182,13 @@ namespace uva {
                         LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << mGramWordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
                         idx++;
                     }
-                    
+
                     LOG_DEBUG3 << "Resulting context hash for context length " << contextLength
                             << " of a  " << (isBackOff ? "back-off" : "probability")
                             << " computation is: " << contextHash << END_LOG;
 
                     return contextHash;
                 }
-
-                /**
-                 * This recursive function allows to get the back-off weight for the current context.
-                 * The N-Gram hashes are obtained from the pre-computed data memeber array _wordHashes
-                 * @param contextLength the current context length
-                 * @return the resulting back-off weight probability
-                 */
-                float getBackOffWeight(const TModelLevel contextLength);
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
@@ -296,7 +226,8 @@ namespace uva {
                         return wordIndex.at(str);
                     } catch (out_of_range e) {
                         LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
-                                << UNKNOWN_WORD_STR << "', hash: " << UNKNOWN_WORD_HASH << END_LOG;
+                                << UNKNOWN_WORD_STR << "', hash: "
+                                << UNKNOWN_WORD_HASH << END_LOG;
                     }
                     return UNKNOWN_WORD_HASH;
                 }
@@ -344,9 +275,19 @@ namespace uva {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     unszudzik(context, subWord, subContext);
                 }
-            };
 
-            typedef HashMapTrie<MAX_NGRAM_LEVEL> TFiveHashMapTrie;
+            private:
+
+                //This map stores the word index, i.e. assigns each unique word a unique id
+                unordered_map<string, TWordHashSize> wordIndex;
+
+                //The temporary data structure to store the N-gram query word hashes
+                TWordHashSize mGramWordHashes[N];
+
+                //Stores the last allocated word hash
+                TWordHashSize nextNewWordHash;
+
+            };
         }
     }
 }

@@ -22,7 +22,7 @@
  *
  * Created on April 18, 2015, 11:42 AM
  */
-#include "HashMapTrie.hpp"
+#include "MultiHashMapTrie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
@@ -83,30 +83,17 @@ namespace uva {
                     const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
             }
 #endif
-            template<TModelLevel N>
-            const TWordHashSize HashMapTrie<N>::UNDEFINED_WORD_HASH = 0;
-            template<TModelLevel N>
-            const TWordHashSize HashMapTrie<N>::UNKNOWN_WORD_HASH = HashMapTrie<N>::UNDEFINED_WORD_HASH + 1;
-            template<TModelLevel N>
-            const TWordHashSize HashMapTrie<N>::MIN_KNOWN_WORD_HASH = HashMapTrie<N>::UNKNOWN_WORD_HASH + 1;
 
             template<TModelLevel N>
-            const TModelLevel HashMapTrie<N>::MINIMUM_CONTEXT_LEVEL = 2;
-
-            template<TModelLevel N>
-            HashMapTrie<N>::HashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
-                //First register the unknown word with the first available hash value
-                TWordHashSize& hash = wordIndex[UNKNOWN_WORD_STR];
-                hash = UNKNOWN_WORD_HASH;
-
-                //Then record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntryPair & pbData = oGrams[hash];
+            MultiHashMapTrie<N>::MultiHashMapTrie() : AHashMapTrie<N>() {
+                //Record the dummy probability and back-off values for the unknown word
+                TProbBackOffEntryPair & pbData = oGrams[UNKNOWN_WORD_HASH];
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
             }
 
             template<TModelLevel N>
-            void HashMapTrie<N>::preAllocate(uint counts[N]) {
+            void MultiHashMapTrie<N>::preAllocate(uint counts[N]) {
                 //ToDo: Implement this method once we know what are the
                 //approximate % values for the number of N-Grams ending
                 //with the same word for each specific N.
@@ -114,14 +101,14 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void HashMapTrie<N>::add1Gram(const SBackOffNGram &oGram) {
+            void MultiHashMapTrie<N>::add1Gram(const SBackOffNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const string & token = oGram.tokens[0];
 
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordHashSize wordHash = createUniqueIdHash(token);
+                TWordHashSize wordHash = AHashMapTrie<N>::createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = oGrams[wordHash];
 
@@ -147,7 +134,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void HashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
+            void MultiHashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
                 const size_t level = mGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(mGram.tokens) << " to the Trie" << END_LOG;
 
@@ -156,11 +143,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    TReferenceHashSize contextHash = computeHashContext(mGram.tokens);
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(mGram.tokens);
 
                     // 2. Compute the hash of w4
                     const string & endWord = *(--mGram.tokens.end());
-                    TWordHashSize wordHash = getUniqueIdHash(endWord);
+                    TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord);
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -198,18 +185,18 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void HashMapTrie<N>::addNGram(const SBackOffNGram &nGram) {
+            void MultiHashMapTrie<N>::addNGram(const SBackOffNGram &nGram) {
                 const size_t level = nGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(nGram.tokens) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TReferenceHashSize contextHash = computeHashContext(nGram.tokens);
+                TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(nGram.tokens);
 
                 // 2. Compute the hash of w4
                 const string & endWord = *(--nGram.tokens.end());
-                TWordHashSize wordHash = getUniqueIdHash(endWord);
+                TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord);
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
@@ -239,9 +226,9 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            float HashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
+            float MultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TWordHashSize & endWordHash = mGramWordHashes[N - 2];
+                const TWordHashSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
@@ -251,7 +238,7 @@ namespace uva {
 
                 if (backOfContextLength > 0) {
                     //Compute the context hash
-                    TReferenceHashSize contextHash = computeHashContext(backOfContextLength, true);
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(backOfContextLength, true);
                     //Attempt to retrieve back-off weights
                     try {
                         //The context length plus one is M value of the M-Gram
@@ -296,9 +283,9 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            float HashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
+            float MultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
-                TWordHashSize & endWordHash = mGramWordHashes[N - 1];
+                const TWordHashSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
 
                 LOG_DEBUG1 << "Computing probability for an " << (contextLength + 1)
                         << "-gram the context length is " << contextLength << END_LOG;
@@ -308,7 +295,7 @@ namespace uva {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
 
                     //Compute the context hash based on what is stored in _wordHashes and context length
-                    TReferenceHashSize contextHash = computeHashContext(contextLength, false);
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(contextLength, false);
 
                     //Attempt to retrieve probabilities
                     try {
@@ -383,12 +370,12 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void HashMapTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            void MultiHashMapTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 const TModelLevel mGramLength = ngram.size();
                 //Check the number of elements in the N-Gram
                 if ((1 <= mGramLength) && (mGramLength <= N)) {
                     //First transform the given M-gram into word hashes.
-                    tokensToHashes(ngram, mGramWordHashes);
+                    AHashMapTrie<N>::storeNGramHashes(ngram);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
                     result.prob = computeLogProbability(mGramLength - 1);
@@ -402,15 +389,15 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            HashMapTrie<N>::HashMapTrie(const HashMapTrie& orig) {
+            MultiHashMapTrie<N>::MultiHashMapTrie(const MultiHashMapTrie& orig) {
             }
 
             template<TModelLevel N>
-            HashMapTrie<N>::~HashMapTrie() {
+            MultiHashMapTrie<N>::~MultiHashMapTrie() {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class HashMapTrie<MAX_NGRAM_LEVEL>;
+            template class MultiHashMapTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }
