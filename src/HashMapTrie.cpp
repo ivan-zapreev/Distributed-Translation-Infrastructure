@@ -34,19 +34,19 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, bool doCache>
-            const TWordHashSize HashMapTrie<N, doCache>::UNDEFINED_WORD_HASH = 0;
-            template<TModelLevel N, bool doCache>
-            const TWordHashSize HashMapTrie<N, doCache>::UNKNOWN_WORD_HASH = HashMapTrie<N, doCache>::UNDEFINED_WORD_HASH + 1;
-            template<TModelLevel N, bool doCache>
-            const TWordHashSize HashMapTrie<N, doCache>::MIN_KNOWN_WORD_HASH = HashMapTrie<N, doCache>::UNKNOWN_WORD_HASH + 1;
+            template<TModelLevel N>
+            const TWordHashSize HashMapTrie<N>::UNDEFINED_WORD_HASH = 0;
+            template<TModelLevel N>
+            const TWordHashSize HashMapTrie<N>::UNKNOWN_WORD_HASH = HashMapTrie<N>::UNDEFINED_WORD_HASH + 1;
+            template<TModelLevel N>
+            const TWordHashSize HashMapTrie<N>::MIN_KNOWN_WORD_HASH = HashMapTrie<N>::UNKNOWN_WORD_HASH + 1;
 
 
-            template<TModelLevel N, bool doCache>
-            const TModelLevel HashMapTrie<N, doCache>::MINIMUM_CONTEXT_LEVEL = 2;
+            template<TModelLevel N>
+            const TModelLevel HashMapTrie<N>::MINIMUM_CONTEXT_LEVEL = 2;
 
-            template<TModelLevel N, bool doCache>
-            HashMapTrie<N, doCache>::HashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+            template<TModelLevel N>
+            HashMapTrie<N>::HashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
                 //First register the unknown word with the first available hash value
                 TWordHashSize& hash = wordIndex[UNKNOWN_WORD_STR];
                 hash = UNKNOWN_WORD_HASH;
@@ -57,16 +57,16 @@ namespace uva {
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
             }
 
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::preAllocate(uint counts[N]) {
+            template<TModelLevel N>
+            void HashMapTrie<N>::preAllocate(uint counts[N]) {
                 //ToDo: Implement this method once we know what are the
                 //approximate % values for the number of N-Grams ending
                 //with the same word for each specific N.
                 LOG_WARNING << "The Trie memory is not allocated efficiently yet! Try using the N-Gram Counts!" << END_LOG;
             }
 
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::add1Gram(const SBackOffNGram &oGram) {
+            template<TModelLevel N>
+            void HashMapTrie<N>::add1Gram(const SBackOffNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const string & token = oGram.tokens[0];
 
@@ -96,8 +96,8 @@ namespace uva {
                         << wordHash << END_LOG;
             }
 
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::addMGram(const SBackOffNGram &mGram) {
+            template<TModelLevel N>
+            void HashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
                 const size_t level = mGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(mGram.tokens) << " to the Trie" << END_LOG;
 
@@ -145,8 +145,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::addNGram(const SBackOffNGram &nGram) {
+            template<TModelLevel N>
+            void HashMapTrie<N>::addNGram(const SBackOffNGram &nGram) {
                 const size_t level = nGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(nGram.tokens) << " to the Trie" << END_LOG;
 
@@ -184,8 +184,8 @@ namespace uva {
                         << contextHash << ", wordHash = " << wordHash << END_LOG;
             }
 
-            template<TModelLevel N, bool doCache>
-            float HashMapTrie<N, doCache>::getBackOffWeight(const TModelLevel contextLength) {
+            template<TModelLevel N>
+            float HashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TWordHashSize & endWordHash = mGramWordHashes[N - 2];
                 const TModelLevel backOfContextLength = contextLength - 1;
@@ -241,8 +241,8 @@ namespace uva {
                 return back_off;
             }
 
-            template<TModelLevel N, bool doCache>
-            float HashMapTrie<N, doCache>::computeLogProbability(const TModelLevel contextLength) {
+            template<TModelLevel N>
+            float HashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
                 TWordHashSize & endWordHash = mGramWordHashes[N - 1];
 
@@ -328,8 +328,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, bool doCache>
-            void HashMapTrie<N, doCache>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            template<TModelLevel N>
+            void HashMapTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 const TModelLevel mGramLength = ngram.size();
                 //Check the number of elements in the N-Gram
                 if ((1 <= mGramLength) && (mGramLength <= N)) {
@@ -347,17 +347,16 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, bool doCache>
-            HashMapTrie<N, doCache>::HashMapTrie(const HashMapTrie& orig) {
+            template<TModelLevel N>
+            HashMapTrie<N>::HashMapTrie(const HashMapTrie& orig) {
             }
 
-            template<TModelLevel N, bool doCache>
-            HashMapTrie<N, doCache>::~HashMapTrie() {
+            template<TModelLevel N>
+            HashMapTrie<N>::~HashMapTrie() {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class HashMapTrie<MAX_NGRAM_LEVEL, true>;
-            template class HashMapTrie<MAX_NGRAM_LEVEL, false>;
+            template class HashMapTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

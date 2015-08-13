@@ -193,12 +193,12 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param fstr the file to read data from
  * @param trie the trie to put the data into
  */
-template<TModelLevel N, bool doCache>
-static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
+template<TModelLevel N>
+static void fillInTrie(ifstream & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
-    ARPATrieBuilder<N, doCache> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
+    ARPATrieBuilder<N> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
 
     //A.2. Build the trie
     builder.build();
@@ -210,8 +210,8 @@ static void fillInTrie(ifstream & fstr, ATrie<N, doCache> & trie) {
  * @param testFile the file containing the N-Gram (5-Gram queries)
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
-template<TModelLevel N, bool doCache>
-static double readAndExecuteQueries(ATrie<N, doCache> & trie, ifstream &testFile) {
+template<TModelLevel N>
+static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime, startTime, endTime;
     //Will store the read line (word1 word2 word3 word4 word5)
@@ -262,7 +262,7 @@ static void performTasks(ifstream &modelFile, ifstream &testFile) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Create a trie and pass it to the algorithm method
-    TFiveCacheHashMapTrie trie;
+    TFiveHashMapTrie trie;
     LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(modelFile, trie);

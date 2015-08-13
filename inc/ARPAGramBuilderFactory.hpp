@@ -72,8 +72,8 @@ namespace uva {
                      * @param delim the delimiter for the ARPA N-Gram string
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
-                    template<TModelLevel N, bool doCache>
-                    static inline void getBuilder(const TModelLevel level, ATrie<N, doCache> & trie, const char delim, ARPAGramBuilder **ppBuilder) {
+                    template<TModelLevel N>
+                    static inline void getBuilder(const TModelLevel level, ATrie<N> & trie, const char delim, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;

@@ -42,7 +42,7 @@ namespace uva {
                  * This is the Trie builder class that reads an input file stream
                  * and creates n-grams and then records them into the provided Trie.
                  */
-                template<TModelLevel N, bool doCache>
+                template<TModelLevel N>
                 class ARPATrieBuilder {
                 public:
                     /**
@@ -51,7 +51,7 @@ namespace uva {
                      * @param _fstr the file stream to read from
                      * @param delim the delimiter for the line elements
                      */
-                    ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & _fstr, const char delim);
+                    ARPATrieBuilder(ATrie<N> & trie, ifstream & _fstr, const char delim);
 
                     /**
                      * This function will read from the file and build the trie
@@ -61,7 +61,7 @@ namespace uva {
                     virtual ~ARPATrieBuilder();
                 private:
                     //The reference to the trie to be build
-                    ATrie<N, doCache> & _trie;
+                    ATrie<N> & _trie;
                     //The reference to the input file with text corpus
                     ifstream & _fstr;
                     //The delimiter for the line elements

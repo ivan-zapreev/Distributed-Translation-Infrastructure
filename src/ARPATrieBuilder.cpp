@@ -43,22 +43,22 @@ namespace uva {
 
 #define END_OF_ARPA_FILE "\\end\\"
 
-                template<TModelLevel N, bool doCache>
-                ARPATrieBuilder<N, doCache>::ARPATrieBuilder(ATrie<N, doCache> & trie, ifstream & fstr, const char delim) :
+                template<TModelLevel N>
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, ifstream & fstr, const char delim) :
                 _trie(trie), _fstr(fstr), _delim(delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<TModelLevel N, bool doCache>
-                ARPATrieBuilder<N, doCache>::ARPATrieBuilder(const ARPATrieBuilder<N, doCache>& orig) :
+                template<TModelLevel N>
+                ARPATrieBuilder<N>::ARPATrieBuilder(const ARPATrieBuilder<N>& orig) :
                 _trie(orig._trie), _fstr(orig._fstr), _delim(orig._delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<TModelLevel N, bool doCache>
-                ARPATrieBuilder<N, doCache>::~ARPATrieBuilder() {
+                template<TModelLevel N>
+                ARPATrieBuilder<N>::~ARPATrieBuilder() {
                 }
 
-                template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::readHeaders(string &line) {
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::readHeaders(string &line) {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
@@ -94,8 +94,8 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
                 }
 
-                template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::readData(string &line, uint counts[N]) {
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::readData(string &line, uint counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
                     
                     LOG_WARNING << "The N-Gram Counts provided in the data section of ARPA are not read yet!" << END_LOG;
@@ -146,8 +146,8 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
 
-                template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::readNGrams(string &line, const TModelLevel level) {
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::readNGrams(string &line, const TModelLevel level) {
                     LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
@@ -159,7 +159,7 @@ namespace uva {
                     if (regex_match(line, ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
                         ARPAGramBuilder *pNGBuilder = NULL;
-                        ARPAGramBuilderFactory::getBuilder<N, doCache>(level, _trie, _delim, &pNGBuilder);
+                        ARPAGramBuilderFactory::getBuilder<N>(level, _trie, _delim, &pNGBuilder);
 
                         try {
                             //The counter of the N-grams
@@ -259,8 +259,8 @@ namespace uva {
                 //will be limited by the N parameter provided to the class template and not
                 //the maximum N-gram level present in the file.
 
-                template<TModelLevel N, bool doCache>
-                void ARPATrieBuilder<N, doCache>::build() {
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::build() {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                     //Do the progress bard indicator
@@ -299,8 +299,7 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder< MAX_NGRAM_LEVEL, true >;
-                template class ARPATrieBuilder< MAX_NGRAM_LEVEL, false >;
+                template class ARPATrieBuilder< MAX_NGRAM_LEVEL >;
             }
         }
     }

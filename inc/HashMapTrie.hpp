@@ -73,8 +73,8 @@ namespace uva {
              *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
              * 
              */
-            template<TModelLevel N, bool doCache>
-            class HashMapTrie : public ATrie<N, doCache> {
+            template<TModelLevel N>
+            class HashMapTrie : public ATrie<N> {
             public:
 
                 /**
@@ -106,16 +106,6 @@ namespace uva {
                  * For more details @see ITrie
                  */
                 virtual void addNGram(const SBackOffNGram &nGram);
-
-                /**
-                 * Does re-set the internal query cache
-                 * For more details @see ITrie
-                 */
-                virtual void resetQueryCache() {
-                    if (doCache) {
-                        queryCache.clear();
-                    }
-                }
 
                 /**
                  * This method will get the N-gram in a form of a vector, e.g.:
@@ -198,11 +188,11 @@ namespace uva {
                  * @return the resulting string
                  */
                 static inline string ngramToString(const vector<string> &tokens) {
-                    string str = "[ ";
+                    string str = "";
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
                         str += *it + " ";
                     }
-                    return str + "]";
+                    return str;
                 }
 
                 /**
@@ -267,6 +257,7 @@ namespace uva {
                         LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << mGramWordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
                         idx++;
                     }
+                    
                     LOG_DEBUG3 << "Resulting context hash for context length " << contextLength
                             << " of a  " << (isBackOff ? "back-off" : "probability")
                             << " computation is: " << contextHash << END_LOG;
@@ -368,9 +359,7 @@ namespace uva {
                 }
             };
 
-            typedef HashMapTrie<MAX_NGRAM_LEVEL, true> TFiveCacheHashMapTrie;
-            typedef HashMapTrie<MAX_NGRAM_LEVEL, false> TFiveNoCacheHashMapTrie;
-
+            typedef HashMapTrie<MAX_NGRAM_LEVEL> TFiveHashMapTrie;
         }
     }
 }

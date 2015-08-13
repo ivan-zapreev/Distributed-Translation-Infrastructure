@@ -89,7 +89,7 @@ namespace uva {
              * @param doCache - the indicative flag that asks the child class to, if possible,
              *                  cache the queries.
              */
-            template<TModelLevel N, bool doCache>
+            template<TModelLevel N>
             class ATrie {
             public:
 
@@ -130,14 +130,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to test if the given Trie implementation has internal query caches
-                 * @return true if the cache exists otherwise false
-                 */
-                virtual bool doesQueryCache() const {
-                    return doCache;
-                }
-
-                /**
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
@@ -148,20 +140,13 @@ namespace uva {
                  *               data for the decoder.
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result) = 0;
-
-                /**
-                 * Allows to force reset of internal query caches, if they exist
-                 */
-                virtual void resetQueryCache() = 0;
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches
-            typedef ATrie<MAX_NGRAM_LEVEL, true> TFiveCacheTrie;
-            typedef ATrie<MAX_NGRAM_LEVEL, false> TFiveNoCacheTrie;
+            typedef ATrie<MAX_NGRAM_LEVEL> TFiveTrie;
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ATrie<MAX_NGRAM_LEVEL, true>;
-            template class ATrie<MAX_NGRAM_LEVEL, false>;
+            template class ATrie<MAX_NGRAM_LEVEL>;
         }
     }
 }
