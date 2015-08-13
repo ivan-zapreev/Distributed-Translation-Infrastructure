@@ -48,8 +48,8 @@ namespace uva {
 
 
             //The following is to be used for additional monitoring of collisions
-#define MONITORE_COLLISIONS true
-#ifdef MONITORE_COLLISIONS
+#define MONITORE_COLLISIONS false
+#if MONITORE_COLLISIONS
             static unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> ngRecorder;
 
             static inline void recordAndCheck(const TWordHashSize wordHash,

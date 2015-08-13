@@ -2,17 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>4</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/src/main.cpp</file>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/src/ARPAGramBuilder.cpp</file>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/inc/ATrie.hpp</file>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/inc/HashMapTrie.hpp</file>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/src/HashMapTrie.cpp</file>
-            <file>file:/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/inc/StringUtils.hpp</file>
+            <file>file:/home/Ivan/Projects/Back-Off-Language-Model-SMT/src/ARPATrieBuilder.cpp</file>
+            <file>file:/home/Ivan/Projects/Back-Off-Language-Model-SMT/inc/ARPAGramBuilderFactory.hpp</file>
         </group>
     </open-files>
 </project-private>

@@ -31,7 +31,7 @@ DEFAULTCONF=Release__Linux_
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Release__Linux_ Debug__Linux_ Release__MacOs_ Release__Centos_ 
+ALLCONFS=Release__Linux_ Debug__Linux_ Release__MacOs_ Release__Centos_ Debug__Centos_ 
 
 
 # build

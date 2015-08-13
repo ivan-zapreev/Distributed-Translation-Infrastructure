@@ -287,5 +287,61 @@
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
+    <conf name="Debug__Centos_" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
+          <incDir>
+            <pElem>inc</pElem>
+          </incDir>
+          <commandLine>-O0 -g -std=c++0x -lrt</commandLine>
+          <warningLevel>3</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
+          <commandLine>-g -O0 -lrt</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
   </confs>
 </configurationDescriptor>
