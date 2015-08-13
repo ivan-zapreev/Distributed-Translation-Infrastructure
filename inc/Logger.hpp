@@ -136,11 +136,7 @@ namespace uva {
                  * @return the output stream object
                  */
                 static inline std::ostream& Get(DebugLevel level, const char * file, const char * func, const char * line) {
-                    cout << _debugLevelStr[level];
-                    if (level >= DEBUG) {
-                        cout << " \t<" << file << "::" << func << "(...):" << line << ">";
-                    }
-                    return cout << ":\t";
+                    return cout << _debugLevelStr[level] << " \t<" << file << "::" << func << "(...):" << line << ">:\t";
                 }
 
                 /**
