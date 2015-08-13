@@ -57,7 +57,9 @@ namespace uva {
         namespace tries {
 
             //The following is to be used for additional monitoring of collisions
+#ifndef MONITORE_COLLISIONS
 #define MONITORE_COLLISIONS false
+#endif
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \

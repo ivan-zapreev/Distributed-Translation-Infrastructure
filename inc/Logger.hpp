@@ -51,13 +51,20 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::DEBUG3
+#define LOGER_MAX_LEVEL Logger::INFO
 #endif
+
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \
+       else Logger::Get(level)
+
+
+#define LOGGER_DEBUG(level)                    \
+  if (level > LOGER_MAX_LEVEL) ;               \
+  else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level, __FILE__, __FUNCTION__, LINE_STRING)
-            
+
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;
@@ -67,10 +74,10 @@ namespace uva {
 #define LOG_ERROR   LOGGER(Logger::ERROR)
 #define LOG_WARNING LOGGER(Logger::WARNING)
 #define LOG_INFO    LOGGER(Logger::INFO)
-#define LOG_DEBUG   LOGGER(Logger::DEBUG)
-#define LOG_DEBUG1  LOGGER(Logger::DEBUG1)
-#define LOG_DEBUG2  LOGGER(Logger::DEBUG2)
-#define LOG_DEBUG3  LOGGER(Logger::DEBUG3)
+#define LOG_DEBUG   LOGGER_DEBUG(Logger::DEBUG)
+#define LOG_DEBUG1  LOGGER_DEBUG(Logger::DEBUG1)
+#define LOG_DEBUG2  LOGGER_DEBUG(Logger::DEBUG2)
+#define LOG_DEBUG3  LOGGER_DEBUG(Logger::DEBUG3)
 #define END_LOG     endl
 
 
@@ -107,12 +114,21 @@ namespace uva {
                  * @return a string containing all the possible reporting levels
                  */
                 static string getReportingLevels();
-                
+
                 /**
                  * Allows to set the logging level from a string, if not recognized - reports a warning!
                  * @param level the string level to set
                  */
                 static void setReportingLevel(const string level);
+
+                /**
+                 * This methods allows to get the output stream for the given log-level
+                 * @param level the log level for the messages to print
+                 * @return the output stream object
+                 */
+                static inline std::ostream& Get(DebugLevel level) {
+                    return cout << _debugLevelStr[level] << ":\t";
+                }
 
                 /**
                  * This methods allows to get the output stream for the given log-level
@@ -152,12 +168,14 @@ namespace uva {
                  * Works if the current debug level is <= INFO
                  */
                 static void stopProgressBar();
-                
+
                 /**
                  * The function allows to check if the progress bar is running or not
                  * @return true if the progress bar is running, otherwise case;
                  */
-                static inline bool isProgressBarOn() { return isPBOn; };
+                static inline bool isProgressBarOn() {
+                    return isPBOn;
+                };
 
             private:
                 //The class constructor, copy constructor and assign operator
@@ -165,7 +183,7 @@ namespace uva {
 
                 //Stores the the string representation of the the DebugLevel enumeration elements
                 static const char * _debugLevelStr[];
-                
+
                 //Stores the flag indicating if the progress bar is running or not
                 static bool isPBOn;
 
