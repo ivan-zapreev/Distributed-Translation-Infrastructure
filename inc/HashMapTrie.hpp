@@ -183,19 +183,6 @@ namespace uva {
                 float computeLogProbability(const TModelLevel contextLength);
 
                 /**
-                 * This function just takes the N-Gram tokens and puts them together in one string.
-                 * @param tokens the tokens to put together
-                 * @return the resulting string
-                 */
-                static inline string ngramToString(const vector<string> &tokens) {
-                    string str = "";
-                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        str += *it + " ";
-                    }
-                    return str;
-                }
-
-                /**
                  * This method converts the M-Gram tokens into hashes and stores
                  * them in an array. Note that, M is the size of the tokens array.
                  * It is not checked, for the sake of performance but is assumed

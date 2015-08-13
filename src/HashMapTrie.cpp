@@ -29,10 +29,41 @@
 #include <algorithm> //std::fill
 
 #include "Logger.hpp"
+#include "StringUtils.hpp"
+
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
         namespace tries {
+
+            unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> collisions;
+
+            static inline void recordAndCheck(const TWordHashSize wordHash,
+                    const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                string gramStr = ngramToString(gram.tokens);
+                //First try to get the entries for the given word
+                try {
+                    unordered_map<TReferenceHashSize, string> & entries = collisions.at(wordHash);
+                    //Second try to get the entries for the given context
+                    try {
+                        string entry = entries.at(contextHash);
+                        //Compare the gram stored for the given word and context
+                        if (!entry.compare(gramStr)) {
+                            //If they are not the same then we have a collision!
+                            LOG_WARNING << "N-gram collision " << entry << " with "
+                                    << gramStr << "! wordHash= " << wordHash
+                                    << ", contextHash= " << contextHash << END_LOG;
+                        }
+                    } catch (out_of_range e) {
+                        //If no entries for the context, add a new one
+                        entries[contextHash] = gramStr;
+                    }
+                } catch (out_of_range e) {
+                    //If no entries for the given word and thus context add a new one
+                    collisions[wordHash][contextHash] = gramStr;
+                }
+            }
 
             template<TModelLevel N>
             const TWordHashSize HashMapTrie<N>::UNDEFINED_WORD_HASH = 0;
@@ -40,7 +71,6 @@ namespace uva {
             const TWordHashSize HashMapTrie<N>::UNKNOWN_WORD_HASH = HashMapTrie<N>::UNDEFINED_WORD_HASH + 1;
             template<TModelLevel N>
             const TWordHashSize HashMapTrie<N>::MIN_KNOWN_WORD_HASH = HashMapTrie<N>::UNKNOWN_WORD_HASH + 1;
-
 
             template<TModelLevel N>
             const TModelLevel HashMapTrie<N>::MINIMUM_CONTEXT_LEVEL = 2;
@@ -76,6 +106,9 @@ namespace uva {
                 TWordHashSize wordHash = createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = oGrams[wordHash];
+
+                //Do a temporary check for hash collisions
+                recordAndCheck(wordHash, UNDEFINED_WORD_HASH, oGram);
 
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
@@ -119,6 +152,9 @@ namespace uva {
                     TMGramEntryMap& ngamEntry = mGrams[level - 1][wordHash];
                     //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
                     TProbBackOffEntryPair& pbData = ngamEntry[contextHash];
+
+                    //Do a temporary check for hash collisions
+                    recordAndCheck(wordHash, contextHash, mGram);
 
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
@@ -166,6 +202,9 @@ namespace uva {
                 TNGramEntryMap& ngamEntry = nGrams[wordHash];
                 //Get/Create the new Prob. in the map, for the context
                 TLogProbBackOff& pData = ngamEntry[contextHash];
+
+                //Do a temporary check for hash collisions
+                recordAndCheck(wordHash, contextHash, nGram);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (pData != ZERO_LOG_PROB_WEIGHT) {
@@ -234,7 +273,7 @@ namespace uva {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
                     }
                 }
-                
+
                 LOG_DEBUG2 << "The chosen log back-off weight for context: " << contextLength << " is: " << back_off << END_LOG;
 
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty

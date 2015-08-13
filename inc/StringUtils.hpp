@@ -48,6 +48,19 @@ namespace uva {
 #define WHITESPACES string("\t\f\v\n\r ")
 
                 /**
+                 * This function just takes the N-Gram tokens and puts them together in one string.
+                 * @param tokens the tokens to put together
+                 * @return the resulting string
+                 */
+                static inline string ngramToString(const vector<string> &tokens) {
+                    string str = "";
+                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
+                        str += *it + " ";
+                    }
+                    return str;
+                }
+
+                /**
                  * Tokenise a given string into avector of strings
                  * @param s the string to tokenise
                  * @param delim the delimiter
