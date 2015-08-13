@@ -147,9 +147,10 @@ namespace uva {
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
-                    //Data stores the N-tires from length 2 on, therefore "idx-1"
-                    //Get/Create the mapping for this word in the Trie level of the N-gram
-                    TMGramEntryMap& ngamEntry = mGrams[level - 1][wordHash];
+                    //Data stores the N-tires from length 2 on and indexing starts
+                    //with 0, therefore "level-2". Get/Create the mapping for this
+                    //word in the Trie level of the N-gram
+                    TMGramEntryMap& ngamEntry = mGrams[level - 2][wordHash];
                     //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
                     TProbBackOffEntryPair& pbData = ngamEntry[contextHash];
 
@@ -241,8 +242,8 @@ namespace uva {
                     try {
                         //The context length plus one is M value of the M-Gram
                         //All the M-grams for 1 < M < N are stored in a mGrams
-                        //array, so this M-Gram is stored under index M-1;
-                        const TModelLevel mGramIdx = ((backOfContextLength + 1) - 1);
+                        //array, so this M-Gram is stored under index M-2;
+                        const TModelLevel mGramIdx = ((backOfContextLength + 1) - 2);
                         TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
 
                         //Obtained the stored back-off weight
@@ -312,8 +313,8 @@ namespace uva {
 
                             //The context length plus one is M value of the M-Gram
                             //All the M-grams for 1 < M < N are stored in a mGrams
-                            //array, so this M-Gram is stored under index M-1;
-                            const TModelLevel mGramIdx = ((contextLength + 1) - 1);
+                            //array, so this M-Gram is stored under index M-2;
+                            const TModelLevel mGramIdx = ((contextLength + 1) - 2);
                             //Get the probability/back-off entry for the given M-gram
                             TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
 

@@ -53,7 +53,7 @@ namespace uva {
                  * @return the resulting string
                  */
                 static inline string ngramToString(const vector<string> &tokens) {
-                    string str = "";
+                    string str = " ";
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
                         str += *it + " ";
                     }
