@@ -64,11 +64,8 @@ namespace uva {
             //This is the smallest size which I've tested and it works for the hash without collisions
             typedef uint32_t TWordHashSize;
             //This is the hash reference size which should be twice as long as the TWordHashSize
-#if __x86_64__
             typedef uint64_t TReferenceHashSize;
-#endif
         }
-
     }
 }
 
