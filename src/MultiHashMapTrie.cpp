@@ -37,57 +37,6 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            //The following is to be used for additional monitoring of collisions
-#define MONITORE_COLLISIONS
-#ifdef MONITORE_COLLISIONS
-
-            template<TModelLevel N>
-            void MultiHashMapTrie<N>::recordAndCheck(const TWordHashSize wordHash,
-                    const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
-                //First try to get the entries for the given word
-                try {
-                    unordered_map<TReferenceHashSize, vector < string>> &entries = ngRecorder.at(wordHash);
-                    //Second try to get the entries for the given context
-                    try {
-                        vector<string> entry = entries.at(contextHash);
-
-                        //If we could get the values, then it is important to check
-                        //that the length is the same. If it is then we have context
-                        //hash collisions for the same length N-grams and this must
-                        //not be happening! Then we will print a lot of debug info!
-                        const TModelLevel size = entry.size();
-                        if (size == gram.tokens.size()) {
-                            LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
-                                    << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
-                                    << ", contextHash= " << contextHash << END_LOG;
-
-                            TWordHashSize old[N], fresh[N];
-                            AHashMapTrie<N>::tokensToHashes(entry, old);
-                            AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
-                            for (int i = 0; i < size; i++) {
-                                LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N - size + i] << END_LOG;
-                                LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N - size + i] << END_LOG;
-                            }
-                            AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
-                            AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
-                        }
-                    } catch (out_of_range e) {
-                        //If no entries for the context, add a new one
-                        entries[contextHash] = gram.tokens;
-                    }
-                } catch (out_of_range e) {
-                    //If no entries for the given word and thus context add a new one
-                    ngRecorder[wordHash][contextHash] = gram.tokens;
-                }
-            }
-#else
-
-            template<TModelLevel N>
-            void MultiHashMapTrie<N>::recordAndCheck(const TWordHashSize wordHash,
-                    const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
-            }
-#endif
-
             template<TModelLevel N>
             MultiHashMapTrie<N>::MultiHashMapTrie() : AHashMapTrie<N>() {
                 //Record the dummy probability and back-off values for the unknown word
@@ -119,7 +68,7 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = oGrams[wordHash];
 
                 //Do a temporary check for hash collisions
-                recordAndCheck(wordHash, UNDEFINED_WORD_HASH, oGram);
+                AHashMapTrie<N>::recordAndCheck(wordHash, UNDEFINED_WORD_HASH, oGram);
 
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
@@ -165,7 +114,7 @@ namespace uva {
                     TProbBackOffEntryPair& pbData = ngamEntry[contextHash];
 
                     //Do a temporary check for hash collisions
-                    recordAndCheck(wordHash, contextHash, mGram);
+                    AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, mGram);
 
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
@@ -213,7 +162,7 @@ namespace uva {
                 TLogProbBackOff& pData = ngamEntry[contextHash];
 
                 //Do a temporary check for hash collisions
-                recordAndCheck(wordHash, contextHash, nGram);
+                AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, nGram);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (pData != ZERO_LOG_PROB_WEIGHT) {

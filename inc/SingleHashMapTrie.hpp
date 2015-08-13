@@ -137,6 +137,9 @@ namespace uva {
                     //Obtain the entry for the given N-gram
                     TProbBackOffEntryPair & pbData = ngRecorder[levelIdx][wordHash][contextHash];
 
+                    //Record the data for collision detection
+                    AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, gram);
+                    
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //If they are not the same then we have a collision!
                         REPORT_COLLISION_WARNING(gram.tokens, wordHash, contextHash,

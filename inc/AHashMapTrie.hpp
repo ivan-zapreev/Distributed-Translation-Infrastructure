@@ -45,14 +45,19 @@
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
+#include "StringUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
         namespace tries {
+
+            //The following is to be used for additional monitoring of collisions
+#define MONITORE_COLLISIONS
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
@@ -207,16 +212,16 @@ namespace uva {
                 template<Logger::DebugLevel logLevel>
                 inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
                     TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
-                    
+
                     //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
-                    if( tokens.size() > MIN_NGRAM_LEVEL ) {
+                    if (tokens.size() > MIN_NGRAM_LEVEL) {
                         //Get the start iterator
                         vector<string>::const_iterator it = tokens.begin();
                         //Get the iterator we are going to iterate until
                         const vector<string>::const_iterator end = --tokens.end();
 
                         contextHash = getUniqueIdHash(*it);
-                        
+
                         LOGGER(logLevel) << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
 
                         //Iterate and compute the hash:
@@ -291,6 +296,64 @@ namespace uva {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     unszudzik(context, subWord, subContext);
                 }
+
+#ifdef MONITORE_COLLISIONS
+
+                //This data member is only used when the hashing function is debugged
+                unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, vector<string>>> ngRecorder;
+
+                /**
+                 * This method is used for debugging the hashing function of N-grams.
+                 * It checks for entries and reports warnings and infor information if
+                 * hash word/context collisions are detected.
+                 * @param wordHash the last N-gram's word hash
+                 * @param contextHash the N-gram's context hash
+                 * @param gram the N-gram information
+                 */
+                void recordAndCheck(const TWordHashSize wordHash,
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                    //First try to get the entries for the given word
+                    try {
+                        unordered_map<TReferenceHashSize, vector < string>> &entries = ngRecorder.at(wordHash);
+                        //Second try to get the entries for the given context
+                        try {
+                            vector<string> entry = entries.at(contextHash);
+
+                            //If we could get the values, then it is important to check
+                            //that the length is the same. If it is then we have context
+                            //hash collisions for the same length N-grams and this must
+                            //not be happening! Then we will print a lot of debug info!
+                            const TModelLevel size = entry.size();
+                            if (size == gram.tokens.size()) {
+                                LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
+                                        << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
+                                        << ", contextHash= " << contextHash << END_LOG;
+
+                                TWordHashSize old[N], fresh[N];
+                                AHashMapTrie<N>::tokensToHashes(entry, old);
+                                AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
+                                for (int i = 0; i < size; i++) {
+                                    LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N - size + i] << END_LOG;
+                                    LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N - size + i] << END_LOG;
+                                }
+                                AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
+                                AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
+                            }
+                        } catch (out_of_range e) {
+                            //If no entries for the context, add a new one
+                            entries[contextHash] = gram.tokens;
+                        }
+                    } catch (out_of_range e) {
+                        //If no entries for the given word and thus context add a new one
+                        ngRecorder[wordHash][contextHash] = gram.tokens;
+                    }
+                }
+#else
+
+                void recordAndCheck(const TWordHashSize wordHash,
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                }
+#endif
 
             private:
 
