@@ -26,6 +26,8 @@
 #ifndef GLOBALS_HPP
 #define	GLOBALS_HPP
 
+#include <inttypes.h>
+
 #include "Logger.hpp"
 
 namespace uva {
@@ -60,9 +62,9 @@ namespace uva {
         //The following type definitions are important for creating hashes
         namespace hashing {
             //This is the smallest size which I've tested and it works for the hash without collisions
-            typedef unsigned int TWordHashSize;
+            typedef uint32_t TWordHashSize;
             //This is the hash reference size which should be twice as long as the TWordHashSize
-            typedef unsigned long long TReferenceHashSize;
+            typedef uint64_t TReferenceHashSize;
         }
 
     }
