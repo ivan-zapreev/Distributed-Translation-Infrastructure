@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/AHashMapTrie.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilder.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
@@ -25,6 +26,8 @@
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
+      <itemPath>src/MultiHashMapTrie.cpp</itemPath>
+      <itemPath>src/SingleHashMapTrie.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
@@ -39,6 +42,8 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>inc/MultiHashMapTrie.hpp</itemPath>
+    <itemPath>inc/SingleHashMapTrie.hpp</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>src</Elem>
