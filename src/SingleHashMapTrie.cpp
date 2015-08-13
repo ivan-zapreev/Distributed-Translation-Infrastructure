@@ -43,6 +43,8 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = ngRecorder[0][UNKNOWN_WORD_HASH][UNDEFINED_WORD_HASH];
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
+                
+                LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
             }
 
             template<TModelLevel N>

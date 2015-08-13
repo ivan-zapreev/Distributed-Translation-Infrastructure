@@ -77,6 +77,8 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = oGrams[UNKNOWN_WORD_HASH];
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
+                
+                LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
             }
 
             template<TModelLevel N>
