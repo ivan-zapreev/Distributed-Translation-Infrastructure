@@ -57,7 +57,7 @@ namespace uva {
         namespace tries {
 
             //The following is to be used for additional monitoring of collisions
-#define MONITORE_COLLISIONS
+#define MONITORE_COLLISIONS false
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
@@ -297,7 +297,7 @@ namespace uva {
                     unszudzik(context, subWord, subContext);
                 }
 
-#ifdef MONITORE_COLLISIONS
+#if MONITORE_COLLISIONS
 
                 //This data member is only used when the hashing function is debugged
                 unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, vector<string>>> ngRecorder;
@@ -311,7 +311,7 @@ namespace uva {
                  * @param gram the N-gram information
                  */
                 void recordAndCheck(const TWordHashSize wordHash,
-                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) const {
                     //First try to get the entries for the given word
                     try {
                         unordered_map<TReferenceHashSize, vector < string>> &entries = ngRecorder.at(wordHash);
@@ -353,7 +353,7 @@ namespace uva {
 #else
 
                 void recordAndCheck(const TWordHashSize wordHash,
-                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) const {
                 }
 #endif
 
