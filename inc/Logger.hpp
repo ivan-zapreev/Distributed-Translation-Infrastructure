@@ -57,7 +57,7 @@ namespace uva {
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level, __FILE__, __FUNCTION__, LINE_STRING)
-
+            
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;

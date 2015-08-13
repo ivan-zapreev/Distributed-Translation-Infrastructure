@@ -201,9 +201,10 @@ namespace uva {
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
-                 * @param tokens alls of the N-gram tokens
+                 * @param tokens the N-gram tokens
                  * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
                  */
+                template<Logger::DebugLevel logLevel>
                 inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
                     TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
                     
@@ -215,14 +216,15 @@ namespace uva {
                         const vector<string>::const_iterator end = --tokens.end();
 
                         contextHash = getUniqueIdHash(*it);
-                        LOG_DEBUG2 << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
+                        
+                        LOGGER(logLevel) << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
 
                         //Iterate and compute the hash:
                         for (++it; it < end; ++it) {
                             TWordHashSize wordHash = getUniqueIdHash(*it);
-                            LOG_DEBUG2 << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
+                            LOGGER(logLevel) << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
-                            LOG_DEBUG2 << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
+                            LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
                         }
                     }
 

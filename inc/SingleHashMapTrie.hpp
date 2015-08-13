@@ -164,7 +164,7 @@ namespace uva {
                     LOG_DEBUG << "Adding a " << level << "-Gram '" << ngramToString(gram.tokens) << "' to the Trie" << END_LOG;
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(gram.tokens);
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(gram.tokens);
 
                     // 2. Compute the hash of w4
                     const string & endWord = *(--gram.tokens.end());

@@ -51,20 +51,25 @@ namespace uva {
                     try {
                         vector<string> entry = entries.at(contextHash);
 
-                        LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
-                                << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
-                                << ", contextHash= " << contextHash << END_LOG;
-
-                        //Get the tokens and debug the hashes if the sizes are the same
+                        //If we could get the values, then it is important to check
+                        //that the length is the same. If it is then we have context
+                        //hash collisions for the same length N-grams and this must
+                        //not be happening! Then we will print a lot of debug info!
                         const TModelLevel size = entry.size();
                         if (size == gram.tokens.size()) {
+                            LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
+                                    << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
+                                    << ", contextHash= " << contextHash << END_LOG;
+
                             TWordHashSize old[N], fresh[N];
                             AHashMapTrie<N>::tokensToHashes(entry, old);
                             AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
-                            for( int i = 0; i < size; i++ ) {
-                                LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N-size+i] << END_LOG;
-                                LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N-size+i] << END_LOG;
+                            for (int i = 0; i < size; i++) {
+                                LOG_INFO << i << ") wordHash(" << entry[i] << ") = " << old[N - size + i] << END_LOG;
+                                LOG_INFO << i << ") wordHash(" << gram.tokens[i] << ") = " << fresh[N - size + i] << END_LOG;
                             }
+                            AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
+                            AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
                         }
                     } catch (out_of_range e) {
                         //If no entries for the context, add a new one
@@ -144,7 +149,7 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(mGram.tokens);
+                    TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram.tokens);
 
                     // 2. Compute the hash of w4
                     const string & endWord = *(--mGram.tokens.end());
@@ -193,7 +198,7 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(nGram.tokens);
+                TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(nGram.tokens);
 
                 // 2. Compute the hash of w4
                 const string & endWord = *(--nGram.tokens.end());
