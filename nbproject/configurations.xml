@@ -113,7 +113,7 @@
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
-    <conf name="Debug" type="1">
+    <conf name="Debug__Linux_" type="1">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
@@ -126,12 +126,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-std=c++0x</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-lrt</commandLine>
+          <commandLine>-g -O0 -lrt</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">

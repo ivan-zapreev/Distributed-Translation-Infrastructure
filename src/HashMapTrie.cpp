@@ -37,14 +37,27 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> collisions;
+            //This macro is needed to report the collision detection warnings!
+#define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
+            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << ngramToString(tokens)                   \
+                        << "' has been already seen! "  << "wordHash: " << wordHash                          \
+                        << ", contextHash: " << contextHash << ". "                                          \
+                        << "Changing the (prob,back-off) data from ("                                        \
+                        << prevProb << "," << prevBackOff << ") to ("                                        \
+                        << newProb << "," << newBackOff << ")" << END_LOG;
+
+
+            //The following is to be used for additional monitoring of collisions
+#define MONITORE_COLLISIONS true
+#ifdef MONITORE_COLLISIONS
+            static unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, string>> ngRecorder;
 
             static inline void recordAndCheck(const TWordHashSize wordHash,
                     const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
                 string gramStr = ngramToString(gram.tokens);
                 //First try to get the entries for the given word
                 try {
-                    unordered_map<TReferenceHashSize, string> & entries = collisions.at(wordHash);
+                    unordered_map<TReferenceHashSize, string> & entries = ngRecorder.at(wordHash);
                     //Second try to get the entries for the given context
                     try {
                         string entry = entries.at(contextHash);
@@ -61,10 +74,15 @@ namespace uva {
                     }
                 } catch (out_of_range e) {
                     //If no entries for the given word and thus context add a new one
-                    collisions[wordHash][contextHash] = gramStr;
+                    ngRecorder[wordHash][contextHash] = gramStr;
                 }
             }
+#else
 
+            static inline void recordAndCheck(const TWordHashSize wordHash,
+                    const TReferenceHashSize contextHash, const SBackOffNGram &gram) {
+            }
+#endif
             template<TModelLevel N>
             const TWordHashSize HashMapTrie<N>::UNDEFINED_WORD_HASH = 0;
             template<TModelLevel N>
@@ -113,10 +131,9 @@ namespace uva {
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                     //The word has been seen already, this is a potential error, so we report a warning!
-                    LOG_WARNING << "The 1-Gram/Word: '" << token << "' has been already seen! "
-                            << "Changing the (prob,back-off) data from ("
-                            << pbData.first << "," << pbData.second << ") to ("
-                            << oGram.prob << "," << oGram.back_off << ")" << END_LOG;
+                    REPORT_COLLISION_WARNING(oGram.tokens, wordHash, UNDEFINED_WORD_HASH,
+                            pbData.first, pbData.second,
+                            oGram.prob, oGram.back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
@@ -160,11 +177,9 @@ namespace uva {
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //The M-Gram has been seen already, this is a potential error, so we report a warning!
-                        LOG_WARNING << "The " << level << "-Gram : '" << ngramToString(mGram.tokens) << "' has been already seen! "
-                                << "wordHash: " << wordHash << ", contextHash: " << contextHash << ". "
-                                << "Changing the (prob,back-off) data from ("
-                                << pbData.first << "," << pbData.second << ") to ("
-                                << mGram.prob << "," << mGram.back_off << ")" << END_LOG;
+                        REPORT_COLLISION_WARNING(mGram.tokens, wordHash, contextHash,
+                                pbData.first, pbData.second,
+                                mGram.prob, mGram.back_off);
                     }
 
                     //Set/Update the probability and back-off values for the word
@@ -210,10 +225,9 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (pData != ZERO_LOG_PROB_WEIGHT) {
                     //The M-Gram has been seen already, this is a potential error, so we report a warning!
-                    LOG_WARNING << "The " << level << "-Gram : '" << ngramToString(nGram.tokens)
-                            << "' has been already seen! "
-                            << "Changing the prob. data from ("
-                            << pData << ") to (" << nGram.prob << ")" << END_LOG;
+                    REPORT_COLLISION_WARNING(nGram.tokens, wordHash, contextHash,
+                            pData, UNDEFINED_LOG_PROB_WEIGHT,
+                            nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
                 }
 
                 //Set/Update the probability

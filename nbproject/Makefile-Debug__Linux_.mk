@@ -23,7 +23,7 @@ AS=as
 # Macros
 CND_PLATFORM=GNU-Linux-x86
 CND_DLIB_EXT=so
-CND_CONF=Debug
+CND_CONF=Debug__Linux_
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 
@@ -47,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-std=c++0x
-CXXFLAGS=-std=c++0x
+CCFLAGS=-O0 -g -std=c++0x -lrt
+CXXFLAGS=-O0 -g -std=c++0x -lrt
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -65,7 +65,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -g -O0 -lrt
 
 ${OBJECTDIR}/src/ARPAGramBuilder.o: src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

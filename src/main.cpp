@@ -213,13 +213,13 @@ static void fillInTrie(ifstream & fstr, ATrie<N> & trie) {
 template<TModelLevel N>
 static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
     //Declare time variables for CPU times in seconds
-    double totalTime, startTime, endTime;
+    double totalTime = 0.0, startTime = 0.0, endTime = 0.0;
     //Will store the read line (word1 word2 word3 word4 word5)
     string line;
     //Will store the N-gram [word1 word2 word3 word4 word5] corresponding to the line
     vector<string> ngram;
     //Will store the queue result for one N-Gram
-    SProbResult result;
+    SProbResult result = {0,};
 
     //Read the test file line by line
     while (getline(testFile, line)) {
