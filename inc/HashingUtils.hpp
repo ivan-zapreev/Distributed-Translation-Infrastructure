@@ -106,7 +106,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TReferenceHashSize cantor(TWordHashSize x, TReferenceHashSize y) {
+            inline TReferenceHashSize cantor(TReferenceHashSize x, TReferenceHashSize y) {
                 return ((x + y)*(x + y + 1)) / 2 + y;
             }
 
@@ -136,7 +136,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TReferenceHashSize szudzik(TWordHashSize x, TReferenceHashSize y) {
+            inline TReferenceHashSize szudzik(TReferenceHashSize x, TReferenceHashSize y) {
                 return ( x >= y ? (y + x + x * x) : (x + y * y));
             }
 
