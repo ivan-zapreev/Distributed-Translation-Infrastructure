@@ -135,12 +135,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-g -O0 -lrt -m64</commandLine>
+          <commandLine>-g -O0 -lrt -m64 -pg</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -328,12 +328,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-g -O0 -lrt -m64</commandLine>
+          <commandLine>-g -O0 -lrt -m64 -pg</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">

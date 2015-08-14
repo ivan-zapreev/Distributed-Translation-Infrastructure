@@ -48,8 +48,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-O0 -g -std=c++0x -lrt -m64
-CXXFLAGS=-O0 -g -std=c++0x -lrt -m64
+CCFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg
+CXXFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -66,7 +66,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -g -O0 -lrt -m64
+	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -g -O0 -lrt -m64 -pg
 
 ${OBJECTDIR}/src/ARPAGramBuilder.o: src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
