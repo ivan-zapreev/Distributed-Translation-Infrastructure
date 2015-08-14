@@ -56,10 +56,26 @@ namespace uva {
 
             template<TModelLevel N>
             void ContextMultiHashMapTrie<N>::preAllocate(uint counts[N]) {
-                //ToDo: Implement this method once we know what are the
-                //approximate % values for the number of N-Grams ending
-                //with the same word for each specific N.
-                LOG_WARNING << "The Trie memory is not allocated efficiently yet! Try using the N-Gram Counts!" << END_LOG;
+                //Call the super class pre-allocator!
+                AHashMapTrie<N>::preAllocate(counts);
+
+                //Do the local pre-allocations
+                const uint ogramSize = counts[0] + 1; //Add an extra element for the unknown word
+                LOG_DEBUG << "Pre-allocating " << ogramSize << " elements for the " << 1 << "-grams!" << END_LOG;
+                oGrams.reserve(ogramSize);
+
+                //Pre-allocate for the M-grams with 1 < M < N
+                for (int idx = 1; idx < (N - 1); idx++) {
+                    //Pre-allocate for the N-grams
+                    const uint mgramSize = counts[idx];
+                    LOG_DEBUG << "Pre-allocating " << mgramSize << " elements for the " << (idx+1) << "-grams!" << END_LOG;
+                    mGrams[idx-1].reserve(mgramSize);
+                }
+
+                //Pre-allocate for the N-grams
+                const uint ngramSize = counts[N - 1];
+                LOG_DEBUG << "Pre-allocating " << ngramSize << " elements for the " << N << "-grams!" << END_LOG;
+                nGrams.reserve(ngramSize);
             }
 
             template<TModelLevel N>

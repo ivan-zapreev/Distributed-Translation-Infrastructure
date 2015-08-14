@@ -104,6 +104,16 @@ namespace uva {
                 };
 
                 /**
+                 * The defaul implementation that pre-allocates the wordIndex
+                 * @param counts the number of ngrams
+                 */
+                virtual void preAllocate(uint counts[N]) {
+                    const uint size = counts[0]+1; //Add an extra element for the unknown word
+                    LOG_DEBUG << "Pre-allocating " << size << " elements for the word index!" << END_LOG;
+                    wordIndex.reserve(size);
+                }
+
+                /**
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {

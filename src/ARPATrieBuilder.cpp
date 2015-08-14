@@ -41,7 +41,10 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-#define END_OF_ARPA_FILE "\\end\\"
+                //The end of ARPA file constant
+                static const string END_OF_ARPA_FILE = "\\end\\";
+                //The N-gram Data Section Amoung delimiter
+                static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
                 ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, ifstream & fstr, const char delim) :
@@ -97,13 +100,14 @@ namespace uva {
                 template<TModelLevel N>
                 void ARPATrieBuilder<N>::readData(string &line, uint counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
-                    
+
                     LOG_WARNING << "The N-Gram Counts provided in the data section of ARPA are not read yet!" << END_LOG;
 
                     //If we are here then it means we just finished reading the
                     //ARPA headers and we stumbled upon something meaningful,
                     //that actually must be the begin of the data section
                     if (line != END_OF_ARPA_FILE) {
+                        TModelLevel level = MIN_NGRAM_LEVEL;
                         while (true) {
                             if (getline(_fstr, line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << line << "'" << END_LOG;
@@ -121,10 +125,27 @@ namespace uva {
                                         //actual number of provided n-grams but for now it is not needed. 
                                         LOG_DEBUG1 << "Is the n-gram amount: '" << line << "', ignoring!" << END_LOG;
 
-                                        //ToDo: Read the number of N-grams in order to have enough data
-                                        //      for the pre-allocation of the memory in the trie! For
-                                        //      large language models that should both improve the memory
-                                        //      usage and the performance of adding new N-Grams!
+                                        //Read the number of N-grams in order to have enough data
+                                        //for the pre-allocation of the memory in the trie! For
+                                        //large language models that should both improve the memory
+                                        //usage and the performance of adding new N-Grams!
+
+                                        //First tokenize the string
+                                        vector<string> elems;
+                                        tokenize(line, NGRAM_COUNTS_DELIM, elems);
+
+                                        //Parse the second (last) value and store it as the amount
+                                        string & amount = *(--elems.end());
+                                        try {
+                                            counts[level - 1] = stoull(amount);
+                                            LOG_INFO << "Expected number of " << level << "-grams is: " << counts[level - 1] << END_LOG;
+                                        } catch (invalid_argument) {
+                                            stringstream msg;
+                                            msg << "Incorrect ARPA format: Can not parse the "
+                                                    << level << "-gram amount: '" << amount
+                                                    << "' from string: '" << line << "'";
+                                            throw Exception(msg.str());
+                                        }
                                     } else {
                                         LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
                                         break;
@@ -136,6 +157,7 @@ namespace uva {
                             } else {
                                 throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
                             }
+                            level++;
                         }
                     } else {
                         stringstream msg;
@@ -178,15 +200,15 @@ namespace uva {
                                         if (pNGBuilder->processString(line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
-                                            
+
                                             //First log the actual amount of read N-grams
                                             const bool wasPBOn = Logger::isProgressBarOn();
                                             Logger::stopProgressBar();
-                                            LOG_INFO << "The number of read " << level << "-grams is: " << numNgrams << END_LOG;
-                                            if( wasPBOn ) {
+                                            LOG_INFO << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
+                                            if (wasPBOn) {
                                                 Logger::startProgressBar();
                                             }
-                                            
+
                                             //Now stop reading this level N-grams and move on
                                             break;
                                         }
@@ -283,6 +305,7 @@ namespace uva {
                         readData(line, counts);
 
                         //Provide the N-Gram counts data to the Trie
+                        _trie.preAllocate(counts);
 
                         //Read the N-grams
                         readNGrams(line, 1);
