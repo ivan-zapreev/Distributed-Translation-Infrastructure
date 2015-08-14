@@ -124,7 +124,8 @@ namespace uva {
 
             private:
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities
-                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
+                //unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
+                TProbBackOffEntryPair oGrams[676752];
 
                 //The map storing the Bi-Grams (Two-Grams)
                 unordered_map<TWordHashSize, TBGramEntryMap> bGrams;
