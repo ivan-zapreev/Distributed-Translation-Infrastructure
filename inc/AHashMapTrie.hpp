@@ -40,17 +40,20 @@
  */
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
+#include <inttypes.h>     // uint8_t
 
 #include "ATrie.hpp"
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
+#include "FixedMemoryAllocator.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
+using namespace uva::smt::tries::alloc;
 
 namespace uva {
     namespace smt {
@@ -69,7 +72,16 @@ namespace uva {
                         << "Changing the (prob,back-off) data from ("                                        \
                         << prevProb << "," << prevBackOff << ") to ("                                        \
                         << newProb << "," << newBackOff << ")" << END_LOG;
+            
+            //The type of key,value pairs to be stored in the word index
+            typedef pair< const string, TWordHashSize> TWordIndexEntry;
+            
+            //The typedef for the word index allocator
+            typedef FixedMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
+            //The word index map type
+            typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndex;
+            
             //The entry pair to store the N-gram probability and back off
             typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
 
@@ -97,10 +109,7 @@ namespace uva {
                 /**
                  * The basic class constructor
                  */
-                AHashMapTrie() : nextNewWordHash(MIN_KNOWN_WORD_HASH) {
-                    //Register the unknown word with the first available hash value
-                    TWordHashSize& hash = AHashMapTrie<N>::wordIndex[UNKNOWN_WORD_STR];
-                    hash = UNKNOWN_WORD_HASH;
+                AHashMapTrie() : pDataStorage(NULL), pMemAlloc(NULL), pWordIndex(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
                 };
 
                 /**
@@ -108,15 +117,50 @@ namespace uva {
                  * @param counts the number of ngrams
                  */
                 virtual void preAllocate(uint counts[N]) {
-                    const uint size = counts[0]+1; //Add an extra element for the unknown word
-                    LOG_DEBUG << "Pre-allocating " << size << " elements for the word index!" << END_LOG;
-                    wordIndex.reserve(size);
+                    //Compute the number of words to be stored
+                    const size_t numWords = counts[0]+1; //Add an extra element for the unknown word
+                    //Compute the number of bytes needed to store these words
+                    const size_t numBytes = numWords * sizeof(TWordIndexEntry) * 2.6;
+                    
+                    //Allocate the data buffer
+                    pDataStorage = new uint8_t[numBytes];
+                    
+                    //Allocate the map allocator
+                    LOG_DEBUG << "Allocating the TWordIndexAllocator for " << numBytes << " bytes!" << END_LOG;
+                    pMemAlloc = new TWordIndexAllocator(pDataStorage, numBytes  );
+                    
+                    //Allocate the map with the given allocator
+                    LOG_DEBUG << "Allocating the TWordIndex with the created allocator!" << END_LOG;
+                    pWordIndex = new TWordIndex(*pMemAlloc);
+                    
+                    //Reserve some memory for the buckets!
+                    LOG_DEBUG << "Reserving " << numWords << " buckets for the word index!" << END_LOG;
+                    pWordIndex->reserve(numWords);
+
+                    //Register the unknown word with the first available hash value
+                    TWordHashSize& hash = AHashMapTrie<N>::pWordIndex->operator[](UNKNOWN_WORD_STR);
+                    hash = UNKNOWN_WORD_HASH;
                 }
 
                 /**
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {
+                    //First deallocate the memory of the map
+                    if( pWordIndex != NULL ) {
+                        delete pWordIndex;
+                        pWordIndex = NULL;
+                    }
+                    //Second deallocate the allocator
+                    if( pMemAlloc != NULL ) {
+                        delete pMemAlloc;
+                        pMemAlloc = NULL;
+                    }
+                    //THird deallocate the actual storage
+                    if( pDataStorage != NULL ) {
+                        delete pDataStorage;
+                        pDataStorage = NULL;
+                    }
                 };
 
             protected:
@@ -262,7 +306,7 @@ namespace uva {
                  */
                 inline TWordHashSize getUniqueIdHash(const string & str) {
                     try {
-                        return wordIndex.at(str);
+                        return pWordIndex->at(str);
                     } catch (out_of_range e) {
                         LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
                                 << UNKNOWN_WORD_STR << "', hash: "
@@ -279,7 +323,7 @@ namespace uva {
                  */
                 inline TWordHashSize createUniqueIdHash(const string & str) {
                     //First get/create an existing/new word entry from from/in the word index
-                    TWordHashSize& hash = wordIndex[str];
+                    TWordHashSize& hash = pWordIndex->operator[](str);
 
                     if (hash == UNDEFINED_WORD_HASH) {
                         //If the word hash is not defined yet, then issue it a new hash id
@@ -376,9 +420,14 @@ namespace uva {
 #endif
 
             private:
+                //The actual data storage for the word index
+                uint8_t * pDataStorage;
+                
+                //This is the pointer to the fixed memory allocator used to allocate the map's memory
+                TWordIndexAllocator * pMemAlloc;
 
                 //This map stores the word index, i.e. assigns each unique word a unique id
-                unordered_map<string, TWordHashSize> wordIndex;
+                TWordIndex * pWordIndex;
 
                 //The temporary data structure to store the N-gram query word hashes
                 TWordHashSize mGramWordHashes[N];

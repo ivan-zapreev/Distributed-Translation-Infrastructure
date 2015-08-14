@@ -11,6 +11,8 @@
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
+      <itemPath>inc/FixedMemoryAllocator.hpp</itemPath>
+      <itemPath>inc/FixedMemoryStorage.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
@@ -97,6 +99,10 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -141,12 +147,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-g -O0 -lrt -m64 -pg</commandLine>
+          <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -162,6 +168,10 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -238,6 +248,10 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -302,6 +316,10 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -346,12 +364,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-g -O0 -lrt -m64 -pg</commandLine>
+          <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -367,6 +385,10 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>

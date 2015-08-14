@@ -32,7 +32,6 @@
 #include <cstddef> // std::size_t
 
 #include "Logger.hpp"
-#include "Exceptions.hpp"
 #include "Globals.hpp"
 
 using uva::smt::logging::Logger;

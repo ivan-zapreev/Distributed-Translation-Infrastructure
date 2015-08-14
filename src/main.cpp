@@ -117,7 +117,7 @@ static void printUsage(const string name) {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extractArguments(const int argc, char const * const * const argv, TAppParams & params) {
+static void extractArguments(const uint argc, char const * const * const argv, TAppParams & params) {
     if (argc < EXPECTED_NUMBER_OF_ARGUMENTS) {
         stringstream msg;
         msg << "Incorrect number of arguments, expected >= " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
@@ -145,27 +145,6 @@ static void extractArguments(const int argc, char const * const * const argv, TA
 static const string getFileExistsString(string const & fname, ifstream const & fstr) {
     string result = ((bool) fstr ? "is present" : "is missing");
     return fname + " (" + result + ")";
-}
-
-/**
- * This is a helper function for creating the memory statistic strings
- * @param vmsize Virtual memory size in Kb
- * @param vmpeak Peak virtual memory size in Kb
- * @param vmrss Resident set size in Kb
- * @param vmhwm Peak resident set size in Kb
- * @return the resulting string reference to the text to be printed
- */
-static string getMemoryUsageString(unsigned int const & vmsize,
-        unsigned int const & vmpeak,
-        unsigned int const & vmrss,
-        unsigned int const & vmhwm) {
-    stringstream msg;
-
-    msg << "vmsize=" << vmsize << " Kb, vmpeak=" <<
-            vmpeak << " Kb, vmrss=" << vmrss <<
-            " Kb, vmhwm=" << vmhwm << " Kb";
-
-    return msg.str();
 }
 
 /**

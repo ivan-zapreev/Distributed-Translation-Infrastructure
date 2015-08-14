@@ -81,8 +81,8 @@ namespace uva {
                     //This is the N-Gram container to store the parsed N-gram data
                     SBackOffNGram _ngram;
                     //The minimum and maximum number of tokens in the N-Gram string
-                    const int MIN_NUM_TOKENS_NGRAM_STR;
-                    const int MAX_NUM_TOKENS_NGRAM_STR;
+                    const uint MIN_NUM_TOKENS_NGRAM_STR;
+                    const uint MAX_NUM_TOKENS_NGRAM_STR;
 
                     /**
                      * The copy constructor

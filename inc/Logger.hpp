@@ -41,6 +41,9 @@ namespace uva {
     namespace smt {
         namespace logging {
 
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+        ( std::ostringstream() << std::dec << x ) ).str()
+
             //The macros needed to get the line sting for proper printing in cout
 #define STRINGIZE(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
@@ -51,7 +54,7 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::INFO
+#define LOGER_MAX_LEVEL Logger::DEBUG3
 #endif
 
 #define LOGGER(level)                          \

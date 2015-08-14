@@ -125,7 +125,6 @@ namespace uva {
                 unordered_map<TWordHashSize, TMGramEntryMap> ngRecorder[N];
 
                 /**
-                /**
                  * Allows to add a new M-Gram with  1< M <= N
                  * @param wordHash the end M-gram word hash
                  * @param contextHash the M-Gram context hash
