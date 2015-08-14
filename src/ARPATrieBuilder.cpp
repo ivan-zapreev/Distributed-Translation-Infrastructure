@@ -101,8 +101,6 @@ namespace uva {
                 void ARPATrieBuilder<N>::readData(string &line, uint counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
-                    LOG_WARNING << "The N-Gram Counts provided in the data section of ARPA are not read yet!" << END_LOG;
-
                     //If we are here then it means we just finished reading the
                     //ARPA headers and we stumbled upon something meaningful,
                     //that actually must be the begin of the data section
