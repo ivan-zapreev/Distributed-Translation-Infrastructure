@@ -44,13 +44,13 @@ namespace uva {
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
 
-                if (N <= BGRAM_LEVEL_VALUE) {
+                if( N <= BGRAM_LEVEL_VALUE ) {
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
                             << "', but for '" << __FILE__ << "' it must be >= " << BGRAM_LEVEL_VALUE << "!";
                     throw Exception(msg.str());
                 }
-
+                
                 LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
             }
 
@@ -216,13 +216,18 @@ namespace uva {
                     //We came to a zero context, which means we have an
                     //1-Gram to try to get the back-off weight from
 
-                    TProbBackOffEntryPair & pbData = oGrams[endWordHash];
-                    //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                    back_off = pbData.second;
+                    //Attempt to retrieve back-off weights
+                    try {
+                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
+                        //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
+                        back_off = pbData.second;
 
-                    LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                            << "( back-off ) for word: " << endWordHash
-                            << ", is: " << back_off << END_LOG;
+                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                << "( back-off ) for word: " << endWordHash
+                                << ", is: " << back_off << END_LOG;
+                    } catch (out_of_range e) {
+                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: " << endWordHash << ", nowhere to back-off!" << END_LOG;
+                    }
                 }
 
                 LOG_DEBUG2 << "The chosen log back-off weight for context: " << contextLength << " is: " << back_off << END_LOG;
@@ -294,14 +299,23 @@ namespace uva {
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
-                    TProbBackOffEntryPair & pbData = oGrams[endWordHash];
+                    try {
+                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
 
-                    LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                            << "( prob. ) for word: " << endWordHash
-                            << ", is: " << pbData.first << END_LOG;
+                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                << "( prob. ) for word: " << endWordHash
+                                << ", is: " << pbData.first << END_LOG;
 
-                    //Return the stored probability
-                    return ( pbData.first == ZERO_LOG_PROB_WEIGHT ? MINIMAL_LOG_PROB_WEIGHT : pbData.first);
+                        //Return the stored probability
+                        return pbData.first;
+                    } catch (out_of_range e) {
+                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
+                                << endWordHash << " returning:" << MINIMAL_LOG_PROB_WEIGHT
+                                << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
+
+                        //Return the default minimal probability for an unknown word
+                        return MINIMAL_LOG_PROB_WEIGHT;
+                    }
                 }
             }
 

@@ -123,9 +123,12 @@ namespace uva {
                 virtual ~MultiHashMapTrie();
 
             private:
-                //The map storing the One-Grams: I.e. the word indexes and the word probabilities
-                //unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
-                TProbBackOffEntryPair oGrams[676752];
+                //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
+                //NOTE: Using an array here in place of an unordered hash map gave 
+                //some 25 Mb reduction on a 20 Gb model ... this is negligible. As
+                //the memory statistics is not accurate that could just be noise! Also,
+                //I see that there are typically not so many 1-Grams an plenty of 5-grams
+                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
 
                 //The map storing the Bi-Grams (Two-Grams)
                 unordered_map<TWordHashSize, TBGramEntryMap> bGrams;
