@@ -72,7 +72,7 @@ static void printInfo() {
     LOG_USAGE << "|          (GPL stands for GNU General Public License)             |" << END_LOG;
     LOG_USAGE << "|          The product comes with ABSOLUTELY NO WARRANTY.          |" << END_LOG;
     LOG_USAGE << "|   This is a free software, you are welcome to redistribute it.   |" << END_LOG;
-    LOG_USAGE << "|                     Running in " << sizeof(uint64_t) * 8 << " bit mode!                      |" << END_LOG;
+    LOG_USAGE << "|                     Running in " << sizeof (uint64_t) * 8 << " bit mode!                      |" << END_LOG;
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
 }
 
@@ -251,10 +251,9 @@ static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
  * This method will perform the main tasks of this application:
  * Read the text corpus and create a trie and then read the test
  * file and query the trie for frequencies.
- * @param modelFile the Back-Off model file in the ARPA format
- * @param testFile the test file with queries
+ * @param params the runtime program parameters
  */
-static void performTasks(ifstream &modelFile, ifstream &testFile) {
+static void performTasks(const TAppParams& params) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
 
@@ -263,24 +262,41 @@ static void performTasks(ifstream &modelFile, ifstream &testFile) {
     TMemotyUsage memStatStart = {}, memStatInterm = {};
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
-    //Create a trie and pass it to the algorithm method
-    TFiveMultiHashMapTrie trie;
-    //TFiveSingleHashMapTrie trie;
-    LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
-    startTime = StatisticsMonitor::getCPUTime();
-    fillInTrie(modelFile, trie);
-    endTime = StatisticsMonitor::getCPUTime();
-    LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+    //Attempt to open the model file
+    ifstream modelFile(params.trainFileName.c_str());
+    //Attempt to open the test file
+    ifstream testFile(params.testFileName.c_str());
 
-    LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
-    StatisticsMonitor::getMemoryStatistics(memStatInterm);
+    //If the files could be opened then proceed with training and then testing
+    if ((modelFile.is_open()) && (testFile.is_open())) {
+        //Create a trie and pass it to the algorithm method
+        TFiveMultiHashMapTrie trie;
 
-    LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-    reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
+        LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
+        startTime = StatisticsMonitor::getCPUTime();
+        fillInTrie(modelFile, trie);
+        endTime = StatisticsMonitor::getCPUTime();
+        LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+        modelFile.close();
 
-    LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
-    const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-    LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+        LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
+        StatisticsMonitor::getMemoryStatistics(memStatInterm);
+
+        LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
+        reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
+
+        LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
+        const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
+        LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+        testFile.close();
+    } else {
+        stringstream msg;
+        msg << "One of the input files does not exist: " +
+                getFileExistsString(params.trainFileName, modelFile)
+                + " , " +
+                getFileExistsString(params.testFileName, testFile);
+        throw Exception(msg.str());
+    }
 
     LOG_INFO << "Done" << END_LOG;
 }
@@ -305,22 +321,9 @@ int main(int argc, char** argv) {
                 << params.trainFileName << "\' and \'"
                 << params.testFileName << "\' ..." << END_LOG;
 
-        //Attempt to open the files
-        ifstream modelFile(params.trainFileName.c_str());
-        ifstream testFile(params.testFileName.c_str());
+        //Do the actual work, read the text corpse, create trie and do queries
+        performTasks(params);
 
-        //If the files could be opened then proceed with training and then testing
-        if ((modelFile.is_open()) && (testFile.is_open())) {
-            //Do the actual work, read the text corpse, create trie and do queries
-            performTasks(modelFile, testFile);
-        } else {
-            stringstream msg;
-            msg << "One of the input files does not exist: " +
-                    getFileExistsString(params.trainFileName, modelFile)
-                    + " , " +
-                    getFileExistsString(params.testFileName, testFile);
-            throw Exception(msg.str());
-        }
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.getMessage() << END_LOG;
