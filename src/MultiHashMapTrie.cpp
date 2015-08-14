@@ -44,6 +44,13 @@ namespace uva {
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
 
+                if( N <= BGRAM_LEVEL_VALUE ) {
+                    stringstream msg;
+                    msg << "The requested N-gram level is '" << N
+                            << "', but for '" << __FILE__ << "' it must be >= " << BGRAM_LEVEL_VALUE << "!";
+                    throw Exception(msg.str());
+                }
+                
                 LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
             }
 
@@ -90,7 +97,7 @@ namespace uva {
 
             template<TModelLevel N>
             void MultiHashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
-                const size_t level = mGram.tokens.size();
+                const TModelLevel level = mGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(mGram.tokens) << " to the Trie" << END_LOG;
 
                 //Check that this is not an 1-Gram or N-Gram for those we need another method!
@@ -98,20 +105,15 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram.tokens);
+                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram.tokens);
 
                     // 2. Compute the hash of w4
                     const string & endWord = *(--mGram.tokens.end());
-                    TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord);
+                    const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord);
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
-                    //Data stores the N-tires from length 2 on and indexing starts
-                    //with 0, therefore "level-2". Get/Create the mapping for this
-                    //word in the Trie level of the N-gram
-                    TMGramEntryMap& ngamEntry = mGrams[level - 2][wordHash];
-                    //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
-                    TProbBackOffEntryPair& pbData = ngamEntry[contextHash];
+                    TProbBackOffEntryPair& pbData = createMGramEntry(level, wordHash, contextHash);
 
                     //Do a temporary check for hash collisions
                     AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, mGram);
@@ -197,10 +199,7 @@ namespace uva {
                     //Attempt to retrieve back-off weights
                     try {
                         //The context length plus one is M value of the M-Gram
-                        //All the M-grams for 1 < M < N are stored in a mGrams
-                        //array, so this M-Gram is stored under index M-2;
-                        const TModelLevel mGramIdx = ((backOfContextLength + 1) - 2);
-                        TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
+                        TProbBackOffEntryPair & entry = getMGramEntry((backOfContextLength + 1), endWordHash, contextHash);
 
                         //Obtained the stored back-off weight
                         back_off = entry.second;
@@ -268,11 +267,7 @@ namespace uva {
                             //If we are looking for a M-Gram probability with 1 < M < N
 
                             //The context length plus one is M value of the M-Gram
-                            //All the M-grams for 1 < M < N are stored in a mGrams
-                            //array, so this M-Gram is stored under index M-2;
-                            const TModelLevel mGramIdx = ((contextLength + 1) - 2);
-                            //Get the probability/back-off entry for the given M-gram
-                            TProbBackOffEntryPair & entry = mGrams[mGramIdx].at(endWordHash).at(contextHash);
+                            TProbBackOffEntryPair & entry = getMGramEntry((contextLength + 1), endWordHash, contextHash);
 
                             LOG_DEBUG2 << "The " << (contextLength + 1)
                                     << "-Gram log_" << LOG_PROB_WEIGHT_BASE

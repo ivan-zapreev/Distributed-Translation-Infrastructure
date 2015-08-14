@@ -264,8 +264,8 @@ static void performTasks(ifstream &modelFile, ifstream &testFile) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Create a trie and pass it to the algorithm method
-    //TFiveMultiHashMapTrie trie;
-    TFiveSingleHashMapTrie trie;
+    TFiveMultiHashMapTrie trie;
+    //TFiveSingleHashMapTrie trie;
     LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
     startTime = StatisticsMonitor::getCPUTime();
     fillInTrie(modelFile, trie);

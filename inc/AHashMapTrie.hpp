@@ -73,6 +73,12 @@ namespace uva {
             //The entry pair to store the N-gram probability and back off
             typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
 
+            //The 2-trie level entry for 1 < 2 < N, for with probability and back-
+            //off weights. The difference here compared to the TMGramEntryMap is
+            //that we can use TWordHashSize data type instead of TReferenceHashSize
+            //for the key values, as the context is always the first word's hash.
+            typedef unordered_map<TWordHashSize, TProbBackOffEntryPair> TBGramEntryMap;
+
             //The M-trie level entry for 1 < M < N, for with probability and back-off weights
             typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair> TMGramEntryMap;
 

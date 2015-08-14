@@ -52,11 +52,6 @@ namespace uva {
         namespace tries {
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
-
-            //The amount of memory dedicated for storing frequency
-            //WARNING: Do not use smaller size as I get overflows
-            //for "unsigned short int" on a text large corpus!
-            typedef uint32_t TFrequencySize;
         }
 
         //The following type definitions are important for creating hashes
