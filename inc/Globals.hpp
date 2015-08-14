@@ -27,6 +27,7 @@
 #define	GLOBALS_HPP
 
 #include <inttypes.h>
+#include <string>
 
 #include "Logger.hpp"
 
@@ -34,24 +35,25 @@ namespace uva {
     namespace smt {
 
         //This is the pattern used for file path separation
-#define PATH_SEPARATION_SYMBOLS "/\\"
+        const string PATH_SEPARATION_SYMBOLS = "/\\";
         //This is a delimiter used in the text corpus and test files
-#define TOKEN_DELIMITER_CHAR ' '
+        const char TOKEN_DELIMITER_CHAR = ' ';
         //The expected number of program arguments
-#define EXPECTED_NUMBER_OF_ARGUMENTS 3
+        const uint EXPECTED_NUMBER_OF_ARGUMENTS = 3;
         //The expected number of user arguments
-#define EXPECTED_USER_NUMBER_OF_ARGUMENTS (EXPECTED_NUMBER_OF_ARGUMENTS - 1)
+        const uint EXPECTED_USER_NUMBER_OF_ARGUMENTS = (EXPECTED_NUMBER_OF_ARGUMENTS - 1);
         //The number of bytes in one Mb
-#define BYTES_ONE_MB 1024u
-        //The considered maximum length of the N-gram
-#define MAX_NGRAM_LEVEL 5u
-        //Defined the minimum possible N-gram level
-#define MIN_NGRAM_LEVEL 1u
+        const uint BYTES_ONE_MB = 1024u;
 
         //The following type definitions are important for storing the Tries information
         namespace tries {
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
+
+            //The considered maximum length of the N-gram
+            const TModelLevel MAX_NGRAM_LEVEL = 5u;
+            //Defined the minimum possible N-gram level
+            const TModelLevel MIN_NGRAM_LEVEL = 1u;
         }
 
         //The following type definitions are important for creating hashes

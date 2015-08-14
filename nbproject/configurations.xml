@@ -9,6 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
+      <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
@@ -25,6 +26,7 @@
                    projectFiles="true">
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
+      <itemPath>src/ContextMultiHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/MultiHashMapTrie.cpp</itemPath>
       <itemPath>src/SingleHashMapTrie.cpp</itemPath>
@@ -91,6 +93,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
@@ -110,6 +114,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -153,6 +159,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
@@ -172,6 +180,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -224,6 +234,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
@@ -243,6 +255,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -284,6 +298,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
@@ -303,6 +319,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -346,6 +364,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
@@ -365,6 +385,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>

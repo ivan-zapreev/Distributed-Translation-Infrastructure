@@ -1,5 +1,5 @@
 /* 
- * File:   MultiHashMapTrie.hpp
+ * File:   ContextMultiHashMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,11 +20,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on April 18, 2015, 11:42 AM
+ * Created on August 14, 2015, 1:53 PM
  */
 
-#ifndef MULTIHASHMAPTRIE_HPP
-#define	MULTIHASHMAPTRIE_HPP
+#ifndef CONTEXTMULTIHASHMAPTRIE_HPP
+#define	CONTEXTMULTIHASHMAPTRIE_HPP
+
 
 /**
  * We actually have several choices:
@@ -74,15 +75,15 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class MultiHashMapTrie : public AHashMapTrie<N> {
+            class ContextMultiHashMapTrie : public AHashMapTrie<N> {
             public:
                 //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
-                static const TModelLevel MGRAM_IDX_OFFSET = 3;
+                static const TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 /**
                  * The basic class constructor
                  */
-                MultiHashMapTrie();
+                ContextMultiHashMapTrie();
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -117,7 +118,7 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
-                virtual ~MultiHashMapTrie();
+                virtual ~ContextMultiHashMapTrie();
 
             private:
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -127,70 +128,17 @@ namespace uva {
                 //I see that there are typically not so many 1-Grams an plenty of 5-grams
                 unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
 
-                //The map storing the Bi-Grams (Two-Grams)
-                unordered_map<TWordHashSize, TBGramEntryMap> bGrams;
-
-                //The array of maps map storing M-grams for 2 < M < N
-                unordered_map<TWordHashSize, TMGramEntryMap > mGrams[N - MGRAM_IDX_OFFSET];
+                //The array of maps map storing M-grams for 1 < M < N
+                unordered_map<TReferenceHashSize, TProbBackOffEntryPair> mGrams[N - MGRAM_IDX_OFFSET];
 
                 //The map storing the N-Grams, they do not have back-off values
-                unordered_map<TWordHashSize, TNGramEntryMap > nGrams;
+                unordered_map<TReferenceHashSize, TLogProbBackOff> nGrams;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                MultiHashMapTrie(const MultiHashMapTrie& orig);
-
-                /**
-                 * Allows to create/retrieve the M-Gram entry for 1<M<N
-                 * @param level the value of M
-                 * @param wordHash the last word's hash
-                 * @param contextHash the context hash
-                 * @return the M-gram probability/back-off weight entry
-                 */
-                inline TProbBackOffEntryPair& createMGramEntry(const TModelLevel level,
-                        const TWordHashSize wordHash, const TReferenceHashSize contextHash) {
-                    if (level == BGRAM_LEVEL_VALUE) {
-                        //Store the Bi grams in a separate memory optimal place
-                        TBGramEntryMap& bgamEntry = bGrams[wordHash];
-                        //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
-                        return bgamEntry[static_cast<TWordHashSize> (contextHash)];
-                    } else {
-                        //Store the N-tires from length 3 on and indexing starts
-                        //with 0, therefore "level-3". Get/Create the mapping for this
-                        //word in the Trie level of the N-gram
-                        TMGramEntryMap& ngamEntry = mGrams[level - MGRAM_IDX_OFFSET][wordHash];
-                        //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
-                        return ngamEntry[contextHash];
-                    }
-                }
-
-                /**
-                 * Allows to retrieve the M-Gram entry for 1<M<N
-                 * Will throw an exception in case the M-gram can not be found!
-                 * @param level the value of M
-                 * @param wordHash the last word's hash
-                 * @param contextHash the context hash
-                 * @return the M-gram probability/back-off weight entry
-                 * @throws out_of_range if the M-gram can not be found!
-                 */
-                inline TProbBackOffEntryPair& getMGramEntry(const TModelLevel level,
-                        const TWordHashSize wordHash, const TReferenceHashSize contextHash) {
-                    if (level == BGRAM_LEVEL_VALUE) {
-                        //Store the Bi grams in a separate memory optimal place
-                        TBGramEntryMap& bgamEntry = bGrams.at(wordHash);
-                        //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
-                        return bgamEntry.at(static_cast<TWordHashSize> (contextHash));
-                    } else {
-                        //Store the N-tires from length 3 on and indexing starts
-                        //with 0, therefore "level-3". Get/Create the mapping for this
-                        //word in the Trie level of the N-gram
-                        TMGramEntryMap& ngamEntry = mGrams[level - MGRAM_IDX_OFFSET].at(wordHash);
-                        //Get/Create the new Prob. and Back-Off entry pair in the map, for the context
-                        return ngamEntry.at(contextHash);
-                    }
-                }
+                ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig);
 
                 /**
                  * This recursive function implements the computation of the
@@ -212,9 +160,9 @@ namespace uva {
                 TLogProbBackOff getBackOffWeight(const TModelLevel contextLength);
             };
 
-            typedef MultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveMultiHashMapTrie;
+            typedef ContextMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;
         }
     }
 }
-#endif	/* HASHMAPTRIE_HPP */
+#endif	/* CONTEXTMULTIHASHMAPTRIE_HPP */
 

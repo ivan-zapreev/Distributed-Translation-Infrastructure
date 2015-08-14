@@ -35,12 +35,14 @@
 #include "ATrie.hpp"
 #include "MultiHashMapTrie.hpp"
 #include "SingleHashMapTrie.hpp"
+#include "ContextMultiHashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
 #include "StringUtils.hpp"
 
 using namespace std;
+using namespace uva::smt;
 using namespace uva::smt::tries;
 using namespace uva::smt::tries::arpa;
 using namespace uva::smt::logging;
@@ -270,7 +272,8 @@ static void performTasks(const TAppParams& params) {
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         //Create a trie and pass it to the algorithm method
-        TFiveMultiHashMapTrie trie;
+        //TFiveMultiHashMapTrie trie;
+        TFiveContextMultiHashMapTrie trie;
 
         LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();
