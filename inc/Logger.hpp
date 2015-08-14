@@ -41,6 +41,7 @@ namespace uva {
     namespace smt {
         namespace logging {
 
+            //This Macro is used to convert numerival values to proper strings!
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
         ( std::ostringstream() << std::dec << x ) ).str()
 
@@ -54,7 +55,7 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::DEBUG3
+#define LOGER_MAX_LEVEL Logger::INFO
 #endif
 
 #define LOGGER(level)                          \
