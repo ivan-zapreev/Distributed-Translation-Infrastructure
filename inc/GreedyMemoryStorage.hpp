@@ -128,7 +128,8 @@ namespace uva {
                             _allocBytes += num;
                         } else {
                             //WARNING: If we need more space we allocate it additionally in a not so efficient way.
-                            void * ptr = static_cast<void*> (new TStorageData[_numBytes]);
+                            LOG_DEBUG3 << "Allocating additional: " << num << " bytes!" END_LOG;
+                            void * ptr = static_cast<void*> (new TStorageData[num]);
                             _memoryBuffers.push_back(ptr);
                         }
                         return ptr;
