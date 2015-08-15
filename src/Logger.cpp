@@ -122,9 +122,9 @@ namespace uva {
 
             string Logger::computeTimeString(const clock_t elapsedClockTime, size_t & timeStrLen) {
                 const float timeSec = ( ((float) elapsedClockTime) / CLOCKS_PER_SEC );
-                const uint minute = (uint) timeSec % 60;
-                const uint hour = (uint) timeSec / 3600;
-                const float second = ((float)((uint) ((timeSec - minute * 60 - hour * 3600 )* 100)))/100;
+                const uint minute = (((uint) timeSec) % 3600) / 60;
+                const uint hour = ((uint) timeSec) / 3600;
+                const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600 )* 100))/100);
                 string result = SSTR( hour ) + " hour(s) " + SSTR( minute ) + " minute(s) " + SSTR( second ) + " second(s) ";
                 timeStrLen = result.size();
                 return result;
