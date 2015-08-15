@@ -121,18 +121,21 @@ namespace uva {
             }
 
             string Logger::computeTimeString(const clock_t elapsedClockTime, size_t & timeStrLen) {
-                const float timeSec = ( ((float) elapsedClockTime) / CLOCKS_PER_SEC );
+                const float timeSec = (((float) elapsedClockTime) / CLOCKS_PER_SEC);
                 const uint minute = (((uint) timeSec) % 3600) / 60;
                 const uint hour = ((uint) timeSec) / 3600;
-                const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600 )* 100))/100);
-                string result = string(_debugLevelStr[USAGE]) + ":\tLoading time: " + SSTR( hour ) + " hour(s) " + SSTR( minute ) + " minute(s) " + SSTR( second ) + " second(s) ";
+                const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
+                stringstream msg;
+                msg << _debugLevelStr[USAGE] << ":\tLoading time: " << SSTR(hour) << " hour(s) "
+                        << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
+                string result = msg.str();
                 timeStrLen = result.size();
                 return result;
             }
 
             string Logger::computeTimeClearString(const size_t length) {
                 string result = "";
-                for(size_t i = 0 ; i < length ; i++) {
+                for (size_t i = 0; i < length; i++) {
                     result += "\r";
                 }
                 return result;
@@ -156,7 +159,7 @@ namespace uva {
                 if (currLEvel <= INFO && isPBOn) {
                     const double currProgressUpdate = StatisticsMonitor::getCPUTime();
                     if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
-                        
+
                         //Output the current time
                         cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
                         cout.flush();

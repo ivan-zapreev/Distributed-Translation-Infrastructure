@@ -280,7 +280,7 @@ namespace uva {
                      * The default constructor
                      */                    
                     GreedyMemoryAllocator() throw () :
-                    _manager(_storage), _storage(NULL, 0) {
+                    _manager(_storage), _storage(0) {
                         throw Exception("The default constructor is not to be used!");
                     }
 
