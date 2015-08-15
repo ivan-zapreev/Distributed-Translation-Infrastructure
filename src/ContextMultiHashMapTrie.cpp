@@ -56,7 +56,7 @@ namespace uva {
                 const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TOneGramsMap, TOneGramEntry, TOneGramAllocator, TStorageData>(&pOneGramMap, &pOneGramAlloc, &pOneGramStorage, numEntries, "1-Grams");
+                reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams");
                 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_HASH);
@@ -81,7 +81,7 @@ namespace uva {
                 const size_t numEntries = counts[N - 1];
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TNGramsMap, TNGramEntry, TNGramAllocator, TStorageData>(&pNGramMap, &pNGramAlloc, &pNGramStorage, numEntries, "N-Grams");
+                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams");
             }
 
             template<TModelLevel N>
@@ -388,9 +388,9 @@ namespace uva {
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
                 //Deallocate One-Grams
-                deallocate_container<TOneGramsMap, TOneGramAllocator, TStorageData>(&pOneGramMap, &pOneGramAlloc, &pOneGramStorage);
+                deallocate_container<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc);
                 //Deallocate N-Grams
-                deallocate_container<TNGramsMap, TNGramAllocator, TStorageData>(&pNGramMap, &pNGramAlloc, &pNGramStorage);
+                deallocate_container<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc);
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

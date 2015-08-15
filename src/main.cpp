@@ -155,16 +155,16 @@ static const string getFileExistsString(string const & fname, ifstream const & f
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
     LOG_USAGE << "Action: \'" << action << "\' memory increase:" << END_LOG;
-    LOG_DEBUG << "memory before: vmsize=" << msStart.vmsize << " Kb, vmpeak="
-            << msStart.vmpeak << " Kb, vmrss=" << msStart.vmrss
-            << " Kb, vmhwm=" << msStart.vmhwm << " Kb" << END_LOG;
-    LOG_DEBUG << "memory after: vmsize=" << msEnd.vmsize << " Kb, vmpeak="
-            << msEnd.vmpeak << " Kb, vmrss=" << msEnd.vmrss
-            << " Kb, vmhwm=" << msEnd.vmhwm << " Kb" << END_LOG;
-    LOG_USAGE << "vmsize=" << double(msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB
-            << " Mb, vmpeak=" << double(msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB
-            << " Mb, vmrss=" << double(msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB
-            << " Mb, vmhwm=" << double(msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB << " Mb" << END_LOG;
+    LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
+            << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
+            << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
+    LOG_DEBUG << "memory after: vmsize=" << SSTR(msEnd.vmsize) << " Kb, vmpeak="
+            << SSTR(msEnd.vmpeak) << " Kb, vmrss=" << SSTR(msEnd.vmrss)
+            << " Kb, vmhwm=" << SSTR(msEnd.vmhwm) << " Kb" << END_LOG;
+    LOG_USAGE << "vmsize=" << SSTR(double(msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB)
+            << " Mb, vmpeak=" << SSTR(double(msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB)
+            << " Mb, vmrss=" << SSTR(double(msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB)
+            << " Mb, vmhwm=" << SSTR(double(msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB) << " Mb" << END_LOG;
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
     LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
     LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;

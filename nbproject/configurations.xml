@@ -11,9 +11,9 @@
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
-      <itemPath>inc/FixedMemoryAllocator.hpp</itemPath>
-      <itemPath>inc/FixedMemoryStorage.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
+      <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
+      <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
@@ -99,11 +99,11 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -169,11 +169,11 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -248,11 +248,11 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -316,11 +316,11 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -386,11 +386,11 @@
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/FixedMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/FixedMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>

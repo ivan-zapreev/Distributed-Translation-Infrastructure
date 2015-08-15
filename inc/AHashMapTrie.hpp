@@ -47,7 +47,7 @@
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
-#include "FixedMemoryAllocator.hpp"
+#include "GreedyMemoryAllocator.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
@@ -72,9 +72,6 @@ namespace uva {
                         << "Changing the (prob,back-off) data from ("                                        \
                         << prevProb << "," << prevBackOff << ") to ("                                        \
                         << newProb << "," << newBackOff << ")" << END_LOG;
-
-            //The data type used for data storage elements for the custom allocators
-            typedef uint8_t TStorageData;
 
             //The entry pair to store the N-gram probability and back off
             typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
@@ -103,7 +100,7 @@ namespace uva {
                 /**
                  * The basic class constructor
                  */
-                AHashMapTrie() : pWordIndexStorage(NULL), pWordIndexAlloc(NULL), pWordIndexMap(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+                AHashMapTrie() : pWordIndexAlloc(NULL), pWordIndexMap(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
                 };
 
                 /**
@@ -115,7 +112,7 @@ namespace uva {
                     const size_t numWords = counts[0] + 1; //Add an extra element for the <unknown/> word
                     
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexEntry,TWordIndexAllocator,TStorageData>(&pWordIndexMap,&pWordIndexAlloc,&pWordIndexStorage,numWords,"WordIndex");
+                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexAllocator>(&pWordIndexMap,&pWordIndexAlloc,numWords,"WordIndex");
 
                     //Register the unknown word with the first available hash value
                     TWordHashSize& hash = AHashMapTrie<N>::pWordIndexMap->operator[](UNKNOWN_WORD_STR);
@@ -126,7 +123,7 @@ namespace uva {
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {
-                    deallocate_container<TWordIndexMap, TWordIndexAllocator, TStorageData>(&pWordIndexMap, &pWordIndexAlloc, &pWordIndexStorage);
+                    deallocate_container<TWordIndexMap, TWordIndexAllocator>(&pWordIndexMap, &pWordIndexAlloc);
                 };
 
             protected:
@@ -391,13 +388,10 @@ namespace uva {
                 typedef pair< const string, TWordHashSize> TWordIndexEntry;
 
                 //The typedef for the word index allocator
-                typedef FixedMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
+                typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
                 //The word index map type
                 typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
-
-                //The actual data storage for the word index
-                TStorageData * pWordIndexStorage;
 
                 //This is the pointer to the fixed memory allocator used to allocate the map's memory
                 TWordIndexAllocator * pWordIndexAlloc;

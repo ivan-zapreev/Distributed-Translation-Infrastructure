@@ -7,6 +7,9 @@
  * Visit my GitHub:
  *      <https://github.com/ivan-zapreev>
  *
+ * The origin of this class is taken from:
+ *      <https://github.com/thelazyenginerd/allocator>
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +31,7 @@
 
 #include <typeinfo>  //std::typeid
 
-#include "FixedMemoryStorage.hpp"
+#include "GreedyMemoryStorage.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "Globals.hpp"
@@ -52,25 +55,20 @@ namespace uva {
                  * Note that, this functions is meant to be used with the unordered_map allocator
                  * @param ppContainer the pointer to the container pointer
                  * @param ppAllocator the pointer to the allocator pointer
-                 * @param ppStorage the pointer to the storage pointer
                  */
-                template<typename TContaner, typename TEntry, typename TAllocator, typename TStorageElem >
-                void allocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator, TStorageElem ** ppStorage,
+                template<typename TContaner, typename TAllocator >
+                void allocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator,
                         const size_t numEntries, const string ctName, const float factor) {
                     //Compute the number of bytes needed to store these words
-                    const size_t numBytes = numEntries * sizeof (TEntry) * factor;
+                    const size_t factoredNumElems = numEntries * factor;
+                    
                     LOG_DEBUG << "Computing the required storage for " << ctName
-                            << ", numEntries=" << numEntries << ", sizeof (TEntry)="
-                            << sizeof (TEntry) << ", factor=" << factor
-                            << ", result=" << numBytes << END_LOG;
-
-                    //Allocate the data buffer
-                    LOG_DEBUG << "Allocating the " << ctName << " storage for " << numBytes << " bytes!" << END_LOG;
-                    *ppStorage = new TStorageElem[numBytes];
+                            << ", numEntries=" << numEntries << ", factor=" << factor
+                            << ", result=" << factoredNumElems << END_LOG;
 
                     //Allocate the allocator
-                    LOG_DEBUG << "Allocating the " << ctName << " allocator for " << numBytes << " bytes!" << END_LOG;
-                    *ppAllocator = new TAllocator(*ppStorage, numBytes);
+                    LOG_DEBUG << "Allocating the " << ctName << " allocator for " << factoredNumElems << " elements!" << END_LOG;
+                    *ppAllocator = new TAllocator(factoredNumElems);
 
                     //Allocate the map with the given allocator
                     LOG_DEBUG << "Allocating the " << ctName << " container with the created allocator!" << END_LOG;
@@ -82,13 +80,12 @@ namespace uva {
                  * Note that, this functions is meant to be used with the unordered_map allocator
                  * @param ppContainer the pointer to the container pointer
                  * @param ppAllocator the pointer to the allocator pointer
-                 * @param ppStorage the pointer to the storage pointer
                  */
-                template<typename TContaner, typename TEntry, typename TAllocator, typename TStorageElem >
-                void reserve_mem_unordered_map(TContaner ** ppContainer, TAllocator ** ppAllocator, TStorageElem ** ppStorage,
+                template<typename TContaner, typename TAllocator >
+                void reserve_mem_unordered_map(TContaner ** ppContainer, TAllocator ** ppAllocator,
                         const size_t numEntries, const string ctName, const float factor = UNORDERED_MAP_MEMORY_FACTOR) {
                     //Call the generic allocation function with the appropriate factor
-                    allocate_container<TContaner, TEntry, TAllocator, TStorageElem>(ppContainer, ppAllocator, ppStorage, numEntries, ctName, factor);
+                    allocate_container<TContaner, TAllocator>(ppContainer, ppAllocator, numEntries, ctName, factor);
 
                     //Reserve some memory for the buckets!
                     LOG_DEBUG << "Reserving " << numEntries << " buckets for the " << ctName << "!" << END_LOG;
@@ -101,8 +98,8 @@ namespace uva {
                  * @param ppAllocator the pointer to the allocator pointer
                  * @param ppStorage the pointer to the storage pointer
                  */
-                template<typename TContaner, typename TAllocator, typename TDataStorage >
-                void deallocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator, TDataStorage ** ppStorage) {
+                template<typename TContaner, typename TAllocator >
+                void deallocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator) {
                     //First deallocate the memory of the map
                     if (*ppContainer != NULL) {
                         delete *ppContainer;
@@ -113,11 +110,6 @@ namespace uva {
                         delete *ppAllocator;
                         *ppAllocator = NULL;
                     }
-                    //Third deallocate the actual storage
-                    if (*ppStorage != NULL) {
-                        delete *ppStorage;
-                        *ppStorage = NULL;
-                    }
                 }
 
                 /**
@@ -127,10 +119,10 @@ namespace uva {
                  * changed, we do no do any memory deallocation here!
                  */
                 template <typename T>
-                class FixedMemoryAllocator {
+                class GreedyMemoryAllocator {
                 public:
                     typedef T value_type;
-                    typedef FixedMemoryStorage::size_type size_type;
+                    typedef GreedyMemoryStorage::size_type size_type;
                     typedef std::ptrdiff_t difference_type;
                     typedef T* pointer;
                     typedef const T* const_pointer;
@@ -139,26 +131,27 @@ namespace uva {
 
                     template <typename U>
                     struct rebind {
-                        typedef FixedMemoryAllocator<U> other;
+                        typedef GreedyMemoryAllocator<U> other;
                     };
 
                     /**
                      * The basic constructor.
-                     * @param buffer the buffer: pre-allocated memory to store the data in
-                     * @param buffer_size the size of this memory in bytes.
+                     * @param numElems the number of elements of template type T to pre-allocate memory for.
                      */
-                    FixedMemoryAllocator(void* buffer, size_type buffer_size) throw () :
+                    GreedyMemoryAllocator(size_type numElems) throw () :
                     _manager(_storage),
-                    _storage(buffer, buffer_size) {
-                        LOG_DEBUG3 << this << ": Creating FixedMemoryAllocator with : " << SSTR(buffer_size) << " bytes for " << SSTR(buffer_size / sizeof (T)) << " " << typeid (T).name() << "elements" << END_LOG;
+                    _storage( numElems * sizeof (T) ) {
+                        LOG_DEBUG3 << this << ": Creating FixedMemoryAllocator for "
+                                << SSTR(numElems) << " " << typeid (T).name()
+                                << " elements of size " << SSTR(sizeof (T)) << END_LOG;
                     }
 
                     /**
                      * The basic copy constructor. 
                      */
-                    FixedMemoryAllocator(const FixedMemoryAllocator& other) throw () :
+                    GreedyMemoryAllocator(const GreedyMemoryAllocator& other) throw () :
                     _manager(other.getStorageRef()),
-                    _storage(NULL, 0) {
+                    _storage(0) {
                         LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator copy constructor." << END_LOG;
                     }
 
@@ -168,16 +161,16 @@ namespace uva {
                      * the stored container elements. 
                      */
                     template <typename U>
-                    FixedMemoryAllocator(const FixedMemoryAllocator<U>& other) throw () :
+                    GreedyMemoryAllocator(const GreedyMemoryAllocator<U>& other) throw () :
                     _manager(other.getStorageRef()),
-                    _storage(NULL, 0) {
+                    _storage(0) {
                         LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
 
                     /**
                      * The standard destructor
                      */
-                    virtual ~FixedMemoryAllocator() throw () {
+                    virtual ~GreedyMemoryAllocator() throw () {
                         //Nothing to be done!
                         LOG_DEBUG3 << this << ": " << __FUNCTION__ << END_LOG;
                     }
@@ -237,7 +230,7 @@ namespace uva {
                      * @return the available number of free elements we can store
                      */
                     size_type available() const throw () {
-                        return static_cast<size_type> (_manager.available() / sizeof (T));
+                        return static_cast<size_type> (_manager.getAvailableBytes() / sizeof (T));
                     }
 
                     /**
@@ -245,7 +238,7 @@ namespace uva {
                      * @return the maximum number of elements we can store
                      */
                     size_type max_size() const throw () {
-                        return static_cast<size_type> (_manager.buffer_size() / sizeof (T));
+                        return static_cast<size_type> (_manager.getBufferSizeBytes() / sizeof (T));
                     }
 
                     /**
@@ -267,23 +260,26 @@ namespace uva {
                         ptr->~T();
                     }
 
-                    // \brief gets the buffer_manager
-
-                    FixedMemoryStorage& getStorageRef() const {
+                    /**
+                     * Returns the reference to the buffer manager
+                     * @return the reference to the buffer manager
+                     */
+                    GreedyMemoryStorage& getStorageRef() const {
                         return _manager;
                     }
 
                 protected:
-                    // \brief reference to the buffer manager that is actively being used
-                    FixedMemoryStorage& _manager;
+                    //The reference to the buffer manager that is actively being used
+                    GreedyMemoryStorage& _manager;
 
                 private:
-                    // \brief the space for a buffer_manager object if this object isn't copy-constructed
-                    FixedMemoryStorage _storage;
+                    //The space for a buffer_manager object if this object isn't copy-constructed
+                    GreedyMemoryStorage _storage;
 
-                    // \brief default ctor that doesn't do anything meaningful.  Don't use it.
-
-                    FixedMemoryAllocator() throw () :
+                    /**
+                     * The default constructor
+                     */                    
+                    GreedyMemoryAllocator() throw () :
                     _manager(_storage), _storage(NULL, 0) {
                         throw Exception("The default constructor is not to be used!");
                     }
@@ -293,22 +289,22 @@ namespace uva {
                 // these are a necessary evil cos some STL classes (e.g. std::basic_string uses them)
 
                 template<typename T, typename U>
-                bool operator==(const FixedMemoryAllocator<T>&, const FixedMemoryAllocator<U>&) {
+                bool operator==(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<U>&) {
                     return true;
                 }
 
                 template<typename T>
-                bool operator==(const FixedMemoryAllocator<T>&, const FixedMemoryAllocator<T>&) {
+                bool operator==(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<T>&) {
                     return true;
                 }
 
                 template<typename T, typename U>
-                bool operator!=(const FixedMemoryAllocator<T>&, const FixedMemoryAllocator<U>&) {
+                bool operator!=(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<U>&) {
                     return false;
                 }
 
                 template<typename T>
-                bool operator!=(const FixedMemoryAllocator<T>&, const FixedMemoryAllocator<T>&) {
+                bool operator!=(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<T>&) {
                     return false;
                 }
             }

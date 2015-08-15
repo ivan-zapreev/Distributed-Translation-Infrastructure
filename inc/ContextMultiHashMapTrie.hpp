@@ -125,11 +125,9 @@ namespace uva {
                 //The type of key,value pairs to be stored in the One Grams map
                 typedef pair< const TWordHashSize, TProbBackOffEntryPair> TOneGramEntry;
                 //The typedef for the One Grams map allocator
-                typedef FixedMemoryAllocator< TOneGramEntry > TOneGramAllocator;
+                typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
                 typedef unordered_map<TWordHashSize, TProbBackOffEntryPair, std::hash<TWordHashSize>, std::equal_to<TWordHashSize>, TOneGramAllocator > TOneGramsMap;
-                //The actual data storage for the One Grams
-                TStorageData * pOneGramStorage;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -145,11 +143,9 @@ namespace uva {
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TReferenceHashSize, TLogProbBackOff> TNGramEntry;
                 //The typedef for the N Grams map allocator
-                typedef FixedMemoryAllocator< TNGramEntry > TNGramAllocator;
+                typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
                 //The N Grams map type
                 typedef unordered_map<TReferenceHashSize, TLogProbBackOff, std::hash<TReferenceHashSize>, std::equal_to<TReferenceHashSize>, TNGramAllocator > TNGramsMap;
-                //The actual data storage for the N Grams
-                TStorageData * pNGramStorage;
                 //The actual data storage for the N Grams
                 TNGramAllocator * pNGramAlloc;
                 //The map storing the N-Grams, they do not have back-off values
