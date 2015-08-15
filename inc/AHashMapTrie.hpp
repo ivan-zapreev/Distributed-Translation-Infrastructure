@@ -112,7 +112,7 @@ namespace uva {
                     const size_t numWords = counts[0] + 1; //Add an extra element for the <unknown/> word
                     
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexAllocator>(&pWordIndexMap,&pWordIndexAlloc,numWords,"WordIndex");
+                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexAllocator>(&pWordIndexMap,&pWordIndexAlloc,numWords,"WordIndex", 2.6);
 
                     //Register the unknown word with the first available hash value
                     TWordHashSize& hash = AHashMapTrie<N>::pWordIndexMap->operator[](UNKNOWN_WORD_STR);

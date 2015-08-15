@@ -137,8 +137,16 @@ namespace uva {
                 //I see that there are typically not so many 1-Grams an plenty of 5-grams
                 TOneGramsMap * pOneGramMap;
 
+                //The type of key,value pairs to be stored in the M Grams map
+                typedef pair< const TReferenceHashSize, TProbBackOffEntryPair> TMGramEntry;
+                //The typedef for the M Grams map allocator
+                typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
+                //The N Grams map type
+                typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair, std::hash<TReferenceHashSize>, std::equal_to<TReferenceHashSize>, TMGramAllocator > TMGramsMap;
+                //The actual data storage for the M Grams for 1 < M < N
+                TMGramAllocator * pMGramAlloc[N - MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
-                unordered_map<TReferenceHashSize, TProbBackOffEntryPair> mGrams[N - MGRAM_IDX_OFFSET];
+                TMGramsMap * pMGramMap[N - MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TReferenceHashSize, TLogProbBackOff> TNGramEntry;
