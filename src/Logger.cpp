@@ -192,6 +192,7 @@ namespace uva {
                         
                         //Output the current time
                         cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
+                        cout.flush();
 
                         lastProgressUpdate = currProgressUpdate;
                     }

@@ -52,7 +52,7 @@ namespace uva {
 #define LINE_STRING STRINGIZE(__LINE__)
 
             //Defines the progress bar update period in CPU seconds
-#define PROGRESS_UPDATE_PERIOD 0.1
+#define PROGRESS_UPDATE_PERIOD 0.05
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
