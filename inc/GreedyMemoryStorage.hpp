@@ -29,11 +29,13 @@
 #ifndef FIXEDMEMORYSTORAGE_HPP
 #define	FIXEDMEMORYSTORAGE_HPP
 
-#include "cstdlib"
+#include <vector>       // std::vector
 
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "Globals.hpp"
+
+using namespace std;
 
 using uva::smt::logging::Logger;
 using uva::smt::exceptions::Exception;
@@ -66,7 +68,9 @@ namespace uva {
                         //Allocate the data buffer
                         LOG_DEBUG << "Pre-Allocating " << numBytes << " bytes storage!" << END_LOG;
                         if (_numBytes > 0) {
-                            _pBuffer = malloc(_numBytes * sizeof (TStorageData));
+                            _pBuffer = new TStorageData[_numBytes];
+                            //Register the first allocated memory buffer
+                            _memoryBuffers.push_back(_pBuffer);
                         } else {
                             _pBuffer = NULL;
                         }
@@ -87,9 +91,8 @@ namespace uva {
                      */
                     ~GreedyMemoryStorage() {
                         //Deallocate the actual storage
-                        if (_pBuffer != NULL) {
-                            free(_pBuffer);
-                            _pBuffer = NULL;
+                        for (std::vector<void*>::iterator it = _memoryBuffers.begin(); it != _memoryBuffers.end(); ++it) {
+                            delete [] static_cast<TStorageData*> (*it);
                         }
                     }
 
@@ -116,28 +119,32 @@ namespace uva {
                      */
                     void* allocate(size_type num) {
                         const size_type remains = getAvailableBytes();
-                        
+                        void* ptr = NULL;
+
                         //Check if there is more space needed!
-                        //WARNING: If yes then we can not reallocate as this can move
-                        //the allocated memory and this will screw up many things!
-                        if (remains < num) {
-                            std::__throw_bad_alloc();
+                        if (remains > num) {
+                            //Allocate the requested memory in the buffer
+                            ptr = static_cast<void*> (static_cast<char*> (_pBuffer) + _allocBytes);
+                            _allocBytes += num;
+                        } else {
+                            //WARNING: If we need more space we allocate it additionally in a not so efficient way.
+                            void * ptr = static_cast<void*> (new TStorageData[_numBytes]);
+                            _memoryBuffers.push_back(ptr);
                         }
-                        
-                        //Allocate the requested memory in the buffer
-                        void* cursor = static_cast<void*> (static_cast<char*> (_pBuffer) + _allocBytes);
-                        _allocBytes += num;
-                        return cursor;
+                        return ptr;
                     }
 
                 protected:
-                    // \brief block of memory
+                    //The pre-allocated block of memory
                     void* _pBuffer;
 
-                    // \brief buffer size
-                    size_type _numBytes;
+                    //The additionally allocated memory will be stored here
+                    vector<void*> _memoryBuffers;
 
-                    // \brief the number of bytes allocated
+                    //The pre-allocated buffer size
+                    const size_type _numBytes;
+
+                    //The number of pre-allocated bytes in the preallocated buffer
                     size_type _allocBytes;
                 };
 
