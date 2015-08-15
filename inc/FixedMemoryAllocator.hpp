@@ -41,6 +41,85 @@ namespace uva {
         namespace tries {
             namespace alloc {
 
+                //This is the experimentally obtained memory increase factor for the unordered_map
+                //The whole point is that the unordered map does not only reserve memory for key/value
+                //pairs but it also usses extra memory for other things, this is why we need a factor
+                //for the good initial memory estimate!
+                static const float UNORDERED_MAP_MEMORY_FACTOR = 2.8;
+
+                /**
+                 * This is helper function that allows to allocate the container, allocator and the actual data storage
+                 * Note that, this functions is meant to be used with the unordered_map allocator
+                 * @param ppContainer the pointer to the container pointer
+                 * @param ppAllocator the pointer to the allocator pointer
+                 * @param ppStorage the pointer to the storage pointer
+                 */
+                template<typename TContaner, typename TEntry, typename TAllocator, typename TStorageElem >
+                void allocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator, TStorageElem ** ppStorage,
+                        const size_t numEntries, const string ctName, const float factor) {
+                    //Compute the number of bytes needed to store these words
+                    const size_t numBytes = numEntries * sizeof (TEntry) * factor;
+                    LOG_DEBUG << "Computing the required storage for " << ctName
+                            << ", numEntries=" << numEntries << ", sizeof (TEntry)="
+                            << sizeof (TEntry) << ", factor=" << factor
+                            << ", result=" << numBytes << END_LOG;
+
+                    //Allocate the data buffer
+                    LOG_DEBUG << "Allocating the " << ctName << " storage for " << numBytes << " bytes!" << END_LOG;
+                    *ppStorage = new TStorageElem[numBytes];
+
+                    //Allocate the allocator
+                    LOG_DEBUG << "Allocating the " << ctName << " allocator for " << numBytes << " bytes!" << END_LOG;
+                    *ppAllocator = new TAllocator(*ppStorage, numBytes);
+
+                    //Allocate the map with the given allocator
+                    LOG_DEBUG << "Allocating the " << ctName << " container with the created allocator!" << END_LOG;
+                    *ppContainer = new TContaner(**ppAllocator);
+                }
+
+                /**
+                 * This is helper function that allows to allocate the container, allocator and the actual data storage
+                 * Note that, this functions is meant to be used with the unordered_map allocator
+                 * @param ppContainer the pointer to the container pointer
+                 * @param ppAllocator the pointer to the allocator pointer
+                 * @param ppStorage the pointer to the storage pointer
+                 */
+                template<typename TContaner, typename TEntry, typename TAllocator, typename TStorageElem >
+                void reserve_mem_unordered_map(TContaner ** ppContainer, TAllocator ** ppAllocator, TStorageElem ** ppStorage,
+                        const size_t numEntries, const string ctName, const float factor = UNORDERED_MAP_MEMORY_FACTOR) {
+                    //Call the generic allocation function with the appropriate factor
+                    allocate_container<TContaner, TEntry, TAllocator, TStorageElem>(ppContainer, ppAllocator, ppStorage, numEntries, ctName, factor);
+
+                    //Reserve some memory for the buckets!
+                    LOG_DEBUG << "Reserving " << numEntries << " buckets for the " << ctName << "!" << END_LOG;
+                    (*ppContainer)->reserve(numEntries);
+                }
+
+                /**
+                 * This is helper function that allows to deallocate the container allocator and actual data storage
+                 * @param ppContainer the pointer to the container pointer
+                 * @param ppAllocator the pointer to the allocator pointer
+                 * @param ppStorage the pointer to the storage pointer
+                 */
+                template<typename TContaner, typename TAllocator, typename TDataStorage >
+                void deallocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator, TDataStorage ** ppStorage) {
+                    //First deallocate the memory of the map
+                    if (*ppContainer != NULL) {
+                        delete *ppContainer;
+                        *ppContainer = NULL;
+                    }
+                    //Second deallocate the allocator
+                    if (*ppAllocator != NULL) {
+                        delete *ppAllocator;
+                        *ppAllocator = NULL;
+                    }
+                    //Third deallocate the actual storage
+                    if (*ppStorage != NULL) {
+                        delete *ppStorage;
+                        *ppStorage = NULL;
+                    }
+                }
+
                 /**
                  * This is the fixed memory allocator class for using in the tries.
                  * Here we pre-allocate some fixed size memory and then just give
@@ -71,7 +150,7 @@ namespace uva {
                     FixedMemoryAllocator(void* buffer, size_type buffer_size) throw () :
                     _manager(_storage),
                     _storage(buffer, buffer_size) {
-                        LOG_DEBUG3 << this << ": Creating FixedMemoryAllocator with : " << SSTR(buffer_size) << " bytes for " << SSTR(buffer_size/sizeof(T)) << " " << typeid(T).name() << "elements" << END_LOG;
+                        LOG_DEBUG3 << this << ": Creating FixedMemoryAllocator with : " << SSTR(buffer_size) << " bytes for " << SSTR(buffer_size / sizeof (T)) << " " << typeid (T).name() << "elements" << END_LOG;
                     }
 
                     /**
@@ -92,7 +171,7 @@ namespace uva {
                     FixedMemoryAllocator(const FixedMemoryAllocator<U>& other) throw () :
                     _manager(other.getStorageRef()),
                     _storage(NULL, 0) {
-                        LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid(T).name() << "." << END_LOG;
+                        LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
 
                     /**
@@ -133,11 +212,11 @@ namespace uva {
                         const size_type bytes = num * sizeof (T);
 
                         LOG_DEBUG3 << this << ": Allocating: " << SSTR(num)
-                                << " of " << typeid(T).name() << " elements, of " << SSTR(bytes)
+                                << " of " << typeid (T).name() << " elements, of " << SSTR(bytes)
                                 << " bytes. Available: " << SSTR(available()) << "/" << SSTR(max_size()) << END_LOG;
-                        
+
                         pointer const ptr = static_cast<pointer> (_manager.allocate(bytes));
-                        
+
                         LOG_DEBUG3 << this << ": The pointer to the first allocated object is: " << ptr << END_LOG;
                         return ptr;
                     }
@@ -158,7 +237,7 @@ namespace uva {
                      * @return the available number of free elements we can store
                      */
                     size_type available() const throw () {
-                        return static_cast<size_type> (_manager.available() / sizeof(T) );
+                        return static_cast<size_type> (_manager.available() / sizeof (T));
                     }
 
                     /**

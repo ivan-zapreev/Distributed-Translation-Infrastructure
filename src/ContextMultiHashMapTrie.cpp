@@ -39,11 +39,7 @@ namespace uva {
 
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie() : AHashMapTrie<N>() {
-                //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntryPair & pbData = oGrams[UNKNOWN_WORD_HASH];
-                pbData.first = MINIMAL_LOG_PROB_WEIGHT;
-                pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
-
+                //Perform an error check! This container has a lower bound on the N level.
                 if (N <= BGRAM_LEVEL_VALUE) {
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
@@ -55,27 +51,52 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocate(uint counts[N]) {
-                //Call the super class pre-allocator!
-                AHashMapTrie<N>::preAllocate(counts);
+            void ContextMultiHashMapTrie<N>::preAllocateOGrams(uint counts[N]) {
+                //Compute the number of words to be stored
+                const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
 
-                //Do the local pre-allocations
-                const uint ogramSize = counts[0] + 1; //Add an extra element for the unknown word
-                LOG_DEBUG << "Pre-allocating " << ogramSize << " elements for the " << 1 << "-grams!" << END_LOG;
-                oGrams.reserve(ogramSize);
+                //Reserve the memory for the map
+                reserve_mem_unordered_map<TOneGramsMap, TOneGramEntry, TOneGramAllocator, TStorageData>(&pOneGramMap, &pOneGramAlloc, &pOneGramStorage, numEntries, "1-Grams");
+                
+                //Record the dummy probability and back-off values for the unknown word
+                TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_HASH);
+                pbData.first = MINIMAL_LOG_PROB_WEIGHT;
+                pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
+            }
 
+            template<TModelLevel N>
+            void ContextMultiHashMapTrie<N>::preAllocateMGrams(uint counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Pre-allocate for the N-grams
                     const uint mgramSize = counts[idx];
-                    LOG_DEBUG << "Pre-allocating " << mgramSize << " elements for the " << (idx+1) << "-grams!" << END_LOG;
-                    mGrams[idx-1].reserve(mgramSize);
+                    LOG_DEBUG << "Pre-allocating " << mgramSize << " elements for the " << (idx + 1) << "-grams!" << END_LOG;
+                    mGrams[idx - 1].reserve(mgramSize);
                 }
+            }
 
+            template<TModelLevel N>
+            void ContextMultiHashMapTrie<N>::preAllocateNGrams(uint counts[N]) {
                 //Pre-allocate for the N-grams
-                const uint ngramSize = counts[N - 1];
-                LOG_DEBUG << "Pre-allocating " << ngramSize << " elements for the " << N << "-grams!" << END_LOG;
-                nGrams.reserve(ngramSize);
+                const size_t numEntries = counts[N - 1];
+
+                //Reserve the memory for the map
+                reserve_mem_unordered_map<TNGramsMap, TNGramEntry, TNGramAllocator, TStorageData>(&pNGramMap, &pNGramAlloc, &pNGramStorage, numEntries, "N-Grams");
+            }
+
+            template<TModelLevel N>
+            void ContextMultiHashMapTrie<N>::preAllocate(uint counts[N]) {
+                //Call the super class pre-allocator!
+                AHashMapTrie<N>::preAllocate(counts);
+
+                //Pre-allocate 0-Grams
+                preAllocateOGrams(counts);
+
+                //Pre-allocate M-Grams
+                preAllocateMGrams(counts);
+
+                //Pre-allocate N-Grams
+                preAllocateNGrams(counts);
             }
 
             template<TModelLevel N>
@@ -88,7 +109,7 @@ namespace uva {
                 //Compute it's hash value
                 TWordHashSize wordHash = AHashMapTrie<N>::createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
-                TProbBackOffEntryPair & pbData = oGrams[wordHash];
+                TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
                 //Do a temporary check for hash collisions
                 AHashMapTrie<N>::recordAndCheck(wordHash, UNDEFINED_WORD_HASH, oGram);
@@ -181,7 +202,7 @@ namespace uva {
                 //Data stores the N-tires from length 2 on, therefore "idx-1"
                 //Get/Create the mapping for this word in the Trie level of the N-gram
                 TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
-                TLogProbBackOff& pData = nGrams[keyContext];
+                TLogProbBackOff& pData = pNGramMap->operator[](keyContext);
 
                 //Do a temporary check for hash collisions
                 AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, nGram);
@@ -239,7 +260,7 @@ namespace uva {
 
                     //Attempt to retrieve back-off weights
                     try {
-                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
+                        TProbBackOffEntryPair & pbData = pOneGramMap->at(endWordHash);
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
                         back_off = pbData.second;
 
@@ -277,7 +298,7 @@ namespace uva {
                         TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(endWordHash, contextHash);
                         if (contextLength == (N - 1)) {
                             //If we are looking for a N-Gram probability
-                            TLogProbBackOff & prob = nGrams.at(keyContext);
+                            TLogProbBackOff & prob = pNGramMap->at(keyContext);
 
                             LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                     << "( prob. ) for (word,context) = (" << endWordHash << ", "
@@ -322,7 +343,7 @@ namespace uva {
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
                     try {
-                        TProbBackOffEntryPair & pbData = oGrams.at(endWordHash);
+                        TProbBackOffEntryPair & pbData = pOneGramMap->at(endWordHash);
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << endWordHash
@@ -366,6 +387,10 @@ namespace uva {
 
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
+                //Deallocate One-Grams
+                deallocate_container<TOneGramsMap, TOneGramAllocator, TStorageData>(&pOneGramMap, &pOneGramAlloc, &pOneGramStorage);
+                //Deallocate N-Grams
+                deallocate_container<TNGramsMap, TNGramAllocator, TStorageData>(&pNGramMap, &pNGramAlloc, &pNGramStorage);
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

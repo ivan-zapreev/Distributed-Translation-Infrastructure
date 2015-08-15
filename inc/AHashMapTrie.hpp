@@ -67,21 +67,15 @@ namespace uva {
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
             LOG_WARNING << "The " << tokens.size() << "-Gram : '" << ngramToString(tokens)                   \
-                        << "' has been already seen! "  << "wordHash: " << wordHash                          \
-                        << ", contextHash: " << contextHash << ". "                                          \
+                        << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                    \
+                        << ", contextHash: " << SSTR(contextHash) << ". "                                    \
                         << "Changing the (prob,back-off) data from ("                                        \
                         << prevProb << "," << prevBackOff << ") to ("                                        \
                         << newProb << "," << newBackOff << ")" << END_LOG;
-            
-            //The type of key,value pairs to be stored in the word index
-            typedef pair< const string, TWordHashSize> TWordIndexEntry;
-            
-            //The typedef for the word index allocator
-            typedef FixedMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
-            //The word index map type
-            typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndex;
-            
+            //The data type used for data storage elements for the custom allocators
+            typedef uint8_t TStorageData;
+
             //The entry pair to store the N-gram probability and back off
             typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
 
@@ -109,7 +103,7 @@ namespace uva {
                 /**
                  * The basic class constructor
                  */
-                AHashMapTrie() : pDataStorage(NULL), pMemAlloc(NULL), pWordIndex(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+                AHashMapTrie() : pWordIndexStorage(NULL), pWordIndexAlloc(NULL), pWordIndexMap(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
                 };
 
                 /**
@@ -118,27 +112,13 @@ namespace uva {
                  */
                 virtual void preAllocate(uint counts[N]) {
                     //Compute the number of words to be stored
-                    const size_t numWords = counts[0]+1; //Add an extra element for the unknown word
-                    //Compute the number of bytes needed to store these words
-                    const size_t numBytes = numWords * sizeof(TWordIndexEntry) * 2.6;
+                    const size_t numWords = counts[0] + 1; //Add an extra element for the <unknown/> word
                     
-                    //Allocate the data buffer
-                    pDataStorage = new uint8_t[numBytes];
-                    
-                    //Allocate the map allocator
-                    LOG_DEBUG << "Allocating the TWordIndexAllocator for " << numBytes << " bytes!" << END_LOG;
-                    pMemAlloc = new TWordIndexAllocator(pDataStorage, numBytes  );
-                    
-                    //Allocate the map with the given allocator
-                    LOG_DEBUG << "Allocating the TWordIndex with the created allocator!" << END_LOG;
-                    pWordIndex = new TWordIndex(*pMemAlloc);
-                    
-                    //Reserve some memory for the buckets!
-                    LOG_DEBUG << "Reserving " << numWords << " buckets for the word index!" << END_LOG;
-                    pWordIndex->reserve(numWords);
+                    //Reserve the memory for the map
+                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexEntry,TWordIndexAllocator,TStorageData>(&pWordIndexMap,&pWordIndexAlloc,&pWordIndexStorage,numWords,"WordIndex");
 
                     //Register the unknown word with the first available hash value
-                    TWordHashSize& hash = AHashMapTrie<N>::pWordIndex->operator[](UNKNOWN_WORD_STR);
+                    TWordHashSize& hash = AHashMapTrie<N>::pWordIndexMap->operator[](UNKNOWN_WORD_STR);
                     hash = UNKNOWN_WORD_HASH;
                 }
 
@@ -146,21 +126,7 @@ namespace uva {
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {
-                    //First deallocate the memory of the map
-                    if( pWordIndex != NULL ) {
-                        delete pWordIndex;
-                        pWordIndex = NULL;
-                    }
-                    //Second deallocate the allocator
-                    if( pMemAlloc != NULL ) {
-                        delete pMemAlloc;
-                        pMemAlloc = NULL;
-                    }
-                    //THird deallocate the actual storage
-                    if( pDataStorage != NULL ) {
-                        delete pDataStorage;
-                        pDataStorage = NULL;
-                    }
+                    deallocate_container<TWordIndexMap, TWordIndexAllocator, TStorageData>(&pWordIndexMap, &pWordIndexAlloc, &pWordIndexStorage);
                 };
 
             protected:
@@ -198,10 +164,10 @@ namespace uva {
                 inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
-                    LOG_DEBUG1 << "Computing hashes for the words of a " << tokens.size() << "-gram:" << END_LOG;
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
                         wordHashes[idx] = getUniqueIdHash(*it);
-                        LOG_DEBUG1 << "hash('" << *it << "') = " << wordHashes[idx] << END_LOG;
+                        LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
                 }
@@ -243,25 +209,25 @@ namespace uva {
                     const TModelLevel bIdx = mGramEndIdx - contextLength;
                     TModelLevel idx = bIdx;
 
-                    LOG_DEBUG3 << "Computing context hash for context length " << contextLength
+                    LOG_DEBUG3 << "Computing context hash for context length " << SSTR(contextLength)
                             << " for a  " << (isBackOff ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
                     TReferenceHashSize contextHash = mGramWordHashes[idx];
-                    LOG_DEBUG3 << "Word: " << idx << " hash == initial context hash: " << contextHash << END_LOG;
+                    LOG_DEBUG3 << "Word: " << SSTR(idx) << " hash == initial context hash: " << SSTR(contextHash) << END_LOG;
                     idx++;
 
                     //Compute the subsequent hashes
                     for (; idx < eIdx;) {
                         contextHash = createContext(mGramWordHashes[idx], contextHash);
-                        LOG_DEBUG3 << "Idx: " << idx << ", createContext(" << mGramWordHashes[idx] << ", prevContextHash) = " << contextHash << END_LOG;
+                        LOG_DEBUG3 << "Idx: " << SSTR(idx) << ", createContext(" << SSTR(mGramWordHashes[idx]) << ", prevContextHash) = " << SSTR(contextHash) << END_LOG;
                         idx++;
                     }
 
-                    LOG_DEBUG3 << "Resulting context hash for context length " << contextLength
+                    LOG_DEBUG3 << "Resulting context hash for context length " << SSTR(contextLength)
                             << " of a  " << (isBackOff ? "back-off" : "probability")
-                            << " computation is: " << contextHash << END_LOG;
+                            << " computation is: " << SSTR(contextHash) << END_LOG;
 
                     return contextHash;
                 }
@@ -284,14 +250,14 @@ namespace uva {
 
                         contextHash = getUniqueIdHash(*it);
 
-                        LOGGER(logLevel) << "contextHash = computeHash('" << *it << "') = " << contextHash << END_LOG;
+                        LOGGER(logLevel) << "contextHash = computeHash('" << *it << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (++it; it < end; ++it) {
                             TWordHashSize wordHash = getUniqueIdHash(*it);
-                            LOGGER(logLevel) << "wordHash = computeHash('" << *it << "') = " << wordHash << END_LOG;
+                            LOGGER(logLevel) << "wordHash = computeHash('" << *it << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
-                            LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << contextHash << END_LOG;
+                            LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
                         }
                     }
 
@@ -306,11 +272,11 @@ namespace uva {
                  */
                 inline TWordHashSize getUniqueIdHash(const string & str) {
                     try {
-                        return pWordIndex->at(str);
+                        return pWordIndexMap->at(str);
                     } catch (out_of_range e) {
                         LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
                                 << UNKNOWN_WORD_STR << "', hash: "
-                                << UNKNOWN_WORD_HASH << END_LOG;
+                                << SSTR(UNKNOWN_WORD_HASH) << END_LOG;
                     }
                     return UNKNOWN_WORD_HASH;
                 }
@@ -323,12 +289,12 @@ namespace uva {
                  */
                 inline TWordHashSize createUniqueIdHash(const string & str) {
                     //First get/create an existing/new word entry from from/in the word index
-                    TWordHashSize& hash = pWordIndex->operator[](str);
+                    TWordHashSize& hash = pWordIndexMap->operator[](str);
 
                     if (hash == UNDEFINED_WORD_HASH) {
                         //If the word hash is not defined yet, then issue it a new hash id
                         hash = nextNewWordHash;
-                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << hash << END_LOG;
+                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
                         nextNewWordHash++;
                     }
 
@@ -388,15 +354,15 @@ namespace uva {
                             const TModelLevel size = entry.size();
                             if (size == gram.tokens.size()) {
                                 LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
-                                        << ngramToString(gram.tokens) << "'! wordHash= " << wordHash
-                                        << ", contextHash= " << contextHash << END_LOG;
+                                        << ngramToString(gram.tokens) << "'! wordHash= " << SSTR(wordHash)
+                                        << ", contextHash= " << SSTR(contextHash) << END_LOG;
 
                                 TWordHashSize old[N], fresh[N];
                                 AHashMapTrie<N>::tokensToHashes(entry, old);
                                 AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
                                 for (int i = 0; i < size; i++) {
-                                    LOG_INFO << i << ") wordHash('" << entry[i] << "') = " << old[N - size + i] << END_LOG;
-                                    LOG_INFO << i << ") wordHash('" << gram.tokens[i] << "') = " << fresh[N - size + i] << END_LOG;
+                                    LOG_INFO << SSTR(i) << ") wordHash('" << SSTR(entry[i]) << "') = " << SSTR(old[N - size + i]) << END_LOG;
+                                    LOG_INFO << SSTR(i) << ") wordHash('" << SSTR(gram.tokens[i]) << "') = " << SSTR(fresh[N - size + i]) << END_LOG;
                                 }
                                 LOG_INFO << "-- First context computation: " << END_LOG;
                                 AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
@@ -420,14 +386,24 @@ namespace uva {
 #endif
 
             private:
+
+                //The type of key,value pairs to be stored in the word index
+                typedef pair< const string, TWordHashSize> TWordIndexEntry;
+
+                //The typedef for the word index allocator
+                typedef FixedMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
+
+                //The word index map type
+                typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+
                 //The actual data storage for the word index
-                uint8_t * pDataStorage;
-                
+                TStorageData * pWordIndexStorage;
+
                 //This is the pointer to the fixed memory allocator used to allocate the map's memory
-                TWordIndexAllocator * pMemAlloc;
+                TWordIndexAllocator * pWordIndexAlloc;
 
                 //This map stores the word index, i.e. assigns each unique word a unique id
-                TWordIndex * pWordIndex;
+                TWordIndexMap * pWordIndexMap;
 
                 //The temporary data structure to store the N-gram query word hashes
                 TWordHashSize mGramWordHashes[N];

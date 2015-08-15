@@ -121,18 +121,39 @@ namespace uva {
                 virtual ~ContextMultiHashMapTrie();
 
             private:
+
+                //The type of key,value pairs to be stored in the One Grams map
+                typedef pair< const TWordHashSize, TProbBackOffEntryPair> TOneGramEntry;
+                //The typedef for the One Grams map allocator
+                typedef FixedMemoryAllocator< TOneGramEntry > TOneGramAllocator;
+                //The One Grams map type
+                typedef unordered_map<TWordHashSize, TProbBackOffEntryPair, std::hash<TWordHashSize>, std::equal_to<TWordHashSize>, TOneGramAllocator > TOneGramsMap;
+                //The actual data storage for the One Grams
+                TStorageData * pOneGramStorage;
+                //The actual data storage for the One Grams
+                TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
                 //NOTE: Using an array here in place of an unordered hash map gave 
                 //some 25 Mb reduction on a 20 Gb model ... this is negligible. As
                 //the memory statistics is not accurate that could just be noise! Also,
                 //I see that there are typically not so many 1-Grams an plenty of 5-grams
-                unordered_map<TWordHashSize, TProbBackOffEntryPair> oGrams;
+                TOneGramsMap * pOneGramMap;
 
                 //The array of maps map storing M-grams for 1 < M < N
                 unordered_map<TReferenceHashSize, TProbBackOffEntryPair> mGrams[N - MGRAM_IDX_OFFSET];
 
+                //The type of key,value pairs to be stored in the N Grams map
+                typedef pair< const TReferenceHashSize, TLogProbBackOff> TNGramEntry;
+                //The typedef for the N Grams map allocator
+                typedef FixedMemoryAllocator< TNGramEntry > TNGramAllocator;
+                //The N Grams map type
+                typedef unordered_map<TReferenceHashSize, TLogProbBackOff, std::hash<TReferenceHashSize>, std::equal_to<TReferenceHashSize>, TNGramAllocator > TNGramsMap;
+                //The actual data storage for the N Grams
+                TStorageData * pNGramStorage;
+                //The actual data storage for the N Grams
+                TNGramAllocator * pNGramAlloc;
                 //The map storing the N-Grams, they do not have back-off values
-                unordered_map<TReferenceHashSize, TLogProbBackOff> nGrams;
+                TNGramsMap * pNGramMap;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -158,6 +179,28 @@ namespace uva {
                  * @return the resulting back-off weight probability
                  */
                 TLogProbBackOff getBackOffWeight(const TModelLevel contextLength);
+
+                /**
+                 * This method must used to provide the N-gram count information
+                 * That should allow for pre-allocation of the memory
+                 * @param counts the counts for the number of elements of each gram level
+                 */
+                void preAllocateOGrams(uint counts[N]);
+
+                /**
+                 * This method must used to provide the N-gram count information
+                 * That should allow for pre-allocation of the memory
+                 * @param counts the counts for the number of elements of each gram level
+                 */
+                void preAllocateMGrams(uint counts[N]);
+
+                /**
+                 * This method must used to provide the N-gram count information
+                 * That should allow for pre-allocation of the memory
+                 * @param counts the counts for the number of elements of each gram level
+                 */
+                void preAllocateNGrams(uint counts[N]);
+
             };
 
             typedef ContextMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;
