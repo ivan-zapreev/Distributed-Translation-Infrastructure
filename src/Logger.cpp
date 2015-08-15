@@ -125,7 +125,7 @@ namespace uva {
                 const uint minute = (((uint) timeSec) % 3600) / 60;
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600 )* 100))/100);
-                string result = SSTR( hour ) + " hour(s) " + SSTR( minute ) + " minute(s) " + SSTR( second ) + " second(s) ";
+                string result = string(_debugLevelStr[USAGE]) + ":\tLoading time: " + SSTR( hour ) + " hour(s) " + SSTR( minute ) + " minute(s) " + SSTR( second ) + " second(s) ";
                 timeStrLen = result.size();
                 return result;
             }
@@ -137,39 +137,6 @@ namespace uva {
                 }
                 return result;
             }
-
-#if 0
-
-            void Logger::startProgressBar() {
-                if (currLEvel <= INFO && !isPBOn) {
-                    currProgCharIdx = 0;
-                    cout << progressChars[currProgCharIdx];
-                    lastProgressUpdate = StatisticsMonitor::getCPUTime();
-                    isPBOn = true;
-                }
-            }
-
-            void Logger::updateProgressBar() {
-                if (currLEvel <= INFO && isPBOn) {
-                    const double currProgressUpdate = StatisticsMonitor::getCPUTime();
-                    if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
-                        currProgCharIdx = (currProgCharIdx + 1) % numProgChars;
-                        cout << progressChars[progressChars.size() - 1] << progressChars[currProgCharIdx];
-                        cout.flush();
-                        lastProgressUpdate = currProgressUpdate;
-                    }
-                }
-            }
-
-            void Logger::stopProgressBar() {
-                if (currLEvel <= INFO && isPBOn) {
-                    currProgCharIdx = 0;
-                    lastProgressUpdate = 0.0;
-                    cout << progressChars[numProgChars];
-                    isPBOn = false;
-                }
-            }
-#else
 
             void Logger::startProgressBar() {
                 if (currLEvel <= INFO && !isPBOn) {
@@ -211,7 +178,6 @@ namespace uva {
                     isPBOn = false;
                 }
             }
-#endif
         }
     }
 }
