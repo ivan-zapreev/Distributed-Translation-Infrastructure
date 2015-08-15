@@ -198,14 +198,7 @@ namespace uva {
                                         if (pNGBuilder->processString(line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
-
-                                            //First log the actual amount of read N-grams
-                                            const bool wasPBOn = Logger::isProgressBarOn();
-                                            Logger::stopProgressBar();
-                                            LOG_INFO << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
-                                            if (wasPBOn) {
-                                                Logger::startProgressBar();
-                                            }
+                                            LOG_DEBUG << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
 
                                             //Now stop reading this level N-grams and move on
                                             break;
@@ -283,9 +276,6 @@ namespace uva {
                 void ARPATrieBuilder<N>::build() {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
-                    //Do the progress bard indicator
-                    Logger::startProgressBar();
-
                     try {
                         //This is the variable that will store the last read line of ARPA file
                         string line = "";
@@ -305,16 +295,19 @@ namespace uva {
                         //Provide the N-Gram counts data to the Trie
                         _trie.preAllocate(counts);
 
+                        //Do the progress bard indicator
+                        Logger::startProgressBar();
+
                         //Read the N-grams
                         readNGrams(line, 1);
+
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
                     } catch (...) {
                         //Stop the progress bar in case of an exception
                         Logger::stopProgressBar();
                         throw;
                     }
-
-                    //Stop the progress bar in case of no exception
-                    Logger::stopProgressBar();
 
                     LOG_DEBUG << "Done reading the file and building the trie." << END_LOG;
                 }

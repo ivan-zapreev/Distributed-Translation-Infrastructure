@@ -38,7 +38,7 @@ namespace uva {
         namespace logging {
             Logger::DebugLevel Logger::currLEvel = Logger::RESULT;
 
-            #define NUM_DEBUG_FLAGS 9
+            const uint NUM_DEBUG_FLAGS = 9;
             const char * Logger::_debugLevelStr[NUM_DEBUG_FLAGS] = {USAGE_PARAM_VALUE,
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE,
@@ -59,19 +59,23 @@ namespace uva {
             //The progress bar is not running first
             bool Logger::isPBOn = false;
 
-            
-            string Logger::getReportingLevels(){
+            //Initialize the progress bar begin time
+            clock_t Logger::beginTime = 0;
+            //Initialize the previous output time string length
+            size_t Logger::timeStrLen = 0;
+
+            string Logger::getReportingLevels() {
                 string result = "{ ";
-                
-                for(int idx = 0; idx < NUM_DEBUG_FLAGS; idx++) {
+
+                for (uint idx = 0; idx < NUM_DEBUG_FLAGS; idx++) {
                     string level = _debugLevelStr[idx];
                     transform(level.begin(), level.end(), level.begin(), ::toupper);
                     result += level + ", ";
                 }
-                
+
                 return result + " }";
             }
-            
+
             void Logger::setReportingLevel(string level) {
                 bool isGoodLevel = true;
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
@@ -116,6 +120,26 @@ namespace uva {
                 }
             }
 
+            string Logger::computeTimeString(const clock_t elapsedClockTime, size_t & timeStrLen) {
+                const float timeSec = ( ((float) elapsedClockTime) / CLOCKS_PER_SEC );
+                const uint minute = (uint) timeSec % 60;
+                const uint hour = (uint) timeSec / 3600;
+                const float second = ((float)((uint) ((timeSec - minute * 60 - hour * 3600 )* 100)))/100;
+                string result = SSTR( hour ) + " hour(s) " + SSTR( minute ) + " minute(s) " + SSTR( second ) + " second(s) ";
+                timeStrLen = result.size();
+                return result;
+            }
+
+            string Logger::computeTimeClearString(const size_t length) {
+                string result = "";
+                for(size_t i = 0 ; i < length ; i++) {
+                    result += "\r";
+                }
+                return result;
+            }
+
+#if 0
+
             void Logger::startProgressBar() {
                 if (currLEvel <= INFO && !isPBOn) {
                     currProgCharIdx = 0;
@@ -145,7 +169,48 @@ namespace uva {
                     isPBOn = false;
                 }
             }
+#else
 
+            void Logger::startProgressBar() {
+                if (currLEvel <= INFO && !isPBOn) {
+                    //Output the time string
+                    cout << computeTimeString(beginTime, timeStrLen);
+
+                    //Store the current time
+                    beginTime = clock();
+
+                    //Update the cpu time and set the progress bar on flag
+                    lastProgressUpdate = StatisticsMonitor::getCPUTime();
+                    isPBOn = true;
+                }
+            }
+
+            void Logger::updateProgressBar() {
+                if (currLEvel <= INFO && isPBOn) {
+                    const double currProgressUpdate = StatisticsMonitor::getCPUTime();
+                    if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
+                        
+                        //Output the current time
+                        cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
+
+                        lastProgressUpdate = currProgressUpdate;
+                    }
+                }
+            }
+
+            void Logger::stopProgressBar() {
+                if (currLEvel <= INFO && isPBOn) {
+                    //Clear the progress
+                    cout << computeTimeClearString(timeStrLen) << "\n";
+
+                    //Reset class variables
+                    beginTime = 0;
+                    timeStrLen = 0;
+                    lastProgressUpdate = 0.0;
+                    isPBOn = false;
+                }
+            }
+#endif
         }
     }
 }

@@ -40,7 +40,7 @@ namespace uva {
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie() : AHashMapTrie<N>() {
                 //Perform an error check! This container has a lower bound on the N level.
-                if (N <= BGRAM_LEVEL_VALUE) {
+                if (N < BGRAM_LEVEL_VALUE) {
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
                             << "', but for '" << __FILE__ << "' it must be >= " << BGRAM_LEVEL_VALUE << "!";

@@ -32,6 +32,7 @@
 #include <iostream>  // std::cout
 #include <sstream>   // std::stringstream
 #include <vector>    // std::vector
+#include <time.h>    // std::clock std::clock_t
 
 #include "Exceptions.hpp"
 
@@ -186,6 +187,11 @@ namespace uva {
 
                 //Stores the flag indicating if the progress bar is running or not
                 static bool isPBOn;
+                
+                //Stores the progress begin time
+                static clock_t beginTime;
+                //Stores the length of the previously output time
+                static size_t timeStrLen;
 
                 Logger() {
                 };
@@ -196,6 +202,21 @@ namespace uva {
                 Logger& operator=(const Logger&) {
                     return *this;
                 };
+                
+                /**
+                 * Allow to compute the elapsed clock time string based on the given elapsed clock time
+                 * @param elapsedClockTime the elapsed clock time
+                 * @param timeStrLen the output parameter - the number of characters in the clock time string
+                 * @return the clock time string
+                 */
+                static string computeTimeString(const clock_t elapsedClockTime, size_t & timeStrLen);
+                
+                /**
+                 * Allows to compute the clear string with the given length
+                 * @param length the length of the string to clear
+                 * @return the clearing string
+                 */
+                static string computeTimeClearString(const size_t length);
 
                 //Stores the current used message level
                 static DebugLevel currLEvel;
