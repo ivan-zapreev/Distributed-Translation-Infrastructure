@@ -48,7 +48,7 @@ namespace uva {
                 //The whole point is that the unordered map does not only reserve memory for key/value
                 //pairs but it also usses extra memory for other things, this is why we need a factor
                 //for the good initial memory estimate!
-                static const float UNORDERED_MAP_MEMORY_FACTOR = 2.5;
+                static const float UNORDERED_MAP_MEMORY_FACTOR = 2.0;
 
                 /**
                  * This is helper function that allows to allocate the container, allocator and the actual data storage
