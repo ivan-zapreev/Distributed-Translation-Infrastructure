@@ -81,16 +81,44 @@ namespace uva {
                 static const TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 /**
-                 * The basic class constructor
+                 * The basic class constructor, accepts memory factors that are the
+                 * coefficients used when pre-allocating memory for unordered maps.
+                 * 
+                 * If a factor is equal to 0.0 then no memory is pre-allocated.
+                 * If the factor is equal to 1.0 then there is only as much preallocated
+                 * as needed to store the gram entries. The latter is typically not enough
+                 * as unordered_map needs more memory for internal administration.
+                 * If there is not enough memory pre-allocated then additional allocations
+                 * will take place but it does not alway lead to more efficient memory
+                 * usage. The observed behavior is that it is better to pre-allocate
+                 * a bit more memory beforehand, than needed. This leads to less
+                 * memory consumption. Depending on the type of unordered_map
+                 * key/value pair types the advised factor values are from 2.0 to 2.6.
+                 * Because it can not be optimally determined beforehand, these are made
+                 * constructor parameters so that they can be configured by the used.
+                 * This breaks encapsulation a bit, exposing the internals, but
+                 * there is no other better way, for fine tuning the memory usage.
+                 * 
+                 * @param  wordIndexMemFactor the assigned memory factor for
+                 * storage allocation in the unordered_map used for the word index
+                 * @param  oGramMemFactor The One-Gram memory factor needed for
+                 * the greedy allocator for the unordered_map
+                 * @param  mGramMemFactor The M-Gram memory factor needed for
+                 * the greedy allocator for the unordered_map
+                 * @param  nGramMemFactor The N-Gram memory factor needed for
+                 * the greedy allocator for the unordered_map
                  */
-                ContextMultiHashMapTrie();
+                explicit ContextMultiHashMapTrie(const float _wordIndexMemFactor,
+                        const float _oGramMemFactor,
+                        const float _mGramMemFactor,
+                        const float _nGramMemFactor);
 
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ITrie
                  */
-                virtual void preAllocate(uint counts[N]);
+                virtual void preAllocate(const size_t counts[N]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
@@ -121,6 +149,12 @@ namespace uva {
                 virtual ~ContextMultiHashMapTrie();
 
             private:
+                //The One-Gram memory factor needed for the greedy allocator for the unordered_map
+                const float oGramMemFactor;
+                //The M-Gram memory factor needed for the greedy allocator for the unordered_map
+                const float mGramMemFactor;
+                //The N-Gram memory factor needed for the greedy allocator for the unordered_map
+                const float nGramMemFactor;
 
                 //The type of key,value pairs to be stored in the One Grams map
                 typedef pair< const TWordHashSize, TProbBackOffEntryPair> TOneGramEntry;
@@ -163,7 +197,10 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig);
+                ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig)
+                : AHashMapTrie<N>(0.0), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
+                    throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
+                };
 
                 /**
                  * This recursive function implements the computation of the
@@ -189,21 +226,21 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateOGrams(uint counts[N]);
+                void preAllocateOGrams(const size_t counts[N]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateMGrams(uint counts[N]);
+                void preAllocateMGrams(const size_t counts[N]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateNGrams(uint counts[N]);
+                void preAllocateNGrams(const size_t counts[N]);
 
             };
 

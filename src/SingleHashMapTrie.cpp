@@ -38,7 +38,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            SingleHashMapTrie<N>::SingleHashMapTrie() : AHashMapTrie<N>() {
+            SingleHashMapTrie<N>::SingleHashMapTrie(const float wordIndexMemFactor) : AHashMapTrie<N>(wordIndexMemFactor) {
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntryPair & pbData = ngRecorder[0][UNKNOWN_WORD_HASH][UNDEFINED_WORD_HASH];
                 pbData.first = MINIMAL_LOG_PROB_WEIGHT;
@@ -48,7 +48,9 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void SingleHashMapTrie<N>::preAllocate(uint counts[N]) {
+            void SingleHashMapTrie<N>::preAllocate(const size_t counts[N]) {
+                AHashMapTrie<N>::preAllocate(counts);
+                
                 //ToDo: Implement this method once we know what are the
                 //approximate % values for the number of N-Grams ending
                 //with the same word for each specific N.
@@ -184,14 +186,6 @@ namespace uva {
                     msg << "An improper N-Gram size, got " << mGramLength << ", must be between [1, " << N << "]!";
                     throw Exception(msg.str());
                 }
-            }
-
-            template<TModelLevel N>
-            SingleHashMapTrie<N>::SingleHashMapTrie(const SingleHashMapTrie& orig) {
-            }
-
-            template<TModelLevel N>
-            SingleHashMapTrie<N>::~SingleHashMapTrie() {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

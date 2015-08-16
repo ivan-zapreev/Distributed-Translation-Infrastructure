@@ -38,7 +38,14 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie() : AHashMapTrie<N>() {
+            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie(const float _wordIndexMemFactor,
+                    const float _oGramMemFactor,
+                    const float _mGramMemFactor,
+                    const float _nGramMemFactor)
+            : AHashMapTrie<N>(_wordIndexMemFactor), 
+            oGramMemFactor(_oGramMemFactor),
+            mGramMemFactor(_mGramMemFactor),
+            nGramMemFactor(_nGramMemFactor) {
                 //Perform an error check! This container has a lower bound on the N level.
                 if (N < BGRAM_LEVEL_VALUE) {
                     stringstream msg;
@@ -51,12 +58,12 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateOGrams(uint counts[N]) {
+            void ContextMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
                 const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams", 2.6);
+                reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams", oGramMemFactor);
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_HASH);
@@ -65,28 +72,28 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateMGrams(uint counts[N]) {
+            void ContextMultiHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
                     const uint numEntries = counts[idx];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", 2.0);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", mGramMemFactor);
                 }
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateNGrams(uint counts[N]) {
+            void ContextMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
                 const size_t numEntries = counts[N - 1];
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", 2.5);
+                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", nGramMemFactor);
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocate(uint counts[N]) {
+            void ContextMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
                 AHashMapTrie<N>::preAllocate(counts);
 
@@ -383,19 +390,15 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig) {
-            }
-
-            template<TModelLevel N>
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
                 //Deallocate One-Grams
                 deallocate_container<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc);
-                
+
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
                 for (int idx = 0; idx < (N - 2); idx++) {
                     deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
                 }
-                
+
                 //Deallocate N-Grams
                 deallocate_container<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc);
             }

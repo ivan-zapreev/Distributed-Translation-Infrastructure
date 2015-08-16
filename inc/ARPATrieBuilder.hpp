@@ -89,7 +89,7 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void readData(string &line, uint counts[N]);
+                    void readData(string &line, size_t counts[N]);
 
                     /**
                      * This recursive method is used to read and process the ARPA N-Grams.

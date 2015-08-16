@@ -98,24 +98,44 @@ namespace uva {
             public:
 
                 /**
-                 * The basic class constructor
+                 * The basic class constructor, accepts memory factor(s) that are the
+                 * coefficients used when pre-allocating memory for unordered maps.
+                 * 
+                 * If a factor is equal to 0.0 then no memory is pre-allocated.
+                 * If the factor is equal to 1.0 then there is only as much preallocated
+                 * as needed to store the gram entries. The latter is typically not enough
+                 * as unordered_map needs more memory for internal administration.
+                 * If there is not enough memory pre-allocated then additional allocations
+                 * will take place but it does not alway lead to more efficient memory
+                 * usage. The observed behavior is that it is better to pre-allocate
+                 * a bit more memory beforehand, than needed. This leads to less
+                 * memory consumption. Depending on the type of unordered_map
+                 * key/value pair types the advised factor values are from 2.0 to 2.6.
+                 * Because it can not be optimally determined beforehand, these are made
+                 * constructor parameters so that they can be configured by the used.
+                 * This breaks encapsulation a bit, exposing the internals, but
+                 * there is no other better way, for fine tuning the memory usage.
+                 * 
+                 * @param  wordIndexMemFactor the assigned memory factor for
+                 * storage allocation in the unordered_map used for the word index
                  */
-                AHashMapTrie() : pWordIndexAlloc(NULL), pWordIndexMap(NULL), nextNewWordHash(MIN_KNOWN_WORD_HASH) {
+                explicit AHashMapTrie(const float wordIndexMemFactor)
+                : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(wordIndexMemFactor) {
                 };
 
                 /**
                  * The defaul implementation that pre-allocates the wordIndex
                  * @param counts the number of ngrams
                  */
-                virtual void preAllocate(uint counts[N]) {
+                virtual void preAllocate(const size_t counts[N]) {
                     //Compute the number of words to be stored
                     const size_t numWords = counts[0] + 1; //Add an extra element for the <unknown/> word
-                    
+
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TWordIndexMap,TWordIndexAllocator>(&pWordIndexMap,&pWordIndexAlloc,numWords,"WordIndex", 2.6);
+                    reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc, numWords, "WordIndex", _wordIndexMemFactor);
 
                     //Register the unknown word with the first available hash value
-                    TWordHashSize& hash = AHashMapTrie<N>::pWordIndexMap->operator[](UNKNOWN_WORD_STR);
+                    TWordHashSize& hash = AHashMapTrie<N>::_pWordIndexMap->operator[](UNKNOWN_WORD_STR);
                     hash = UNKNOWN_WORD_HASH;
                 }
 
@@ -123,7 +143,7 @@ namespace uva {
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {
-                    deallocate_container<TWordIndexMap, TWordIndexAllocator>(&pWordIndexMap, &pWordIndexAlloc);
+                    deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                 };
 
             protected:
@@ -132,7 +152,11 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                AHashMapTrie(const AHashMapTrie& orig);
+                AHashMapTrie(const AHashMapTrie& orig)
+                : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL),
+                _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(0.0) {
+                    throw Exception("AHashMapTrie copy constructor is not to be used, unless implemented!");
+                };
 
                 /**
                  * Gets the word hash for the end word of the back-off N-Gram
@@ -269,7 +293,7 @@ namespace uva {
                  */
                 inline TWordHashSize getUniqueIdHash(const string & str) {
                     try {
-                        return pWordIndexMap->at(str);
+                        return _pWordIndexMap->at(str);
                     } catch (out_of_range e) {
                         LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
                                 << UNKNOWN_WORD_STR << "', hash: "
@@ -286,13 +310,13 @@ namespace uva {
                  */
                 inline TWordHashSize createUniqueIdHash(const string & str) {
                     //First get/create an existing/new word entry from from/in the word index
-                    TWordHashSize& hash = pWordIndexMap->operator[](str);
+                    TWordHashSize& hash = _pWordIndexMap->operator[](str);
 
                     if (hash == UNDEFINED_WORD_HASH) {
                         //If the word hash is not defined yet, then issue it a new hash id
-                        hash = nextNewWordHash;
+                        hash = _nextNewWordHash;
                         LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
-                        nextNewWordHash++;
+                        _nextNewWordHash++;
                     }
 
                     //Use the Prime numbers hashing algorithm as it outperforms djb2
@@ -394,16 +418,20 @@ namespace uva {
                 typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
 
                 //This is the pointer to the fixed memory allocator used to allocate the map's memory
-                TWordIndexAllocator * pWordIndexAlloc;
+                TWordIndexAllocator * _pWordIndexAlloc;
 
                 //This map stores the word index, i.e. assigns each unique word a unique id
-                TWordIndexMap * pWordIndexMap;
+                TWordIndexMap * _pWordIndexMap;
 
                 //The temporary data structure to store the N-gram query word hashes
                 TWordHashSize mGramWordHashes[N];
 
                 //Stores the last allocated word hash
-                TWordHashSize nextNewWordHash;
+                TWordHashSize _nextNewWordHash;
+
+                //Stores the assigned memory factor for storage allocation
+                //in the unordered_map used for the word index
+                const float _wordIndexMemFactor;
 
             };
         }

@@ -54,6 +54,20 @@ namespace uva {
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
             //Defined the minimum possible N-gram level
             const TModelLevel MIN_NGRAM_LEVEL = 1u;
+            
+            namespace __AHashMapTrie {
+                //The unordered map memory factor for the Word index in AHashMapTrie
+                const float UNORDERED_MAP_WORD_INDEX_MEMORY_FACTOR = 2.6;
+            }
+            
+            namespace __ContextMultiHashMapTrie {
+                //The unordered map memory factor for the One-Grams in ContextMultiHashMapTrie
+                const float UNORDERED_MAP_O_GRAM_MEMORY_FACTOR = 2.6;
+                //The unordered map memory factor for the M-Grams in ContextMultiHashMapTrie
+                const float UNORDERED_MAP_M_GRAM_MEMORY_FACTOR = 2.0;
+                //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie
+                const float UNORDERED_MAP_N_GRAM_MEMORY_FACTOR = 2.5;
+            }
         }
 
         //The following type definitions are important for creating hashes

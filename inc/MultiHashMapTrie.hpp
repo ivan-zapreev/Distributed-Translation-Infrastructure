@@ -80,16 +80,35 @@ namespace uva {
                 static const TModelLevel MGRAM_IDX_OFFSET = 3;
 
                 /**
-                 * The basic class constructor
+                 * The basic class constructor, accepts memory factor(s) that are the
+                 * coefficients used when pre-allocating memory for unordered maps.
+                 * 
+                 * If a factor is equal to 0.0 then no memory is pre-allocated.
+                 * If the factor is equal to 1.0 then there is only as much preallocated
+                 * as needed to store the gram entries. The latter is typically not enough
+                 * as unordered_map needs more memory for internal administration.
+                 * If there is not enough memory pre-allocated then additional allocations
+                 * will take place but it does not alway lead to more efficient memory
+                 * usage. The observed behavior is that it is better to pre-allocate
+                 * a bit more memory beforehand, than needed. This leads to less
+                 * memory consumption. Depending on the type of unordered_map
+                 * key/value pair types the advised factor values are from 2.0 to 2.6.
+                 * Because it can not be optimally determined beforehand, these are made
+                 * constructor parameters so that they can be configured by the used.
+                 * This breaks encapsulation a bit, exposing the internals, but
+                 * there is no other better way, for fine tuning the memory usage.
+                 * 
+                 * @param  wordIndexMemFactor the assigned memory factor for
+                 * storage allocation in the unordered_map used for the word index
                  */
-                MultiHashMapTrie();
+                explicit MultiHashMapTrie(const float wordIndexMemFactor);
 
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ITrie
                  */
-                virtual void preAllocate(uint counts[N]);
+                virtual void preAllocate(const size_t counts[N]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
@@ -117,7 +136,10 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
-                virtual ~MultiHashMapTrie();
+                /**
+                 * The destructor
+                 */
+                virtual ~MultiHashMapTrie() {};
 
             private:
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -140,7 +162,9 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                MultiHashMapTrie(const MultiHashMapTrie& orig);
+                MultiHashMapTrie(const MultiHashMapTrie& orig) : AHashMapTrie<N>(0.0) {
+                    throw Exception("MultiHashMapTrie copy constructor is not to be used, unless implemented!");
+                };
 
                 /**
                  * Allows to create/retrieve the M-Gram entry for 1<M<N

@@ -114,7 +114,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
-                virtual void preAllocate(uint counts[N]) = 0;
+                virtual void preAllocate(const size_t counts[N]) = 0;
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.

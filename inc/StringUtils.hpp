@@ -43,8 +43,9 @@ namespace uva {
             namespace text {
 
                 //All the possible Whitespaces, including unicode, to be imagined, are to be used for trimming and reduce
-                //#define WHITESPACES string("\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r")
-#define WHITESPACES string("\t\f\v\n\r ")
+                //const string WHITESPACES = "\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r"
+                //In the ARPA format we should only consider the basic asci delimiters!
+                const string WHITESPACES = "\t\f\v\n\r ";
 
                 /**
                  * This function allows to convert an array of values to a string representation.
@@ -55,7 +56,7 @@ namespace uva {
                 static inline string arrayToString(const T values[N]) {
                     stringstream data;
                     data << "[ ";
-                    for (size_t idx = 0; idx < N ; idx++) {
+                    for (size_t idx = 0; idx < N; idx++) {
                         data << values[idx] << " ";
                     }
                     data << "]";

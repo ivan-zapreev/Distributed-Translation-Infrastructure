@@ -98,7 +98,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readData(string &line, uint counts[N]) {
+                void ARPATrieBuilder<N>::readData(string &line, size_t counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
@@ -163,7 +163,7 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
-                    LOG_INFO << "Expected number of M-grams per level: " << arrayToString<uint, N>(counts) << END_LOG;
+                    LOG_INFO << "Expected number of M-grams per level: " << arrayToString<size_t, N>(counts) << END_LOG;
 
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
@@ -289,7 +289,7 @@ namespace uva {
 
                         //Declare an array of N-Gram counts, that is to be filled from the
                         //headers. This data will be used to pre-allocate memory for the Trie 
-                        uint counts[N];
+                        size_t counts[N];
 
                         //Read the DATA section of ARPA
                         readData(line, counts);
