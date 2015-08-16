@@ -136,7 +136,7 @@ namespace uva {
                                         string & amount = *(--elems.end());
                                         try {
                                             counts[level - 1] = stoull(amount);
-                                            LOG_INFO << "Expected number of " << level << "-grams is: " << counts[level - 1] << END_LOG;
+                                            LOG_DEBUG << "Expected number of " << level << "-grams is: " << counts[level - 1] << END_LOG;
                                         } catch (invalid_argument) {
                                             stringstream msg;
                                             msg << "Incorrect ARPA format: Can not parse the "
@@ -162,6 +162,8 @@ namespace uva {
                         msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
                         throw Exception(msg.str());
                     }
+
+                    LOG_INFO << "Expected number of M-grams per level: " << arrayToString<uint, N>(counts) << END_LOG;
 
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }

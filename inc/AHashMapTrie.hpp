@@ -66,7 +66,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
-            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << ngramToString(tokens)                   \
+            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << tokensToString(tokens)                   \
                         << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                    \
                         << ", contextHash: " << SSTR(contextHash) << ". "                                    \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -350,8 +350,8 @@ namespace uva {
                             //not be happening! Then we will print a lot of debug info!
                             const TModelLevel size = entry.size();
                             if (size == gram.tokens.size()) {
-                                LOG_WARNING << "N-gram collision/duplicates: '" << ngramToString(entry) << "' with '"
-                                        << ngramToString(gram.tokens) << "'! wordHash= " << SSTR(wordHash)
+                                LOG_WARNING << "N-gram collision/duplicates: '" << tokensToString(entry) << "' with '"
+                                        << tokensToString(gram.tokens) << "'! wordHash= " << SSTR(wordHash)
                                         << ", contextHash= " << SSTR(contextHash) << END_LOG;
 
                                 TWordHashSize old[N], fresh[N];

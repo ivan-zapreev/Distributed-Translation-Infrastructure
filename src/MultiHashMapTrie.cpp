@@ -91,14 +91,14 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.first << "," << pbData.second << ") for "
-                        << ngramToString(oGram.tokens) << " wordHash = "
+                        << tokensToString(oGram.tokens) << " wordHash = "
                         << wordHash << END_LOG;
             }
 
             template<TModelLevel N>
             void MultiHashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
                 const TModelLevel level = mGram.tokens.size();
-                LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(mGram.tokens) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString(mGram.tokens) << " to the Trie" << END_LOG;
 
                 //Check that this is not an 1-Gram or N-Gram for those we need another method!
                 if ((MIN_NGRAM_LEVEL < level) || (level < N)) {
@@ -132,7 +132,7 @@ namespace uva {
 
                     LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                             << pbData.first << "," << pbData.second << ") for "
-                            << ngramToString(mGram.tokens) << " contextHash = "
+                            << tokensToString(mGram.tokens) << " contextHash = "
                             << contextHash << ", wordHash = " << wordHash << END_LOG;
                 } else {
                     stringstream msg;
@@ -144,7 +144,7 @@ namespace uva {
             template<TModelLevel N>
             void MultiHashMapTrie<N>::addNGram(const SBackOffNGram &nGram) {
                 const size_t level = nGram.tokens.size();
-                LOG_DEBUG << "Adding a " << level << "-Gram " << ngramToString(nGram.tokens) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString(nGram.tokens) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -178,7 +178,7 @@ namespace uva {
                 pData = nGram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << ngramToString(nGram.tokens) << " contextHash = "
+                        << tokensToString(nGram.tokens) << " contextHash = "
                         << contextHash << ", wordHash = " << wordHash << END_LOG;
             }
 

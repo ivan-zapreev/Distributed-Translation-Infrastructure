@@ -47,16 +47,44 @@ namespace uva {
 #define WHITESPACES string("\t\f\v\n\r ")
 
                 /**
+                 * This function allows to convert an array of values to a string representation.
+                 * @param values the array of values to print
+                 * @return the resulting string
+                 */
+                template<typename T, size_t N>
+                static inline string arrayToString(const T values[N]) {
+                    stringstream data;
+                    data << "[ ";
+                    for (size_t idx = 0; idx < N ; idx++) {
+                        data << values[idx] << " ";
+                    }
+                    data << "]";
+                    return data.str();
+                }
+
+                /**
+                 * This function allows to convert a vector of values to a string representation.
+                 * @param values the vector of values to print
+                 * @return the resulting string
+                 */
+                template<typename T>
+                static inline string vectorToString(const vector<T> &values) {
+                    stringstream data;
+                    data << "[ ";
+                    for (typename vector<T>::const_iterator it = values.cbegin(); it != values.cend(); ++it) {
+                        data << *it << " ";
+                    }
+                    data << "]";
+                    return data.str();
+                }
+
+                /**
                  * This function just takes the N-Gram tokens and puts them together in one string.
                  * @param tokens the tokens to put together
                  * @return the resulting string
                  */
-                static inline string ngramToString(const vector<string> &tokens) {
-                    string str = " ";
-                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        str += *it + " ";
-                    }
-                    return str;
+                static inline string tokensToString(const vector<string> &values) {
+                    return vectorToString<string>(values);
                 }
 
                 /**

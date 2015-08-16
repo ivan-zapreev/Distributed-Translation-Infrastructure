@@ -152,7 +152,7 @@ namespace uva {
 
                     LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                             << pbData.first << "," << pbData.second << ") for "
-                            << ngramToString(gram.tokens) << " wordHash = "
+                            << tokensToString(gram.tokens) << " wordHash = "
                             << wordHash << END_LOG;
                 }
 
@@ -163,7 +163,7 @@ namespace uva {
                 template<bool isCreate>
                 inline void addGram(const SBackOffNGram &gram) {
                     const size_t level = gram.tokens.size();
-                    LOG_DEBUG << "Adding a " << level << "-Gram '" << ngramToString(gram.tokens) << "' to the Trie" << END_LOG;
+                    LOG_DEBUG << "Adding a " << level << "-Gram '" << tokensToString(gram.tokens) << "' to the Trie" << END_LOG;
 
                     // 1. Compute the context hash defined by w1 w2 w3
                     TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(gram.tokens);
