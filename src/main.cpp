@@ -251,12 +251,12 @@ static void performTasks(const TAppParams& params) {
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         //Create a trie and pass it to the algorithm method
-        //TFiveMultiHashMapTrie trie(__AHashMapTrie::UNORDERED_MAP_WORD_INDEX_MEMORY_FACTOR);
+        //TFiveMultiHashMapTrie trie(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
         TFiveContextMultiHashMapTrie trie(
-                __AHashMapTrie::UNORDERED_MAP_WORD_INDEX_MEMORY_FACTOR,
-                __ContextMultiHashMapTrie::UNORDERED_MAP_O_GRAM_MEMORY_FACTOR,
-                __ContextMultiHashMapTrie::UNORDERED_MAP_M_GRAM_MEMORY_FACTOR,
-                __ContextMultiHashMapTrie::UNORDERED_MAP_N_GRAM_MEMORY_FACTOR);
+                __AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR,
+                __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
+                __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
         LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();

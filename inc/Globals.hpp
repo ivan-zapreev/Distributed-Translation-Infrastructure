@@ -57,16 +57,16 @@ namespace uva {
             
             namespace __AHashMapTrie {
                 //The unordered map memory factor for the Word index in AHashMapTrie
-                const float UNORDERED_MAP_WORD_INDEX_MEMORY_FACTOR = 2.6;
+                const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
             
             namespace __ContextMultiHashMapTrie {
                 //The unordered map memory factor for the One-Grams in ContextMultiHashMapTrie
-                const float UNORDERED_MAP_O_GRAM_MEMORY_FACTOR = 2.6;
+                const float UM_O_GRAM_MEMORY_FACTOR = 2.6;
                 //The unordered map memory factor for the M-Grams in ContextMultiHashMapTrie
-                const float UNORDERED_MAP_M_GRAM_MEMORY_FACTOR = 2.0;
+                const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
                 //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie
-                const float UNORDERED_MAP_N_GRAM_MEMORY_FACTOR = 2.5;
+                const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
             }
         }
 
