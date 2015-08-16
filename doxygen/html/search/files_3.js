@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['hashingutils_2ehpp',['HashingUtils.hpp',['../_hashing_utils_8hpp.html',1,'']]],
-  ['hashmaptrie_2ecpp',['HashMapTrie.cpp',['../_hash_map_trie_8cpp.html',1,'']]],
-  ['hashmaptrie_2ehpp',['HashMapTrie.hpp',['../_hash_map_trie_8hpp.html',1,'']]],
-  ['hashmaptrie_2eo_2ed',['HashMapTrie.o.d',['../_hash_map_trie_8o_8d.html',1,'']]]
+  ['globals_2ehpp',['Globals.hpp',['../_globals_8hpp.html',1,'']]],
+  ['greedymemoryallocator_2ehpp',['GreedyMemoryAllocator.hpp',['../_greedy_memory_allocator_8hpp.html',1,'']]],
+  ['greedymemorystorage_2ehpp',['GreedyMemoryStorage.hpp',['../_greedy_memory_storage_8hpp.html',1,'']]]
 ];

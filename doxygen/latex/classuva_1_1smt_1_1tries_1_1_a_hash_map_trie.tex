@@ -1,0 +1,287 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:A\+Hash\+Map\+Trie$<$ N $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie$<$ N $>$@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie$<$ N $>$}}
+
+
+{\ttfamily \#include $<$A\+Hash\+Map\+Trie.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:A\+Hash\+Map\+Trie$<$ N $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.007169cm]{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a97fbb7a95590096e7416f82b2016998e}{A\+Hash\+Map\+Trie} (const float word\+Index\+Mem\+Factor)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad867b72350326f464b563fba6727ba5f}{pre\+Allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a5118f2f3566fd37b41998ef405ca6df1}{$\sim$\+A\+Hash\+Map\+Trie} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a42ba762f7a711f22111b3fefa46d418a}{A\+Hash\+Map\+Trie} (const \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie}{A\+Hash\+Map\+Trie} \&orig)
+\item 
+const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aa59ec4b6c4f0cb7eb4f1f4140bf9b9de}{get\+Back\+Off\+N\+Gram\+End\+Word\+Hash} ()
+\item 
+const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a0c44c85dd64be9c9238d7313eb4dfcc9}{get\+N\+Gram\+End\+Word\+Hash} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a98254f0f1271f1651b3c70acbce8fcb3}{tokens\+To\+Hashes} (const vector$<$ string $>$ \&tokens, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} word\+Hashes\mbox{[}N\mbox{]})
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ababc583f0e22e3be69345bb43211fef6}{store\+N\+Gram\+Hashes} (const vector$<$ string $>$ \&ngram)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a1fb2b99ca8211bd45a343922b64cc96f}{compute\+Hash\+Context} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} context\+Length, bool is\+Back\+Off)
+\item 
+{\footnotesize template$<$Logger\+::\+Debug\+Level log\+Level$>$ }\\\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a340430c87c0fb0725004689e8b47a0}{compute\+Hash\+Context} (const vector$<$ string $>$ \&tokens)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aae50ef05783fc3ca8367610475fe9b40}{get\+Unique\+Id\+Hash} (const string \&str)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad23c5ad2dea14220aa3a61edcbd5346a}{create\+Unique\+Id\+Hash} (const string \&str)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af3f7c7d7f0c8dddd5fc2ea5318e58109}{record\+And\+Check} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} word\+Hash, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} context\+Hash, const \hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{S\+Back\+Off\+N\+Gram} \&gram) const 
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af4aac18ab4f9db12bae8ba0ee8f63d92}{create\+Context} (\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} hash, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} context)
+\item 
+static void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a35a764c83eafb369f7b858fa9b826e}{dessolve\+Context} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} context, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \&sub\+Word, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \&sub\+Context)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Model\+Level N$>$class uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie$<$ N $>$}
+
+This is a base abstract class for the Trie implementation using hash tables. The class only contains a few basic features, such as hashing functions and methods for working with the queued M-\/gram. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a97fbb7a95590096e7416f82b2016998e}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!A\+Hash\+Map\+Trie@{A\+Hash\+Map\+Trie}}
+\index{A\+Hash\+Map\+Trie@{A\+Hash\+Map\+Trie}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{A\+Hash\+Map\+Trie(const float word\+Index\+Mem\+Factor)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::{\bf A\+Hash\+Map\+Trie} (
+\begin{DoxyParamCaption}
+\item[{const float}]{word\+Index\+Mem\+Factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a97fbb7a95590096e7416f82b2016998e}
+The basic class constructor, accepts memory factor(s) that are the coefficients used when pre-\/allocating memory for unordered maps.
+
+If a factor is equal to 0.\+0 then no memory is pre-\/allocated. If the factor is equal to 1.\+0 then there is only as much preallocated as needed to store the gram entries. The latter is typically not enough as unordered\+\_\+map needs more memory for internal administration. If there is not enough memory pre-\/allocated then additional allocations will take place but it does not alway lead to more efficient memory usage. The observed behavior is that it is better to pre-\/allocate a bit more memory beforehand, than needed. This leads to less memory consumption. Depending on the type of unordered\+\_\+map key/value pair types the advised factor values are from 2.\+0 to 2.\+6. Because it can not be optimally determined beforehand, these are made constructor parameters so that they can be configured by the used. This breaks encapsulation a bit, exposing the internals, but there is no other better way, for fine tuning the memory usage.
+
+
+\begin{DoxyParams}{Parameters}
+{\em word\+Index\+Mem\+Factor} & the assigned memory factor for storage allocation in the unordered\+\_\+map used for the word index \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a5118f2f3566fd37b41998ef405ca6df1}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!````~A\+Hash\+Map\+Trie@{$\sim$\+A\+Hash\+Map\+Trie}}
+\index{````~A\+Hash\+Map\+Trie@{$\sim$\+A\+Hash\+Map\+Trie}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{$\sim$\+A\+Hash\+Map\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::$\sim${\bf A\+Hash\+Map\+Trie} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a5118f2f3566fd37b41998ef405ca6df1}
+The basic class destructor \hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a42ba762f7a711f22111b3fefa46d418a}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!A\+Hash\+Map\+Trie@{A\+Hash\+Map\+Trie}}
+\index{A\+Hash\+Map\+Trie@{A\+Hash\+Map\+Trie}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{A\+Hash\+Map\+Trie(const A\+Hash\+Map\+Trie \&orig)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::{\bf A\+Hash\+Map\+Trie} (
+\begin{DoxyParamCaption}
+\item[{const {\bf A\+Hash\+Map\+Trie}$<$ N $>$ \&}]{orig}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a42ba762f7a711f22111b3fefa46d418a}
+The copy constructor, is made private as we do not intend to copy this class objects 
+\begin{DoxyParams}{Parameters}
+{\em orig} & the object to copy from \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a1fb2b99ca8211bd45a343922b64cc96f}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!compute\+Hash\+Context@{compute\+Hash\+Context}}
+\index{compute\+Hash\+Context@{compute\+Hash\+Context}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{compute\+Hash\+Context(const T\+Model\+Level context\+Length, bool is\+Back\+Off)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf T\+Reference\+Hash\+Size} {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::compute\+Hash\+Context (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{context\+Length, }
+\item[{bool}]{is\+Back\+Off}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a1fb2b99ca8211bd45a343922b64cc96f}
+Compute the context hash for the M-\/\+Gram prefix, example\+:
+
+N = 5
+
+0 1 2 3 4 w1 w2 w3 w4 w5
+
+context\+Length = 2
+
+0 1 2 3 4 w1 w2 w3 w4 w5 $^\wedge$ $^\wedge$ Hash will be computed for the 3-\/gram prefix w3 w4.
+
+
+\begin{DoxyParams}{Parameters}
+{\em context\+Length} & the length of the context to compute \\
+\hline
+{\em is\+Back\+Off} & is the boolean flag that determines whether we compute the context for the entire M-\/\+Gram or for the back-\/off sub-\/\+M-\/gram. For the latter we consider w1 w2 w3 w4 only \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the computed hash context 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a340430c87c0fb0725004689e8b47a0}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!compute\+Hash\+Context@{compute\+Hash\+Context}}
+\index{compute\+Hash\+Context@{compute\+Hash\+Context}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{compute\+Hash\+Context(const vector$<$ string $>$ \&tokens)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ template$<$Logger\+::\+Debug\+Level log\+Level$>$ {\bf T\+Reference\+Hash\+Size} {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::compute\+Hash\+Context (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ string $>$ \&}]{tokens}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a340430c87c0fb0725004689e8b47a0}
+This function computes the hash context of the N-\/gram given by the tokens, e.\+g. \mbox{[}w1 w2 w3 w4\mbox{]} 
+\begin{DoxyParams}{Parameters}
+{\em tokens} & the N-\/gram tokens \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash of the context(w1 w2 w3) or U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H for any M-\/\+Gram with M $<$= 1 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af4aac18ab4f9db12bae8ba0ee8f63d92}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!create\+Context@{create\+Context}}
+\index{create\+Context@{create\+Context}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{create\+Context(\+T\+Word\+Hash\+Size hash, T\+Reference\+Hash\+Size context)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ static {\bf T\+Reference\+Hash\+Size} {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::create\+Context (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Word\+Hash\+Size}}]{hash, }
+\item[{{\bf T\+Reference\+Hash\+Size}}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af4aac18ab4f9db12bae8ba0ee8f63d92}
+Computes the N-\/\+Gram context using the previous context and the current word hash 
+\begin{DoxyParams}{Parameters}
+{\em hash} & the current word hash \\
+\hline
+{\em context} & the previous context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting context 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad23c5ad2dea14220aa3a61edcbd5346a}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!create\+Unique\+Id\+Hash@{create\+Unique\+Id\+Hash}}
+\index{create\+Unique\+Id\+Hash@{create\+Unique\+Id\+Hash}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{create\+Unique\+Id\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf T\+Word\+Hash\+Size} {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::create\+Unique\+Id\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad23c5ad2dea14220aa3a61edcbd5346a}
+This function creates/gets a hash for the given word. Note\+: The hash id will be unique! 
+\begin{DoxyParams}{Parameters}
+{\em str} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a35a764c83eafb369f7b858fa9b826e}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!dessolve\+Context@{dessolve\+Context}}
+\index{dessolve\+Context@{dessolve\+Context}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{dessolve\+Context(const T\+Reference\+Hash\+Size context, T\+Word\+Hash\+Size \&sub\+Word, T\+Reference\+Hash\+Size \&sub\+Context)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ static void {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::dessolve\+Context (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Reference\+Hash\+Size}}]{context, }
+\item[{{\bf T\+Word\+Hash\+Size} \&}]{sub\+Word, }
+\item[{{\bf T\+Reference\+Hash\+Size} \&}]{sub\+Context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a9a35a764c83eafb369f7b858fa9b826e}
+This function dissolves the given Ngram context (for N$>$=2) into a sub-\/word hash and a sub-\/context\+: c(w\+\_\+n) is defined by hash(w\+\_\+n) and c(w\+\_\+(n-\/1)) 
+\begin{DoxyParams}{Parameters}
+{\em context} & the given context to dissolve \\
+\hline
+{\em sub\+Word} & the sub-\/work \\
+\hline
+{\em sub\+Context} & the sub-\/context \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aa59ec4b6c4f0cb7eb4f1f4140bf9b9de}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!get\+Back\+Off\+N\+Gram\+End\+Word\+Hash@{get\+Back\+Off\+N\+Gram\+End\+Word\+Hash}}
+\index{get\+Back\+Off\+N\+Gram\+End\+Word\+Hash@{get\+Back\+Off\+N\+Gram\+End\+Word\+Hash}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{get\+Back\+Off\+N\+Gram\+End\+Word\+Hash()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ const {\bf T\+Word\+Hash\+Size}\& {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::get\+Back\+Off\+N\+Gram\+End\+Word\+Hash (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aa59ec4b6c4f0cb7eb4f1f4140bf9b9de}
+Gets the word hash for the end word of the back-\/off N-\/\+Gram \begin{DoxyReturn}{Returns}
+the word hash for the end word of the back-\/off N-\/\+Gram 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a0c44c85dd64be9c9238d7313eb4dfcc9}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!get\+N\+Gram\+End\+Word\+Hash@{get\+N\+Gram\+End\+Word\+Hash}}
+\index{get\+N\+Gram\+End\+Word\+Hash@{get\+N\+Gram\+End\+Word\+Hash}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{get\+N\+Gram\+End\+Word\+Hash()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ const {\bf T\+Word\+Hash\+Size}\& {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::get\+N\+Gram\+End\+Word\+Hash (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a0c44c85dd64be9c9238d7313eb4dfcc9}
+Gets the word hash for the last word in the N-\/gram \begin{DoxyReturn}{Returns}
+the word hash for the last word in the N-\/gram 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aae50ef05783fc3ca8367610475fe9b40}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!get\+Unique\+Id\+Hash@{get\+Unique\+Id\+Hash}}
+\index{get\+Unique\+Id\+Hash@{get\+Unique\+Id\+Hash}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{get\+Unique\+Id\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf T\+Word\+Hash\+Size} {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::get\+Unique\+Id\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_aae50ef05783fc3ca8367610475fe9b40}
+This function gets a hash for the given word word based no the stored 1-\/\+Grams. If the word is not known then an unknown word I\+D is returned\+: U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H 
+\begin{DoxyParams}{Parameters}
+{\em str} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad867b72350326f464b563fba6727ba5f}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!pre\+Allocate@{pre\+Allocate}}
+\index{pre\+Allocate@{pre\+Allocate}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{pre\+Allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::pre\+Allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+N\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad867b72350326f464b563fba6727ba5f}
+The defaul implementation that pre-\/allocates the word\+Index 
+\begin{DoxyParams}{Parameters}
+{\em counts} & the number of ngrams \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a642f48565e195a41a768b2cfa247735a}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
+
+
+
+Reimplemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_ac744e6f6e63317d1f955ac96d504f724}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_ac7d916356f0ad36d33c0c4722e6459b9}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_a6a40f4047280dedc7f402d6502547b2c}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af3f7c7d7f0c8dddd5fc2ea5318e58109}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!record\+And\+Check@{record\+And\+Check}}
+\index{record\+And\+Check@{record\+And\+Check}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{record\+And\+Check(const T\+Word\+Hash\+Size word\+Hash, const T\+Reference\+Hash\+Size context\+Hash, const S\+Back\+Off\+N\+Gram \&gram) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::record\+And\+Check (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Word\+Hash\+Size}}]{word\+Hash, }
+\item[{const {\bf T\+Reference\+Hash\+Size}}]{context\+Hash, }
+\item[{const {\bf S\+Back\+Off\+N\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_af3f7c7d7f0c8dddd5fc2ea5318e58109}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ababc583f0e22e3be69345bb43211fef6}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!store\+N\+Gram\+Hashes@{store\+N\+Gram\+Hashes}}
+\index{store\+N\+Gram\+Hashes@{store\+N\+Gram\+Hashes}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{store\+N\+Gram\+Hashes(const vector$<$ string $>$ \&ngram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::store\+N\+Gram\+Hashes (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ string $>$ \&}]{ngram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ababc583f0e22e3be69345bb43211fef6}
+Converts the given tokens to hashes and stores it in m\+Gram\+Word\+Hashes 
+\begin{DoxyParams}{Parameters}
+{\em ngram} & the n-\/gram tokens to convert to hashes \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a98254f0f1271f1651b3c70acbce8fcb3}{}\index{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}!tokens\+To\+Hashes@{tokens\+To\+Hashes}}
+\index{tokens\+To\+Hashes@{tokens\+To\+Hashes}!uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie@{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}}
+\subsubsection[{tokens\+To\+Hashes(const vector$<$ string $>$ \&tokens, T\+Word\+Hash\+Size word\+Hashes[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie}$<$ N $>$\+::tokens\+To\+Hashes (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ string $>$ \&}]{tokens, }
+\item[{{\bf T\+Word\+Hash\+Size}}]{word\+Hashes\mbox{[}\+N\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_a98254f0f1271f1651b3c70acbce8fcb3}
+This method converts the M-\/\+Gram tokens into hashes and stores them in an array. Note that, M is the size of the tokens array. It is not checked, for the sake of performance but is assumed that M is $<$= N! 
+\begin{DoxyParams}{Parameters}
+{\em tokens} & the tokens to be transformed into word hashes must have size $<$=N \\
+\hline
+{\em word\+Hashes} & the out array parameter to store the hashes. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_a_hash_map_trie_8hpp}{A\+Hash\+Map\+Trie.\+hpp}\end{DoxyCompactItemize}

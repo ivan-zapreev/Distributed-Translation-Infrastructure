@@ -1,0 +1,54 @@
+\hypertarget{classuva_1_1smt_1_1monitore_1_1_statistics_monitor}{}\section{uva\+:\+:smt\+:\+:monitore\+:\+:Statistics\+Monitor Class Reference}
+\label{classuva_1_1smt_1_1monitore_1_1_statistics_monitor}\index{uva\+::smt\+::monitore\+::\+Statistics\+Monitor@{uva\+::smt\+::monitore\+::\+Statistics\+Monitor}}
+
+
+{\ttfamily \#include $<$Statistics\+Monitor.\+hpp$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_ad035148c19b9b5dff93a6450fb7635ba}{get\+Memory\+Statistics} (\hyperlink{structuva_1_1smt_1_1monitore_1_1_t_memoty_usage}{T\+Memoty\+Usage} \&mem\+Stat)  throw (\+Exception)
+\item 
+static double \hyperlink{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_aa3d29b120f9cc6f8bfbbef053a029dd3}{get\+C\+P\+U\+Time} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is responsible for monitoring the program statistics, such as the used memory and C\+P\+U times. This class is a trivial singleton 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_aa3d29b120f9cc6f8bfbbef053a029dd3}{}\index{uva\+::smt\+::monitore\+::\+Statistics\+Monitor@{uva\+::smt\+::monitore\+::\+Statistics\+Monitor}!get\+C\+P\+U\+Time@{get\+C\+P\+U\+Time}}
+\index{get\+C\+P\+U\+Time@{get\+C\+P\+U\+Time}!uva\+::smt\+::monitore\+::\+Statistics\+Monitor@{uva\+::smt\+::monitore\+::\+Statistics\+Monitor}}
+\subsubsection[{get\+C\+P\+U\+Time()}]{\setlength{\rightskip}{0pt plus 5cm}double uva\+::smt\+::monitore\+::\+Statistics\+Monitor\+::get\+C\+P\+U\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_aa3d29b120f9cc6f8bfbbef053a029dd3}
+This function returns the current C\+P\+U time as given in the article \href{http://nadeausoftware.com/articles/2012/03/c_c_tip_how_measure_cpu_time_benchmarking}{\tt http\+://nadeausoftware.\+com/articles/2012/03/c\+\_\+c\+\_\+tip\+\_\+how\+\_\+measure\+\_\+cpu\+\_\+time\+\_\+benchmarking} \begin{DoxyReturn}{Returns}
+Returns the amount of C\+P\+U time used by the current process, in seconds, or -\/1.\+0 if an error occurred. 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_ad035148c19b9b5dff93a6450fb7635ba}{}\index{uva\+::smt\+::monitore\+::\+Statistics\+Monitor@{uva\+::smt\+::monitore\+::\+Statistics\+Monitor}!get\+Memory\+Statistics@{get\+Memory\+Statistics}}
+\index{get\+Memory\+Statistics@{get\+Memory\+Statistics}!uva\+::smt\+::monitore\+::\+Statistics\+Monitor@{uva\+::smt\+::monitore\+::\+Statistics\+Monitor}}
+\subsubsection[{get\+Memory\+Statistics(\+T\+Memoty\+Usage \&mem\+Stat)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::monitore\+::\+Statistics\+Monitor\+::get\+Memory\+Statistics (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Memoty\+Usage} \&}]{mem\+Stat}
+\end{DoxyParamCaption}
+) throw  {\bf Exception}) \hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1monitore_1_1_statistics_monitor_ad035148c19b9b5dff93a6450fb7635ba}
+Allows to get the current memory usage of the process. 
+\begin{DoxyParams}{Parameters}
+{\em mem\+Stat} & this is an out parameter that will store the obtained data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & in case the memory statistics can not be obtained.\\
+\hline
+\end{DoxyExceptions}
+This implementation is derived from \href{http://locklessinc.com/articles/memory_usage/}{\tt http\+://locklessinc.\+com/articles/memory\+\_\+usage/} This here is actually C-\/style code and also pretty ugly.
+
+To\+Do\+: Refactor this code into C++ 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_statistics_monitor_8hpp}{Statistics\+Monitor.\+hpp}\item 
+src/\hyperlink{_statistics_monitor_8cpp}{Statistics\+Monitor.\+cpp}\end{DoxyCompactItemize}

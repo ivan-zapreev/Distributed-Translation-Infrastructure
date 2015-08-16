@@ -1,0 +1,76 @@
+\hypertarget{_a_hash_map_trie_8hpp}{}\section{inc/\+A\+Hash\+Map\+Trie.hpp File Reference}
+\label{_a_hash_map_trie_8hpp}\index{inc/\+A\+Hash\+Map\+Trie.\+hpp@{inc/\+A\+Hash\+Map\+Trie.\+hpp}}
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}A\+Trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Hashing\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}String\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Greedy\+Memory\+Allocator.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie}{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie$<$ N $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_a_hash_map_trie_8hpp_a02f1c02ee83e5e1e409ae82a39fa2b86}{M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S}~false
+\item 
+\#define \hyperlink{_a_hash_map_trie_8hpp_a432ed87990a5baeb7bbcdd13179b736a}{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}(tokens,  word\+Hash,  context\+Hash,  prev\+Prob,  prev\+Back\+Off,  new\+Prob,  new\+Back\+Off)
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef pair$<$ \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off}, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_aeca18bf92dfc5ecf2028d93f9ba73981}{uva\+::smt\+::tries\+::\+T\+Prob\+Back\+Off\+Entry\+Pair}
+\item 
+typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}, \hyperlink{namespaceuva_1_1smt_1_1tries_aeca18bf92dfc5ecf2028d93f9ba73981}{T\+Prob\+Back\+Off\+Entry\+Pair} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a320b838ead9f4f7ce1ca28f18acef6ec}{uva\+::smt\+::tries\+::\+T\+B\+Gram\+Entry\+Map}
+\item 
+typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size}, \hyperlink{namespaceuva_1_1smt_1_1tries_aeca18bf92dfc5ecf2028d93f9ba73981}{T\+Prob\+Back\+Off\+Entry\+Pair} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a21490f0bf060a75f3e963c580a64a3db}{uva\+::smt\+::tries\+::\+T\+M\+Gram\+Entry\+Map}
+\item 
+typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size}, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a994b61d58b0b25d288c1fb8a6a56a48a}{uva\+::smt\+::tries\+::\+T\+N\+Gram\+Entry\+Map}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_a_hash_map_trie_8hpp_a02f1c02ee83e5e1e409ae82a39fa2b86}{}\index{A\+Hash\+Map\+Trie.\+hpp@{A\+Hash\+Map\+Trie.\+hpp}!M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S@{M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S}}
+\index{M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S@{M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S}!A\+Hash\+Map\+Trie.\+hpp@{A\+Hash\+Map\+Trie.\+hpp}}
+\subsubsection[{M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\+O\+N\+I\+T\+O\+R\+E\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+S~false}\label{_a_hash_map_trie_8hpp_a02f1c02ee83e5e1e409ae82a39fa2b86}
+\hypertarget{_a_hash_map_trie_8hpp_a432ed87990a5baeb7bbcdd13179b736a}{}\index{A\+Hash\+Map\+Trie.\+hpp@{A\+Hash\+Map\+Trie.\+hpp}!R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}}
+\index{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}!A\+Hash\+Map\+Trie.\+hpp@{A\+Hash\+Map\+Trie.\+hpp}}
+\subsubsection[{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G(
+\begin{DoxyParamCaption}
+\item[{}]{tokens, }
+\item[{}]{word\+Hash, }
+\item[{}]{context\+Hash, }
+\item[{}]{prev\+Prob, }
+\item[{}]{prev\+Back\+Off, }
+\item[{}]{new\+Prob, }
+\item[{}]{new\+Back\+Off}
+\end{DoxyParamCaption}
+)}\label{_a_hash_map_trie_8hpp_a432ed87990a5baeb7bbcdd13179b736a}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{_logger_8hpp_adf4476a6a4ea6c74231c826e899d7189}{LOG\_WARNING} << \textcolor{stringliteral}{"The "} << tokens.size() << \textcolor{stringliteral}{"-Gram : '"} << tokensToString(tokens)                 
+        \(\backslash\)
+                        << \textcolor{stringliteral}{"' has been already seen! "}  << \textcolor{stringliteral}{"wordHash: "} << \hyperlink{_logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(wordHash)              
+            \(\backslash\)
+                        << \textcolor{stringliteral}{", contextHash: "} << \hyperlink{_logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(contextHash) << \textcolor{stringliteral}{". "}                              
+            \(\backslash\)
+                        << \textcolor{stringliteral}{"Changing the (prob,back-off) data from ("}                                      
+        \(\backslash\)
+                        << prevProb << \textcolor{stringliteral}{","} << prevBackOff << \textcolor{stringliteral}{") to ("}                                      
+        \(\backslash\)
+                        << newProb << \textcolor{stringliteral}{","} << newBackOff << \textcolor{stringliteral}{")"} << \hyperlink{_logger_8hpp_a80f2223fb302398deb65324a1543b8db}{END\_LOG};
+\end{DoxyCode}

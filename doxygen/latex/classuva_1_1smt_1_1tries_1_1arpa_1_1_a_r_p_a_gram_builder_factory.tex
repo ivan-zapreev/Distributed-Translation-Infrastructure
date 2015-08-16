@@ -1,0 +1,62 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:arpa\+:\+:A\+R\+P\+A\+Gram\+Builder\+Factory Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
+
+
+{\ttfamily \#include $<$A\+R\+P\+A\+Gram\+Builder\+Factory.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a66e551c1d15723bad56b8aa5b91ee87f}{$\sim$\+A\+R\+P\+A\+Gram\+Builder\+Factory} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$T\+Model\+Level N$>$ }\\static void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}{get\+Builder} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} level, \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, const char delim, \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}{A\+R\+P\+A\+Gram\+Builder} $\ast$$\ast$pp\+Builder)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the A\+R\+P\+A N-\/gram Builder Factory class that is supposed to be used to instantiate the proper A\+R\+P\+A N-\/\+Gram Builder class. Note that there can be a small difference in the data provided for the N-\/grams of different levels. For example the N-\/gram of the maximum level does not have back-\/off weights, so knowing that can allow for a more optimal reading the data and filling in the Trie. Also the first level N-\/grams (N==1) are just words and have to be added as vocabulary words into the Trie and not as regular N-\/grams. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a66e551c1d15723bad56b8aa5b91ee87f}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}!````~A\+R\+P\+A\+Gram\+Builder\+Factory@{$\sim$\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
+\index{````~A\+R\+P\+A\+Gram\+Builder\+Factory@{$\sim$\+A\+R\+P\+A\+Gram\+Builder\+Factory}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
+\subsubsection[{$\sim$\+A\+R\+P\+A\+Gram\+Builder\+Factory()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory\+::$\sim$\+A\+R\+P\+A\+Gram\+Builder\+Factory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a66e551c1d15723bad56b8aa5b91ee87f}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}!get\+Builder@{get\+Builder}}
+\index{get\+Builder@{get\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
+\subsubsection[{get\+Builder(const T\+Model\+Level level, A\+Trie$<$ N $>$ \&trie, const char delim, A\+R\+P\+A\+Gram\+Builder $\ast$$\ast$pp\+Builder)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ static void uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory\+::get\+Builder (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level, }
+\item[{{\bf A\+Trie}$<$ N $>$ \&}]{trie, }
+\item[{const char}]{delim, }
+\item[{{\bf A\+R\+P\+A\+Gram\+Builder} $\ast$$\ast$}]{pp\+Builder}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}
+This is a template method for getting the proper A\+R\+P\+A N-\/gram Builder for the given N-\/gram level. The two template parameters of this method N and do\+Cache have to do with the Trie template parameters. N is the maximum N-\/gram level and do\+Cache indicates whether the given Trie does caching of query results.
+
+Note\+: the returned pointer to the dynamically allocated builder is to be freed by the caller!
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the N-\/gram \\
+\hline
+{\em trie} & the trie to be filled in with the N-\/grams \\
+\hline
+{\em delim} & the delimiter for the A\+R\+P\+A N-\/\+Gram string \\
+\hline
+{\em p\+Builder} & the pointer to a dynamically allocated N-\/\+Gram builder \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_a_r_p_a_gram_builder_factory_8hpp}{A\+R\+P\+A\+Gram\+Builder\+Factory.\+hpp}\end{DoxyCompactItemize}

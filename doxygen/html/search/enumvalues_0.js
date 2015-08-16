@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['debug',['DEBUG',['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932abdc8d840ac4b73e1bd3212184af8f85e',1,'Logger']]],
-  ['debug1',['DEBUG1',['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932a5f7718483e39a028518b90f969b41771',1,'Logger']]],
-  ['debug2',['DEBUG2',['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932a616a45f059b15bff1cda9207cd465564',1,'Logger']]]
+  ['debug',['DEBUG',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70',1,'uva::smt::logging::Logger']]],
+  ['debug1',['DEBUG1',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8',1,'uva::smt::logging::Logger']]],
+  ['debug2',['DEBUG2',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265',1,'uva::smt::logging::Logger']]],
+  ['debug3',['DEBUG3',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa',1,'uva::smt::logging::Logger']]]
 ];

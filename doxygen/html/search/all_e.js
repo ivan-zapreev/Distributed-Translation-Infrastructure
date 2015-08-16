@@ -1,11 +1,4 @@
 var searchData=
 [
-  ['sfrequencyresult',['SFrequencyResult',['../structtries_1_1_s_frequency_result.html',1,'tries']]],
-  ['startprogressbar',['startProgressBar',['../class_logger.html#aa0bf3fb521a27a3d343c4f16523e3669',1,'Logger']]],
-  ['statisticsmonitor',['StatisticsMonitor',['../class_statistics_monitor.html',1,'']]],
-  ['statisticsmonitor_2ecpp',['StatisticsMonitor.cpp',['../_statistics_monitor_8cpp.html',1,'']]],
-  ['statisticsmonitor_2ehpp',['StatisticsMonitor.hpp',['../_statistics_monitor_8hpp.html',1,'']]],
-  ['statisticsmonitor_2eo_2ed',['StatisticsMonitor.o.d',['../_statistics_monitor_8o_8d.html',1,'']]],
-  ['stopprogressbar',['stopProgressBar',['../class_logger.html#a684c36c7810276214a0b3592ee907baf',1,'Logger']]],
-  ['szudzik',['szudzik',['../namespacehashing.html#a14faa1694242a5c0980b79bd8ea32f59',1,'hashing']]]
+  ['queryngram',['queryNGram',['../classuva_1_1smt_1_1tries_1_1_a_trie.html#a86f8301bb7a9e7a232f16bcd000062b2',1,'uva::smt::tries::ATrie::queryNGram()'],['../classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ad861e3027580ea2b78c95b22c43395ee',1,'uva::smt::tries::ContextMultiHashMapTrie::queryNGram()'],['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#a6b31b10b19c93ea3e6d08923ee1c0df7',1,'uva::smt::tries::MultiHashMapTrie::queryNGram()'],['../classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#ac0a2b8c57ccfd60a8b06ea2116cf8349',1,'uva::smt::tries::SingleHashMapTrie::queryNGram()']]]
 ];

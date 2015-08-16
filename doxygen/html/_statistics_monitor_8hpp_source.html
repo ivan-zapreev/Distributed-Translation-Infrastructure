@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: inc/StatisticsMonitor.hpp Source File</title>
+<title>My Project: inc/StatisticsMonitor.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,21 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('_statistics_monitor_8hpp_source.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -103,6 +80,11 @@ $(document).ready(function(){initNavTree('_statistics_monitor_8hpp_source.html',
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">StatisticsMonitor.hpp</div>  </div>
@@ -138,53 +120,63 @@ $(document).ready(function(){initNavTree('_statistics_monitor_8hpp_source.html',
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_exceptions_8hpp.html">Exceptions.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="struct_t_memoty_usage.html">   40</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">//Virtual memory size in Kb</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="struct_t_memoty_usage.html#a85cd99dcbca0d070abd2a5c3301375d4">   42</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="struct_t_memoty_usage.html#a85cd99dcbca0d070abd2a5c3301375d4">vmsize</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">//Peak virtual memory size in Kb</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="struct_t_memoty_usage.html#a4d66cce3c91b795c15e9de158d2658f5">   44</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="struct_t_memoty_usage.html#a4d66cce3c91b795c15e9de158d2658f5">vmpeak</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">//Resident set size in Kb</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="struct_t_memoty_usage.html#a968cf005ed24343dd992ab89ab361686">   46</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="struct_t_memoty_usage.html#a968cf005ed24343dd992ab89ab361686">vmrss</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//Peak resident set size in Kb</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="struct_t_memoty_usage.html#a66089e06d885f009f50872d8c0ccd3b3">   48</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="struct_t_memoty_usage.html#a66089e06d885f009f50872d8c0ccd3b3">vmhwm</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <a class="code" href="struct_t_memoty_usage.html">TMemotyUsage</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_statistics_monitor.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_statistics_monitor.html">StatisticsMonitor</a> {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_statistics_monitor.html#a00243d75edfd193a258cbd49af37e021">getMemoryStatistics</a>(<a class="code" href="struct_t_memoty_usage.html">TMemotyUsage</a> &amp; memStat) <span class="keywordflow">throw</span> (<a class="code" href="class_exception.html">Exception</a>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="class_statistics_monitor.html#ac953ddc655f3354a5b63bbdbe9c74179">getCPUTime</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="class_statistics_monitor.html">StatisticsMonitor</a>(){}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="class_statistics_monitor.html">StatisticsMonitor</a>(<span class="keyword">const</span> <a class="code" href="class_statistics_monitor.html">StatisticsMonitor</a>&amp; orig){}</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_statistics_monitor.html">StatisticsMonitor</a>(){}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* STATISTICSMONITOR_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div><div class="ttdoc">This is an application exception class that is capable of storing an error message. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00036">Exceptions.hpp:36</a></div></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1smt_1_1exceptions.html">uva::smt::exceptions</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1monitore.html">   35</a></span>&#160;        <span class="keyword">namespace </span>monitore {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html">   46</a></span>&#160;            <span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="comment">//Virtual memory size in Kb</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a2899bd97567443117eb064ee4ced277e">   48</a></span>&#160;                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a2899bd97567443117eb064ee4ced277e">vmsize</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="comment">//Peak virtual memory size in Kb</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#ad95a47875e4fb92f9fac3d0960386e77">   50</a></span>&#160;                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#ad95a47875e4fb92f9fac3d0960386e77">vmpeak</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="comment">//Resident set size in Kb</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a55337bfac835a2cdf05d98db116615da">   52</a></span>&#160;                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a55337bfac835a2cdf05d98db116615da">vmrss</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="comment">//Peak resident set size in Kb</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a4a7ea0bbc7e0a06c85bd7ed53d3c022a">   54</a></span>&#160;                <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a4a7ea0bbc7e0a06c85bd7ed53d3c022a">vmhwm</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            } <a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html">TMemotyUsage</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">   61</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">StatisticsMonitor</a> {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">void</span> getMemoryStatistics(<a class="code" href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html">TMemotyUsage</a> &amp; memStat) <span class="keywordflow">throw</span> (<a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html">Exception</a>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">double</span> getCPUTime();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                <a class="code" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">StatisticsMonitor</a>() {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <a class="code" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">StatisticsMonitor</a>(<span class="keyword">const</span> <a class="code" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">StatisticsMonitor</a>&amp; orig) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keyword">virtual</span> ~<a class="code" href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">StatisticsMonitor</a>() {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            };</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* STATISTICSMONITOR_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html">uva::smt::exceptions::Exception</a></div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:40</div></div>
+<div class="ttc" id="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage_html_a55337bfac835a2cdf05d98db116615da"><div class="ttname"><a href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a55337bfac835a2cdf05d98db116615da">uva::smt::monitore::TMemotyUsage::vmrss</a></div><div class="ttdeci">unsigned int vmrss</div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:52</div></div>
 <div class="ttc" id="_exceptions_8hpp_html"><div class="ttname"><a href="_exceptions_8hpp.html">Exceptions.hpp</a></div></div>
-<div class="ttc" id="struct_t_memoty_usage_html_a4d66cce3c91b795c15e9de158d2658f5"><div class="ttname"><a href="struct_t_memoty_usage.html#a4d66cce3c91b795c15e9de158d2658f5">TMemotyUsage::vmpeak</a></div><div class="ttdeci">unsigned int vmpeak</div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00044">StatisticsMonitor.hpp:44</a></div></div>
-<div class="ttc" id="struct_t_memoty_usage_html_a968cf005ed24343dd992ab89ab361686"><div class="ttname"><a href="struct_t_memoty_usage.html#a968cf005ed24343dd992ab89ab361686">TMemotyUsage::vmrss</a></div><div class="ttdeci">unsigned int vmrss</div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00046">StatisticsMonitor.hpp:46</a></div></div>
-<div class="ttc" id="struct_t_memoty_usage_html"><div class="ttname"><a href="struct_t_memoty_usage.html">TMemotyUsage</a></div><div class="ttdoc">This structure stores the memory statistics. </div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00040">StatisticsMonitor.hpp:40</a></div></div>
-<div class="ttc" id="class_statistics_monitor_html"><div class="ttname"><a href="class_statistics_monitor.html">StatisticsMonitor</a></div><div class="ttdoc">This class is responsible for monitoring the program statistics, such as the used memory and CPU time...</div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00055">StatisticsMonitor.hpp:55</a></div></div>
-<div class="ttc" id="struct_t_memoty_usage_html_a85cd99dcbca0d070abd2a5c3301375d4"><div class="ttname"><a href="struct_t_memoty_usage.html#a85cd99dcbca0d070abd2a5c3301375d4">TMemotyUsage::vmsize</a></div><div class="ttdeci">unsigned int vmsize</div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00042">StatisticsMonitor.hpp:42</a></div></div>
-<div class="ttc" id="class_statistics_monitor_html_ac953ddc655f3354a5b63bbdbe9c74179"><div class="ttname"><a href="class_statistics_monitor.html#ac953ddc655f3354a5b63bbdbe9c74179">StatisticsMonitor::getCPUTime</a></div><div class="ttdeci">static double getCPUTime()</div><div class="ttdoc">This function returns the current CPU time as given in the article http://nadeausoftware.com/articles/2012/03/c_c_tip_how_measure_cpu_time_benchmarking. </div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8cpp_source.html#l00141">StatisticsMonitor.cpp:141</a></div></div>
-<div class="ttc" id="struct_t_memoty_usage_html_a66089e06d885f009f50872d8c0ccd3b3"><div class="ttname"><a href="struct_t_memoty_usage.html#a66089e06d885f009f50872d8c0ccd3b3">TMemotyUsage::vmhwm</a></div><div class="ttdeci">unsigned int vmhwm</div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8hpp_source.html#l00048">StatisticsMonitor.hpp:48</a></div></div>
-<div class="ttc" id="class_statistics_monitor_html_a00243d75edfd193a258cbd49af37e021"><div class="ttname"><a href="class_statistics_monitor.html#a00243d75edfd193a258cbd49af37e021">StatisticsMonitor::getMemoryStatistics</a></div><div class="ttdeci">static void getMemoryStatistics(TMemotyUsage &amp;memStat)</div><div class="ttdoc">Allows to get the current memory usage of the process. </div><div class="ttdef"><b>Definition:</b> <a href="_statistics_monitor_8cpp_source.html#l00061">StatisticsMonitor.cpp:61</a></div></div>
+<div class="ttc" id="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage_html_a2899bd97567443117eb064ee4ced277e"><div class="ttname"><a href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a2899bd97567443117eb064ee4ced277e">uva::smt::monitore::TMemotyUsage::vmsize</a></div><div class="ttdeci">unsigned int vmsize</div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:48</div></div>
+<div class="ttc" id="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage_html_ad95a47875e4fb92f9fac3d0960386e77"><div class="ttname"><a href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#ad95a47875e4fb92f9fac3d0960386e77">uva::smt::monitore::TMemotyUsage::vmpeak</a></div><div class="ttdeci">unsigned int vmpeak</div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:50</div></div>
+<div class="ttc" id="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage_html_a4a7ea0bbc7e0a06c85bd7ed53d3c022a"><div class="ttname"><a href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html#a4a7ea0bbc7e0a06c85bd7ed53d3c022a">uva::smt::monitore::TMemotyUsage::vmhwm</a></div><div class="ttdeci">unsigned int vmhwm</div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:54</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1monitore_1_1_statistics_monitor_html"><div class="ttname"><a href="classuva_1_1smt_1_1monitore_1_1_statistics_monitor.html">uva::smt::monitore::StatisticsMonitor</a></div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:61</div></div>
+<div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> AHashMapTrie.hpp:58</div></div>
+<div class="ttc" id="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage_html"><div class="ttname"><a href="structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html">uva::smt::monitore::TMemotyUsage</a></div><div class="ttdef"><b>Definition:</b> StatisticsMonitor.hpp:46</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1exceptions_html"><div class="ttname"><a href="namespaceuva_1_1smt_1_1exceptions.html">uva::smt::exceptions</a></div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="_statistics_monitor_8hpp.html">StatisticsMonitor.hpp</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['sfrequencyresult',['SFrequencyResult',['../structtries_1_1_s_frequency_result.html',1,'tries']]],
-  ['statisticsmonitor',['StatisticsMonitor',['../class_statistics_monitor.html',1,'']]]
+  ['multihashmaptrie',['MultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html',1,'uva::smt::tries']]]
 ];

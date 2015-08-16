@@ -1,0 +1,61 @@
+\hypertarget{_hashing_utils_8hpp}{}\section{inc/\+Hashing\+Utils.hpp File Reference}
+\label{_hashing_utils_8hpp}\index{inc/\+Hashing\+Utils.\+hpp@{inc/\+Hashing\+Utils.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1hashing}{uva\+::smt\+::hashing}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}{A}~54059 /$\ast$ a prime $\ast$/
+\item 
+\#define \hyperlink{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}{B}~76963 /$\ast$ another prime $\ast$/
+\item 
+\#define \hyperlink{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}{C}~86969 /$\ast$ yet another prime $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+T\+Word\+Hash\+Size \hyperlink{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}{uva\+::smt\+::hashing\+::compute\+Djb2\+Hash} (const string \&str)
+\item 
+T\+Word\+Hash\+Size \hyperlink{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}{uva\+::smt\+::hashing\+::compute\+Primes\+Hash} (const string \&str)
+\item 
+T\+Word\+Hash\+Size \hyperlink{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}{uva\+::smt\+::hashing\+::compute\+R\+S\+Hash} (const string \&str)
+\item 
+T\+Reference\+Hash\+Size \hyperlink{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}{uva\+::smt\+::hashing\+::cantor} (T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}{uva\+::smt\+::hashing\+::uncantor} (const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)
+\item 
+T\+Reference\+Hash\+Size \hyperlink{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}{uva\+::smt\+::hashing\+::szudzik} (T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}{uva\+::smt\+::hashing\+::unszudzik} (const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!A@{A}}
+\index{A@{A}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{A}]{\setlength{\rightskip}{0pt plus 5cm}\#define A~54059 /$\ast$ a prime $\ast$/}\label{_hashing_utils_8hpp_a955f504eccf76b4eb2489c0adab03121}
+This is a hash function found online \href{http://stackoverflow.com/questions/8317508/hash-function-for-a-string}{\tt http\+://stackoverflow.\+com/questions/8317508/hash-\/function-\/for-\/a-\/string} It\textquotesingle{}s origin is unknown but it proves to work perfect (without collisions) on both test sets! So I do not need to complicate a hash map to a multi-\/map for now! Note\+: The time complexity is linear in the length of the word. Note\+: There are no observed collisions up until now. Note\+: But it is not yet known if this hash is collision free. 
+\begin{DoxyParams}{Parameters}
+{\em str} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+\hypertarget{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!B@{B}}
+\index{B@{B}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{B}]{\setlength{\rightskip}{0pt plus 5cm}\#define B~76963 /$\ast$ another prime $\ast$/}\label{_hashing_utils_8hpp_a111da81ae5883147168bbb8366377b10}
+\hypertarget{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}{}\index{Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}!C@{C}}
+\index{C@{C}!Hashing\+Utils.\+hpp@{Hashing\+Utils.\+hpp}}
+\subsubsection[{C}]{\setlength{\rightskip}{0pt plus 5cm}\#define C~86969 /$\ast$ yet another prime $\ast$/}\label{_hashing_utils_8hpp_ac4cf4b2ab929bd23951a8676eeac086b}

@@ -1,6 +1,12 @@
 var searchData=
 [
-  ['cantor',['cantor',['../namespacehashing.html#af05a30bd014cabba826f4ad3c03d68dc',1,'hashing']]],
-  ['computedjb2hash',['computeDjb2Hash',['../namespacehashing.html#a25e4ac309ffbe4b908d1613f4dfcd3a2',1,'hashing']]],
-  ['computeprimeshash',['computePrimesHash',['../namespacehashing.html#ae6401f4d7cf46aff6f9f5171593433ca',1,'hashing']]]
+  ['cantor',['cantor',['../namespaceuva_1_1smt_1_1hashing.html#ad2b30c50e6db131c94fb813153100c9c',1,'uva::smt::hashing']]],
+  ['computedjb2hash',['computeDjb2Hash',['../namespaceuva_1_1smt_1_1hashing.html#a8ac196e26b372b4716effe395c3cbb1c',1,'uva::smt::hashing']]],
+  ['computehashcontext',['computeHashContext',['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#a1fb2b99ca8211bd45a343922b64cc96f',1,'uva::smt::tries::AHashMapTrie::computeHashContext(const TModelLevel contextLength, bool isBackOff)'],['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#a9a340430c87c0fb0725004689e8b47a0',1,'uva::smt::tries::AHashMapTrie::computeHashContext(const vector&lt; string &gt; &amp;tokens)']]],
+  ['computeprimeshash',['computePrimesHash',['../namespaceuva_1_1smt_1_1hashing.html#a390d782fb4e4723b565577a85d5bc8bd',1,'uva::smt::hashing']]],
+  ['computershash',['computeRSHash',['../namespaceuva_1_1smt_1_1hashing.html#a0ccb220ca55a85d4238d2f8ca287a76f',1,'uva::smt::hashing']]],
+  ['construct',['construct',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#ab734ed08724d82553b8b4a73b2d48e82',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
+  ['contextmultihashmaptrie',['ContextMultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#a4dedd355285be9d410d0cef0faf4e493',1,'uva::smt::tries::ContextMultiHashMapTrie']]],
+  ['createcontext',['createContext',['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#af4aac18ab4f9db12bae8ba0ee8f63d92',1,'uva::smt::tries::AHashMapTrie']]],
+  ['createuniqueidhash',['createUniqueIdHash',['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#ad23c5ad2dea14220aa3a61edcbd5346a',1,'uva::smt::tries::AHashMapTrie']]]
 ];

@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: Automated-Translation-Tries</title>
+<title>My Project: Back Off Language Model(s) for SMT</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -68,21 +60,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -97,15 +74,16 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Automated-Translation-Tries </div>  </div>
+<div class="title">Back Off Language Model(s) for SMT </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>&lt;big&gt;Author: Dr. Ivan S. Zapreev&lt;/big&gt;: <a href="https://nl.linkedin.com/in/zapreevis">https://nl.linkedin.com/in/zapreevis</a></p>
-<p>&lt;big&gt;Git-Hub&lt;/big&gt;: <a href="https://github.com/ivan-zapreev/Automated-Translation-Tries">https://github.com/ivan-zapreev/Automated-Translation-Tries</a></p>
+<p>&lt;big&gt;Git-Hub&lt;/big&gt;: <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT</a></p>
 <h2>Introduction</h2>
-<p>This is a project made as a test exercise for automated machine translation which is aiming at automated translation of text in different languages.</p>
+<p>This is a fork project from the Automated-Translation-Tries project, made as a test exercise for automated machine translation (aiming at automated translation of text in different languages).</p>
 <p>For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</p>
 <h3>Background</h3>
 <p>An <em>n-gram</em> refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of this sentence include: <code> "our neighbor ," "neighbor , who" ", who moved" ... ", came by" "came by ." </code></p>
@@ -126,7 +104,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h2>Project structure</h2>
 <p>This is a Netbeans 8.0.2 project, and its' top-level structure is as follows:</p>
 <blockquote class="doxtable">
-<p>./doc/ ./inc/ ./src/ ./nbproject/ ./LICENSE ./Makefile ./README.md </p>
+<p>./doc/ ./inc/ ./src/ ./nbproject/ ./doxygen/ ./LICENSE ./Makefile ./README.md ./Doxyfile </p>
 </blockquote>
 <p>Further, we give a few explanations of the structure above</p>
 <ul>
@@ -135,15 +113,20 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>inc/ - stores the C++ header files used in the implementation</li>
 <li>src/ - stores the C++ source files used in the implementation</li>
 <li>nbproject/ - stores the Netbeans project data</li>
+<li>doxygen/ - stores the Doxygen-generated code documentation</li>
 <li>LICENSE - the code license (GPL 2.0)</li>
 <li>Makefile - the Makefile used to build the project</li>
 <li><a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a> - this document</li>
+<li>Doxyfile - the Doxygen configuration file</li>
 </ul>
 </li>
 </ul>
 <h2>Supported platforms</h2>
-<p>Currently there is only one supported platform: &lt;big&gt;Linux&lt;/big&gt;<br />
- This project was built and tested on Ubuntu 14.10 64-bit.</p>
+<p>Currently there are two supported platforms:</p><ul>
+<li>&lt;big&gt;Linux&lt;/big&gt; - Complete functionality.</li>
+<li>&lt;big&gt;Mac OS&lt;/big&gt; - Limited by inability to collect memory-usage statistics.</li>
+</ul>
+<p>This project was built and tested on Ubuntu 14.10 64-bit and OS X Yosemite, version 10.10.4.</p>
 <h2>Building the project</h2>
 <p>This project can be build in two ways:</p>
 <ul>
@@ -158,20 +141,20 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </li>
 </ul>
 <p>In order to clean the project from the command line run <em>"make clean"</em></p>
-<h2>Usage</h2>
-<p>In order to get the program usage information please run <em>./automated-translation-tries</em> from the command line, the output of the program is supposed to be as follows: </p><pre class="fragment">    USAGE:  ------------------------------------------------------------------ 
-    USAGE: |                    Automated Translation Tires         :)\___/(: |
+<p>One can limit the debug-level printing of the code by defining the <em>LOGER_MAX_LEVEL<em> compile-time macros. The possible range of values, with increasing logging level is: Logger::USAGE, Logger::RESULT, Logger::ERROR, Logger::WARNING, Logger::INFO, Logger::DEBUG, Logger::DEBUG1, Logger::DEBUG2</em></em></p>
+<p><em><em></p><h2>Usage</h2>
+<p></em></em></p>
+<p><em><em> In order to get the program usage information please run <em>./automated-translation-tries</em> from the command line, the output of the program is supposed to be as follows: </p><pre class="fragment">    USAGE:  ------------------------------------------------------------------ 
+    USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
     USAGE: |                     Test software version 1.1          {(@)v(@)} |
     USAGE: |                                                        {|~- -~|} |
-    USAGE: |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^</pre> </div></div><!-- contents -->
-</div><!-- doc-content -->
+    USAGE: |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^</pre><p> </em></em></p>
+</div></div><!-- contents -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

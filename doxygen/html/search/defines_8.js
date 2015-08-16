@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['n_5fgram_5fparam',['N_GRAM_PARAM',['../_globals_8hpp.html#a5f3826bb70e91d12acce8d68c346c07b',1,'Globals.hpp']]]
+  ['progress_5fupdate_5fperiod',['PROGRESS_UPDATE_PERIOD',['../_logger_8hpp.html#a6a29bf797538ea7ba250e7ccbc0f9082',1,'Logger.hpp']]]
 ];

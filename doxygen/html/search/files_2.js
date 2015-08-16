@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['globals_2ehpp',['Globals.hpp',['../_globals_8hpp.html',1,'']]]
+  ['exceptions_2ehpp',['Exceptions.hpp',['../_exceptions_8hpp.html',1,'']]]
 ];

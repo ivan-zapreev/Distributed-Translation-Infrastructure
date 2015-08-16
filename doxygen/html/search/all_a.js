@@ -1,9 +1,22 @@
 var searchData=
 [
-  ['n_5fgram_5fparam',['N_GRAM_PARAM',['../_globals_8hpp.html#a5f3826bb70e91d12acce8d68c346c07b',1,'Globals.hpp']]],
-  ['ngrambuilder',['NGramBuilder',['../classtries_1_1ngrams_1_1_n_gram_builder.html#a694f8a3a7e8fc07aefe5fba45ff4f31f',1,'tries::ngrams::NGramBuilder']]],
-  ['ngrambuilder',['NGramBuilder',['../classtries_1_1ngrams_1_1_n_gram_builder.html',1,'tries::ngrams']]],
-  ['ngrambuilder_2ecpp',['NGramBuilder.cpp',['../_n_gram_builder_8cpp.html',1,'']]],
-  ['ngrambuilder_2ehpp',['NGramBuilder.hpp',['../_n_gram_builder_8hpp.html',1,'']]],
-  ['ngrambuilder_2eo_2ed',['NGramBuilder.o.d',['../_n_gram_builder_8o_8d.html',1,'']]]
+  ['main',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]],
+  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
+  ['main_2eo_2ed',['main.o.d',['../_release-_mac_os_2_g_n_u-_mac_o_s_x_2src_2main_8o_8d.html',1,'']]],
+  ['main_2eo_2ed',['main.o.d',['../_release_____mac_os___2_g_n_u-_mac_o_s_x_2src_2main_8o_8d.html',1,'']]],
+  ['max_5fngram_5flevel',['MAX_NGRAM_LEVEL',['../namespaceuva_1_1smt_1_1tries.html#ad08b42e58134f38a6aa8af8591035ab9',1,'uva::smt::tries']]],
+  ['max_5fnum_5ftokens_5fngram_5fstr',['MAX_NUM_TOKENS_NGRAM_STR',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#afd40395f976805a4835bc0b03e26cee2',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['max_5fsize',['max_size',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#ac749bcedee3cc0a29834feeafeca1b6a',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
+  ['mgram_5fidx_5foffset',['MGRAM_IDX_OFFSET',['../classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ab12bd7cfd0b00da7c134d8d6b1694346',1,'uva::smt::tries::ContextMultiHashMapTrie::MGRAM_IDX_OFFSET()'],['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#a7efd4616e7d1f51db0cc4cb50f11345e',1,'uva::smt::tries::MultiHashMapTrie::MGRAM_IDX_OFFSET()']]],
+  ['min_5fknown_5fword_5fhash',['MIN_KNOWN_WORD_HASH',['../namespaceuva_1_1smt_1_1tries.html#ad6efe97228b9a8b89f2f0d2a7a2c7ddb',1,'uva::smt::tries']]],
+  ['min_5fngram_5flevel',['MIN_NGRAM_LEVEL',['../namespaceuva_1_1smt_1_1tries.html#aaa0549945bf349e9796dcffd7824ffa1',1,'uva::smt::tries']]],
+  ['min_5fnum_5ftokens_5fngram_5fstr',['MIN_NUM_TOKENS_NGRAM_STR',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a6ab807fa7fd956beabb58d8f275050d0',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['minimal_5flog_5fprob_5fweight',['MINIMAL_LOG_PROB_WEIGHT',['../namespaceuva_1_1smt_1_1tries.html#a62d201889d19f6e5bad70de0b101ce75',1,'uva::smt::tries']]],
+  ['minimum_5fcontext_5flevel',['MINIMUM_CONTEXT_LEVEL',['../namespaceuva_1_1smt_1_1tries.html#a1b0ab780d7a692242e66beb30e92dfab',1,'uva::smt::tries']]],
+  ['monitore_5fcollisions',['MONITORE_COLLISIONS',['../_a_hash_map_trie_8hpp.html#a02f1c02ee83e5e1e409ae82a39fa2b86',1,'AHashMapTrie.hpp']]],
+  ['multihashmaptrie',['MultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html',1,'uva::smt::tries']]],
+  ['multihashmaptrie',['MultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#a33184c09e7b63bcdbfad0443492cab93',1,'uva::smt::tries::MultiHashMapTrie']]],
+  ['multihashmaptrie_2ecpp',['MultiHashMapTrie.cpp',['../_multi_hash_map_trie_8cpp.html',1,'']]],
+  ['multihashmaptrie_2ehpp',['MultiHashMapTrie.hpp',['../_multi_hash_map_trie_8hpp.html',1,'']]],
+  ['multihashmaptrie_2eo_2ed',['MultiHashMapTrie.o.d',['../_multi_hash_map_trie_8o_8d.html',1,'']]]
 ];

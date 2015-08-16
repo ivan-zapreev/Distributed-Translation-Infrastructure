@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hashmaptrie',['HashMapTrie',['../classtries_1_1_hash_map_trie.html',1,'tries']]]
+  ['exception',['Exception',['../classuva_1_1smt_1_1exceptions_1_1_exception.html',1,'uva::smt::exceptions']]]
 ];

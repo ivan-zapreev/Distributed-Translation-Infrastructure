@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: inc/Exceptions.hpp Source File</title>
+<title>My Project: inc/Exceptions.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,21 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('_exceptions_8hpp_source.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -103,6 +80,11 @@ $(document).ready(function(){initNavTree('_exceptions_8hpp_source.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">Exceptions.hpp</div>  </div>
@@ -140,54 +122,58 @@ $(document).ready(function(){initNavTree('_exceptions_8hpp_source.html','');});
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_exception.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_exception.html">Exception</a> : <span class="keyword">public</span> exception {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">//The error message to be stored</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">string</span> msg;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_exception.html#ac541ead5c20548813d7dea73c28c7fab">   43</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_exception.html#ac541ead5c20548813d7dea73c28c7fab">Exception</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * message) : exception(), msg(message) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_exception.html#aad1be11dc85840f8a7fac731057ab715">   46</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_exception.html#aad1be11dc85840f8a7fac731057ab715">Exception</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;message) : exception(), msg(message) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_exception.html#a3623ce1b8b6435348d98c415b7a40d44">   53</a></span>&#160;    <a class="code" href="class_exception.html#a3623ce1b8b6435348d98c415b7a40d44">Exception</a>(<a class="code" href="class_exception.html">Exception</a> <span class="keyword">const</span> &amp; other) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        this-&gt;msg = other.msg;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="class_exception.html#af7b8adbf8470f04f2bd6313af3b877de">   61</a></span>&#160;    <span class="keywordtype">string</span> <span class="keyword">const</span> &amp; <a class="code" href="class_exception.html#af7b8adbf8470f04f2bd6313af3b877de">getMessage</a>() <span class="keyword">const</span> throw () {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">return</span> msg;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="class_exception.html#ad1ba411de295ef2eeb02ba26284a829a">   68</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_exception.html#ad1ba411de295ef2eeb02ba26284a829a">~Exception</a>() throw (){}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_exception.html#a78154a31544a609cbd226d32574f52cd">   75</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="class_exception.html#a78154a31544a609cbd226d32574f52cd">what</a>() <span class="keyword">const</span> throw (){</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;       <span class="keywordflow">return</span> msg.c_str();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* EXCEPTIONS_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="ttc" id="class_exception_html"><div class="ttname"><a href="class_exception.html">Exception</a></div><div class="ttdoc">This is an application exception class that is capable of storing an error message. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00036">Exceptions.hpp:36</a></div></div>
-<div class="ttc" id="class_exception_html_a78154a31544a609cbd226d32574f52cd"><div class="ttname"><a href="class_exception.html#a78154a31544a609cbd226d32574f52cd">Exception::what</a></div><div class="ttdeci">virtual const char * what() const </div><div class="ttdoc">Returns a pointer to the (constant) error description. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00075">Exceptions.hpp:75</a></div></div>
-<div class="ttc" id="class_exception_html_ac541ead5c20548813d7dea73c28c7fab"><div class="ttname"><a href="class_exception.html#ac541ead5c20548813d7dea73c28c7fab">Exception::Exception</a></div><div class="ttdeci">Exception(const char *message)</div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00043">Exceptions.hpp:43</a></div></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1exceptions.html">   35</a></span>&#160;        <span class="keyword">namespace </span>exceptions {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html">   40</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html">Exception</a> : <span class="keyword">public</span> exception {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="comment">//The error message to be stored</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordtype">string</span> msg;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a42e50b1d8a373992eb38adca8b5da8c0">   47</a></span>&#160;                <span class="keyword">explicit</span> <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a42e50b1d8a373992eb38adca8b5da8c0">Exception</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * message) : exception(), msg(message) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a717a591b94ecbbc7f17e39b60fca3854">   50</a></span>&#160;                <span class="keyword">explicit</span> <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a717a591b94ecbbc7f17e39b60fca3854">Exception</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;message) : exception(), msg(message) {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a428f19e9377f8658e23f3a58251f18f4">   57</a></span>&#160;                <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a428f19e9377f8658e23f3a58251f18f4">Exception</a>(<a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html">Exception</a> <span class="keyword">const</span> &amp; other) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    this-&gt;msg = other.msg;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#ad9041cffc8d5f7ca1c3f4bc9c857462c">   65</a></span>&#160;                <span class="keywordtype">string</span> <span class="keyword">const</span> &amp; <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#ad9041cffc8d5f7ca1c3f4bc9c857462c">getMessage</a>() <span class="keyword">const</span> throw () {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="keywordflow">return</span> msg;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a1ddbe2ffb25aca9ef031f6584af60e23">   72</a></span>&#160;                <span class="keyword">virtual</span> <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a1ddbe2ffb25aca9ef031f6584af60e23">~Exception</a>() throw () {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a0ea6aae278f6b04d4d99a0b73befe5ee">   80</a></span>&#160;                <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a0ea6aae278f6b04d4d99a0b73befe5ee">what</a>() <span class="keyword">const</span> throw () {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="keywordflow">return</span> msg.c_str();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            };</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* EXCEPTIONS_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html">uva::smt::exceptions::Exception</a></div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:40</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_ad9041cffc8d5f7ca1c3f4bc9c857462c"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#ad9041cffc8d5f7ca1c3f4bc9c857462c">uva::smt::exceptions::Exception::getMessage</a></div><div class="ttdeci">string const &amp; getMessage() const </div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:65</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_a42e50b1d8a373992eb38adca8b5da8c0"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a42e50b1d8a373992eb38adca8b5da8c0">uva::smt::exceptions::Exception::Exception</a></div><div class="ttdeci">Exception(const char *message)</div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:47</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_a0ea6aae278f6b04d4d99a0b73befe5ee"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a0ea6aae278f6b04d4d99a0b73befe5ee">uva::smt::exceptions::Exception::what</a></div><div class="ttdeci">virtual const char * what() const </div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:80</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
-<div class="ttc" id="class_exception_html_ad1ba411de295ef2eeb02ba26284a829a"><div class="ttname"><a href="class_exception.html#ad1ba411de295ef2eeb02ba26284a829a">Exception::~Exception</a></div><div class="ttdeci">virtual ~Exception()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00068">Exceptions.hpp:68</a></div></div>
-<div class="ttc" id="class_exception_html_aad1be11dc85840f8a7fac731057ab715"><div class="ttname"><a href="class_exception.html#aad1be11dc85840f8a7fac731057ab715">Exception::Exception</a></div><div class="ttdeci">Exception(const string &amp;message)</div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00046">Exceptions.hpp:46</a></div></div>
-<div class="ttc" id="class_exception_html_a3623ce1b8b6435348d98c415b7a40d44"><div class="ttname"><a href="class_exception.html#a3623ce1b8b6435348d98c415b7a40d44">Exception::Exception</a></div><div class="ttdeci">Exception(Exception const &amp;other)</div><div class="ttdoc">The copy constructor. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00053">Exceptions.hpp:53</a></div></div>
-<div class="ttc" id="class_exception_html_af7b8adbf8470f04f2bd6313af3b877de"><div class="ttname"><a href="class_exception.html#af7b8adbf8470f04f2bd6313af3b877de">Exception::getMessage</a></div><div class="ttdeci">string const &amp; getMessage() const </div><div class="ttdoc">This method returns the stored message. </div><div class="ttdef"><b>Definition:</b> <a href="_exceptions_8hpp_source.html#l00061">Exceptions.hpp:61</a></div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_a717a591b94ecbbc7f17e39b60fca3854"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a717a591b94ecbbc7f17e39b60fca3854">uva::smt::exceptions::Exception::Exception</a></div><div class="ttdeci">Exception(const string &amp;message)</div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:50</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_a1ddbe2ffb25aca9ef031f6584af60e23"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a1ddbe2ffb25aca9ef031f6584af60e23">uva::smt::exceptions::Exception::~Exception</a></div><div class="ttdeci">virtual ~Exception()</div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:72</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1exceptions_1_1_exception_html_a428f19e9377f8658e23f3a58251f18f4"><div class="ttname"><a href="classuva_1_1smt_1_1exceptions_1_1_exception.html#a428f19e9377f8658e23f3a58251f18f4">uva::smt::exceptions::Exception::Exception</a></div><div class="ttdeci">Exception(Exception const &amp;other)</div><div class="ttdef"><b>Definition:</b> Exceptions.hpp:57</div></div>
+<div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> AHashMapTrie.hpp:58</div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="_exceptions_8hpp.html">Exceptions.hpp</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

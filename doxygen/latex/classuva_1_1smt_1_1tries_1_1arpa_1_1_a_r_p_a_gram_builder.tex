@@ -1,0 +1,123 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:arpa\+:\+:A\+R\+P\+A\+Gram\+Builder Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+
+
+{\ttfamily \#include $<$A\+R\+P\+A\+Gram\+Builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aabc607c9ba43ff636456b23cb8236e60}{A\+R\+P\+A\+Gram\+Builder} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} level, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1arpa_a16805e23db5ab5a826e46ae4a59a0a71}{T\+Add\+Gram\+Funct} add\+Garm\+Func, const char delim)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_af505ce38243a3e39fbc6b4d9ee83368f}{process\+String} (const string \&data)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ab65614501c700f5654ddd3397050e671}{$\sim$\+A\+R\+P\+A\+Gram\+Builder} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ad9de06a743ac014b818df81d2bec0267}{A\+R\+P\+A\+Gram\+Builder} (const \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}{A\+R\+P\+A\+Gram\+Builder} \&orig)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1arpa_a16805e23db5ab5a826e46ae4a59a0a71}{T\+Add\+Gram\+Funct} \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aff22fce8a9b8b5f00e5d9fcad4dd218c}{\+\_\+add\+Garm\+Func}
+\item 
+const char \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a21ec180396f89d3a252fdd750217c2b7}{\+\_\+delim}
+\item 
+const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a333c47efee11f1812378325732d0e43c}{\+\_\+level}
+\item 
+\hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{S\+Back\+Off\+N\+Gram} \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_adcf89e815cdffc79ada87f33d8ebfb74}{\+\_\+ngram}
+\item 
+const uint \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a6ab807fa7fd956beabb58d8f275050d0}{M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}
+\item 
+const uint \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_afd40395f976805a4835bc0b03e26cee2}{M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aabc607c9ba43ff636456b23cb8236e60}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!A\+R\+P\+A\+Gram\+Builder@{A\+R\+P\+A\+Gram\+Builder}}
+\index{A\+R\+P\+A\+Gram\+Builder@{A\+R\+P\+A\+Gram\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{A\+R\+P\+A\+Gram\+Builder(const T\+Model\+Level level, T\+Add\+Gram\+Funct add\+Garm\+Func, const char delim)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+A\+R\+P\+A\+Gram\+Builder (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level, }
+\item[{{\bf T\+Add\+Gram\+Funct}}]{add\+Garm\+Func, }
+\item[{const char}]{delim}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aabc607c9ba43ff636456b23cb8236e60}
+The constructor to be used in order to instantiate a N-\/\+Gram builder 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the N-\/grams to be processed \\
+\hline
+{\em add\+Garm\+Func} & the strategy for adding the N-\/grams \\
+\hline
+{\em delim} & the delimiter for the N-\/gram string \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ab65614501c700f5654ddd3397050e671}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!````~A\+R\+P\+A\+Gram\+Builder@{$\sim$\+A\+R\+P\+A\+Gram\+Builder}}
+\index{````~A\+R\+P\+A\+Gram\+Builder@{$\sim$\+A\+R\+P\+A\+Gram\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{$\sim$\+A\+R\+P\+A\+Gram\+Builder()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::$\sim$\+A\+R\+P\+A\+Gram\+Builder (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ab65614501c700f5654ddd3397050e671}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ad9de06a743ac014b818df81d2bec0267}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!A\+R\+P\+A\+Gram\+Builder@{A\+R\+P\+A\+Gram\+Builder}}
+\index{A\+R\+P\+A\+Gram\+Builder@{A\+R\+P\+A\+Gram\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{A\+R\+P\+A\+Gram\+Builder(const A\+R\+P\+A\+Gram\+Builder \&orig)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+A\+R\+P\+A\+Gram\+Builder (
+\begin{DoxyParamCaption}
+\item[{const {\bf A\+R\+P\+A\+Gram\+Builder} \&}]{orig}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_ad9de06a743ac014b818df81d2bec0267}
+The copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em orig} & the other builder to copy \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_af505ce38243a3e39fbc6b4d9ee83368f}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!process\+String@{process\+String}}
+\index{process\+String@{process\+String}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{process\+String(const string \&data)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::process\+String (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{data}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_af505ce38243a3e39fbc6b4d9ee83368f}
+This pure virtual method is supposed to parse the N-\/\+Gram string from the A\+R\+P\+A file format of a Back-\/\+Off language model and then add the obtained data to the Trie. This method has a default implementation that should work for N-\/grams with level $>$ M\+I\+N\+\_\+\+N\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L and level $<$ N 
+\begin{DoxyParams}{Parameters}
+{\em data} & the string to process, has to be space a separated sequence of tokens \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns true if the provided line is N\+O\+T recognized as the N-\/\+Gram of the specified level. 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aff22fce8a9b8b5f00e5d9fcad4dd218c}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!\+\_\+add\+Garm\+Func@{\+\_\+add\+Garm\+Func}}
+\index{\+\_\+add\+Garm\+Func@{\+\_\+add\+Garm\+Func}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{\+\_\+add\+Garm\+Func}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Add\+Gram\+Funct} uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+\_\+add\+Garm\+Func\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_aff22fce8a9b8b5f00e5d9fcad4dd218c}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a21ec180396f89d3a252fdd750217c2b7}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!\+\_\+delim@{\+\_\+delim}}
+\index{\+\_\+delim@{\+\_\+delim}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{\+\_\+delim}]{\setlength{\rightskip}{0pt plus 5cm}const char uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+\_\+delim\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a21ec180396f89d3a252fdd750217c2b7}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a333c47efee11f1812378325732d0e43c}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!\+\_\+level@{\+\_\+level}}
+\index{\+\_\+level@{\+\_\+level}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{\+\_\+level}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf T\+Model\+Level} uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+\_\+level\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a333c47efee11f1812378325732d0e43c}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_adcf89e815cdffc79ada87f33d8ebfb74}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!\+\_\+ngram@{\+\_\+ngram}}
+\index{\+\_\+ngram@{\+\_\+ngram}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{\+\_\+ngram}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\+Back\+Off\+N\+Gram} uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+\_\+ngram\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_adcf89e815cdffc79ada87f33d8ebfb74}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_afd40395f976805a4835bc0b03e26cee2}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R@{M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}}
+\index{M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R@{M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}const uint uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+M\+A\+X\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_afd40395f976805a4835bc0b03e26cee2}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a6ab807fa7fd956beabb58d8f275050d0}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}!M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R@{M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}}
+\index{M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R@{M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder}}
+\subsubsection[{M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}const uint uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+::\+M\+I\+N\+\_\+\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\+\_\+\+N\+G\+R\+A\+M\+\_\+\+S\+T\+R\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_a6ab807fa7fd956beabb58d8f275050d0}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_a_r_p_a_gram_builder_8hpp}{A\+R\+P\+A\+Gram\+Builder.\+hpp}\item 
+src/\hyperlink{_a_r_p_a_gram_builder_8cpp}{A\+R\+P\+A\+Gram\+Builder.\+cpp}\end{DoxyCompactItemize}

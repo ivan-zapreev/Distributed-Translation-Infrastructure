@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['exception',['Exception',['../class_exception.html#ac541ead5c20548813d7dea73c28c7fab',1,'Exception::Exception(const char *message)'],['../class_exception.html#aad1be11dc85840f8a7fac731057ab715',1,'Exception::Exception(const string &amp;message)'],['../class_exception.html#a3623ce1b8b6435348d98c415b7a40d44',1,'Exception::Exception(Exception const &amp;other)']]]
+  ['exception',['Exception',['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a42e50b1d8a373992eb38adca8b5da8c0',1,'uva::smt::exceptions::Exception::Exception(const char *message)'],['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a717a591b94ecbbc7f17e39b60fca3854',1,'uva::smt::exceptions::Exception::Exception(const string &amp;message)'],['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a428f19e9377f8658e23f3a58251f18f4',1,'uva::smt::exceptions::Exception::Exception(Exception const &amp;other)']]]
 ];

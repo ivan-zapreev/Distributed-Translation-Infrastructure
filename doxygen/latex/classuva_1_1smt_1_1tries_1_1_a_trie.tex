@@ -1,0 +1,145 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:A\+Trie$<$ N $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_a_trie}\index{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$@{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}}
+
+
+{\ttfamily \#include $<$A\+Trie.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:A\+Trie$<$ N $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.007169cm]{classuva_1_1smt_1_1tries_1_1_a_trie}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a642f48565e195a41a768b2cfa247735a}{pre\+Allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})=0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_af184dbb0b095d24c76f79c7da6479eda}{add1\+Gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{S\+Back\+Off\+N\+Gram} \&o\+Gram)=0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_acf62fc322ece5ec01ca00e96e17eb9ef}{add\+M\+Gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{S\+Back\+Off\+N\+Gram} \&m\+Gram)=0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a240c090a5651e74304cf37b131ca9741}{add\+N\+Gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{S\+Back\+Off\+N\+Gram} \&n\+Gram)=0
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a3b2fa839686009a777f4ffbd12f1284f}{get\+N\+Gram\+Level} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a86f8301bb7a9e7a232f16bcd000062b2}{query\+N\+Gram} (const vector$<$ string $>$ \&ngram, \hyperlink{structuva_1_1smt_1_1tries_1_1_s_prob_result}{S\+Prob\+Result} \&result)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Model\+Level N$>$class uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}
+
+This is a common abstract class for all possible Trie implementations The purpose of having this as a template class is performance optimization. It is a template class that has two template parameters\+: 
+\begin{DoxyParams}{Parameters}
+{\em N} & -\/ the maximum level of the considered N-\/gram, i.\+e. the N value \\
+\hline
+{\em do\+Cache} & -\/ the indicative flag that asks the child class to, if possible, cache the queries. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_af184dbb0b095d24c76f79c7da6479eda}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!add1\+Gram@{add1\+Gram}}
+\index{add1\+Gram@{add1\+Gram}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{add1\+Gram(const S\+Back\+Off\+N\+Gram \&o\+Gram)=0}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::add1\+Gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf S\+Back\+Off\+N\+Gram} \&}]{o\+Gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_af184dbb0b095d24c76f79c7da6479eda}
+This method adds a 1-\/\+Gram (word) to the trie. It it snot guaranteed that the parameter will be checked to be a 1-\/\+Gram! 
+\begin{DoxyParams}{Parameters}
+{\em o\+Gram} & the 1-\/\+Gram data \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_abc5ad6e7f2a260a4cc374bbc332edc5c}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_aa49f2f0ed0d86038fe5efb13e6ee70a5}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_a27f420ad02db97ab648ef27ffb12e688}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_acf62fc322ece5ec01ca00e96e17eb9ef}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!add\+M\+Gram@{add\+M\+Gram}}
+\index{add\+M\+Gram@{add\+M\+Gram}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{add\+M\+Gram(const S\+Back\+Off\+N\+Gram \&m\+Gram)=0}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::add\+M\+Gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf S\+Back\+Off\+N\+Gram} \&}]{m\+Gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_acf62fc322ece5ec01ca00e96e17eb9ef}
+This method adds a M-\/\+Gram (word) to the trie where 1 $<$ M $<$ N 
+\begin{DoxyParams}{Parameters}
+{\em m\+Gram} & the M-\/\+Gram data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & if the level of this M-\/gram is not such that 1 $<$ M $<$ N \\
+\hline
+\end{DoxyExceptions}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_adaf0ff4116ea8c9c0ffe7407841bf8e1}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_aa01609671de94014323015352e03c441}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_a2da8d1cba4cdbab7cc79bcfc4f55117b}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_a240c090a5651e74304cf37b131ca9741}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!add\+N\+Gram@{add\+N\+Gram}}
+\index{add\+N\+Gram@{add\+N\+Gram}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{add\+N\+Gram(const S\+Back\+Off\+N\+Gram \&n\+Gram)=0}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::add\+N\+Gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf S\+Back\+Off\+N\+Gram} \&}]{n\+Gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_a240c090a5651e74304cf37b131ca9741}
+This method adds a N-\/\+Gram (word) to the trie where It it snot guaranteed that the parameter will be checked to be a N-\/\+Gram! 
+\begin{DoxyParams}{Parameters}
+{\em n\+Gram} & the N-\/\+Gram data \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_a2d8c22fa039d475b8b39f06531b58bc7}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_a3ecb4eb51f5163eedcf100ed8b8f0104}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_af9541116f44c985e80f9d1173512fc4f}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_a3b2fa839686009a777f4ffbd12f1284f}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!get\+N\+Gram\+Level@{get\+N\+Gram\+Level}}
+\index{get\+N\+Gram\+Level@{get\+N\+Gram\+Level}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{get\+N\+Gram\+Level() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf T\+Model\+Level} {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::get\+N\+Gram\+Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_a3b2fa839686009a777f4ffbd12f1284f}
+Returns the maximum length of the considered N-\/\+Grams \begin{DoxyReturn}{Returns}
+the maximum length of the considered N-\/\+Grams 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_a642f48565e195a41a768b2cfa247735a}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!pre\+Allocate@{pre\+Allocate}}
+\index{pre\+Allocate@{pre\+Allocate}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{pre\+Allocate(const size\+\_\+t counts[N])=0}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::pre\+Allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+N\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_a642f48565e195a41a768b2cfa247735a}
+This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory 
+\begin{DoxyParams}{Parameters}
+{\em counts} & the array of N-\/\+Gram counts counts\mbox{[}0\mbox{]} is for 1-\/\+Gram \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_a_hash_map_trie_ad867b72350326f464b563fba6727ba5f}{uva\+::smt\+::tries\+::\+A\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_ac744e6f6e63317d1f955ac96d504f724}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_ac7d916356f0ad36d33c0c4722e6459b9}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_a6a40f4047280dedc7f402d6502547b2c}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_a_trie_a86f8301bb7a9e7a232f16bcd000062b2}{}\index{uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}!query\+N\+Gram@{query\+N\+Gram}}
+\index{query\+N\+Gram@{query\+N\+Gram}!uva\+::smt\+::tries\+::\+A\+Trie@{uva\+::smt\+::tries\+::\+A\+Trie}}
+\subsubsection[{query\+N\+Gram(const vector$<$ string $>$ \&ngram, S\+Prob\+Result \&result)=0}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+A\+Trie}$<$ N $>$\+::query\+N\+Gram (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ string $>$ \&}]{ngram, }
+\item[{{\bf S\+Prob\+Result} \&}]{result}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1_a_trie_a86f8301bb7a9e7a232f16bcd000062b2}
+This method will get the N-\/gram in a form of a vector, e.\+g.\+: \mbox{[}word1 word2 word3 word4 word5\mbox{]} and will compute and return the Language Model Probability for it 
+\begin{DoxyParams}{Parameters}
+{\em ngram} & the given N-\/gram vector is expected to have exactly N elements (see the template parameters) \\
+\hline
+{\em result} & the output parameter containing the the result probability and possibly some additional meta data for the decoder. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie_ad861e3027580ea2b78c95b22c43395ee}{uva\+::smt\+::tries\+::\+Context\+Multi\+Hash\+Map\+Trie$<$ N $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie_a6b31b10b19c93ea3e6d08923ee1c0df7}{uva\+::smt\+::tries\+::\+Multi\+Hash\+Map\+Trie$<$ N $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_single_hash_map_trie_ac0a2b8c57ccfd60a8b06ea2116cf8349}{uva\+::smt\+::tries\+::\+Single\+Hash\+Map\+Trie$<$ N $>$}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_a_trie_8hpp}{A\+Trie.\+hpp}\end{DoxyCompactItemize}

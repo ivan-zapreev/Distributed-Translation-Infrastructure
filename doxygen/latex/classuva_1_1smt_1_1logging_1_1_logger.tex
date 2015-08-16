@@ -1,0 +1,196 @@
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger}{}\section{uva\+:\+:smt\+:\+:logging\+:\+:Logger Class Reference}
+\label{classuva_1_1smt_1_1logging_1_1_logger}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+
+
+{\ttfamily \#include $<$Logger.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}{Debug\+Level} \{ \\*
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1ada6ecc276d8dd53e59ea137c7e4e5a8a}{U\+S\+A\+G\+E} = 0, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205}{E\+R\+R\+O\+R} = U\+S\+A\+G\+E + 1, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb}{W\+A\+R\+N\+I\+N\+G} = E\+R\+R\+O\+R + 1, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e}{R\+E\+S\+U\+L\+T} = W\+A\+R\+N\+I\+N\+G + 1, 
+\\*
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1}{I\+N\+F\+O} = R\+E\+S\+U\+L\+T + 1, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70}{D\+E\+B\+U\+G} = I\+N\+F\+O + 1, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8}{D\+E\+B\+U\+G1} = D\+E\+B\+U\+G + 1, 
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265}{D\+E\+B\+U\+G2} = D\+E\+B\+U\+G1 + 1, 
+\\*
+\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa}{D\+E\+B\+U\+G3} = D\+E\+B\+U\+G2 + 1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a3513d7db6ba5a43f59b56e3396712dbb}{$\sim$\+Logger} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static string \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a21c762988e07657298e025a4df2813e3}{get\+Reporting\+Levels} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_af07617f0088beaf25775c94202144548}{set\+Reporting\+Level} (const string level)
+\item 
+static std\+::ostream \& \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a645d1622809b356ec5863d31666fd6fd}{Get} (\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}{Debug\+Level} level)
+\item 
+static std\+::ostream \& \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a9e52f2be59d5ba40107135b313ea1acb}{Get} (\hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}{Debug\+Level} level, const char $\ast$file, const char $\ast$func, const char $\ast$line)
+\item 
+static \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}{Debug\+Level} \& \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a48dbb0863fed63eab9ca2fc50d86bb2a}{Reporting\+Level} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_a93e0d1e9874895360ba8a5019819a253}{start\+Progress\+Bar} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ac99950b42d9cbe17becae3a68f4b0015}{update\+Progress\+Bar} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_ae71f997a95aed7402dbad289f7a0ec9f}{stop\+Progress\+Bar} ()
+\item 
+static bool \hyperlink{classuva_1_1smt_1_1logging_1_1_logger_adc05eba04bec4f3c46414aa6e0dd8610}{is\+Progress\+Bar\+On} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout. 
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!Debug\+Level@{Debug\+Level}}
+\index{Debug\+Level@{Debug\+Level}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{Debug\+Level}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf uva\+::smt\+::logging\+::\+Logger\+::\+Debug\+Level}}\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{U\+S\+A\+G\+E@{U\+S\+A\+G\+E}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!U\+S\+A\+G\+E@{U\+S\+A\+G\+E}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1ada6ecc276d8dd53e59ea137c7e4e5a8a}{}U\+S\+A\+G\+E\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1ada6ecc276d8dd53e59ea137c7e4e5a8a}
+}]\index{E\+R\+R\+O\+R@{E\+R\+R\+O\+R}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!E\+R\+R\+O\+R@{E\+R\+R\+O\+R}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205}{}E\+R\+R\+O\+R\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205}
+}]\index{W\+A\+R\+N\+I\+N\+G@{W\+A\+R\+N\+I\+N\+G}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!W\+A\+R\+N\+I\+N\+G@{W\+A\+R\+N\+I\+N\+G}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb}{}W\+A\+R\+N\+I\+N\+G\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb}
+}]\index{R\+E\+S\+U\+L\+T@{R\+E\+S\+U\+L\+T}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!R\+E\+S\+U\+L\+T@{R\+E\+S\+U\+L\+T}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e}{}R\+E\+S\+U\+L\+T\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e}
+}]\index{I\+N\+F\+O@{I\+N\+F\+O}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!I\+N\+F\+O@{I\+N\+F\+O}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1}{}I\+N\+F\+O\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1}
+}]\index{D\+E\+B\+U\+G@{D\+E\+B\+U\+G}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!D\+E\+B\+U\+G@{D\+E\+B\+U\+G}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70}{}D\+E\+B\+U\+G\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70}
+}]\index{D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8}{}D\+E\+B\+U\+G1\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8}
+}]\index{D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265}{}D\+E\+B\+U\+G2\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265}
+}]\index{D\+E\+B\+U\+G3@{D\+E\+B\+U\+G3}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!D\+E\+B\+U\+G3@{D\+E\+B\+U\+G3}}\item[{\em 
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa}{}D\+E\+B\+U\+G3\label{classuva_1_1smt_1_1logging_1_1_logger_ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a3513d7db6ba5a43f59b56e3396712dbb}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!````~Logger@{$\sim$\+Logger}}
+\index{````~Logger@{$\sim$\+Logger}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{$\sim$\+Logger()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::logging\+::\+Logger\+::$\sim$\+Logger (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a3513d7db6ba5a43f59b56e3396712dbb}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a645d1622809b356ec5863d31666fd6fd}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!Get@{Get}}
+\index{Get@{Get}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{Get(\+Debug\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}static std\+::ostream\& uva\+::smt\+::logging\+::\+Logger\+::\+Get (
+\begin{DoxyParamCaption}
+\item[{{\bf Debug\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a645d1622809b356ec5863d31666fd6fd}
+This methods allows to get the output stream for the given log-\/level 
+\begin{DoxyParams}{Parameters}
+{\em level} & the log level for the messages to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream object 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a9e52f2be59d5ba40107135b313ea1acb}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!Get@{Get}}
+\index{Get@{Get}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{Get(\+Debug\+Level level, const char $\ast$file, const char $\ast$func, const char $\ast$line)}]{\setlength{\rightskip}{0pt plus 5cm}static std\+::ostream\& uva\+::smt\+::logging\+::\+Logger\+::\+Get (
+\begin{DoxyParamCaption}
+\item[{{\bf Debug\+Level}}]{level, }
+\item[{const char $\ast$}]{file, }
+\item[{const char $\ast$}]{func, }
+\item[{const char $\ast$}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a9e52f2be59d5ba40107135b313ea1acb}
+This methods allows to get the output stream for the given log-\/level 
+\begin{DoxyParams}{Parameters}
+{\em level} & the log level for the messages to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream object 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a21c762988e07657298e025a4df2813e3}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!get\+Reporting\+Levels@{get\+Reporting\+Levels}}
+\index{get\+Reporting\+Levels@{get\+Reporting\+Levels}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{get\+Reporting\+Levels()}]{\setlength{\rightskip}{0pt plus 5cm}string uva\+::smt\+::logging\+::\+Logger\+::get\+Reporting\+Levels (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a21c762988e07657298e025a4df2813e3}
+Returns a string containing all the possible reporting levels \begin{DoxyReturn}{Returns}
+a string containing all the possible reporting levels 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_adc05eba04bec4f3c46414aa6e0dd8610}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!is\+Progress\+Bar\+On@{is\+Progress\+Bar\+On}}
+\index{is\+Progress\+Bar\+On@{is\+Progress\+Bar\+On}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{is\+Progress\+Bar\+On()}]{\setlength{\rightskip}{0pt plus 5cm}static bool uva\+::smt\+::logging\+::\+Logger\+::is\+Progress\+Bar\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_adc05eba04bec4f3c46414aa6e0dd8610}
+The function allows to check if the progress bar is running or not \begin{DoxyReturn}{Returns}
+true if the progress bar is running, otherwise case; 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a48dbb0863fed63eab9ca2fc50d86bb2a}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!Reporting\+Level@{Reporting\+Level}}
+\index{Reporting\+Level@{Reporting\+Level}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{Reporting\+Level()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf Debug\+Level}\& uva\+::smt\+::logging\+::\+Logger\+::\+Reporting\+Level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a48dbb0863fed63eab9ca2fc50d86bb2a}
+Returns the reference to the internal log level variable \begin{DoxyReturn}{Returns}
+the reference to the internal log level variable 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_af07617f0088beaf25775c94202144548}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!set\+Reporting\+Level@{set\+Reporting\+Level}}
+\index{set\+Reporting\+Level@{set\+Reporting\+Level}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{set\+Reporting\+Level(const string level)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::logging\+::\+Logger\+::set\+Reporting\+Level (
+\begin{DoxyParamCaption}
+\item[{const string}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_af07617f0088beaf25775c94202144548}
+Allows to set the logging level from a string, if not recognized -\/ reports a warning! 
+\begin{DoxyParams}{Parameters}
+{\em level} & the string level to set \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1logging_1_1_logger_a93e0d1e9874895360ba8a5019819a253}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!start\+Progress\+Bar@{start\+Progress\+Bar}}
+\index{start\+Progress\+Bar@{start\+Progress\+Bar}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{start\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::logging\+::\+Logger\+::start\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_a93e0d1e9874895360ba8a5019819a253}
+The function that start progress bar Works if the current debug level is $<$= I\+N\+F\+O \hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ae71f997a95aed7402dbad289f7a0ec9f}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!stop\+Progress\+Bar@{stop\+Progress\+Bar}}
+\index{stop\+Progress\+Bar@{stop\+Progress\+Bar}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{stop\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::logging\+::\+Logger\+::stop\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_ae71f997a95aed7402dbad289f7a0ec9f}
+The function that stops progress bar Works if the current debug level is $<$= I\+N\+F\+O \hypertarget{classuva_1_1smt_1_1logging_1_1_logger_ac99950b42d9cbe17becae3a68f4b0015}{}\index{uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}!update\+Progress\+Bar@{update\+Progress\+Bar}}
+\index{update\+Progress\+Bar@{update\+Progress\+Bar}!uva\+::smt\+::logging\+::\+Logger@{uva\+::smt\+::logging\+::\+Logger}}
+\subsubsection[{update\+Progress\+Bar()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::logging\+::\+Logger\+::update\+Progress\+Bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1logging_1_1_logger_ac99950b42d9cbe17becae3a68f4b0015}
+The function that updates progress bar Works if the current debug level is $<$= I\+N\+F\+O 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_logger_8hpp}{Logger.\+hpp}\item 
+src/\hyperlink{_logger_8cpp}{Logger.\+cpp}\end{DoxyCompactItemize}

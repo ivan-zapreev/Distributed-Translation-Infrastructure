@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['testfilename',['testFileName',['../struct_t_app_params.html#aa507fd765fbe8670bd55bb79f978a1ba',1,'TAppParams']]],
-  ['trainfilename',['trainFileName',['../struct_t_app_params.html#a063fb4df929a287131eecbaa44b02d90',1,'TAppParams']]]
+  ['expected_5fnumber_5fof_5farguments',['EXPECTED_NUMBER_OF_ARGUMENTS',['../namespaceuva_1_1smt.html#a2914c44c8d1f679d2c8e79543bd915cf',1,'uva::smt']]],
+  ['expected_5fuser_5fnumber_5fof_5farguments',['EXPECTED_USER_NUMBER_OF_ARGUMENTS',['../namespaceuva_1_1smt.html#a3e6faa2f4ff7b75ea9e1d8eca32c45bd',1,'uva::smt']]]
 ];

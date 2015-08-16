@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['a',['A',['../_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121',1,'HashingUtils.hpp']]],
-  ['addngram',['addNGram',['../classtries_1_1_a_trie.html#a4969240cf320883567c59df02efee9bb',1,'tries::ATrie::addNGram()'],['../classtries_1_1_hash_map_trie.html#a163ec5519b0b1842e65fbb77ed53fe1a',1,'tries::HashMapTrie::addNGram()']]],
-  ['addwords',['addWords',['../classtries_1_1_a_trie.html#a337e8d59dcc31c7dc32a9e2c336c1007',1,'tries::ATrie::addWords()'],['../classtries_1_1_hash_map_trie.html#ae1f930f846bf91418bc9f295756506d9',1,'tries::HashMapTrie::addWords()']]],
-  ['atrie',['ATrie',['../classtries_1_1_a_trie.html',1,'tries']]],
-  ['atrie_2ehpp',['ATrie.hpp',['../_a_trie_8hpp.html',1,'']]],
-  ['automated_2dtranslation_2dtries',['Automated-Translation-Tries',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['_5faddgarmfunc',['_addGarmFunc',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aff22fce8a9b8b5f00e5d9fcad4dd218c',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['_5fallocbytes',['_allocBytes',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html#a7364ad54922d2866d881cada8d29017f',1,'uva::smt::tries::alloc::GreedyMemoryStorage']]],
+  ['_5fdelim',['_delim',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a21ec180396f89d3a252fdd750217c2b7',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['_5flevel',['_level',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a333c47efee11f1812378325732d0e43c',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['_5fmanager',['_manager',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#a43f47988468fe19dee3d5adae8574321',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
+  ['_5fmemorybuffers',['_memoryBuffers',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html#a98f1adcd062b5d194b7a4a6053abf539',1,'uva::smt::tries::alloc::GreedyMemoryStorage']]],
+  ['_5fngram',['_ngram',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#adcf89e815cdffc79ada87f33d8ebfb74',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['_5fnumbytes',['_numBytes',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html#ac9ba82a66f68d38f829fdca14cde1dee',1,'uva::smt::tries::alloc::GreedyMemoryStorage']]],
+  ['_5fpbuffer',['_pBuffer',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html#a1c8ad9025dcdf7c396b72cb06a67662a',1,'uva::smt::tries::alloc::GreedyMemoryStorage']]]
 ];

@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: inc/Logger.hpp Source File</title>
+<title>My Project: inc/Logger.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,21 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('_logger_8hpp_source.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -103,6 +80,11 @@ $(document).ready(function(){initNavTree('_logger_8hpp_source.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">Logger.hpp</div>  </div>
@@ -136,104 +118,182 @@ $(document).ready(function(){initNavTree('_logger_8hpp_source.html','');});
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> * Created on July 26, 2015, 3:49 PM</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span>  <span class="comment">// std::cout</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span>   <span class="comment">// std::stringstream</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span>    <span class="comment">// std::vector</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_exceptions_8hpp.html">Exceptions.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef LOGGER_HPP</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define LOGGER_HPP</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span>  <span class="comment">// std::cout</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span>   <span class="comment">// std::stringstream</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span>    <span class="comment">// std::vector</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span>    <span class="comment">// std::clock std::clock_t</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#ifndef LOGGER_HPP</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a46c5641c9a0192f415a133917f57b01a">   38</a></span>&#160;<span class="preprocessor">#define LOGGER_HPP</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//Defines the progress bar update period in CPU seconds</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a6a29bf797538ea7ba250e7ccbc0f9082">   41</a></span>&#160;<span class="preprocessor">#define PROGRESS_UPDATE_PERIOD 0.1</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//The logging macros to be used that allows for compile-time as well as runtime optimization</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#ifndef LOGER_MAX_LEVEL</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ac44bfa0883a8e25bcc4b05d7b5835054">   45</a></span>&#160;<span class="preprocessor">#define LOGER_MAX_LEVEL Logger::DEBUG2</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">   47</a></span>&#160;<span class="preprocessor">#define LOGGER(level)                          \</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">  if (level &gt; LOGER_MAX_LEVEL) ;               \</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">  else if (level &gt; Logger::ReportingLevel()) ; \</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">       else Logger::Get(level)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#afa0bc156f2e1f7056324caf133f33917">   52</a></span>&#160;<span class="preprocessor">#define LOG_USAGE   LOGGER(Logger::USAGE)</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a83517142e41fc0d6262d01fd5d925ff8">   53</a></span>&#160;<span class="preprocessor">#define LOG_RESULT  LOGGER(Logger::RESULT)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">   54</a></span>&#160;<span class="preprocessor">#define LOG_ERROR   LOGGER(Logger::ERROR)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#adf4476a6a4ea6c74231c826e899d7189">   55</a></span>&#160;<span class="preprocessor">#define LOG_WARNING LOGGER(Logger::WARNING)</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">   56</a></span>&#160;<span class="preprocessor">#define LOG_INFO    LOGGER(Logger::INFO)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">   57</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG   LOGGER(Logger::DEBUG)</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a86b83e67e838f35b174e0b09e38c02f4">   58</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG1  LOGGER(Logger::DEBUG1)</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a173816c382b4ec16b3c8ff8d25974b70">   59</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG2  LOGGER(Logger::DEBUG2)</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">   60</a></span>&#160;<span class="preprocessor">#define END_LOG     endl</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_logger.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_logger.html">Logger</a> {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//This enumeration stores all the available logging levels.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932">   70</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932">DebugLevel</a> {</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932afb1bf96f41b282521d9438106ea11bca">   71</a></span>&#160;        USAGE = 0, RESULT = USAGE + 1, ERROR = RESULT + 1, WARNING = ERROR + 1, INFO = WARNING + 1, DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    };</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">//Stores the the string representation of the sthe DebugLeven enumeration elements</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_logger.html#a30344984f1f6d2a5896a52a4788e8b72">   75</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> * DebugLevelStr[];</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="class_logger.html#ae93f62ca3e47716b7120acb032a260f3">   77</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_logger.html#ae93f62ca3e47716b7120acb032a260f3">~Logger</a>(){};</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">static</span> std::ostream&amp; Get(DebugLevel level = INFO);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    </div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_logger.html#a8b07a26d2b5896a239e3b834ff4e9024">   90</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> <a class="code" href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932">DebugLevel</a>&amp; <a class="code" href="class_logger.html#a8b07a26d2b5896a239e3b834ff4e9024">ReportingLevel</a>() { <span class="keywordflow">return</span> currLEvel; };</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> startProgressBar();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> updateProgressBar();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> stopProgressBar();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">//The class constructor, copy constructor and assign operator</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">//are made private as they are not to be used.</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="class_logger.html">Logger</a>(){};</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <a class="code" href="class_logger.html">Logger</a>(<span class="keyword">const</span> <a class="code" href="class_logger.html">Logger</a>&amp;) {};</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="class_logger.html">Logger</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="class_logger.html">Logger</a>&amp;) { <span class="keywordflow">return</span> *<span class="keyword">this</span>;};</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">//Stores the current used message level</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">static</span> DebugLevel currLEvel;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">//Stores the progress bar characters</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> vector&lt;string&gt; progressChars;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">//Stores the number of progress characters</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <span class="keywordtype">int</span> numProgChars;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">//Stores the current progress element idx</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <span class="keywordtype">int</span> currProgCharIdx;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="comment">//Stores the last progress update in CPU seconds</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">double</span> lastProgressUpdate;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;};</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* LOGGER_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="ttc" id="class_logger_html_a8b07a26d2b5896a239e3b834ff4e9024"><div class="ttname"><a href="class_logger.html#a8b07a26d2b5896a239e3b834ff4e9024">Logger::ReportingLevel</a></div><div class="ttdeci">static DebugLevel &amp; ReportingLevel()</div><div class="ttdoc">Returns the reference to the internal log level variable. </div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00090">Logger.hpp:90</a></div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_exceptions_8hpp.html">Exceptions.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1logging.html">   43</a></span>&#160;        <span class="keyword">namespace </span>logging {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="comment">//This Macro is used to convert numerival values to proper strings!</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a0d2f37137ee1fd6ff4a0ef803849dd63">   46</a></span>&#160;<span class="preprocessor">#define SSTR( x ) std::dec &lt;&lt; x</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="comment">//The macros needed to get the line sting for proper printing in cout</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a3428692efe6051ef30016ffde1a9f7bb">   49</a></span>&#160;<span class="preprocessor">#define STRINGIZE(x) STRINGIZE2(x)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a07adf97daf307190d143f32b213f2dad">   50</a></span>&#160;<span class="preprocessor">#define STRINGIZE2(x) #x</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#aa627383e16ea66813a5245995ee6671f">   51</a></span>&#160;<span class="preprocessor">#define LINE_STRING STRINGIZE(__LINE__)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">//Defines the progress bar update period in CPU seconds</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a6a29bf797538ea7ba250e7ccbc0f9082">   54</a></span>&#160;<span class="preprocessor">#define PROGRESS_UPDATE_PERIOD 0.05</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="comment">//The logging macros to be used that allows for compile-time as well as runtime optimization</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#ifndef LOGER_MAX_LEVEL</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ac44bfa0883a8e25bcc4b05d7b5835054">   58</a></span>&#160;<span class="preprocessor">#define LOGER_MAX_LEVEL Logger::INFO</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a8909731db6798bb18ac697c179b4dedd">   61</a></span>&#160;<span class="preprocessor">#define LOGGER(level)                          \</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">  if (level &gt; LOGER_MAX_LEVEL) ;               \</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">  else if (level &gt; Logger::ReportingLevel()) ; \</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">       else Logger::Get(level)</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ad9ce886ce630e6c09c7032ed4c56ce23">   67</a></span>&#160;<span class="preprocessor">#define LOGGER_DEBUG(level)                    \</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">  if (level &gt; LOGER_MAX_LEVEL) ;               \</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">  else if (level &gt; Logger::ReportingLevel()) ; \</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">       else Logger::Get(level, __FILE__, __FUNCTION__, LINE_STRING)</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="comment">//The Macro commands to be used for logging data with different log levels,</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="comment">//For example, to log a warning one can use:</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="comment">//      LOG_WARNING &lt;&lt; &quot;This is a warning message!&quot; &lt;&lt; END_LOG;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="comment">//Here, the END_LOG is optional and is currently used for a new line only.</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#afa0bc156f2e1f7056324caf133f33917">   76</a></span>&#160;<span class="preprocessor">#define LOG_USAGE   LOGGER(Logger::USAGE)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a83517142e41fc0d6262d01fd5d925ff8">   77</a></span>&#160;<span class="preprocessor">#define LOG_RESULT  LOGGER(Logger::RESULT)</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">   78</a></span>&#160;<span class="preprocessor">#define LOG_ERROR   LOGGER(Logger::ERROR)</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#adf4476a6a4ea6c74231c826e899d7189">   79</a></span>&#160;<span class="preprocessor">#define LOG_WARNING LOGGER(Logger::WARNING)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">   80</a></span>&#160;<span class="preprocessor">#define LOG_INFO    LOGGER(Logger::INFO)</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">   81</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG   LOGGER_DEBUG(Logger::DEBUG)</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a86b83e67e838f35b174e0b09e38c02f4">   82</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG1  LOGGER_DEBUG(Logger::DEBUG1)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a173816c382b4ec16b3c8ff8d25974b70">   83</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG2  LOGGER_DEBUG(Logger::DEBUG2)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ab1a4bdfb9a07ba0fc565aa7cef8d8033">   84</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG3  LOGGER_DEBUG(Logger::DEBUG3)</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">   85</a></span>&#160;<span class="preprocessor">#define END_LOG     endl</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="comment">//The string representation values for debug levels</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a2e2e195d6efc14c993a50401cbef63f9">   89</a></span>&#160;<span class="preprocessor">#define USAGE_PARAM_VALUE &quot;USAGE&quot;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a496c9e777737a9f87ed4b3c1d558bf4c">   90</a></span>&#160;<span class="preprocessor">#define ERROR_PARAM_VALUE &quot;ERROR&quot;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a8490160ad5cabd466d371e0dcdd5a15e">   91</a></span>&#160;<span class="preprocessor">#define WARNING_PARAM_VALUE &quot;WARNING&quot;</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ab0b859af554a2a951c6beee845c34777">   92</a></span>&#160;<span class="preprocessor">#define RESULT_PARAM_VALUE &quot;RESULT&quot;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a71979fc65a21e2bf27f0df1f7c9d4721">   93</a></span>&#160;<span class="preprocessor">#define INFO_PARAM_VALUE &quot;INFO&quot;</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#ab433fe232979981ca13d4abc88018217">   94</a></span>&#160;<span class="preprocessor">#define DEBUG_PARAM_VALUE &quot;DEBUG&quot;</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#adf15fa14513d5726dc604a148ea51cb8">   95</a></span>&#160;<span class="preprocessor">#define DEBUG1_PARAM_VALUE &quot;DEBUG1&quot;</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#af4ae2cfc470ee4127ae7e9f64fc8aabd">   96</a></span>&#160;<span class="preprocessor">#define DEBUG2_PARAM_VALUE &quot;DEBUG2&quot;</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="_logger_8hpp.html#a12e35d7952c6de07f8c3a66247c2c787">   97</a></span>&#160;<span class="preprocessor">#define DEBUG3_PARAM_VALUE &quot;DEBUG3&quot;</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html">  103</a></span>&#160;            <span class="keyword">class </span><a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html">Logger</a> {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="comment">//This enumeration stores all the available logging levels.</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">  108</a></span>&#160;                <span class="keyword">enum</span> <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> {</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb">  109</a></span>&#160;                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1,</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa">  110</a></span>&#160;                    DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                };</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#a3513d7db6ba5a43f59b56e3396712dbb">  113</a></span>&#160;                <span class="keyword">virtual</span> <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#a3513d7db6ba5a43f59b56e3396712dbb">~Logger</a>() {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                };</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">string</span> getReportingLevels();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">void</span> setReportingLevel(<span class="keyword">const</span> <span class="keywordtype">string</span> level);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#a645d1622809b356ec5863d31666fd6fd">  133</a></span>&#160;                <span class="keyword">static</span> <span class="keyword">inline</span> std::ostream&amp; <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#a645d1622809b356ec5863d31666fd6fd">Get</a>(<a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> level) {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                    <span class="keywordflow">return</span> cout &lt;&lt; _debugLevelStr[level] &lt;&lt; <span class="stringliteral">&quot;:\t&quot;</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                }</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#a9e52f2be59d5ba40107135b313ea1acb">  142</a></span>&#160;                <span class="keyword">static</span> <span class="keyword">inline</span> std::ostream&amp; <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#a9e52f2be59d5ba40107135b313ea1acb">Get</a>(<a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> level, <span class="keyword">const</span> <span class="keywordtype">char</span> * file, <span class="keyword">const</span> <span class="keywordtype">char</span> * func, <span class="keyword">const</span> <span class="keywordtype">char</span> * line) {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    <span class="keywordflow">return</span> cout &lt;&lt; _debugLevelStr[level] &lt;&lt; <span class="stringliteral">&quot; \t&lt;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;::&quot;</span> &lt;&lt; func &lt;&lt; <span class="stringliteral">&quot;(...):&quot;</span> &lt;&lt; line &lt;&lt; <span class="stringliteral">&quot;&gt;:\t&quot;</span>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#a48dbb0863fed63eab9ca2fc50d86bb2a">  150</a></span>&#160;                <span class="keyword">static</span> <span class="keyword">inline</span> <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a>&amp; <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#a48dbb0863fed63eab9ca2fc50d86bb2a">ReportingLevel</a>() {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                    <span class="keywordflow">return</span> currLEvel;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                };</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">void</span> startProgressBar();</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">void</span> updateProgressBar();</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">void</span> stopProgressBar();</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classuva_1_1smt_1_1logging_1_1_logger.html#adc05eba04bec4f3c46414aa6e0dd8610">  176</a></span>&#160;                <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html#adc05eba04bec4f3c46414aa6e0dd8610">isProgressBarOn</a>() {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                    <span class="keywordflow">return</span> isPBOn;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                };</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                <span class="comment">//The class constructor, copy constructor and assign operator</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                <span class="comment">//are made private as they are not to be used.</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                <span class="comment">//Stores the the string representation of the the DebugLevel enumeration elements</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> * _debugLevelStr[];</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="comment">//Stores the flag indicating if the progress bar is running or not</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">bool</span> isPBOn;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <span class="comment">//Stores the progress begin time</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                <span class="keyword">static</span> clock_t beginTime;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                <span class="comment">//Stores the length of the previously output time</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">size_t</span> timeStrLen;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                <a class="code" href="classuva_1_1smt_1_1logging_1_1_logger.html">Logger</a>() {</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                };</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                Logger(<span class="keyword">const</span> Logger&amp;) {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                };</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                Logger&amp; operator=(<span class="keyword">const</span> Logger&amp;) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                };</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">string</span> computeTimeString(<span class="keyword">const</span> clock_t elapsedClockTime, <span class="keywordtype">size_t</span> &amp; timeStrLen);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">string</span> computeTimeClearString(<span class="keyword">const</span> <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="comment">//Stores the current used message level</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="keyword">static</span> DebugLevel currLEvel;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                <span class="comment">//Stores the progress bar characters</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <span class="keyword">static</span> <span class="keyword">const</span> vector&lt;string&gt; progressChars;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                <span class="comment">//Stores the number of progress characters</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <span class="keywordtype">int</span> numProgChars;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                <span class="comment">//Stores the current progress element idx</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <span class="keywordtype">int</span> currProgCharIdx;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                <span class="comment">//Stores the last progress update in CPU seconds</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                <span class="keyword">static</span> <span class="keywordtype">double</span> lastProgressUpdate;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            };</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;}</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* LOGGER_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
 <div class="ttc" id="_exceptions_8hpp_html"><div class="ttname"><a href="_exceptions_8hpp.html">Exceptions.hpp</a></div></div>
-<div class="ttc" id="class_logger_html"><div class="ttname"><a href="class_logger.html">Logger</a></div><div class="ttdoc">This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and ...</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00066">Logger.hpp:66</a></div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_a645d1622809b356ec5863d31666fd6fd"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#a645d1622809b356ec5863d31666fd6fd">uva::smt::logging::Logger::Get</a></div><div class="ttdeci">static std::ostream &amp; Get(DebugLevel level)</div><div class="ttdef"><b>Definition:</b> Logger.hpp:133</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_a3513d7db6ba5a43f59b56e3396712dbb"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#a3513d7db6ba5a43f59b56e3396712dbb">uva::smt::logging::Logger::~Logger</a></div><div class="ttdeci">virtual ~Logger()</div><div class="ttdef"><b>Definition:</b> Logger.hpp:113</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
-<div class="ttc" id="class_logger_html_a96ecc57d01700c7b14d101f0f65a9932"><div class="ttname"><a href="class_logger.html#a96ecc57d01700c7b14d101f0f65a9932">Logger::DebugLevel</a></div><div class="ttdeci">DebugLevel</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00070">Logger.hpp:70</a></div></div>
-<div class="ttc" id="class_logger_html_ae93f62ca3e47716b7120acb032a260f3"><div class="ttname"><a href="class_logger.html#ae93f62ca3e47716b7120acb032a260f3">Logger::~Logger</a></div><div class="ttdeci">virtual ~Logger()</div><div class="ttdef"><b>Definition:</b> <a href="_logger_8hpp_source.html#l00077">Logger.hpp:77</a></div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_ad8a08f17c873112b1717d5fadbfe32d1"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">uva::smt::logging::Logger::DebugLevel</a></div><div class="ttdeci">DebugLevel</div><div class="ttdef"><b>Definition:</b> Logger.hpp:108</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_adc05eba04bec4f3c46414aa6e0dd8610"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#adc05eba04bec4f3c46414aa6e0dd8610">uva::smt::logging::Logger::isProgressBarOn</a></div><div class="ttdeci">static bool isProgressBarOn()</div><div class="ttdef"><b>Definition:</b> Logger.hpp:176</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_a9e52f2be59d5ba40107135b313ea1acb"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#a9e52f2be59d5ba40107135b313ea1acb">uva::smt::logging::Logger::Get</a></div><div class="ttdeci">static std::ostream &amp; Get(DebugLevel level, const char *file, const char *func, const char *line)</div><div class="ttdef"><b>Definition:</b> Logger.hpp:142</div></div>
+<div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> AHashMapTrie.hpp:58</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html_a48dbb0863fed63eab9ca2fc50d86bb2a"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html#a48dbb0863fed63eab9ca2fc50d86bb2a">uva::smt::logging::Logger::ReportingLevel</a></div><div class="ttdeci">static DebugLevel &amp; ReportingLevel()</div><div class="ttdef"><b>Definition:</b> Logger.hpp:150</div></div>
+<div class="ttc" id="classuva_1_1smt_1_1logging_1_1_logger_html"><div class="ttname"><a href="classuva_1_1smt_1_1logging_1_1_logger.html">uva::smt::logging::Logger</a></div><div class="ttdef"><b>Definition:</b> Logger.hpp:103</div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="_logger_8hpp.html">Logger.hpp</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: inc/HashingUtils.hpp Source File</title>
+<title>My Project: inc/HashingUtils.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,21 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('_hashing_utils_8hpp_source.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -103,6 +80,11 @@ $(document).ready(function(){initNavTree('_hashing_utils_8hpp_source.html','');}
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">HashingUtils.hpp</div>  </div>
@@ -139,96 +121,108 @@ $(document).ready(function(){initNavTree('_hashing_utils_8hpp_source.html','');}
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span> <span class="comment">//std::string</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span>  <span class="comment">//floor, sqrt </span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacehashing.html">hashing</a> {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">//This is the smallest size which I&#39;ve tested and it works for the hash without collisions</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacehashing.html#aa08467967a260f22e9dcf6983aa38c81">TWordHashSize</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">//This is the hash reference size which should be twice as long as the TWordHashSize</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> <a class="code" href="namespacehashing.html#a0c0f51ea23331c249e570f323e48056c">TReferenceHashSize</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_logger_8hpp.html">Logger.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_globals_8hpp.html">Globals.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">namespace </span>hashing {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespacehashing.html#a25e4ac309ffbe4b908d1613f4dfcd3a2">   49</a></span>&#160;    <span class="keyword">inline</span> TWordHashSize <a class="code" href="namespacehashing.html#a25e4ac309ffbe4b908d1613f4dfcd3a2">computeDjb2Hash</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        TWordHashSize hashVal = 5381;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">int</span> c;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span> * c_str = str.c_str();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">while</span> ( (c = *c_str++) ) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            hashVal = ((hashVal &lt;&lt; 5) + hashVal) + c; <span class="comment">/* hash * 33 + c */</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> hashVal;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">   74</a></span>&#160;<span class="preprocessor">    #define A 54059 </span><span class="comment">/* a prime */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">   75</a></span>&#160;<span class="preprocessor">    #define B 76963 </span><span class="comment">/* another prime */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#ac4cf4b2ab929bd23951a8676eeac086b">   76</a></span>&#160;<span class="preprocessor">    #define C 86969 </span><span class="comment">/* yet another prime */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespacehashing.html#ae6401f4d7cf46aff6f9f5171593433ca">   77</a></span>&#160;    <span class="keyword">inline</span> TWordHashSize <a class="code" href="namespacehashing.html#ae6401f4d7cf46aff6f9f5171593433ca">computePrimesHash</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;       TWordHashSize h = 31 <span class="comment">/* also prime */</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;       <span class="keyword">const</span> <span class="keywordtype">char</span> * c_str = str.c_str();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;       <span class="keywordflow">while</span> (*c_str) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;         h = (h * <a class="code" href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">A</a>) ^ (c_str[0] * <a class="code" href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">B</a>);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;         c_str++;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;       }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;       <span class="keywordflow">return</span> h; <span class="comment">// or return h % C;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="namespacehashing.html#af05a30bd014cabba826f4ad3c03d68dc">   97</a></span>&#160;    <span class="keyword">inline</span> TReferenceHashSize <a class="code" href="namespacehashing.html#af05a30bd014cabba826f4ad3c03d68dc">cantor</a>(TWordHashSize x, TReferenceHashSize y) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> ((x+y)*(x+y+1))/2 + y;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespacehashing.html#a22b46cd16001aabaa5212b223a028c4d">  110</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespacehashing.html#a22b46cd16001aabaa5212b223a028c4d">uncantor</a>(<span class="keyword">const</span> TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y){</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">const</span> TReferenceHashSize w = floor( ( sqrt( 8 * z + 1 ) - 1 ) / 2);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">const</span> TReferenceHashSize t = ( w * w + w ) / 2;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        y = (z - t);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        x = (<a class="code" href="namespacehashing.html#aa08467967a260f22e9dcf6983aa38c81">TWordHashSize</a>) (w - y);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="namespacehashing.html#a14faa1694242a5c0980b79bd8ea32f59">  127</a></span>&#160;    <span class="keyword">inline</span> TReferenceHashSize <a class="code" href="namespacehashing.html#a14faa1694242a5c0980b79bd8ea32f59">szudzik</a>(TWordHashSize x, TReferenceHashSize y) {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">return</span> ( x &gt;= y ? (y + x + x * x ) : (x + y * y) );</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="namespacehashing.html#adc6c8d839598eb1016caf13010a9034e">  140</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespacehashing.html#adc6c8d839598eb1016caf13010a9034e">unszudzik</a>(<span class="keyword">const</span> TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y){</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keyword">const</span> TReferenceHashSize zrf = floor( sqrt( z ) );</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keyword">const</span> TReferenceHashSize zrfs = zrf * zrf;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keyword">const</span> TReferenceHashSize zmzrfs = z - zrfs;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">if</span>( zmzrfs &lt; zrf ) {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            x = zmzrfs;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            y = zrf;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            x = zrf;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            y = zmzrfs - zrf;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* HASHINGUTILS_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#a8ac196e26b372b4716effe395c3cbb1c">   49</a></span>&#160;            <span class="keyword">inline</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a8ac196e26b372b4716effe395c3cbb1c">computeDjb2Hash</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> hashVal = 5381;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="keywordtype">int</span> c;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keyword">const</span> <span class="keywordtype">char</span> * c_str = str.c_str();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordflow">while</span> ((c = *c_str++)) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                    hashVal = ((hashVal &lt;&lt; 5) + hashVal) + c; <span class="comment">/* hash * 33 + c */</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">return</span> hashVal;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">   73</a></span>&#160;<span class="preprocessor">#define A 54059 </span><span class="comment">/* a prime */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">   74</a></span>&#160;<span class="preprocessor">#define B 76963 </span><span class="comment">/* another prime */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="_hashing_utils_8hpp.html#ac4cf4b2ab929bd23951a8676eeac086b">   75</a></span>&#160;<span class="preprocessor">#define C 86969 </span><span class="comment">/* yet another prime */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#a390d782fb4e4723b565577a85d5bc8bd">   77</a></span>&#160;            <span class="keyword">inline</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a390d782fb4e4723b565577a85d5bc8bd">computePrimesHash</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> h = 31 <span class="comment">/* also prime */</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">const</span> <span class="keywordtype">char</span> * c_str = str.c_str();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keywordflow">while</span> (*c_str) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    h = (h * <a class="code" href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">A</a>) ^ (c_str[0] * <a class="code" href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">B</a>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    c_str++;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordflow">return</span> h; <span class="comment">// or return h % C;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#a0ccb220ca55a85d4238d2f8ca287a76f">   87</a></span>&#160;            <span class="keyword">inline</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a0ccb220ca55a85d4238d2f8ca287a76f">computeRSHash</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; str) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> b = 378551;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> a = 63689;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> hash = 0;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; str.length(); i++) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    hash = hash * a + str[i];</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    a = a * b;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">return</span> hash;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#ad2b30c50e6db131c94fb813153100c9c">  109</a></span>&#160;            <span class="keyword">inline</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#ad2b30c50e6db131c94fb813153100c9c">cantor</a>(<a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> x, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> y) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keywordflow">return</span> ((x + y)*(x + y + 1)) / 2 + y;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#aa6b9f5792fc3efa9e1f04466569b5404">  122</a></span>&#160;            <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#aa6b9f5792fc3efa9e1f04466569b5404">uncantor</a>(<span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> z, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;x, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;y) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> w = floor((sqrt(8 * z + 1) - 1) / 2);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> t = (w * w + w) / 2;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                y = (z - t);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                x = (<a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>) (w - y);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#afe883e418ca19024fe820ef2fb4ade8a">  139</a></span>&#160;            <span class="keyword">inline</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#afe883e418ca19024fe820ef2fb4ade8a">szudzik</a>(<a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> x, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> y) {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                <span class="keywordflow">return</span> ( x &gt;= y ? (y + x + x * x) : (x + y * y));</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1hashing.html#a6c6735ddab6518f2a947ef0373722fd4">  152</a></span>&#160;            <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6c6735ddab6518f2a947ef0373722fd4">unszudzik</a>(<span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> z, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;x, <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;y) {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> zrf = floor(sqrt(z));</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> zrfs = zrf * zrf;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> zmzrfs = z - zrfs;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <span class="keywordflow">if</span> (zmzrfs &lt; zrf) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    x = zmzrfs;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    y = zrf;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                    x = zrf;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                    y = zmzrfs - zrf;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* HASHINGUTILS_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_a8ac196e26b372b4716effe395c3cbb1c"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#a8ac196e26b372b4716effe395c3cbb1c">uva::smt::hashing::computeDjb2Hash</a></div><div class="ttdeci">TWordHashSize computeDjb2Hash(const string &amp;str)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:49</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_a6cc10b288b11b76c718a898b022fbdd1"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">uva::smt::hashing::TReferenceHashSize</a></div><div class="ttdeci">uint64_t TReferenceHashSize</div><div class="ttdef"><b>Definition:</b> Globals.hpp:78</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_afe883e418ca19024fe820ef2fb4ade8a"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#afe883e418ca19024fe820ef2fb4ade8a">uva::smt::hashing::szudzik</a></div><div class="ttdeci">TReferenceHashSize szudzik(TReferenceHashSize x, TReferenceHashSize y)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:139</div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
-<div class="ttc" id="namespacehashing_html"><div class="ttname"><a href="namespacehashing.html">hashing</a></div><div class="ttdef"><b>Definition:</b> <a href="_globals_8hpp_source.html#l00059">Globals.hpp:59</a></div></div>
-<div class="ttc" id="_hashing_utils_8hpp_html_a111da81ae5883147168bbb8366377b10"><div class="ttname"><a href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">B</a></div><div class="ttdeci">#define B</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00075">HashingUtils.hpp:75</a></div></div>
-<div class="ttc" id="namespacehashing_html_adc6c8d839598eb1016caf13010a9034e"><div class="ttname"><a href="namespacehashing.html#adc6c8d839598eb1016caf13010a9034e">hashing::unszudzik</a></div><div class="ttdeci">void unszudzik(const TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y)</div><div class="ttdoc">This function will invert the Szudzik&#39;s encoded context and split it into two things The previous wor...</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00140">HashingUtils.hpp:140</a></div></div>
-<div class="ttc" id="namespacehashing_html_aa08467967a260f22e9dcf6983aa38c81"><div class="ttname"><a href="namespacehashing.html#aa08467967a260f22e9dcf6983aa38c81">hashing::TWordHashSize</a></div><div class="ttdeci">unsigned int TWordHashSize</div><div class="ttdef"><b>Definition:</b> <a href="_globals_8hpp_source.html#l00061">Globals.hpp:61</a></div></div>
-<div class="ttc" id="namespacehashing_html_a22b46cd16001aabaa5212b223a028c4d"><div class="ttname"><a href="namespacehashing.html#a22b46cd16001aabaa5212b223a028c4d">hashing::uncantor</a></div><div class="ttdeci">void uncantor(const TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y)</div><div class="ttdoc">This function will invert the cuntor encoded context and split it into two things The previous word a...</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00110">HashingUtils.hpp:110</a></div></div>
-<div class="ttc" id="namespacehashing_html_a0c0f51ea23331c249e570f323e48056c"><div class="ttname"><a href="namespacehashing.html#a0c0f51ea23331c249e570f323e48056c">hashing::TReferenceHashSize</a></div><div class="ttdeci">unsigned long int TReferenceHashSize</div><div class="ttdef"><b>Definition:</b> <a href="_globals_8hpp_source.html#l00063">Globals.hpp:63</a></div></div>
-<div class="ttc" id="namespacehashing_html_a14faa1694242a5c0980b79bd8ea32f59"><div class="ttname"><a href="namespacehashing.html#a14faa1694242a5c0980b79bd8ea32f59">hashing::szudzik</a></div><div class="ttdeci">TReferenceHashSize szudzik(TWordHashSize x, TReferenceHashSize y)</div><div class="ttdoc">This function will combine two word references to get one hash map N-gram level reference. </div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00127">HashingUtils.hpp:127</a></div></div>
-<div class="ttc" id="namespacehashing_html_ae6401f4d7cf46aff6f9f5171593433ca"><div class="ttname"><a href="namespacehashing.html#ae6401f4d7cf46aff6f9f5171593433ca">hashing::computePrimesHash</a></div><div class="ttdeci">TWordHashSize computePrimesHash(const string &amp;str)</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00077">HashingUtils.hpp:77</a></div></div>
-<div class="ttc" id="namespacehashing_html_af05a30bd014cabba826f4ad3c03d68dc"><div class="ttname"><a href="namespacehashing.html#af05a30bd014cabba826f4ad3c03d68dc">hashing::cantor</a></div><div class="ttdeci">TReferenceHashSize cantor(TWordHashSize x, TReferenceHashSize y)</div><div class="ttdoc">This function will combine two word references to get one hash map N-gram level reference. </div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00097">HashingUtils.hpp:97</a></div></div>
-<div class="ttc" id="namespacehashing_html_a25e4ac309ffbe4b908d1613f4dfcd3a2"><div class="ttname"><a href="namespacehashing.html#a25e4ac309ffbe4b908d1613f4dfcd3a2">hashing::computeDjb2Hash</a></div><div class="ttdeci">TWordHashSize computeDjb2Hash(const string &amp;str)</div><div class="ttdoc">This is one of the best known hashing function algorithms (djb2) for the C strings as reported and de...</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00049">HashingUtils.hpp:49</a></div></div>
-<div class="ttc" id="_hashing_utils_8hpp_html_a955f504eccf76b4eb2489c0adab03121"><div class="ttname"><a href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">A</a></div><div class="ttdeci">#define A</div><div class="ttdoc">This is a hash function found online http://stackoverflow.com/questions/8317508/hash-function-for-a-s...</div><div class="ttdef"><b>Definition:</b> <a href="_hashing_utils_8hpp_source.html#l00074">HashingUtils.hpp:74</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_aa6b9f5792fc3efa9e1f04466569b5404"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#aa6b9f5792fc3efa9e1f04466569b5404">uva::smt::hashing::uncantor</a></div><div class="ttdeci">void uncantor(const TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:122</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_ad2b30c50e6db131c94fb813153100c9c"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#ad2b30c50e6db131c94fb813153100c9c">uva::smt::hashing::cantor</a></div><div class="ttdeci">TReferenceHashSize cantor(TReferenceHashSize x, TReferenceHashSize y)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:109</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_a6c6735ddab6518f2a947ef0373722fd4"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#a6c6735ddab6518f2a947ef0373722fd4">uva::smt::hashing::unszudzik</a></div><div class="ttdeci">void unszudzik(const TReferenceHashSize z, TWordHashSize &amp;x, TReferenceHashSize &amp;y)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:152</div></div>
+<div class="ttc" id="_hashing_utils_8hpp_html_a111da81ae5883147168bbb8366377b10"><div class="ttname"><a href="_hashing_utils_8hpp.html#a111da81ae5883147168bbb8366377b10">B</a></div><div class="ttdeci">#define B</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:74</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_acdc1f2765e669283f8e9c1ed42705314"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">uva::smt::hashing::TWordHashSize</a></div><div class="ttdeci">uint32_t TWordHashSize</div><div class="ttdef"><b>Definition:</b> Globals.hpp:76</div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_a390d782fb4e4723b565577a85d5bc8bd"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#a390d782fb4e4723b565577a85d5bc8bd">uva::smt::hashing::computePrimesHash</a></div><div class="ttdeci">TWordHashSize computePrimesHash(const string &amp;str)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:77</div></div>
+<div class="ttc" id="_logger_8hpp_html"><div class="ttname"><a href="_logger_8hpp.html">Logger.hpp</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1hashing_html_a0ccb220ca55a85d4238d2f8ca287a76f"><div class="ttname"><a href="namespaceuva_1_1smt_1_1hashing.html#a0ccb220ca55a85d4238d2f8ca287a76f">uva::smt::hashing::computeRSHash</a></div><div class="ttdeci">TWordHashSize computeRSHash(const string &amp;str)</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:87</div></div>
+<div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> AHashMapTrie.hpp:58</div></div>
+<div class="ttc" id="_globals_8hpp_html"><div class="ttname"><a href="_globals_8hpp.html">Globals.hpp</a></div></div>
+<div class="ttc" id="_hashing_utils_8hpp_html_a955f504eccf76b4eb2489c0adab03121"><div class="ttname"><a href="_hashing_utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">A</a></div><div class="ttdeci">#define A</div><div class="ttdef"><b>Definition:</b> HashingUtils.hpp:73</div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="_hashing_utils_8hpp.html">HashingUtils.hpp</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

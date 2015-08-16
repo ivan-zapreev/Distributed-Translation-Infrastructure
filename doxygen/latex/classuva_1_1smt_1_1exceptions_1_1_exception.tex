@@ -1,0 +1,94 @@
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception}{}\section{uva\+:\+:smt\+:\+:exceptions\+:\+:Exception Class Reference}
+\label{classuva_1_1smt_1_1exceptions_1_1_exception}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+
+
+{\ttfamily \#include $<$Exceptions.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:exceptions\+:\+:Exception\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1exceptions_1_1_exception}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_a42e50b1d8a373992eb38adca8b5da8c0}{Exception} (const char $\ast$message)
+\item 
+\hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_a717a591b94ecbbc7f17e39b60fca3854}{Exception} (const string \&message)
+\item 
+\hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_a428f19e9377f8658e23f3a58251f18f4}{Exception} (\hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception}{Exception} const \&other)
+\item 
+string const \& \hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_ad9041cffc8d5f7ca1c3f4bc9c857462c}{get\+Message} () const   throw ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_a1ddbe2ffb25aca9ef031f6584af60e23}{$\sim$\+Exception} ()  throw ()
+\item 
+virtual const char $\ast$ \hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception_a0ea6aae278f6b04d4d99a0b73befe5ee}{what} () const   throw ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is an application exception class that is capable of storing an error message 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_a42e50b1d8a373992eb38adca8b5da8c0}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{Exception(const char $\ast$message)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::exceptions\+::\+Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{message}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_a42e50b1d8a373992eb38adca8b5da8c0}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_a717a591b94ecbbc7f17e39b60fca3854}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{Exception(const string \&message)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::exceptions\+::\+Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{message}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_a717a591b94ecbbc7f17e39b60fca3854}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_a428f19e9377f8658e23f3a58251f18f4}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!Exception@{Exception}}
+\index{Exception@{Exception}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{Exception(\+Exception const \&other)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::exceptions\+::\+Exception\+::\+Exception (
+\begin{DoxyParamCaption}
+\item[{{\bf Exception} const \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_a428f19e9377f8658e23f3a58251f18f4}
+The copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em other} & the other exception to copy from \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_a1ddbe2ffb25aca9ef031f6584af60e23}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!````~Exception@{$\sim$\+Exception}}
+\index{````~Exception@{$\sim$\+Exception}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{$\sim$\+Exception()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::exceptions\+::\+Exception\+::$\sim$\+Exception (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_a1ddbe2ffb25aca9ef031f6584af60e23}
+Destructor. Virtual to allow for subclassing. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_ad9041cffc8d5f7ca1c3f4bc9c857462c}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{get\+Message() const }]{\setlength{\rightskip}{0pt plus 5cm}string const\& uva\+::smt\+::exceptions\+::\+Exception\+::get\+Message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_ad9041cffc8d5f7ca1c3f4bc9c857462c}
+This method returns the stored message \begin{DoxyReturn}{Returns}
+the reference to a constant error message string 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1exceptions_1_1_exception_a0ea6aae278f6b04d4d99a0b73befe5ee}{}\index{uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}!what@{what}}
+\index{what@{what}!uva\+::smt\+::exceptions\+::\+Exception@{uva\+::smt\+::exceptions\+::\+Exception}}
+\subsubsection[{what() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual const char$\ast$ uva\+::smt\+::exceptions\+::\+Exception\+::what (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1exceptions_1_1_exception_a0ea6aae278f6b04d4d99a0b73befe5ee}
+Returns a pointer to the (constant) error description. \begin{DoxyReturn}{Returns}
+A pointer to a {\ttfamily const} {\ttfamily char$\ast$}. The underlying memory is in posession of the {\ttfamily \hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception}{Exception}} object. Callers {\itshape must} not attempt to free the memory. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_exceptions_8hpp}{Exceptions.\+hpp}\end{DoxyCompactItemize}

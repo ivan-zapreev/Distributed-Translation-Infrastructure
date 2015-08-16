@@ -1,0 +1,139 @@
+\hypertarget{namespaceuva_1_1smt_1_1hashing}{}\section{uva\+:\+:smt\+:\+:hashing Namespace Reference}
+\label{namespaceuva_1_1smt_1_1hashing}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}
+\item 
+typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}{compute\+Djb2\+Hash} (const string \&str)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}{compute\+Primes\+Hash} (const string \&str)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}{compute\+R\+S\+Hash} (const string \&str)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}{cantor} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}{uncantor} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \&y)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}{szudzik} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}{unszudzik} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \&y)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Reference\+Hash\+Size@{T\+Reference\+Hash\+Size}}
+\index{T\+Reference\+Hash\+Size@{T\+Reference\+Hash\+Size}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{T\+Reference\+Hash\+Size}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Reference\+Hash\+Size}}\label{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Word\+Hash\+Size@{T\+Word\+Hash\+Size}}
+\index{T\+Word\+Hash\+Size@{T\+Word\+Hash\+Size}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{T\+Word\+Hash\+Size}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint32\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Word\+Hash\+Size}}\label{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!cantor@{cantor}}
+\index{cantor@{cantor}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{cantor(\+T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Reference\+Hash\+Size} uva\+::smt\+::hashing\+::cantor (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Reference\+Hash\+Size}}]{x, }
+\item[{{\bf T\+Reference\+Hash\+Size}}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}
+This function will combine two word references to get one hash map N-\/gram level reference. This is a cantor function used for pairing. \href{http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function}{\tt http\+://en.\+wikipedia.\+org/wiki/\+Pairing\+\_\+function\#\+Cantor\+\_\+pairing\+\_\+function} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Overflows! 
+\begin{DoxyParams}{Parameters}
+{\em x} & the key word reference \\
+\hline
+{\em y} & the previous context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the context reference for the next N-\/gram level 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Djb2\+Hash@{compute\+Djb2\+Hash}}
+\index{compute\+Djb2\+Hash@{compute\+Djb2\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Djb2\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+Djb2\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}
+This is one of the best known hashing function algorithms (djb2) for the C strings as reported and described in \href{http://www.cse.yorku.ca/~oz/hash.html}{\tt http\+://www.\+cse.\+yorku.\+ca/$\sim$oz/hash.\+html} Note\+: It turned to be not as good as the Primes\+Hash as resulted in collisions on the test data. Note\+: The time complexity of this algorithm is also linear in the length of the input word. 
+\begin{DoxyParams}{Parameters}
+{\em str} & the string to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Primes\+Hash@{compute\+Primes\+Hash}}
+\index{compute\+Primes\+Hash@{compute\+Primes\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Primes\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+Primes\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+R\+S\+Hash@{compute\+R\+S\+Hash}}
+\index{compute\+R\+S\+Hash@{compute\+R\+S\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+R\+S\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+R\+S\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!szudzik@{szudzik}}
+\index{szudzik@{szudzik}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{szudzik(\+T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Reference\+Hash\+Size} uva\+::smt\+::hashing\+::szudzik (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Reference\+Hash\+Size}}]{x, }
+\item[{{\bf T\+Reference\+Hash\+Size}}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}
+This function will combine two word references to get one hash map N-\/gram level reference. This is a Szudzik\textquotesingle{}s function used for pairing. \href{http://szudzik.com/ElegantPairing.pdf}{\tt http\+://szudzik.\+com/\+Elegant\+Pairing.\+pdf} This function is more efficient that than of Cantor as it uses indexes densely the result of szudzik(\+N,\+M) is $<$= 2$\ast$max(M,N), so the risk of owerflows is much smaller! 
+\begin{DoxyParams}{Parameters}
+{\em x} & the key word reference \\
+\hline
+{\em y} & the previous context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the context reference for the next N-\/gram level 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!uncantor@{uncantor}}
+\index{uncantor@{uncantor}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{uncantor(const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::uncantor (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Reference\+Hash\+Size}}]{z, }
+\item[{{\bf T\+Word\+Hash\+Size} \&}]{x, }
+\item[{{\bf T\+Reference\+Hash\+Size} \&}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}
+This function will invert the cuntor encoded context and split it into two things The previous word and the previous context. This is an inverse cantor function used for unpairing. \href{http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function}{\tt http\+://en.\+wikipedia.\+org/wiki/\+Pairing\+\_\+function\#\+Cantor\+\_\+pairing\+\_\+function} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Overflows! 
+\begin{DoxyParams}{Parameters}
+{\em z} & the current context id \\
+\hline
+{\em x} & the previous word in the context \\
+\hline
+{\em y} & the context of the previous word \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!unszudzik@{unszudzik}}
+\index{unszudzik@{unszudzik}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{unszudzik(const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::unszudzik (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Reference\+Hash\+Size}}]{z, }
+\item[{{\bf T\+Word\+Hash\+Size} \&}]{x, }
+\item[{{\bf T\+Reference\+Hash\+Size} \&}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}
+This function will invert the Szudzik\textquotesingle{}s encoded context and split it into two things The previous word and the previous context. This is an inverse Szudzik\textquotesingle{}s function used for unpairing. \href{http://szudzik.com/ElegantPairing.pdf}{\tt http\+://szudzik.\+com/\+Elegant\+Pairing.\+pdf} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Owerflows! 
+\begin{DoxyParams}{Parameters}
+{\em z} & the current context id \\
+\hline
+{\em x} & the previous word in the context \\
+\hline
+{\em y} & the context of the previous word \\
+\hline
+\end{DoxyParams}

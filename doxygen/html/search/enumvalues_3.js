@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['result',['RESULT',['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932af5da0215b58667cc5314fc1bdc7a81e3',1,'Logger']]]
+  ['result',['RESULT',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e',1,'uva::smt::logging::Logger']]]
 ];

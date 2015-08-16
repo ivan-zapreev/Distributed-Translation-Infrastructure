@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['build',['build',['../classtries_1_1_trie_builder.html#ac6960b180d338d5c72dfb19bf49db8ee',1,'tries::TrieBuilder']]],
-  ['buildngram',['buildNGram',['../classtries_1_1ngrams_1_1_n_gram_builder.html#a631371b5643e2222c2303b6163fdfd24',1,'tries::ngrams::NGramBuilder']]]
+  ['build',['build',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8e01c726cb800efa9b5f157017eb35f4',1,'uva::smt::tries::arpa::ARPATrieBuilder']]]
 ];

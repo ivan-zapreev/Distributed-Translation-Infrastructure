@@ -4,18 +4,10 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>Back Off Language Model(s) for SMT: inc/ATrie.hpp File Reference</title>
+<title>My Project: inc/ATrie.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript">
-  $(document).ready(initResizable);
-  $(window).load(resizeHeight);
-</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -31,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Back Off Language Model(s) for SMT
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -74,21 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){initNavTree('_a_trie_8hpp.html','');});
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -103,11 +80,17 @@ $(document).ready(function(){initNavTree('_a_trie_8hpp.html','');});
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">ATrie.hpp File Reference</div>  </div>
 </div><!--header-->
@@ -121,34 +104,60 @@ $(document).ready(function(){initNavTree('_a_trie_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtries_1_1_s_frequency_result.html">tries::SFrequencyResult&lt; N &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">uva::smt::tries::SBackOffNGram</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtries_1_1_a_trie.html">tries::ATrie&lt; N, doCache &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a common abstract class for all possible Trie implementations The purpose of having this as a template class is performance optimization.  <a href="classtries_1_1_a_trie.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_prob_result.html">uva::smt::tries::SProbResult</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie&lt; N &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacetries"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetries.html">tries</a></td></tr>
+<tr class="memitem:namespaceuva"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva.html">uva</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceuva_1_1smt"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt.html">uva::smt</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceuva_1_1smt_1_1tries"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html">uva::smt::tries</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a8b71e593af4a9a80282f1fa85d7f8255"><td class="memItemLeft" align="right" valign="top">typedef ATrie&lt; <a class="el" href="_globals_8hpp.html#a5f3826bb70e91d12acce8d68c346c07b">N_GRAM_PARAM</a>, true &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetries.html#a8b71e593af4a9a80282f1fa85d7f8255">tries::TFiveCacheTrie</a></td></tr>
-<tr class="separator:a8b71e593af4a9a80282f1fa85d7f8255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc3f42d6b717a7d2a34ad0d90c028a00"><td class="memItemLeft" align="right" valign="top">typedef ATrie&lt; <a class="el" href="_globals_8hpp.html#a5f3826bb70e91d12acce8d68c346c07b">N_GRAM_PARAM</a>, false &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetries.html#adc3f42d6b717a7d2a34ad0d90c028a00">tries::TFiveNoCacheTrie</a></td></tr>
-<tr class="separator:adc3f42d6b717a7d2a34ad0d90c028a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0660255dd9ef5d644f01de49102750"><td class="memItemLeft" align="right" valign="top">typedef float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">uva::smt::tries::TLogProbBackOff</a></td></tr>
+<tr class="separator:acd0660255dd9ef5d644f01de49102750"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e7eb3ceb4e902809786973cf89aa9c"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; MAX_NGRAM_LEVEL &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a55e7eb3ceb4e902809786973cf89aa9c">uva::smt::tries::TFiveTrie</a></td></tr>
+<tr class="separator:a55e7eb3ceb4e902809786973cf89aa9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a5da2a0c71a6224ade6ea097e6b90bd3a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a5da2a0c71a6224ade6ea097e6b90bd3a">uva::smt::tries::BGRAM_LEVEL_VALUE</a> = 2</td></tr>
+<tr class="separator:a5da2a0c71a6224ade6ea097e6b90bd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadd51d0ad0007db1d97769719dda1ff0"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#aadd51d0ad0007db1d97769719dda1ff0">uva::smt::tries::UNKNOWN_WORD_STR</a> = &quot;&lt;unk&gt;&quot;</td></tr>
+<tr class="separator:aadd51d0ad0007db1d97769719dda1ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac729c4f31fd2bab9e8af8f6370344b87"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ac729c4f31fd2bab9e8af8f6370344b87">uva::smt::tries::LOG_PROB_WEIGHT_BASE</a> = 10.0</td></tr>
+<tr class="separator:ac729c4f31fd2bab9e8af8f6370344b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60f325085f4d50c378efc2809a6fecc0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a60f325085f4d50c378efc2809a6fecc0">uva::smt::tries::ZERO_LOG_PROB_WEIGHT</a> = 0.0f</td></tr>
+<tr class="separator:a60f325085f4d50c378efc2809a6fecc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae028201dd0a4a32686e5396de9919b07"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ae028201dd0a4a32686e5396de9919b07">uva::smt::tries::UNDEFINED_LOG_PROB_WEIGHT</a> = 99.0f</td></tr>
+<tr class="separator:ae028201dd0a4a32686e5396de9919b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d201889d19f6e5bad70de0b101ce75"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a62d201889d19f6e5bad70de0b101ce75">uva::smt::tries::MINIMAL_LOG_PROB_WEIGHT</a> = -10.0f</td></tr>
+<tr class="separator:a62d201889d19f6e5bad70de0b101ce75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9592d33e326894227ec9d9c0a443aac6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a9592d33e326894227ec9d9c0a443aac6">uva::smt::tries::ZERRO_LOG_PROB_WEIGHT</a> = -99.0f</td></tr>
+<tr class="separator:a9592d33e326894227ec9d9c0a443aac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b5fbcd66b62775091f4c2e9c28b1db9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a9b5fbcd66b62775091f4c2e9c28b1db9">uva::smt::tries::UNDEFINED_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (0)</td></tr>
+<tr class="separator:a9b5fbcd66b62775091f4c2e9c28b1db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e95ae5121d967a11fc70ad49b824cf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ab8e95ae5121d967a11fc70ad49b824cf">uva::smt::tries::UNKNOWN_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (UNDEFINED_WORD_HASH + 1)</td></tr>
+<tr class="separator:ab8e95ae5121d967a11fc70ad49b824cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6efe97228b9a8b89f2f0d2a7a2c7ddb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ad6efe97228b9a8b89f2f0d2a7a2c7ddb">uva::smt::tries::MIN_KNOWN_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (UNKNOWN_WORD_HASH + 1)</td></tr>
+<tr class="separator:ad6efe97228b9a8b89f2f0d2a7a2c7ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0ab780d7a692242e66beb30e92dfab"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a1b0ab780d7a692242e66beb30e92dfab">uva::smt::tries::MINIMUM_CONTEXT_LEVEL</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&gt; (2)</td></tr>
+<tr class="separator:a1b0ab780d7a692242e66beb30e92dfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_bfccd401955b95cf8c75461437045ac0.html">inc</a></li><li class="navelem"><a class="el" href="_a_trie_8hpp.html">ATrie.hpp</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.10
+</small></address>
 </body>
 </html>

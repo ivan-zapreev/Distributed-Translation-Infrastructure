@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
-  ['reportinglevel',['ReportingLevel',['../class_logger.html#a8b07a26d2b5896a239e3b834ff4e9024',1,'Logger']]],
-  ['resetquerycache',['resetQueryCache',['../classtries_1_1_a_trie.html#a029b5c975cf279d569ab948ab7fd87f0',1,'tries::ATrie::resetQueryCache()'],['../classtries_1_1_hash_map_trie.html#acd9d79668a9ceb0093bb42aa43eb6546',1,'tries::HashMapTrie::resetQueryCache()']]],
-  ['result',['result',['../structtries_1_1_s_frequency_result.html#a19708f5412b441f681b0e92308fcbd00',1,'tries::SFrequencyResult::result()'],['../class_logger.html#a96ecc57d01700c7b14d101f0f65a9932af5da0215b58667cc5314fc1bdc7a81e3',1,'Logger::RESULT()']]]
+  ['path_5fseparation_5fsymbols',['PATH_SEPARATION_SYMBOLS',['../namespaceuva_1_1smt.html#afb9a44bd9eb3ded951a6f0c41f07c108',1,'uva::smt']]],
+  ['pointer',['pointer',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#ad82be226faea1278f210654317249483',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
+  ['preallocate',['preAllocate',['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#ad867b72350326f464b563fba6727ba5f',1,'uva::smt::tries::AHashMapTrie::preAllocate()'],['../classuva_1_1smt_1_1tries_1_1_a_trie.html#a642f48565e195a41a768b2cfa247735a',1,'uva::smt::tries::ATrie::preAllocate()'],['../classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ac744e6f6e63317d1f955ac96d504f724',1,'uva::smt::tries::ContextMultiHashMapTrie::preAllocate()'],['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#ac7d916356f0ad36d33c0c4722e6459b9',1,'uva::smt::tries::MultiHashMapTrie::preAllocate()'],['../classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#a6a40f4047280dedc7f402d6502547b2c',1,'uva::smt::tries::SingleHashMapTrie::preAllocate()']]],
+  ['prob',['prob',['../structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html#a3af5b26367189b16778ff72a5cd29abc',1,'uva::smt::tries::SBackOffNGram::prob()'],['../structuva_1_1smt_1_1tries_1_1_s_prob_result.html#ab3ee325486a4178241c94f0f1f113f2e',1,'uva::smt::tries::SProbResult::prob()']]],
+  ['processstring',['processString',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#af505ce38243a3e39fbc6b4d9ee83368f',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
+  ['progress_5fupdate_5fperiod',['PROGRESS_UPDATE_PERIOD',['../_logger_8hpp.html#a6a29bf797538ea7ba250e7ccbc0f9082',1,'Logger.hpp']]]
 ];
