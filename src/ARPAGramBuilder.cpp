@@ -65,7 +65,7 @@ namespace uva {
                     size_t end = data.find_first_of('\t');
                     if (end != std::string::npos) {
                         //The first element of the N-gram must be probability,read it
-                        (void) fast_stoT_2<float>(_ngram.prob, data.substr(start, end - start).c_str());
+                        (void) fast_stoT_2<float>(_ngram.prob, data.substr(start, end).c_str());
                         start = end + 1;
 
                         LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
