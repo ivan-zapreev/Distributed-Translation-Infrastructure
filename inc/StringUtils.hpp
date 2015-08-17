@@ -31,6 +31,7 @@
 #include <sstream> // std::stringstream
 #include <cstddef> // std::size_t
 #include <limits>  // std::numeric_limits
+#include <cstring> // std::memchr
 
 #include "Logger.hpp"
 #include "Globals.hpp"

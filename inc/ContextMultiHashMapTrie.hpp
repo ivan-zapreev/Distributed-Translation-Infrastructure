@@ -124,19 +124,19 @@ namespace uva {
                  * This method adds a 1-Gram (word) to the trie.
                  * For more details @see ITrie
                  */
-                virtual void add1Gram(const SBackOffNGram &oGram);
+                virtual void add1Gram(const SRawNGram &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * For more details @see ITrie
                  */
-                virtual void addMGram(const SBackOffNGram &mGram);
+                virtual void addMGram(const SRawNGram &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * For more details @see ITrie
                  */
-                virtual void addNGram(const SBackOffNGram &nGram);
+                virtual void addNGram(const SRawNGram &nGram);
 
                 /**
                  * This method will get the N-gram in a form of a vector, e.g.:

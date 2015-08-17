@@ -108,7 +108,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::add1Gram(const SBackOffNGram &oGram) {
+            void ContextMultiHashMapTrie<N>::add1Gram(const SRawNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const string & token = oGram.tokens[0];
 
@@ -141,7 +141,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::addMGram(const SBackOffNGram &mGram) {
+            void ContextMultiHashMapTrie<N>::addMGram(const SRawNGram &mGram) {
                 const TModelLevel level = mGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString(mGram.tokens) << " to the Trie" << END_LOG;
 
@@ -192,7 +192,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::addNGram(const SBackOffNGram &nGram) {
+            void ContextMultiHashMapTrie<N>::addNGram(const SRawNGram &nGram) {
                 const size_t level = nGram.tokens.size();
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString(nGram.tokens) << " to the Trie" << END_LOG;
 

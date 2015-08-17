@@ -33,15 +33,17 @@
 
 #include "Globals.hpp"
 #include <Exceptions.hpp>
+#include "MMappedFileReader.hpp"
 
 using namespace std;
+using namespace uva::smt::file;
 
 namespace uva {
     namespace smt {
         namespace tries {
             namespace arpa {
 
-                typedef std::function<void (const SBackOffNGram&)> TAddGramFunct;
+                typedef std::function<void (const SRawNGram&) > TAddGramFunct;
 
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
@@ -67,7 +69,7 @@ namespace uva {
                      * @result returns true if the provided line is NOT recognized
                      *         as the N-Gram of the specified level.
                      */
-                    bool processString(const string & data);
+                    bool parseLine(const MTextFilePiece & data);
 
                     virtual ~ARPAGramBuilder();
                 protected:
@@ -75,13 +77,19 @@ namespace uva {
                     TAddGramFunct _addGarmFunc;
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel _level;
-                    //Will be used as a temporary storage of the N-gram parts
-                    vector<string> _ngramParts;
                     //This is the N-Gram container to store the parsed N-gram data
-                    SBackOffNGram _ngram;
+                    SRawNGram _ngram;
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;
                     static const unsigned short int MAX_NUM_TOKENS_NGRAM_STR;
+
+                    /**
+                     * Tokenise a given piece of text into a set of text peices
+                     * @param text the piece of text to tokenise
+                     * @param delim the delimiter
+                     * @param elems the output array of text pieces
+                     */
+                    static bool parseToGram(const MTextFilePiece &text, SRawNGram & gram);
 
                     /**
                      * The copy constructor

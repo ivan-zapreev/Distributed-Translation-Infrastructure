@@ -63,7 +63,6 @@ namespace uva {
   else if (level > Logger::ReportingLevel()) ; \
        else Logger::Get(level)
 
-
 #define LOGGER_DEBUG(level)                    \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::ReportingLevel()) ; \

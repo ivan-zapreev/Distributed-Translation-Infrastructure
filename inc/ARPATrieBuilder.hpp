@@ -30,8 +30,10 @@
 #include <regex>        // std::regex, std::regex_match
 
 #include "ATrie.hpp"
+#include "MMappedFileReader.hpp"
 
 using namespace std;
+using namespace uva::smt::file;
 
 namespace uva {
     namespace smt {
@@ -50,7 +52,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, ifstream & _fstr);
+                    ARPATrieBuilder(ATrie<N> & trie, MMappedFileReader & _fstr);
 
                     /**
                      * This function will read from the file and build the trie
@@ -62,7 +64,9 @@ namespace uva {
                     //The reference to the trie to be build
                     ATrie<N> & _trie;
                     //The reference to the input file with text corpus
-                    ifstream & _fstr;
+                    MMappedFileReader & _fstr;
+                    //Stores the next line data
+                    MTextFilePiece _line;
                     //The regular expression for matching the n-gram amount entry of the data section
                     const regex _ngAmountRegExp;
                     //The regular expression for matching the n-grams section
@@ -78,7 +82,7 @@ namespace uva {
                      * This method is used to read and process the ARPA headers
                      * @param line the in/out parameter storing the last read line
                      */
-                    void readHeaders(string &line);
+                    void readHeaders();
 
                     /**
                      * This method is used to read and process the ARPA data section
@@ -86,14 +90,14 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void readData(string &line, size_t counts[N]);
+                    void readData(size_t counts[N]);
 
                     /**
                      * This recursive method is used to read and process the ARPA N-Grams.
                      * @param line the in/out parameter storing the last read line
                      * @param level the level we are to read
                      */
-                    void readNGrams(string &line, const TModelLevel level);
+                    void readNGrams(const TModelLevel level);
                 };
             }
         }

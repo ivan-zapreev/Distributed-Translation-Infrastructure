@@ -33,17 +33,17 @@
 #include "StatisticsMonitor.hpp"
 #include "Logger.hpp"
 #include "ATrie.hpp"
-#include "MultiHashMapTrie.hpp"
-#include "SingleHashMapTrie.hpp"
 #include "ContextMultiHashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
 #include "StringUtils.hpp"
+#include "MMappedFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt;
 using namespace uva::smt::tries;
+using namespace uva::smt::file;
 using namespace uva::smt::tries::arpa;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
@@ -55,7 +55,7 @@ using namespace uva::smt::monitore;
  */
 typedef struct {
     //The train file name
-    string trainFileName;
+    string modelFileName;
     //The test file name
     string testFileName;
 } TAppParams;
@@ -123,7 +123,7 @@ static void extractArguments(const uint argc, char const * const * const argv, T
         msg << "Incorrect number of arguments, expected >= " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
         throw Exception(msg.str());
     } else {
-        params.trainFileName = argv[1];
+        params.modelFileName = argv[1];
         params.testFileName = argv[2];
         //Set the default reporting level information for the logger
         string errorLevelStr = RESULT_PARAM_VALUE;
@@ -177,7 +177,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param trie the trie to put the data into
  */
 template<TModelLevel N>
-static void fillInTrie(ifstream & fstr, ATrie<N> & trie) {
+static void fillInTrie(MMappedFileReader & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
@@ -244,14 +244,13 @@ static void performTasks(const TAppParams& params) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Attempt to open the model file
-    ifstream modelFile(params.trainFileName.c_str());
+    MMappedFileReader modelFile(params.modelFileName.c_str());
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
 
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         //Create a trie and pass it to the algorithm method
-        //TFiveMultiHashMapTrie trie(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
         TFiveContextMultiHashMapTrie trie(
                 __AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR,
                 __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
@@ -278,7 +277,7 @@ static void performTasks(const TAppParams& params) {
     } else {
         stringstream msg;
         msg << "One of the input files does not exist: " +
-                getFileExistsString(params.trainFileName, modelFile)
+                getFileExistsString(params.modelFileName, modelFile)
                 + " , " +
                 getFileExistsString(params.testFileName, testFile);
         throw Exception(msg.str());
@@ -304,7 +303,7 @@ int main(int argc, char** argv) {
         extractArguments(argc, argv, params);
 
         LOG_INFO << "Checking on the provided files \'"
-                << params.trainFileName << "\' and \'"
+                << params.modelFileName << "\' and \'"
                 << params.testFileName << "\' ..." << END_LOG;
 
         //Do the actual work, read the text corpse, create trie and do queries

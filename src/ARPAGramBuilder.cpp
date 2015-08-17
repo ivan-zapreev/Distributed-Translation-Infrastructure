@@ -57,14 +57,9 @@ namespace uva {
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                bool ARPAGramBuilder::processString(const string & data) {
-                    LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
-                    //We expect a good input, so the result is set to false by default.
-                    bool result = false;
-
-                    //First tokenize as a pattern "prob \t gram \t back-off"
-                    tokenize(data, '\t', _ngramParts);
-
+                bool ARPAGramBuilder::parseToGram(const MTextFilePiece &text, SRawNGram & gram) {
+                    //ToDO: Implement
+                    /*
                     //Get the number of tokens
                     const size_t size = _ngramParts.size();
 
@@ -100,23 +95,36 @@ namespace uva {
                             _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
                         }
 
-                        //Add the obtained N-gram data to the Trie
-                        _addGarmFunc(_ngram);
                     } else {
                         //This is a possible situation, there is an unexpected
                         //number of tokens, so we should stop with this level N-grams
                         if (size > MAX_NUM_TOKENS_NGRAM_STR) {
-                            LOG_WARNING << "There is too many tokens in '" << data
+                            LOG_WARNING << "There is too many tokens in '" << line
                                     << "' there should be at most two tab symbols! IGNORING!" << END_LOG;
                         } else {
-                            //If there is less than the minimum number of tokens then
-                            //it should be the beginning of the next m-gram section
-                            result = true;
                         }
+                    }
+                     */
+                    return true;
+                }
+
+                bool ARPAGramBuilder::parseLine(const MTextFilePiece & line) {
+                    LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                    //We expect a good input, so the result is set to false by default.
+                    bool result = false;
+
+                    //First tokenize as a pattern "prob \t gram \t back-off"
+                    if (parseToGram(line, _ngram)) {
+                        //Add the obtained N-gram data to the Trie
+                        _addGarmFunc(_ngram);
+                    } else {
+                        //If we could not parse the line to gram then it should
+                        //be the beginning of the next m-gram section
+                        result = true;
                     }
 
                     LOG_DEBUG << "Finished processing the " << _level << "-Gram (?) line: '"
-                            << data << "', it is " << (result ? "NOT " : "") << "accepted" << END_LOG;
+                            << line << "', it is " << (result ? "NOT " : "") << "accepted" << END_LOG;
 
                     return result;
                 }

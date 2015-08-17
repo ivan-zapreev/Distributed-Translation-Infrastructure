@@ -90,7 +90,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
-                                        [&] (const SBackOffNGram & gram) {
+                                        [&] (const SRawNGram & gram) {
                                             trie.add1Gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
@@ -99,7 +99,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
-                                            [&] (const SBackOffNGram & gram) {
+                                            [&] (const SRawNGram & gram) {
                                                 trie.addNGram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
                                 } else {
@@ -107,7 +107,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
-                                            [&] (const SBackOffNGram & gram) {
+                                            [&] (const SRawNGram & gram) {
                                                 trie.addMGram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }

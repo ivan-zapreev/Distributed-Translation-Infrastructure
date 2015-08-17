@@ -31,11 +31,13 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
+#include "MTextFilePiece.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::hashing;
 using namespace uva::smt::tries;
+using namespace uva::smt::file;
 
 namespace uva {
     namespace smt {
@@ -70,6 +72,22 @@ namespace uva {
             const TWordHashSize MIN_KNOWN_WORD_HASH = static_cast<TWordHashSize> (UNKNOWN_WORD_HASH + 1);
             //Stores the minimum context level
             const TWordHashSize MINIMUM_CONTEXT_LEVEL = static_cast<TModelLevel> (2);
+
+            /**
+             * This structure is used to store the N-Gram data
+             * of the back-off Language Model.
+             * @param prob stores the log_10 probability of the N-Gram Must be
+             *             a negative value
+             * @param back_off stores the log_10 back-off weight (probability)
+             *        of the N-gram can be 0 is the probability is not available
+             * @param tokens stores the N-gram words the size of this vector
+             *        defines the N-gram level.
+             */
+            struct SRawNGram {
+                TLogProbBackOff prob;
+                TLogProbBackOff back_off;
+                MTextFilePiece tokens[MAX_NGRAM_LEVEL];
+            };
 
             /**
              * This structure is used to store the N-Gram data
@@ -121,21 +139,21 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @param oGram the 1-Gram data
                  */
-                virtual void add1Gram(const SBackOffNGram &oGram) = 0;
+                virtual void add1Gram(const SRawNGram &oGram) = 0;
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @param mGram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void addMGram(const SBackOffNGram &mGram) = 0;
+                virtual void addMGram(const SRawNGram &mGram) = 0;
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
                  * @param nGram the N-Gram data
                  */
-                virtual void addNGram(const SBackOffNGram &nGram) = 0;
+                virtual void addNGram(const SRawNGram &nGram) = 0;
 
                 /**
                  * Returns the maximum length of the considered N-Grams

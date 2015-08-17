@@ -47,13 +47,13 @@ namespace uva {
                 static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, ifstream & fstr) :
-                _trie(trie), _fstr(fstr), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, MMappedFileReader & fstr) :
+                _trie(trie), _fstr(fstr), _line({0,}), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
                 ARPATrieBuilder<N>::ARPATrieBuilder(const ARPATrieBuilder<N>& orig) :
-                _trie(orig._trie), _fstr(orig._fstr), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                _trie(orig._trie), _fstr(orig._fstr), _line(orig._line), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
@@ -61,21 +61,20 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readHeaders(string &line) {
+                void ARPATrieBuilder<N>::readHeaders() {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
-                        LOG_DEBUG1 << "Read header (?) line: '" << line << "'" << END_LOG;
-                        reduce(line);
+                        LOG_DEBUG1 << "Read header (?) line: '" << _line << "'" << END_LOG;
 
                         //If the line is empty then we keep reading
-                        if (line != "") {
+                        if (_line != "") {
                             //If the line begins with "<" then it could be a header
                             //or something else that we do not need to read or
                             //interpret! Therefore we skip it and read on, otherwise
                             //it is potentially a meaningful data so we should stop
                             //and go on to the next section, namely" data
-                            if (line.substr(0, 1) != "<") {
+                            if (*_line.m_beginPtr != '<') {
                                 LOG_DEBUG1 << "Is something meaningful, moving to data section!" << END_LOG;
                                 break;
                             } else {
@@ -89,7 +88,7 @@ namespace uva {
                         Logger::updateProgressBar();
 
                         //Read the next line from the file if it is there
-                        if (!getline(_fstr, line)) {
+                        if (!_fstr.getline(_line)) {
                             throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                         }
                     }
@@ -98,30 +97,29 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readData(string &line, size_t counts[N]) {
+                void ARPATrieBuilder<N>::readData(size_t counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
                     //ARPA headers and we stumbled upon something meaningful,
                     //that actually must be the begin of the data section
-                    if (line != END_OF_ARPA_FILE) {
+                    if (_line != END_OF_ARPA_FILE) {
                         TModelLevel level = MIN_NGRAM_LEVEL;
                         while (true) {
-                            if (getline(_fstr, line)) {
-                                LOG_DEBUG1 << "Read data (?) line: '" << line << "'" << END_LOG;
-                                reduce(line);
+                            if (_fstr.getline(_line)) {
+                                LOG_DEBUG1 << "Read data (?) line: '" << _line << "'" << END_LOG;
 
                                 //Update the progress bar status
                                 Logger::updateProgressBar();
 
                                 //If the line is empty then we keep reading
-                                if (line != "") {
+                                if (_line != "") {
                                     //Check that the next line contains the meaningful N-gram amount information!
-                                    if (regex_match(line, _ngAmountRegExp)) {
+                                    if (regex_match(_line.str(), _ngAmountRegExp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
-                                        LOG_DEBUG1 << "Is the n-gram amount: '" << line << "', ignoring!" << END_LOG;
+                                        LOG_DEBUG1 << "Is the n-gram amount: '" << _line << "', ignoring!" << END_LOG;
 
                                         //Read the number of N-grams in order to have enough data
                                         //for the pre-allocation of the memory in the trie! For
@@ -130,7 +128,7 @@ namespace uva {
 
                                         //First tokenize the string
                                         vector<string> elems;
-                                        tokenize(line, NGRAM_COUNTS_DELIM, elems);
+                                        tokenize(_line.str(), NGRAM_COUNTS_DELIM, elems);
 
                                         //Parse the second (last) value and store it as the amount
                                         string & amount = *(--elems.end());
@@ -141,7 +139,7 @@ namespace uva {
                                             stringstream msg;
                                             msg << "Incorrect ARPA format: Can not parse the "
                                                     << level << "-gram amount: '" << amount
-                                                    << "' from string: '" << line << "'";
+                                                    << "' from string: '" << _line << "'";
                                             throw Exception(msg.str());
                                         }
                                     } else {
@@ -159,7 +157,7 @@ namespace uva {
                         }
                     } else {
                         stringstream msg;
-                        msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
+                        msg << "Incorrect ARPA format: Got '" << _line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
                         throw Exception(msg.str());
                     }
 
@@ -169,7 +167,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readNGrams(string &line, const TModelLevel level) {
+                void ARPATrieBuilder<N>::readNGrams(const TModelLevel level) {
                     LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
@@ -178,7 +176,7 @@ namespace uva {
                     const regex ngSectionRegExp(regexpStr.str());
 
                     //Check if the line that was input is the header of the N-grams section for N=level
-                    if (regex_match(line, ngSectionRegExp)) {
+                    if (regex_match(_line.str(), ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
                         ARPAGramBuilder *pNGBuilder = NULL;
                         ARPAGramBuilderFactory::getBuilder<N>(level, _trie, &pNGBuilder);
@@ -189,14 +187,14 @@ namespace uva {
                             //Read the current level N-grams and add them to the trie
                             while (true) {
                                 //Try to read the next line
-                                if (getline(_fstr, line)) {
-                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                                if (_fstr.getline(_line)) {
+                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << _line << "'" << END_LOG;
 
                                     //Empty lines will just be skipped
-                                    if (line != "") {
+                                    if (_line != "") {
                                         //Pass the given N-gram string to the N-Gram Builder. If the
                                         //N-gram is not matched then stop the loop and move on
-                                        if (pNGBuilder->processString(line)) {
+                                        if (pNGBuilder->parseLine(_line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
                                             LOG_DEBUG << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
@@ -230,14 +228,14 @@ namespace uva {
 
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram
                         LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
-                                << ", the current line is '" << line << "'" << END_LOG;
+                                << ", the current line is '" << _line << "'" << END_LOG;
 
                         //Test if we need to move on or we are done or an error is detected
                         if (level < N) {
                             //There are still N-Gram levels to read
-                            if (line != END_OF_ARPA_FILE) {
+                            if (_line != END_OF_ARPA_FILE) {
                                 //We did not encounter the \end\ tag yet so do recursion to the next level
-                                readNGrams(line, level + 1);
+                                readNGrams(level + 1);
                             } else {
                                 //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                                 LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
@@ -245,9 +243,9 @@ namespace uva {
                             }
                         } else {
                             //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
-                            if (line != END_OF_ARPA_FILE) {
+                            if (_line != END_OF_ARPA_FILE) {
                                 stringstream msg;
-                                msg << "Incorrect ARPA format: Got '" << line << "' instead of '" << END_OF_ARPA_FILE
+                                msg << "Incorrect ARPA format: Got '" << _line << "' instead of '" << END_OF_ARPA_FILE
                                         << "' when reading " << level << "-grams section!";
                                 throw Exception(msg.str());
                             }
@@ -256,9 +254,9 @@ namespace uva {
                         //The obtained string is something else than the next n-grams section header
                         //So the only thing it is allowed to be is the end of file, let's check on
                         //it and otherwise report an error
-                        if (line != END_OF_ARPA_FILE) {
+                        if (_line != END_OF_ARPA_FILE) {
                             stringstream msg;
-                            msg << "Incorrect ARPA format: Got '" << line
+                            msg << "Incorrect ARPA format: Got '" << _line
                                     << "' when trying to read the " << level
                                     << "-grams section!";
                             throw Exception(msg.str());
@@ -278,20 +276,18 @@ namespace uva {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                     try {
-                        //This is the variable that will store the last read line of ARPA file
-                        string line = "";
                         //Read the first line from the file
-                        getline(_fstr, line);
+                        _fstr.getline(_line);
 
                         //Skip on ARPA headers
-                        readHeaders(line);
+                        readHeaders();
 
                         //Declare an array of N-Gram counts, that is to be filled from the
                         //headers. This data will be used to pre-allocate memory for the Trie 
                         size_t counts[N];
 
                         //Read the DATA section of ARPA
-                        readData(line, counts);
+                        readData(counts);
 
                         //Provide the N-Gram counts data to the Trie
                         _trie.preAllocate(counts);
@@ -299,8 +295,8 @@ namespace uva {
                         //Do the progress bard indicator
                         Logger::startProgressBar();
 
-                        //Read the N-grams
-                        readNGrams(line, 1);
+                        //Read the N-grams, starting from 1-Grams
+                        readNGrams(1);
 
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
