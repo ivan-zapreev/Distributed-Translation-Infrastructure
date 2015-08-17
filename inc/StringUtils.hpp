@@ -96,6 +96,7 @@ namespace uva {
                  * @param elems the output array
                  */
                 static inline void tokenize(const std::string &data, const char delim, vector<string> & elems) {
+                    elems.clear();
                     size_t start = 0;
                     size_t end = data.find_first_of(delim);
                     while (end <= std::string::npos) {

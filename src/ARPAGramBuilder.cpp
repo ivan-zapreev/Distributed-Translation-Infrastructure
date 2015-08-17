@@ -62,12 +62,6 @@ namespace uva {
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
-                    //Clear the current data, set the probability and weight to zero
-                    _ngramParts.clear();
-                    _ngram.tokens.clear();
-                    _ngram.prob = ZERO_LOG_PROB_WEIGHT;
-                    _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
-
                     //First tokenize as a pattern "prob \t gram \t back-off"
                     tokenize(data, '\t', _ngramParts);
 
@@ -84,7 +78,8 @@ namespace uva {
                         //If there is one extra token then it must be a probability
                         //The probability is located at the very first place in string,
                         //so it must be the very first token in the vector - parse it
-                        fast_stoT_3<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
+                        //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
+                        fast_stoT_2<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
 
                         LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
@@ -96,9 +91,13 @@ namespace uva {
                             //probability and a back-off weight. The back-off is
                             //located at the very last place in the string, so it
                             //must be the very last token in the vector - parse it
-                            fast_stoT_3<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
+                            //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
+                            fast_stoT_2<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
 
                             LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                        } else {
+                            //There is no back-off so set it to zero
+                            _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
                         }
 
                         //Add the obtained N-gram data to the Trie
