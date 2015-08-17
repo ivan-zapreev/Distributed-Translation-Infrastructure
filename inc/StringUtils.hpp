@@ -205,6 +205,7 @@ namespace uva {
                 // 09-May-2009 Tom Van Baak (tvb) www.LeapSecond.com
                 // See:http://www.leapsecond.com/tools/fast_atof.c
                 //
+
                 template<typename T>
                 void fast_stoT_1(T & r, const char *p) {
                     int frac;
@@ -286,9 +287,9 @@ namespace uva {
                 }
 
                 // See: http://pastebin.com/dHP1pgQ4
+
                 template<typename T>
                 bool fast_stoT_2(T & r, const char *p) {
-
                     r = 0.0;
                     int c = 0; // counter to check how many numbers we got!
 
@@ -390,6 +391,37 @@ namespace uva {
                     }
 
                     return true;
+                }
+
+                //See: http://tinodidriksen.com/2011/05/28/cpp-convert-string-to-double-speed/
+                //NOTE: This method does not support exponent part!
+
+                template<typename T>
+                void fast_stoT_3(T & r, const char *p) {
+                    r = 0.0;
+                    bool neg = false;
+                    if (*p == '-') {
+                        neg = true;
+                        ++p;
+                    }
+                    while (*p >= '0' && *p <= '9') {
+                        r = (r * 10.0) + (*p - '0');
+                        ++p;
+                    }
+                    if (*p == '.') {
+                        double f = 0.0;
+                        int n = 0;
+                        ++p;
+                        while (*p >= '0' && *p <= '9') {
+                            f = (f * 10.0) + (*p - '0');
+                            ++p;
+                            ++n;
+                        }
+                        r += f / std::pow(10.0, n);
+                    }
+                    if (neg) {
+                        r = -r;
+                    }
                 }
             }
         }
