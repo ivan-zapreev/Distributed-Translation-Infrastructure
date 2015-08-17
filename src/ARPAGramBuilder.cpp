@@ -74,7 +74,7 @@ namespace uva {
                         //The probability is located at the very first place in string,
                         //so it must be the very first token in the vector - parse it
                         //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
-                        fast_stoT_2<float>(_ngram.prob, _ngramParts[0].c_str());
+                        fast_stoT_2_opt<float>(_ngram.prob, _ngramParts[0].c_str());
 
                         LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
@@ -87,7 +87,7 @@ namespace uva {
                             //located at the very last place in the string, so it
                             //must be the very last token in the vector - parse it
                             //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
-                            fast_stoT_2<float>(_ngram.back_off, _ngramParts[2].c_str());
+                            fast_stoT_2_opt<float>(_ngram.back_off, _ngramParts[2].c_str());
 
                             LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
                         } else {

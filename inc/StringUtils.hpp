@@ -316,7 +316,7 @@ namespace uva {
                         T f = 0.0;
                         T scale = 1.0;
                         ++p;
-                        while (*p >= '0' && *p <= '9') {
+                        while (valid_digit(*p)) {
                             f = (f * 10.0) + (*p - '0');
                             ++p;
                             scale *= 10.0;
@@ -394,6 +394,48 @@ namespace uva {
                     return true;
                 }
 
+
+                // See: http://pastebin.com/dHP1pgQ4
+
+                template<typename T>
+                void fast_stoT_2_opt(T & r, const char *p) {
+                    r = 0.0;
+
+                    // Get the sign!
+                    bool neg = false;
+                    if (*p == '-') {
+                        neg = true;
+                        ++p;
+                    } else if (*p == '+') {
+                        neg = false;
+                        ++p;
+                    }
+
+                    // Get the digits before decimal point
+                    while (valid_digit(*p)) {
+                        r = (r * 10.0) + (*p - '0');
+                        ++p;
+                    }
+
+                    // Get the digits after decimal point
+                    if (*p == '.') {
+                        T f = 0.0;
+                        T scale = 1.0;
+                        ++p;
+                        while (valid_digit(*p)) {
+                            f = (f * 10.0) + (*p - '0');
+                            ++p;
+                            scale *= 10.0;
+                        }
+                        r += f / scale;
+                    }
+
+                    // Apply sign to number
+                    if (neg) {
+                        r = -r;
+                    }
+                }
+                
                 //See: http://tinodidriksen.com/2011/05/28/cpp-convert-string-to-double-speed/
                 //NOTE: This method does not support exponent part!
 
