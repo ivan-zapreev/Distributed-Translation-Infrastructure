@@ -81,11 +81,10 @@ namespace uva {
 
                     //Check the number of tokens and by that detect the sort of N-Gram it is
                     if ((MIN_NUM_TOKENS_NGRAM_STR <= size) && (size <= MAX_NUM_TOKENS_NGRAM_STR)) {
-                        bool isGood = true;
                         //If there is one extra token then it must be a probability
                         //The probability is located at the very first place in string,
                         //so it must be the very first token in the vector - parse it
-                        isGood = fast_stoT<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
+                        fast_stoT_1<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
 
                         LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
@@ -97,21 +96,13 @@ namespace uva {
                             //probability and a back-off weight. The back-off is
                             //located at the very last place in the string, so it
                             //must be the very last token in the vector - parse it
-                            isGood = isGood && fast_stoT<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
+                            fast_stoT_1<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
 
                             LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
                         }
 
                         //Add the obtained N-gram data to the Trie
-                        if (isGood) {
                             _addGarmFunc(_ngram);
-                        } else {
-                            stringstream msg;
-                            msg << "The probability or back-off value of the "
-                                    << "expected N-gram (?) '" << data << "' of level "
-                                    << _level << " could not be parsed !";
-                            throw Exception(msg.str());
-                        }
                     } else {
                         //This is a possible situation, there is an unexpected
                         //number of tokens, so we should stop with this level N-grams
