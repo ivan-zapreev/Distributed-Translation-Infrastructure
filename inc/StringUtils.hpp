@@ -99,13 +99,14 @@ namespace uva {
                     elems.clear();
                     size_t start = 0;
                     size_t end = data.find_first_of(delim);
-                    while (end < std::string::npos) {
+                    while (end <= std::string::npos) {
                         elems.emplace_back(data.substr(start, end - start));
-                        start = end + 1;
-                        end = data.find_first_of(delim, start);
-                    }
-                    if (start < std::string::npos) {
-                        elems.emplace_back(data.substr(start));
+                        if (end != std::string::npos) {
+                            start = end + 1;
+                            end = data.find_first_of(delim, start);
+                        } else {
+                            break;
+                        }
                     }
                 }
 
