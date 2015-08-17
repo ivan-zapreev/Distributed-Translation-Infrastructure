@@ -90,7 +90,7 @@ namespace uva {
                 }
 
                 /**
-                 * Tokenise a given string into avector of strings
+                 * Tokenise a given string into a vector of strings
                  * @param s the string to tokenise
                  * @param delim the delimiter
                  * @param elems the output array
@@ -99,14 +99,13 @@ namespace uva {
                     elems.clear();
                     size_t start = 0;
                     size_t end = data.find_first_of(delim);
-                    while (end <= std::string::npos) {
+                    while (end < std::string::npos) {
                         elems.emplace_back(data.substr(start, end - start));
-                        if (end != std::string::npos) {
-                            start = end + 1;
-                            end = data.find_first_of(delim, start);
-                        } else {
-                            break;
-                        }
+                        start = end + 1;
+                        end = data.find_first_of(delim, start);
+                    }
+                    if (start < std::string::npos) {
+                        elems.emplace_back(data.substr(start));
                     }
                 }
 
