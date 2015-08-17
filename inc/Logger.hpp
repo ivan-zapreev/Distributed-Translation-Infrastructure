@@ -230,7 +230,7 @@ namespace uva {
                 static unsigned short int currProgCharIdx;
 
                 //Stores the last progress update in CPU seconds
-                static double lastProgressUpdate;
+                static unsigned int updateCounter;
 
             };
 

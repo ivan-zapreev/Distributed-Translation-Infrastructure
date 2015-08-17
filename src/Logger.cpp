@@ -54,7 +54,7 @@ namespace uva {
             unsigned short int Logger::currProgCharIdx = 0;
 
             //Set the initial update time to zero
-            double Logger::lastProgressUpdate = 0.0;
+            unsigned int Logger::updateCounter = 0.0;
 
             //The progress bar is not running first
             bool Logger::isPBOn = false;
@@ -142,42 +142,42 @@ namespace uva {
             }
 
             void Logger::startProgressBar() {
-                if (currLEvel <= INFO && !isPBOn) {
+                if (!isPBOn) {
                     //Output the time string
                     cout << computeTimeString(beginTime, timeStrLen);
 
                     //Store the current time
                     beginTime = clock();
 
-                    //Update the cpu time and set the progress bar on flag
-                    lastProgressUpdate = StatisticsMonitor::getCPUTime();
+                    //Update the update counter and set the progress bar on flag
+                    updateCounter = 0;
                     isPBOn = true;
                 }
             }
 
             void Logger::updateProgressBar() {
-                if (currLEvel <= INFO && isPBOn) {
-                    const double currProgressUpdate = StatisticsMonitor::getCPUTime();
-                    if ((currProgressUpdate - lastProgressUpdate) > PROGRESS_UPDATE_PERIOD) {
+                //Do not update each time to save on computations
+                if (updateCounter > (CLOCKS_PER_SEC / 4)) {
 
-                        //Output the current time
-                        cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
-                        cout.flush();
+                    //Output the current time
+                    cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
+                    cout.flush();
 
-                        lastProgressUpdate = currProgressUpdate;
-                    }
+                    updateCounter = 0;
+                } else {
+                    updateCounter++;
                 }
             }
 
             void Logger::stopProgressBar() {
-                if (currLEvel <= INFO && isPBOn) {
+                if (isPBOn) {
                     //Clear the progress
                     cout << computeTimeClearString(timeStrLen) << "\n";
 
                     //Reset class variables
                     beginTime = 0;
                     timeStrLen = 0;
-                    lastProgressUpdate = 0.0;
+                    updateCounter = 0;
                     isPBOn = false;
                 }
             }
