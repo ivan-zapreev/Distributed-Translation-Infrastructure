@@ -62,6 +62,54 @@ namespace uva {
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
+                    //Do the low level string parsing
+                    size_t start = 0;
+                    size_t end = data.find_first_of('\t');
+                    if (end != std::string::npos) {
+                        //The first element of the N-gram must be probability,read it
+                        (void) fast_stoT_2<float>(_ngram.prob, data.substr(start, end - start).c_str());
+                        start = end + 1;
+
+                        LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
+
+                        //Now read the N-gram words in a loop until the last one
+                        end = data.find_first_of(' ', start);
+                        while (end < std::string::npos) {
+                            _ngram.tokens.emplace_back(data.substr(start, end - start));
+                            start = end + 1;
+                            end = data.find_first_of(' ', start);
+                        }
+                        //Add the last word
+                        end = data.find_first_of('\t', start);
+                        _ngram.tokens.emplace_back(data.substr(start, end - start));
+
+                        //If there is something else left then it is the back-off weight
+                        if (end != std::string::npos) {
+                            start = end + 1;
+                            (void) fast_stoT_2<float>(_ngram.back_off, data.substr(start).c_str() );
+
+                            LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                        } else {
+                            //There is no back-off so set it to zero
+                            _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                        }
+
+                        //Add the obtained N-gram data to the Trie
+                        _addGarmFunc(_ngram);
+
+                        return true;
+                    } else {
+                        //If we did not find a tab then it is not an N-gram! Skipping on!
+                        return false;
+                    }
+                }
+#if 0                
+
+                bool ARPAGramBuilder::processString(const string & data) {
+                    LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
+                    //We expect a good input, so the result is set to false by default.
+                    bool result = false;
+
                     //First tokenize as a pattern "prob \t gram \t back-off"
                     tokenize(data, '\t', _ngramParts);
 
@@ -120,6 +168,7 @@ namespace uva {
 
                     return result;
                 }
+#endif
             }
         }
     }
