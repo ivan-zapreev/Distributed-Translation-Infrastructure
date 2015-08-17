@@ -208,7 +208,7 @@ namespace uva {
                 //
 
                 template<typename T>
-                void fast_stoT_1(T & r, const char *p) {
+                inline void fast_stoT_1(T & r, const char *p) {
                     int frac;
                     T sign, value, scale;
 
@@ -290,7 +290,7 @@ namespace uva {
                 // See: http://pastebin.com/dHP1pgQ4
 
                 template<typename T>
-                bool fast_stoT_2(T & r, const char *p) {
+                inline bool fast_stoT_2(T & r, const char *p) {
                     r = 0.0;
                     int c = 0; // counter to check how many numbers we got!
 
@@ -396,9 +396,10 @@ namespace uva {
 
 
                 // See: http://pastebin.com/dHP1pgQ4
+                //NOTE: This method does not support exponent part!
 
                 template<typename T>
-                void fast_stoT_2_opt(T & r, const char *p) {
+                inline void fast_stoT_2_opt(T & r, const char *p) {
                     r = 0.0;
 
                     // Get the sign!
@@ -435,12 +436,12 @@ namespace uva {
                         r = -r;
                     }
                 }
-                
+
                 //See: http://tinodidriksen.com/2011/05/28/cpp-convert-string-to-double-speed/
                 //NOTE: This method does not support exponent part!
 
                 template<typename T>
-                void fast_stoT_3(T & r, const char *p) {
+                inline void fast_stoT_3(T & r, const char *p) {
                     r = 0.0;
                     bool neg = false;
                     if (*p == '-') {
