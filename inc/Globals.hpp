@@ -36,7 +36,7 @@ namespace uva {
 
         //This is the pattern used for file path separation
         const string PATH_SEPARATION_SYMBOLS = "/\\";
-        //This is a delimiter used in the text corpus and test files
+        //This is a delimiter used in the test files
         const char TOKEN_DELIMITER_CHAR = ' ';
         //The expected number of program arguments
         const uint EXPECTED_NUMBER_OF_ARGUMENTS = 3;

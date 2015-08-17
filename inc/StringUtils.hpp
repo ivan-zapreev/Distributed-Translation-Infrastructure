@@ -95,12 +95,16 @@ namespace uva {
                  * @param elems the output array
                  */
                 static inline void tokenize(const std::string &data, const char delim, vector<string> & elems) {
-                    stringstream stream(data);
-                    string token;
-
-                    //Read from the string stream
-                    while (getline(stream, token, delim)) {
-                        elems.push_back(token);
+                    size_t start = 0;
+                    size_t end = data.find_first_of(delim);
+                    while (end <= std::string::npos) {
+                        elems.emplace_back(data.substr(start, end - start));
+                        if (end != std::string::npos) {
+                            start = end + 1;
+                            end = data.find_first_of(delim, start);
+                        } else {
+                            break;
+                        }
                     }
                 }
 

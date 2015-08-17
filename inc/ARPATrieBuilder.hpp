@@ -49,9 +49,8 @@ namespace uva {
                      * The basic constructor that accepts a trie to be build up and the file stream to read from
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
-                     * @param delim the delimiter for the line elements
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, ifstream & _fstr, const char delim);
+                    ARPATrieBuilder(ATrie<N> & trie, ifstream & _fstr);
 
                     /**
                      * This function will read from the file and build the trie
@@ -64,8 +63,6 @@ namespace uva {
                     ATrie<N> & _trie;
                     //The reference to the input file with text corpus
                     ifstream & _fstr;
-                    //The delimiter for the line elements
-                    const char _delim;
                     //The regular expression for matching the n-gram amount entry of the data section
                     const regex _ngAmountRegExp;
                     //The regular expression for matching the n-grams section

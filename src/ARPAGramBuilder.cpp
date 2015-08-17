@@ -42,15 +42,16 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc, const char delim)
-                : _addGarmFunc(addGarmFunc), _delim(delim), _level(level),
-                MIN_NUM_TOKENS_NGRAM_STR(_level + 1), MAX_NUM_TOKENS_NGRAM_STR(_level + 2) {
-                    LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie," << delim << ")" << END_LOG;
+                const unsigned short int ARPAGramBuilder::MIN_NUM_TOKENS_NGRAM_STR = 1;
+                const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 2;
+
+                ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc)
+                : _addGarmFunc(addGarmFunc), _level(level) {
+                    LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
                 }
 
                 ARPAGramBuilder::ARPAGramBuilder(const ARPAGramBuilder& orig)
-                : _addGarmFunc(orig._addGarmFunc), _delim(orig._delim), _level(orig._level),
-                MIN_NUM_TOKENS_NGRAM_STR(_level + 1), MAX_NUM_TOKENS_NGRAM_STR(_level + 2) {
+                : _addGarmFunc(orig._addGarmFunc), _level(orig._level) {
                 }
 
                 ARPAGramBuilder::~ARPAGramBuilder() {
@@ -62,14 +63,16 @@ namespace uva {
                     bool result = false;
 
                     //Clear the current data, set the probability and weight to zero
+                    _ngramParts.clear();
                     _ngram.tokens.clear();
                     _ngram.prob = ZERO_LOG_PROB_WEIGHT;
                     _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
 
-                    //Tokenise the line of text into a vector
-                    tokenize(data, _delim, _ngram.tokens);
-                    //Compute the total number of tokens
-                    const size_t size = _ngram.tokens.size();
+                    //First tokenize as a pattern "prob \t gram \t back-off"
+                    tokenize(data, '\t', _ngramParts);
+
+                    //Get the number of tokens
+                    const size_t size = _ngramParts.size();
 
                     LOG_DEBUG1 << "The number of tokens is: " << size
                             << ", it is expected to be within ["
@@ -82,21 +85,20 @@ namespace uva {
                             //If there is one extra token then it must be a probability
                             //The probability is located at the very first place in string,
                             //so it must be the very first token in the vector - parse it
-                            _ngram.prob = stof(*_ngram.tokens.begin());
-                            //Erase this first token as we only want words as tokens left
-                            _ngram.tokens.erase(_ngram.tokens.begin());
+                            _ngram.prob = stof(*_ngramParts.begin());
 
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
+                            //Tokenise the gram words
+                            tokenize(*(++_ngramParts.begin()), ' ', _ngram.tokens);
+                            
                             if (size == MAX_NUM_TOKENS_NGRAM_STR) {
                                 //If there is two extra tokens then it must be a
                                 //probability and a back-off weight. The back-off is
                                 //located at the very last place in the string, so it
                                 //must be the very last token in the vector - parse it
-                                vector<string>::iterator lastElem = --_ngram.tokens.end();
+                                vector<string>::iterator lastElem = --_ngramParts.end();
                                 _ngram.back_off = stof(*lastElem);
-                                //Erase this last token as we only want words as tokens left
-                                _ngram.tokens.erase(lastElem);
 
                                 LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
                             }
@@ -113,10 +115,9 @@ namespace uva {
                     } else {
                         //This is a possible situation, there is an unexpected
                         //number of tokens, so we should stop with this level N-grams
-                        if( size > MAX_NUM_TOKENS_NGRAM_STR ) {
+                        if (size > MAX_NUM_TOKENS_NGRAM_STR) {
                             LOG_WARNING << "There is too many tokens in '" << data
-                                        << "' we are expecting a " << _level
-                                        << "-gram, IGNORING!" << END_LOG;
+                                    << "' there should be at most two tab symbols! IGNORING!" << END_LOG;
                         } else {
                             //If there is less than the minimum number of tokens then
                             //it should be the beginning of the next m-gram section

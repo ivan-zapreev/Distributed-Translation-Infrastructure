@@ -53,9 +53,8 @@ namespace uva {
                      * The constructor to be used in order to instantiate a N-Gram builder
                      * @param level the level of the N-grams to be processed
                      * @param addGarmFunc the strategy for adding the N-grams
-                     * @param delim the delimiter for the N-gram string
                      */
-                    ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc, const char delim);
+                    ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -74,15 +73,15 @@ namespace uva {
                 protected:
                     //The function that is to be used to add an N-gram to a trie
                     TAddGramFunct _addGarmFunc;
-                    //The tokens delimiter in the string to parse
-                    const char _delim;
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel _level;
+                    //Will be used as a temporary storage of the N-gram parts
+                    vector<string> _ngramParts;
                     //This is the N-Gram container to store the parsed N-gram data
                     SBackOffNGram _ngram;
                     //The minimum and maximum number of tokens in the N-Gram string
-                    const uint MIN_NUM_TOKENS_NGRAM_STR;
-                    const uint MAX_NUM_TOKENS_NGRAM_STR;
+                    static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;
+                    static const unsigned short int MAX_NUM_TOKENS_NGRAM_STR;
 
                     /**
                      * The copy constructor

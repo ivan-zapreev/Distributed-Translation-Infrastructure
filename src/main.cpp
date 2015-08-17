@@ -181,7 +181,7 @@ static void fillInTrie(ifstream & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
-    ARPATrieBuilder<N> builder(trie, fstr, TOKEN_DELIMITER_CHAR);
+    ARPATrieBuilder<N> builder(trie, fstr);
 
     //A.2. Build the trie
     builder.build();

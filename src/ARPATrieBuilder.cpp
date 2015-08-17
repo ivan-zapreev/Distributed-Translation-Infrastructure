@@ -47,13 +47,13 @@ namespace uva {
                 static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, ifstream & fstr, const char delim) :
-                _trie(trie), _fstr(fstr), _delim(delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, ifstream & fstr) :
+                _trie(trie), _fstr(fstr), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
                 ARPATrieBuilder<N>::ARPATrieBuilder(const ARPATrieBuilder<N>& orig) :
-                _trie(orig._trie), _fstr(orig._fstr), _delim(orig._delim), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                _trie(orig._trie), _fstr(orig._fstr), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
@@ -181,7 +181,7 @@ namespace uva {
                     if (regex_match(line, ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
                         ARPAGramBuilder *pNGBuilder = NULL;
-                        ARPAGramBuilderFactory::getBuilder<N>(level, _trie, _delim, &pNGBuilder);
+                        ARPAGramBuilderFactory::getBuilder<N>(level, _trie, &pNGBuilder);
 
                         try {
                             //The counter of the N-grams
