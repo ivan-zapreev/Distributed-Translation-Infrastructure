@@ -191,7 +191,6 @@ namespace uva {
                                 //Try to read the next line
                                 if (getline(_fstr, line)) {
                                     LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
-                                    reduce(line);
 
                                     //Empty lines will just be skipped
                                     if (line != "") {
