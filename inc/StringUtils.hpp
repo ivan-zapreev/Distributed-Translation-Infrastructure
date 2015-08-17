@@ -276,10 +276,10 @@ namespace uva {
                             ++p;
                             ++c;
                         }
-                        if (!neg && e > std::numeric_limits<T>::max_exponent10) {
-                            e = std::numeric_limits<T>::max_exponent10;
-                        } else if (e < std::numeric_limits<T>::min_exponent10) {
-                            e = std::numeric_limits<T>::max_exponent10;
+                        if (!neg && e > (uint) std::numeric_limits<T>::max_exponent10) {
+                            e = (uint) std::numeric_limits<T>::max_exponent10;
+                        } else if (e < (uint) std::numeric_limits<T>::min_exponent10) {
+                            e = (uint) std::numeric_limits<T>::max_exponent10;
                         }
                         // SECOND CHECK:
                         if (c == 0) {
