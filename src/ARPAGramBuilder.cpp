@@ -59,6 +59,60 @@ namespace uva {
 
                 bool ARPAGramBuilder::processString(const string & data) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
+
+                    //First tokenize as a pattern "prob \t gram \t back-off"
+                    tokenize(data, '\t', _ngramParts);
+
+                    LOG_DEBUG1 << "The number of tokens is: " << _ngramParts.size()
+                            << ", it is expected to be within ["
+                            << MIN_NUM_TOKENS_NGRAM_STR << ","
+                            << MAX_NUM_TOKENS_NGRAM_STR << "]" << END_LOG;
+
+                    //Check the number of tokens and by that detect the sort of N-Gram it is
+                    if (_ngramParts.size() >= MIN_NUM_TOKENS_NGRAM_STR) {
+                        //If there is one extra token then it must be a probability
+                        //The probability is located at the very first place in string,
+                        //so it must be the very first token in the vector - parse it
+                        //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
+                        fast_stoT_2<float>(_ngram.prob, _ngramParts[0].c_str());
+
+                        LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
+
+                        //Tokenise the gram words, which is the second element in the array
+                        tokenize(_ngramParts[1], ' ', _ngram.tokens);
+
+                        if (_ngramParts.size() >= MAX_NUM_TOKENS_NGRAM_STR) {
+                            //If there is two extra tokens then it must be a
+                            //probability and a back-off weight. The back-off is
+                            //located at the very last place in the string, so it
+                            //must be the very last token in the vector - parse it
+                            //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
+                            fast_stoT_2<float>(_ngram.back_off, _ngramParts[2].c_str());
+
+                            LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                        } else {
+                            //There is no back-off so set it to zero
+                            _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                        }
+
+                        //Add the obtained N-gram data to the Trie
+                        _addGarmFunc(_ngram);
+
+                        LOG_DEBUG << "Finished processing the " << _level << "-Gram (?) line: '"
+                                << data << "', it is accepted!" << END_LOG;
+
+                        return false;
+                    } else {
+                        //If there is less than the minimum number of tokens then
+                        //it should be the beginning of the next m-gram section
+                        return true;
+                    }
+                }
+
+#if 0
+
+                bool ARPAGramBuilder::processString(const string & data) {
+                    LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
@@ -120,6 +174,7 @@ namespace uva {
 
                     return result;
                 }
+#endif
             }
         }
     }
