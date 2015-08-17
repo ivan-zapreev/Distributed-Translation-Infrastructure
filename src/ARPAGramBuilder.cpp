@@ -42,8 +42,8 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                const unsigned short int ARPAGramBuilder::MIN_NUM_TOKENS_NGRAM_STR = 1;
-                const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 2;
+                const unsigned short int ARPAGramBuilder::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
                 ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc)
                 : _addGarmFunc(addGarmFunc), _level(level) {
@@ -89,7 +89,7 @@ namespace uva {
 
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
-                            //Tokenise the gram words
+                            //Tokenise the gram words, which is the second element in the array
                             tokenize(*(++_ngramParts.begin()), ' ', _ngram.tokens);
                             
                             if (size == MAX_NUM_TOKENS_NGRAM_STR) {
@@ -97,8 +97,7 @@ namespace uva {
                                 //probability and a back-off weight. The back-off is
                                 //located at the very last place in the string, so it
                                 //must be the very last token in the vector - parse it
-                                vector<string>::iterator lastElem = --_ngramParts.end();
-                                _ngram.back_off = stof(*lastElem);
+                                _ngram.back_off = stof(*(--_ngramParts.end()));
 
                                 LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
                             }
