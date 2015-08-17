@@ -76,9 +76,9 @@ namespace uva {
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = oGrams[wordHash];
 
+#if MONITORE_COLLISIONS
                 //Do a temporary check for hash collisions
                 AHashMapTrie<N>::recordAndCheck(wordHash, UNDEFINED_WORD_HASH, oGram);
-
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                     //The word has been seen already, this is a potential error, so we report a warning!
@@ -86,7 +86,7 @@ namespace uva {
                             pbData.first, pbData.second,
                             oGram.prob, oGram.back_off);
                 }
-
+#endif
                 //Set/Update the probability and back-off values for the word
                 pbData.first = oGram.prob;
                 pbData.second = oGram.back_off;
@@ -117,9 +117,9 @@ namespace uva {
                     // 3. Insert the probability data into the trie
                     TProbBackOffEntryPair& pbData = createMGramEntry(level, wordHash, contextHash);
 
+#if MONITORE_COLLISIONS
                     //Do a temporary check for hash collisions
                     AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, mGram);
-
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //The M-Gram has been seen already, this is a potential error, so we report a warning!
@@ -127,7 +127,7 @@ namespace uva {
                                 pbData.first, pbData.second,
                                 mGram.prob, mGram.back_off);
                     }
-
+#endif
                     //Set/Update the probability and back-off values for the word
                     pbData.first = mGram.prob;
                     pbData.second = mGram.back_off;
@@ -165,9 +165,9 @@ namespace uva {
                 //Get/Create the new Prob. in the map, for the context
                 TLogProbBackOff& pData = ngamEntry[contextHash];
 
+#if MONITORE_COLLISIONS
                 //Do a temporary check for hash collisions
                 AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, nGram);
-
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (pData != ZERO_LOG_PROB_WEIGHT) {
                     //The M-Gram has been seen already, this is a potential error, so we report a warning!
@@ -175,7 +175,7 @@ namespace uva {
                             pData, UNDEFINED_LOG_PROB_WEIGHT,
                             nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
                 }
-
+#endif
                 //Set/Update the probability
                 pData = nGram.prob;
 

@@ -158,16 +158,16 @@ namespace uva {
                     //Obtain the entry for the given N-gram
                     TProbBackOffEntryPair & pbData = ngRecorder[levelIdx][wordHash][contextHash];
 
+#if MONITORE_COLLISIONS
                     //Record the data for collision detection
                     AHashMapTrie<N>::recordAndCheck(wordHash, contextHash, gram);
-                    
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //If they are not the same then we have a collision!
                         REPORT_COLLISION_WARNING(gram.tokens, wordHash, contextHash,
                                 pbData.first, pbData.second,
                                 gram.prob, gram.back_off);
                     }
-
+#endif
                     //Store the probability and back-off values
                     pbData.first = gram.prob;
                     pbData.second = gram.back_off;
