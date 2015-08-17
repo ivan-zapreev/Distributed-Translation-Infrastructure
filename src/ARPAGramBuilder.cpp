@@ -81,30 +81,31 @@ namespace uva {
 
                     //Check the number of tokens and by that detect the sort of N-Gram it is
                     if ((MIN_NUM_TOKENS_NGRAM_STR <= size) && (size <= MAX_NUM_TOKENS_NGRAM_STR)) {
-                        try {
-                            //If there is one extra token then it must be a probability
-                            //The probability is located at the very first place in string,
-                            //so it must be the very first token in the vector - parse it
-                            _ngram.prob = stof(*_ngramParts.begin());
+                        bool isGood = true;
+                        //If there is one extra token then it must be a probability
+                        //The probability is located at the very first place in string,
+                        //so it must be the very first token in the vector - parse it
+                        isGood = fast_stoT<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
 
-                            LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
+                        LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
-                            //Tokenise the gram words, which is the second element in the array
-                            tokenize(*(++_ngramParts.begin()), ' ', _ngram.tokens);
-                            
-                            if (size == MAX_NUM_TOKENS_NGRAM_STR) {
-                                //If there is two extra tokens then it must be a
-                                //probability and a back-off weight. The back-off is
-                                //located at the very last place in the string, so it
-                                //must be the very last token in the vector - parse it
-                                _ngram.back_off = stof(*(--_ngramParts.end()));
+                        //Tokenise the gram words, which is the second element in the array
+                        tokenize(*(++_ngramParts.begin()), ' ', _ngram.tokens);
 
-                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
-                            }
+                        if (size == MAX_NUM_TOKENS_NGRAM_STR) {
+                            //If there is two extra tokens then it must be a
+                            //probability and a back-off weight. The back-off is
+                            //located at the very last place in the string, so it
+                            //must be the very last token in the vector - parse it
+                            isGood = isGood && fast_stoT<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
 
-                            //Add the obtained N-gram data to the Trie
+                            LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                        }
+
+                        //Add the obtained N-gram data to the Trie
+                        if (isGood) {
                             _addGarmFunc(_ngram);
-                        } catch (invalid_argument) {
+                        } else {
                             stringstream msg;
                             msg << "The probability or back-off value of the "
                                     << "expected N-gram (?) '" << data << "' of level "
