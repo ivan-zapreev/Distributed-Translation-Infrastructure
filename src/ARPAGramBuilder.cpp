@@ -59,8 +59,6 @@ namespace uva {
 
                 bool ARPAGramBuilder::processString(const string & data) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << data << "'" << END_LOG;
-                    //We expect a good input, so the result is set to false by default.
-                    bool result = false;
 
                     //Do the low level string parsing
                     size_t start = 0;
@@ -97,10 +95,10 @@ namespace uva {
                         //Add the obtained N-gram data to the Trie
                         _addGarmFunc(_ngram);
 
-                        return true;
+                        return false;
                     } else {
                         //If we did not find a tab then it is not an N-gram! Skipping on!
-                        return false;
+                        return true;
                     }
                 }
 #if 0                
