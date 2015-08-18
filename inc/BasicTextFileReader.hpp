@@ -112,6 +112,16 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to get the pointer to the beginning of the text
+                 * This is a C string that is returned BUT there is no \0
+                 * termination and it can be Gb long!
+                 * @return the pointer to the beginning of the text
+                 */
+                inline const char * getCStr() {
+                    return m_beginPtr;
+                }
+
+                /**
                  * Allows to set the text
                  * @param beginPtr the pointer to the beginning of the text
                  * @param len the length of the text
