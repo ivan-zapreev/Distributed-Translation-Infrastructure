@@ -105,7 +105,7 @@ namespace uva {
                     //that actually must be the begin of the data section
                     if (_line != END_OF_ARPA_FILE) {
                         TModelLevel level = MIN_NGRAM_LEVEL;
-                        while (true) {
+                        while (level < N) {
                             if (_fstr.getLine(_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << _line << "'" << END_LOG;
 

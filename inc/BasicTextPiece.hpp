@@ -36,6 +36,7 @@
 using namespace std;
 using namespace uva::smt::tries;
 using namespace uva::smt::exceptions;
+using namespace uva::smt::logging;
 
 namespace uva {
     namespace smt {
@@ -153,6 +154,10 @@ namespace uva {
                     m_is_gen_str = true;
                     m_len = len;
                     m_restLen = m_len;
+                    
+                    LOG_DEBUG2 << "Setting the data to BasicTextPiece: m_beginPtr = "
+                            << m_beginPtr << ", m_cursorPtr = " << m_cursorPtr << ", m_is_gen_str = "
+                            << m_is_gen_str << ", m_len = " << m_len << ", m_restLen = " << m_restLen << END_LOG;
                 }
 
                 /**
