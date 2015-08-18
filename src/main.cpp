@@ -252,6 +252,8 @@ static void performTasks(const TAppParams& params) {
     LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
+    //ToDo: Add the possibility to choose between the file readers from the command line!
+    //
     //Attempt to open the model file
     //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
     FileStreamReader modelFile(params.modelFileName.c_str());
