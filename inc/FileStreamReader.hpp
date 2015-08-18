@@ -87,7 +87,7 @@ namespace uva {
 
                     //Check that it was properly read
                     if (m_file_stream.bad()) {
-                        LOG_ERROR << SSTR(this) << ": Error while reading the new line in the file!" << END_LOG;
+                        LOG_ERROR << "Error while reading the new line in the file!" << END_LOG;
                         //If there was failure during reading the return a failed flag
                         return false;
                     } else {

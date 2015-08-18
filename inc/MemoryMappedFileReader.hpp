@@ -123,13 +123,13 @@ namespace uva {
                         //The statistics structure for the mapped file
                         struct stat fileStat;
                         if (fstat(m_fileDesc, &fileStat) < 0) {
-                            LOG_ERROR << SSTR(this) << ": Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
+                            LOG_ERROR << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
                             //close the file
                             close();
                         } else {
                             //Get the file length
                             const size_t len = fileStat.st_size;
-                            LOG_INFO << SSTR(this) << ": Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
+                            LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
 
                             //Map the file into memory
                             //NOTE: We populate the map as it is then immediately moved to
