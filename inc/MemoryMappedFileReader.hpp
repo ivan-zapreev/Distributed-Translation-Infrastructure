@@ -67,7 +67,7 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                MemoryMappedFileReader(const char * fileName) : BasicTextPiece() {
+                MemoryMappedFileReader(const char * fileName) : BasicTextPiece(), m_fileDesc(0) {
                     m_fileDesc = open(fileName, O_RDONLY);
                     LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
@@ -90,7 +90,7 @@ namespace uva {
                         } else {
                             LOG_ERROR << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
                             //close the file
-                            close(m_fileDesc);
+                            close();
                         }
                     }
                 }
@@ -108,18 +108,21 @@ namespace uva {
                  * @return true if it is
                  */
                 explicit inline operator bool() const {
-                    return m_fileDesc >= 0;
+                    return m_fileDesc != 0;
                 }
 
                 /**
                  * This method should be used to close the file
                  */
                 inline void close() {
-                    if (is_open()) {
-                        // Release the memory (unnecessary because the program exits).
+                    // Release the memory (unnecessary because the program exits).
+                    if (BasicTextPiece::getBeginPtr() != NULL) {
                         munmap(BasicTextPiece::getBeginPtr(), BasicTextPiece::getLen());
-                        // Close the file descriptor
+                    }
+                    // Close the file descriptor
+                    if (m_fileDesc != 0) {
                         ::close(m_fileDesc);
+                        m_fileDesc = 0;
                     }
                 };
 
