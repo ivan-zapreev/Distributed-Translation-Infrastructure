@@ -81,7 +81,7 @@ namespace uva {
 #define LOG_DEBUG1  LOGGER_DEBUG(Logger::DEBUG1)
 #define LOG_DEBUG2  LOGGER_DEBUG(Logger::DEBUG2)
 #define LOG_DEBUG3  LOGGER_DEBUG(Logger::DEBUG3)
-#define END_LOG     endl
+#define END_LOG     endl << flush
 
 
             //The string representation values for debug levels
