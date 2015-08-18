@@ -195,103 +195,22 @@ namespace uva {
 
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')
 
-                //
-                // Simple and fast atof (ascii to float) function.
-                //
-                // - Executes about 5x faster than standard MSCRT library atof().
-                // - An attractive alternative if the number of calls is in the millions.
-                // - Assumes input is a proper integer, fraction, or scientific format.
-                // - Matches library atof() to 15 digits (except at extreme exponents).
-                // - Follows atof() precedent of essentially no error checking.
-                //
-                // 09-May-2009 Tom Van Baak (tvb) www.LeapSecond.com
-                // See:http://www.leapsecond.com/tools/fast_atof.c
-                //
-
-                template<typename T>
-                inline void fast_stoT_1(T & r, const char *p) {
-                    int frac;
-                    T sign, value, scale;
-
-                    // Get sign, if any.
-
-                    sign = 1.0;
-                    if (*p == '-') {
-                        sign = -1.0;
-                        p += 1;
-
-                    } else if (*p == '+') {
-                        p += 1;
-                    }
-
-                    // Get digits before decimal point or exponent, if any.
-
-                    for (value = 0.0; valid_digit(*p); p += 1) {
-                        value = value * 10.0 + (*p - '0');
-                    }
-
-                    // Get digits after decimal point, if any.
-
-                    if (*p == '.') {
-                        double pow10 = 10.0;
-                        p += 1;
-                        while (valid_digit(*p)) {
-                            value += (*p - '0') / pow10;
-                            pow10 *= 10.0;
-                            p += 1;
-                        }
-                    }
-
-                    // Handle exponent, if any.
-
-                    frac = 0;
-                    scale = 1.0;
-                    if ((*p == 'e') || (*p == 'E')) {
-                        unsigned int expon;
-
-                        // Get sign of exponent, if any.
-
-                        p += 1;
-                        if (*p == '-') {
-                            frac = 1;
-                            p += 1;
-
-                        } else if (*p == '+') {
-                            p += 1;
-                        }
-
-                        // Get digits of exponent, if any.
-
-                        for (expon = 0; valid_digit(*p); p += 1) {
-                            expon = expon * 10 + (*p - '0');
-                        }
-                        if (expon > 308) expon = 308;
-
-                        // Calculate scaling factor.
-
-                        while (expon >= 50) {
-                            scale *= 1E50;
-                            expon -= 50;
-                        }
-                        while (expon >= 8) {
-                            scale *= 1E8;
-                            expon -= 8;
-                        }
-                        while (expon > 0) {
-                            scale *= 10.0;
-                            expon -= 1;
-                        }
-                    }
-
-                    // Return signed and scaled floating point result.
-
-                    r = sign * (frac ? (value / scale) : (value * scale));
-                }
-
                 // See: http://pastebin.com/dHP1pgQ4
 
+                /**
+                 * This function tries to read from a piece of memory and interpret
+                 * it as a float or double or other decimal type given as template
+                 * parameter. This function is more efficient than atof and it does
+                 * not check for the lengh of the input, e.g. does no rely on the
+                 * \0 terminating symbol in general. It reads until it gets something
+                 * that it can not interpret as a part of a decimal. Then it stops!
+                 * @param r the type to read into
+                 * @param p the pointer to read from,
+                 * @return true if the function thinks it successfully parsed the
+                 * input, otherwise false.
+                 */
                 template<typename T>
-                inline bool fast_stoT_2(T & r, const char *p) {
+                inline bool fast_stoT(T & r, const char *p) {
                     r = 0.0;
                     int c = 0; // counter to check how many numbers we got!
 
@@ -382,48 +301,12 @@ namespace uva {
                         }
                     }
 
-                    // POST CHECK:
-                    if (*p != '\0') {
-                        return false;
-                    } // if next character is not the terminating character
-
                     // Apply sign to number
                     if (neg) {
                         r = -r;
                     }
 
                     return true;
-                }
-
-                //See: http://tinodidriksen.com/2011/05/28/cpp-convert-string-to-double-speed/
-                //NOTE: This method does not support exponent part!
-
-                template<typename T>
-                inline void fast_stoT_3(T & r, const char *p) {
-                    r = 0.0;
-                    bool neg = false;
-                    if (*p == '-') {
-                        neg = true;
-                        ++p;
-                    }
-                    while (*p >= '0' && *p <= '9') {
-                        r = (r * 10.0) + (*p - '0');
-                        ++p;
-                    }
-                    if (*p == '.') {
-                        double f = 0.0;
-                        int n = 0;
-                        ++p;
-                        while (*p >= '0' && *p <= '9') {
-                            f = (f * 10.0) + (*p - '0');
-                            ++p;
-                            ++n;
-                        }
-                        r += f / std::pow(10.0, n);
-                    }
-                    if (neg) {
-                        r = -r;
-                    }
                 }
             }
         }

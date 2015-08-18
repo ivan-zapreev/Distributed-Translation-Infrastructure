@@ -26,7 +26,6 @@
 #ifndef CONTEXTMULTIHASHMAPTRIE_HPP
 #define	CONTEXTMULTIHASHMAPTRIE_HPP
 
-
 /**
  * We actually have several choices:
  * 
@@ -46,6 +45,7 @@
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
+#include "BasicTextPiece.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;

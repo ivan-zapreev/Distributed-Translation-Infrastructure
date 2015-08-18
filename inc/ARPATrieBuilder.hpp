@@ -66,7 +66,7 @@ namespace uva {
                     //The reference to the input file with text corpus
                     MemoryMappedFileReader & _fstr;
                     //Stores the next line data
-                    BasicTextFileReader _line;
+                    BasicTextPiece _line;
                     //The regular expression for matching the n-gram amount entry of the data section
                     const regex _ngAmountRegExp;
                     //The regular expression for matching the n-grams section

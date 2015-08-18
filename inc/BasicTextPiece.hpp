@@ -23,16 +23,18 @@
  * Created on August 17, 2015, 10:47 PM
  */
 
-#ifndef BASICTEXTFILEREADER_HPP
-#define	BASICTEXTFILEREADER_HPP
+#ifndef BASICTEXTPIECE_HPP
+#define	BASICTEXTPIECE_HPP
 
-#include <cstring>
+#include <cstring>      // std::memchr
+#include <algorithm>    // std::min
 
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
 using namespace std;
+using namespace uva::smt::tries;
 using namespace uva::smt::exceptions;
 
 namespace uva {
@@ -43,6 +45,8 @@ namespace uva {
             static const size_t MAX_STRING_LENGTH = string().max_size();
             //The text is too large string to be used in conversion
             static const string TEXT_TOO_LARGE_STR("<text-too-large>");
+            //This stores the NOTHING string to be used in conversion
+            static const string TEXT_NOTHING_STR("<NULL>");
 
             /**
              * This basic storage class that stores the pointer to pre-allocated memory
@@ -51,13 +55,18 @@ namespace uva {
              * Note that, the string here is not necessarily \0 terminated and the
              * text memory can be Gb large! Also the memory is not managed by the class.
              */
-            class BasicTextFileReader {
+            class BasicTextPiece {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
                 const char * m_beginPtr;
                 //The length of the line
                 size_t m_len;
+
+                //Contains true if the string is to be generated, otherwise false
+                mutable bool m_is_gen_str;
+                //The string representation of the given text piece
+                mutable string m_str;
 
                 //The pointer to the unread remainder of the file
                 const char * m_cursorPtr;
@@ -70,7 +79,7 @@ namespace uva {
                  * Allows to get the pointer to the beginning of the text
                  * @return the pointer to the beginning of the text
                  */
-                inline void * getBeginPtr() {
+                inline void * getBeginPtr() const {
                     return (void *) m_beginPtr;
                 }
 
@@ -78,7 +87,7 @@ namespace uva {
                  * Allows to get the length of the text
                  * @return the length of the text
                  */
-                inline size_t getLen() {
+                inline size_t getLen() const {
                     return m_len;
                 }
 
@@ -87,8 +96,8 @@ namespace uva {
                 /**
                  * The basic constructor initializes empty text
                  */
-                BasicTextFileReader()
-                : m_beginPtr(NULL), m_len(0), m_cursorPtr(NULL), m_restLen(0) {
+                BasicTextPiece()
+                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(), m_cursorPtr(NULL), m_restLen(0) {
                 }
 
                 /**
@@ -96,7 +105,7 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                BasicTextFileReader(const void * beginPtr, const size_t len) {
+                BasicTextPiece(const void * beginPtr, const size_t len) : BasicTextPiece() {
                     set(beginPtr, len);
                 }
 
@@ -104,9 +113,11 @@ namespace uva {
                  * The copy constructor.
                  * @param other the const reference to the object to copy from
                  */
-                BasicTextFileReader(const BasicTextFileReader & other) {
+                BasicTextPiece(const BasicTextPiece & other) {
                     this->m_beginPtr = other.m_beginPtr;
                     this->m_len = other.m_len;
+                    this->m_is_gen_str = other.m_is_gen_str;
+                    this->m_str = other.m_str;
                     this->m_cursorPtr = other.m_cursorPtr;
                     this->m_restLen = other.m_restLen;
                 }
@@ -117,8 +128,18 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the beginning of the text
                  */
-                inline const char * getCStr() {
+                inline const char * getBeginCStr() {
                     return m_beginPtr;
+                }
+
+                /**
+                 * Allows to get the pointer to the remainder of the text
+                 * This is a C string that is returned BUT there is no \0
+                 * termination and it can be Gb long!
+                 * @return the pointer to the remainder of the text
+                 */
+                inline const char * getRestCStr() {
+                    return m_cursorPtr;
                 }
 
                 /**
@@ -129,6 +150,7 @@ namespace uva {
                 inline void set(const void * beginPtr, const size_t len) {
                     m_beginPtr = static_cast<const char *> (beginPtr);
                     m_cursorPtr = m_beginPtr;
+                    m_is_gen_str = true;
                     m_len = len;
                     m_restLen = m_len;
                 }
@@ -138,7 +160,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getNext(BasicTextFileReader& out, const char delim) {
+                inline bool getNext(BasicTextPiece& out, const char delim) {
                     //The next line begins where we stopped
                     out.m_beginPtr = m_cursorPtr;
 
@@ -182,13 +204,21 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to check if there is something left to read
+                 * @return true if there is yet something to read, otherwise false
+                 */
+                inline bool isSmthLeft() {
+                    return m_restLen > 0;
+                }
+
+                /**
                  * This function, from the current position, searches for the end of line
                  * or until the end of the text and then sets the data about the found
                  * region into the provided output parameter.
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getLine(BasicTextFileReader& out) {
+                inline bool getLine(BasicTextPiece& out) {
                     return getNext(out, '\n');
                 }
 
@@ -199,7 +229,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getSpace(BasicTextFileReader& out) {
+                inline bool getSpace(BasicTextPiece& out) {
                     return getNext(out, ' ');
                 }
 
@@ -210,7 +240,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getTab(BasicTextFileReader& out) {
+                inline bool getTab(BasicTextPiece& out) {
                     return getNext(out, '\t');
                 }
 
@@ -280,15 +310,23 @@ namespace uva {
                  * Allows to convert the line to string object
                  * @return the resulting line
                  */
-                inline string str() const {
-                    if (m_len <= MAX_STRING_LENGTH) {
-                        char data[m_len + 1];
-                        strncpy(data, m_beginPtr, m_len);
-                        data[m_len] = '\0';
-                        return string(data);
-                    } else {
-                        return TEXT_TOO_LARGE_STR;
+                inline const string & str() const {
+                    if (m_is_gen_str) {
+                        if (m_len > 0) {
+                            if (m_len <= MAX_STRING_LENGTH) {
+                                char data[m_len + 1];
+                                strncpy(data, m_beginPtr, m_len);
+                                data[m_len] = '\0';
+                                m_str = data;
+                            } else {
+                                m_str = TEXT_TOO_LARGE_STR;
+                            }
+                        } else {
+                            m_str = TEXT_NOTHING_STR;
+                        }
+                        m_is_gen_str = false;
                     }
+                    return m_str;
                 }
             };
 
@@ -298,9 +336,26 @@ namespace uva {
              * @param val the value to print
              * @return the output stream
              */
-            inline ostream& operator<<(ostream &output, const BasicTextFileReader & val) {
+            inline ostream& operator<<(ostream &output, const BasicTextPiece & val) {
                 return output << val.str();
             };
+
+            /**
+             * This function allows to convert the BasicTextFileReader elements tokens into a array string representation. 
+             * @param tokens the tokens to print
+             * @return the resulting string
+             */
+            template<TModelLevel N>
+            inline string tokensToString(const BasicTextPiece tokens[N], const TModelLevel level) {
+                stringstream data;
+                data << "[ ";
+                for (int i = 0; i < min<TModelLevel>(level, N); i++) {
+                    data << tokens[i].str() << " ";
+                }
+                data << "]";
+                return data.str();
+            }
+
         }
     }
 }

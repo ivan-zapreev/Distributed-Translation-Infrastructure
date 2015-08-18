@@ -43,7 +43,7 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"
-#include "BasicTextFileReader.hpp"
+#include "BasicTextPiece.hpp"
 
 using namespace std;
 using namespace uva::smt::utils::text;
@@ -55,7 +55,7 @@ namespace uva {
             /**
              * This is the file reader for the memory mapped file. It is supposed to provide fast memory reads from large files
              */
-            class MemoryMappedFileReader : public BasicTextFileReader {
+            class MemoryMappedFileReader : public BasicTextPiece {
             private:
                 //The file descriptor of the mapped file
                 int m_fileDesc;
@@ -66,7 +66,7 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                MemoryMappedFileReader(const char * fileName) : BasicTextFileReader() {
+                MemoryMappedFileReader(const char * fileName) : BasicTextPiece() {
                     m_fileDesc = open(fileName, O_RDONLY);
 
                     if (m_fileDesc >= 0) {
@@ -79,7 +79,7 @@ namespace uva {
                             void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
 
                             //Set the data to the base class
-                            BasicTextFileReader::set(beginPtr, len);
+                            BasicTextPiece::set(beginPtr, len);
                         }
                     }
                 }
@@ -88,9 +88,17 @@ namespace uva {
                  * This method is used to check if the file was successfully opened.
                  * @return true if the file is successfully opened otherwise false.
                  */
-                inline bool is_open() {
-                    return (BasicTextFileReader::getBeginPtr() != NULL);
+                inline bool is_open() const {
+                    return (BasicTextPiece::getBeginPtr() != NULL);
                 };
+
+                /**
+                 * Checks if the file is present.
+                 * @return true if it is
+                 */
+                explicit inline operator bool() const {
+                    return is_open();
+                }
 
                 /**
                  * This method should be used to close the file
@@ -98,7 +106,7 @@ namespace uva {
                 inline void close() {
                     if (is_open()) {
                         // Release the memory (unnecessary because the program exits).
-                        munmap(BasicTextFileReader::getBeginPtr(), BasicTextFileReader::getLen());
+                        munmap(BasicTextPiece::getBeginPtr(), BasicTextPiece::getLen());
                         // Close the file descriptor
                         ::close(m_fileDesc);
                     }

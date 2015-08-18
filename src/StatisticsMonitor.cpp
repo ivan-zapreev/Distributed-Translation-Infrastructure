@@ -55,8 +55,6 @@ namespace uva {
              * This implementation is derived from 
              * http://locklessinc.com/articles/memory_usage/
              * This here is actually C-style code and also pretty ugly.
-             * 
-             * ToDo: Refactor this code into C++ 
              */
 #ifdef __APPLE__
 

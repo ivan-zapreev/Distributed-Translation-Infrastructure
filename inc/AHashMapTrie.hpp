@@ -48,12 +48,14 @@
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 #include "GreedyMemoryAllocator.hpp"
+#include "BasicTextPiece.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
 using namespace uva::smt::tries::alloc;
+using namespace uva::smt::file;
 
 namespace uva {
     namespace smt {
@@ -255,28 +257,26 @@ namespace uva {
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
-                 * @param tokens the N-gram tokens
+                 * @param gram the N-gram with its tokens to create context for
                  * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
                  */
                 template<Logger::DebugLevel logLevel>
-                inline TReferenceHashSize computeHashContext(const vector<string> & tokens) {
+                inline TReferenceHashSize computeHashContext(const SRawNGram & gram) {
                     TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
 
                     //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
-                    if (tokens.size() > MIN_NGRAM_LEVEL) {
-                        //Get the start iterator
-                        vector<string>::const_iterator it = tokens.begin();
-                        //Get the iterator we are going to iterate until
-                        const vector<string>::const_iterator end = --tokens.end();
+                    if (gram.level > MIN_NGRAM_LEVEL) {
+                        //Get the start context value for the first token
+                        const string & token = gram.tokens[0].str();
+                        contextHash = getUniqueIdHash(token);
 
-                        contextHash = getUniqueIdHash(*it);
-
-                        LOGGER(logLevel) << "contextHash = computeHash('" << *it << "') = " << SSTR(contextHash) << END_LOG;
+                        LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
-                        for (++it; it < end; ++it) {
-                            TWordHashSize wordHash = getUniqueIdHash(*it);
-                            LOGGER(logLevel) << "wordHash = computeHash('" << *it << "') = " << SSTR(wordHash) << END_LOG;
+                        for (int i = 1; i < (gram.level - 1); i++) {
+                            const string & token = gram.tokens[i].str();
+                            TWordHashSize wordHash = getUniqueIdHash(token);
+                            LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
                         }
@@ -288,14 +288,14 @@ namespace uva {
                 /**
                  * This function gets a hash for the given word word based no the stored 1-Grams.
                  * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
-                 * @param str the word to hash
+                 * @param token the word to hash
                  * @return the resulting hash
                  */
-                inline TWordHashSize getUniqueIdHash(const string & str) {
+                inline TWordHashSize getUniqueIdHash(const string & token) {
                     try {
-                        return _pWordIndexMap->at(str);
+                        return _pWordIndexMap->at(token);
                     } catch (out_of_range e) {
-                        LOG_WARNING << "Word: '" << str << "' is not known! Mapping it to: '"
+                        LOG_WARNING << "Word: '" << token << "' is not known! Mapping it to: '"
                                 << UNKNOWN_WORD_STR << "', hash: "
                                 << SSTR(UNKNOWN_WORD_HASH) << END_LOG;
                     }
@@ -305,17 +305,17 @@ namespace uva {
                 /**
                  * This function creates/gets a hash for the given word.
                  * Note: The hash id will be unique!
-                 * @param str the word to hash
+                 * @param token the word to hash
                  * @return the resulting hash
                  */
-                inline TWordHashSize createUniqueIdHash(const string & str) {
+                inline TWordHashSize createUniqueIdHash(const BasicTextPiece & token) {
                     //First get/create an existing/new word entry from from/in the word index
-                    TWordHashSize& hash = _pWordIndexMap->operator[](str);
+                    TWordHashSize& hash = _pWordIndexMap->operator[](token.str());
 
                     if (hash == UNDEFINED_WORD_HASH) {
                         //If the word hash is not defined yet, then issue it a new hash id
                         hash = _nextNewWordHash;
-                        LOG_DEBUG2 << "Word: '" << str << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
+                        LOG_DEBUG2 << "Word: '" << token.str() << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
                         _nextNewWordHash++;
                     }
 
@@ -346,65 +346,9 @@ namespace uva {
                     unszudzik(context, subWord, subContext);
                 }
 
-#if MONITORE_COLLISIONS
-
-                //This data member is only used when the hashing function is debugged
-                unordered_map<TWordHashSize, unordered_map<TReferenceHashSize, vector<string>>> ngRecorder;
-
-                /**
-                 * This method is used for debugging the hashing function of N-grams.
-                 * It checks for entries and reports warnings and infor information if
-                 * hash word/context collisions are detected.
-                 * @param wordHash the last N-gram's word hash
-                 * @param contextHash the N-gram's context hash
-                 * @param gram the N-gram information
-                 */
                 void recordAndCheck(const TWordHashSize wordHash,
-                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) const {
-                    //First try to get the entries for the given word
-                    try {
-                        unordered_map<TReferenceHashSize, vector < string>> &entries = ngRecorder.at(wordHash);
-                        //Second try to get the entries for the given context
-                        try {
-                            vector<string> entry = entries.at(contextHash);
-
-                            //If we could get the values, then it is important to check
-                            //that the length is the same. If it is then we have context
-                            //hash collisions for the same length N-grams and this must
-                            //not be happening! Then we will print a lot of debug info!
-                            const TModelLevel size = entry.size();
-                            if (size == gram.tokens.size()) {
-                                LOG_WARNING << "N-gram collision/duplicates: '" << tokensToString(entry) << "' with '"
-                                        << tokensToString(gram.tokens) << "'! wordHash= " << SSTR(wordHash)
-                                        << ", contextHash= " << SSTR(contextHash) << END_LOG;
-
-                                TWordHashSize old[N], fresh[N];
-                                AHashMapTrie<N>::tokensToHashes(entry, old);
-                                AHashMapTrie<N>::tokensToHashes(gram.tokens, fresh);
-                                for (int i = 0; i < size; i++) {
-                                    LOG_INFO << SSTR(i) << ") wordHash('" << SSTR(entry[i]) << "') = " << SSTR(old[N - size + i]) << END_LOG;
-                                    LOG_INFO << SSTR(i) << ") wordHash('" << SSTR(gram.tokens[i]) << "') = " << SSTR(fresh[N - size + i]) << END_LOG;
-                                }
-                                LOG_INFO << "-- First context computation: " << END_LOG;
-                                AHashMapTrie<N>::template computeHashContext<Logger::INFO>(entry);
-                                LOG_INFO << "-- Second context computation: " << END_LOG;
-                                AHashMapTrie<N>::template computeHashContext<Logger::INFO>(gram.tokens);
-                            }
-                        } catch (out_of_range e) {
-                            //If no entries for the context, add a new one
-                            entries[contextHash] = gram.tokens;
-                        }
-                    } catch (out_of_range e) {
-                        //If no entries for the given word and thus context add a new one
-                        ngRecorder[wordHash][contextHash] = gram.tokens;
-                    }
+                        const TReferenceHashSize contextHash, const SNiceNGram &gram) const {
                 }
-#else
-
-                void recordAndCheck(const TWordHashSize wordHash,
-                        const TReferenceHashSize contextHash, const SBackOffNGram &gram) const {
-                }
-#endif
 
             private:
 

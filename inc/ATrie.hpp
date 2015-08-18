@@ -31,7 +31,7 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
-#include "BasicTextFileReader.hpp"
+#include "BasicTextPiece.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
@@ -82,11 +82,13 @@ namespace uva {
              *        of the N-gram can be 0 is the probability is not available
              * @param tokens stores the N-gram words the size of this vector
              *        defines the N-gram level.
+             * @param level stores the number of meaningfull elements in the tokens, the value of N for the N-gram
              */
             struct SRawNGram {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
-                BasicTextFileReader tokens[MAX_NGRAM_LEVEL];
+                BasicTextPiece tokens[MAX_NGRAM_LEVEL];
+                TModelLevel level;
             };
 
             /**
@@ -99,7 +101,7 @@ namespace uva {
              * @param tokens stores the N-gram words the size of this vector
              *        defines the N-gram level.
              */
-            struct SBackOffNGram {
+            struct SNiceNGram {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
                 vector<string> tokens;

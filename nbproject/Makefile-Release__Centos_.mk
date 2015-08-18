@@ -39,8 +39,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/ContextMultiHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
-	${OBJECTDIR}/src/MultiHashMapTrie.o \
-	${OBJECTDIR}/src/SingleHashMapTrie.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/main.o
 
@@ -69,42 +67,32 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt: ${OBJECT
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt -m64
 
-${OBJECTDIR}/src/ARPAGramBuilder.o: src/ARPAGramBuilder.cpp 
+${OBJECTDIR}/src/ARPAGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
 
-${OBJECTDIR}/src/ARPATrieBuilder.o: src/ARPATrieBuilder.cpp 
+${OBJECTDIR}/src/ARPATrieBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPATrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
-${OBJECTDIR}/src/ContextMultiHashMapTrie.o: src/ContextMultiHashMapTrie.cpp 
+${OBJECTDIR}/src/ContextMultiHashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/ContextMultiHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ContextMultiHashMapTrie.o src/ContextMultiHashMapTrie.cpp
 
-${OBJECTDIR}/src/Logger.o: src/Logger.cpp 
+${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
-${OBJECTDIR}/src/MultiHashMapTrie.o: src/MultiHashMapTrie.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MultiHashMapTrie.o src/MultiHashMapTrie.cpp
-
-${OBJECTDIR}/src/SingleHashMapTrie.o: src/SingleHashMapTrie.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SingleHashMapTrie.o src/SingleHashMapTrie.cpp
-
-${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
+${OBJECTDIR}/src/StatisticsMonitor.o: nbproject/Makefile-${CND_CONF}.mk src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
 
-${OBJECTDIR}/src/main.o: src/main.cpp 
+${OBJECTDIR}/src/main.o: nbproject/Makefile-${CND_CONF}.mk src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp

@@ -86,7 +86,7 @@ namespace uva {
                             //The N-gram level values are correct, so instantiate an appropriate builder
 
                             if (level == MIN_NGRAM_LEVEL) {
-                                //ToDo: If the level is at minimum it means we are filling in the dictionary
+                                //If the level is at minimum it means we are filling in the dictionary
                                 LOG_DEBUG1 << "Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
@@ -95,7 +95,7 @@ namespace uva {
                                 LOG_DEBUG2 << "DONE Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
                                 if (level == N) {
-                                    //ToDo: If the minimum is at maximum it means we are filling in the top N-gram level
+                                    //If the minimum is at maximum it means we are filling in the top N-gram level
                                     LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,

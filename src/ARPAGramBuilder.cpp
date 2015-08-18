@@ -46,69 +46,83 @@ namespace uva {
                 const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
                 ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc)
-                : _addGarmFunc(addGarmFunc), _level(level) {
+                : _addGarmFunc(addGarmFunc), _level(level), _token(), _ngram({0,}) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
+                    _ngram.level = _level;
                 }
 
                 ARPAGramBuilder::ARPAGramBuilder(const ARPAGramBuilder& orig)
-                : _addGarmFunc(orig._addGarmFunc), _level(orig._level) {
+                : _addGarmFunc(orig._addGarmFunc), _level(orig._level), _token(), _ngram(orig._ngram) {
                 }
 
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                bool ARPAGramBuilder::parseToGram(const BasicTextFileReader &text, SRawNGram & gram) {
-                    //ToDO: Implement
-                    /*
-                    //Get the number of tokens
-                    const size_t size = _ngramParts.size();
+                bool ARPAGramBuilder::parseToGram(BasicTextPiece &line, SRawNGram & gram) {
+                    //Read the first element until the tab, we read until the tab because it should be the probability
+                    if (line.getTab(_token)) {
+                        //Try to parse it float
+                        if (fast_stoT<float>(_ngram.prob, _token.getRestCStr())) {
+                            LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
 
-                    LOG_DEBUG1 << "The number of tokens is: " << size
-                            << ", it is expected to be within ["
-                            << MIN_NUM_TOKENS_NGRAM_STR << ","
-                            << MAX_NUM_TOKENS_NGRAM_STR << "]" << END_LOG;
-
-                    //Check the number of tokens and by that detect the sort of N-Gram it is
-                    if ((MIN_NUM_TOKENS_NGRAM_STR <= size) && (size <= MAX_NUM_TOKENS_NGRAM_STR)) {
-                        //If there is one extra token then it must be a probability
-                        //The probability is located at the very first place in string,
-                        //so it must be the very first token in the vector - parse it
-                        //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
-                        (void) fast_stoT_2<float>(_ngram.prob, (*_ngramParts.begin()).c_str());
-
-                        LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
-
-                        //Tokenise the gram words, space delimited, which is the second element in the array
-                        tokenize(*(++_ngramParts.begin()), ' ', _ngram.tokens);
-
-                        if (size == MAX_NUM_TOKENS_NGRAM_STR) {
-                            //If there is two extra tokens then it must be a
-                            //probability and a back-off weight. The back-off is
-                            //located at the very last place in the string, so it
-                            //must be the very last token in the vector - parse it
-                            //NOTE: fast_stoT_2 is faster than fast_stoT_1 and fast_stoT_3
-                            (void) fast_stoT_2<float>(_ngram.back_off, (*(--_ngramParts.end())).c_str());
-
-                            LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                            //Read the first (N-1) string of the N-gram - space separated
+                            for (int i = 0; i < (_level - 1); i++) {
+                                if (!line.getSpace(gram.tokens[i])) {
+                                    LOG_WARNING << "An unexpected end of line '" << line.str()
+                                            << "' when reading the " << (i + 1)
+                                            << "'th " << _level << "-gram token!" << END_LOG;
+                                    //The unexpected end of line, broken file format (?)
+                                    return false;
+                                }
+                            }
+                            //Read the last N-Gram token, read until the tab as after the 
+                            //tab there is a back-off weight or there is no tab in the line
+                            if (!line.getSpace(gram.tokens[_level - 1])) {
+                                LOG_WARNING << "An unexpected end of line '" << line.str()
+                                        << "' when reading the " << _level << "'th "
+                                        << _level << "-gram token!" << END_LOG;
+                                //The unexpected end of line, broken file format (?)
+                                return false;
+                            }
+                            //Now if there is something left it should be the back-off weight, otherwise we are done
+                            if (line.isSmthLeft()) {
+                                //Take the remainder of the line and try to parse it!
+                                if (!fast_stoT<float>(_ngram.back_off, line.getRestCStr())) {
+                                    LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
+                                            << "' as a back-off weight!" << END_LOG;
+                                    //The first token was not a float, need to skip to another N-Gram section(?)
+                                    return false;
+                                }
+                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                            } else {
+                                //There is no back-off so set it to zero
+                                _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                                LOG_DEBUG2 << "The parsed N-gram '" << line.str()
+                                        << "' does not have back-off using: " << _ngram.back_off << END_LOG;
+                            }
+                            return true;
                         } else {
-                            //There is no back-off so set it to zero
-                            _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                            //NOTE: Do it as a debug3 level and not a warning because 
+                            //this will happen each time we need to move on to a new section!
+                            LOG_DEBUG3 << "Could not parse the the string '" << _token.str()
+                                    << "' as a probability!" << END_LOG;
+                            //The first token was not a float, need to skip to another N-Gram section(?)
+                            
+                            //Take the line and convert it into a string, then trim it.
+                            string line = _token.str();
+                            trim(line);
+                            //Skip to the next section only if we are dealing with a non-empty line!
+                            return (line == "");
                         }
-
                     } else {
-                        //This is a possible situation, there is an unexpected
-                        //number of tokens, so we should stop with this level N-grams
-                        if (size > MAX_NUM_TOKENS_NGRAM_STR) {
-                            LOG_WARNING << "There is too many tokens in '" << line
-                                    << "' there should be at most two tab symbols! IGNORING!" << END_LOG;
-                        } else {
-                        }
+                        LOG_DEBUG3 << "An unexpected end of line '" << line.str()
+                                << "', an empty line detected!" << END_LOG;
+                        //The unexpected end of line, it is an empty line so we skip it but keep reading this N-gram section
+                        return true;
                     }
-                     */
-                    return true;
                 }
 
-                bool ARPAGramBuilder::parseLine(const BasicTextFileReader & line) {
+                bool ARPAGramBuilder::parseLine(BasicTextPiece & line) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;

@@ -9,7 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
-      <itemPath>inc/BasicTextFileReader.hpp</itemPath>
+      <itemPath>inc/BasicTextPiece.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
@@ -32,8 +32,6 @@
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/ContextMultiHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
-      <itemPath>src/MultiHashMapTrie.cpp</itemPath>
-      <itemPath>src/SingleHashMapTrie.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
@@ -48,8 +46,6 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>inc/MultiHashMapTrie.hpp</itemPath>
-    <itemPath>inc/SingleHashMapTrie.hpp</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>src</Elem>
@@ -97,7 +93,7 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -115,10 +111,6 @@
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -130,10 +122,6 @@
       <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -171,7 +159,7 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -189,10 +177,6 @@
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -204,10 +188,6 @@
       <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -254,7 +234,7 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -272,10 +252,6 @@
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -288,10 +264,6 @@
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
@@ -301,7 +273,7 @@
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
+        <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <ccTool>
@@ -326,7 +298,7 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -344,10 +316,6 @@
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -359,10 +327,6 @@
       <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -400,7 +364,7 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -418,10 +382,6 @@
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/SingleHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -433,10 +393,6 @@
       <item path="src/ContextMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SingleHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>

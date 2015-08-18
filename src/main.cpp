@@ -139,11 +139,11 @@ static void extractArguments(const uint argc, char const * const * const argv, T
 /**
  * THis method creates a string for the "file exists" information
  * @param fname the file name
- * @param fstr the file stream
+ * @param isPresent true if the file is present
  * @return the resulting string to be print
  */
-static const string getFileExistsString(string const & fname, ifstream const & fstr) {
-    string result = ((bool) fstr ? "is present" : "is missing");
+static const string getFileExistsString(string const & fname, bool isPresent) {
+    string result = ((bool) isPresent ? "is present" : "is missing");
     return fname + " (" + result + ")";
 }
 
@@ -177,7 +177,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param trie the trie to put the data into
  */
 template<TModelLevel N>
-static void fillInTrie(MMappedFileReader & fstr, ATrie<N> & trie) {
+static void fillInTrie(MemoryMappedFileReader & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
@@ -244,7 +244,7 @@ static void performTasks(const TAppParams& params) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Attempt to open the model file
-    MMappedFileReader modelFile(params.modelFileName.c_str());
+    MemoryMappedFileReader modelFile(params.modelFileName.c_str());
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
 
@@ -277,9 +277,9 @@ static void performTasks(const TAppParams& params) {
     } else {
         stringstream msg;
         msg << "One of the input files does not exist: " +
-                getFileExistsString(params.modelFileName, modelFile)
+                getFileExistsString(params.modelFileName, (bool)modelFile)
                 + " , " +
-                getFileExistsString(params.testFileName, testFile);
+                getFileExistsString(params.testFileName, (bool)testFile);
         throw Exception(msg.str());
     }
 
