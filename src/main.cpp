@@ -166,10 +166,8 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     int vmpeak = ((msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB;
     int vmrss = ((msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB;
     int vmhwm = ((msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB;
-    LOG_USAGE << showpos << "vmsize=" << vmsize
-            << " Mb, vmpeak=" << vmpeak
-            << " Mb, vmrss=" << vmrss
-            << " Mb, vmhwm=" << vmhwm
+    LOG_USAGE << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
+            << " Mb, vmrss=" << vmrss << " Mb, vmhwm=" << vmhwm
             << " Mb" << noshowpos << END_LOG;
 
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
