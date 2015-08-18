@@ -173,7 +173,8 @@ namespace uva {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;
                         //Release the memory
-                        munmap(filePtr, len);
+                        int err = munmap(filePtr, len);
+                        LOG_DEBUG << "Result of munmap is: " << err << END_LOG;
                         //Re-set the internals!
                         set(NULL, 0);
                     }
