@@ -167,11 +167,19 @@ namespace uva {
                  */
                 inline void close() {
                     // Release the memory (unnecessary because the program exits).
-                    if (BasicTextPiece::getBeginPtr() != NULL) {
-                        munmap(BasicTextPiece::getBeginPtr(), BasicTextPiece::getLen());
+                    void * filePtr = BasicTextPiece::getBeginPtr();
+                    const size_t len = BasicTextPiece::getLen();
+                    if ( filePtr != NULL) {
+                        LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
+                                SSTR(filePtr) << ", len = " << len << END_LOG;
+                        //Release the memory
+                        munmap(filePtr, len);
+                        //Re-set the internals!
+                        set(NULL, 0);
                     }
                     // Close the file descriptor
                     if (m_fileDesc != UNDEFINED_FILE_DESCRIPTOR) {
+                        LOG_DEBUG << "Closing the Memory Mapped File file!" << END_LOG;
                         ::close(m_fileDesc);
                         m_fileDesc = UNDEFINED_FILE_DESCRIPTOR;
                     }
