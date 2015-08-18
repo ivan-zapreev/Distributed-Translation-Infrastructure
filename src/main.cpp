@@ -166,11 +166,11 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     int vmpeak = (msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak;
     int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
     int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
-    LOG_USAGE << "vmsize=" << showpos << SSTR(vmsize / BYTES_ONE_MB)
-            << " Mb, vmpeak=" << SSTR(vmpeak / BYTES_ONE_MB)
-            << " Mb, vmrss=" << SSTR(vmrss / BYTES_ONE_MB)
-            << " Mb, vmhwm=" << SSTR(vmhwm / BYTES_ONE_MB)
-            << " Mb" << noshowpos<< END_LOG;
+    LOG_USAGE << "vmsize=" << SSTR(showpos << vmsize / BYTES_ONE_MB)
+            << " Mb, vmpeak=" << SSTR(showpos << vmpeak / BYTES_ONE_MB)
+            << " Mb, vmrss=" << SSTR(showpos << vmrss / BYTES_ONE_MB)
+            << " Mb, vmhwm=" << SSTR(showpos << vmhwm / BYTES_ONE_MB)
+            << " Mb" << noshowpos << END_LOG;
 
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
     LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
@@ -289,7 +289,7 @@ static void performTasks(const TAppParams& params) {
 
         LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
-        
+
         LOG_DEBUG << "Closing the model file ..." << END_LOG;
         modelFile.close();
 
