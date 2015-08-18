@@ -283,7 +283,7 @@ static void performTasks(const TAppParams& params) {
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Loading of the Language Model", memStatStart, memStatEnd);
+        reportMemotyUsage("Creating the Language Model Trie", memStatStart, memStatEnd);
 
         LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
