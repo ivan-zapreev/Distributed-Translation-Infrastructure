@@ -238,16 +238,18 @@ static void performTasks(const TAppParams& params) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
 
-    LOG_DEBUG << "Getting the initial memory statistics ..." << END_LOG;
-    //Declare the statistics monitor and its data
-    TMemotyUsage memStatStart = {}, memStatInterm = {};
-    StatisticsMonitor::getMemoryStatistics(memStatStart);
-
     //Attempt to open the model file
     MemoryMappedFileReader modelFile(params.modelFileName.c_str());
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
 
+    //Get the memory statistics after the files are opened!
+    //In order to measure the memory consumption by the Trie only!
+    LOG_DEBUG << "Getting the initial memory statistics ..." << END_LOG;
+    //Declare the statistics monitor and its data
+    TMemotyUsage memStatStart = {}, memStatInterm = {};
+    StatisticsMonitor::getMemoryStatistics(memStatStart);
+    
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         //Create a trie and pass it to the algorithm method
