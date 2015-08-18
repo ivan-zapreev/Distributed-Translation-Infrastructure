@@ -146,7 +146,7 @@ namespace uva {
                         }
                     }
 
-                    LOG_INFO << "Using the " << __FILE__ << " file reader!" << END_LOG;
+                    LOG_INFO << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
                 /**

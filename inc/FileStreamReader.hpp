@@ -69,7 +69,7 @@ namespace uva {
                     m_curr_line = new char[MAX_STRING_LENGTH];
                     LOG_DEBUG << SSTR(this) << ": Allocated " << MAX_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
 
-                    LOG_INFO << "Using the " << __FILE__ << " file reader!" << END_LOG;
+                    LOG_INFO << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
                 virtual ~FileStreamReader() {

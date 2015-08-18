@@ -54,7 +54,7 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
-                LOG_INFO << "Using the " << __FILE__ << " model!" << END_LOG;
+                LOG_INFO << "Using the <" << __FILE__ << "> model!" << END_LOG;
             }
 
             template<TModelLevel N>
