@@ -169,10 +169,6 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
             << " Mb, vmpeak=" << SSTR(vmpeak / BYTES_ONE_MB)
             << " Mb, vmrss=" << SSTR(vmrss / BYTES_ONE_MB)
             << " Mb, vmhwm=" << SSTR(vmhwm / BYTES_ONE_MB) << " Mb" << END_LOG;
-    LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
-    LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
-    LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
-    LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
 }
 
 /**
@@ -286,6 +282,11 @@ static void performTasks(const TAppParams& params) {
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
         reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
+
+        LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
+        LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
+        LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
+        LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
 
         LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
