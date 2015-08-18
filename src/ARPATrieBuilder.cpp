@@ -105,7 +105,7 @@ namespace uva {
                     //that actually must be the begin of the data section
                     if (_line != END_OF_ARPA_FILE) {
                         TModelLevel level = MIN_NGRAM_LEVEL;
-                        while (level < N) {
+                        while (level <= N) {
                             if (_fstr.getLine(_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << _line << "'" << END_LOG;
 
@@ -285,6 +285,9 @@ namespace uva {
                         //Declare an array of N-Gram counts, that is to be filled from the
                         //headers. This data will be used to pre-allocate memory for the Trie 
                         size_t counts[N];
+                        for (int i = 0; i < N; i++) {
+                            counts[i] = 0;
+                        }
 
                         //Read the DATA section of ARPA
                         readData(counts);
