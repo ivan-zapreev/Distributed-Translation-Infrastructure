@@ -38,6 +38,7 @@
 #include <sys/mman.h>
 #include <stdint.h>
 #include <cstring>
+#include <errno.h> 
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -71,6 +72,8 @@ namespace uva {
                     LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
                     if (m_fileDesc >= 0) {
+                        // set the errno to default value 
+                        errno = 0;
                         //The statistics structure for the mapped file
                         struct stat fileStat;
                         if (fstat(m_fileDesc, &fileStat) < 0) {
@@ -85,7 +88,7 @@ namespace uva {
                             //Set the data to the base class
                             BasicTextPiece::set(beginPtr, len);
                         } else {
-                            LOG_WARNING << "Could not get the file '" << fileName << "' statistics after loading!" << END_LOG;
+                            LOG_WARNING << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
                         }
                     }
                 }
