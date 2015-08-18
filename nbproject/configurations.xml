@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>inc/AFileReader.hpp</itemPath>
       <itemPath>inc/AHashMapTrie.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilder.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
@@ -11,6 +12,7 @@
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
+      <itemPath>inc/FileStreamReader.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
@@ -83,6 +85,8 @@
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -96,6 +100,8 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -149,6 +155,8 @@
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -162,6 +170,8 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -224,6 +234,8 @@
           <commandLine>-m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -237,6 +249,8 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -288,6 +302,8 @@
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -301,6 +317,8 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -354,6 +372,8 @@
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -367,6 +387,8 @@
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>

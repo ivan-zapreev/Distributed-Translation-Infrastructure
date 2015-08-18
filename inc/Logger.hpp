@@ -55,7 +55,7 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::INFO
+#define LOGER_MAX_LEVEL Logger::DEBUG3
 #endif
 
 #define LOGGER(level)                          \

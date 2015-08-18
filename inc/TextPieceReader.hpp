@@ -43,7 +43,7 @@ namespace uva {
         namespace file {
 
             //The maximum length of the text that will be managed by this class as a string convertable
-            static const size_t MAX_STRING_LENGTH = string().max_size();
+            static const size_t MAX_STRING_LENGTH = 2048;
             //The text is too large string to be used in conversion
             static const string TEXT_TOO_LARGE_STR("<text-too-large>");
             //This stores the NOTHING string to be used in conversion
@@ -231,7 +231,7 @@ namespace uva {
                  * Allows to check if there is something left to read
                  * @return true if there is yet something to read, otherwise false
                  */
-                inline bool isSmthLeft() {
+                inline bool hasMore() {
                     return m_restLen > 0;
                 }
 
@@ -242,7 +242,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getLine(TextPieceReader& out) {
+                virtual bool getLine(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
                     return getNext(out, '\n');
                 }
@@ -254,7 +254,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getSpace(TextPieceReader& out) {
+                virtual bool getSpace(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a space!" << END_LOG;
                     return getNext(out, ' ');
                 }
@@ -266,7 +266,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getTab(TextPieceReader& out) {
+                virtual bool getTab(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a tab!" << END_LOG;
                     return getNext(out, '\t');
                 }

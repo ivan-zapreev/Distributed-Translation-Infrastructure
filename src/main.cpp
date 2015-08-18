@@ -38,7 +38,9 @@
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
 #include "StringUtils.hpp"
+#include "AFileReader.hpp"
 #include "MemoryMappedFileReader.hpp"
+#include "FileStreamReader.hpp"
 
 using namespace std;
 using namespace uva::smt;
@@ -152,8 +154,9 @@ static const string getFileExistsString(string const & fname, bool isPresent) {
  * @param action the monitored action
  * @param msStart the start memory usage statistics
  * @param msEnd the end memory usage statistics
+ * @param isDoInfo true if the memory info may be print
  */
-static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
+static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
     LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
     LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
             << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
@@ -169,11 +172,12 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     LOG_USAGE << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
             << " Mb, vmrss=" << vmrss << " Mb, vmhwm=" << vmhwm
             << " Mb" << noshowpos << END_LOG;
-
-    LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
-    LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
-    LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
-    LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
+    if (isDoInfo) {
+        LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
+        LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
+        LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
+        LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
+    }
 }
 
 /**
@@ -182,7 +186,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param trie the trie to put the data into
  */
 template<TModelLevel N>
-static void fillInTrie(MemoryMappedFileReader & fstr, ATrie<N> & trie) {
+static void fillInTrie(AFileReader & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
@@ -249,13 +253,14 @@ static void performTasks(const TAppParams& params) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Attempt to open the model file
-    MemoryMappedFileReader modelFile(params.modelFileName.c_str());
+    //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
+    FileStreamReader modelFile(params.modelFileName.c_str());
 
     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
     LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd);
+    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd, false);
 
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
@@ -283,7 +288,7 @@ static void performTasks(const TAppParams& params) {
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Creating the Language Model Trie", memStatStart, memStatEnd);
+        reportMemotyUsage("Creating the Language Model Trie", memStatStart, memStatEnd, false);
 
         LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
@@ -295,7 +300,7 @@ static void performTasks(const TAppParams& params) {
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd);
+        reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
         LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(trie, testFile);

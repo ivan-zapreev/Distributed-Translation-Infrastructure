@@ -56,7 +56,7 @@ namespace uva {
         namespace tries {
 
             /**
-             * This is a HashMpa based ITrie interface implementation class.
+             * This is a HashMpa based ATrie interface implementation class.
              * Note 1: This implementation uses the unsigned long for the hashes it is not optimal
              * Note 2: the unordered_map might be not as efficient as a hash_map with respect to memory usage but it is supposed to be faster
              * 
@@ -116,25 +116,25 @@ namespace uva {
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
-                 * For more details @see ITrie
+                 * For more details @see ATrie
                  */
                 virtual void preAllocate(const size_t counts[N]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
-                 * For more details @see ITrie
+                 * For more details @see ATrie
                  */
                 virtual void add1Gram(const SRawNGram &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * For more details @see ITrie
+                 * For more details @see ATrie
                  */
                 virtual void addMGram(const SRawNGram &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
-                 * For more details @see ITrie
+                 * For more details @see ATrie
                  */
                 virtual void addNGram(const SRawNGram &nGram);
 
@@ -142,7 +142,7 @@ namespace uva {
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
-                 * For more details @see ITrie
+                 * For more details @see ATrie
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 

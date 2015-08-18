@@ -45,6 +45,7 @@
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"
 #include "TextPieceReader.hpp"
+#include "AFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt::utils::text;
@@ -100,7 +101,7 @@ namespace uva {
              * OS will write out the changed sections. I think this also happens when the memory is swapped
              * out as well (in low physical memory situations), since your buffer is simply a window onto the file.
              */
-            class MemoryMappedFileReader : public TextPieceReader {
+            class MemoryMappedFileReader : public AFileReader {
             private:
 
                 //The file descriptor of the mapped file
@@ -112,23 +113,23 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                MemoryMappedFileReader(const char * fileName) : TextPieceReader(), m_fileDesc(0) {
+                MemoryMappedFileReader(const char * fileName) : AFileReader(), m_fileDesc(0) {
                     m_fileDesc = open(fileName, O_RDONLY);
-                    LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
+                    LOG_DEBUG << SSTR(this) << ": Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
                     if (m_fileDesc != UNDEFINED_FILE_DESCRIPTOR) {
                         // set the errno to default value 
                         errno = 0;
                         //The statistics structure for the mapped file
                         struct stat fileStat;
-                        if (fstat(m_fileDesc, &fileStat) < 0 ) {
-                            LOG_ERROR << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
+                        if (fstat(m_fileDesc, &fileStat) < 0) {
+                            LOG_ERROR << SSTR(this) << ": Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
                             //close the file
                             close();
                         } else {
                             //Get the file length
                             const size_t len = fileStat.st_size;
-                            LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
+                            LOG_INFO << SSTR(this) << ": Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
 
                             //Map the file into memory
                             //NOTE: We populate the map as it is then immediately moved to
@@ -137,20 +138,22 @@ namespace uva {
                             //  MAP_POPULATE Populate (prefault) page tables for a mapping.
                             //For a file mapping, this causes read-ahead on the file. Later
                             //accesses to the mapping will not be blocked by page faults.
-                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE|MAP_POPULATE, m_fileDesc, 0);
-                            LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
+                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
+                            LOG_DEBUG << SSTR(this) << ": Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
                             TextPieceReader::set(beginPtr, len);
                         }
                     }
+
+                    LOG_INFO << "Using the " << __FILE__ << " file reader!" << END_LOG;
                 }
 
                 /**
                  * This method is used to check if the file was successfully opened.
                  * @return true if the file is successfully opened otherwise false.
                  */
-                inline bool is_open() const {
+                virtual bool is_open() const {
                     return (TextPieceReader::getBeginPtr() != NULL);
                 };
 
@@ -158,18 +161,18 @@ namespace uva {
                  * Checks if the file is present.
                  * @return true if it is
                  */
-                explicit inline operator bool() const {
+                explicit virtual operator bool() const {
                     return m_fileDesc != UNDEFINED_FILE_DESCRIPTOR;
                 }
 
                 /**
                  * This method should be used to close the file
                  */
-                inline void close() {
+                virtual void close() {
                     // Release the memory (unnecessary because the program exits).
                     void * filePtr = TextPieceReader::getBeginPtr();
                     const size_t len = TextPieceReader::getLen();
-                    if ( filePtr != NULL) {
+                    if (filePtr != NULL) {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;
                         //Release the memory
@@ -184,14 +187,6 @@ namespace uva {
                         ::close(m_fileDesc);
                         m_fileDesc = UNDEFINED_FILE_DESCRIPTOR;
                     }
-                };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~MemoryMappedFileReader() {
-                    //Just close the file if it has not been closed yet
-                    close();
                 };
             };
         }

@@ -85,7 +85,7 @@ namespace uva {
                                 return false;
                             }
                             //Now if there is something left it should be the back-off weight, otherwise we are done
-                            if (line.isSmthLeft()) {
+                            if (line.hasMore()) {
                                 //Take the remainder of the line and try to parse it!
                                 if (!fast_stoT<float>(_ngram.back_off, line.getRestCStr())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
