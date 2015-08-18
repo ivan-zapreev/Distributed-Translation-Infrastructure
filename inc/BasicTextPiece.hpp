@@ -168,8 +168,11 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getNext(BasicTextPiece& out, const char delim) {
+                    const char * out_m_beginPtr = NULL;
+                    size_t out_m_len = 0;
+                    
                     //The next line begins where we stopped
-                    out.m_beginPtr = m_cursorPtr;
+                    out_m_beginPtr = m_cursorPtr;
 
                     //Search for the next new line symbol in the remainder of the file
                     const char * newLineCharPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
@@ -185,16 +188,16 @@ namespace uva {
                         m_restLen -= (lineLen + 1);
 
                         //Set the resulting length of the line
-                        out.m_len = lineLen;
+                        out_m_len = lineLen;
 
                         //For Windows-format text files remove the '\r' as well
                         //in case we were looking for the end of file
-                        if (lineLen && delim == '\n' && '\r' == out.m_beginPtr[lineLen - 1])
-                            out.m_len--;
+                        if (lineLen && delim == '\n' && '\r' == out_m_beginPtr[lineLen - 1])
+                            out_m_len--;
                     } else {
                         //If the pointer is not found then the length of the
                         //last file line is the length of the file remains
-                        out.m_len = m_restLen;
+                        out_m_len = m_restLen;
 
                         //If the remaining file length is zero then return file
                         if (!m_restLen) {
@@ -205,6 +208,9 @@ namespace uva {
                             m_restLen = 0;
                         }
                     }
+                    
+                    //Set the return data
+                    out.set( out_m_beginPtr, out_m_len );
 
                     //Return true as we successfully read a new line
                     return true;
