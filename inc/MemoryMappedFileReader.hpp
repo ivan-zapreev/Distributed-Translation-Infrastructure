@@ -57,7 +57,33 @@ namespace uva {
             static const int UNDEFINED_FILE_DESCRIPTOR = -1;
 
             /**
-             * This is the file reader for the memory mapped file. It is supposed to provide fast memory reads from large files
+             * This is the file reader for the memory mapped file. It is supposed to provide fast memory reads from large files.
+             * 
+             * Here is some nice explanation from: http://stackoverflow.com/questions/1972765/mmap-problem-allocates-huge-amounts-of-memory
+             * 
+             * Mapping the file into memory  is different to actually reading the file into memory.
+             * Were you to read it in, you would have to transfer the entire contents into memory.
+             * By mapping it, you let the operating system handle it. If you attempt to read or write
+             * to a location in that memory area, the OS will load the relevant section for you first.
+             * It will not load the entire file unless the entire file is needed.
+             * 
+             * That is where you get your performance gain. If you map the entire file but only change
+             * one byte then unmap it, you'll find that there's not much disk I/O at all.
+             * 
+             * Of course, if you touch every byte in the file, then yes, it will all be loaded at some
+             * point but not necessarily in physical RAM all at once. But that's the case even if you
+             * load the entire file up front. The OS will swap out parts of your data if there's not
+             * enough physical memory to contain it all, along with that of the other processes in the system.
+             * 
+             * The main advantages of memory mapping are:
+             * 
+             * 1) You defer reading the file sections until they're needed (and, if they're never needed,
+             * they don't get loaded). So there's no big upfront cost as you load the entire file.
+             * It amortises the cost of loading.
+             * 
+             * 2) The writes are automated, you don't have to write out every byte. Just close it and the
+             * OS will write out the changed sections. I think this also happens when the memory is swapped
+             * out as well (in low physical memory situations), since your buffer is simply a window onto the file.
              */
             class MemoryMappedFileReader : public BasicTextPiece {
             private:
@@ -90,7 +116,7 @@ namespace uva {
                             LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
 
                             //Map the file into memory
-                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
+                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, m_fileDesc, 0);
                             LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
