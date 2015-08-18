@@ -278,7 +278,7 @@ namespace uva {
                  * @return 
                  */
                 inline char operator[](size_t idx) {
-                    if ((0 <= idx) && (idx <= m_len)) {
+                    if (idx < m_len) {
                         return m_beginPtr[idx];
                     } else {
                         stringstream msg;
