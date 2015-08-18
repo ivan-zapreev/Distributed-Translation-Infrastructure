@@ -162,14 +162,14 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
             << SSTR(msEnd.vmpeak) << " Kb, vmrss=" << SSTR(msEnd.vmrss)
             << " Kb, vmhwm=" << SSTR(msEnd.vmhwm) << " Kb" << END_LOG;
 
-    int vmsize = (msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize;
-    int vmpeak = (msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak;
-    int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
-    int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
-    LOG_USAGE << "vmsize=" << SSTR(showpos << vmsize / BYTES_ONE_MB)
-            << " Mb, vmpeak=" << SSTR(showpos << vmpeak / BYTES_ONE_MB)
-            << " Mb, vmrss=" << SSTR(showpos << vmrss / BYTES_ONE_MB)
-            << " Mb, vmhwm=" << SSTR(showpos << vmhwm / BYTES_ONE_MB)
+    int vmsize = ((msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB;
+    int vmpeak = ((msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB;
+    int vmrss = ((msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB;
+    int vmhwm = ((msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB;
+    LOG_USAGE << showpos << "vmsize=" << vmsize
+            << " Mb, vmpeak=" << vmpeak
+            << " Mb, vmrss=" << vmrss
+            << " Mb, vmhwm=" << vmhwm
             << " Mb" << noshowpos << END_LOG;
 
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
