@@ -131,7 +131,13 @@ namespace uva {
                             LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
 
                             //Map the file into memory
-                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, m_fileDesc, 0);
+                            //NOTE: We populate the map as it is then immediately moved to
+                            //the RAM and reading the file is then faster and it does not
+                            //give a false impression of that we use too much memory in Trie.
+                            //  MAP_POPULATE Populate (prefault) page tables for a mapping.
+                            //For a file mapping, this causes read-ahead on the file. Later
+                            //accesses to the mapping will not be blocked by page faults.
+                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE|MAP_POPULATE, m_fileDesc, 0);
                             LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
