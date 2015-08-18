@@ -45,13 +45,13 @@ namespace uva {
              */
             typedef struct {
                 //Virtual memory size in Kb
-                unsigned int vmsize;
+                int vmsize;
                 //Peak virtual memory size in Kb
-                unsigned int vmpeak;
+                int vmpeak;
                 //Resident set size in Kb
-                unsigned int vmrss;
+                int vmrss;
                 //Peak resident set size in Kb
-                unsigned int vmhwm;
+                int vmhwm;
             } TMemotyUsage;
 
             /**

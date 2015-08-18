@@ -154,7 +154,7 @@ static const string getFileExistsString(string const & fname, bool isPresent) {
  * @param msEnd the end memory usage statistics
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd) {
-    LOG_USAGE << "Action: \'" << action << "\' memory increase:" << END_LOG;
+    LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
     LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
             << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
             << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
@@ -162,10 +162,10 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
             << SSTR(msEnd.vmpeak) << " Kb, vmrss=" << SSTR(msEnd.vmrss)
             << " Kb, vmhwm=" << SSTR(msEnd.vmhwm) << " Kb" << END_LOG;
 
-    unsigned int vmsize = (msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize;
-    unsigned int vmpeak = (msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak;
-    unsigned int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
-    unsigned int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
+    int vmsize = (msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize;
+    int vmpeak = (msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak;
+    int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
+    int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
     LOG_USAGE << "vmsize=" << SSTR(vmsize / BYTES_ONE_MB)
             << " Mb, vmpeak=" << SSTR(vmpeak / BYTES_ONE_MB)
             << " Mb, vmrss=" << SSTR(vmrss / BYTES_ONE_MB)
@@ -244,7 +244,7 @@ static void performTasks(const TAppParams& params) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
     //Declare the statistics monitor and its data
-    TMemotyUsage memStatStart = {}, memStatInterm = {};
+    TMemotyUsage memStatStart = {}, memStatEnd = {};
 
     LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatStart);
@@ -253,10 +253,10 @@ static void performTasks(const TAppParams& params) {
     MemoryMappedFileReader modelFile(params.modelFileName.c_str());
 
     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
-    StatisticsMonitor::getMemoryStatistics(memStatInterm);
+    StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
     LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatInterm);
+    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd);
 
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
@@ -281,13 +281,22 @@ static void performTasks(const TAppParams& params) {
         LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
         LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
-        StatisticsMonitor::getMemoryStatistics(memStatInterm);
+        StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
+        LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
+        reportMemotyUsage("Loading of the Language Model", memStatStart, memStatEnd);
+
+        LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
+        StatisticsMonitor::getMemoryStatistics(memStatStart);
+        
         LOG_DEBUG << "Closing the model file ..." << END_LOG;
         modelFile.close();
 
+        LOG_DEBUG << "Getting the memory statistics after closing the Model file ..." << END_LOG;
+        StatisticsMonitor::getMemoryStatistics(memStatEnd);
+
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
+        reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd);
 
         LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
