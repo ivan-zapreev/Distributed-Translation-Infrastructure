@@ -97,7 +97,7 @@ namespace uva {
                  * @return true if it is
                  */
                 explicit inline operator bool() const {
-                    return is_open();
+                    return m_fileDesc >= 0;
                 }
 
                 /**
