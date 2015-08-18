@@ -53,11 +53,15 @@ namespace uva {
     namespace smt {
         namespace file {
 
+            //The value of the undefined file descriptor
+            static const int UNDEFINED_FILE_DESCRIPTOR = -1;
+
             /**
              * This is the file reader for the memory mapped file. It is supposed to provide fast memory reads from large files
              */
             class MemoryMappedFileReader : public BasicTextPiece {
             private:
+
                 //The file descriptor of the mapped file
                 int m_fileDesc;
 
@@ -71,7 +75,7 @@ namespace uva {
                     m_fileDesc = open(fileName, O_RDONLY);
                     LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
-                    if (m_fileDesc >= 0) {
+                    if (m_fileDesc != UNDEFINED_FILE_DESCRIPTOR) {
                         // set the errno to default value 
                         errno = 0;
                         //The statistics structure for the mapped file
@@ -108,7 +112,7 @@ namespace uva {
                  * @return true if it is
                  */
                 explicit inline operator bool() const {
-                    return m_fileDesc != 0;
+                    return m_fileDesc != UNDEFINED_FILE_DESCRIPTOR;
                 }
 
                 /**
@@ -120,9 +124,9 @@ namespace uva {
                         munmap(BasicTextPiece::getBeginPtr(), BasicTextPiece::getLen());
                     }
                     // Close the file descriptor
-                    if (m_fileDesc != 0) {
+                    if (m_fileDesc != UNDEFINED_FILE_DESCRIPTOR) {
                         ::close(m_fileDesc);
-                        m_fileDesc = 0;
+                        m_fileDesc = UNDEFINED_FILE_DESCRIPTOR;
                     }
                 };
 
