@@ -76,7 +76,7 @@ namespace uva {
                         errno = 0;
                         //The statistics structure for the mapped file
                         struct stat fileStat;
-                        if (fstat(m_fileDesc, &fileStat) < 0) {
+                        if (fstat(m_fileDesc, &fileStat) != 0) {
                             //Get the file length
                             const size_t len = fileStat.st_size;
                             LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
@@ -88,7 +88,9 @@ namespace uva {
                             //Set the data to the base class
                             BasicTextPiece::set(beginPtr, len);
                         } else {
-                            LOG_WARNING << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
+                            LOG_ERROR << "Could not get the file '" << fileName << "' statistics after loading! ERROR: " << strerror(errno) << END_LOG;
+                            //close the file
+                            close(m_fileDesc);
                         }
                     }
                 }
