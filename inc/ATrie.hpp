@@ -31,7 +31,7 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
-#include "MTextFilePiece.hpp"
+#include "BasicTextFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
@@ -86,7 +86,7 @@ namespace uva {
             struct SRawNGram {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
-                MTextFilePiece tokens[MAX_NGRAM_LEVEL];
+                BasicTextFileReader tokens[MAX_NGRAM_LEVEL];
             };
 
             /**

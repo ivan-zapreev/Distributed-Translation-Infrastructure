@@ -57,7 +57,7 @@ namespace uva {
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                bool ARPAGramBuilder::parseToGram(const MTextFilePiece &text, SRawNGram & gram) {
+                bool ARPAGramBuilder::parseToGram(const BasicTextFileReader &text, SRawNGram & gram) {
                     //ToDO: Implement
                     /*
                     //Get the number of tokens
@@ -108,7 +108,7 @@ namespace uva {
                     return true;
                 }
 
-                bool ARPAGramBuilder::parseLine(const MTextFilePiece & line) {
+                bool ARPAGramBuilder::parseLine(const BasicTextFileReader & line) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;

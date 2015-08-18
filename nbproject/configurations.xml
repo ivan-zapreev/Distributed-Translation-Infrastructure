@@ -9,6 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
+      <itemPath>inc/BasicTextFileReader.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
@@ -16,8 +17,7 @@
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
-      <itemPath>inc/MMappedFileReader.hpp</itemPath>
-      <itemPath>inc/MTextFilePiece.hpp</itemPath>
+      <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
     </logicalFolder>
@@ -97,6 +97,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -111,9 +113,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MTextFilePiece.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -171,6 +171,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -185,9 +187,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MTextFilePiece.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -254,6 +254,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -268,9 +270,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MTextFilePiece.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -326,6 +326,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -340,9 +342,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MTextFilePiece.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -400,6 +400,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicTextFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -414,9 +416,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MTextFilePiece.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

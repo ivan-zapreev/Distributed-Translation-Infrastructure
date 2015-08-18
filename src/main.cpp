@@ -38,7 +38,7 @@
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
 #include "StringUtils.hpp"
-#include "MMappedFileReader.hpp"
+#include "MemoryMappedFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt;

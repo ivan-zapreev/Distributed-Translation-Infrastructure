@@ -33,7 +33,7 @@
 
 #include "Globals.hpp"
 #include <Exceptions.hpp>
-#include "MMappedFileReader.hpp"
+#include "MemoryMappedFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
@@ -69,7 +69,7 @@ namespace uva {
                      * @result returns true if the provided line is NOT recognized
                      *         as the N-Gram of the specified level.
                      */
-                    bool parseLine(const MTextFilePiece & data);
+                    bool parseLine(const BasicTextFileReader & data);
 
                     virtual ~ARPAGramBuilder();
                 protected:
@@ -89,7 +89,7 @@ namespace uva {
                      * @param delim the delimiter
                      * @param elems the output array of text pieces
                      */
-                    static bool parseToGram(const MTextFilePiece &text, SRawNGram & gram);
+                    static bool parseToGram(const BasicTextFileReader &text, SRawNGram & gram);
 
                     /**
                      * The copy constructor

@@ -47,8 +47,8 @@ namespace uva {
                 static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, MMappedFileReader & fstr) :
-                _trie(trie), _fstr(fstr), _line({0,}), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, MemoryMappedFileReader & fstr) :
+                _trie(trie), _fstr(fstr), _line(), _ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
@@ -74,7 +74,7 @@ namespace uva {
                             //interpret! Therefore we skip it and read on, otherwise
                             //it is potentially a meaningful data so we should stop
                             //and go on to the next section, namely" data
-                            if (*_line.m_beginPtr != '<') {
+                            if (_line[0] != '<') {
                                 LOG_DEBUG1 << "Is something meaningful, moving to data section!" << END_LOG;
                                 break;
                             } else {
@@ -88,7 +88,7 @@ namespace uva {
                         Logger::updateProgressBar();
 
                         //Read the next line from the file if it is there
-                        if (!_fstr.getline(_line)) {
+                        if (!_fstr.getLine(_line)) {
                             throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                         }
                     }
@@ -106,7 +106,7 @@ namespace uva {
                     if (_line != END_OF_ARPA_FILE) {
                         TModelLevel level = MIN_NGRAM_LEVEL;
                         while (true) {
-                            if (_fstr.getline(_line)) {
+                            if (_fstr.getLine(_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << _line << "'" << END_LOG;
 
                                 //Update the progress bar status
@@ -187,7 +187,7 @@ namespace uva {
                             //Read the current level N-grams and add them to the trie
                             while (true) {
                                 //Try to read the next line
-                                if (_fstr.getline(_line)) {
+                                if (_fstr.getLine(_line)) {
                                     LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << _line << "'" << END_LOG;
 
                                     //Empty lines will just be skipped
@@ -277,7 +277,7 @@ namespace uva {
 
                     try {
                         //Read the first line from the file
-                        _fstr.getline(_line);
+                        _fstr.getLine(_line);
 
                         //Skip on ARPA headers
                         readHeaders();
