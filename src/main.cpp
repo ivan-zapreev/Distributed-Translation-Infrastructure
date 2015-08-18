@@ -167,9 +167,10 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
     int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
     LOG_USAGE << "vmsize=" << showpos << SSTR(vmsize / BYTES_ONE_MB)
-            << " Mb, vmpeak=" << showpos << SSTR(vmpeak / BYTES_ONE_MB)
-            << " Mb, vmrss=" << showpos << SSTR(vmrss / BYTES_ONE_MB)
-            << " Mb, vmhwm=" << showpos << SSTR(vmhwm / BYTES_ONE_MB) << " Mb" << END_LOG;
+            << " Mb, vmpeak=" << SSTR(vmpeak / BYTES_ONE_MB)
+            << " Mb, vmrss=" << SSTR(vmrss / BYTES_ONE_MB)
+            << " Mb, vmhwm=" << SSTR(vmhwm / BYTES_ONE_MB)
+            << " Mb" << noshowpos<< END_LOG;
 
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
     LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
