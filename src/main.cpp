@@ -161,10 +161,14 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     LOG_DEBUG << "memory after: vmsize=" << SSTR(msEnd.vmsize) << " Kb, vmpeak="
             << SSTR(msEnd.vmpeak) << " Kb, vmrss=" << SSTR(msEnd.vmrss)
             << " Kb, vmhwm=" << SSTR(msEnd.vmhwm) << " Kb" << END_LOG;
-    LOG_USAGE << "vmsize=" << SSTR(double(msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB)
-            << " Mb, vmpeak=" << SSTR(double(msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB)
-            << " Mb, vmrss=" << SSTR(double(msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB)
-            << " Mb, vmhwm=" << SSTR(double(msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB) << " Mb" << END_LOG;
+    unsigned int vmsize = (msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize;
+    unsigned int vmpeak = (msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak;
+    unsigned int vmrss = (msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss;
+    unsigned int vmhwm = (msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm;
+    LOG_USAGE << "vmsize=" << SSTR(vmsize / BYTES_ONE_MB)
+            << " Mb, vmpeak=" << SSTR(vmpeak / BYTES_ONE_MB)
+            << " Mb, vmrss=" << SSTR(vmrss / BYTES_ONE_MB)
+            << " Mb, vmhwm=" << SSTR(vmhwm / BYTES_ONE_MB) << " Mb" << END_LOG;
     LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
     LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
     LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
@@ -237,19 +241,27 @@ static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
 static void performTasks(const TAppParams& params) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
+    //Declare the statistics monitor and its data
+    TMemotyUsage memStatStart = {}, memStatInterm = {};
+
+    LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
+    StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //Attempt to open the model file
     MemoryMappedFileReader modelFile(params.modelFileName.c_str());
+
+    LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
+    StatisticsMonitor::getMemoryStatistics(memStatInterm);
+
+    LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
+    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatInterm);
+
     //Attempt to open the test file
     ifstream testFile(params.testFileName.c_str());
 
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
-        //Get the memory statistics after the files are opened!
-        //In order to measure the memory consumption by the Trie only!
-        LOG_DEBUG << "Getting the initial memory statistics ..." << END_LOG;
-        //Declare the statistics monitor and its data
-        TMemotyUsage memStatStart = {}, memStatInterm = {};
+        LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
 
         //Create a trie and pass it to the algorithm method
@@ -259,13 +271,14 @@ static void performTasks(const TAppParams& params) {
                 __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                 __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
-        LOG_USAGE << "Start reading the Language Model and filling in the Trie ..." << END_LOG;
+        LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();
         fillInTrie(modelFile, trie);
+        LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
         endTime = StatisticsMonitor::getCPUTime();
         LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
-        LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
+        LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatInterm);
 
         LOG_DEBUG << "Closing the model file ..." << END_LOG;
