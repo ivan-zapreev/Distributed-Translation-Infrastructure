@@ -105,7 +105,7 @@ namespace uva {
                     //that actually must be the begin of the data section
                     if (_line != END_OF_ARPA_FILE) {
                         TModelLevel level = MIN_NGRAM_LEVEL;
-                        while (level <= N) {
+                        while (true) {
                             if (_fstr.getLine(_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << _line << "'" << END_LOG;
 
@@ -119,7 +119,7 @@ namespace uva {
                                         //This is a valid data section entry, there is no need to do anything with it.
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
-                                        LOG_DEBUG1 << "Is the n-gram amount: '" << _line << "', ignoring!" << END_LOG;
+                                        LOG_DEBUG1 << "Reading " << level << "-gram amount, got: '" << _line << "'!" << END_LOG;
 
                                         //Read the number of N-grams in order to have enough data
                                         //for the pre-allocation of the memory in the trie! For
@@ -149,7 +149,6 @@ namespace uva {
                                 } else {
                                     LOG_DEBUG1 << "Is an empty line, skipping forward" << END_LOG;
                                 }
-
                             } else {
                                 throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
                             }
