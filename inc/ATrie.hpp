@@ -31,7 +31,7 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
-#include "BasicTextPiece.hpp"
+#include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
@@ -87,7 +87,7 @@ namespace uva {
             struct SRawNGram {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
-                BasicTextPiece tokens[MAX_NGRAM_LEVEL];
+                TextPieceReader tokens[MAX_NGRAM_LEVEL];
                 TModelLevel level;
             };
 

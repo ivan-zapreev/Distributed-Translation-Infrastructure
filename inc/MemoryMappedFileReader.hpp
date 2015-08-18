@@ -44,7 +44,7 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"
-#include "BasicTextPiece.hpp"
+#include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::utils::text;
@@ -100,7 +100,7 @@ namespace uva {
              * OS will write out the changed sections. I think this also happens when the memory is swapped
              * out as well (in low physical memory situations), since your buffer is simply a window onto the file.
              */
-            class MemoryMappedFileReader : public BasicTextPiece {
+            class MemoryMappedFileReader : public TextPieceReader {
             private:
 
                 //The file descriptor of the mapped file
@@ -112,7 +112,7 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                MemoryMappedFileReader(const char * fileName) : BasicTextPiece(), m_fileDesc(0) {
+                MemoryMappedFileReader(const char * fileName) : TextPieceReader(), m_fileDesc(0) {
                     m_fileDesc = open(fileName, O_RDONLY);
                     LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
@@ -141,7 +141,7 @@ namespace uva {
                             LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
-                            BasicTextPiece::set(beginPtr, len);
+                            TextPieceReader::set(beginPtr, len);
                         }
                     }
                 }
@@ -151,7 +151,7 @@ namespace uva {
                  * @return true if the file is successfully opened otherwise false.
                  */
                 inline bool is_open() const {
-                    return (BasicTextPiece::getBeginPtr() != NULL);
+                    return (TextPieceReader::getBeginPtr() != NULL);
                 };
 
                 /**
@@ -167,8 +167,8 @@ namespace uva {
                  */
                 inline void close() {
                     // Release the memory (unnecessary because the program exits).
-                    void * filePtr = BasicTextPiece::getBeginPtr();
-                    const size_t len = BasicTextPiece::getLen();
+                    void * filePtr = TextPieceReader::getBeginPtr();
+                    const size_t len = TextPieceReader::getLen();
                     if ( filePtr != NULL) {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;

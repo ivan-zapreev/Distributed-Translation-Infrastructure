@@ -1,5 +1,5 @@
 /* 
- * File:   BasicTextFileReader.hpp
+ * File:   TextPieceReader.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on August 17, 2015, 10:47 PM
  */
 
-#ifndef BASICTEXTPIECE_HPP
-#define	BASICTEXTPIECE_HPP
+#ifndef TEXTPIECEREADER_HPP
+#define	TEXTPIECEREADER_HPP
 
 #include <cstring>      // std::memchr
 #include <algorithm>    // std::min
@@ -56,7 +56,7 @@ namespace uva {
              * Note that, the string here is not necessarily \0 terminated and the
              * text memory can be Gb large! Also the memory is not managed by the class.
              */
-            class BasicTextPiece {
+            class TextPieceReader {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
@@ -97,7 +97,7 @@ namespace uva {
                 /**
                  * The basic constructor initializes empty text
                  */
-                BasicTextPiece()
+                TextPieceReader()
                 : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(), m_cursorPtr(NULL), m_restLen(0) {
                 }
 
@@ -106,7 +106,7 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                BasicTextPiece(const void * beginPtr, const size_t len) : BasicTextPiece() {
+                TextPieceReader(const void * beginPtr, const size_t len) : TextPieceReader() {
                     set(beginPtr, len);
                 }
 
@@ -114,7 +114,7 @@ namespace uva {
                  * The copy constructor.
                  * @param other the const reference to the object to copy from
                  */
-                BasicTextPiece(const BasicTextPiece & other) {
+                TextPieceReader(const TextPieceReader & other) {
                     this->m_beginPtr = other.m_beginPtr;
                     this->m_len = other.m_len;
                     this->m_is_gen_str = other.m_is_gen_str;
@@ -167,7 +167,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getNext(BasicTextPiece& out, const char delim) {
+                inline bool getNext(TextPieceReader& out, const char delim) {
                     const char * out_m_beginPtr = NULL;
                     size_t out_m_len = 0;
 
@@ -242,7 +242,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getLine(BasicTextPiece& out) {
+                inline bool getLine(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
                     return getNext(out, '\n');
                 }
@@ -254,7 +254,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getSpace(BasicTextPiece& out) {
+                inline bool getSpace(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a space!" << END_LOG;
                     return getNext(out, ' ');
                 }
@@ -266,7 +266,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getTab(BasicTextPiece& out) {
+                inline bool getTab(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a tab!" << END_LOG;
                     return getNext(out, '\t');
                 }
@@ -363,7 +363,7 @@ namespace uva {
              * @param val the value to print
              * @return the output stream
              */
-            inline ostream& operator<<(ostream &output, const BasicTextPiece & val) {
+            inline ostream& operator<<(ostream &output, const TextPieceReader & val) {
                 return output << val.str();
             };
 
@@ -373,7 +373,7 @@ namespace uva {
              * @return the resulting string
              */
             template<TModelLevel N>
-            inline string tokensToString(const BasicTextPiece tokens[N], const TModelLevel level) {
+            inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
                 stringstream data;
                 data << "[ ";
                 for (int i = 0; i < min<TModelLevel>(level, N); i++) {

@@ -48,7 +48,7 @@
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 #include "GreedyMemoryAllocator.hpp"
-#include "BasicTextPiece.hpp"
+#include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
@@ -308,7 +308,7 @@ namespace uva {
                  * @param token the word to hash
                  * @return the resulting hash
                  */
-                inline TWordHashSize createUniqueIdHash(const BasicTextPiece & token) {
+                inline TWordHashSize createUniqueIdHash(const TextPieceReader & token) {
                     //First get/create an existing/new word entry from from/in the word index
                     TWordHashSize& hash = _pWordIndexMap->operator[](token.str());
 

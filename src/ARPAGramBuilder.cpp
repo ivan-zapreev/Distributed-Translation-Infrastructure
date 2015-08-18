@@ -58,7 +58,7 @@ namespace uva {
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                bool ARPAGramBuilder::parseToGram(BasicTextPiece &line, SRawNGram & gram) {
+                bool ARPAGramBuilder::parseToGram(TextPieceReader &line, SRawNGram & gram) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.getTab(_token)) {
                         //Try to parse it float
@@ -122,7 +122,7 @@ namespace uva {
                     }
                 }
 
-                bool ARPAGramBuilder::parseLine(BasicTextPiece & line) {
+                bool ARPAGramBuilder::parseLine(TextPieceReader & line) {
                     LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;

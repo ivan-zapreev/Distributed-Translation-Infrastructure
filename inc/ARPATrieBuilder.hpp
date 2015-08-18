@@ -30,7 +30,7 @@
 #include <regex>        // std::regex, std::regex_match
 
 #include "ATrie.hpp"
-#include "MemoryMappedFileReader.hpp"
+#include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
@@ -52,7 +52,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, MemoryMappedFileReader & _fstr);
+                    ARPATrieBuilder(ATrie<N> & trie, TextPieceReader & file);
 
                     /**
                      * This function will read from the file and build the trie
@@ -63,10 +63,10 @@ namespace uva {
                 private:
                     //The reference to the trie to be build
                     ATrie<N> & _trie;
-                    //The reference to the input file with text corpus
-                    MemoryMappedFileReader & _fstr;
+                    //The reference to the input file with language model
+                    TextPieceReader & _file;
                     //Stores the next line data
-                    BasicTextPiece _line;
+                    TextPieceReader _line;
                     //The regular expression for matching the n-gram amount entry of the data section
                     const regex _ngAmountRegExp;
                     //The regular expression for matching the n-grams section

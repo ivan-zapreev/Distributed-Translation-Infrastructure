@@ -9,7 +9,6 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
-      <itemPath>inc/BasicTextPiece.hpp</itemPath>
       <itemPath>inc/ContextMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
@@ -20,6 +19,7 @@
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
+      <itemPath>inc/TextPieceReader.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -93,8 +93,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -114,6 +112,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -159,8 +159,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -180,6 +178,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -234,8 +234,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -255,6 +253,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -298,8 +298,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -319,6 +317,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -364,8 +364,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BasicTextPiece.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ContextMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -385,6 +383,8 @@
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>

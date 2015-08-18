@@ -69,7 +69,7 @@ namespace uva {
                      * @result returns true if the provided line is NOT recognized
                      *         as the N-Gram of the specified level.
                      */
-                    bool parseLine(BasicTextPiece & data);
+                    bool parseLine(TextPieceReader & data);
 
                     virtual ~ARPAGramBuilder();
                 protected:
@@ -78,7 +78,7 @@ namespace uva {
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel _level;
                     //The temporary storage for read pieces of text
-                    BasicTextPiece _token;
+                    TextPieceReader _token;
                     //This is the N-Gram container to store the parsed N-gram data
                     SRawNGram _ngram;
                     //The minimum and maximum number of tokens in the N-Gram string
@@ -91,7 +91,7 @@ namespace uva {
                      * @param delim the delimiter
                      * @param elems the output array of text pieces
                      */
-                    bool parseToGram(BasicTextPiece &text, SRawNGram & gram);
+                    bool parseToGram(TextPieceReader &text, SRawNGram & gram);
 
                     /**
                      * The copy constructor

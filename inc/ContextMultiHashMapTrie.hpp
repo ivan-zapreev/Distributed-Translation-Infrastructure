@@ -45,7 +45,7 @@
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
-#include "BasicTextPiece.hpp"
+#include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;

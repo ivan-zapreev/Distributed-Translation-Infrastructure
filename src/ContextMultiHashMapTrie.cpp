@@ -110,7 +110,7 @@ namespace uva {
             template<TModelLevel N>
             void ContextMultiHashMapTrie<N>::add1Gram(const SRawNGram &oGram) {
                 //First get the token/word from the 1-Gram
-                const BasicTextPiece & token = oGram.tokens[0];
+                const TextPieceReader & token = oGram.tokens[0];
 
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
@@ -151,7 +151,7 @@ namespace uva {
                     const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
-                    const BasicTextPiece & endWord = mGram.tokens[level-1];
+                    const TextPieceReader & endWord = mGram.tokens[level-1];
                     const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
@@ -198,7 +198,7 @@ namespace uva {
                 const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
-                const BasicTextPiece & endWord = nGram.tokens[level-1];
+                const TextPieceReader & endWord = nGram.tokens[level-1];
                 const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
