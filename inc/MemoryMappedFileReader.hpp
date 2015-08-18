@@ -68,6 +68,7 @@ namespace uva {
                  */
                 MemoryMappedFileReader(const char * fileName) : BasicTextPiece() {
                     m_fileDesc = open(fileName, O_RDONLY);
+                    LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
                     if (m_fileDesc >= 0) {
                         //The statistics structure for the mapped file
@@ -75,11 +76,16 @@ namespace uva {
                         if (fstat(m_fileDesc, &fileStat) < 0) {
                             //Get the file length
                             const size_t len = fileStat.st_size;
+                            LOG_INFO << "Opened the file '" << fileName << "' size: " << SSTR(len) << " bytes." << END_LOG;
+
                             //Map the file into memory
                             void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
+                            LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
                             BasicTextPiece::set(beginPtr, len);
+                        } else {
+                            LOG_WARNING << "Could not get the file '" << fileName << "' statistics after loading!" << END_LOG;
                         }
                     }
                 }
