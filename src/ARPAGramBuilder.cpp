@@ -77,7 +77,7 @@ namespace uva {
                             }
                             //Read the last N-Gram token, read until the tab as after the 
                             //tab there is a back-off weight or there is no tab in the line
-                            if (!line.getSpace(gram.tokens[_level - 1])) {
+                            if (!line.getTab(gram.tokens[_level - 1])) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
                                         << "' when reading the " << _level << "'th "
                                         << _level << "-gram token!" << END_LOG;
