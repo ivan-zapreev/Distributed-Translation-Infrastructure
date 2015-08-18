@@ -264,10 +264,12 @@ static void performTasks(const TAppParams& params) {
         fillInTrie(modelFile, trie);
         endTime = StatisticsMonitor::getCPUTime();
         LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
-        modelFile.close();
 
         LOG_DEBUG << "Getting the intermediate memory statistics ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatInterm);
+
+        LOG_DEBUG << "Closing the model file ..." << END_LOG;
+        modelFile.close();
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
         reportMemotyUsage("Loading of the Language Model", memStatStart, memStatInterm);
