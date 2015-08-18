@@ -76,7 +76,7 @@ namespace uva {
                             //Get the file length
                             const size_t len = fileStat.st_size;
                             //Map the file into memory
-                            const char * beginPtr = static_cast<char *> (mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0));
+                            void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
 
                             //Set the data to the base class
                             BasicTextFileReader::set(beginPtr, len);
