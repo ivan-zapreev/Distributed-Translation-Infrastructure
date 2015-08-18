@@ -59,7 +59,22 @@ namespace uva {
             /**
              * This is the file reader for the memory mapped file. It is supposed to provide fast memory reads from large files.
              * 
-             * Here is some nice explanation from: http://stackoverflow.com/questions/1972765/mmap-problem-allocates-huge-amounts-of-memory
+             * For more information on memory mapped files read: https://en.wikipedia.org/wiki/Memory-mapped_file
+             * 
+             * A possible benefit of memory-mapped files is a "lazy loading", thus using small amounts of RAM even
+             * for a very large file. Trying to load the entire contents of a file that is significantly larger
+             * than the amount of memory available can cause severe thrashing as the operating system reads from
+             * disk into memory and simultaneously writes pages from memory back to disk. Memory-mapping may not
+             * only bypass the page file completely, but the system only needs to load the smaller page-sized
+             * sections as data is being edited, similarly to demand paging scheme used for programs.
+             * 
+             * The memory mapping process is handled by the virtual memory manager, which is the same subsystem
+             * responsible for dealing with the page file. Memory mapped files are loaded into memory one entire
+             * page at a time. The page size is selected by the operating system for maximum performance. Since
+             * page file management is one of the most critical elements of a virtual memory system, loading page
+             * sized sections of a file into physical memory is typically a very highly optimized system function.
+             * 
+             * Here is also some nice explanation from: http://stackoverflow.com/questions/1972765/mmap-problem-allocates-huge-amounts-of-memory
              * 
              * Mapping the file into memory  is different to actually reading the file into memory.
              * Were you to read it in, you would have to transfer the entire contents into memory.
