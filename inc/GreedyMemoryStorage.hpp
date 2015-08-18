@@ -59,14 +59,19 @@ namespace uva {
                     typedef std::size_t size_type;
 
                     /**
+                     * The basic constructor
+                     */
+                    explicit GreedyMemoryStorage() {}
+
+                    /**
                      * The basic constructor of the greedy storage.
                      * @param numBytes the number of bytes to pre-allocate the buffer for - the initial buffer capacity
                      */
-                    GreedyMemoryStorage(size_type numBytes) :
+                    explicit GreedyMemoryStorage(size_type numBytes) :
                     _numBytes(numBytes),
                     _allocBytes(0) {
                         //Allocate the data buffer
-                        LOG_DEBUG << "Pre-Allocating " << numBytes << " bytes storage!" << END_LOG;
+                        LOG_DEBUG3 << "Pre-Allocating " << numBytes << " bytes storage!" << END_LOG;
                         if (_numBytes > 0) {
                             _pBuffer = new TStorageData[_numBytes];
                             //Register the first allocated memory buffer
@@ -143,7 +148,7 @@ namespace uva {
                     vector<void*> _memoryBuffers;
 
                     //The pre-allocated buffer size
-                    const size_type _numBytes;
+                    size_type _numBytes;
 
                     //The number of pre-allocated bytes in the preallocated buffer
                     size_type _allocBytes;

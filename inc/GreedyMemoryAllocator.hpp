@@ -150,8 +150,7 @@ namespace uva {
                      * The basic copy constructor. 
                      */
                     GreedyMemoryAllocator(const GreedyMemoryAllocator& other) throw () :
-                    _manager(other.getStorageRef()),
-                    _storage(0) {
+                    _manager(other.getStorageRef()) {
                         LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator copy constructor." << END_LOG;
                     }
 
@@ -162,8 +161,7 @@ namespace uva {
                      */
                     template <typename U>
                     GreedyMemoryAllocator(const GreedyMemoryAllocator<U>& other) throw () :
-                    _manager(other.getStorageRef()),
-                    _storage(0) {
+                    _manager(other.getStorageRef()) {
                         LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
 
