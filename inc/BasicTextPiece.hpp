@@ -154,10 +154,10 @@ namespace uva {
                     m_is_gen_str = true;
                     m_len = len;
                     m_restLen = m_len;
-                    
-                    LOG_DEBUG2 << "Setting the data to BasicTextPiece: m_beginPtr = "
-                            << SSTR((void*)m_beginPtr) << ", m_cursorPtr = "
-                            << SSTR((void*)m_cursorPtr) << ", m_is_gen_str = "
+
+                    LOG_DEBUG2 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
+                            << SSTR((void*) m_beginPtr) << ", m_cursorPtr = "
+                            << SSTR((void*) m_cursorPtr) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
                 }
@@ -170,30 +170,41 @@ namespace uva {
                 inline bool getNext(BasicTextPiece& out, const char delim) {
                     const char * out_m_beginPtr = NULL;
                     size_t out_m_len = 0;
-                    
+
                     //The next line begins where we stopped
                     out_m_beginPtr = m_cursorPtr;
 
                     //Search for the next new line symbol in the remainder of the file
-                    const char * newLineCharPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
+                    const char * charPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
+
+                    LOG_DEBUG3 << SSTR(this) << ": Searching for the character got: " << SSTR((void *) charPtr) << END_LOG;
 
                     //Check if we found a pointer to the new line
-                    if (newLineCharPtr) {
+                    if (charPtr != NULL) {
                         //Compute the line length
-                        size_t lineLen = newLineCharPtr - m_cursorPtr;
+                        size_t lineLen = charPtr - m_cursorPtr;
+
+                        LOG_DEBUG3 << SSTR(this) << ": The substring length is " << SSTR(lineLen) << END_LOG;
 
                         //Store the pointer to the remaining of the file
-                        m_cursorPtr = newLineCharPtr + 1;
+                        m_cursorPtr = charPtr + 1;
                         //Store the remaining length of the file
                         m_restLen -= (lineLen + 1);
+
+                        LOG_DEBUG3 << SSTR(this) << ": Resetting m_cursorPtr = "
+                                << SSTR((void *) m_cursorPtr) << ", m_restLen = "
+                                << m_restLen << END_LOG;
 
                         //Set the resulting length of the line
                         out_m_len = lineLen;
 
                         //For Windows-format text files remove the '\r' as well
                         //in case we were looking for the end of file
-                        if (lineLen && delim == '\n' && '\r' == out_m_beginPtr[lineLen - 1])
+                        if (lineLen && delim == '\n' && '\r' == out_m_beginPtr[lineLen - 1]) {
                             out_m_len--;
+                            LOG_DEBUG3 << SSTR(this) << ": A \\\\r detected, resetting m_restLen = "
+                                    << m_restLen << END_LOG;
+                        }
                     } else {
                         //If the pointer is not found then the length of the
                         //last file line is the length of the file remains
@@ -208,9 +219,9 @@ namespace uva {
                             m_restLen = 0;
                         }
                     }
-                    
+
                     //Set the return data
-                    out.set( out_m_beginPtr, out_m_len );
+                    out.set(out_m_beginPtr, out_m_len);
 
                     //Return true as we successfully read a new line
                     return true;
@@ -232,6 +243,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getLine(BasicTextPiece& out) {
+                    LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
                     return getNext(out, '\n');
                 }
 
@@ -243,6 +255,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getSpace(BasicTextPiece& out) {
+                    LOG_DEBUG3 << SSTR(this) << ": Searching for a space!" << END_LOG;
                     return getNext(out, ' ');
                 }
 
@@ -254,6 +267,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getTab(BasicTextPiece& out) {
+                    LOG_DEBUG3 << SSTR(this) << ": Searching for a tab!" << END_LOG;
                     return getNext(out, '\t');
                 }
 
