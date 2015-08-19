@@ -204,6 +204,17 @@ namespace uva {
                  * not check for the lengh of the input, e.g. does no rely on the
                  * \0 terminating symbol in general. It reads until it gets something
                  * that it can not interpret as a part of a decimal. Then it stops!
+                 * 
+                 * WARNING: This function does at least one symbol look ahead and
+                 * does not check on the \0 of the c string or its length. This is
+                 * perfectly good when reading ARPA file floats, if the file format
+                 * is correct. We can not generally rely on \0 as the input string
+                 * is not guaranteed to have it! Yet we could try to take into account
+                 * the string length, but this might cost performance!
+                 * 
+                 * ToDo: Try to impose the string length limit and test the performance
+                 * on reading large ARPA files!
+                 * 
                  * @param r the type to read into
                  * @param p the pointer to read from,
                  * @return true if the function thinks it successfully parsed the
