@@ -253,7 +253,6 @@ static void performTasks(const TAppParams& params) {
     StatisticsMonitor::getMemoryStatistics(memStatStart);
 
     //ToDo: Add the possibility to choose between the file readers from the command line!
-    //
     //Attempt to open the model file
     //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
     FileStreamReader modelFile(params.modelFileName.c_str());
@@ -272,6 +271,7 @@ static void performTasks(const TAppParams& params) {
         LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
 
+        //ToDo: Add the possibility to choose between the Tries from the command line!
         //Create a trie and pass it to the algorithm method
         TFiveContextMultiHashMapTrie trie(
                 __AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR,
