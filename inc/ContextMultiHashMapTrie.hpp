@@ -193,6 +193,9 @@ namespace uva {
                 //The map storing the N-Grams, they do not have back-off values
                 TNGramsMap * pNGramMap;
 
+                //The temporary structure for storing the hash key values statistics
+                pair<TReferenceHashSize, TReferenceHashSize> hashSizes[N];
+
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from

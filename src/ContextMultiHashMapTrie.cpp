@@ -42,10 +42,16 @@ namespace uva {
                     const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
-            : AHashMapTrie<N>(_wordIndexMemFactor), 
+            : AHashMapTrie<N>(_wordIndexMemFactor),
             oGramMemFactor(_oGramMemFactor),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor) {
+                //Initialize the hash statistics map
+                for (int i = 0; i < N; i++) {
+                    hashSizes[i].first = UINT64_MAX;
+                    hashSizes[i].second = 0;
+                }
+
                 //Perform an error check! This container has a lower bound on the N level.
                 if (N < BGRAM_LEVEL_VALUE) {
                     stringstream msg;
@@ -119,6 +125,10 @@ namespace uva {
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
+                //Add hash key statistics
+                hashSizes[0].first = min<TReferenceHashSize>(wordHash, hashSizes[0].first);
+                hashSizes[0].second = max<TReferenceHashSize>(wordHash, hashSizes[0].second);
+
 #if MONITORE_COLLISIONS
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
@@ -134,14 +144,14 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.first << "," << pbData.second << ") for "
-                        << tokensToString<N>(oGram.tokens,oGram.level) << " wordHash = "
+                        << tokensToString<N>(oGram.tokens, oGram.level) << " wordHash = "
                         << wordHash << END_LOG;
             }
 
             template<TModelLevel N>
             void ContextMultiHashMapTrie<N>::addMGram(const SRawNGram &mGram) {
                 const TModelLevel level = mGram.level;
-                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens,mGram.level) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
 
                 //Check that this is not an 1-Gram or N-Gram for those we need another method!
                 if ((MIN_NGRAM_LEVEL < level) || (level < N)) {
@@ -151,7 +161,7 @@ namespace uva {
                     const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
-                    const TextPieceReader & endWord = mGram.tokens[level-1];
+                    const TextPieceReader & endWord = mGram.tokens[level - 1];
                     const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
@@ -162,6 +172,10 @@ namespace uva {
                     //word in the Trie level of the N-gram
                     TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
                     TProbBackOffEntryPair& pbData = pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
+
+                    //Add hash key statistics
+                    hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
+                    hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
 
 #if MONITORE_COLLISIONS
                     //Check that the probability data is not set yet, otherwise a warning!
@@ -178,7 +192,7 @@ namespace uva {
 
                     LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                             << pbData.first << "," << pbData.second << ") for "
-                            << tokensToString<N>(mGram.tokens,mGram.level) << " contextHash = "
+                            << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
                             << contextHash << ", wordHash = " << wordHash << END_LOG;
                 } else {
                     stringstream msg;
@@ -190,7 +204,7 @@ namespace uva {
             template<TModelLevel N>
             void ContextMultiHashMapTrie<N>::addNGram(const SRawNGram &nGram) {
                 const size_t level = nGram.level;
-                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(nGram.tokens,nGram.level) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -198,7 +212,7 @@ namespace uva {
                 const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
-                const TextPieceReader & endWord = nGram.tokens[level-1];
+                const TextPieceReader & endWord = nGram.tokens[level - 1];
                 const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
@@ -207,6 +221,10 @@ namespace uva {
                 //Get/Create the mapping for this word in the Trie level of the N-gram
                 TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
                 TLogProbBackOff& pData = pNGramMap->operator[](keyContext);
+
+                //Add hash key statistics
+                hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
+                hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
 
 #if MONITORE_COLLISIONS
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -221,7 +239,7 @@ namespace uva {
                 pData = nGram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokensToString<N>(nGram.tokens,nGram.level) << " contextHash = "
+                        << tokensToString<N>(nGram.tokens, nGram.level) << " contextHash = "
                         << contextHash << ", wordHash = " << wordHash << END_LOG;
             }
 
@@ -385,6 +403,11 @@ namespace uva {
 
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
+                //Print the hash sizes statistics
+                for(int i = 0; i < N; i++) {
+                    LOG_INFO3 << i << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                }
+
                 //Deallocate One-Grams
                 deallocate_container<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc);
 
