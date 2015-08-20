@@ -405,7 +405,7 @@ namespace uva {
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
                 //Print the hash sizes statistics
                 for(int i = 0; i < N; i++) {
-                    LOG_INFO3 << i << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                    LOG_INFO3 << (i+1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
                 }
 
                 //Deallocate One-Grams

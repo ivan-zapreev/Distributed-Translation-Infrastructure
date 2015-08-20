@@ -331,7 +331,7 @@ namespace uva {
                  */
                 static inline TReferenceHashSize createContext(TWordHashSize hash, TReferenceHashSize context) {
                     //Use the Szudzik algorithm as it outperforms Cantor
-                    return szudzik(hash, context);
+                    return cantor(hash, context);
                 }
 
                 /**
