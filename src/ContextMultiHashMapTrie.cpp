@@ -133,7 +133,7 @@ namespace uva {
                 //If the probability is not zero then this word has been already seen!
                 if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                     //The word has been seen already, this is a potential error, so we report a warning!
-                    REPORT_COLLISION_WARNING(oGram.tokens, wordHash, UNDEFINED_WORD_HASH,
+                    REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_HASH,
                             pbData.first, pbData.second,
                             oGram.prob, oGram.back_off);
                 }
@@ -181,7 +181,7 @@ namespace uva {
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
                         //The M-Gram has been seen already, this is a potential error, so we report a warning!
-                        REPORT_COLLISION_WARNING(mGram.tokens, wordHash, contextHash,
+                        REPORT_COLLISION_WARNING(N, mGram, wordHash, contextHash,
                                 pbData.first, pbData.second,
                                 mGram.prob, mGram.back_off);
                     }
@@ -230,7 +230,7 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (pData != ZERO_LOG_PROB_WEIGHT) {
                     //The M-Gram has been seen already, this is a potential error, so we report a warning!
-                    REPORT_COLLISION_WARNING(nGram.tokens, wordHash, contextHash,
+                    REPORT_COLLISION_WARNING(N, nGram, wordHash, contextHash,
                             pData, UNDEFINED_LOG_PROB_WEIGHT,
                             nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
                 }

@@ -63,12 +63,12 @@ namespace uva {
 
             //The following is to be used for additional monitoring of collisions
 #ifndef MONITORE_COLLISIONS
-#define MONITORE_COLLISIONS false
+#define MONITORE_COLLISIONS true
 #endif
 
             //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(tokens, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)  \
-            LOG_WARNING << "The " << tokens.size() << "-Gram : '" << tokensToString(tokens)                   \
+#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)    \
+            LOG_WARNING << "The " << gram.level << "-Gram : '" << tokensToString<N>(gram.tokens, gram.level)    \
                         << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                    \
                         << ", contextHash: " << SSTR(contextHash) << ". "                                    \
                         << "Changing the (prob,back-off) data from ("                                        \
