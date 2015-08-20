@@ -60,7 +60,9 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model!" << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
+                        << "detections are: " << (MONITORE_COLLISIONS ? "ON" : "OFF")
+                        << " !" << END_LOG;
             }
 
             template<TModelLevel N>
@@ -126,18 +128,18 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
                 //Add hash key statistics
-                hashSizes[0].first = min<TReferenceHashSize>(wordHash, hashSizes[0].first);
-                hashSizes[0].second = max<TReferenceHashSize>(wordHash, hashSizes[0].second);
+                if (Logger::isRelevantLevel(Logger::INFO3)) {
+                    hashSizes[0].first = min<TReferenceHashSize>(wordHash, hashSizes[0].first);
+                    hashSizes[0].second = max<TReferenceHashSize>(wordHash, hashSizes[0].second);
+                }
 
-#if MONITORE_COLLISIONS
-                //If the probability is not zero then this word has been already seen!
-                if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
-                    //The word has been seen already, this is a potential error, so we report a warning!
+                //Check that the probability data is not set yet, otherwise a warning!
+                if (MONITORE_COLLISIONS && (pbData.first != ZERO_LOG_PROB_WEIGHT)) {
+                    //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_HASH,
                             pbData.first, pbData.second,
                             oGram.prob, oGram.back_off);
                 }
-#endif
                 //Set/Update the probability and back-off values for the word
                 pbData.first = oGram.prob;
                 pbData.second = oGram.back_off;
@@ -174,18 +176,19 @@ namespace uva {
                     TProbBackOffEntryPair& pbData = pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
 
                     //Add hash key statistics
-                    hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
-                    hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                    if (Logger::isRelevantLevel(Logger::INFO3)) {
+                        hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                    }
 
-#if MONITORE_COLLISIONS
                     //Check that the probability data is not set yet, otherwise a warning!
-                    if (pbData.first != ZERO_LOG_PROB_WEIGHT) {
-                        //The M-Gram has been seen already, this is a potential error, so we report a warning!
+                    if (MONITORE_COLLISIONS && (pbData.first != ZERO_LOG_PROB_WEIGHT)) {
+                        //If the probability is not zero then this word has been already seen!
                         REPORT_COLLISION_WARNING(N, mGram, wordHash, contextHash,
                                 pbData.first, pbData.second,
                                 mGram.prob, mGram.back_off);
                     }
-#endif
+
                     //Set/Update the probability and back-off values for the word
                     pbData.first = mGram.prob;
                     pbData.second = mGram.back_off;
@@ -223,18 +226,19 @@ namespace uva {
                 TLogProbBackOff& pData = pNGramMap->operator[](keyContext);
 
                 //Add hash key statistics
-                hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
-                hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                if (Logger::isRelevantLevel(Logger::INFO3)) {
+                    hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
+                    hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                }
 
-#if MONITORE_COLLISIONS
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (pData != ZERO_LOG_PROB_WEIGHT) {
-                    //The M-Gram has been seen already, this is a potential error, so we report a warning!
+                if (MONITORE_COLLISIONS && (pData != ZERO_LOG_PROB_WEIGHT)) {
+                    //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(N, nGram, wordHash, contextHash,
                             pData, UNDEFINED_LOG_PROB_WEIGHT,
                             nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
                 }
-#endif
+
                 //Set/Update the probability
                 pData = nGram.prob;
 
@@ -404,8 +408,8 @@ namespace uva {
             template<TModelLevel N>
             ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
                 //Print the hash sizes statistics
-                for(int i = 0; i < N; i++) {
-                    LOG_INFO3 << (i+1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                for (int i = 0; i < N; i++) {
+                    LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
                 }
 
                 //Deallocate One-Grams

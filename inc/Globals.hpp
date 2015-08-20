@@ -46,7 +46,7 @@ namespace uva {
         const uint BYTES_ONE_MB = 1024u;
 
         namespace logging {
-//Defines the maximum logging level
+            //Defines the maximum logging level
 #define LOGER_MAX_LEVEL Logger::INFO3
         }
 
@@ -61,7 +61,7 @@ namespace uva {
             const TModelLevel MIN_NGRAM_LEVEL = 1u;
 
             //Sets the collision detection on and off.
-#define MONITORE_COLLISIONS false
+            const bool MONITORE_COLLISIONS = true;
 
             namespace __AHashMapTrie {
                 //The unordered map memory factor for the Word index in AHashMapTrie

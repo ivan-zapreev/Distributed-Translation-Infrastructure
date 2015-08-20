@@ -193,7 +193,7 @@ namespace uva {
                 //The map storing the N-Grams, they do not have back-off values
                 TNGramsMap * pNGramMap;
 
-                //The temporary structure for storing the hash key values statistics
+                //The structure for storing the hash key values statistics
                 pair<TReferenceHashSize, TReferenceHashSize> hashSizes[N];
 
                 /**

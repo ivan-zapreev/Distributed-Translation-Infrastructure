@@ -61,11 +61,6 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            //The following is to be used for additional monitoring of collisions
-#ifndef MONITORE_COLLISIONS
-#define MONITORE_COLLISIONS false
-#endif
-
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(N, gram, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)    \
             LOG_WARNING << "The " << gram.level << "-Gram : '" << tokensToString<N>(gram.tokens, gram.level)    \

@@ -84,37 +84,37 @@ namespace uva {
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
                 if (!level.compare(USAGE_PARAM_VALUE)) {
-                    Logger::ReportingLevel() = Logger::USAGE;
+                    Logger::getReportingLevel() = Logger::USAGE;
                 } else {
                     if (!level.compare(RESULT_PARAM_VALUE)) {
-                        Logger::ReportingLevel() = Logger::RESULT;
+                        Logger::getReportingLevel() = Logger::RESULT;
                     } else {
                         if (!level.compare(WARNING_PARAM_VALUE)) {
-                            Logger::ReportingLevel() = Logger::WARNING;
+                            Logger::getReportingLevel() = Logger::WARNING;
                         } else {
                             if (!level.compare(INFO_PARAM_VALUE)) {
-                                Logger::ReportingLevel() = Logger::INFO;
+                                Logger::getReportingLevel() = Logger::INFO;
                             } else {
                                 if (!level.compare(INFO1_PARAM_VALUE)) {
-                                    Logger::ReportingLevel() = Logger::INFO1;
+                                    Logger::getReportingLevel() = Logger::INFO1;
                                 } else {
                                     if (!level.compare(INFO2_PARAM_VALUE)) {
-                                        Logger::ReportingLevel() = Logger::INFO2;
+                                        Logger::getReportingLevel() = Logger::INFO2;
                                     } else {
                                         if (!level.compare(INFO3_PARAM_VALUE)) {
-                                            Logger::ReportingLevel() = Logger::INFO3;
+                                            Logger::getReportingLevel() = Logger::INFO3;
                                         } else {
                                             if (!level.compare(DEBUG_PARAM_VALUE)) {
-                                                Logger::ReportingLevel() = Logger::DEBUG;
+                                                Logger::getReportingLevel() = Logger::DEBUG;
                                             } else {
                                                 if (!level.compare(DEBUG1_PARAM_VALUE)) {
-                                                    Logger::ReportingLevel() = Logger::DEBUG1;
+                                                    Logger::getReportingLevel() = Logger::DEBUG1;
                                                 } else {
                                                     if (!level.compare(DEBUG2_PARAM_VALUE)) {
-                                                        Logger::ReportingLevel() = Logger::DEBUG2;
+                                                        Logger::getReportingLevel() = Logger::DEBUG2;
                                                     } else {
                                                         if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                            Logger::ReportingLevel() = Logger::DEBUG3;
+                                                            Logger::getReportingLevel() = Logger::DEBUG3;
                                                         } else {
                                                             isGoodLevel = false;
                                                         }

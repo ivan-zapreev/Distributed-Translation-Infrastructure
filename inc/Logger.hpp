@@ -60,13 +60,13 @@ namespace uva {
 
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
-  else if (level > Logger::ReportingLevel()) ; \
-       else Logger::Get(level)
+  else if (level > Logger::getReportingLevel()) ; \
+       else Logger::get(level)
 
 #define LOGGER_DEBUG(level)                    \
   if (level > LOGER_MAX_LEVEL) ;               \
-  else if (level > Logger::ReportingLevel()) ; \
-       else Logger::Get(level, __FILE__, __FUNCTION__, LINE_STRING)
+  else if (level > Logger::getReportingLevel()) ; \
+       else Logger::get(level, __FILE__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
@@ -136,7 +136,7 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& Get(DebugLevel level) {
+                static inline std::ostream& get(DebugLevel level) {
                     return cout << _debugLevelStr[level] << ":\t";
                 }
 
@@ -145,15 +145,24 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& Get(DebugLevel level, const char * file, const char * func, const char * line) {
+                static inline std::ostream& get(DebugLevel level, const char * file, const char * func, const char * line) {
                     return cout << _debugLevelStr[level] << " \t<" << file << "::" << func << "(...):" << line << ">:\t";
                 }
+
+                /**
+                 * Checks if the current reporting level is higher or equal to the given
+                 * @return the reporting level to check
+                 * @return true if the given reporting level is smaller or equal to the current, otherwise false
+                 */
+                static inline bool isRelevantLevel(const DebugLevel& level) {
+                    return level <= currLEvel;
+                };
 
                 /**
                  * Returns the reference to the internal log level variable
                  * @return the reference to the internal log level variable
                  */
-                static inline DebugLevel& ReportingLevel() {
+                static inline DebugLevel& getReportingLevel() {
                     return currLEvel;
                 };
 
