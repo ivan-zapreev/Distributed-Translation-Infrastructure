@@ -63,7 +63,7 @@ namespace uva {
 
             //The following is to be used for additional monitoring of collisions
 #ifndef MONITORE_COLLISIONS
-#define MONITORE_COLLISIONS true
+#define MONITORE_COLLISIONS false
 #endif
 
             //This macro is needed to report the collision detection warnings!

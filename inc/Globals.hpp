@@ -45,6 +45,11 @@ namespace uva {
         //The number of bytes in one Mb
         const uint BYTES_ONE_MB = 1024u;
 
+        namespace logging {
+//Defines the maximum logging level
+#define LOGER_MAX_LEVEL Logger::INFO3
+        }
+
         //The following type definitions are important for storing the Tries information
         namespace tries {
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
@@ -54,12 +59,15 @@ namespace uva {
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
             //Defined the minimum possible N-gram level
             const TModelLevel MIN_NGRAM_LEVEL = 1u;
-            
+
+            //Sets the collision detection on and off.
+#define MONITORE_COLLISIONS false
+
             namespace __AHashMapTrie {
                 //The unordered map memory factor for the Word index in AHashMapTrie
                 const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
-            
+
             namespace __ContextMultiHashMapTrie {
                 //The unordered map memory factor for the One-Grams in ContextMultiHashMapTrie
                 const float UM_O_GRAM_MEMORY_FACTOR = 2.6;
