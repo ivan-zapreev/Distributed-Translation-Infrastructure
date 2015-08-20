@@ -55,7 +55,7 @@ namespace uva {
 
             //The logging macros to be used that allows for compile-time as well as runtime optimization
 #ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::INFO
+#define LOGER_MAX_LEVEL Logger::INFO3
 #endif
 
 #define LOGGER(level)                          \
@@ -77,6 +77,9 @@ namespace uva {
 #define LOG_ERROR   LOGGER(Logger::ERROR)
 #define LOG_WARNING LOGGER(Logger::WARNING)
 #define LOG_INFO    LOGGER(Logger::INFO)
+#define LOG_INFO1    LOGGER(Logger::INFO1)
+#define LOG_INFO2    LOGGER(Logger::INFO2)
+#define LOG_INFO3    LOGGER(Logger::INFO3)
 #define LOG_DEBUG   LOGGER_DEBUG(Logger::DEBUG)
 #define LOG_DEBUG1  LOGGER_DEBUG(Logger::DEBUG1)
 #define LOG_DEBUG2  LOGGER_DEBUG(Logger::DEBUG2)
@@ -87,9 +90,12 @@ namespace uva {
             //The string representation values for debug levels
 #define USAGE_PARAM_VALUE "USAGE"
 #define ERROR_PARAM_VALUE "ERROR"
-#define WARNING_PARAM_VALUE "WARNING"
+#define WARNING_PARAM_VALUE "WARN"
 #define RESULT_PARAM_VALUE "RESULT"
 #define INFO_PARAM_VALUE "INFO"
+#define INFO1_PARAM_VALUE "INFO1"
+#define INFO2_PARAM_VALUE "INFO2"
+#define INFO3_PARAM_VALUE "INFO3"
 #define DEBUG_PARAM_VALUE "DEBUG"
 #define DEBUG1_PARAM_VALUE "DEBUG1"
 #define DEBUG2_PARAM_VALUE "DEBUG2"
@@ -105,8 +111,9 @@ namespace uva {
                 //This enumeration stores all the available logging levels.
 
                 enum DebugLevel {
-                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1, INFO = RESULT + 1,
-                    DEBUG = INFO + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1
+                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
+                    INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1, 
+                    DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1
                 };
 
                 virtual ~Logger() {

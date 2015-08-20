@@ -38,11 +38,11 @@ namespace uva {
         namespace logging {
             Logger::DebugLevel Logger::currLEvel = Logger::RESULT;
 
-            const uint NUM_DEBUG_FLAGS = 9;
+            const uint NUM_DEBUG_FLAGS = 12;
             const char * Logger::_debugLevelStr[NUM_DEBUG_FLAGS] = {USAGE_PARAM_VALUE,
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
-                INFO_PARAM_VALUE, DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE,
-                DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE};
+                INFO_PARAM_VALUE, INFO1_PARAM_VALUE, INFO2_PARAM_VALUE, INFO3_PARAM_VALUE,
+                DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE};
 
             //Initialize the progress bar chars array
             const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
@@ -77,6 +77,9 @@ namespace uva {
             }
 
             void Logger::setReportingLevel(string level) {
+                //ToDo: This function is ugly improve it by using a map, or a
+                //      similar so that we could just get an appropriate level
+                //      for the string.
                 bool isGoodLevel = true;
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
@@ -92,19 +95,31 @@ namespace uva {
                             if (!level.compare(INFO_PARAM_VALUE)) {
                                 Logger::ReportingLevel() = Logger::INFO;
                             } else {
-                                if (!level.compare(DEBUG_PARAM_VALUE)) {
-                                    Logger::ReportingLevel() = Logger::DEBUG;
+                                if (!level.compare(INFO1_PARAM_VALUE)) {
+                                    Logger::ReportingLevel() = Logger::INFO1;
                                 } else {
-                                    if (!level.compare(DEBUG1_PARAM_VALUE)) {
-                                        Logger::ReportingLevel() = Logger::DEBUG1;
+                                    if (!level.compare(INFO2_PARAM_VALUE)) {
+                                        Logger::ReportingLevel() = Logger::INFO2;
                                     } else {
-                                        if (!level.compare(DEBUG2_PARAM_VALUE)) {
-                                            Logger::ReportingLevel() = Logger::DEBUG2;
+                                        if (!level.compare(INFO3_PARAM_VALUE)) {
+                                            Logger::ReportingLevel() = Logger::INFO3;
                                         } else {
-                                            if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                Logger::ReportingLevel() = Logger::DEBUG3;
+                                            if (!level.compare(DEBUG_PARAM_VALUE)) {
+                                                Logger::ReportingLevel() = Logger::DEBUG;
                                             } else {
-                                                isGoodLevel = false;
+                                                if (!level.compare(DEBUG1_PARAM_VALUE)) {
+                                                    Logger::ReportingLevel() = Logger::DEBUG1;
+                                                } else {
+                                                    if (!level.compare(DEBUG2_PARAM_VALUE)) {
+                                                        Logger::ReportingLevel() = Logger::DEBUG2;
+                                                    } else {
+                                                        if (!level.compare(DEBUG3_PARAM_VALUE)) {
+                                                            Logger::ReportingLevel() = Logger::DEBUG3;
+                                                        } else {
+                                                            isGoodLevel = false;
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -114,7 +129,9 @@ namespace uva {
                     }
                 }
                 if (isGoodLevel) {
-                    LOG_USAGE << "The debugging level is set to: \'" << level << "\'" << END_LOG;
+                    LOG_INFO << "The debugging level is set to: \'" << level
+                            << "\', maximum build level is '"
+                            << _debugLevelStr[LOGER_MAX_LEVEL] << "'" << END_LOG;
                 } else {
                     LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << level << "'" << END_LOG;
                 }
@@ -126,7 +143,7 @@ namespace uva {
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
                 stringstream msg;
-                msg << _debugLevelStr[USAGE] << ":\tLoading time: " << SSTR(hour) << " hour(s) "
+                msg << _debugLevelStr[USAGE] << ":\tElapsed time: " << SSTR(hour) << " hour(s) "
                         << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
                 string result = msg.str();
                 timeStrLen = result.size();

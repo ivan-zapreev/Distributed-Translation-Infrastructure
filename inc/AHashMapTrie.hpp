@@ -295,7 +295,7 @@ namespace uva {
                     try {
                         return _pWordIndexMap->at(token);
                     } catch (out_of_range e) {
-                        LOG_WARNING << "Word: '" << token << "' is not known! Mapping it to: '"
+                        LOG_INFO2 << "Word: '" << token << "' is not known! Mapping it to: '"
                                 << UNKNOWN_WORD_STR << "', hash: "
                                 << SSTR(UNKNOWN_WORD_HASH) << END_LOG;
                     }

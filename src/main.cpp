@@ -157,7 +157,7 @@ static const string getFileExistsString(string const & fname, bool isPresent) {
  * @param isDoInfo true if the memory info may be print
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
-    LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
+    LOG_INFO2 << "Action: \'" << action << "\' memory change:" << END_LOG;
     LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
             << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
             << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
@@ -169,14 +169,14 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     int vmpeak = ((msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB;
     int vmrss = ((msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB;
     int vmhwm = ((msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB;
-    LOG_USAGE << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
+    LOG_INFO2 << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
             << " Mb, vmrss=" << vmrss << " Mb, vmhwm=" << vmhwm
             << " Mb" << noshowpos << END_LOG;
     if (isDoInfo) {
-        LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
-        LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
-        LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
-        LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
+        LOG_INFO3 << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
+        LOG_INFO3 << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
+        LOG_INFO3 << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
+        LOG_INFO3 << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
     }
 }
 
@@ -194,6 +194,33 @@ static void fillInTrie(AFileReader & fstr, ATrie<N> & trie) {
 
     //A.2. Build the trie
     builder.build();
+}
+
+/**
+ * For the given N-gram allows to give the string of the object
+ * for which the probability is computed, e.g.:
+ * N-gram = "word1" -> result = "word1"
+ * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+ * @param ngram the n-gram to transform
+ * @return the resulting string
+ */
+static string getNGramProbStr(const vector<string> & ngram) {
+    if (ngram.size() == 1) {
+        const string & token = *ngram.begin();
+        return token.empty() ? "<empty>" : token;
+    } else {
+        if (ngram.size() > 1) {
+            const vector<string>::const_iterator last_word_iter = (--ngram.end());
+            string result = *(last_word_iter) + " |";
+            for(vector<string>::const_iterator iter = ngram.begin(); 
+                    iter < last_word_iter; ++iter ){
+                result += string(" ") + *(iter);
+            }
+            return result;
+        } else {
+            return "<none>";
+        }
+    }
 }
 
 /**
@@ -226,9 +253,10 @@ static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
         endTime = StatisticsMonitor::getCPUTime();
 
         //Print the results:
-        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( '" << line << "' ) ) = " << result.prob << END_LOG;
-        LOG_INFO << "Prob( '" << line << "' ) = " << pow(LOG_PROB_WEIGHT_BASE, result.prob) << END_LOG;
-        LOG_RESULT << "CPU Time needed: " << (endTime - startTime) << " sec." << END_LOG;
+        string request = getNGramProbStr(ngram);
+        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << request << " ) ) = " << SSTR(result.prob) << END_LOG;
+        LOG_INFO << "Prob( " << request << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
+        LOG_INFO2 << "CPU Time needed: " << SSTR(endTime - startTime) << " sec." << END_LOG;
 
         //update total time
         totalTime += (endTime - startTime);
@@ -271,6 +299,8 @@ static void performTasks(const TAppParams& params) {
         LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
 
+        LOG_USAGE << "Start creating and loading the Trie ..." << END_LOG;
+
         //ToDo: Add the possibility to choose between the Tries from the command line!
         //Create a trie and pass it to the algorithm method
         TFiveContextMultiHashMapTrie trie(
@@ -284,7 +314,7 @@ static void performTasks(const TAppParams& params) {
         fillInTrie(modelFile, trie);
         LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
         endTime = StatisticsMonitor::getCPUTime();
-        LOG_USAGE << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+        LOG_INFO1 << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
         LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
@@ -304,9 +334,9 @@ static void performTasks(const TAppParams& params) {
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
         reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
-        LOG_USAGE << "Reading and executing the test queries ..." << END_LOG;
+        LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
-        LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+        LOG_INFO1 << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
         testFile.close();
     } else {
         stringstream msg;
@@ -331,12 +361,15 @@ int main(int argc, char** argv) {
     printInfo();
 
     try {
-        LOG_INFO << "Checking on the program arguments ..." << END_LOG;
-        //Attempt to extract the program arguments
+        //Define en empty parameters structure
         TAppParams params = {};
+
+        LOG_INFO << "Checking on the program arguments ..." << END_LOG;
+        
+        //Attempt to extract the program arguments
         extractArguments(argc, argv, params);
 
-        LOG_INFO << "Checking on the provided files \'"
+        LOG_DEBUG << "Checking on the provided files \'"
                 << params.modelFileName << "\' and \'"
                 << params.testFileName << "\' ..." << END_LOG;
 
