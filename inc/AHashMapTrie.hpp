@@ -255,7 +255,7 @@ namespace uva {
                  * @param gram the N-gram with its tokens to create context for
                  * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
                  */
-                template<Logger::DebugLevel logLevel>
+                template<DebugLevel logLevel>
                 inline TReferenceHashSize computeHashContext(const SRawNGram & gram) {
                     TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
 

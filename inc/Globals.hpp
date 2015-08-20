@@ -29,7 +29,7 @@
 #include <inttypes.h>
 #include <string>
 
-#include "Logger.hpp"
+using namespace std;
 
 namespace uva {
     namespace smt {
@@ -46,8 +46,17 @@ namespace uva {
         const uint BYTES_ONE_MB = 1024u;
 
         namespace logging {
+
+            //This enumeration stores all the available logging levels.
+
+            enum DebugLevel {
+                USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
+                INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
+                DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1
+            };
+
             //Defines the maximum logging level
-#define LOGER_MAX_LEVEL Logger::INFO3
+            static const DebugLevel LOGER_MAX_LEVEL = INFO3;
         }
 
         //The following type definitions are important for storing the Tries information

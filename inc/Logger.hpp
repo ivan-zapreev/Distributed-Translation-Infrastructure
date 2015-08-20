@@ -34,6 +34,7 @@
 #include <vector>    // std::vector
 #include <time.h>    // std::clock std::clock_t
 
+#include "Globals.hpp"
 #include "Exceptions.hpp"
 
 using namespace std;
@@ -53,11 +54,6 @@ namespace uva {
             //Defines the progress bar update period in CPU seconds
 #define PROGRESS_UPDATE_PERIOD 0.05
 
-            //The logging macros to be used that allows for compile-time as well as runtime optimization
-#ifndef LOGER_MAX_LEVEL
-#define LOGER_MAX_LEVEL Logger::INFO3
-#endif
-
 #define LOGGER(level)                          \
   if (level > LOGER_MAX_LEVEL) ;               \
   else if (level > Logger::getReportingLevel()) ; \
@@ -72,18 +68,18 @@ namespace uva {
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;
             //Here, the END_LOG is optional and is currently used for a new line only.
-#define LOG_USAGE   LOGGER(Logger::USAGE)
-#define LOG_RESULT  LOGGER(Logger::RESULT)
-#define LOG_ERROR   LOGGER(Logger::ERROR)
-#define LOG_WARNING LOGGER(Logger::WARNING)
-#define LOG_INFO    LOGGER(Logger::INFO)
-#define LOG_INFO1    LOGGER(Logger::INFO1)
-#define LOG_INFO2    LOGGER(Logger::INFO2)
-#define LOG_INFO3    LOGGER(Logger::INFO3)
-#define LOG_DEBUG   LOGGER_DEBUG(Logger::DEBUG)
-#define LOG_DEBUG1  LOGGER_DEBUG(Logger::DEBUG1)
-#define LOG_DEBUG2  LOGGER_DEBUG(Logger::DEBUG2)
-#define LOG_DEBUG3  LOGGER_DEBUG(Logger::DEBUG3)
+#define LOG_USAGE   LOGGER(DebugLevel::USAGE)
+#define LOG_RESULT  LOGGER(DebugLevel::RESULT)
+#define LOG_ERROR   LOGGER(DebugLevel::ERROR)
+#define LOG_WARNING LOGGER(DebugLevel::WARNING)
+#define LOG_INFO    LOGGER(DebugLevel::INFO)
+#define LOG_INFO1    LOGGER(DebugLevel::INFO1)
+#define LOG_INFO2    LOGGER(DebugLevel::INFO2)
+#define LOG_INFO3    LOGGER(DebugLevel::INFO3)
+#define LOG_DEBUG   LOGGER_DEBUG(DebugLevel::DEBUG)
+#define LOG_DEBUG1  LOGGER_DEBUG(DebugLevel::DEBUG1)
+#define LOG_DEBUG2  LOGGER_DEBUG(DebugLevel::DEBUG2)
+#define LOG_DEBUG3  LOGGER_DEBUG(DebugLevel::DEBUG3)
 #define END_LOG     endl << flush
 
 
@@ -107,14 +103,6 @@ namespace uva {
              */
             class Logger {
             public:
-
-                //This enumeration stores all the available logging levels.
-
-                enum DebugLevel {
-                    USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
-                    INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1, 
-                    DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1
-                };
 
                 virtual ~Logger() {
                 };

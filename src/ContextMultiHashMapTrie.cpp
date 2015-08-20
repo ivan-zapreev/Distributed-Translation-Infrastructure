@@ -128,7 +128,7 @@ namespace uva {
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
                 //Add hash key statistics
-                if (Logger::isRelevantLevel(Logger::INFO3)) {
+                if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
                     hashSizes[0].first = min<TReferenceHashSize>(wordHash, hashSizes[0].first);
                     hashSizes[0].second = max<TReferenceHashSize>(wordHash, hashSizes[0].second);
                 }
@@ -160,7 +160,7 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(mGram);
+                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
@@ -176,7 +176,7 @@ namespace uva {
                     TProbBackOffEntryPair& pbData = pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
 
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(Logger::INFO3)) {
+                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
                         hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
                         hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
                     }
@@ -212,7 +212,7 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<Logger::DEBUG2>(nGram);
+                const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<DebugLevel::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
@@ -226,7 +226,7 @@ namespace uva {
                 TLogProbBackOff& pData = pNGramMap->operator[](keyContext);
 
                 //Add hash key statistics
-                if (Logger::isRelevantLevel(Logger::INFO3)) {
+                if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
                     hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
                     hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
                 }
