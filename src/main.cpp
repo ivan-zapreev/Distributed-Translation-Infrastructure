@@ -41,10 +41,12 @@
 #include "AFileReader.hpp"
 #include "MemoryMappedFileReader.hpp"
 #include "FileStreamReader.hpp"
+#include "HashMapWordIndex.hpp"
 
 using namespace std;
 using namespace uva::smt;
 using namespace uva::smt::tries;
+using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::arpa;
 using namespace uva::smt::logging;
@@ -212,8 +214,8 @@ static string getNGramProbStr(const vector<string> & ngram) {
         if (ngram.size() > 1) {
             const vector<string>::const_iterator last_word_iter = (--ngram.end());
             string result = *(last_word_iter) + " |";
-            for(vector<string>::const_iterator iter = ngram.begin(); 
-                    iter < last_word_iter; ++iter ){
+            for (vector<string>::const_iterator iter = ngram.begin();
+                    iter < last_word_iter; ++iter) {
                 result += string(" ") + *(iter);
             }
             return result;
@@ -302,9 +304,12 @@ static void performTasks(const TAppParams& params) {
         LOG_USAGE << "Start creating and loading the Trie ..." << END_LOG;
 
         //ToDo: Add the possibility to choose between the Tries from the command line!
+
+        //Allocate the word dictionary
+        HashMapWordIndex dictionary(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
+
         //Create a trie and pass it to the algorithm method
-        TFiveContextMultiHashMapTrie trie(
-                __AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR,
+        TFiveContextMultiHashMapTrie trie(&dictionary,
                 __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
                 __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                 __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
@@ -365,7 +370,7 @@ int main(int argc, char** argv) {
         TAppParams params = {};
 
         LOG_INFO << "Checking on the program arguments ..." << END_LOG;
-        
+
         //Attempt to extract the program arguments
         extractArguments(argc, argv, params);
 

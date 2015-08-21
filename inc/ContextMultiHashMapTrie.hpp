@@ -42,6 +42,8 @@
 #include <unordered_map>  // std::unordered_map
 
 #include "AHashMapTrie.hpp"
+#include "AHashMapTrie.hpp"
+#include "GreedyMemoryAllocator.hpp"
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
@@ -50,6 +52,7 @@
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
+using namespace uva::smt::tries::alloc;
 
 namespace uva {
     namespace smt {
@@ -99,16 +102,15 @@ namespace uva {
                  * This breaks encapsulation a bit, exposing the internals, but
                  * there is no other better way, for fine tuning the memory usage.
                  * 
-                 * @param  wordIndexMemFactor the assigned memory factor for
-                 * storage allocation in the unordered_map used for the word index
-                 * @param  oGramMemFactor The One-Gram memory factor needed for
+                 * @param _pWordIndex the word index to be used
+                 * @param _oGramMemFactor The One-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
-                 * @param  mGramMemFactor The M-Gram memory factor needed for
+                 * @param _mGramMemFactor The M-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
-                 * @param  nGramMemFactor The N-Gram memory factor needed for
+                 * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit ContextMultiHashMapTrie(const float _wordIndexMemFactor,
+                explicit ContextMultiHashMapTrie(AWordIndex * const _pWordIndex,
                         const float _oGramMemFactor,
                         const float _mGramMemFactor,
                         const float _nGramMemFactor);
@@ -201,7 +203,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig)
-                : AHashMapTrie<N>(0.0), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
+                : AHashMapTrie<N>(NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

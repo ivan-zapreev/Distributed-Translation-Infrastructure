@@ -43,19 +43,19 @@
 #include <inttypes.h>     // uint8_t
 
 #include "ATrie.hpp"
+#include "AWordIndex.hpp"
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
-#include "GreedyMemoryAllocator.hpp"
 #include "TextPieceReader.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
-using namespace uva::smt::tries::alloc;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
@@ -113,11 +113,9 @@ namespace uva {
                  * This breaks encapsulation a bit, exposing the internals, but
                  * there is no other better way, for fine tuning the memory usage.
                  * 
-                 * @param  wordIndexMemFactor the assigned memory factor for
-                 * storage allocation in the unordered_map used for the word index
+                 * @param _wordIndex the word index to be used
                  */
-                explicit AHashMapTrie(const float wordIndexMemFactor)
-                : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(wordIndexMemFactor) {
+                explicit AHashMapTrie( AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
                 };
 
                 /**
@@ -126,32 +124,25 @@ namespace uva {
                  */
                 virtual void preAllocate(const size_t counts[N]) {
                     //Compute the number of words to be stored
-                    const size_t numWords = counts[0] + 1; //Add an extra element for the <unknown/> word
-
-                    //Reserve the memory for the map
-                    reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc, numWords, "WordIndex", _wordIndexMemFactor);
-
-                    //Register the unknown word with the first available hash value
-                    TWordHashSize& hash = AHashMapTrie<N>::_pWordIndexMap->operator[](UNKNOWN_WORD_STR);
-                    hash = UNKNOWN_WORD_HASH;
+                    //Add an extra element for the <unknown/> word
+                    pWordIndex->preAllocate(counts[0] + 1);
                 }
 
                 /**
                  * The basic class destructor
                  */
                 virtual ~AHashMapTrie() {
-                    deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                 };
 
             protected:
+                //Stores the reference to the word index to be used
+                AWordIndex * const pWordIndex;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                AHashMapTrie(const AHashMapTrie& orig)
-                : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL),
-                _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(0.0) {
+                AHashMapTrie(const AHashMapTrie& orig) {
                     throw Exception("AHashMapTrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -184,7 +175,7 @@ namespace uva {
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = getUniqueIdHash(*it);
+                        wordHashes[idx] = pWordIndex->getUniqueIdHash(*it);
                         LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
@@ -263,14 +254,14 @@ namespace uva {
                     if (gram.level > MIN_NGRAM_LEVEL) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
-                        contextHash = getUniqueIdHash(token);
+                        contextHash = pWordIndex->getUniqueIdHash(token);
 
                         LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordHashSize wordHash = getUniqueIdHash(token);
+                            TWordHashSize wordHash = pWordIndex->getUniqueIdHash(token);
                             LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
@@ -278,44 +269,6 @@ namespace uva {
                     }
 
                     return contextHash;
-                }
-
-                /**
-                 * This function gets a hash for the given word word based no the stored 1-Grams.
-                 * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
-                 * @param token the word to hash
-                 * @return the resulting hash
-                 */
-                inline TWordHashSize getUniqueIdHash(const string & token) {
-                    try {
-                        return _pWordIndexMap->at(token);
-                    } catch (out_of_range e) {
-                        LOG_INFO2 << "Word: '" << token << "' is not known! Mapping it to: '"
-                                << UNKNOWN_WORD_STR << "', hash: "
-                                << SSTR(UNKNOWN_WORD_HASH) << END_LOG;
-                    }
-                    return UNKNOWN_WORD_HASH;
-                }
-
-                /**
-                 * This function creates/gets a hash for the given word.
-                 * Note: The hash id will be unique!
-                 * @param token the word to hash
-                 * @return the resulting hash
-                 */
-                inline TWordHashSize createUniqueIdHash(const TextPieceReader & token) {
-                    //First get/create an existing/new word entry from from/in the word index
-                    TWordHashSize& hash = _pWordIndexMap->operator[](token.str());
-
-                    if (hash == UNDEFINED_WORD_HASH) {
-                        //If the word hash is not defined yet, then issue it a new hash id
-                        hash = _nextNewWordHash;
-                        LOG_DEBUG2 << "Word: '" << token.str() << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
-                        _nextNewWordHash++;
-                    }
-
-                    //Use the Prime numbers hashing algorithm as it outperforms djb2
-                    return hash;
                 }
 
                 /**
@@ -347,30 +300,8 @@ namespace uva {
 
             private:
 
-                //The type of key,value pairs to be stored in the word index
-                typedef pair< const string, TWordHashSize> TWordIndexEntry;
-
-                //The typedef for the word index allocator
-                typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
-
-                //The word index map type
-                typedef unordered_map<string, TWordHashSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
-
-                //This is the pointer to the fixed memory allocator used to allocate the map's memory
-                TWordIndexAllocator * _pWordIndexAlloc;
-
-                //This map stores the word index, i.e. assigns each unique word a unique id
-                TWordIndexMap * _pWordIndexMap;
-
                 //The temporary data structure to store the N-gram query word hashes
                 TWordHashSize mGramWordHashes[N];
-
-                //Stores the last allocated word hash
-                TWordHashSize _nextNewWordHash;
-
-                //Stores the assigned memory factor for storage allocation
-                //in the unordered_map used for the word index
-                const float _wordIndexMemFactor;
 
             };
         }

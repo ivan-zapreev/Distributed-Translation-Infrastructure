@@ -38,11 +38,11 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie(const float _wordIndexMemFactor,
+            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
-            : AHashMapTrie<N>(_wordIndexMemFactor),
+            : AHashMapTrie<N>(_pWordIndex),
             oGramMemFactor(_oGramMemFactor),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor) {
@@ -123,7 +123,7 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordHashSize wordHash = AHashMapTrie<N>::createUniqueIdHash(token);
+                TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
@@ -164,7 +164,7 @@ namespace uva {
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
+                    const TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -216,7 +216,7 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordHashSize wordHash = AHashMapTrie<N>::getUniqueIdHash(endWord.str());
+                const TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie

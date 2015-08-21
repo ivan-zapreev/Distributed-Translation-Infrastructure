@@ -46,9 +46,6 @@ namespace uva {
             //Stores the Bi-Gram level value
             const TModelLevel BGRAM_LEVEL_VALUE = 2;
 
-            //Stores the string representation of an unknown word
-            const string UNKNOWN_WORD_STR = "<unk>";
-
             //The type used for storing log probabilities and back-off values
             typedef float TLogProbBackOff;
 
