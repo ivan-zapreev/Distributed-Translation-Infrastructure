@@ -22,7 +22,7 @@
  *
  * Created on August 14, 2015, 1:53 PM
  */
-#include "ContextMultiHashMapTrie.hpp"
+#include "CtxMultiHashMapTrie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
@@ -38,7 +38,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            ContextMultiHashMapTrie<N>::ContextMultiHashMapTrie(AWordIndex * const _pWordIndex,
+            CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
@@ -66,7 +66,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            void CtxMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
                 const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
 
@@ -80,7 +80,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            void CtxMultiHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
@@ -92,7 +92,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            void CtxMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
                 const size_t numEntries = counts[N - 1];
 
@@ -101,7 +101,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
+            void CtxMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
                 AHashMapTrie<N>::preAllocate(counts);
 
@@ -116,7 +116,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::add1Gram(const SRawNGram &oGram) {
+            void CtxMultiHashMapTrie<N>::add1Gram(const SRawNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = oGram.tokens[0];
 
@@ -151,7 +151,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::addMGram(const SRawNGram &mGram) {
+            void CtxMultiHashMapTrie<N>::addMGram(const SRawNGram &mGram) {
                 const TModelLevel level = mGram.level;
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
 
@@ -205,7 +205,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::addNGram(const SRawNGram &nGram) {
+            void CtxMultiHashMapTrie<N>::addNGram(const SRawNGram &nGram) {
                 const size_t level = nGram.level;
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
 
@@ -248,7 +248,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            TLogProbBackOff ContextMultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
+            TLogProbBackOff CtxMultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TWordHashSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
@@ -303,7 +303,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            TLogProbBackOff ContextMultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
+            TLogProbBackOff CtxMultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
                 const TWordHashSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
 
@@ -387,7 +387,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ContextMultiHashMapTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            void CtxMultiHashMapTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 const TModelLevel mGramLength = ngram.size();
                 //Check the number of elements in the N-Gram
                 if ((1 <= mGramLength) && (mGramLength <= N)) {
@@ -406,7 +406,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            ContextMultiHashMapTrie<N>::~ContextMultiHashMapTrie() {
+            CtxMultiHashMapTrie<N>::~CtxMultiHashMapTrie() {
                 //Print the hash sizes statistics
                 for (int i = 0; i < N; i++) {
                     LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
@@ -425,7 +425,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ContextMultiHashMapTrie<MAX_NGRAM_LEVEL>;
+            template class CtxMultiHashMapTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

@@ -33,7 +33,7 @@
 #include "StatisticsMonitor.hpp"
 #include "Logger.hpp"
 #include "ATrie.hpp"
-#include "ContextMultiHashMapTrie.hpp"
+#include "CtxMultiHashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"

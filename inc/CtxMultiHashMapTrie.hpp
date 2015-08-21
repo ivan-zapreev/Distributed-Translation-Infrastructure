@@ -23,8 +23,8 @@
  * Created on August 14, 2015, 1:53 PM
  */
 
-#ifndef CONTEXTMULTIHASHMAPTRIE_HPP
-#define	CONTEXTMULTIHASHMAPTRIE_HPP
+#ifndef CTXMULTIHASHMAPTRIE_HPP
+#define	CTXMULTIHASHMAPTRIE_HPP
 
 /**
  * We actually have several choices:
@@ -78,7 +78,7 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class ContextMultiHashMapTrie : public AHashMapTrie<N> {
+            class CtxMultiHashMapTrie : public AHashMapTrie<N> {
             public:
                 //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
                 static const TModelLevel MGRAM_IDX_OFFSET = 2;
@@ -110,7 +110,7 @@ namespace uva {
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit ContextMultiHashMapTrie(AWordIndex * const _pWordIndex,
+                explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
                         const float _oGramMemFactor,
                         const float _mGramMemFactor,
                         const float _nGramMemFactor);
@@ -148,7 +148,7 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
-                virtual ~ContextMultiHashMapTrie();
+                virtual ~CtxMultiHashMapTrie();
 
             private:
                 //The One-Gram memory factor needed for the greedy allocator for the unordered_map
@@ -202,7 +202,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                ContextMultiHashMapTrie(const ContextMultiHashMapTrie& orig)
+                CtxMultiHashMapTrie(const CtxMultiHashMapTrie& orig)
                 : AHashMapTrie<N>(NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
@@ -249,7 +249,7 @@ namespace uva {
 
             };
 
-            typedef ContextMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;
+            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;
         }
     }
 }
