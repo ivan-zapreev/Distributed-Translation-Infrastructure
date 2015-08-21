@@ -32,12 +32,14 @@
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "TextPieceReader.hpp"
+#include "AWordIndex.hpp"
 
 using namespace std;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::hashing;
 using namespace uva::smt::tries;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
@@ -125,7 +127,13 @@ namespace uva {
             template<TModelLevel N>
             class ATrie {
             public:
-
+                /**
+                 * The basic constructor
+                 * @param _wordIndex the word index to be used
+                 */
+                explicit ATrie( AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
+                };
+                
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
@@ -173,6 +181,17 @@ namespace uva {
                  *               data for the decoder.
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result) = 0;
+
+
+                /**
+                 * The basic class destructor
+                 */
+                virtual ~ATrie() {
+                };
+                
+            protected:
+                //Stores the reference to the word index to be used
+                AWordIndex * const pWordIndex;
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches

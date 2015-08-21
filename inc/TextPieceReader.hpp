@@ -381,8 +381,7 @@ namespace uva {
                 }
                 data << "]";
                 return data.str();
-            }
-
+            };
         }
     }
 }

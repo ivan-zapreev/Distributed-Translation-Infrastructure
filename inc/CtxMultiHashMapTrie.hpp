@@ -41,12 +41,11 @@
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
 
-#include "AHashMapTrie.hpp"
+#include "Globals.hpp"
+#include "Logger.hpp"
 #include "AHashMapTrie.hpp"
 #include "GreedyMemoryAllocator.hpp"
-#include "Globals.hpp"
 #include "HashingUtils.hpp"
-#include "Logger.hpp"
 #include "TextPieceReader.hpp"
 
 using namespace std;
@@ -148,6 +147,9 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
 
+                /**
+                 * The basic destructor
+                 */
                 virtual ~CtxMultiHashMapTrie();
 
             private:

@@ -43,7 +43,6 @@
 #include <inttypes.h>     // uint8_t
 
 #include "ATrie.hpp"
-#include "AWordIndex.hpp"
 #include "Globals.hpp"
 #include "HashingUtils.hpp"
 #include "Logger.hpp"
@@ -55,7 +54,6 @@ using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
 using namespace uva::smt::file;
-using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
@@ -115,7 +113,7 @@ namespace uva {
                  * 
                  * @param _wordIndex the word index to be used
                  */
-                explicit AHashMapTrie( AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
+                explicit AHashMapTrie( AWordIndex * const _pWordIndex) : ATrie<N>(_pWordIndex) {
                 };
 
                 /**
@@ -125,7 +123,7 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]) {
                     //Compute the number of words to be stored
                     //Add an extra element for the <unknown/> word
-                    pWordIndex->preAllocate(counts[0] + 1);
+                    ATrie<N>::pWordIndex->preAllocate(counts[0] + 1);
                 }
 
                 /**
@@ -135,8 +133,6 @@ namespace uva {
                 };
 
             protected:
-                //Stores the reference to the word index to be used
-                AWordIndex * const pWordIndex;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -175,7 +171,7 @@ namespace uva {
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = pWordIndex->getUniqueIdHash(*it);
+                        wordHashes[idx] = ATrie<N>::pWordIndex->getUniqueIdHash(*it);
                         LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
@@ -254,14 +250,14 @@ namespace uva {
                     if (gram.level > MIN_NGRAM_LEVEL) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
-                        contextHash = pWordIndex->getUniqueIdHash(token);
+                        contextHash = ATrie<N>::pWordIndex->getUniqueIdHash(token);
 
                         LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordHashSize wordHash = pWordIndex->getUniqueIdHash(token);
+                            TWordHashSize wordHash = ATrie<N>::pWordIndex->getUniqueIdHash(token);
                             LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;

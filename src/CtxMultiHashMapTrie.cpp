@@ -123,7 +123,7 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->createUniqueIdHash(token);
+                TWordHashSize wordHash = ATrie<N>::pWordIndex->createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
@@ -164,7 +164,7 @@ namespace uva {
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
+                    const TWordHashSize wordHash = ATrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -216,7 +216,7 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordHashSize wordHash = AHashMapTrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
+                const TWordHashSize wordHash = ATrie<N>::pWordIndex->getUniqueIdHash(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
