@@ -92,7 +92,7 @@ namespace uva {
                 //as the for M == 0 - the One Grams, we do not need this mappings
                 for (int idx = 0; idx < (N - 1); idx++) {
                     m_mgram_mapping[idx] = new C*[m_word_arr_size];
-                    memset(m_mgram_mapping[idx], 0, counts[idx]*sizeof(C*));
+                    memset(m_mgram_mapping[idx], 0, m_word_arr_size*sizeof(C*));
                 }
             }
 
