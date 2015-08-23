@@ -89,7 +89,7 @@ namespace uva {
                             return _pWordIndexMap->at(token);
                         } catch (out_of_range e) {
                             LOG_INFO2 << "Word: '" << token << "' is not known! Mapping it to: '"
-                                    << UNKNOWN_WORD_STR << "', hash: "
+                                    << UNKNOWN_WORD_STR << "', id: "
                                     << SSTR(UNKNOWN_WORD_ID) << END_LOG;
                         }
                         return UNKNOWN_WORD_ID;
@@ -108,7 +108,7 @@ namespace uva {
                         if (hash == UNDEFINED_WORD_ID) {
                             //If the word hash is not defined yet, then issue it a new hash id
                             hash = _nextNewWordId;
-                            LOG_DEBUG2 << "Word: '" << token.str() << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
+                            LOG_DEBUG2 << "Word: '" << token.str() << "' is not known yet, issuing it a new id: " << SSTR(hash) << END_LOG;
                             _nextNewWordId++;
                         }
 
