@@ -214,7 +214,8 @@ namespace uva {
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
-                TIndexSize next_ctx_id[N - 2];
+                const static TModelLevel NUM_IDX_COUNTERS = N-2;
+                TIndexSize next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
                  * This function gets the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]

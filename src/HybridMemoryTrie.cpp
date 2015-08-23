@@ -53,6 +53,9 @@ namespace uva {
                     msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
                     throw Exception(msg.str());
                 }
+                
+                //Initialize the array of counters
+                memset(next_ctx_id, 0, NUM_IDX_COUNTERS*sizeof(TIndexSize));
             }
 
             template<TModelLevel N, class C>
@@ -69,6 +72,7 @@ namespace uva {
                 //First allocate the memory for the One-grams, add an extra
                 //element for the unknown word and initialize it!
                 m_mgram_data[0] = new TProbBackOffEntryPair[m_word_arr_size];
+                memset(m_mgram_data[0], 0, m_word_arr_size*sizeof(TProbBackOffEntryPair));
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntryPair & pbData = m_mgram_data[0][UNKNOWN_WORD_ID];
@@ -81,12 +85,14 @@ namespace uva {
                 //Inside the C container class values.
                 for (int idx = 1; idx < (N - 1); idx++) {
                     m_mgram_data[idx] = new TProbBackOffEntryPair[counts[idx]];
+                    memset(m_mgram_data[idx], 0, counts[idx]*sizeof(TProbBackOffEntryPair));
                 }
 
                 //Allocate the word map arrays per level There is N-1 levels to have 
                 //as the for M == 0 - the One Grams, we do not need this mappings
                 for (int idx = 0; idx < (N - 1); idx++) {
                     m_mgram_mapping[idx] = new C*[m_word_arr_size];
+                    memset(m_mgram_mapping[idx], 0, counts[idx]*sizeof(C*));
                 }
             }
 
