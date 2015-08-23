@@ -90,7 +90,7 @@ namespace uva {
         //The following type definitions are important for creating hashes
         namespace hashing {
             //This is the smallest size which I've tested and it works for the hash without collisions
-            typedef uint32_t TWordHashSize;
+            typedef uint32_t TWordIndexSize;
             //This is the hash reference size which should be twice as long as the TWordHashSize
             typedef uint64_t TReferenceHashSize;
         }

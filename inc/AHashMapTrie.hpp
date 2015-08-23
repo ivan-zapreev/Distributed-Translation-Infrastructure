@@ -75,7 +75,7 @@ namespace uva {
             //off weights. The difference here compared to the TMGramEntryMap is
             //that we can use TWordHashSize data type instead of TReferenceHashSize
             //for the key values, as the context is always the first word's hash.
-            typedef unordered_map<TWordHashSize, TProbBackOffEntryPair> TBGramEntryMap;
+            typedef unordered_map<TWordIndexSize, TProbBackOffEntryPair> TBGramEntryMap;
 
             //The M-trie level entry for 1 < M < N, for with probability and back-off weights
             typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair> TMGramEntryMap;
@@ -146,7 +146,7 @@ namespace uva {
                  * Gets the word hash for the end word of the back-off N-Gram
                  * @return the word hash for the end word of the back-off N-Gram
                  */
-                inline const TWordHashSize & getBackOffNGramEndWordHash() {
+                inline const TWordIndexSize & getBackOffNGramEndWordHash() {
                     return mGramWordHashes[N - 2];
                 }
 
@@ -154,7 +154,7 @@ namespace uva {
                  * Gets the word hash for the last word in the N-gram
                  * @return the word hash for the last word in the N-gram
                  */
-                inline const TWordHashSize & getNGramEndWordHash() {
+                inline const TWordIndexSize & getNGramEndWordHash() {
                     return mGramWordHashes[N - 1];
                 }
 
@@ -166,7 +166,7 @@ namespace uva {
                  * @param tokens the tokens to be transformed into word hashes must have size <=N
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                inline void tokensToHashes(const vector<string> & tokens, TWordHashSize wordHashes[N]) {
+                inline void tokensToHashes(const vector<string> & tokens, TWordIndexSize wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
@@ -257,7 +257,7 @@ namespace uva {
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordHashSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
+                            TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
                             LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
@@ -273,7 +273,7 @@ namespace uva {
                  * @param context the previous context
                  * @return the resulting context
                  */
-                static inline TReferenceHashSize createContext(TWordHashSize hash, TReferenceHashSize context) {
+                static inline TReferenceHashSize createContext(TWordIndexSize hash, TReferenceHashSize context) {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     return cantor(hash, context);
                 }
@@ -285,19 +285,19 @@ namespace uva {
                  * @param subWord the sub-work
                  * @param subContext the sub-context
                  */
-                static inline void dessolveContext(const TReferenceHashSize context, TWordHashSize &subWord, TReferenceHashSize & subContext) {
+                static inline void dessolveContext(const TReferenceHashSize context, TWordIndexSize &subWord, TReferenceHashSize & subContext) {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     unszudzik(context, subWord, subContext);
                 }
 
-                void recordAndCheck(const TWordHashSize wordHash,
+                void recordAndCheck(const TWordIndexSize wordHash,
                         const TReferenceHashSize contextHash, const SNiceNGram &gram) const {
                 }
 
             private:
 
                 //The temporary data structure to store the N-gram query word hashes
-                TWordHashSize mGramWordHashes[N];
+                TWordIndexSize mGramWordHashes[N];
 
             };
         }

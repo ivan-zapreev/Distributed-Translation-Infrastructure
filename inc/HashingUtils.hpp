@@ -46,8 +46,8 @@ namespace uva {
              * @param str the string to hash
              * @return the resulting hash
              */
-            inline TWordHashSize computeDjb2Hash(const string & str) {
-                TWordHashSize hashVal = 5381;
+            inline TWordIndexSize computeDjb2Hash(const string & str) {
+                TWordIndexSize hashVal = 5381;
                 int c;
                 const char * c_str = str.c_str();
 
@@ -74,8 +74,8 @@ namespace uva {
 #define B 76963 /* another prime */
 #define C 86969 /* yet another prime */
 
-            inline TWordHashSize computePrimesHash(const string & str) {
-                TWordHashSize h = 31 /* also prime */;
+            inline TWordIndexSize computePrimesHash(const string & str) {
+                TWordIndexSize h = 31 /* also prime */;
                 const char * c_str = str.c_str();
                 while (*c_str) {
                     h = (h * A) ^ (c_str[0] * B);
@@ -84,10 +84,10 @@ namespace uva {
                 return h; // or return h % C;
             }
 
-            inline TWordHashSize computeRSHash(const string & str) {
-                TWordHashSize b = 378551;
-                TWordHashSize a = 63689;
-                TWordHashSize hash = 0;
+            inline TWordIndexSize computeRSHash(const string & str) {
+                TWordIndexSize b = 378551;
+                TWordIndexSize a = 63689;
+                TWordIndexSize hash = 0;
 
                 for (std::size_t i = 0; i < str.length(); i++) {
                     hash = hash * a + str[i];
@@ -119,11 +119,11 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void uncantor(const TReferenceHashSize z, TWordHashSize &x, TReferenceHashSize &y) {
+            inline void uncantor(const TReferenceHashSize z, TWordIndexSize &x, TReferenceHashSize &y) {
                 const TReferenceHashSize w = floor((sqrt(8 * z + 1) - 1) / 2);
                 const TReferenceHashSize t = (w * w + w) / 2;
                 y = (z - t);
-                x = (TWordHashSize) (w - y);
+                x = (TWordIndexSize) (w - y);
             }
 
             /**
@@ -149,7 +149,7 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void unszudzik(const TReferenceHashSize z, TWordHashSize &x, TReferenceHashSize &y) {
+            inline void unszudzik(const TReferenceHashSize z, TWordIndexSize &x, TReferenceHashSize &y) {
                 const TReferenceHashSize zrf = floor(sqrt(z));
                 const TReferenceHashSize zrfs = zrf * zrf;
                 const TReferenceHashSize zmzrfs = z - zrfs;

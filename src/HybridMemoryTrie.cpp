@@ -32,9 +32,22 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            HybridMemoryTrie<N>::HybridMemoryTrie(AWordIndex * const _pWordIndex) : ATrie<N>() {
-                
+            template<TModelLevel N, class C>
+            HybridMemoryTrie<N, C>::HybridMemoryTrie(AWordIndex * const p_word_index)
+            : ATrie<N>(), m_p_word_index(p_word_index), m_mgram_data(NULL), m_mgram_mapping(NULL) {
+                const size_t float_size = sizeof(TLogProbBackOff);
+                const size_t idx_size = sizeof(TIndexSize);
+                if( float_size != idx_size ) {
+                    stringstream msg;
+                    msg << "Unable to use " << __FILE__ << " for a trie as it expects ( sizeof(TLogProbBackOff) = "
+                            << float_size << " ) == ( sizeof(TIndexSize) = " << idx_size << ")!";
+                    throw Exception(msg.str());
+                }
+            }
+
+            template<TModelLevel N, class C>
+            void HybridMemoryTrie<N, C>::preAllocate(const size_t counts[N]) {
+                //ToDo: Implement
             }
 
         }

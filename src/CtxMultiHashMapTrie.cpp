@@ -123,7 +123,7 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordHashSize wordHash = ATrie<N>::getWordIndex()->createUniqueIdHash(token);
+                TWordIndexSize wordHash = ATrie<N>::getWordIndex()->createUniqueIdHash(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
@@ -164,7 +164,7 @@ namespace uva {
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordHashSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
+                    const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -216,7 +216,7 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordHashSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
+                const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
@@ -250,7 +250,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TWordHashSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
+                const TWordIndexSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
@@ -305,7 +305,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
-                const TWordHashSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
+                const TWordIndexSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
 
                 LOG_DEBUG1 << "Computing probability for an " << (contextLength + 1)
                         << "-gram the context length is " << contextLength << END_LOG;

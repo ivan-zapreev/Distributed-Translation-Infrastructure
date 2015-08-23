@@ -64,7 +64,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordHashSize getUniqueIdHash(const string & token) const = 0;
+                    virtual TWordIndexSize getUniqueIdHash(const string & token) const = 0;
 
                     /**
                      * This function creates/gets a hash for the given word.
@@ -72,7 +72,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordHashSize createUniqueIdHash(const TextPieceReader & token) = 0;
+                    virtual TWordIndexSize createUniqueIdHash(const TextPieceReader & token) = 0;
 
                     /**
                      * The basic destructor

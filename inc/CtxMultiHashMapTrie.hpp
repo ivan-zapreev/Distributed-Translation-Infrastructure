@@ -161,11 +161,11 @@ namespace uva {
                 const float nGramMemFactor;
 
                 //The type of key,value pairs to be stored in the One Grams map
-                typedef pair< const TWordHashSize, TProbBackOffEntryPair> TOneGramEntry;
+                typedef pair< const TWordIndexSize, TProbBackOffEntryPair> TOneGramEntry;
                 //The typedef for the One Grams map allocator
                 typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
-                typedef unordered_map<TWordHashSize, TProbBackOffEntryPair, std::hash<TWordHashSize>, std::equal_to<TWordHashSize>, TOneGramAllocator > TOneGramsMap;
+                typedef unordered_map<TWordIndexSize, TProbBackOffEntryPair, std::hash<TWordIndexSize>, std::equal_to<TWordIndexSize>, TOneGramAllocator > TOneGramsMap;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.

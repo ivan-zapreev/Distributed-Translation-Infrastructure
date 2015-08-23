@@ -60,17 +60,17 @@ namespace uva {
             //The value of the minimal probability/back-off weight
             const TLogProbBackOff MINIMAL_LOG_PROB_WEIGHT = -10.0f;
             //The zerro like value for probability/back-off weight
-            const TLogProbBackOff ZERRO_LOG_PROB_WEIGHT = -99.0f;
+            const TLogProbBackOff ZERRO_LOG_PROB_WEIGHT = -100.0f;
 
             //Stores the word hash for an unknown word
-            const TWordHashSize UNDEFINED_WORD_HASH = static_cast<TWordHashSize> (0);
+            const TWordIndexSize UNDEFINED_WORD_HASH = static_cast<TWordIndexSize> (0);
             //Stores the word hash for an unknown word
 
-            const TWordHashSize UNKNOWN_WORD_HASH = static_cast<TWordHashSize> (UNDEFINED_WORD_HASH + 1);
+            const TWordIndexSize UNKNOWN_WORD_HASH = static_cast<TWordIndexSize> (UNDEFINED_WORD_HASH + 1);
             //Stores the minimum known word hash
-            const TWordHashSize MIN_KNOWN_WORD_HASH = static_cast<TWordHashSize> (UNKNOWN_WORD_HASH + 1);
+            const TWordIndexSize MIN_KNOWN_WORD_HASH = static_cast<TWordIndexSize> (UNKNOWN_WORD_HASH + 1);
             //Stores the minimum context level
-            const TWordHashSize MINIMUM_CONTEXT_LEVEL = static_cast<TModelLevel> (2);
+            const TWordIndexSize MINIMUM_CONTEXT_LEVEL = static_cast<TModelLevel> (2);
 
             /**
              * This structure is used to store the N-Gram data
