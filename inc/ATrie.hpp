@@ -46,12 +46,12 @@ namespace uva {
         namespace tries {
 
             //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)     \
-            LOG_WARNING << "The " << gram.level << "-Gram : '" << tokensToString<N>(gram.tokens, gram.level)   \
-                        << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                      \
-                        << ", contextHash: " << SSTR(contextId) << ". "                                        \
-                        << "Changing the (prob,back-off) data from ("                                          \
-                        << prevProb << "," << prevBackOff << ") to ("                                          \
+#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
+            LOG_WARNING << "The " << gram.level << "-Gram : " << tokensToString<N>(gram.tokens, gram.level)  \
+                        << " has been already seen! Word Id: " << SSTR(wordHash)                             \
+                        << ", context Id: " << SSTR(contextId) << ". "                                       \
+                        << "Changing the (prob,back-off) data from ("                                        \
+                        << prevProb << "," << prevBackOff << ") to ("                                        \
                         << newProb << "," << newBackOff << ")" << END_LOG;
 
             //Stores the Bi-Gram level value
