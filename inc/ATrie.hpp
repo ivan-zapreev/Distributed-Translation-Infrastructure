@@ -182,14 +182,19 @@ namespace uva {
                  */
                 virtual void queryNGram(const vector<string> & ngram, SProbResult & result) = 0;
 
-
+                /**
+                 * Allows to retrieve the stored word index, if any
+                 * @return the pointer to the stored word index or NULL if none
+                 */
+                inline AWordIndex * getWordIndex() { return pWordIndex; } 
+                
                 /**
                  * The basic class destructor
                  */
                 virtual ~ATrie() {
                 };
                 
-            protected:
+            private:
                 //Stores the reference to the word index to be used
                 AWordIndex * const pWordIndex;
             };

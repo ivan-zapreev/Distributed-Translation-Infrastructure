@@ -123,7 +123,7 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]) {
                     //Compute the number of words to be stored
                     //Add an extra element for the <unknown/> word
-                    ATrie<N>::pWordIndex->preAllocate(counts[0] + 1);
+                    ATrie<N>::getWordIndex()->preAllocate(counts[0] + 1);
                 }
 
                 /**
@@ -171,7 +171,7 @@ namespace uva {
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = ATrie<N>::pWordIndex->getUniqueIdHash(*it);
+                        wordHashes[idx] = ATrie<N>::getWordIndex()->getUniqueIdHash(*it);
                         LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
@@ -250,14 +250,14 @@ namespace uva {
                     if (gram.level > MIN_NGRAM_LEVEL) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
-                        contextHash = ATrie<N>::pWordIndex->getUniqueIdHash(token);
+                        contextHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
 
                         LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordHashSize wordHash = ATrie<N>::pWordIndex->getUniqueIdHash(token);
+                            TWordHashSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
                             LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
