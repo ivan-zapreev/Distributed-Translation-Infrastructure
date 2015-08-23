@@ -26,8 +26,10 @@
 #ifndef HYBRIDMEMORYTRIE_HPP
 #define	HYBRIDMEMORYTRIE_HPP
 
-#include <string>       // std::string
-#include <inttypes.h>   // std::uint32_t
+#include <string>           // std::string
+#include <inttypes.h>       // std::uint32_t
+#include <utility>          // std::pair, std::make_pair
+#include <unordered_map>    // std::unordered_map
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -43,17 +45,6 @@ namespace uva {
         namespace tries {
             //This is the id type size to be used as index
             typedef TWordIndexSize TIndexSize;
-
-            /**
-             * This structure is used to define the trivial probability/
-             * back-off pari to be stored for M-grams with 1 <= M < N
-             * @param prob stores the probability
-             * @param back_off stores the back-off
-             */
-            typedef struct {
-                TLogProbBackOff prob;
-                TLogProbBackOff back_off;
-            } TProbBackOffEntryPair;
 
             /**
              * This is an abstract class that defines an interface for all container
@@ -80,7 +71,7 @@ namespace uva {
                  * @param num_pairs the number of pairs to pre-allocate in the store
                  */
                 virtual void preAllocate(const size_t num_pairs) = 0;
-                
+
                 /**
                  * This operator will search for a key ctx_idx and if found will
                  * return the reference to the corresponding value. If not will
@@ -90,7 +81,7 @@ namespace uva {
                  * @return the reference to the value
                  */
                 virtual TIndexSize & operator[](const TIndexSize ctx_idx) = 0;
-                
+
                 /**
                  * This method will search for a key ctx_idx and if found will
                  * return the reference to the const value. If not found will
@@ -99,8 +90,38 @@ namespace uva {
                  * @return the reference to the value
                  * @throws out_of_range
                  */
-                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw(out_of_range) = 0;
+                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) = 0;
 
+            };
+
+            /**
+             * The unordered hash map-based storage for the HybridMemoryTrie
+             */
+            class CtxToPBMapStorage : public ACtxToPBStorare {
+            public:
+                //Stores the map type
+                typedef unordered_map<TIndexSize, TIndexSize> TCtxToPBMapElement;
+
+                CtxToPBMapStorage() : ACtxToPBStorare() {
+                };
+
+                virtual ~CtxToPBMapStorage() {
+                };
+
+                virtual void preAllocate(const size_t num_pairs) {
+                    LOG_WARNING << "CtxToPBMapStorage is asked to pre-allocate " << num_pairs << " elements, ignoring!" << END_LOG;
+                };
+
+                virtual TIndexSize & operator[](const TIndexSize ctx_idx) {
+                    return m_data[ctx_idx];
+                };
+
+                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
+                    return m_data.at(ctx_idx);
+                };
+
+            private:
+                TCtxToPBMapElement m_data;
             };
 
             /**
@@ -108,7 +129,7 @@ namespace uva {
              * @param N the maximum number of levelns in the trie.
              * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
              */
-            template<TModelLevel N, class C >
+            template<TModelLevel N, class CtxToPBStore>
             class HybridMemoryTrie : public ATrie<N> {
             public:
 
@@ -157,9 +178,12 @@ namespace uva {
                 virtual ~HybridMemoryTrie();
 
             private:
-                //Stores the pointer to the word index, must not be null
-                AWordIndex * const m_p_word_index;
-                
+                //The offset, relative to the M-gram level M for the mgram mapping array index
+                const static TModelLevel MGRAM_MAPPING_IDX_OFFSET = 2;
+
+                //Stores the number of words
+                size_t m_word_arr_size;
+
                 //M-Gram data for 1 <= M < N. This is a 2D array storing
                 //For each M-Gram level M an array of prob-back_off values
                 // m_mgram_data[M][0] - probability/back-off pair for the given M-gram
@@ -167,8 +191,8 @@ namespace uva {
                 // ...
                 // m_mgram_data[M][#M-Grams - 1] --//--
                 // m_mgram_data[M][#M-Grams] --//--
-                TProbBackOffEntryPair ** m_mgram_data;
-                
+                TProbBackOffEntryPair * m_mgram_data[N - 1];
+
                 //M-Gram data for 1 < M <= N. This is a 2D array storing
                 //For each M-Gram level M an array of #words elements of
                 //pointers to C template parameter type:
@@ -186,8 +210,46 @@ namespace uva {
                 //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                 //4 byte integer, so we minimize memory usage by storing float
                 //probability in place of the index.
-                C** m_mgram_mapping;
+                CtxToPBStore** m_mgram_mapping[N - 1];
+
+                //Will store the next context index counters per M-gram level
+                //for 1 < M < N.
+                TIndexSize next_ctx_id[N - 2];
+
+                /**
+                 * This function gets the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * @param gram the N-gram with its tokens to create context for
+                 * @return the resulting the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
+                 */
+                template<DebugLevel logLevel>
+                inline TIndexSize getContextId(const SRawNGram & gram) {
+                    //Obtain the N-gram level
+                    const TModelLevel level = gram.level;
+
+                    TIndexSize ctxId = UNDEFINED_WORD_ID;
+                    //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
+                    if (level > MIN_NGRAM_LEVEL) {
+                        //Get the start context value for the first token
+                        const string & token = gram.tokens[0].str();
+                        ctxId = ATrie<N>::getWordIndex()->getId(token);
+
+                        LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
+
+                        //Iterate and compute the hash:
+                        for (int i = 1; i < (level - 1); i++) {
+                            const string & token = gram.tokens[i].str();
+                            TWordIndexSize wordId = ATrie<N>::getWordIndex()->getId(token);
+                            LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
+                            ctxId = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId]->at(ctxId);
+                            LOGGER(logLevel) << "ctxId = contextId( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
+                        }
+                    }
+
+                    return ctxId;
+                }
             };
+
+            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
         }
     }
 }

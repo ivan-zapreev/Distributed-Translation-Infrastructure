@@ -44,10 +44,27 @@ namespace uva {
                 //Stores the string representation of an unknown word
                 const string UNKNOWN_WORD_STR = "<unk>";
 
+                //Stores the word hash for an unknown word, is 0
+                //WARNING! MUST BE 0 as this is the value of a default initialized integer!
+                const TWordIndexSize UNDEFINED_WORD_ID = static_cast<TWordIndexSize> (0);
+
+                //Stores the word id for an unknown word, it must have value 1
+                const TWordIndexSize UNKNOWN_WORD_ID = static_cast<TWordIndexSize> (UNDEFINED_WORD_ID + 1);
+
+                //Stores the minimum known word id, it must have value 2
+                const TWordIndexSize MIN_KNOWN_WORD_ID = static_cast<TWordIndexSize> (UNKNOWN_WORD_ID + 1);
+
                 /**
                  * This abstract class is used to represent the word dictionary.
                  * It contains no specific implementation but is more of an interface.
                  * It is used to allow for more word dictionary/index implementations.
+                 * 
+                 * Any implementation of this class must issue the unknown word
+                 * <unk> index 1 (UNKNOWN_WORD_ID).
+                 * 
+                 * The first real word index will be therefore 2 (MIN_KNOWN_WORD_ID).
+                 * 
+                 * The issued word ids must be continuous and non-repeating, unique!
                  */
                 class AWordIndex {
                 public:
@@ -56,23 +73,23 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @param num_words the number of words
                      */
-                    virtual void preAllocate(const size_t num_words) = 0;
+                    virtual void reserve(const size_t num_words) = 0;
 
                     /**
-                     * This function gets a hash for the given word word based no the stored 1-Grams.
+                     * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize getUniqueIdHash(const string & token) const = 0;
+                    virtual TWordIndexSize getId(const string & token) const = 0;
 
                     /**
-                     * This function creates/gets a hash for the given word.
-                     * Note: The hash id will be unique and continuous!
+                     * This function creates/gets an id for the given word.
+                     * Note: The ids must be unique and continuous!
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize createUniqueIdHash(const TextPieceReader & token) = 0;
+                    virtual TWordIndexSize makeId(const TextPieceReader & token) = 0;
 
                     /**
                      * The basic destructor

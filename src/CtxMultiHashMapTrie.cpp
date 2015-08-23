@@ -54,6 +54,7 @@ namespace uva {
 
                 //Perform an error check! This container has a lower bound on the N level.
                 if (N < BGRAM_LEVEL_VALUE) {
+
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
                             << "', but for '" << __FILE__ << "' it must be >= " << BGRAM_LEVEL_VALUE << "!";
@@ -68,15 +69,16 @@ namespace uva {
             template<TModelLevel N>
             void CtxMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
+
                 const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
 
                 //Reserve the memory for the map
                 reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams", oGramMemFactor);
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_HASH);
-                pbData.first = MINIMAL_LOG_PROB_WEIGHT;
-                pbData.second = UNDEFINED_LOG_PROB_WEIGHT;
+                TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_ID);
+                pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
+                pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
             }
 
             template<TModelLevel N>
@@ -84,6 +86,7 @@ namespace uva {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
+
                     const uint numEntries = counts[idx];
 
                     //Reserve the memory for the map
@@ -94,6 +97,7 @@ namespace uva {
             template<TModelLevel N>
             void CtxMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
+
                 const size_t numEntries = counts[N - 1];
 
                 //Reserve the memory for the map
@@ -103,6 +107,7 @@ namespace uva {
             template<TModelLevel N>
             void CtxMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
+
                 AHashMapTrie<N>::preAllocate(counts);
 
                 //Pre-allocate 0-Grams
@@ -123,7 +128,7 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordIndexSize wordHash = ATrie<N>::getWordIndex()->createUniqueIdHash(token);
+                TWordIndexSize wordHash = ATrie<N>::getWordIndex()->makeId(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
@@ -134,18 +139,19 @@ namespace uva {
                 }
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (MONITORE_COLLISIONS && (pbData.first != ZERO_LOG_PROB_WEIGHT)) {
+                if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_HASH,
-                            pbData.first, pbData.second,
+
+                    REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_ID,
+                            pbData.prob, pbData.back_off,
                             oGram.prob, oGram.back_off);
                 }
                 //Set/Update the probability and back-off values for the word
-                pbData.first = oGram.prob;
-                pbData.second = oGram.back_off;
+                pbData.prob = oGram.prob;
+                pbData.back_off = oGram.back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
-                        << pbData.first << "," << pbData.second << ") for "
+                        << pbData.prob << "," << pbData.back_off << ") for "
                         << tokensToString<N>(oGram.tokens, oGram.level) << " wordHash = "
                         << wordHash << END_LOG;
             }
@@ -160,11 +166,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<DebugLevel::DEBUG2>(mGram);
+                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
+                    const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -182,22 +188,23 @@ namespace uva {
                     }
 
                     //Check that the probability data is not set yet, otherwise a warning!
-                    if (MONITORE_COLLISIONS && (pbData.first != ZERO_LOG_PROB_WEIGHT)) {
+                    if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
                         //If the probability is not zero then this word has been already seen!
                         REPORT_COLLISION_WARNING(N, mGram, wordHash, contextHash,
-                                pbData.first, pbData.second,
+                                pbData.prob, pbData.back_off,
                                 mGram.prob, mGram.back_off);
                     }
 
                     //Set/Update the probability and back-off values for the word
-                    pbData.first = mGram.prob;
-                    pbData.second = mGram.back_off;
+                    pbData.prob = mGram.prob;
+                    pbData.back_off = mGram.back_off;
 
                     LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
-                            << pbData.first << "," << pbData.second << ") for "
+                            << pbData.prob << "," << pbData.back_off << ") for "
                             << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
                             << contextHash << ", wordHash = " << wordHash << END_LOG;
                 } else {
+
                     stringstream msg;
                     msg << "Internal error: The " << level << "-Grams are to be handled with another add method!";
                     throw Exception(msg.str());
@@ -212,11 +219,11 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                const TReferenceHashSize contextHash = AHashMapTrie<N>::template computeHashContext<DebugLevel::DEBUG2>(nGram);
+                const TReferenceHashSize contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(endWord.str());
+                const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
@@ -234,6 +241,7 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (MONITORE_COLLISIONS && (pData != ZERO_LOG_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
+
                     REPORT_COLLISION_WARNING(N, nGram, wordHash, contextHash,
                             pData, UNDEFINED_LOG_PROB_WEIGHT,
                             nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
@@ -268,7 +276,7 @@ namespace uva {
                         TProbBackOffEntryPair & entry = pMGramMap[(backOfContextLength + 1) - MGRAM_IDX_OFFSET]->at(keyContext);
 
                         //Obtained the stored back-off weight
-                        back_off = entry.second;
+                        back_off = entry.back_off;
 
                         LOG_DEBUG2 << "The " << contextLength << "-Gram log_"
                                 << LOG_PROB_WEIGHT_BASE << "( back-off ) for (word, context)=("
@@ -286,7 +294,7 @@ namespace uva {
                     try {
                         TProbBackOffEntryPair & pbData = pOneGramMap->at(endWordHash);
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                        back_off = pbData.second;
+                        back_off = pbData.back_off;
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( back-off ) for word: " << endWordHash
@@ -299,6 +307,7 @@ namespace uva {
                 LOG_DEBUG2 << "The chosen log back-off weight for context: " << contextLength << " is: " << back_off << END_LOG;
 
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
+
                 return back_off;
             }
 
@@ -340,10 +349,10 @@ namespace uva {
                                     << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                     << "( prob. ) for (word,context) = ("
                                     << endWordHash << ", " << contextHash
-                                    << "), is: " << entry.first << END_LOG;
+                                    << "), is: " << entry.prob << END_LOG;
 
                             //Return the stored probability
-                            return entry.first;
+                            return entry.prob;
                         }
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the " << (contextLength + 1)
@@ -371,16 +380,17 @@ namespace uva {
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << endWordHash
-                                << ", is: " << pbData.first << END_LOG;
+                                << ", is: " << pbData.prob << END_LOG;
 
                         //Return the stored probability
-                        return pbData.first;
+                        return pbData.prob;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
                                 << endWordHash << " returning:" << MINIMAL_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
+
                         return MINIMAL_LOG_PROB_WEIGHT;
                     }
                 }
@@ -399,6 +409,7 @@ namespace uva {
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 } else {
+
                     stringstream msg;
                     msg << "An improper N-Gram size, got " << mGramLength << ", must be between [1, " << N << "]!";
                     throw Exception(msg.str());

@@ -59,18 +59,6 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextHash, prevProb, prevBackOff, newProb, newBackOff)    \
-            LOG_WARNING << "The " << gram.level << "-Gram : '" << tokensToString<N>(gram.tokens, gram.level)    \
-                        << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                    \
-                        << ", contextHash: " << SSTR(contextHash) << ". "                                    \
-                        << "Changing the (prob,back-off) data from ("                                        \
-                        << prevProb << "," << prevBackOff << ") to ("                                        \
-                        << newProb << "," << newBackOff << ")" << END_LOG;
-
-            //The entry pair to store the N-gram probability and back off
-            typedef pair<TLogProbBackOff, TLogProbBackOff> TProbBackOffEntryPair;
-
             //The 2-trie level entry for 1 < 2 < N, for with probability and back-
             //off weights. The difference here compared to the TMGramEntryMap is
             //that we can use TWordHashSize data type instead of TReferenceHashSize
@@ -113,7 +101,13 @@ namespace uva {
                  * 
                  * @param _wordIndex the word index to be used
                  */
-                explicit AHashMapTrie( AWordIndex * const _pWordIndex) : ATrie<N>(_pWordIndex) {
+                explicit AHashMapTrie(AWordIndex * const _pWordIndex) : ATrie<N>(_pWordIndex) {
+                    //This one is needed for having a proper non-null word index pointer.
+                    if (_pWordIndex == NULL) {
+                        stringstream msg;
+                        msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
+                        throw Exception(msg.str());
+                    }
                 };
 
                 /**
@@ -123,7 +117,7 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]) {
                     //Compute the number of words to be stored
                     //Add an extra element for the <unknown/> word
-                    ATrie<N>::getWordIndex()->preAllocate(counts[0] + 1);
+                    ATrie<N>::getWordIndex()->reserve(counts[0] + 1);
                 }
 
                 /**
@@ -171,7 +165,7 @@ namespace uva {
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = ATrie<N>::getWordIndex()->getUniqueIdHash(*it);
+                        wordHashes[idx] = ATrie<N>::getWordIndex()->getId(*it);
                         LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
@@ -243,21 +237,21 @@ namespace uva {
                  * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
                  */
                 template<DebugLevel logLevel>
-                inline TReferenceHashSize computeHashContext(const SRawNGram & gram) {
-                    TReferenceHashSize contextHash = UNDEFINED_WORD_HASH;
+                inline TReferenceHashSize getContextId(const SRawNGram & gram) {
+                    TReferenceHashSize contextHash = UNDEFINED_WORD_ID;
 
                     //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
                     if (gram.level > MIN_NGRAM_LEVEL) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
-                        contextHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
+                        contextHash = ATrie<N>::getWordIndex()->getId(token);
 
                         LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getUniqueIdHash(token);
+                            TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getId(token);
                             LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
                             contextHash = createContext(wordHash, contextHash);
                             LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;

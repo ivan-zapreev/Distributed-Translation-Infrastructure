@@ -59,14 +59,14 @@ namespace uva {
                      * storage allocation in the unordered_map used for the word index
                      */
                     HashMapWordIndex(const float wordIndexMemFactor)
-                    : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(wordIndexMemFactor) {
+                    : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(wordIndexMemFactor) {
                     };
 
                     /**
                      * This method should be used to pre-allocate the word index
                      * @param num_words the number of words
                      */
-                    virtual void preAllocate(const size_t num_words) {
+                    virtual void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
                         const size_t numWords = num_words + 1; //Add an extra element for the <unknown/> word
 
@@ -75,24 +75,24 @@ namespace uva {
 
                         //Register the unknown word with the first available hash value
                         TWordIndexSize& hash = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
-                        hash = UNKNOWN_WORD_HASH;
+                        hash = UNKNOWN_WORD_ID;
                     };
 
                     /**
                      * This function gets a hash for the given word word based no the stored 1-Grams.
-                     * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
+                     * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize getUniqueIdHash(const string & token) const {
+                    virtual TWordIndexSize getId(const string & token) const {
                         try {
                             return _pWordIndexMap->at(token);
                         } catch (out_of_range e) {
                             LOG_INFO2 << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', hash: "
-                                    << SSTR(UNKNOWN_WORD_HASH) << END_LOG;
+                                    << SSTR(UNKNOWN_WORD_ID) << END_LOG;
                         }
-                        return UNKNOWN_WORD_HASH;
+                        return UNKNOWN_WORD_ID;
                     }
 
                     /**
@@ -101,15 +101,15 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize createUniqueIdHash(const TextPieceReader & token) {
+                    virtual TWordIndexSize makeId(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
                         TWordIndexSize& hash = _pWordIndexMap->operator[](token.str());
 
-                        if (hash == UNDEFINED_WORD_HASH) {
+                        if (hash == UNDEFINED_WORD_ID) {
                             //If the word hash is not defined yet, then issue it a new hash id
-                            hash = _nextNewWordHash;
+                            hash = _nextNewWordId;
                             LOG_DEBUG2 << "Word: '" << token.str() << "' is not yet, issuing it a new hash: " << SSTR(hash) << END_LOG;
-                            _nextNewWordHash++;
+                            _nextNewWordId++;
                         }
 
                         //Use the Prime numbers hashing algorithm as it outperforms djb2
@@ -130,7 +130,7 @@ namespace uva {
                      */
                     HashMapWordIndex(const HashMapWordIndex & other)
                     : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL),
-                    _nextNewWordHash(MIN_KNOWN_WORD_HASH), _wordIndexMemFactor(0.0) {
+                    _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(0.0) {
                         throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                     }
 
@@ -152,7 +152,7 @@ namespace uva {
                     TWordIndexMap * _pWordIndexMap;
 
                     //Stores the last allocated word hash
-                    TWordIndexSize _nextNewWordHash;
+                    TWordIndexSize _nextNewWordId;
 
                     //Stores the assigned memory factor for storage allocation
                     //in the unordered_map used for the word index

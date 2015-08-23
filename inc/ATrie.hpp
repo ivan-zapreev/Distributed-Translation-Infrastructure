@@ -45,6 +45,15 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            //This macro is needed to report the collision detection warnings!
+#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)     \
+            LOG_WARNING << "The " << gram.level << "-Gram : '" << tokensToString<N>(gram.tokens, gram.level)   \
+                        << "' has been already seen! "  << "wordHash: " << SSTR(wordHash)                      \
+                        << ", contextHash: " << SSTR(contextId) << ". "                                        \
+                        << "Changing the (prob,back-off) data from ("                                          \
+                        << prevProb << "," << prevBackOff << ") to ("                                          \
+                        << newProb << "," << newBackOff << ")" << END_LOG;
+
             //Stores the Bi-Gram level value
             const TModelLevel BGRAM_LEVEL_VALUE = 2;
 
@@ -62,15 +71,16 @@ namespace uva {
             //The zerro like value for probability/back-off weight
             const TLogProbBackOff ZERRO_LOG_PROB_WEIGHT = -100.0f;
 
-            //Stores the word hash for an unknown word
-            const TWordIndexSize UNDEFINED_WORD_HASH = static_cast<TWordIndexSize> (0);
-            //Stores the word hash for an unknown word
-
-            const TWordIndexSize UNKNOWN_WORD_HASH = static_cast<TWordIndexSize> (UNDEFINED_WORD_HASH + 1);
-            //Stores the minimum known word hash
-            const TWordIndexSize MIN_KNOWN_WORD_HASH = static_cast<TWordIndexSize> (UNKNOWN_WORD_HASH + 1);
-            //Stores the minimum context level
-            const TWordIndexSize MINIMUM_CONTEXT_LEVEL = static_cast<TModelLevel> (2);
+            /**
+             * This structure is used to define the trivial probability/
+             * back-off pari to be stored for M-grams with 1 <= M < N
+             * @param prob stores the probability
+             * @param back_off stores the back-off
+             */
+            typedef struct {
+                TLogProbBackOff prob;
+                TLogProbBackOff back_off;
+            } TProbBackOffEntryPair;
 
             /**
              * This structure is used to store the N-Gram data
@@ -127,13 +137,14 @@ namespace uva {
             template<TModelLevel N>
             class ATrie {
             public:
+
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit ATrie( AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
+                explicit ATrie(AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
                 };
-                
+
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
@@ -186,14 +197,16 @@ namespace uva {
                  * Allows to retrieve the stored word index, if any
                  * @return the pointer to the stored word index or NULL if none
                  */
-                inline AWordIndex * getWordIndex() { return pWordIndex; } 
-                
+                inline AWordIndex * getWordIndex() {
+                    return pWordIndex;
+                }
+
                 /**
                  * The basic class destructor
                  */
                 virtual ~ATrie() {
                 };
-                
+
             private:
                 //Stores the reference to the word index to be used
                 AWordIndex * const pWordIndex;

@@ -91,6 +91,8 @@ namespace uva {
         namespace hashing {
             //This is the smallest size which I've tested and it works for the hash without collisions
             typedef uint32_t TWordIndexSize;
+            //The maximum word index/id value
+            const static TWordIndexSize MAX_WORD_ID_VALUE  = UINT32_MAX;
             //This is the hash reference size which should be twice as long as the TWordHashSize
             typedef uint64_t TReferenceHashSize;
         }

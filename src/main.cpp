@@ -42,7 +42,8 @@
 #include "MemoryMappedFileReader.hpp"
 #include "FileStreamReader.hpp"
 #include "HashMapWordIndex.hpp"
-
+#include "HybridMemoryTrie.hpp"
+        
 using namespace std;
 using namespace uva::smt;
 using namespace uva::smt::tries;
@@ -309,10 +310,8 @@ static void performTasks(const TAppParams& params) {
         HashMapWordIndex dictionary(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
-        TFiveContextMultiHashMapTrie trie(&dictionary,
-                __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
-                __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+        //TFiveContextMultiHashMapTrie trie(&dictionary);
+        TFiveMapHybridMemoryTrie trie(&dictionary);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();

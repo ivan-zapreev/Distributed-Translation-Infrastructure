@@ -110,10 +110,10 @@ namespace uva {
                  * the greedy allocator for the unordered_map
                  */
                 explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _oGramMemFactor,
-                        const float _mGramMemFactor,
-                        const float _nGramMemFactor);
-
+                        const float _oGramMemFactor = __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
+                        const float _mGramMemFactor = __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
