@@ -17,6 +17,7 @@
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
+      <itemPath>inc/HybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
@@ -33,6 +34,7 @@
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/CtxMultiHashMapTrie.cpp</itemPath>
+      <itemPath>src/HybridMemoryTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
@@ -111,6 +113,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -126,6 +130,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -181,6 +187,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -196,6 +204,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -260,6 +270,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -275,6 +287,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -328,6 +342,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -343,6 +359,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -398,6 +416,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -413,6 +433,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
