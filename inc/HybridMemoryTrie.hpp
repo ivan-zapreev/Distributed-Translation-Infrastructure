@@ -241,6 +241,9 @@ namespace uva {
                             const string & token = gram.tokens[i].str();
                             TWordIndexSize wordId = ATrie<N>::getWordIndex()->getId(token);
                             LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
+                            LOG_INFO << "level = " << level << ", MGRAM_MAPPING_IDX_OFFSET = "
+                                    << MGRAM_MAPPING_IDX_OFFSET << ", wordId = " << wordId  << ", ptr = "
+                                    << SSTR(m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId]) << END_LOG;
                             ctxId = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId]->at(ctxId);
                             LOGGER(logLevel) << "ctxId = contextId( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                         }
