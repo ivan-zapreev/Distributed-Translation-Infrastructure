@@ -215,17 +215,17 @@ namespace uva {
             template<TModelLevel N, class CtxToPBStore>
             HybridMemoryTrie<N, CtxToPBStore>::~HybridMemoryTrie() {
                 //Delete the probability and back-off data
-                for (int idx = 0; idx < (N - 1); idx++) {
+                for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the prob/back-off arrays per level
                     if (m_mgram_data[idx] != NULL) {
                         delete[] m_mgram_data[idx];
                     }
                 }
                 //Delete the mapping data
-                for (int idx = 0; idx < (N - 1); idx++) {
+                for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the word arrays per level
                     if (m_mgram_mapping[idx] != NULL) {
-                        for (int widx = 0; widx < m_word_arr_size; widx++) {
+                        for (TWordIndexSize widx = 0; widx < m_word_arr_size; widx++) {
                             //Delete the C containers per word index
                             if (m_mgram_mapping[idx][widx] != NULL) {
                                 delete m_mgram_mapping[idx][widx];
