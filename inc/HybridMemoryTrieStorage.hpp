@@ -45,82 +45,6 @@ namespace uva {
             //This is the id type size to be used as index
             typedef TWordIndexSize TIndexSize;
 
-            /**
-             * This is an abstract class that defines an interface for all container
-             * types that can be used in the HybridMemoryTrie class for storing
-             * the context-to-prob_back_off_index pairs.
-             */
-            class ACtxToPBStorage {
-            public:
-
-                /**
-                 * The basic constructor
-                 */
-                ACtxToPBStorage() {
-                }
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~ACtxToPBStorage() {
-                }
-
-                /**
-                 * This operator will search for a key ctx_idx and if found will
-                 * return the reference to the corresponding value. If not will
-                 * create a new entry and return a reference for the uninitialized
-                 * value. Does not throw any exceptions
-                 * @param ctx_idx the key value
-                 * @return the reference to the value
-                 */
-                virtual TIndexSize & operator[](const TIndexSize ctx_idx) = 0;
-
-                /**
-                 * This method will search for a key ctx_idx and if found will
-                 * return the reference to the const value. If not found will
-                 * throw an exception.
-                 * @param ctx_idx the key value
-                 * @return the reference to the value
-                 * @throws out_of_range
-                 */
-                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) = 0;
-            };
-
-            /**
-             * This is an abstract class factory class that should be used as a
-             * base class for the factories producing instances of ACtxToPBStorage.
-             * The M-Gram level must be 1 < M <= N. This is not checked and will
-             * cause a segmentation fault if used with M other than specified!
-             */
-            template<TModelLevel N>
-            class ACtxToPBStorageFactory {
-            public:
-
-                /**
-                 * This is a basic constructor for the factory
-                 * @param _counts the number of elements to insert per trie level
-                 */
-                ACtxToPBStorageFactory(const size_t _counts[N]) {
-                };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~ACtxToPBStorageFactory() {
-                }
-
-                /**
-                 * This method should provide a new storage instance for the
-                 * given M-gram level M.
-                 * 
-                 * WARNING: M must be > 1 No allocation for One grams is done!
-                 * 
-                 * @param level the M-Gram level M
-                 * @return the storage instance for this level
-                 */
-                virtual ACtxToPBStorage * create(const TModelLevel level) = 0;
-            };
-
             //The type of key,value pairs to be stored
             typedef pair< const TIndexSize, TIndexSize> TStorageMapEntry;
             //The typedef for the map allocator
@@ -131,13 +55,11 @@ namespace uva {
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
              */
-//            class CtxToPBMapStorage : public ACtxToPBStorage {
             class CtxToPBMapStorage {
             public:
                 //Stores the map type
                 typedef unordered_map<TIndexSize, TIndexSize> TCtxToPBMapElement;
 
-//                CtxToPBMapStorage(TStorageMapAllocator & alloc) : ACtxToPBStorage() {
                 CtxToPBMapStorage(TStorageMapAllocator & alloc) {
                     m_p_map = new TStorageMap(alloc);
                 };
@@ -164,7 +86,6 @@ namespace uva {
              * base class for the factories producing instances of ACtxToPBStorage.
              */
             template<TModelLevel N>
-//            class CtxToPBMapStorageFactory : public ACtxToPBStorageFactory<N> {
             class CtxToPBMapStorageFactory {
             public:
 
@@ -176,7 +97,6 @@ namespace uva {
                  */
                 CtxToPBMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
                 {
-//                : ACtxToPBStorageFactory<N>(_counts) {
                     for (size_t i = 1; i < N; i++) {
                         const GreedyMemoryStorage::size_type size = _counts[i] * factor;
                         m_p_alloc[i - 1] = new TStorageMapAllocator(size);
