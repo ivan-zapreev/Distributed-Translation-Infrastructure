@@ -5,7 +5,6 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>inc/AFileReader.hpp</itemPath>
-      <itemPath>inc/AHashMapTrie.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilder.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
@@ -90,8 +89,6 @@
       </compileType>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -165,8 +162,6 @@
         </linkerTool>
       </compileType>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -251,8 +246,6 @@
       </compileType>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -324,8 +317,6 @@
         </linkerTool>
       </compileType>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -400,8 +391,6 @@
         </linkerTool>
       </compileType>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/AHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>

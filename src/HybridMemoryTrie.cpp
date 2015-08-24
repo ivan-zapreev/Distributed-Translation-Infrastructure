@@ -36,7 +36,9 @@ namespace uva {
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             HybridMemoryTrie<N, StorageFactory, StorageContainer>::HybridMemoryTrie(AWordIndex * const p_word_index)
-            : ATrie<N>(p_word_index), m_storage_factory(NULL) {
+            : ATrie<N>(p_word_index, [&] (const TWordId wordId, const TContextId ctxId, const TModelLevel level) {
+
+                return this->getContextId(wordId, ctxId, level); }), m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description
                 //of the m_mgram_mapping data member.
@@ -139,8 +141,9 @@ namespace uva {
                 if ((MIN_NGRAM_LEVEL < level) || (level < N)) {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                    // 1. Compute the context hash defined by w1 w2 w3
-                    const TIndexSize ctxId = getContextId<DebugLevel::DEBUG2>(mGram);
+                    // 1. Compute the context hash defined by w1 w2 w3, although the getContextId returns TContextSize
+                    //    in this class we work with TIndexSize ids only, so it is safe to cast it to TIndexSize
+                    const TIndexSize ctxId = (TIndexSize) ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
@@ -187,8 +190,9 @@ namespace uva {
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                // 1. Compute the context hash defined by w1 w2 w3
-                const TIndexSize ctxId = getContextId<DebugLevel::DEBUG2>(nGram);
+                // 1. Compute the context hash defined by w1 w2 w3, although the getContextId returns TContextSize
+                //    in this class we work with TIndexSize ids only, so it is safe to cast it to TIndexSize
+                const TIndexSize ctxId = (TIndexSize) ATrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];

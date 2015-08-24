@@ -43,7 +43,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "AHashMapTrie.hpp"
+#include "ATrie.hpp"
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
@@ -77,7 +77,7 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class CtxMultiHashMapTrie : public AHashMapTrie<N> {
+            class CtxMultiHashMapTrie : public ATrie<N> {
             public:
                 //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
                 static const TModelLevel MGRAM_IDX_OFFSET = 2;
@@ -205,7 +205,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 CtxMultiHashMapTrie(const CtxMultiHashMapTrie& orig)
-                : AHashMapTrie<N>(NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
+                : ATrie<N>(NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -249,6 +249,21 @@ namespace uva {
                  */
                 void preAllocateNGrams(const size_t counts[N]);
 
+                /**
+                 * Computes the N-Gram context using the previous context and the current word id
+                 * 
+                 * WARNING: Must only be called for the M-gram level M > 1!
+                 * 
+                 * @param wordId the current word id
+                 * @param ctxId the previous context id
+                 * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
+                 * @return the resulting context
+                 */
+                static inline TContextId getContextId(TWordId hash, TContextId context, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
+                    //Use the Szudzik algorithm as it outperforms Cantor
+                    return szudzik(hash, context);
+                }
+                
             };
 
             typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;

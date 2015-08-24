@@ -26,8 +26,9 @@
 #ifndef ITRIES_HPP
 #define	ITRIES_HPP
 
-#include <vector> //std::vector
-#include <string> //std::string
+#include <vector>       //std::vector
+#include <string>       //std::string
+#include <functional>   // std::function 
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -129,6 +130,16 @@ namespace uva {
             };
 
             /**
+             * This is a function type for the function that should be able to
+             * provide a new (next) context id for a word id and a previous context.
+             * @param wordId the word id
+             * @param ctxId the context id
+             * @param level the M-gram level we are working with, must have M > 1 or UNDEF_NGRAM_LEVEL!
+             * @result the new context id
+             */
+            typedef std::function<TContextId(const TWordId wordId, const TContextId ctxId, const TModelLevel level) > TGetCtxIdFunct;
+
+            /**
              * This is a common abstract class for all possible Trie implementations
              * The purpose of having this as a template class is performance optimization.
              * It is a template class that has two template parameters:
@@ -144,10 +155,16 @@ namespace uva {
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit ATrie(AWordIndex * const _pWordIndex)
-                : pWordIndex(_pWordIndex),
-                chachedContext(contextCStr, MAX_N_GRAM_STRING_LENGTH),
-                chachedContextId(UNDEFINED_WORD_ID) {
+                explicit ATrie(AWordIndex * const _pWordIndex, TGetCtxIdFunct get_ctx_id_func)
+                : m_p_word_index(_pWordIndex),
+                m_chached_context(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
+                m_chached_context_id(UNDEFINED_WORD_ID), m_get_ctx_id_func(get_ctx_id_func) {
+                    //This one is needed for having a proper non-null word index pointer.
+                    if (_pWordIndex == NULL) {
+                        stringstream msg;
+                        msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
+                        throw Exception(msg.str());
+                    }
                 };
 
                 /**
@@ -155,7 +172,11 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
-                virtual void preAllocate(const size_t counts[N]) = 0;
+                virtual void preAllocate(const size_t counts[N]) {
+                    //Compute the number of words to be stored
+                    //Add an extra element for the <unknown/> word
+                    m_p_word_index->reserve(counts[0] + 1);
+                };
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
@@ -203,7 +224,7 @@ namespace uva {
                  * @return the pointer to the stored word index or NULL if none
                  */
                 inline AWordIndex * getWordIndex() {
-                    return pWordIndex;
+                    return m_p_word_index;
                 }
 
                 /**
@@ -211,7 +232,149 @@ namespace uva {
                  */
                 virtual ~ATrie() {
                 };
+
             protected:
+
+                /**
+                 * The copy constructor, is made private as we do not intend to copy this class objects
+                 * @param orig the object to copy from
+                 */
+                ATrie(const ATrie& orig) : m_p_word_index(NULL), m_get_ctx_id_func(NULL) {
+                    throw Exception("ATrie copy constructor is not to be used, unless implemented!");
+                };
+
+                /**
+                 * Gets the word hash for the end word of the back-off N-Gram
+                 * @return the word hash for the end word of the back-off N-Gram
+                 */
+                inline const TWordId & getBackOffNGramEndWordHash() {
+                    return mGramWordIds[N - 2];
+                }
+
+                /**
+                 * Gets the word hash for the last word in the N-gram
+                 * @return the word hash for the last word in the N-gram
+                 */
+                inline const TWordId & getNGramEndWordHash() {
+                    return mGramWordIds[N - 1];
+                }
+
+                /**
+                 * This method converts the M-Gram tokens into hashes and stores
+                 * them in an array. Note that, M is the size of the tokens array.
+                 * It is not checked, for the sake of performance but is assumed
+                 * that M is <= N!
+                 * @param tokens the tokens to be transformed into word hashes must have size <=N
+                 * @param wordHashes the out array parameter to store the hashes.
+                 */
+                inline void tokensToHashes(const vector<string> & tokens, TWordId wordHashes[N]) {
+                    //The start index depends on the value M of the given M-Gram
+                    TModelLevel idx = N - tokens.size();
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
+                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
+                        wordHashes[idx] = m_p_word_index->getId(*it);
+                        LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
+                        idx++;
+                    }
+                }
+
+                /**
+                 * Converts the given tokens to hashes and stores it in mGramWordHashes
+                 * @param ngram the n-gram tokens to convert to hashes
+                 */
+                inline void storeNGramHashes(const vector<string> & ngram) {
+                    //First transform the given M-gram into word hashes.
+                    tokensToHashes(ngram, mGramWordIds);
+                }
+
+                /**
+                 * Compute the context hash for the M-Gram prefix, example:
+                 * 
+                 *  N = 5
+                 * 
+                 *   0  1  2  3  4
+                 *  w1 w2 w3 w4 w5
+                 * 
+                 *  contextLength = 2
+                 * 
+                 *    0  1  2  3  4
+                 *   w1 w2 w3 w4 w5
+                 *          ^  ^
+                 * Hash will be computed for the 3-gram prefix w3 w4.
+                 * 
+                 * @param contextLength the length of the context to compute
+                 * @param isBackOff is the boolean flag that determines whether
+                 *                  we compute the context for the entire M-Gram
+                 *                  or for the back-off sub-M-gram. For the latter
+                 *                  we consider w1 w2 w3 w4 only
+                 * @return the computed hash context
+                 */
+                inline TContextId getQueryContextId(const TModelLevel contextLength, bool isBackOff) {
+                    const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
+                    const TModelLevel eIdx = mGramEndIdx;
+                    const TModelLevel bIdx = mGramEndIdx - contextLength;
+                    TModelLevel idx = bIdx;
+
+                    LOG_DEBUG3 << "Computing context hash for context length " << SSTR(contextLength)
+                            << " for a  " << (isBackOff ? "back-off" : "probability")
+                            << " computation" << END_LOG;
+
+                    //Compute the first words' hash
+                    TContextId ctxId = mGramWordIds[idx];
+                    LOG_DEBUG3 << "Word: " << SSTR(idx) << " id == initial context id: " << SSTR(ctxId) << END_LOG;
+                    idx++;
+
+                    //Compute the subsequent context ids
+                    for (; idx < eIdx;) {
+                        ctxId = m_get_ctx_id_func(mGramWordIds[idx], ctxId, (idx - bIdx) + 1);
+                        LOG_DEBUG3 << "Idx: " << SSTR(idx) << ", getContextId(" << SSTR(mGramWordIds[idx]) << ", prevContextId) = " << SSTR(ctxId) << END_LOG;
+                        idx++;
+                    }
+
+                    LOG_DEBUG3 << "Resulting context hash for context length " << SSTR(contextLength)
+                            << " of a  " << (isBackOff ? "back-off" : "probability")
+                            << " computation is: " << SSTR(ctxId) << END_LOG;
+
+                    return ctxId;
+                }
+
+                /**
+                 * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * 
+                 * WARNING: Must not be called on M-grams with M <= 1!
+                 * 
+                 * @param gram the N-gram with its tokens to create context for
+                 * @return the resulting hash of the context(w1 w2 w3)
+                 */
+                template<DebugLevel logLevel>
+                inline TContextId getContextId(const SRawNGram & gram) {
+                    TContextId ctxId;
+
+                    //Try to retrieve the context from the cache, if not present then compute it
+                    if (ATrie<N>::getCachedContextId(gram, ctxId)) {
+                        //Get the start context value for the first token
+                        const string & token = gram.tokens[0].str();
+
+                        //There is no id cached for this M-gram context - compute it
+                        ctxId = ATrie<N>::getWordIndex()->getId(token);
+
+                        LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
+
+                        //Iterate and compute the hash:
+                        for (int i = 1; i < (gram.level - 1); i++) {
+                            const string & token = gram.tokens[i].str();
+                            const TWordId wordId = ATrie<N>::getWordIndex()->getId(token);
+                            LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
+                            ctxId = m_get_ctx_id_func(wordId, ctxId, i + 1);
+                            LOGGER(logLevel) << "ctxId = createContext( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
+                        }
+
+                        //Cache the newly computed context id for the given n-gram context
+                        ATrie<N>::cacheContextId(gram, ctxId);
+                    }
+
+                    return ctxId;
+                }
 
                 /**
                  * Allows to retrieve the cached context id for the given M-gram if any
@@ -220,9 +383,9 @@ namespace uva {
                  * @return true if there was nothing cached, otherwise false
                  */
                 inline bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
-                    if (chachedContext == mGram.context) {
-                        result = chachedContextId;
-                        LOG_DEBUG3 << "Cache match! " << chachedContext << " == " << mGram.context << END_LOG;
+                    if (m_chached_context == mGram.context) {
+                        result = m_chached_context_id;
+                        LOG_DEBUG3 << "Cache match! " << m_chached_context << " == " << mGram.context << END_LOG;
                         return false;
                     }
                     return true;
@@ -234,21 +397,28 @@ namespace uva {
                  * @param result
                  */
                 inline void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
-                    chachedContext.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
-                    chachedContextId = stx_id;
-                    LOG_DEBUG3 << "Caching context = [ " << chachedContext << " ], id = " << chachedContextId << END_LOG;
+                    m_chached_context.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
+                    m_chached_context_id = stx_id;
+                    LOG_DEBUG3 << "Caching context = [ " << m_chached_context << " ], id = " << m_chached_context_id << END_LOG;
                 }
 
             private:
                 //Stores the reference to the word index to be used
-                AWordIndex * const pWordIndex;
+                AWordIndex * const m_p_word_index;
+
+                //Stores the pointer to the function that will be used to compute
+                //the context id from a word id and the previous context
+                TGetCtxIdFunct const m_get_ctx_id_func;
 
                 //The actual storage for the cached context c string
-                char contextCStr[MAX_N_GRAM_STRING_LENGTH];
+                char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
                 //Stores the cached M-gram context (for 1 < M <= N )
-                TextPieceReader chachedContext;
+                TextPieceReader m_chached_context;
                 //Stores the cached M-gram context value (for 1 < M <= N )
-                TContextId chachedContextId;
+                TContextId m_chached_context_id;
+
+                //The temporary data structure to store the N-gram query word hashes
+                TWordId mGramWordIds[N];
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches

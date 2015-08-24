@@ -26,7 +26,7 @@
 #ifndef HYBRIDMEMORYTRIE_HPP
 #define	HYBRIDMEMORYTRIE_HPP
 
-#include <string>           // std::string
+#include <string>   // std::string
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -139,42 +139,19 @@ namespace uva {
                 TIndexSize next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
-                 * This function gets the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must not be called on M-grams with M <= 1!
+                 * WARNING: Must only be called for the M-gram level M > 1!
                  * 
-                 * @param gram the N-gram with its tokens to create context for
-                 * @return the resulting the context(w1 w2 w3)
+                 * @param wordId the current word id
+                 * @param ctxId the previous context id
+                 * @param level the M-gram level we are working with M
+                 * @return the resulting context
                  */
-                template<DebugLevel logLevel>
-                inline TIndexSize getContextId(const SRawNGram & gram) {
-                    TContextId ctxId;
-
-                    //Try to retrieve the context from the cache, if not present then compute it
-                    if (ATrie<N>::getCachedContextId(gram, ctxId)) {
-                        //Get the start context value for the first token
-                        const string & token = gram.tokens[0].str();
-
-                        //There is no id cached for this M-gram context - compute it
-                        ctxId = ATrie<N>::getWordIndex()->getId(token);
-                        LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
-
-                        //Iterate and compute the hash:
-                        for (int i = 1; i < (gram.level - 1); i++) {
-                            const string & token = gram.tokens[i].str();
-                            TWordId wordId = ATrie<N>::getWordIndex()->getId(token);
-                            LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
-                            ctxId = m_mgram_mapping[i - 1][wordId]->at(ctxId);
-                            LOGGER(logLevel) << "ctxId = contextId( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
-                        }
-
-                        //Cache the newly computed context id for the given n-gram context
-                        ATrie<N>::cacheContextId(gram, ctxId);
-                    }
-
-                    //The ids we work with here are of index size - smaller than general purpose context ids
-                    return (TIndexSize) ctxId;
+                inline TContextId getContextId(TWordId wordId, TContextId ctxId, const TModelLevel level) {
+                    return m_mgram_mapping[level - 1][wordId]->at(ctxId);
                 }
+                
             };
 
             typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapHybridMemoryTrie;
