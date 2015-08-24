@@ -253,8 +253,8 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
+            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage>;
             template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorageFactory, CtxToPBMapStorage>;
-            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBVectorStorageFactory, CtxToPBVectorStorage>;
         }
     }
 }
