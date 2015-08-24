@@ -171,8 +171,12 @@ namespace uva {
                  */
                 CtxToPBMapStorageFactory(const size_t _counts[N])
                 : ACtxToPBStorageFactory<N>(_counts) {
-                    for(size_t i = 1; i < N; i++) {
-                        m_p_alloc[i-1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
+                    for (size_t i = 1; i < N; i++) {
+                        m_p_alloc[i - 1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
+                        LOG_DEBUG3 << "Allocating a new TStorageMapAllocator("
+                                << _counts[i] * UNORDERED_MAP_MEMORY_FACTOR << ") for level "
+                                << i << ", the allocator m_p_alloc[" << (i - 1)
+                                << "] = " << SSTR(m_p_alloc[i - 1]) << END_LOG;
                     }
                 };
 
@@ -180,8 +184,8 @@ namespace uva {
                  * The basic destructor
                  */
                 virtual ~CtxToPBMapStorageFactory() {
-                    for(size_t i = 1; i < N; i++) {
-                        delete m_p_alloc[i-1];
+                    for (size_t i = 1; i < N; i++) {
+                        delete m_p_alloc[i - 1];
                     }
                 }
 
@@ -191,14 +195,16 @@ namespace uva {
                  * @return the pointer to the allocated container
                  */
                 virtual ACtxToPBStorage * create(const TModelLevel level) {
-                    LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level " << level << ", the allocator pts = " << SSTR(m_p_alloc[level-1]) << END_LOG;
-                    return new CtxToPBMapStorage(*m_p_alloc[level-1]);
+                    LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level "
+                            << level << ", the allocator m_p_alloc[" << (level - 1)
+                            << "] = " << SSTR(m_p_alloc[level - 1]) << END_LOG;
+                    return new CtxToPBMapStorage(*m_p_alloc[level - 1]);
                 }
 
             protected:
 
                 //The array of length ACtxToPBStorage::m_max_level
-                TStorageMapAllocator * m_p_alloc[N-1];
+                TStorageMapAllocator * m_p_alloc[N - 1];
             };
         }
     }
