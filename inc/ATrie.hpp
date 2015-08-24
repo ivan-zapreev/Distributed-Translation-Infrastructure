@@ -239,7 +239,8 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                ATrie(const ATrie& orig) : m_p_word_index(NULL), m_get_ctx_id_func(NULL) {
+                ATrie(const ATrie& orig) : m_p_word_index(NULL), m_chached_context(),
+                m_chached_context_id(UNDEFINED_WORD_ID), m_get_ctx_id_func(NULL) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
