@@ -151,8 +151,8 @@ namespace uva {
                     ACtxToPBStorage*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(level);
+                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << level << END_LOG;
                     }
-
                     TIndexSize & ctx_id = (*ctx_mapping)[ctxId];
                     ctx_id = next_ctx_id[level - MGRAM_MAPPING_IDX_OFFSET]++;
                     TProbBackOffEntryPair& pbData = m_mgram_data[level - 1][ctx_id];
@@ -199,6 +199,7 @@ namespace uva {
                 ACtxToPBStorage*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
                 if (ctx_mapping == NULL) {
                     ctx_mapping = m_storage_factory->create(level);
+                    LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << level << END_LOG;
                 }
                 TLogProbBackOff & pData = (TLogProbBackOff &) (*ctx_mapping)[ctxId];
 

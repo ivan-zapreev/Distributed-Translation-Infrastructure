@@ -191,6 +191,7 @@ namespace uva {
                  * @return the pointer to the allocated container
                  */
                 virtual ACtxToPBStorage * create(const TModelLevel level) {
+                    LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level " << level << END_LOG;
                     return new CtxToPBMapStorage(*m_p_alloc[level-1]);
                 }
 
