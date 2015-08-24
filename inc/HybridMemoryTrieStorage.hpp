@@ -156,7 +156,7 @@ namespace uva {
 
             private:
                 //The map storage
-                mpa<pair<TIndexSize,TIndexSize> >  m_map;
+                map<TIndexSize,TIndexSize>  m_map;
             };
 
             /**
