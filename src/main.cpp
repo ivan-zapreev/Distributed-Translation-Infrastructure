@@ -310,8 +310,8 @@ static void performTasks(const TAppParams& params) {
         HashMapWordIndex dictionary(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
-        //TFiveContextMultiHashMapTrie trie(&dictionary);
-        TFiveMapHybridMemoryTrie trie(&dictionary);
+        TFiveContextMultiHashMapTrie trie(&dictionary);
+        //TFiveMapHybridMemoryTrie trie(&dictionary);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();
