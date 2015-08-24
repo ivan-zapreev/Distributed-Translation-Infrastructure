@@ -1,0 +1,923 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 28.57      0.06     0.06   639383     0.00     0.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&)
+ 19.05      0.10     0.04   726427     0.00     0.00  uva::smt::tries::CtxMultiHashMapTrie<(unsigned short)5>::preAllocate(unsigned long const*)
+ 14.29      0.13     0.03   644219     0.00     0.00  uva::smt::tries::arpa::ARPAGramBuilder::parseToGram(uva::smt::file::TextPieceReader&, uva::smt::tries::SRawNGram&)
+  9.52      0.15     0.02   823094     0.00     0.00  std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::string const&, unsigned long) const
+  9.52      0.17     0.02   639383     0.00     0.00  std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&)
+  9.52      0.19     0.02     8539     0.00     0.00  std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::clear()
+  4.76      0.20     0.01   644225     0.00     0.00  uva::smt::logging::Logger::updateProgressBar()
+  4.76      0.21     0.01   639383     0.00     0.00  std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false>*)
+  0.00      0.21     0.00   818260     0.00     0.00  uva::smt::tries::dictionary::HashMapWordIndex::getId(std::string const&) const
+  0.00      0.21     0.00   644229     0.00     0.00  uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&)
+  0.00      0.21     0.00   644219     0.00     0.00  uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&)
+  0.00      0.21     0.00   639383     0.00     0.00  std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&)
+  0.00      0.21     0.00    91833     0.00     0.00  void uva::smt::file::TextPieceReader::copy_string<2048ul>(uva::smt::file::TextPieceReader const&)
+  0.00      0.21     0.00    22559     0.00     0.00  std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false> > >::_M_allocate_buckets(unsigned long)
+  0.00      0.21     0.00     8539     0.00     0.00  std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Hashtable(unsigned long, std::hash<unsigned int> const&, std::__detail::_Mod_range_hashing const&, std::__detail::_Default_ranged_hash const&, std::equal_to<unsigned int> const&, std::__detail::_Select1st const&, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> > const&)
+  0.00      0.21     0.00     4834     0.00     0.00  std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*)
+  0.00      0.21     0.00     4834     0.00     0.00  std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>* std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&)
+  0.00      0.21     0.00     4834     0.00     0.00  std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_deallocate_node(std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*)
+  0.00      0.21     0.00     4834     0.00     0.00  std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&)
+  0.00      0.21     0.00     4833     0.00     0.00  uva::smt::tries::dictionary::HashMapWordIndex::makeId(uva::smt::file::TextPieceReader const&)
+  0.00      0.21     0.00     4833     0.00     0.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::add1Gram(uva::smt::tries::SRawNGram const&)
+  0.00      0.21     0.00     4833     0.00     0.00  std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&)
+  0.00      0.21     0.00     1060     0.00     0.00  uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&)
+  0.00      0.21     0.00      512     0.00     0.00  std::regex_traits<char>::isctype(char, std::regex_traits<char>::_RegexMask) const
+  0.00      0.21     0.00      512     0.00     0.00  std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const
+  0.00      0.21     0.00      512     0.00     0.00  __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > > std::__find_if<__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const> >(__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const>, std::random_access_iterator_tag)
+  0.00      0.21     0.00      495     0.00     0.00  char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag)
+  0.00      0.21     0.00      492     0.00     0.00  std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const
+  0.00      0.21     0.00      492     0.00     0.00  __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > > std::__find_if<__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const> >(__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const>, std::random_access_iterator_tag)
+  0.00      0.21     0.00      120     0.00     0.00  std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
+  0.00      0.21     0.00       71     0.00     0.00  std::function<bool (char)>::operator()(char) const
+  0.00      0.21     0.00       60     0.00     0.00  std::function<bool (char)>::function(std::function<bool (char)> const&)
+  0.00      0.21     0.00       54     0.00     0.00  void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&)
+  0.00      0.21     0.00       50     0.00     0.00  std::__detail::_Scanner<char>::_M_advance()
+  0.00      0.21     0.00       49     0.00     0.00  std::_Function_handler<bool (char), std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char)
+  0.00      0.21     0.00       44     0.00     0.00  void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::emplace_back<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&)
+  0.00      0.21     0.00       44     0.00     0.00  void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::_M_emplace_back_aux<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&)
+  0.00      0.21     0.00       44     0.00     0.00  std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::vector(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&)
+  0.00      0.21     0.00       44     0.00     0.00  void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long)
+  0.00      0.21     0.00       40     0.00     0.00  void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&)
+  0.00      0.21     0.00       40     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_try_char()
+  0.00      0.21     0.00       40     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_assertion()
+  0.00      0.21     0.00       40     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_atom()
+  0.00      0.21     0.00       38     0.00     0.00  std::__detail::_Scanner<char>::_M_scan_normal()
+  0.00      0.21     0.00       38     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()
+  0.00      0.21     0.00       36     0.00     0.00  std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>)
+  0.00      0.21     0.00       34     0.00     0.00  void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>()
+  0.00      0.21     0.00       22     0.00     0.00  std::_Function_handler<bool (char), std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char)
+  0.00      0.21     0.00       20     0.00     0.00  void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&)
+  0.00      0.21     0.00       17     0.00     0.00  uva::smt::monitore::StatisticsMonitor::getCPUTime()
+  0.00      0.21     0.00       11     0.00     0.00  uva::smt::logging::Logger::get(uva::smt::logging::DebugLevel)
+  0.00      0.21     0.00       10     0.00     0.00  void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&)
+  0.00      0.21     0.00        9     0.00     0.00  std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&)
+  0.00      0.21     0.00        9     0.00     0.00  std::__detail::_Scanner<char>::_M_eat_escape_ecma()
+  0.00      0.21     0.00        8     0.00     0.00  std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::_M_initialize_map(unsigned long)
+  0.00      0.21     0.00        8     0.00     0.00  std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base()
+  0.00      0.21     0.00        7     0.00     0.00  bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type)
+  0.00      0.21     0.00        6     0.00     0.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::queryNGram(std::vector<std::string, std::allocator<std::string> > const&, uva::smt::tries::SProbResult&)
+  0.00      0.21     0.00        6     0.00     0.00  uva::smt::monitore::StatisticsMonitor::getMemoryStatistics(uva::smt::monitore::TMemotyUsage&)
+  0.00      0.21     0.00        6     0.00     0.00  std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation)
+  0.00      0.21     0.00        6     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression()
+  0.00      0.21     0.00        4     0.00     0.00  _GLOBAL__sub_I__ZN3uva3smt5tries4arpa15ARPAGramBuilder24MIN_NUM_TOKENS_NGRAM_STRE
+  0.00      0.21     0.00        4     0.00     0.00  std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
+  0.00      0.21     0.00        4     0.00     0.00  std::_Sp_counted_ptr_inplace<std::__detail::_NFA<std::regex_traits<char> >, std::allocator<std::__detail::_NFA<std::regex_traits<char> > >, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00      0.21     0.00        4     0.00     0.00  void std::vector<unsigned long, std::allocator<unsigned long> >::_M_emplace_back_aux<unsigned long const&>(unsigned long const&)
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::~_BracketMatcher()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_NFA<std::regex_traits<char> >::_M_eliminate_dummy()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_Scanner<char>::_M_scan_in_bracket()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale)
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_disjunction()
+  0.00      0.21     0.00        4     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type)
+  0.00      0.21     0.00        4     0.00     0.00  bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>()
+  0.00      0.21     0.00        3     0.00     0.00  reportMemotyUsage(char const*, uva::smt::monitore::TMemotyUsage, uva::smt::monitore::TMemotyUsage, bool)
+  0.00      0.21     0.00        3     0.00     0.00  uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder(unsigned short, std::function<void (uva::smt::tries::SRawNGram const&)>)
+  0.00      0.21     0.00        3     0.00     0.00  uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder()
+  0.00      0.21     0.00        3     0.00     0.00  uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder()
+  0.00      0.21     0.00        3     0.00     0.00  void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)
+  0.00      0.21     0.00        3     0.00     0.00  uva::smt::logging::Logger::computeTimeString(long, unsigned long&)
+  0.00      0.21     0.00        3     0.00     0.00  uva::smt::logging::Logger::computeTimeClearString(unsigned long)
+  0.00      0.21     0.00        3     0.00     0.00  char* std::string::_S_construct<__gnu_cxx::__normal_iterator<char const*, std::string> >(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<char> const&, std::forward_iterator_tag)
+  0.00      0.21     0.00        3     0.00     0.00  std::basic_regex<char, std::regex_traits<char> >::~basic_regex()
+  0.00      0.21     0.00        3     0.00     0.00  std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation)
+  0.00      0.21     0.00        3     0.00     0.00  std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf()
+  0.00      0.21     0.00        3     0.00     0.00  void std::vector<void*, std::allocator<void*> >::_M_emplace_back_aux<void* const&>(void* const&)
+  0.00      0.21     0.00        3     0.00     0.00  std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::~vector()
+  0.00      0.21     0.00        3     0.00     0.00  void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long)
+  0.00      0.21     0.00        3     0.00     0.00  std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&)
+  0.00      0.21     0.00        2     0.00     0.00  std::regex_traits<char>::_RegexMask std::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const
+  0.00      0.21     0.00        2     0.00     0.00  std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::push_back(std::__detail::_StateSeq<std::regex_traits<char> > const&)
+  0.00      0.21     0.00        2     0.00     0.00  std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long)
+  0.00      0.21     0.00        2     0.00     0.00  std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool)
+  0.00      0.21     0.00        2     0.00     0.00  std::__detail::_Scanner<char>::_M_eat_class(char)
+  0.00      0.21     0.00        2     0.00     0.00  void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&)
+  0.00      0.21     0.00        2     0.00     0.00  void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool)
+  0.00      0.21     0.00        2     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_pop()
+  0.00      0.21     0.00        2     0.00     0.00  std::function<bool (char)>::function<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>, void>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>)
+  0.00      0.21     0.00        2     0.00     0.00  std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()::{lambda()#1}::operator()() const
+  0.00      0.21     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN3uva3smt7logging6Logger9currLEvelE
+  0.00      0.21     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN3uva3smt8monitore17StatisticsMonitor19getMemoryStatisticsERNS1_12TMemotyUsageE
+  0.00      0.21     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::file::TextPieceReader::operator[](unsigned long)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::file::FileStreamReader::~FileStreamReader()
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::HybridMemoryTrie(uva::smt::tries::dictionary::AWordIndex*)
+  0.00      0.21     0.00        1     0.00    20.00  uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::~HybridMemoryTrie()
+  0.00      0.21     0.00        1     0.00   190.01  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders()
+  0.00      0.21     0.00        1     0.00   190.01  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build()
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder()
+  0.00      0.21     0.00        1     0.00     0.00  void uva::smt::tries::alloc::deallocate_container<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**)
+  0.00      0.21     0.00        1     0.00     0.00  void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float)
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::logging::Logger::stopProgressBar()
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::logging::Logger::startProgressBar()
+  0.00      0.21     0.00        1     0.00     0.00  uva::smt::logging::Logger::setReportingLevel(std::string)
+  0.00      0.21     0.00        1     0.00     0.00  char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag)
+  0.00      0.21     0.00        1     0.00     0.00  std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&)
+  0.00      0.21     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::~vector()
+  0.00      0.21     0.00        1     0.00     0.00  std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 4.76% of 0.21 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00    0.21                 performTasks(TAppParams const&) [1]
+                0.00    0.19       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+                0.00    0.02       1/1           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::~HybridMemoryTrie() [11]
+                0.00    0.00      15/17          uva::smt::monitore::StatisticsMonitor::getCPUTime() [65]
+                0.00    0.00       6/6           uva::smt::monitore::StatisticsMonitor::getMemoryStatistics(uva::smt::monitore::TMemotyUsage&) [74]
+                0.00    0.00       6/6           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::queryNGram(std::vector<std::string, std::allocator<std::string> > const&, uva::smt::tries::SProbResult&) [73]
+                0.00    0.00       5/11          uva::smt::logging::Logger::get(uva::smt::logging::DebugLevel) [66]
+                0.00    0.00       4/10          void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) [67]
+                0.00    0.00       3/3           reportMemotyUsage(char const*, uva::smt::monitore::TMemotyUsage, uva::smt::monitore::TMemotyUsage, bool) [90]
+                0.00    0.00       1/1           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::HybridMemoryTrie(uva::smt::tries::dictionary::AWordIndex*) [120]
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&) [121]
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::~vector() [130]
+                0.00    0.00       1/1           void uva::smt::tries::alloc::deallocate_container<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**) [123]
+                0.00    0.00       1/1           uva::smt::file::FileStreamReader::~FileStreamReader() [119]
+-----------------------------------------------
+                0.00    0.19       1/1           performTasks(TAppParams const&) [1]
+[2]     90.5    0.00    0.19       1         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+                0.00    0.19       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+                0.00    0.00       1/1           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*) [20]
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [21]
+                0.00    0.00       1/1           uva::smt::logging::Logger::startProgressBar() [126]
+                0.00    0.00       1/1           uva::smt::logging::Logger::stopProgressBar() [125]
+                0.00    0.00       1/644229      uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [29]
+-----------------------------------------------
+                                   2             uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.19       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[3]     90.5    0.00    0.19       1+2       uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.18  644219/644219      uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+                0.01    0.00  644219/644225      uva::smt::logging::Logger::updateProgressBar() [13]
+                0.00    0.00  644222/644229      uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [29]
+                0.00    0.00      12/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       3/3           char* std::string::_S_construct<__gnu_cxx::__normal_iterator<char const*, std::string> >(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<char> const&, std::forward_iterator_tag) [97]
+                0.00    0.00       3/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+                0.00    0.00       3/8           std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base() [71]
+                0.00    0.00       3/7           bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+                0.00    0.00       3/3           std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [98]
+                0.00    0.00       3/3           std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf() [100]
+                0.00    0.00       3/3           void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [94]
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [92]
+                                   2             uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+-----------------------------------------------
+                0.00    0.18  644219/644219      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[4]     85.7    0.00    0.18  644219         uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+                0.06    0.09  639383/639383      uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+                0.03    0.00  644219/644219      uva::smt::tries::arpa::ARPAGramBuilder::parseToGram(uva::smt::file::TextPieceReader&, uva::smt::tries::SRawNGram&) [8]
+                0.00    0.00    4833/4833        uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::add1Gram(uva::smt::tries::SRawNGram const&) [17]
+                0.00    0.00  639383/639383      std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [30]
+                0.00    0.00    4833/4833        std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [37]
+-----------------------------------------------
+                0.06    0.09  639383/639383      uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+[5]     71.4    0.06    0.09  639383         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+                0.02    0.05  639383/639383      std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&) [6]
+                0.00    0.02  818260/818260      uva::smt::tries::dictionary::HashMapWordIndex::getId(std::string const&) const [12]
+                0.00    0.00   87044/726427      uva::smt::tries::CtxMultiHashMapTrie<(unsigned short)5>::preAllocate(unsigned long const*) [7]
+                0.00    0.00   91833/91833       void uva::smt::file::TextPieceReader::copy_string<2048ul>(uva::smt::file::TextPieceReader const&) [31]
+                0.00    0.00    8539/8539        std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Hashtable(unsigned long, std::hash<unsigned int> const&, std::__detail::_Mod_range_hashing const&, std::__detail::_Default_ranged_hash const&, std::equal_to<unsigned int> const&, std::__detail::_Select1st const&, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> > const&) [33]
+-----------------------------------------------
+                0.02    0.05  639383/639383      uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+[6]     31.1    0.02    0.05  639383         std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&) [6]
+                0.04    0.00  639383/726427      uva::smt::tries::CtxMultiHashMapTrie<(unsigned short)5>::preAllocate(unsigned long const*) [7]
+                0.01    0.00  639383/639383      std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false>*) [14]
+-----------------------------------------------
+                0.00    0.00   87044/726427      uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+                0.04    0.00  639383/726427      std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&) [6]
+[7]     19.0    0.04    0.00  726427         uva::smt::tries::CtxMultiHashMapTrie<(unsigned short)5>::preAllocate(unsigned long const*) [7]
+-----------------------------------------------
+                0.03    0.00  644219/644219      uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+[8]     14.3    0.03    0.00  644219         uva::smt::tries::arpa::ARPAGramBuilder::parseToGram(uva::smt::file::TextPieceReader&, uva::smt::tries::SRawNGram&) [8]
+-----------------------------------------------
+                0.00    0.00    4834/823094      std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+                0.02    0.00  818260/823094      uva::smt::tries::dictionary::HashMapWordIndex::getId(std::string const&) const [12]
+[9]      9.5    0.02    0.00  823094         std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::string const&, unsigned long) const [9]
+-----------------------------------------------
+                0.02    0.00    8539/8539        uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::~HybridMemoryTrie() [11]
+[10]     9.5    0.02    0.00    8539         std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::clear() [10]
+-----------------------------------------------
+                0.00    0.02       1/1           performTasks(TAppParams const&) [1]
+[11]     9.5    0.00    0.02       1         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::~HybridMemoryTrie() [11]
+                0.02    0.00    8539/8539        std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::clear() [10]
+-----------------------------------------------
+                0.00    0.02  818260/818260      uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+[12]     9.5    0.00    0.02  818260         uva::smt::tries::dictionary::HashMapWordIndex::getId(std::string const&) const [12]
+                0.02    0.00  818260/823094      std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::string const&, unsigned long) const [9]
+-----------------------------------------------
+                0.00    0.00       1/644225      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [21]
+                0.00    0.00       5/644225      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+                0.01    0.00  644219/644225      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[13]     4.8    0.01    0.00  644225         uva::smt::logging::Logger::updateProgressBar() [13]
+                0.00    0.00       2/3           uva::smt::logging::Logger::computeTimeString(long, unsigned long&) [95]
+                0.00    0.00       2/3           uva::smt::logging::Logger::computeTimeClearString(unsigned long) [96]
+-----------------------------------------------
+                0.01    0.00  639383/639383      std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&) [6]
+[14]     4.8    0.01    0.00  639383         std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false>*) [14]
+                0.00    0.00   14020/22559       std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false> > >::_M_allocate_buckets(unsigned long) [32]
+-----------------------------------------------
+                0.00    0.00       1/4834        uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long) [19]
+                0.00    0.00    4833/4834        uva::smt::tries::dictionary::HashMapWordIndex::makeId(uva::smt::file::TextPieceReader const&) [16]
+[15]     0.1    0.00    0.00    4834         std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+                0.00    0.00    4834/823094      std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::string const&, unsigned long) const [9]
+                0.00    0.00    4834/4834        std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>* std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) [35]
+                0.00    0.00    4834/4834        std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*) [34]
+-----------------------------------------------
+                0.00    0.00    4833/4833        uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::add1Gram(uva::smt::tries::SRawNGram const&) [17]
+[16]     0.1    0.00    0.00    4833         uva::smt::tries::dictionary::HashMapWordIndex::makeId(uva::smt::file::TextPieceReader const&) [16]
+                0.00    0.00    4833/4834        std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+-----------------------------------------------
+                0.00    0.00    4833/4833        uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+[17]     0.1    0.00    0.00    4833         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::add1Gram(uva::smt::tries::SRawNGram const&) [17]
+                0.00    0.00    4833/4833        uva::smt::tries::dictionary::HashMapWordIndex::makeId(uva::smt::file::TextPieceReader const&) [16]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[18]     0.0    0.00    0.00       1         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+                0.00    0.00       5/644225      uva::smt::logging::Logger::updateProgressBar() [13]
+                0.00    0.00       9/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       6/10          void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) [67]
+                0.00    0.00       5/644229      uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [29]
+                0.00    0.00       4/7           bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*) [20]
+[19]     0.0    0.00    0.00       1         uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long) [19]
+                0.00    0.00       1/4834        std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+                0.00    0.00       1/1           void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [124]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[20]     0.0    0.00    0.00       1         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*) [20]
+                0.00    0.00       1/1           uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long) [19]
+                0.00    0.00       2/3           void std::vector<void*, std::allocator<void*> >::_M_emplace_back_aux<void* const&>(void* const&) [101]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[21]     0.0    0.00    0.00       1         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [21]
+                0.00    0.00       1/644225      uva::smt::logging::Logger::updateProgressBar() [13]
+                0.00    0.00       1/1           uva::smt::file::TextPieceReader::operator[](unsigned long) [118]
+                0.00    0.00       1/644229      uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [29]
+-----------------------------------------------
+                0.00    0.00       1/644229      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [21]
+                0.00    0.00       1/644229      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+                0.00    0.00       5/644229      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+                0.00    0.00  644222/644229      uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[29]     0.0    0.00    0.00  644229         uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [29]
+-----------------------------------------------
+                0.00    0.00  639383/639383      uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+[30]     0.0    0.00    0.00  639383         std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [30]
+-----------------------------------------------
+                0.00    0.00   91833/91833       uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+[31]     0.0    0.00    0.00   91833         void uva::smt::file::TextPieceReader::copy_string<2048ul>(uva::smt::file::TextPieceReader const&) [31]
+-----------------------------------------------
+                0.00    0.00    8539/22559       std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Hashtable(unsigned long, std::hash<unsigned int> const&, std::__detail::_Mod_range_hashing const&, std::__detail::_Default_ranged_hash const&, std::equal_to<unsigned int> const&, std::__detail::_Select1st const&, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> > const&) [33]
+                0.00    0.00   14020/22559       std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false>*) [14]
+[32]     0.0    0.00    0.00   22559         std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false> > >::_M_allocate_buckets(unsigned long) [32]
+-----------------------------------------------
+                0.00    0.00    8539/8539        uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [5]
+[33]     0.0    0.00    0.00    8539         std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Hashtable(unsigned long, std::hash<unsigned int> const&, std::__detail::_Mod_range_hashing const&, std::__detail::_Default_ranged_hash const&, std::equal_to<unsigned int> const&, std::__detail::_Select1st const&, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> > const&) [33]
+                0.00    0.00    8539/22559       std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false> > >::_M_allocate_buckets(unsigned long) [32]
+-----------------------------------------------
+                0.00    0.00    4834/4834        std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+[34]     0.0    0.00    0.00    4834         std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*) [34]
+-----------------------------------------------
+                0.00    0.00    4834/4834        std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&) [15]
+[35]     0.0    0.00    0.00    4834         std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>* std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&) [35]
+-----------------------------------------------
+                0.00    0.00    4834/4834        void uva::smt::tries::alloc::deallocate_container<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**) [123]
+[36]     0.0    0.00    0.00    4834         std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_deallocate_node(std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*) [36]
+-----------------------------------------------
+                0.00    0.00    4833/4833        uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [4]
+[37]     0.0    0.00    0.00    4833         std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [37]
+-----------------------------------------------
+                0.00    0.00       2/1060        uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+                0.00    0.00       2/1060        std::regex_traits<char>::_RegexMask std::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const [105]
+                0.00    0.00       2/1060        std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+                0.00    0.00       2/1060        void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&) [110]
+                0.00    0.00       2/1060        void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+                0.00    0.00       2/1060        std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression() [76]
+                0.00    0.00       2/1060        std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [131]
+                0.00    0.00       3/1060        std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [98]
+                0.00    0.00       4/1060        std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+                0.00    0.00       9/1060        uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+                0.00    0.00      12/1060        uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.00      34/1060        std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+                0.00    0.00     492/1060        std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const [43]
+                0.00    0.00     492/1060        std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+[38]     0.0    0.00    0.00    1060         uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00      46/50          std::__detail::_Scanner<char>::_M_advance() [49]
+                0.00    0.00      34/38          std::__detail::_Scanner<char>::_M_scan_normal() [59]
+                0.00    0.00       6/9           std::__detail::_Scanner<char>::_M_eat_escape_ecma() [69]
+                0.00    0.00       4/4           std::__detail::_Scanner<char>::_M_scan_in_bracket() [84]
+-----------------------------------------------
+                0.00    0.00     512/512         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+[39]     0.0    0.00    0.00     512         std::regex_traits<char>::isctype(char, std::regex_traits<char>::_RegexMask) const [39]
+-----------------------------------------------
+                0.00    0.00     512/512         void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+[40]     0.0    0.00    0.00     512         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+                0.00    0.00     512/512         __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > > std::__find_if<__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const> >(__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const>, std::random_access_iterator_tag) [41]
+                0.00    0.00     512/512         std::regex_traits<char>::isctype(char, std::regex_traits<char>::_RegexMask) const [39]
+                0.00    0.00     492/492         std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const [43]
+                0.00    0.00     492/492         __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > > std::__find_if<__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const> >(__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const>, std::random_access_iterator_tag) [44]
+                0.00    0.00     492/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+-----------------------------------------------
+                0.00    0.00     512/512         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+[41]     0.0    0.00    0.00     512         __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > > std::__find_if<__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const> >(__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const>, std::random_access_iterator_tag) [41]
+-----------------------------------------------
+                0.00    0.00       3/495         uva::smt::logging::Logger::computeTimeString(long, unsigned long&) [95]
+                0.00    0.00     492/495         std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const [43]
+[42]     0.0    0.00    0.00     495         char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [42]
+-----------------------------------------------
+                0.00    0.00     492/492         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+[43]     0.0    0.00    0.00     492         std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const [43]
+                0.00    0.00     492/495         char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [42]
+                0.00    0.00     492/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+-----------------------------------------------
+                0.00    0.00     492/492         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+[44]     0.0    0.00    0.00     492         __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > > std::__find_if<__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const> >(__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const>, std::random_access_iterator_tag) [44]
+-----------------------------------------------
+                0.00    0.00       7/120         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+                0.00    0.00      27/120         std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [98]
+                0.00    0.00      43/120         std::function<bool (char)>::function(std::function<bool (char)> const&) [47]
+                0.00    0.00      43/120         void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+[45]     0.0    0.00    0.00     120         std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [45]
+-----------------------------------------------
+                0.00    0.00      27/71          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+                0.00    0.00      44/71          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+[46]     0.0    0.00    0.00      71         std::function<bool (char)>::operator()(char) const [46]
+-----------------------------------------------
+                0.00    0.00      60/60          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+[47]     0.0    0.00    0.00      60         std::function<bool (char)>::function(std::function<bool (char)> const&) [47]
+                0.00    0.00      43/120         std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [45]
+                0.00    0.00       1/4           std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [78]
+-----------------------------------------------
+                0.00    0.00       2/54          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool) [108]
+                0.00    0.00       4/54          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin() [83]
+                0.00    0.00       4/54          std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+                0.00    0.00       8/54          std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+                0.00    0.00      36/54          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>) [61]
+[48]     0.0    0.00    0.00      54         void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+-----------------------------------------------
+                0.00    0.00       4/50          std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale) [85]
+                0.00    0.00      46/50          uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+[49]     0.0    0.00    0.00      50         std::__detail::_Scanner<char>::_M_advance() [49]
+-----------------------------------------------
+                0.00    0.00      22/49          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+                0.00    0.00      27/49          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+[50]     0.0    0.00    0.00      49         std::_Function_handler<bool (char), std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [50]
+-----------------------------------------------
+                0.00    0.00       4/44          bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+                0.00    0.00      40/44          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+[51]     0.0    0.00    0.00      44         void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::emplace_back<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [51]
+-----------------------------------------------
+                0.00    0.00       4/44          bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+                0.00    0.00      40/44          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+[52]     0.0    0.00    0.00      44         void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::_M_emplace_back_aux<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [52]
+-----------------------------------------------
+                0.00    0.00       4/44          bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+                0.00    0.00      40/44          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+[53]     0.0    0.00    0.00      44         std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::vector(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [53]
+-----------------------------------------------
+                                  58             void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+                0.00    0.00      44/44          bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+[54]     0.0    0.00    0.00      44+58      void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+                0.00    0.00      44/71          std::function<bool (char)>::operator()(char) const [46]
+                0.00    0.00      40/44          std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::vector(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [53]
+                0.00    0.00      40/44          void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::_M_emplace_back_aux<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [52]
+                0.00    0.00      40/44          void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::emplace_back<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [51]
+                0.00    0.00      22/49          std::_Function_handler<bool (char), std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [50]
+                0.00    0.00      22/22          std::_Function_handler<bool (char), std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [63]
+                0.00    0.00       3/9           std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [68]
+                                  58             void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+-----------------------------------------------
+                0.00    0.00       2/40          void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+                0.00    0.00       4/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+                0.00    0.00      34/40          void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>() [62]
+[55]     0.0    0.00    0.00      40         void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&) [55]
+-----------------------------------------------
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+[56]     0.0    0.00    0.00      40         std::__detail::_Compiler<std::regex_traits<char> >::_M_try_char() [56]
+-----------------------------------------------
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+[57]     0.0    0.00    0.00      40         std::__detail::_Compiler<std::regex_traits<char> >::_M_assertion() [57]
+-----------------------------------------------
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+[58]     0.0    0.00    0.00      40         std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_try_char() [56]
+                0.00    0.00      34/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00      34/34          void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>() [62]
+                0.00    0.00       6/6           std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression() [76]
+-----------------------------------------------
+                0.00    0.00       4/38          std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale) [85]
+                0.00    0.00      34/38          uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+[59]     0.0    0.00    0.00      38         std::__detail::_Scanner<char>::_M_scan_normal() [59]
+-----------------------------------------------
+                0.00    0.00      38/38          std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+[60]     0.0    0.00    0.00      38         std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()::{lambda()#1}::operator()() const [114]
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_pop() [112]
+                0.00    0.00       2/2           std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool) [108]
+                0.00    0.00       2/2           std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::push_back(std::__detail::_StateSeq<std::regex_traits<char> > const&) [106]
+-----------------------------------------------
+                0.00    0.00       2/36          void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+                0.00    0.00      34/36          void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>() [62]
+[61]     0.0    0.00    0.00      36         std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>) [61]
+                0.00    0.00      36/54          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+                0.00    0.00      15/20          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+-----------------------------------------------
+                0.00    0.00      34/34          std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+[62]     0.0    0.00    0.00      34         void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>() [62]
+                0.00    0.00      34/36          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>) [61]
+                0.00    0.00      34/40          void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&) [55]
+-----------------------------------------------
+                0.00    0.00      22/22          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+[63]     0.0    0.00    0.00      22         std::_Function_handler<bool (char), std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [63]
+-----------------------------------------------
+                0.00    0.00       1/20          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool) [108]
+                0.00    0.00       4/20          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin() [83]
+                0.00    0.00      15/20          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>) [61]
+[64]     0.0    0.00    0.00      20         void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+                0.00    0.00      60/60          std::function<bool (char)>::function(std::function<bool (char)> const&) [47]
+                0.00    0.00      43/120         std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [45]
+                0.00    0.00       1/4           std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [78]
+-----------------------------------------------
+                0.00    0.00       2/17          extractArguments(unsigned int, char const* const*, TAppParams&) [132]
+                0.00    0.00      15/17          performTasks(TAppParams const&) [1]
+[65]     0.0    0.00    0.00      17         uva::smt::monitore::StatisticsMonitor::getCPUTime() [65]
+-----------------------------------------------
+                0.00    0.00       5/11          performTasks(TAppParams const&) [1]
+                0.00    0.00       6/11          reportMemotyUsage(char const*, uva::smt::monitore::TMemotyUsage, uva::smt::monitore::TMemotyUsage, bool) [90]
+[66]     0.0    0.00    0.00      11         uva::smt::logging::Logger::get(uva::smt::logging::DebugLevel) [66]
+-----------------------------------------------
+                0.00    0.00       4/10          performTasks(TAppParams const&) [1]
+                0.00    0.00       6/10          uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+[67]     0.0    0.00    0.00      10         void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) [67]
+-----------------------------------------------
+                0.00    0.00       3/9           void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+                0.00    0.00       3/9           void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+                0.00    0.00       3/9           bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+[68]     0.0    0.00    0.00       9         std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [68]
+-----------------------------------------------
+                0.00    0.00       3/9           std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale) [85]
+                0.00    0.00       6/9           uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+[69]     0.0    0.00    0.00       9         std::__detail::_Scanner<char>::_M_eat_escape_ecma() [69]
+-----------------------------------------------
+                0.00    0.00       8/8           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[70]     0.0    0.00    0.00       8         std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::_M_initialize_map(unsigned long) [70]
+-----------------------------------------------
+                0.00    0.00       1/8           std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [131]
+                0.00    0.00       3/8           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.00       4/8           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[71]     0.0    0.00    0.00       8         std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base() [71]
+-----------------------------------------------
+                0.00    0.00       3/7           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+                0.00    0.00       4/7           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [18]
+[72]     0.0    0.00    0.00       7         bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+                0.00    0.00       4/4           bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+                0.00    0.00       3/9           std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [68]
+                0.00    0.00       3/3           void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+-----------------------------------------------
+                0.00    0.00       6/6           performTasks(TAppParams const&) [1]
+[73]     0.0    0.00    0.00       6         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::queryNGram(std::vector<std::string, std::allocator<std::string> > const&, uva::smt::tries::SProbResult&) [73]
+-----------------------------------------------
+                0.00    0.00       6/6           performTasks(TAppParams const&) [1]
+[74]     0.0    0.00    0.00       6         uva::smt::monitore::StatisticsMonitor::getMemoryStatistics(uva::smt::monitore::TMemotyUsage&) [74]
+-----------------------------------------------
+                0.00    0.00       2/6           uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [93]
+                0.00    0.00       2/6           std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&) [104]
+                0.00    0.00       2/6           void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [94]
+[75]     0.0    0.00    0.00       6         std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation) [75]
+-----------------------------------------------
+                0.00    0.00       6/6           std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+[76]     0.0    0.00    0.00       6         std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression() [76]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       2/2           void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+-----------------------------------------------
+                0.00    0.00       4/4           __libc_csu_init [345]
+[77]     0.0    0.00    0.00       4         _GLOBAL__sub_I__ZN3uva3smt5tries4arpa15ARPAGramBuilder24MIN_NUM_TOKENS_NGRAM_STRE [77]
+-----------------------------------------------
+                0.00    0.00       1/4           std::function<bool (char)>::function(std::function<bool (char)> const&) [47]
+                0.00    0.00       1/4           void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+                0.00    0.00       2/4           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+[78]     0.0    0.00    0.00       4         std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [78]
+-----------------------------------------------
+                0.00    0.00       1/4           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+                0.00    0.00       3/4           std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [98]
+[79]     0.0    0.00    0.00       4         std::_Sp_counted_ptr_inplace<std::__detail::_NFA<std::regex_traits<char> >, std::allocator<std::__detail::_NFA<std::regex_traits<char> > >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [79]
+-----------------------------------------------
+                0.00    0.00       4/4           std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin() [83]
+[80]     0.0    0.00    0.00       4         void std::vector<unsigned long, std::allocator<unsigned long> >::_M_emplace_back_aux<unsigned long const&>(unsigned long const&) [80]
+-----------------------------------------------
+                0.00    0.00       4/4           void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+[81]     0.0    0.00    0.00       4         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::~_BracketMatcher() [81]
+-----------------------------------------------
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[82]     0.0    0.00    0.00       4         std::__detail::_NFA<std::regex_traits<char> >::_M_eliminate_dummy() [82]
+-----------------------------------------------
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[83]     0.0    0.00    0.00       4         std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin() [83]
+                0.00    0.00       4/20          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+                0.00    0.00       4/54          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+                0.00    0.00       4/4           void std::vector<unsigned long, std::allocator<unsigned long> >::_M_emplace_back_aux<unsigned long const&>(unsigned long const&) [80]
+-----------------------------------------------
+                0.00    0.00       4/4           uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+[84]     0.0    0.00    0.00       4         std::__detail::_Scanner<char>::_M_scan_in_bracket() [84]
+                0.00    0.00       2/2           std::__detail::_Scanner<char>::_M_eat_class(char) [109]
+-----------------------------------------------
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[85]     0.0    0.00    0.00       4         std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale) [85]
+                0.00    0.00       4/38          std::__detail::_Scanner<char>::_M_scan_normal() [59]
+                0.00    0.00       4/50          std::__detail::_Scanner<char>::_M_advance() [49]
+                0.00    0.00       3/9           std::__detail::_Scanner<char>::_M_eat_escape_ecma() [69]
+-----------------------------------------------
+                                  36             std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_M_disjunction() [87]
+[86]     0.0    0.00    0.00       4+36      std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_assertion() [57]
+                0.00    0.00      40/40          std::__detail::_Compiler<std::regex_traits<char> >::_M_atom() [58]
+                0.00    0.00      38/38          std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+                0.00    0.00       4/54          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+                0.00    0.00       4/40          void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&) [55]
+                                  36             std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+-----------------------------------------------
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+[87]     0.0    0.00    0.00       4         std::__detail::_Compiler<std::regex_traits<char> >::_M_disjunction() [87]
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative() [86]
+-----------------------------------------------
+                0.00    0.00       1/4           std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [131]
+                0.00    0.00       3/4           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[88]     0.0    0.00    0.00       4         std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+                0.00    0.00       8/8           std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::_M_initialize_map(unsigned long) [70]
+                0.00    0.00       8/54          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+                0.00    0.00       4/4           std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale) [85]
+                0.00    0.00       4/8           std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base() [71]
+                0.00    0.00       4/4           std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin() [83]
+                0.00    0.00       4/4           std::__detail::_Compiler<std::regex_traits<char> >::_M_disjunction() [87]
+                0.00    0.00       4/4           std::__detail::_NFA<std::regex_traits<char> >::_M_eliminate_dummy() [82]
+                0.00    0.00       4/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+-----------------------------------------------
+                0.00    0.00       4/4           bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+[89]     0.0    0.00    0.00       4         bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+                0.00    0.00      44/44          void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long) [54]
+                0.00    0.00       4/44          std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::vector(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [53]
+                0.00    0.00       4/44          void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::_M_emplace_back_aux<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [52]
+                0.00    0.00       4/44          void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::emplace_back<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [51]
+                0.00    0.00       3/3           std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::~vector() [102]
+-----------------------------------------------
+                0.00    0.00       3/3           performTasks(TAppParams const&) [1]
+[90]     0.0    0.00    0.00       3         reportMemotyUsage(char const*, uva::smt::monitore::TMemotyUsage, uva::smt::monitore::TMemotyUsage, bool) [90]
+                0.00    0.00       6/11          uva::smt::logging::Logger::get(uva::smt::logging::DebugLevel) [66]
+-----------------------------------------------
+                0.00    0.00       3/3           void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [94]
+[91]     0.0    0.00    0.00       3         uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder(unsigned short, std::function<void (uva::smt::tries::SRawNGram const&)>) [91]
+                0.00    0.00       3/3           std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&) [104]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[92]     0.0    0.00    0.00       3         uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [92]
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [93]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [92]
+[93]     0.0    0.00    0.00       3         uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [93]
+                0.00    0.00       2/6           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation) [75]
+                0.00    0.00       1/3           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation) [99]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[94]     0.0    0.00    0.00       3         void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [94]
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder(unsigned short, std::function<void (uva::smt::tries::SRawNGram const&)>) [91]
+                0.00    0.00       2/6           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation) [75]
+                0.00    0.00       1/3           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation) [99]
+-----------------------------------------------
+                0.00    0.00       1/3           uva::smt::logging::Logger::startProgressBar() [126]
+                0.00    0.00       2/3           uva::smt::logging::Logger::updateProgressBar() [13]
+[95]     0.0    0.00    0.00       3         uva::smt::logging::Logger::computeTimeString(long, unsigned long&) [95]
+                0.00    0.00       3/495         char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [42]
+-----------------------------------------------
+                0.00    0.00       1/3           uva::smt::logging::Logger::stopProgressBar() [125]
+                0.00    0.00       2/3           uva::smt::logging::Logger::updateProgressBar() [13]
+[96]     0.0    0.00    0.00       3         uva::smt::logging::Logger::computeTimeClearString(unsigned long) [96]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[97]     0.0    0.00    0.00       3         char* std::string::_S_construct<__gnu_cxx::__normal_iterator<char const*, std::string> >(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<char> const&, std::forward_iterator_tag) [97]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[98]     0.0    0.00    0.00       3         std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [98]
+                0.00    0.00      27/120         std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [45]
+                0.00    0.00       3/4           std::_Sp_counted_ptr_inplace<std::__detail::_NFA<std::regex_traits<char> >, std::allocator<std::__detail::_NFA<std::regex_traits<char> > >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [79]
+                0.00    0.00       3/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+-----------------------------------------------
+                0.00    0.00       1/3           uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [93]
+                0.00    0.00       1/3           std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&) [104]
+                0.00    0.00       1/3           void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [94]
+[99]     0.0    0.00    0.00       3         std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation) [99]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [3]
+[100]    0.0    0.00    0.00       3         std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf() [100]
+-----------------------------------------------
+                0.00    0.00       1/3           void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [124]
+                0.00    0.00       2/3           uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*) [20]
+[101]    0.0    0.00    0.00       3         void std::vector<void*, std::allocator<void*> >::_M_emplace_back_aux<void* const&>(void* const&) [101]
+-----------------------------------------------
+                0.00    0.00       3/3           bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>() [89]
+[102]    0.0    0.00    0.00       3         std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::~vector() [102]
+-----------------------------------------------
+                                  33             void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+                0.00    0.00       3/3           bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type) [72]
+[103]    0.0    0.00    0.00       3+33      void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+                0.00    0.00      27/49          std::_Function_handler<bool (char), std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [50]
+                0.00    0.00      27/71          std::function<bool (char)>::operator()(char) const [46]
+                0.00    0.00       3/9           std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [68]
+                                  33             void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long) [103]
+-----------------------------------------------
+                0.00    0.00       3/3           uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder(unsigned short, std::function<void (uva::smt::tries::SRawNGram const&)>) [91]
+[104]    0.0    0.00    0.00       3         std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&) [104]
+                0.00    0.00       2/6           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation) [75]
+                0.00    0.00       1/3           std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation) [99]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&) [110]
+[105]    0.0    0.00    0.00       2         std::regex_traits<char>::_RegexMask std::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const [105]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+[106]    0.0    0.00    0.00       2         std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::push_back(std::__detail::_StateSeq<std::regex_traits<char> > const&) [106]
+-----------------------------------------------
+                0.00    0.00       1/2           std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) [129]
+                0.00    0.00       1/2           void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [124]
+[107]    0.0    0.00    0.00       2         std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) [107]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+[108]    0.0    0.00    0.00       2         std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool) [108]
+                0.00    0.00       2/54          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [48]
+                0.00    0.00       1/20          void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [64]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Scanner<char>::_M_scan_in_bracket() [84]
+[109]    0.0    0.00    0.00       2         std::__detail::_Scanner<char>::_M_eat_class(char) [109]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+[110]    0.0    0.00    0.00       2         void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&) [110]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       2/2           std::regex_traits<char>::_RegexMask std::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const [105]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression() [76]
+[111]    0.0    0.00    0.00       2         void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+                0.00    0.00     512/512         std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [40]
+                0.00    0.00       4/4           std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::~_BracketMatcher() [81]
+                0.00    0.00       2/2           void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&) [110]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       2/2           std::function<bool (char)>::function<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>, void>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>) [113]
+                0.00    0.00       2/36          std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>) [61]
+                0.00    0.00       2/40          void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&) [55]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+[112]    0.0    0.00    0.00       2         std::__detail::_Compiler<std::regex_traits<char> >::_M_pop() [112]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool) [111]
+[113]    0.0    0.00    0.00       2         std::function<bool (char)>::function<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>, void>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>) [113]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier() [60]
+[114]    0.0    0.00    0.00       2         std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()::{lambda()#1}::operator()() const [114]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [345]
+[115]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN3uva3smt7logging6Logger9currLEvelE [115]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [345]
+[116]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN3uva3smt8monitore17StatisticsMonitor19getMemoryStatisticsERNS1_12TMemotyUsageE [116]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [345]
+[117]    0.0    0.00    0.00       1         _GLOBAL__sub_I_main [117]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [21]
+[118]    0.0    0.00    0.00       1         uva::smt::file::TextPieceReader::operator[](unsigned long) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[119]    0.0    0.00    0.00       1         uva::smt::file::FileStreamReader::~FileStreamReader() [119]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[120]    0.0    0.00    0.00       1         uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::HybridMemoryTrie(uva::smt::tries::dictionary::AWordIndex*) [120]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[121]    0.0    0.00    0.00       1         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&) [121]
+                0.00    0.00       1/1           char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) [128]
+                0.00    0.00       1/1           std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [131]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[122]    0.0    0.00    0.00       1         uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [122]
+                0.00    0.00       7/120         std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [45]
+                0.00    0.00       2/4           std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [78]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       1/4           std::_Sp_counted_ptr_inplace<std::__detail::_NFA<std::regex_traits<char> >, std::allocator<std::__detail::_NFA<std::regex_traits<char> > >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [79]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[123]    0.0    0.00    0.00       1         void uva::smt::tries::alloc::deallocate_container<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**) [123]
+                0.00    0.00    4834/4834        std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_deallocate_node(std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*) [36]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long) [19]
+[124]    0.0    0.00    0.00       1         void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [124]
+                0.00    0.00       1/2           std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) [107]
+                0.00    0.00       1/1           std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) [129]
+                0.00    0.00       1/3           void std::vector<void*, std::allocator<void*> >::_M_emplace_back_aux<void* const&>(void* const&) [101]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[125]    0.0    0.00    0.00       1         uva::smt::logging::Logger::stopProgressBar() [125]
+                0.00    0.00       1/3           uva::smt::logging::Logger::computeTimeClearString(unsigned long) [96]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [2]
+[126]    0.0    0.00    0.00       1         uva::smt::logging::Logger::startProgressBar() [126]
+                0.00    0.00       1/3           uva::smt::logging::Logger::computeTimeString(long, unsigned long&) [95]
+-----------------------------------------------
+                0.00    0.00       1/1           extractArguments(unsigned int, char const* const*, TAppParams&) [132]
+[127]    0.0    0.00    0.00       1         uva::smt::logging::Logger::setReportingLevel(std::string) [127]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&) [121]
+[128]    0.0    0.00    0.00       1         char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) [128]
+-----------------------------------------------
+                0.00    0.00       1/1           void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [124]
+[129]    0.0    0.00    0.00       1         std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) [129]
+                0.00    0.00       1/2           std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long) [107]
+-----------------------------------------------
+                0.00    0.00       1/1           performTasks(TAppParams const&) [1]
+[130]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::~vector() [130]
+-----------------------------------------------
+                0.00    0.00       1/1           uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&) [121]
+[131]    0.0    0.00    0.00       1         std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [131]
+                0.00    0.00       2/1060        uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [38]
+                0.00    0.00       1/4           std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type) [88]
+                0.00    0.00       1/8           std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base() [71]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [77] _GLOBAL__sub_I__ZN3uva3smt5tries4arpa15ARPAGramBuilder24MIN_NUM_TOKENS_NGRAM_STRE (ARPAGramBuilder.cpp) [74] uva::smt::monitore::StatisticsMonitor::getMemoryStatistics(uva::smt::monitore::TMemotyUsage&) [80] void std::vector<unsigned long, std::allocator<unsigned long> >::_M_emplace_back_aux<unsigned long const&>(unsigned long const&)
+ [115] _GLOBAL__sub_I__ZN3uva3smt7logging6Logger9currLEvelE (Logger.cpp) [12] uva::smt::tries::dictionary::HashMapWordIndex::getId(std::string const&) const [131] std::shared_ptr<std::__detail::_NFA<std::regex_traits<char> > > std::__detail::__compile_nfa<std::regex_traits<char> >(std::regex_traits<char>::char_type const*, std::regex_traits<char>::char_type const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type)
+ [116] _GLOBAL__sub_I__ZN3uva3smt8monitore17StatisticsMonitor19getMemoryStatisticsERNS1_12TMemotyUsageE (StatisticsMonitor.cpp) [9] std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::string const&, unsigned long) const [81] std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::~_BracketMatcher()
+ [117] _GLOBAL__sub_I_main (main.cpp) [105] std::regex_traits<char>::_RegexMask std::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const [35] std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>* std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<std::string const&>&&, std::tuple<>&&)
+  [90] reportMemotyUsage(char const*, uva::smt::monitore::TMemotyUsage, uva::smt::monitore::TMemotyUsage, bool) (main.cpp) [43] std::string std::regex_traits<char>::transform_primary<char*>(char*, char*) const [36] std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_deallocate_node(std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*)
+  [31] void uva::smt::file::TextPieceReader::copy_string<2048ul>(uva::smt::file::TextPieceReader const&) [39] std::regex_traits<char>::isctype(char, std::regex_traits<char>::_RegexMask) const [107] std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true> > >::_M_allocate_buckets(unsigned long)
+ [118] uva::smt::file::TextPieceReader::operator[](unsigned long) [40] std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>::_M_apply(char, std::integral_constant<bool, false>) const [32] std::__detail::_Hashtable_alloc<uva::smt::tries::alloc::GreedyMemoryAllocator<std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false> > >::_M_allocate_buckets(unsigned long)
+  [29] uva::smt::file::FileStreamReader::getLine(uva::smt::file::TextPieceReader&) [46] std::function<bool (char)>::operator()(char) const [72] bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, char, std::regex_traits<char>, (std::__detail::_RegexExecutorPolicy)0, true>(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::match_results<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >&, std::basic_regex<char, std::regex_traits<char> > const&, std::regex_constants::match_flag_type)
+ [119] uva::smt::file::FileStreamReader::~FileStreamReader() [97] char* std::string::_S_construct<__gnu_cxx::__normal_iterator<char const*, std::string> >(__gnu_cxx::__normal_iterator<char const*, std::string>, __gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<char> const&, std::forward_iterator_tag) [108] std::__detail::_NFA<std::regex_traits<char> >::_M_insert_alt(long, long, bool)
+  [16] uva::smt::tries::dictionary::HashMapWordIndex::makeId(uva::smt::file::TextPieceReader const&) [128] char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) [61] std::__detail::_NFA<std::regex_traits<char> >::_M_insert_matcher(std::function<bool (char)>)
+  [19] uva::smt::tries::dictionary::HashMapWordIndex::reserve(unsigned long) [42] char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [82] std::__detail::_NFA<std::regex_traits<char> >::_M_eliminate_dummy()
+  [73] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::queryNGram(std::vector<std::string, std::allocator<std::string> > const&, uva::smt::tries::SProbResult&) [34] std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<std::string const, unsigned int>, true>*) [83] std::__detail::_NFA<std::regex_traits<char> >::_M_insert_subexpr_begin()
+  [20] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::preAllocate(unsigned long const*) [129] std::_Hashtable<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) [49] std::__detail::_Scanner<char>::_M_advance()
+  [17] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::add1Gram(uva::smt::tries::SRawNGram const&) [14] std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<unsigned int const, unsigned int>, false>*) [109] std::__detail::_Scanner<char>::_M_eat_class(char)
+   [5] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::addMGram(uva::smt::tries::SRawNGram const&) [10] std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::clear() [59] std::__detail::_Scanner<char>::_M_scan_normal()
+ [120] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::HybridMemoryTrie(uva::smt::tries::dictionary::AWordIndex*) [33] std::_Hashtable<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Hashtable(unsigned long, std::hash<unsigned int> const&, std::__detail::_Mod_range_hashing const&, std::__detail::_Default_ranged_hash const&, std::equal_to<unsigned int> const&, std::__detail::_Select1st const&, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> > const&) [69] std::__detail::_Scanner<char>::_M_eat_escape_ecma()
+  [11] uva::smt::tries::HybridMemoryTrie<(unsigned short)5, uva::smt::tries::CtxToPBMapStorageFactory, uva::smt::tries::CtxToPBMapStorage>::~HybridMemoryTrie() [70] std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::_M_initialize_map(unsigned long) [84] std::__detail::_Scanner<char>::_M_scan_in_bracket()
+   [7] uva::smt::tries::CtxMultiHashMapTrie<(unsigned short)5>::preAllocate(unsigned long const*) [71] std::_Deque_base<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::~_Deque_base() [85] std::__detail::_Scanner<char>::_Scanner(char const*, char const*, std::regex_constants::syntax_option_type, std::locale)
+   [8] uva::smt::tries::arpa::ARPAGramBuilder::parseToGram(uva::smt::file::TextPieceReader&, uva::smt::tries::SRawNGram&) [98] std::basic_regex<char, std::regex_traits<char> >::~basic_regex() [56] std::__detail::_Compiler<std::regex_traits<char> >::_M_try_char()
+   [4] uva::smt::tries::arpa::ARPAGramBuilder::parseLine(uva::smt::file::TextPieceReader&) [45] std::_Function_base::_Base_manager<std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [57] std::__detail::_Compiler<std::regex_traits<char> >::_M_assertion()
+  [91] uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder(unsigned short, std::function<void (uva::smt::tries::SRawNGram const&)>) [78] std::_Function_base::_Base_manager<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [60] std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()
+  [92] uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [75] std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}> const&, std::_Manager_operation) [86] std::__detail::_Compiler<std::regex_traits<char> >::_M_alternative()
+  [93] uva::smt::tries::arpa::ARPAGramBuilder::~ARPAGramBuilder() [99] std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}> const&, std::_Manager_operation) [87] std::__detail::_Compiler<std::regex_traits<char> >::_M_disjunction()
+   [3] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readNGrams(unsigned short) [100] std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >::~basic_stringbuf() [110] void std::__detail::_Compiler<std::regex_traits<char> >::_M_expression_term<false, false>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>&)
+  [21] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readHeaders() [50] std::_Function_handler<bool (char), std::__detail::_CharMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [76] std::__detail::_Compiler<std::regex_traits<char> >::_M_bracket_expression()
+   [2] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::build() [63] std::_Function_handler<bool (char), std::__detail::_BracketMatcher<std::regex_traits<char>, false, false> >::_M_invoke(std::_Any_data const&, char) [62] void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_char_matcher<false, false>()
+  [18] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::readData(unsigned long*) [30] std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#3}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [111] void std::__detail::_Compiler<std::regex_traits<char> >::_M_insert_bracket_matcher<false, false>(bool)
+ [121] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::ARPATrieBuilder(uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::file::TextPieceReader&) [37] std::_Function_handler<void (uva::smt::tries::SRawNGram const&), void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**)::{lambda(uva::smt::tries::SRawNGram const&)#1}>::_M_invoke(std::_Any_data const&, uva::smt::tries::SRawNGram const&) [112] std::__detail::_Compiler<std::regex_traits<char> >::_M_pop()
+ [122] uva::smt::tries::arpa::ARPATrieBuilder<(unsigned short)5>::~ARPATrieBuilder() [79] std::_Sp_counted_ptr_inplace<std::__detail::_NFA<std::regex_traits<char> >, std::allocator<std::__detail::_NFA<std::regex_traits<char> > >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [58] std::__detail::_Compiler<std::regex_traits<char> >::_M_atom()
+  [94] void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder<(unsigned short)5>(unsigned short, uva::smt::tries::ATrie<(unsigned short)5>&, uva::smt::tries::arpa::ARPAGramBuilder**) [55] void std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::emplace_back<std::__detail::_StateSeq<std::regex_traits<char> > >(std::__detail::_StateSeq<std::regex_traits<char> >&&) [88] std::__detail::_Compiler<std::regex_traits<char> >::_Compiler(char const*, char const*, std::regex_traits<char> const&, std::regex_constants::syntax_option_type)
+  [38] uva::smt::tries::ATrie<(unsigned short)5>::cacheContextId(uva::smt::tries::SRawNGram const&, unsigned long&) [106] std::deque<std::__detail::_StateSeq<std::regex_traits<char> >, std::allocator<std::__detail::_StateSeq<std::regex_traits<char> > > >::push_back(std::__detail::_StateSeq<std::regex_traits<char> > const&) [54] void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_dfs<true>(long)
+ [123] void uva::smt::tries::alloc::deallocate_container<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**) [48] void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::emplace_back<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [89] bool std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, false>::_M_main<true>()
+ [124] void uva::smt::tries::alloc::reserve_mem_unordered_map<std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >(std::unordered_map<std::string, unsigned int, std::hash<std::string>, std::equal_to<std::string>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> > >**, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >**, unsigned long, std::string, float) [64] void std::vector<std::__detail::_State<std::regex_traits<char> >, std::allocator<std::__detail::_State<std::regex_traits<char> > > >::_M_emplace_back_aux<std::__detail::_State<std::regex_traits<char> > >(std::__detail::_State<std::regex_traits<char> >&&) [103] void std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::string>, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > >, std::regex_traits<char>, true>::_M_dfs<true>(long)
+ [125] uva::smt::logging::Logger::stopProgressBar() [101] void std::vector<void*, std::allocator<void*> >::_M_emplace_back_aux<void* const&>(void* const&) [15] std::__detail::_Map_base<std::string, std::pair<std::string const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<std::string const, unsigned int> >, std::__detail::_Select1st, std::equal_to<std::string>, std::hash<std::string>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::string const&)
+ [126] uva::smt::logging::Logger::startProgressBar() [67] void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) [6] std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, unsigned int>, uva::smt::tries::alloc::GreedyMemoryAllocator<std::pair<unsigned int const, unsigned int> >, std::__detail::_Select1st, std::equal_to<unsigned int>, std::hash<unsigned int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](unsigned int const&)
+  [95] uva::smt::logging::Logger::computeTimeString(long, unsigned long&) [130] std::vector<std::string, std::allocator<std::string> >::~vector() [47] std::function<bool (char)>::function(std::function<bool (char)> const&)
+ [127] uva::smt::logging::Logger::setReportingLevel(std::string) [51] void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::emplace_back<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [113] std::function<bool (char)>::function<std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>, void>(std::__detail::_BracketMatcher<std::regex_traits<char>, false, false>)
+  [13] uva::smt::logging::Logger::updateProgressBar() [52] void std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::_M_emplace_back_aux<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > >(std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >&&) [104] std::function<void (uva::smt::tries::SRawNGram const&)>::function(std::function<void (uva::smt::tries::SRawNGram const&)> const&)
+  [96] uva::smt::logging::Logger::computeTimeClearString(unsigned long) [102] std::vector<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > >, std::allocator<std::pair<long, std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > > > >::~vector() [44] __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > > std::__find_if<__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const> >(__gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__normal_iterator<std::string const*, std::vector<std::string, std::allocator<std::string> > >, __gnu_cxx::__ops::_Iter_equals_val<std::string const>, std::random_access_iterator_tag)
+  [66] uva::smt::logging::Logger::get(uva::smt::logging::DebugLevel) [53] std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::vector(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [41] __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > > std::__find_if<__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const> >(__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__ops::_Iter_equals_val<char const>, std::random_access_iterator_tag)
+  [65] uva::smt::monitore::StatisticsMonitor::getCPUTime() [68] std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > >::operator=(std::vector<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> >, std::allocator<std::sub_match<__gnu_cxx::__normal_iterator<char const*, std::string> > > > const&) [114] std::__detail::_Compiler<std::regex_traits<char> >::_M_quantifier()::{lambda()#1}::operator()() const

@@ -156,9 +156,9 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit ATrie(AWordIndex * const _pWordIndex, TGetCtxIdFunct get_ctx_id_func)
-                : m_p_word_index(_pWordIndex),
+                : m_p_word_index(_pWordIndex), m_get_ctx_id_func(get_ctx_id_func),
                 m_chached_context(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
-                m_chached_context_id(UNDEFINED_WORD_ID), m_get_ctx_id_func(get_ctx_id_func) {
+                m_chached_context_id(UNDEFINED_WORD_ID) {
                     //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
@@ -239,8 +239,8 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                ATrie(const ATrie& orig) : m_p_word_index(NULL), m_chached_context(),
-                m_chached_context_id(UNDEFINED_WORD_ID), m_get_ctx_id_func(NULL) {
+                ATrie(const ATrie& orig) : m_p_word_index(NULL), m_get_ctx_id_func(NULL), m_chached_context(),
+                m_chached_context_id(UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -409,7 +409,7 @@ namespace uva {
 
                 //Stores the pointer to the function that will be used to compute
                 //the context id from a word id and the previous context
-                TGetCtxIdFunct const m_get_ctx_id_func;
+                TGetCtxIdFunct m_get_ctx_id_func;
 
                 //The actual storage for the cached context c string
                 char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
