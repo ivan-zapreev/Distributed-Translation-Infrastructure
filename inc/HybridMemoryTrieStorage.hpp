@@ -175,7 +175,7 @@ namespace uva {
                         m_p_alloc[i - 1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
                         LOG_DEBUG2 << "Allocating a new TStorageMapAllocator("
                                 << _counts[i] * UNORDERED_MAP_MEMORY_FACTOR << ") for level "
-                                << i << ", the allocator m_p_alloc[" << (i - 1)
+                                << i+1 << ", the allocator m_p_alloc[" << (i - 1)
                                 << "] = " << SSTR(m_p_alloc[i - 1]) << END_LOG;
                     }
                 };
@@ -195,10 +195,11 @@ namespace uva {
                  * @return the pointer to the allocated container
                  */
                 virtual ACtxToPBStorage * create(const TModelLevel level) {
+                    const TModelLevel idx = level -2;
                     LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level "
-                            << level << ", the allocator m_p_alloc[" << (level - 1)
-                            << "] = " << SSTR(m_p_alloc[level - 1]) << END_LOG;
-                    return new CtxToPBMapStorage(*m_p_alloc[level - 1]);
+                            << level << ", the allocator m_p_alloc[" << idx
+                            << "] = " << SSTR(m_p_alloc[idx]) << END_LOG;
+                    return new CtxToPBMapStorage(*m_p_alloc[idx]);
                 }
 
             protected:
