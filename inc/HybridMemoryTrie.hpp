@@ -101,10 +101,10 @@ namespace uva {
 
                 //Stores the number of words
                 size_t m_word_arr_size;
-                
+
                 //The factory to produce the storage containers
                 StorageFactory<N> * m_storage_factory;
-        
+
                 //M-Gram data for 1 <= M < N. This is a 2D array storing
                 //For each M-Gram level M an array of prob-back_off values
                 // m_mgram_data[M][0] - probability/back-off pair for the given M-gram
@@ -135,43 +135,48 @@ namespace uva {
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
-                const static TModelLevel NUM_IDX_COUNTERS = N-2;
+                const static TModelLevel NUM_IDX_COUNTERS = N - 2;
                 TIndexSize next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
                  * This function gets the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * 
+                 * WARNING: Must not be called on M-grams with M <= 1!
+                 * 
                  * @param gram the N-gram with its tokens to create context for
-                 * @return the resulting the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
+                 * @return the resulting the context(w1 w2 w3)
                  */
                 template<DebugLevel logLevel>
                 inline TIndexSize getContextId(const SRawNGram & gram) {
-                    //Obtain the N-gram level
-                    const TModelLevel level = gram.level;
-
-                    TIndexSize ctxId = UNDEFINED_WORD_ID;
-                    //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
-                    if (level > MIN_NGRAM_LEVEL) {
-                        //Get the start context value for the first token
-                        const string & token = gram.tokens[0].str();
+                    //Get the start context value for the first token
+                    const string & token = gram.tokens[0].str();
+                    TContextId ctxId;
+                    
+                    //Try to retrieve the context from the cache, if not present then compute it
+                    if (ATrie<N>::getCachedContextId(gram, ctxId)) {
+                        //There is no id cached for this M-gram context - compute it
                         ctxId = ATrie<N>::getWordIndex()->getId(token);
-
                         LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
-                        for (int i = 1; i < (level - 1); i++) {
+                        for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordIndexSize wordId = ATrie<N>::getWordIndex()->getId(token);
+                            TWordId wordId = ATrie<N>::getWordIndex()->getId(token);
                             LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
-                            ctxId = m_mgram_mapping[i-1][wordId]->at(ctxId);
+                            ctxId = m_mgram_mapping[i - 1][wordId]->at(ctxId);
                             LOGGER(logLevel) << "ctxId = contextId( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                         }
+                        
+                        //Cache the newly computed context id for the given n-gram context
+                        ATrie<N>::cacheContextId(gram, ctxId);
                     }
 
-                    return ctxId;
+                    //The ids we work with here are of index size - smaller than general purpose context ids
+                    return (TIndexSize) ctxId;
                 }
             };
 
-            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL,CtxToPBMapStorageFactory,CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
+            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorageFactory, CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
         }
     }
 }

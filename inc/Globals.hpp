@@ -64,10 +64,12 @@ namespace uva {
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
 
+            //Define the undefined N-gram level
+            const TModelLevel UNDEF_NGRAM_LEVEL = 0u;
+            //Define the minimum possible N-gram level
+            const TModelLevel MIN_NGRAM_LEVEL = 1u;
             //The considered maximum length of the N-gram
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
-            //Defined the minimum possible N-gram level
-            const TModelLevel MIN_NGRAM_LEVEL = 1u;
 
             //Sets the collision detection on and off.
             const bool MONITORE_COLLISIONS = true;
@@ -95,11 +97,11 @@ namespace uva {
         //The following type definitions are important for creating hashes
         namespace hashing {
             //This is the smallest size which I've tested and it works for the hash without collisions
-            typedef uint32_t TWordIndexSize;
+            typedef uint32_t TWordId;
             //The maximum word index/id value
-            const static TWordIndexSize MAX_WORD_ID_VALUE  = UINT32_MAX;
+            const static TWordId MAX_WORD_ID_VALUE  = UINT32_MAX;
             //This is the hash reference size which should be twice as long as the TWordHashSize
-            typedef uint64_t TReferenceHashSize;
+            typedef uint64_t TContextId;
         }
     }
 }

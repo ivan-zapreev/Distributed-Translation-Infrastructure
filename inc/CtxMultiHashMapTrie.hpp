@@ -161,11 +161,11 @@ namespace uva {
                 const float nGramMemFactor;
 
                 //The type of key,value pairs to be stored in the One Grams map
-                typedef pair< const TWordIndexSize, TProbBackOffEntryPair> TOneGramEntry;
+                typedef pair< const TWordId, TProbBackOffEntryPair> TOneGramEntry;
                 //The typedef for the One Grams map allocator
                 typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
-                typedef unordered_map<TWordIndexSize, TProbBackOffEntryPair, std::hash<TWordIndexSize>, std::equal_to<TWordIndexSize>, TOneGramAllocator > TOneGramsMap;
+                typedef unordered_map<TWordId, TProbBackOffEntryPair, std::hash<TWordId>, std::equal_to<TWordId>, TOneGramAllocator > TOneGramsMap;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -176,29 +176,29 @@ namespace uva {
                 TOneGramsMap * pOneGramMap;
 
                 //The type of key,value pairs to be stored in the M Grams map
-                typedef pair< const TReferenceHashSize, TProbBackOffEntryPair> TMGramEntry;
+                typedef pair< const TContextId, TProbBackOffEntryPair> TMGramEntry;
                 //The typedef for the M Grams map allocator
                 typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TReferenceHashSize, TProbBackOffEntryPair, std::hash<TReferenceHashSize>, std::equal_to<TReferenceHashSize>, TMGramAllocator > TMGramsMap;
+                typedef unordered_map<TContextId, TProbBackOffEntryPair, std::hash<TContextId>, std::equal_to<TContextId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
                 TMGramAllocator * pMGramAlloc[N - MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
                 TMGramsMap * pMGramMap[N - MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
-                typedef pair< const TReferenceHashSize, TLogProbBackOff> TNGramEntry;
+                typedef pair< const TContextId, TLogProbBackOff> TNGramEntry;
                 //The typedef for the N Grams map allocator
                 typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TReferenceHashSize, TLogProbBackOff, std::hash<TReferenceHashSize>, std::equal_to<TReferenceHashSize>, TNGramAllocator > TNGramsMap;
+                typedef unordered_map<TContextId, TLogProbBackOff, std::hash<TContextId>, std::equal_to<TContextId>, TNGramAllocator > TNGramsMap;
                 //The actual data storage for the N Grams
                 TNGramAllocator * pNGramAlloc;
                 //The map storing the N-Grams, they do not have back-off values
                 TNGramsMap * pNGramMap;
 
                 //The structure for storing the hash key values statistics
-                pair<TReferenceHashSize, TReferenceHashSize> hashSizes[N];
+                pair<TContextId, TContextId> hashSizes[N];
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects

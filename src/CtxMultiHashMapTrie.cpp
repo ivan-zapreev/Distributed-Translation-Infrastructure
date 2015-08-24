@@ -128,14 +128,14 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordIndexSize wordHash = ATrie<N>::getWordIndex()->makeId(token);
+                TWordId wordHash = ATrie<N>::getWordIndex()->makeId(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = pOneGramMap->operator[](wordHash);
 
                 //Add hash key statistics
                 if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                    hashSizes[0].first = min<TReferenceHashSize>(wordHash, hashSizes[0].first);
-                    hashSizes[0].second = max<TReferenceHashSize>(wordHash, hashSizes[0].second);
+                    hashSizes[0].first = min<TContextId>(wordHash, hashSizes[0].first);
+                    hashSizes[0].second = max<TContextId>(wordHash, hashSizes[0].second);
                 }
 
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -166,11 +166,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TReferenceHashSize contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
+                    const TContextId contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TWordId wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordHash << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -178,13 +178,13 @@ namespace uva {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
-                    TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
+                    TContextId keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
                     TProbBackOffEntryPair& pbData = pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
 
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
-                        hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                        hashSizes[level - 1].first = min<TContextId>(keyContext, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TContextId>(keyContext, hashSizes[level - 1].second);
                     }
 
                     //Check that the probability data is not set yet, otherwise a warning!
@@ -219,23 +219,23 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                const TReferenceHashSize contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
+                const TContextId contextHash = AHashMapTrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordIndexSize wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
+                const TWordId wordHash = ATrie<N>::getWordIndex()->getId(endWord.str());
                 LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordHash << END_LOG;
 
                 // 3. Insert the probability data into the trie
                 //Data stores the N-tires from length 2 on, therefore "idx-1"
                 //Get/Create the mapping for this word in the Trie level of the N-gram
-                TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
+                TContextId keyContext = AHashMapTrie<N>::createContext(wordHash, contextHash);
                 TLogProbBackOff& pData = pNGramMap->operator[](keyContext);
 
                 //Add hash key statistics
                 if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                    hashSizes[level - 1].first = min<TReferenceHashSize>(keyContext, hashSizes[level - 1].first);
-                    hashSizes[level - 1].second = max<TReferenceHashSize>(keyContext, hashSizes[level - 1].second);
+                    hashSizes[level - 1].first = min<TContextId>(keyContext, hashSizes[level - 1].first);
+                    hashSizes[level - 1].second = max<TContextId>(keyContext, hashSizes[level - 1].second);
                 }
 
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -258,7 +258,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TWordIndexSize & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
+                const TWordId & endWordHash = AHashMapTrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
@@ -268,11 +268,11 @@ namespace uva {
 
                 if (backOfContextLength > 0) {
                     //Compute the context hash
-                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(backOfContextLength, true);
+                    TContextId contextHash = AHashMapTrie<N>::computeHashContext(backOfContextLength, true);
                     //Attempt to retrieve back-off weights
                     try {
                         //The context length plus one is M value of the M-Gram
-                        TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(endWordHash, contextHash);
+                        TContextId keyContext = AHashMapTrie<N>::createContext(endWordHash, contextHash);
                         TProbBackOffEntryPair & entry = pMGramMap[(backOfContextLength + 1) - MGRAM_IDX_OFFSET]->at(keyContext);
 
                         //Obtained the stored back-off weight
@@ -314,7 +314,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
-                const TWordIndexSize & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
+                const TWordId & endWordHash = AHashMapTrie<N>::getNGramEndWordHash();
 
                 LOG_DEBUG1 << "Computing probability for an " << (contextLength + 1)
                         << "-gram the context length is " << contextLength << END_LOG;
@@ -324,11 +324,11 @@ namespace uva {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
 
                     //Compute the context hash based on what is stored in _wordHashes and context length
-                    TReferenceHashSize contextHash = AHashMapTrie<N>::computeHashContext(contextLength, false);
+                    TContextId contextHash = AHashMapTrie<N>::computeHashContext(contextLength, false);
 
                     //Attempt to retrieve probabilities
                     try {
-                        TReferenceHashSize keyContext = AHashMapTrie<N>::createContext(endWordHash, contextHash);
+                        TContextId keyContext = AHashMapTrie<N>::createContext(endWordHash, contextHash);
                         if (contextLength == (N - 1)) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff & prob = pNGramMap->at(keyContext);

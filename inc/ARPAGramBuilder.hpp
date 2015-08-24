@@ -74,13 +74,13 @@ namespace uva {
                     virtual ~ARPAGramBuilder();
                 protected:
                     //The function that is to be used to add an N-gram to a trie
-                    TAddGramFunct _addGarmFunc;
+                    TAddGramFunct m_addGarmFunc;
                     //The level of the N-grams to be processed by the given builder
-                    const TModelLevel _level;
+                    const TModelLevel m_level;
                     //The temporary storage for read pieces of text
-                    TextPieceReader _token;
+                    TextPieceReader m_token;
                     //This is the N-Gram container to store the parsed N-gram data
-                    SRawNGram _ngram;
+                    SRawNGram m_ngram;
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;
                     static const unsigned short int MAX_NUM_TOKENS_NGRAM_STR;

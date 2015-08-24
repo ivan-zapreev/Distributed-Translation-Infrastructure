@@ -26,7 +26,7 @@
 #ifndef TEXTPIECEREADER_HPP
 #define	TEXTPIECEREADER_HPP
 
-#include <cstring>      // std::memchr
+#include <cstring>      // std::memchr std::strncpy
 #include <algorithm>    // std::min
 
 #include "Globals.hpp"
@@ -43,7 +43,7 @@ namespace uva {
         namespace file {
 
             //The maximum length of the text that will be managed by this class as a string convertable
-            static const size_t MAX_STRING_LENGTH = 2048;
+            static const size_t MAX_N_GRAM_STRING_LENGTH = 2048;
             //The text is too large string to be used in conversion
             static const string TEXT_TOO_LARGE_STR("<text-too-large>");
             //This stores the NOTHING string to be used in conversion
@@ -60,7 +60,7 @@ namespace uva {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
-                const char * m_beginPtr;
+                char * m_beginPtr;
                 //The length of the line
                 size_t m_len;
 
@@ -70,27 +70,9 @@ namespace uva {
                 mutable string m_str;
 
                 //The pointer to the unread remainder of the file
-                const char * m_cursorPtr;
+                char * m_cursorPtr;
                 //The remaining length of the file to read
                 size_t m_restLen;
-
-            protected:
-
-                /**
-                 * Allows to get the pointer to the beginning of the text
-                 * @return the pointer to the beginning of the text
-                 */
-                inline void * getBeginPtr() const {
-                    return (void *) m_beginPtr;
-                }
-
-                /**
-                 * Allows to get the length of the text
-                 * @return the length of the text
-                 */
-                inline size_t getLen() const {
-                    return m_len;
-                }
 
             public:
 
@@ -106,7 +88,7 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                TextPieceReader(const void * beginPtr, const size_t len) : TextPieceReader() {
+                TextPieceReader(void * beginPtr, const size_t len) : TextPieceReader() {
                     set(beginPtr, len);
                 }
 
@@ -129,7 +111,7 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the beginning of the text
                  */
-                inline const char * getBeginCStr() {
+                inline char * getBeginCStr() {
                     return m_beginPtr;
                 }
 
@@ -139,8 +121,24 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the remainder of the text
                  */
-                inline const char * getRestCStr() {
+                inline char * getRestCStr() {
                     return m_cursorPtr;
+                }
+
+                /**
+                 * Allows to get the pointer to the beginning of the text
+                 * @return the pointer to the beginning of the text
+                 */
+                inline void * getBeginPtr() const {
+                    return (void *) m_beginPtr;
+                }
+
+                /**
+                 * Allows to get the length of the text
+                 * @return the length of the text
+                 */
+                inline size_t getLen() const {
+                    return m_len;
                 }
 
                 /**
@@ -148,8 +146,8 @@ namespace uva {
                  * @param beginPtr the pointer to the beginning of the text
                  * @param len the length of the text
                  */
-                inline void set(const void * beginPtr, const size_t len) {
-                    m_beginPtr = static_cast<const char *> (beginPtr);
+                inline void set(void * beginPtr, const size_t len) {
+                    m_beginPtr = static_cast<char *> (beginPtr);
                     m_cursorPtr = m_beginPtr;
                     m_is_gen_str = true;
                     m_len = len;
@@ -163,19 +161,42 @@ namespace uva {
                 }
 
                 /**
+                 * This method allows to copy the string of one text piece into another.
+                 * The copying process re-sets the internal cursor and remaining length to read.
+                 * @param other the element to copy from
+                 * @param limit the maximum length allowed to be copied from the source (other)
+                 * if the source length is larger - an exception will be raised!
+                 */
+                template<const size_t LEN_LIMIT>
+                inline void copy_string(const TextPieceReader& other) {
+                    if (LEN_LIMIT >= other.m_len) {
+                        //Copy the data
+                        (void) strncpy(m_beginPtr, other.m_beginPtr, (size_t) other.m_len);
+                        //Re-set the other members using the available standard method
+                        set(m_beginPtr, other.m_len);
+                    } else {
+                        stringstream msg;
+                        msg << "Unable to copy the string data to the target, "
+                                << "maximum copy length is " << LEN_LIMIT
+                                << ", the source length is " << other.m_len << "!";
+                        throw Exception(msg.str());
+                    }
+                }
+
+                /**
                  * This function reads a line from the mapped file
                  * @param out the out parameter - the read line 
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getNext(TextPieceReader& out, const char delim) {
-                    const char * out_m_beginPtr = NULL;
+                    char * out_m_beginPtr = NULL;
                     size_t out_m_len = 0;
 
                     //The next line begins where we stopped
                     out_m_beginPtr = m_cursorPtr;
 
                     //Search for the next new line symbol in the remainder of the file
-                    const char * charPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
+                    char * charPtr = static_cast<char *> (memchr(m_cursorPtr, delim, m_restLen));
 
                     LOG_DEBUG3 << SSTR(this) << ": Searching for the character got: " << SSTR((void *) charPtr) << END_LOG;
 
@@ -290,18 +311,34 @@ namespace uva {
 
                 /**
                  * The comparison operator implementation
+                 * @param other text piece to compare with
+                 */
+                inline bool operator==(const TextPieceReader & other) const {
+                    if (other.m_len == m_len) {
+                        return !strncmp(m_beginPtr, other.m_beginPtr, m_len);
+                    } else {
+                        return false;
+                    }
+                }
+
+                /**
+                 * The comparison operator implementation
+                 * @param other text piece to compare with
+                 */
+                inline bool operator!=(const TextPieceReader & other) const {
+                    return !this->operator==(other);
+                }
+
+                /**
+                 * The comparison operator implementation
                  * @param other a c_string to compare with
                  */
                 inline bool operator==(const char * other) const {
                     const size_t len = strlen(other);
-                    if (len != m_len) {
-                        return false;
+                    if (len == m_len) {
+                        return !strncmp(m_beginPtr, other, m_len);
                     } else {
-                        if (m_len <= MAX_STRING_LENGTH) {
-                            return !strncmp(m_beginPtr, other, m_len);
-                        } else {
-                            return false;
-                        }
+                        return false;
                     }
                 }
 
@@ -318,11 +355,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator==(const string & other) const {
-                    if ((m_len <= MAX_STRING_LENGTH)) {
-                        return this->operator==(other.c_str());
-                    } else {
-                        return false;
-                    }
+                    return this->operator==(other.c_str());
                 }
 
                 /**
@@ -340,7 +373,7 @@ namespace uva {
                 inline const string & str() const {
                     if (m_is_gen_str) {
                         if (m_len > 0) {
-                            if (m_len <= MAX_STRING_LENGTH) {
+                            if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
                                 char data[m_len + 1];
                                 strncpy(data, m_beginPtr, m_len);
                                 data[m_len] = '\0';

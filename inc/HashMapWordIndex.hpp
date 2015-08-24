@@ -74,7 +74,7 @@ namespace uva {
                         reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc, numWords, "WordIndex", _wordIndexMemFactor);
 
                         //Register the unknown word with the first available hash value
-                        TWordIndexSize& hash = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
+                        TWordId& hash = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
                         hash = UNKNOWN_WORD_ID;
                     };
 
@@ -84,7 +84,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize getId(const string & token) const {
+                    virtual TWordId getId(const string & token) const {
                         try {
                             return _pWordIndexMap->at(token);
                         } catch (out_of_range e) {
@@ -101,9 +101,9 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize makeId(const TextPieceReader & token) {
+                    virtual TWordId makeId(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
-                        TWordIndexSize& hash = _pWordIndexMap->operator[](token.str());
+                        TWordId& hash = _pWordIndexMap->operator[](token.str());
 
                         if (hash == UNDEFINED_WORD_ID) {
                             //If the word hash is not defined yet, then issue it a new hash id
@@ -137,13 +137,13 @@ namespace uva {
                 private:
 
                     //The type of key,value pairs to be stored in the word index
-                    typedef pair< const string, TWordIndexSize> TWordIndexEntry;
+                    typedef pair< const string, TWordId> TWordIndexEntry;
 
                     //The typedef for the word index allocator
                     typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
                     //The word index map type
-                    typedef unordered_map<string, TWordIndexSize, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                    typedef unordered_map<string, TWordId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
 
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
                     TWordIndexAllocator * _pWordIndexAlloc;
@@ -152,7 +152,7 @@ namespace uva {
                     TWordIndexMap * _pWordIndexMap;
 
                     //Stores the last allocated word hash
-                    TWordIndexSize _nextNewWordId;
+                    TWordId _nextNewWordId;
 
                     //Stores the assigned memory factor for storage allocation
                     //in the unordered_map used for the word index

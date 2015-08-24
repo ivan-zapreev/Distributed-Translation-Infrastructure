@@ -46,13 +46,13 @@ namespace uva {
 
                 //Stores the word hash for an unknown word, is 0
                 //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                const TWordIndexSize UNDEFINED_WORD_ID = static_cast<TWordIndexSize> (0);
+                const TWordId UNDEFINED_WORD_ID = static_cast<TWordId> (0);
 
                 //Stores the word id for an unknown word, it must have value 1
-                const TWordIndexSize UNKNOWN_WORD_ID = static_cast<TWordIndexSize> (UNDEFINED_WORD_ID + 1);
+                const TWordId UNKNOWN_WORD_ID = static_cast<TWordId> (UNDEFINED_WORD_ID + 1);
 
                 //Stores the minimum known word id, it must have value 2
-                const TWordIndexSize MIN_KNOWN_WORD_ID = static_cast<TWordIndexSize> (UNKNOWN_WORD_ID + 1);
+                const TWordId MIN_KNOWN_WORD_ID = static_cast<TWordId> (UNKNOWN_WORD_ID + 1);
 
                 /**
                  * This abstract class is used to represent the word dictionary.
@@ -81,7 +81,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize getId(const string & token) const = 0;
+                    virtual TWordId getId(const string & token) const = 0;
 
                     /**
                      * This function creates/gets an id for the given word.
@@ -89,7 +89,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TWordIndexSize makeId(const TextPieceReader & token) = 0;
+                    virtual TWordId makeId(const TextPieceReader & token) = 0;
 
                     /**
                      * The basic destructor

@@ -46,13 +46,13 @@ namespace uva {
                 const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
                 ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc)
-                : _addGarmFunc(addGarmFunc), _level(level), _token(), _ngram({0,}) {
+                : m_addGarmFunc(addGarmFunc), m_level(level), m_token(), m_ngram({0,}) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
-                    _ngram.level = _level;
+                    m_ngram.level = m_level;
                 }
 
                 ARPAGramBuilder::ARPAGramBuilder(const ARPAGramBuilder& orig)
-                : _addGarmFunc(orig._addGarmFunc), _level(orig._level), _token(), _ngram(orig._ngram) {
+                : m_addGarmFunc(orig.m_addGarmFunc), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram) {
                 }
 
                 ARPAGramBuilder::~ARPAGramBuilder() {
@@ -60,56 +60,66 @@ namespace uva {
 
                 bool ARPAGramBuilder::parseToGram(TextPieceReader &line, SRawNGram & gram) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
-                    if (line.getTab(_token)) {
+                    if (line.getTab(m_token)) {
                         //Try to parse it float
-                        if (fast_stoT<float>(_ngram.prob, _token.getRestCStr())) {
-                            LOG_DEBUG2 << "Parsed the N-gram probability: " << _ngram.prob << END_LOG;
+                        if (fast_stoT<float>(m_ngram.prob, m_token.getRestCStr())) {
+                            LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.prob << END_LOG;
 
-                            //Read the first (N-1) string of the N-gram - space separated
-                            for (int i = 0; i < (_level - 1); i++) {
-                                if (!line.getSpace(gram.tokens[i])) {
+                            //Read the all the N-Gram tokes, read until the tab as after the 
+                            //tab there is a back-off weight or there is no tab in the line
+                            if (!line.getTab(gram.context)) {
+                                LOG_WARNING << "An unexpected end of line '" << line.str()
+                                        << "' when reading the " << m_level << "'th "
+                                        << m_level << "-gram token!" << END_LOG;
+                                //The unexpected end of line, broken file format (?)
+                                return false;
+                            }
+                            
+                            //Read the N tokens of the N-gram - space separated
+                            for (int i = 0; i < m_level; i++) {
+                                if (!gram.context.getSpace(gram.tokens[i])) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
-                                            << "'th " << _level << "-gram token!" << END_LOG;
+                                            << "'th " << m_level << "-gram token!" << END_LOG;
                                     //The unexpected end of line, broken file format (?)
                                     return false;
                                 }
                             }
-                            //Read the last N-Gram token, read until the tab as after the 
-                            //tab there is a back-off weight or there is no tab in the line
-                            if (!line.getTab(gram.tokens[_level - 1])) {
-                                LOG_WARNING << "An unexpected end of line '" << line.str()
-                                        << "' when reading the " << _level << "'th "
-                                        << _level << "-gram token!" << END_LOG;
-                                //The unexpected end of line, broken file format (?)
-                                return false;
+                            
+                            //Remove the last token from the context string
+                            if( m_level > MIN_NGRAM_LEVEL ) {
+                                //The reduction factor for length is the length of the last N-gram token plus
+                                //one character which is the space symbol located between N-gram tokens.
+                                const size_t reduction = (gram.tokens[m_level-1].getLen() + 1);
+                                gram.context.set(gram.context.getBeginPtr(), gram.context.getLen() - reduction ) ;
                             }
+
                             //Now if there is something left it should be the back-off weight, otherwise we are done
                             if (line.hasMore()) {
                                 //Take the remainder of the line and try to parse it!
-                                if (!fast_stoT<float>(_ngram.back_off, line.getRestCStr())) {
+                                if (!fast_stoT<float>(m_ngram.back_off, line.getRestCStr())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
                                             << "' as a back-off weight!" << END_LOG;
                                     //The first token was not a float, need to skip to another N-Gram section(?)
                                     return false;
                                 }
-                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << _ngram.back_off << END_LOG;
+                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.back_off << END_LOG;
                             } else {
                                 //There is no back-off so set it to zero
-                                _ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                                m_ngram.back_off = ZERO_LOG_PROB_WEIGHT;
                                 LOG_DEBUG2 << "The parsed N-gram '" << line.str()
-                                        << "' does not have back-off using: " << _ngram.back_off << END_LOG;
+                                        << "' does not have back-off using: " << m_ngram.back_off << END_LOG;
                             }
                             return true;
                         } else {
                             //NOTE: Do it as a debug3 level and not a warning because 
                             //this will happen each time we need to move on to a new section!
-                            LOG_DEBUG3 << "Could not parse the the string '" << _token.str()
+                            LOG_DEBUG3 << "Could not parse the the string '" << m_token.str()
                                     << "' as a probability!" << END_LOG;
                             //The first token was not a float, need to skip to another N-Gram section(?)
                             
                             //Take the line and convert it into a string, then trim it.
-                            string line = _token.str();
+                            string line = m_token.str();
                             trim(line);
                             //Skip to the next section only if we are dealing with a non-empty line!
                             return (line == "");
@@ -123,21 +133,21 @@ namespace uva {
                 }
 
                 bool ARPAGramBuilder::parseLine(TextPieceReader & line) {
-                    LOG_DEBUG << "Processing the " << _level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                    LOG_DEBUG << "Processing the " << m_level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
                     //First tokenize as a pattern "prob \t gram \t back-off"
-                    if (parseToGram(line, _ngram)) {
+                    if (parseToGram(line, m_ngram)) {
                         //Add the obtained N-gram data to the Trie
-                        _addGarmFunc(_ngram);
+                        m_addGarmFunc(m_ngram);
                     } else {
                         //If we could not parse the line to gram then it should
                         //be the beginning of the next m-gram section
                         result = true;
                     }
 
-                    LOG_DEBUG << "Finished processing the " << _level << "-Gram (?) line: '"
+                    LOG_DEBUG << "Finished processing the " << m_level << "-Gram (?) line: '"
                             << line << "', it is " << (result ? "NOT " : "") << "accepted" << END_LOG;
 
                     return result;

@@ -89,13 +89,15 @@ namespace uva {
              *             a negative value
              * @param back_off stores the log_10 back-off weight (probability)
              *        of the N-gram can be 0 is the probability is not available
+             * @param context stores the n-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
              * @param tokens stores the N-gram words the size of this vector
              *        defines the N-gram level.
-             * @param level stores the number of meaningfull elements in the tokens, the value of N for the N-gram
+             * @param level stores the number of meaningful elements in the tokens, the value of N for the N-gram
              */
             struct SRawNGram {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
+                TextPieceReader context;
                 TextPieceReader tokens[MAX_NGRAM_LEVEL];
                 TModelLevel level;
             };
@@ -142,7 +144,10 @@ namespace uva {
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit ATrie(AWordIndex * const _pWordIndex) : pWordIndex(_pWordIndex) {
+                explicit ATrie(AWordIndex * const _pWordIndex)
+                : pWordIndex(_pWordIndex), chachedLevel(UNDEF_NGRAM_LEVEL),
+                chachedContext(contextCStr, MAX_N_GRAM_STRING_LENGTH),
+                chachedContextId(UNDEFINED_WORD_ID) {
                 };
 
                 /**
@@ -206,10 +211,47 @@ namespace uva {
                  */
                 virtual ~ATrie() {
                 };
+            protected:
+
+                /**
+                 * Allows to retrieve the cached context id for the given M-gram if any
+                 * @param mGram the m-gram to get the context id for
+                 * @param result the output parameter, will store the cached id, if any
+                 * @return true if there was nothing cached, otherwise false
+                 */
+                bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
+                    if (chachedLevel == mGram.level) {
+                        if (chachedContext == mGram.context) {
+                            result = chachedContextId;
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                /**
+                 * Allows to cache the context id of the given m-grams context
+                 * @param mGram
+                 * @param result
+                 */
+                void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
+                    chachedLevel = mGram.level;
+                    chachedContext.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
+                    chachedContextId = stx_id;
+                }
 
             private:
                 //Stores the reference to the word index to be used
                 AWordIndex * const pWordIndex;
+
+                //Stores the cached M-gram level M (for 1 < M <= N )
+                TModelLevel chachedLevel;
+                //The actual storage for the cached context c string
+                char contextCStr[MAX_N_GRAM_STRING_LENGTH];
+                //Stores the cached M-gram context (for 1 < M <= N )
+                TextPieceReader chachedContext;
+                //Stores the cached M-gram context value (for 1 < M <= N )
+                TContextId chachedContextId;
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches

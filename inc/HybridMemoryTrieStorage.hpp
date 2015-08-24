@@ -43,7 +43,7 @@ namespace uva {
     namespace smt {
         namespace tries {
             //This is the id type size to be used as index
-            typedef TWordIndexSize TIndexSize;
+            typedef TWordId TIndexSize;
 
             //The type of key,value pairs to be stored
             typedef pair< const TIndexSize, TIndexSize> TStorageMapEntry;
