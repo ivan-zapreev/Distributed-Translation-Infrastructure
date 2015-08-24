@@ -145,7 +145,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit ATrie(AWordIndex * const _pWordIndex)
-                : pWordIndex(_pWordIndex), chachedLevel(UNDEF_NGRAM_LEVEL),
+                : pWordIndex(_pWordIndex),
                 chachedContext(contextCStr, MAX_N_GRAM_STRING_LENGTH),
                 chachedContextId(UNDEFINED_WORD_ID) {
                 };
