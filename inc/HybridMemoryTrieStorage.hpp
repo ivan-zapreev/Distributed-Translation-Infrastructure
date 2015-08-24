@@ -50,8 +50,10 @@ namespace uva {
             typedef pair< const TIndexSize, TIndexSize> TStorageMapEntry;
             //The typedef for the map allocator
             typedef GreedyMemoryAllocator< TStorageMapEntry > TStorageMapAllocator;
-            //The map type
-            typedef unordered_map<TIndexSize, TIndexSize, std::hash<TIndexSize>, std::equal_to<TIndexSize>, TStorageMapAllocator > TStorageMap;
+            //The unsigned map type
+            typedef unordered_map<TIndexSize, TIndexSize, std::hash<TIndexSize>, std::equal_to<TIndexSize>, TStorageMapAllocator > TStorageUnsignedMap;
+            //The unsigned map type
+            typedef map<TIndexSize, TIndexSize> TStorageMap;
 
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
@@ -60,7 +62,7 @@ namespace uva {
             public:
 
                 CtxToPBUnorderedMapStorage(TStorageMapAllocator & alloc) {
-                    m_p_map = new TStorageMap(alloc);
+                    m_p_map = new TStorageUnsignedMap(alloc);
                 };
 
                 virtual ~CtxToPBUnorderedMapStorage() {
@@ -77,7 +79,7 @@ namespace uva {
 
             private:
                 //The map storage
-                TStorageMap * m_p_map;
+                TStorageUnsignedMap * m_p_map;
             };
 
             /**
@@ -131,63 +133,6 @@ namespace uva {
 
                 //The array of length ACtxToPBStorage::m_max_level
                 TStorageMapAllocator * m_p_alloc[N - 1];
-            };
-
-
-            /**
-             * The vector based storage for the HybridMemoryTrie
-             */
-            class CtxToPBMapStorage {
-            public:
-
-                CtxToPBMapStorage() {
-                };
-
-                virtual ~CtxToPBMapStorage() {
-                };
-
-                TIndexSize & operator[](const TIndexSize ctx_idx) {
-                    return m_map[ctx_idx];
-                };
-
-                const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
-                    return m_map.at(ctx_idx);
-                };
-
-            private:
-                //The map storage
-                map<TIndexSize,TIndexSize>  m_map;
-            };
-
-            /**
-             * This is a factory class that should be used to produce containers of CtxToPBVectorStorage.
-             */
-            template<TModelLevel N>
-            class CtxToPBMapStorageFactory {
-            public:
-
-                /**
-                 * This is a basic constructor for the factory
-                 * @param _counts the number of elements to insert per trie level
-                 */
-                CtxToPBMapStorageFactory(const size_t _counts[N])
-                {
-                };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~CtxToPBMapStorageFactory() {
-                }
-
-                /**
-                 * Allocates a new storage container for the given M-gram level
-                 * @param level the N-gram level must be > 1 and <= N
-                 * @return the pointer to the allocated container
-                 */
-                CtxToPBMapStorage * create(const TModelLevel level) {
-                    return new CtxToPBMapStorage();
-                }
             };
         }
     }
