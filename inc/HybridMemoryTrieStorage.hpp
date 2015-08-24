@@ -173,7 +173,7 @@ namespace uva {
                 : ACtxToPBStorageFactory<N>(_counts) {
                     for (size_t i = 1; i < N; i++) {
                         m_p_alloc[i - 1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
-                        LOG_DEBUG3 << "Allocating a new TStorageMapAllocator("
+                        LOG_DEBUG2 << "Allocating a new TStorageMapAllocator("
                                 << _counts[i] * UNORDERED_MAP_MEMORY_FACTOR << ") for level "
                                 << i << ", the allocator m_p_alloc[" << (i - 1)
                                 << "] = " << SSTR(m_p_alloc[i - 1]) << END_LOG;
