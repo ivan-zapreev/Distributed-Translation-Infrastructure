@@ -175,7 +175,7 @@ namespace uva {
                  */
                 virtual ~CtxToPBMapStorageFactory() {
                     for(size_t i = 0; i < N; i++) {
-                        delete[] m_p_alloc[i];
+                        delete m_p_alloc[i];
                     }
                 }
 
