@@ -24,6 +24,8 @@
  */
 #include "HybridMemoryTrie.hpp"
 
+#include <inttypes.h>       // std::uint32_t
+
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
@@ -32,9 +34,9 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, class C>
-            HybridMemoryTrie<N, C>::HybridMemoryTrie(AWordIndex * const p_word_index)
-            : ATrie<N>(p_word_index) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            HybridMemoryTrie<N, StorageFactory>::HybridMemoryTrie(AWordIndex * const p_word_index)
+            : ATrie<N>(p_word_index), m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description
                 //of the m_mgram_mapping data member.
@@ -53,13 +55,13 @@ namespace uva {
                     msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
                     throw Exception(msg.str());
                 }
-                
+
                 //Initialize the array of counters
-                memset(next_ctx_id, 0, NUM_IDX_COUNTERS*sizeof(TIndexSize));
+                memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TIndexSize));
             }
 
-            template<TModelLevel N, class C>
-            void HybridMemoryTrie<N, C>::preAllocate(const size_t counts[N]) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            void HybridMemoryTrie<N, StorageFactory>::preAllocate(const size_t counts[N]) {
                 //Store the number of words plus 2 because a word with index 0 is
                 //UNDEFINED and a word with index 1 is UNKNOWN (<unk>)
                 m_word_arr_size = counts[0] + 2;
@@ -67,12 +69,15 @@ namespace uva {
                 //01) Pre-allocate the word index
                 ATrie<N>::getWordIndex()->reserve(counts[0]);
 
-                //02) Allocate the main arrays of pointers where probs/back-offs will be stored
+                //02) Allocate the factory
+                m_storage_factory = new StorageFactory<N>(counts);
+
+                //03) Allocate the main arrays of pointers where probs/back-offs will be stored
 
                 //First allocate the memory for the One-grams, add an extra
                 //element for the unknown word and initialize it!
                 m_mgram_data[0] = new TProbBackOffEntryPair[m_word_arr_size];
-                memset(m_mgram_data[0], 0, m_word_arr_size*sizeof(TProbBackOffEntryPair));
+                memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (TProbBackOffEntryPair));
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntryPair & pbData = m_mgram_data[0][UNKNOWN_WORD_ID];
@@ -85,26 +90,26 @@ namespace uva {
                 //Inside the C container class values.
                 for (int idx = 1; idx < (N - 1); idx++) {
                     m_mgram_data[idx] = new TProbBackOffEntryPair[counts[idx]];
-                    memset(m_mgram_data[idx], 0, counts[idx]*sizeof(TProbBackOffEntryPair));
+                    memset(m_mgram_data[idx], 0, counts[idx] * sizeof (TProbBackOffEntryPair));
                 }
 
-                //Allocate the word map arrays per level There is N-1 levels to have 
+                //04) Allocate the word map arrays per level There is N-1 levels to have 
                 //as the for M == 0 - the One Grams, we do not need this mappings
                 for (int idx = 0; idx < (N - 1); idx++) {
-                    m_mgram_mapping[idx] = new C*[m_word_arr_size];
-                    memset(m_mgram_mapping[idx], 0, m_word_arr_size*sizeof(C*));
+                    m_mgram_mapping[idx] = new ACtxToPBStorage*[m_word_arr_size];
+                    memset(m_mgram_mapping[idx], 0, m_word_arr_size * sizeof (ACtxToPBStorage*));
                 }
             }
 
-            template<TModelLevel N, class C>
-            void HybridMemoryTrie<N, C>::add1Gram(const SRawNGram &oGram) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            void HybridMemoryTrie<N, StorageFactory>::add1Gram(const SRawNGram &oGram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = oGram.tokens[0];
 
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TWordIndexSize wordId = ATrie<N>::getWordIndex()->makeId(token);
+                TIndexSize wordId = ATrie<N>::getWordIndex()->makeId(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntryPair & pbData = m_mgram_data[0][wordId];
 
@@ -125,8 +130,8 @@ namespace uva {
                         << wordId << END_LOG;
             }
 
-            template<TModelLevel N, class C>
-            void HybridMemoryTrie<N, C>::addMGram(const SRawNGram &mGram) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            void HybridMemoryTrie<N, StorageFactory>::addMGram(const SRawNGram &mGram) {
                 const TModelLevel level = mGram.level;
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
 
@@ -139,14 +144,14 @@ namespace uva {
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordIndexSize wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TIndexSize wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = getId('" << endWord.str() << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
-                    if (m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId] == NULL) {
-                        m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId] = new C();
+                    ACtxToPBStorage*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                    if (ctx_mapping == NULL) {
+                        ctx_mapping = m_storage_factory->create(level);
                     }
-                    C* ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
 
                     TIndexSize & ctx_id = (*ctx_mapping)[ctxId];
                     ctx_id = next_ctx_id[level - MGRAM_MAPPING_IDX_OFFSET]++;
@@ -175,8 +180,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, class C>
-            void HybridMemoryTrie<N, C>::addNGram(const SRawNGram &nGram) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            void HybridMemoryTrie<N, StorageFactory>::addNGram(const SRawNGram &nGram) {
                 const size_t level = nGram.level;
                 LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
 
@@ -187,14 +192,14 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[level - 1];
-                const TWordIndexSize wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                const TIndexSize wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
                 LOG_DEBUG2 << "wordHash = getId('" << endWord << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
-                if (m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId] == NULL) {
-                    m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId] = new C();
+                ACtxToPBStorage*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                if (ctx_mapping == NULL) {
+                    ctx_mapping = m_storage_factory->create(level);
                 }
-                C* ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
                 TLogProbBackOff & pData = (TLogProbBackOff &) (*ctx_mapping)[ctxId];
 
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -213,13 +218,13 @@ namespace uva {
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             }
 
-            template<TModelLevel N, class C>
-            void HybridMemoryTrie<N, C>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            void HybridMemoryTrie<N, StorageFactory>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 //ToDo: Implement
             }
 
-            template<TModelLevel N, class CtxToPBStore>
-            HybridMemoryTrie<N, CtxToPBStore>::~HybridMemoryTrie() {
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            HybridMemoryTrie<N, StorageFactory>::~HybridMemoryTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the prob/back-off arrays per level
@@ -231,7 +236,7 @@ namespace uva {
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the word arrays per level
                     if (m_mgram_mapping[idx] != NULL) {
-                        for (TWordIndexSize widx = 0; widx < m_word_arr_size; widx++) {
+                        for (TIndexSize widx = 0; widx < m_word_arr_size; widx++) {
                             //Delete the C containers per word index
                             if (m_mgram_mapping[idx][widx] != NULL) {
                                 delete m_mgram_mapping[idx][widx];
@@ -240,10 +245,13 @@ namespace uva {
                         delete[] m_mgram_mapping[idx];
                     }
                 }
+                if (m_storage_factory != NULL) {
+                    delete m_storage_factory;
+                }
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorage>;
+            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorageFactory>;
 
         }
     }

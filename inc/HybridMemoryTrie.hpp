@@ -27,15 +27,13 @@
 #define	HYBRIDMEMORYTRIE_HPP
 
 #include <string>           // std::string
-#include <inttypes.h>       // std::uint32_t
-#include <utility>          // std::pair, std::make_pair
-#include <unordered_map>    // std::unordered_map
 
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "ATrie.hpp"
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
+#include "HybridMemoryTrieStorage.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
@@ -43,93 +41,13 @@ using namespace uva::smt::tries::dictionary;
 namespace uva {
     namespace smt {
         namespace tries {
-            //This is the id type size to be used as index
-            typedef TWordIndexSize TIndexSize;
-
-            /**
-             * This is an abstract class that defines an interface for all container
-             * types that can be used in the HybridMemoryTrie class for storing
-             * the context-to-prob_back_off_index pairs.
-             */
-            class ACtxToPBStorare {
-            public:
-
-                /**
-                 * The basic constructor
-                 */
-                ACtxToPBStorare() {
-                }
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~ACtxToPBStorare() {
-                }
-
-                /**
-                 * This method should be used to pre-allocate the storage
-                 * @param num_pairs the number of pairs to pre-allocate in the store
-                 */
-                virtual void preAllocate(const size_t num_pairs) = 0;
-
-                /**
-                 * This operator will search for a key ctx_idx and if found will
-                 * return the reference to the corresponding value. If not will
-                 * create a new entry and return a reference for the uninitialized
-                 * value. Does not throw any exceptions
-                 * @param ctx_idx the key value
-                 * @return the reference to the value
-                 */
-                virtual TIndexSize & operator[](const TIndexSize ctx_idx) = 0;
-
-                /**
-                 * This method will search for a key ctx_idx and if found will
-                 * return the reference to the const value. If not found will
-                 * throw an exception.
-                 * @param ctx_idx the key value
-                 * @return the reference to the value
-                 * @throws out_of_range
-                 */
-                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) = 0;
-
-            };
-
-            /**
-             * The unordered hash map-based storage for the HybridMemoryTrie
-             */
-            class CtxToPBMapStorage : public ACtxToPBStorare {
-            public:
-                //Stores the map type
-                typedef unordered_map<TIndexSize, TIndexSize> TCtxToPBMapElement;
-
-                CtxToPBMapStorage() : ACtxToPBStorare() {
-                };
-
-                virtual ~CtxToPBMapStorage() {
-                };
-
-                virtual void preAllocate(const size_t num_pairs) {
-                    LOG_WARNING << "CtxToPBMapStorage is asked to pre-allocate " << num_pairs << " elements, ignoring!" << END_LOG;
-                };
-
-                virtual TIndexSize & operator[](const TIndexSize ctx_idx) {
-                    return m_data[ctx_idx];
-                };
-
-                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
-                    return m_data.at(ctx_idx);
-                };
-
-            private:
-                TCtxToPBMapElement m_data;
-            };
 
             /**
              * This is the hybrid memory trie implementation class. It has two template parameters.
              * @param N the maximum number of levelns in the trie.
              * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
              */
-            template<TModelLevel N, class CtxToPBStore>
+            template<TModelLevel N, template<TModelLevel > class StorageFactory>
             class HybridMemoryTrie : public ATrie<N> {
             public:
 
@@ -183,7 +101,10 @@ namespace uva {
 
                 //Stores the number of words
                 size_t m_word_arr_size;
-
+                
+                //The factory to produce the storage containers
+                ACtxToPBStorageFactory<N> * m_storage_factory;
+        
                 //M-Gram data for 1 <= M < N. This is a 2D array storing
                 //For each M-Gram level M an array of prob-back_off values
                 // m_mgram_data[M][0] - probability/back-off pair for the given M-gram
@@ -210,7 +131,7 @@ namespace uva {
                 //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                 //4 byte integer, so we minimize memory usage by storing float
                 //probability in place of the index.
-                CtxToPBStore** m_mgram_mapping[N - 1];
+                ACtxToPBStorage** m_mgram_mapping[N - 1];
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
@@ -250,7 +171,7 @@ namespace uva {
                 }
             };
 
-            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
+            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL,CtxToPBMapStorageFactory> TFiveMapHybridMemoryTrie;
         }
     }
 }

@@ -18,6 +18,7 @@
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/HybridMemoryTrie.hpp</itemPath>
+      <itemPath>inc/HybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
@@ -99,8 +100,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -113,11 +112,11 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -177,8 +176,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -191,11 +188,11 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -264,8 +261,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -278,11 +273,11 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -340,8 +335,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -354,11 +347,11 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -418,8 +411,6 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -432,11 +423,11 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
