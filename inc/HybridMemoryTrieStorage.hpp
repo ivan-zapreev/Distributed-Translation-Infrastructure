@@ -146,6 +146,9 @@ namespace uva {
                 };
 
                 TIndexSize & operator[](const TIndexSize ctx_idx) {
+                    if( ctx_idx >= m_vector.size() ) {
+                        m_vector.resize(ctx_idx+1);
+                    }
                     return m_vector[ctx_idx];
                 };
 
