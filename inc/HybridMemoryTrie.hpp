@@ -148,12 +148,13 @@ namespace uva {
                  */
                 template<DebugLevel logLevel>
                 inline TIndexSize getContextId(const SRawNGram & gram) {
-                    //Get the start context value for the first token
-                    const string & token = gram.tokens[0].str();
                     TContextId ctxId;
-                    
+
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (ATrie<N>::getCachedContextId(gram, ctxId)) {
+                        //Get the start context value for the first token
+                        const string & token = gram.tokens[0].str();
+
                         //There is no id cached for this M-gram context - compute it
                         ctxId = ATrie<N>::getWordIndex()->getId(token);
                         LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
@@ -166,7 +167,7 @@ namespace uva {
                             ctxId = m_mgram_mapping[i - 1][wordId]->at(ctxId);
                             LOGGER(logLevel) << "ctxId = contextId( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                         }
-                        
+
                         //Cache the newly computed context id for the given n-gram context
                         ATrie<N>::cacheContextId(gram, ctxId);
                     }

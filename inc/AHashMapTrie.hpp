@@ -233,32 +233,40 @@ namespace uva {
 
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * 
+                 * WARNING: Must not be called on M-grams with M <= 1!
+                 * 
                  * @param gram the N-gram with its tokens to create context for
-                 * @return the resulting hash of the context(w1 w2 w3) or UNDEFINED_WORD_HASH for any M-Gram with M <= 1
+                 * @return the resulting hash of the context(w1 w2 w3)
                  */
                 template<DebugLevel logLevel>
                 inline TContextId getContextId(const SRawNGram & gram) {
-                    TContextId contextHash = UNDEFINED_WORD_ID;
+                    TContextId ctxId;
 
-                    //If it is more than a 1-Gram then compute the context, otherwise it is undefined.
-                    if (gram.level > MIN_NGRAM_LEVEL) {
+                    //Try to retrieve the context from the cache, if not present then compute it
+                    if (ATrie<N>::getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
-                        contextHash = ATrie<N>::getWordIndex()->getId(token);
 
-                        LOGGER(logLevel) << "contextHash = computeHash('" << token << "') = " << SSTR(contextHash) << END_LOG;
+                        //There is no id cached for this M-gram context - compute it
+                        ctxId = ATrie<N>::getWordIndex()->getId(token);
+
+                        LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            TWordId wordHash = ATrie<N>::getWordIndex()->getId(token);
-                            LOGGER(logLevel) << "wordHash = computeHash('" << token << "') = " << SSTR(wordHash) << END_LOG;
-                            contextHash = createContext(wordHash, contextHash);
-                            LOGGER(logLevel) << "contextHash = createContext( wordHash, contextHash ) = " << SSTR(contextHash) << END_LOG;
+                            TWordId wordId = ATrie<N>::getWordIndex()->getId(token);
+                            LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
+                            ctxId = createContext(wordId, ctxId);
+                            LOGGER(logLevel) << "ctxId = createContext( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                         }
+
+                        //Cache the newly computed context id for the given n-gram context
+                        ATrie<N>::cacheContextId(gram, ctxId);
                     }
 
-                    return contextHash;
+                    return ctxId;
                 }
 
                 /**
@@ -285,7 +293,7 @@ namespace uva {
                 }
 
                 void recordAndCheck(const TWordId wordHash,
-                        const TContextId contextHash, const SNiceNGram &gram) const {
+                        const TContextId contextHash, const SNiceNGram & gram) const {
                 }
 
             private:
