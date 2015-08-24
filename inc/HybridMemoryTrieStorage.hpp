@@ -89,6 +89,8 @@ namespace uva {
             /**
              * This is an abstract class factory class that should be used as a
              * base class for the factories producing instances of ACtxToPBStorage.
+             * The M-Gram level must be 1 < M <= N. This is not checked and will
+             * cause a segmentation fault if used with M other than specified!
              */
             template<TModelLevel N>
             class ACtxToPBStorageFactory {
@@ -108,7 +110,11 @@ namespace uva {
                 }
 
                 /**
-                 * This method should provide a new storage instance for the given M-gram level M
+                 * This method should provide a new storage instance for the
+                 * given M-gram level M.
+                 * 
+                 * WARNING: M must be > 1 No allocation for One grams is done!
+                 * 
                  * @param level the M-Gram level M
                  * @return the storage instance for this level
                  */
@@ -165,8 +171,8 @@ namespace uva {
                  */
                 CtxToPBMapStorageFactory(const size_t _counts[N])
                 : ACtxToPBStorageFactory<N>(_counts) {
-                    for(size_t i = 0; i < N; i++) {
-                        m_p_alloc[i] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
+                    for(size_t i = 1; i < N; i++) {
+                        m_p_alloc[i-1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
                     }
                 };
 
@@ -174,24 +180,24 @@ namespace uva {
                  * The basic destructor
                  */
                 virtual ~CtxToPBMapStorageFactory() {
-                    for(size_t i = 0; i < N; i++) {
-                        delete m_p_alloc[i];
+                    for(size_t i = 1; i < N; i++) {
+                        delete m_p_alloc[i-1];
                     }
                 }
 
                 /**
-                 * This method should provide a new storage instance for the given M-gram level M
-                 * @param level the M-Gram level M
-                 * @return the storage instance for this level
+                 * Allocates a new storage container for the given M-gram level
+                 * @param level the N-gram level must be > 1 and <= N
+                 * @return the pointer to the allocated container
                  */
                 virtual ACtxToPBStorage * create(const TModelLevel level) {
-                    return new CtxToPBMapStorage(*m_p_alloc[level]);
+                    return new CtxToPBMapStorage(*m_p_alloc[level-1]);
                 }
 
             protected:
 
                 //The array of length ACtxToPBStorage::m_max_level
-                TStorageMapAllocator * m_p_alloc[N];
+                TStorageMapAllocator * m_p_alloc[N-1];
             };
         }
     }
