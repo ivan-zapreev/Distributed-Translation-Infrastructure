@@ -131,12 +131,14 @@ namespace uva {
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
              */
-            class CtxToPBMapStorage : public ACtxToPBStorage {
+//            class CtxToPBMapStorage : public ACtxToPBStorage {
+            class CtxToPBMapStorage {
             public:
                 //Stores the map type
                 typedef unordered_map<TIndexSize, TIndexSize> TCtxToPBMapElement;
 
-                CtxToPBMapStorage(TStorageMapAllocator & alloc) : ACtxToPBStorage() {
+//                CtxToPBMapStorage(TStorageMapAllocator & alloc) : ACtxToPBStorage() {
+                CtxToPBMapStorage(TStorageMapAllocator & alloc) {
                     m_p_map = new TStorageMap(alloc);
                 };
 
@@ -144,11 +146,11 @@ namespace uva {
                     delete m_p_map;
                 };
 
-                virtual TIndexSize & operator[](const TIndexSize ctx_idx) {
+                TIndexSize & operator[](const TIndexSize ctx_idx) {
                     return m_p_map->operator[](ctx_idx);
                 };
 
-                virtual const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
+                const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
                     return m_p_map->at(ctx_idx);
                 };
 
@@ -162,7 +164,8 @@ namespace uva {
              * base class for the factories producing instances of ACtxToPBStorage.
              */
             template<TModelLevel N>
-            class CtxToPBMapStorageFactory : public ACtxToPBStorageFactory<N> {
+//            class CtxToPBMapStorageFactory : public ACtxToPBStorageFactory<N> {
+            class CtxToPBMapStorageFactory {
             public:
 
                 /**
@@ -172,7 +175,8 @@ namespace uva {
                  * __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR
                  */
                 CtxToPBMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
-                : ACtxToPBStorageFactory<N>(_counts) {
+                {
+//                : ACtxToPBStorageFactory<N>(_counts) {
                     for (size_t i = 1; i < N; i++) {
                         const GreedyMemoryStorage::size_type size = _counts[i] * factor;
                         m_p_alloc[i - 1] = new TStorageMapAllocator(size);
@@ -197,7 +201,7 @@ namespace uva {
                  * @param level the N-gram level must be > 1 and <= N
                  * @return the pointer to the allocated container
                  */
-                virtual ACtxToPBStorage * create(const TModelLevel level) {
+                CtxToPBMapStorage * create(const TModelLevel level) {
                     const TModelLevel idx = level -2;
                     LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level "
                             << level << ", the allocator m_p_alloc[" << idx

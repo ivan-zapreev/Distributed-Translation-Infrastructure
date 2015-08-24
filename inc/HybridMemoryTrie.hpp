@@ -47,7 +47,7 @@ namespace uva {
              * @param N the maximum number of levelns in the trie.
              * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
              */
-            template<TModelLevel N, template<TModelLevel > class StorageFactory>
+            template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             class HybridMemoryTrie : public ATrie<N> {
             public:
 
@@ -103,7 +103,7 @@ namespace uva {
                 size_t m_word_arr_size;
                 
                 //The factory to produce the storage containers
-                ACtxToPBStorageFactory<N> * m_storage_factory;
+                StorageFactory<N> * m_storage_factory;
         
                 //M-Gram data for 1 <= M < N. This is a 2D array storing
                 //For each M-Gram level M an array of prob-back_off values
@@ -131,7 +131,7 @@ namespace uva {
                 //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                 //4 byte integer, so we minimize memory usage by storing float
                 //probability in place of the index.
-                ACtxToPBStorage** m_mgram_mapping[N - 1];
+                StorageContainer** m_mgram_mapping[N - 1];
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
@@ -171,7 +171,7 @@ namespace uva {
                 }
             };
 
-            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL,CtxToPBMapStorageFactory> TFiveMapHybridMemoryTrie;
+            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL,CtxToPBMapStorageFactory,CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
         }
     }
 }
