@@ -222,6 +222,7 @@ namespace uva {
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             void HybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 //ToDo: Implement
+                throw Exception("Not implemented: HybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result)");
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
@@ -253,7 +254,7 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorageFactory, CtxToPBMapStorage>;
-
+            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBVectorStorageFactory, CtxToPBVectorStorage>;
         }
     }
 }

@@ -178,6 +178,7 @@ namespace uva {
             };
 
             typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBMapStorageFactory, CtxToPBMapStorage> TFiveMapHybridMemoryTrie;
+            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBVectorStorageFactory, CtxToPBVectorStorage> TFiveVectorHybridMemoryTrie;
         }
     }
 }

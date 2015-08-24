@@ -57,8 +57,6 @@ namespace uva {
              */
             class CtxToPBMapStorage {
             public:
-                //Stores the map type
-                typedef unordered_map<TIndexSize, TIndexSize> TCtxToPBMapElement;
 
                 CtxToPBMapStorage(TStorageMapAllocator & alloc) {
                     m_p_map = new TStorageMap(alloc);
@@ -82,8 +80,7 @@ namespace uva {
             };
 
             /**
-             * This is an abstract class factory class that should be used as a
-             * base class for the factories producing instances of ACtxToPBStorage.
+             * This is a factory class that should be used to produce containers of CtxToPBMapStorage.
              */
             template<TModelLevel N>
             class CtxToPBMapStorageFactory {
@@ -133,6 +130,63 @@ namespace uva {
 
                 //The array of length ACtxToPBStorage::m_max_level
                 TStorageMapAllocator * m_p_alloc[N - 1];
+            };
+
+
+            /**
+             * The vector based storage for the HybridMemoryTrie
+             */
+            class CtxToPBVectorStorage {
+            public:
+
+                CtxToPBVectorStorage() {
+                };
+
+                virtual ~CtxToPBVectorStorage() {
+                };
+
+                TIndexSize & operator[](const TIndexSize ctx_idx) {
+                    return m_vector[ctx_idx];
+                };
+
+                const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
+                    return m_vector.at(ctx_idx);
+                };
+
+            private:
+                //The map storage
+                vector<TIndexSize> m_vector;
+            };
+
+            /**
+             * This is a factory class that should be used to produce containers of CtxToPBVectorStorage.
+             */
+            template<TModelLevel N>
+            class CtxToPBVectorStorageFactory {
+            public:
+
+                /**
+                 * This is a basic constructor for the factory
+                 * @param _counts the number of elements to insert per trie level
+                 */
+                CtxToPBVectorStorageFactory(const size_t _counts[N])
+                {
+                };
+
+                /**
+                 * The basic destructor
+                 */
+                virtual ~CtxToPBVectorStorageFactory() {
+                }
+
+                /**
+                 * Allocates a new storage container for the given M-gram level
+                 * @param level the N-gram level must be > 1 and <= N
+                 * @return the pointer to the allocated container
+                 */
+                CtxToPBVectorStorage * create(const TModelLevel level) {
+                    return new CtxToPBVectorStorage();
+                }
             };
         }
     }
