@@ -168,14 +168,17 @@ namespace uva {
                 /**
                  * This is a basic constructor for the factory
                  * @param _counts the number of elements to insert per trie level
+                 * @param factor the memory multiplication factor, by default
+                 * __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR
                  */
-                CtxToPBMapStorageFactory(const size_t _counts[N])
+                CtxToPBMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
                 : ACtxToPBStorageFactory<N>(_counts) {
                     for (size_t i = 1; i < N; i++) {
-                        m_p_alloc[i - 1] = new TStorageMapAllocator(_counts[i] * UNORDERED_MAP_MEMORY_FACTOR);
+                        const GreedyMemoryStorage::size_type size = _counts[i] * factor;
+                        m_p_alloc[i - 1] = new TStorageMapAllocator(size);
                         LOG_DEBUG2 << "Allocating a new TStorageMapAllocator("
-                                << _counts[i] * UNORDERED_MAP_MEMORY_FACTOR << ") for level "
-                                << i+1 << ", the allocator m_p_alloc[" << (i - 1)
+                                << size << ") for level " << i+1
+                                << ", the allocator m_p_alloc[" << (i - 1)
                                 << "] = " << SSTR(m_p_alloc[i - 1]) << END_LOG;
                     }
                 };

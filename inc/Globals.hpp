@@ -85,6 +85,11 @@ namespace uva {
                 //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie
                 const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
             }
+            
+            namespace __CtxToPBMapStorageFactory {
+                //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
+                const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
+            }
         }
 
         //The following type definitions are important for creating hashes
