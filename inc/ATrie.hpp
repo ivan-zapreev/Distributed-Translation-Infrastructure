@@ -219,10 +219,11 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
+                inline bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
                     if (chachedLevel == mGram.level) {
                         if (chachedContext == mGram.context) {
                             result = chachedContextId;
+                            LOG_INFO3 << "Cache match! " << chachedContext << " == " << mGram.context << "!" << END_LOG;
                             return false;
                         }
                     }
@@ -234,7 +235,7 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
+                inline void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
                     chachedLevel = mGram.level;
                     chachedContext.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     chachedContextId = stx_id;
