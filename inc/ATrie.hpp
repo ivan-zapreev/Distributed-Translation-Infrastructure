@@ -220,12 +220,10 @@ namespace uva {
                  * @return true if there was nothing cached, otherwise false
                  */
                 inline bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
-                    if (chachedLevel == mGram.level) {
-                        if (chachedContext == mGram.context) {
-                            result = chachedContextId;
-                            LOG_INFO3 << "Cache match! " << chachedContext << " == " << mGram.context << "!" << END_LOG;
-                            return false;
-                        }
+                    if (chachedContext == mGram.context) {
+                        result = chachedContextId;
+                        LOG_DEBUG3 << "Cache match! " << chachedContext << " == " << mGram.context << END_LOG;
+                        return false;
                     }
                     return true;
                 }
@@ -236,17 +234,15 @@ namespace uva {
                  * @param result
                  */
                 inline void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
-                    chachedLevel = mGram.level;
                     chachedContext.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     chachedContextId = stx_id;
+                    LOG_DEBUG3 << "Caching context = [ " << chachedContext << " ], id = " << chachedContextId << END_LOG;
                 }
 
             private:
                 //Stores the reference to the word index to be used
                 AWordIndex * const pWordIndex;
 
-                //Stores the cached M-gram level M (for 1 < M <= N )
-                TModelLevel chachedLevel;
                 //The actual storage for the cached context c string
                 char contextCStr[MAX_N_GRAM_STRING_LENGTH];
                 //Stores the cached M-gram context (for 1 < M <= N )
