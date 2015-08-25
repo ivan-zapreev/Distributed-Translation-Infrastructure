@@ -224,7 +224,9 @@ namespace uva {
                  * @return the resulting context
                  */
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
-                    return m_mgram_mapping[level - 1][wordId]->at(ctxId);
+                    LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
+                            << wordId << ", ctxId: " << ctxId << END_LOG;
+                    return m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId]->at(ctxId);
                 }
 
             };

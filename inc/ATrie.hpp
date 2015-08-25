@@ -196,7 +196,7 @@ namespace uva {
                     LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                     //Compute it's hash value
-                    TShortId wordHash = ATrie<N>::getWordIndex()->makeId(token);
+                    TShortId wordHash = m_p_word_index->makeId(token);
                     //Get the word probability and back-off data reference
                     TProbBackOffEntryPair & pbData = make_1_GramDataRef(wordHash);
 
@@ -231,11 +231,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TLongId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
+                    const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TShortId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TShortId wordId = m_p_word_index->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -270,11 +270,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TLongId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
+                    const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(nGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = nGram.tokens[N - 1];
-                    const TShortId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TShortId wordId = m_p_word_index->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -520,14 +520,14 @@ namespace uva {
                         const string & token = gram.tokens[0].str();
 
                         //There is no id cached for this M-gram context - compute it
-                        ctxId = ATrie<N>::getWordIndex()->getId(token);
+                        ctxId = m_p_word_index->getId(token);
 
                         LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            const TShortId wordId = ATrie<N>::getWordIndex()->getId(token);
+                            const TShortId wordId = m_p_word_index->getId(token);
                             LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
                             ctxId = m_get_ctx_id_func(wordId, ctxId, i + 1);
                             LOGGER(logLevel) << "ctxId = createContext( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
