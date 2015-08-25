@@ -74,7 +74,12 @@ namespace uva {
             /**
              * This is the hybrid memory trie implementation class.
              * It implements storage by using maps and arrays and for a M-gram
-             * with 1 < M < N it maps previous context to the word/proba/back-off data
+             * with 1 < M < N it maps previous context to the word/proba/back-off data.
+             * 
+             * WARNING: This trie assumes that the N-grams are added to the Trie in an
+             * ordered way and there are no duplicates in the 1-Grams. The order is
+             * assumed to be lexicographical as in the ARPA files! This is not checked!
+             * 
              * @param N the maximum number of levelns in the trie.
              * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
              */
