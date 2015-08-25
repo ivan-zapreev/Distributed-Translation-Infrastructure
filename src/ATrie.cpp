@@ -50,6 +50,8 @@ namespace uva {
                         //Compute the context hash
                         ctxId = getQueryContextId(boCtxLen, true);
 
+                        LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
+
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntryPair& entry = get_M_GramDataRef(level, wordId, ctxId);
 
@@ -109,6 +111,8 @@ namespace uva {
                     try {
                         //Compute the context hash based on what is stored in _wordHashes and context length
                         ctxId = getQueryContextId(ctxLen, false);
+
+                        LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
 
                         if (level == N) {
                             //If we are looking for a N-Gram probability
