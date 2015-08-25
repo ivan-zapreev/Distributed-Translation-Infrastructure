@@ -53,9 +53,13 @@ namespace uva {
 
             template<TModelLevel N>
             void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
-                //Store the M-gram level sizes in terms of the number of M-grams per level
+                //Compute and store the M-gram level sizes in terms of the number of M-grams per level
+                //Also initialize the M-gram index counters, for issuing context indexes
                 for (TModelLevel i = 0; i < NUM_M_N_GRAM_LEVELS; i++) {
-                    m_MN_gram_size[i] = counts[i + 1];
+                    //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
+                    m_MN_gram_idx_cnts[i] = 1;
+                    //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
+                    m_MN_gram_size[i] = counts[i + 1]+1;
                 }
 
                 //01) Pre-allocate the word index
@@ -84,24 +88,25 @@ namespace uva {
                 m_M_gram_ctx_2_data[0] = new TSubArrReference[one_gram_arr_size];
                 memset(m_M_gram_ctx_2_data[0], 0, one_gram_arr_size * sizeof (TSubArrReference));
 
-                //Now also allocate the data for the 2-Grams, the number of 2-grams is counts[1] 
-                m_M_gram_data[0] = new TWordIdProbBackOffEntryPair[counts[1]];
-                memset(m_M_gram_data[0], 0, counts[1] * sizeof (TSubArrReference));
+                //Now also allocate the data for the 2-Grams, the number of 2-grams is m_MN_gram_size[0] 
+                m_M_gram_data[0] = new TWordIdProbBackOffEntryPair[m_MN_gram_size[0]];
+                memset(m_M_gram_data[0], 0, m_MN_gram_size[0] * sizeof (TSubArrReference));
 
                 //Now the remaining elements can be added in a loop
                 for (TModelLevel i = 1; i < NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
-                    //level M = i + 2. The counts[i] stores the number of elements
+                    //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
-                    m_M_gram_ctx_2_data[i] = new TSubArrReference[counts[i]];
-                    memset(m_M_gram_ctx_2_data[i], 0, counts[i] * sizeof (TSubArrReference));
-                    //The counts[i+1] stores the number of elements
+                    m_M_gram_ctx_2_data[i] = new TSubArrReference[m_MN_gram_size[i-1]];
+                    memset(m_M_gram_ctx_2_data[i], 0, m_MN_gram_size[i-1] * sizeof (TSubArrReference));
+                    //The m_MN_gram_size[i] stores the number of elements
                     //on the current level - the number of M-Grams.
-                    m_M_gram_data[i] = new TWordIdProbBackOffEntryPair[counts[i + 1]];
-                    memset(m_M_gram_data[i], 0, counts[i + 1] * sizeof (TSubArrReference));
+                    m_M_gram_data[i] = new TWordIdProbBackOffEntryPair[m_MN_gram_size[i]];
+                    memset(m_M_gram_data[i], 0, m_MN_gram_size[i] * sizeof (TSubArrReference));
                 }
 
-                //05) Allocate the data for the N-Grams
+                //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
+                //There is no need to add extra elements here as the context index is not relevant.
                 m_N_gram_data = new TCtxIdProbEntryPair[counts[N - 1]];
                 memset(m_N_gram_data, 0, counts[N - 1] * sizeof (TCtxIdProbEntryPair));
             }
