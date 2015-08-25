@@ -1,5 +1,5 @@
 /* 
- * File:   C2WHybridMemoryTrie.cpp
+ * File:   C2WOrderedArrayTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -22,7 +22,7 @@
  *
  * Created on August 25, 2015, 11:27 PM
  */
-#include "C2WHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 
@@ -35,7 +35,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            C2WHybridMemoryTrie<N>::C2WHybridMemoryTrie(AWordIndex * const p_word_index)
+            C2WOrderedArrayTrie<N>::C2WOrderedArrayTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
             [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
@@ -43,11 +43,17 @@ namespace uva {
             m_1_gram_data(NULL), m_N_gram_data(NULL) {
 
                 //Initialize the array of counters
-                memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
+                memset(m_MN_gram_size, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_MN_gram_idx_cnts, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
             }
 
             template<TModelLevel N>
-            void C2WHybridMemoryTrie<N>::preAllocate(const size_t counts[N]) {
+            void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
+                //Store the M-gram level sizes in terms of the number of M-grams per level
+                for (TModelLevel i = 0; i < NUM_M_N_GRAM_LEVELS; i++) {
+                    m_MN_gram_size[i] = counts[i + 1];
+                }
+
                 //01) Pre-allocate the word index
                 ATrie<N>::getWordIndex()->reserve(counts[0]);
 
@@ -79,7 +85,7 @@ namespace uva {
                 memset(m_M_gram_data[0], 0, counts[1] * sizeof (TSubArrReference));
 
                 //Now the remaining elements can be added in a loop
-                for (TModelLevel i = 1; i < (N - MGRAM_IDX_OFFSET); i++) {
+                for (TModelLevel i = 1; i < NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
                     //level M = i + 2. The counts[i] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
@@ -97,17 +103,17 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2WHybridMemoryTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            void C2WOrderedArrayTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 //ToDo: Implement
                 throw Exception("Not implemented: HybridMemoryTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result)");
             }
 
             template<TModelLevel N>
-            C2WHybridMemoryTrie<N>::~C2WHybridMemoryTrie() {
+            C2WOrderedArrayTrie<N>::~C2WOrderedArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
-                    for (TModelLevel i = 0; i < (N - MGRAM_IDX_OFFSET); i++) {
+                    for (TModelLevel i = 0; i < NUM_M_GRAM_LEVELS; i++) {
                         delete[] m_M_gram_ctx_2_data[i];
                         delete[] m_M_gram_data[i];
                     }
@@ -116,7 +122,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2WHybridMemoryTrie<MAX_NGRAM_LEVEL>;
+            template class C2WOrderedArrayTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

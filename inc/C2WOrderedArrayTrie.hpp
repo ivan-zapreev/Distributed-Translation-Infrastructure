@@ -1,5 +1,5 @@
 /* 
- * File:   ContextToWordHybridMemoryTrie.hpp
+ * File:   C2WOrderedArrayTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on August 25, 2015, 11:10 AM
  */
 
-#ifndef C2WHYBRIDMEMORYTRIE_HPP
-#define	C2WHYBRIDMEMORYTRIE_HPP
+#ifndef C2WORDEREDARRAYTRIE_HPP
+#define	C2WORDEREDARRAYTRIE_HPP
 
 #include <string>   // std::string
 
@@ -79,14 +79,14 @@ namespace uva {
              * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
              */
             template<TModelLevel N>
-            class C2WHybridMemoryTrie : public ATrie<N> {
+            class C2WOrderedArrayTrie : public ATrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
-                explicit C2WHybridMemoryTrie(AWordIndex * const p_word_index);
+                explicit C2WOrderedArrayTrie(AWordIndex * const p_word_index);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -106,7 +106,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~C2WHybridMemoryTrie();
+                virtual ~C2WOrderedArrayTrie();
 
             protected:
 
@@ -116,7 +116,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
-                    throw Exception("TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId)");
+                    return m_1_gram_data[wordId];
                 };
 
                 /**
@@ -126,6 +126,35 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    //First get the sub-array reference. 
+                    TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+
+                    //Get the new index and increment - this will be the new end index
+                    ref.end_idx = m_MN_gram_idx_cnts[mgram_idx]++;
+
+                    //Check if we exceeded the maximum allowed number of M-grams
+                    if (ref.end_idx >= m_MN_gram_size[mgram_idx]) {
+                        stringstream msg;
+                        msg << "The maximum allowed number of " << SSTR(level) << "-grams: " << SSTR(m_MN_gram_size[mgram_idx]) << " is exceeded )!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Check if there are already elements for this context
+                    if (ref.begin_idx == UNDEFINED_ARR_IDX) {
+                        //There was no elements put into this contex, the begin index is then equal to the end index
+                        ref.begin_idx = ref.end_idx;
+                    }
+
+                    //Store the word id
+                    m_M_gram_data[mgram_idx][ref.end_idx].wordId = wordId;
+
+                    //Return the reference to the newly allocated element
+                    return m_M_gram_data[mgram_idx][ref.end_idx].data;
+
+                    //there are elements in this context already
                     throw Exception("TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId)");
                 };
 
@@ -136,12 +165,36 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    throw Exception("TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId)");
+                    //Get the new n-gram index
+                    const TShortId n_gram_idx = m_MN_gram_idx_cnts[N_GRAM_IDX]++;
+
+                    //Check if we exceeded the maximum allowed number of M-grams
+                    if (n_gram_idx >= m_MN_gram_size[N_GRAM_IDX]) {
+                        stringstream msg;
+                        msg << "The maximum allowed number of " << SSTR(N) << "-grams: " << SSTR(m_MN_gram_size[N_GRAM_IDX]) << " is exceeded )!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Store the context and word ids
+                    m_N_gram_data[n_gram_idx].ctx_id = ctxId;
+                    m_N_gram_data[n_gram_idx].word_id = wordId;
+                    
+                    //return the reference to the probability
+                    return m_N_gram_data[n_gram_idx].prob;
                 };
 
             private:
                 //The offset, relative to the M-gram level M for the mgram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
+
+                //Will store the the number of M levels such that 1 < M < N.
+                const static TModelLevel NUM_M_GRAM_LEVELS = N - MGRAM_IDX_OFFSET;
+
+                //Will store the the number of M levels such that 1 < M < N.
+                const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
+
+                //Compute the N-gram index in m_MN_gram_size and  m_MN_gram_idx_cnts
+                static const TModelLevel N_GRAM_IDX = N - MGRAM_IDX_OFFSET;
 
                 // Stores the undefined index array value
                 static const TShortId UNDEFINED_ARR_IDX = 0;
@@ -151,18 +204,18 @@ namespace uva {
 
                 //Stores the M-gram context to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                TSubArrReference * m_M_gram_ctx_2_data[N - MGRAM_IDX_OFFSET];
+                TSubArrReference * m_M_gram_ctx_2_data[NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TWordIdProbBackOffEntryPair * m_M_gram_data[N - MGRAM_IDX_OFFSET];
+                TWordIdProbBackOffEntryPair * m_M_gram_data[NUM_M_GRAM_LEVELS];
 
                 //Stores the N-gram data
                 TCtxIdProbEntryPair * m_N_gram_data;
 
-                //Will store the next context index counters per M-gram level
-                //for 1 < M < N.
-                const static TModelLevel NUM_IDX_COUNTERS = N - MGRAM_IDX_OFFSET;
-                TShortId next_ctx_id[NUM_IDX_COUNTERS];
+                //Stores the index counters per M-gram level: 1 < M <= N
+                TShortId m_MN_gram_size[NUM_M_N_GRAM_LEVELS];
+                //Stores the index counters per M-gram level: 1 < M <= N
+                TShortId m_MN_gram_idx_cnts[NUM_M_N_GRAM_LEVELS];
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -180,7 +233,7 @@ namespace uva {
 
             };
 
-            typedef C2WHybridMemoryTrie<MAX_NGRAM_LEVEL> TFiveC2WMapHybridMemoryTrie;
+            typedef C2WOrderedArrayTrie<MAX_NGRAM_LEVEL> TFiveC2WOrderedArrayTrie;
         }
     }
 }

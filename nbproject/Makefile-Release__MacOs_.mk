@@ -37,7 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
-	${OBJECTDIR}/src/C2WHybridMemoryTrie.o \
+	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
 	${OBJECTDIR}/src/CtxMultiHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
@@ -79,10 +79,10 @@ ${OBJECTDIR}/src/ARPATrieBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPATr
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
-${OBJECTDIR}/src/C2WHybridMemoryTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2WHybridMemoryTrie.cpp 
+${OBJECTDIR}/src/C2WOrderedArrayTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2WOrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WHybridMemoryTrie.o src/C2WHybridMemoryTrie.cpp
+	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
 
 ${OBJECTDIR}/src/CtxMultiHashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/CtxMultiHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

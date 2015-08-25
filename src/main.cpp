@@ -43,7 +43,8 @@
 #include "FileStreamReader.hpp"
 #include "HashMapWordIndex.hpp"
 #include "W2CHybridMemoryTrie.hpp"
-        
+#include "C2WOrderedArrayTrie.hpp"
+
 using namespace std;
 using namespace uva::smt;
 using namespace uva::smt::tries;
@@ -310,8 +311,9 @@ static void performTasks(const TAppParams& params) {
         HashMapWordIndex dictionary(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
-        TFiveCtxMultiHashMapTrie trie(&dictionary);
-        //TFiveMapHybridMemoryTrie trie(&dictionary);
+        //TFiveCtxMultiHashMapTrie trie(&dictionary);
+        //TFiveMapW2CHybridMemoryTrie trie(&dictionary);
+        TFiveC2WOrderedArrayTrie trie(&dictionary);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();
