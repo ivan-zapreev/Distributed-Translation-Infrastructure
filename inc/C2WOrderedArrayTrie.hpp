@@ -311,6 +311,7 @@ namespace uva {
                  * @param ctxId the previous context id
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
+                 * @throw out_of_range in case the context can not be computed, e.g. does not exist.
                  */
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     //Compute the m-gram index
@@ -326,20 +327,18 @@ namespace uva {
                         if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, result)) {
                             return result;
                         } else {
-                            stringstream msg;
-                            msg << "Unable to find M-gram context id for level: "
-                                    << level << ", prev ctxId: " << ctxId
-                                    << ", wordId: " << wordId << " wordId range: ["
+                            LOG_DEBUG1 << "Unable to find M-gram context id for level: "
+                                    << level << ", wordId: " << wordId
+                                    << ", prev ctxId: " << ctxId << ", wordId range: ["
                                     << m_M_gram_data[mgram_idx][ref.beginIdx].wordId
-                                    << ", " << m_M_gram_data[mgram_idx][ref.endIdx].wordId << "]";
-                            throw Exception(msg.str());
+                                    << ", " << m_M_gram_data[mgram_idx][ref.endIdx].wordId << "]" << END_LOG;
+                            throw out_of_range("not found");
                         }
                     } else {
-                        stringstream msg;
-                        msg << "Unable to find M-gram context id for level: "
+                        LOG_DEBUG1 << "Unable to find M-gram context id for level: "
                                 << level << ", prev ctxId: " << ctxId
-                                << ", nothing present in that context!";
-                        throw Exception(msg.str());
+                                << ", nothing present in that context!" << END_LOG;
+                        throw out_of_range("not found");
                     }
 
                 }

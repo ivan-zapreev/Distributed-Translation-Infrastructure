@@ -44,10 +44,12 @@ namespace uva {
                         << "-gram the context length is " << boCtxLen << END_LOG;
 
                 if (boCtxLen > 0) {
-                    //Compute the context hash
-                    TLongId ctxId = getQueryContextId(boCtxLen, true);
                     //Attempt to retrieve back-off weights
+                    TLongId ctxId = UNDEFINED_WORD_ID;
                     try {
+                        //Compute the context hash
+                        ctxId = getQueryContextId(boCtxLen, true);
+
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntryPair& entry = get_M_GramDataRef(level, wordId, ctxId);
 
@@ -102,11 +104,12 @@ namespace uva {
                 if (ctxLen > 0) {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
 
-                    //Compute the context hash based on what is stored in _wordHashes and context length
-                    TLongId ctxId = getQueryContextId(ctxLen, false);
-
                     //Attempt to retrieve probabilities
+                    TLongId ctxId = UNDEFINED_WORD_ID;
                     try {
+                        //Compute the context hash based on what is stored in _wordHashes and context length
+                        ctxId = getQueryContextId(ctxLen, false);
+
                         if (level == N) {
                             //If we are looking for a N-Gram probability
                             const TLogProbBackOff& prob = get_N_GramDataRef(wordId, ctxId);

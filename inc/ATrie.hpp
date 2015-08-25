@@ -139,6 +139,7 @@ namespace uva {
              * @param ctxId the context id
              * @param level the M-gram level we are working with, must have 1 < M <= N or UNDEF_NGRAM_LEVEL!
              * @result the new context id
+             * @throw out_of_range in case the context can not be computed, e.g. does not exist.
              */
             typedef std::function<TLongId(const TShortId wordId, const TLongId ctxId, const TModelLevel level) > TGetCtxIdFunct;
 
@@ -469,7 +470,8 @@ namespace uva {
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
-                 * @return the computed hash context
+                 * @return the computed context id
+                 * @throws out_of_range in case the context could not be computed, the context M-gram is not present in the trie
                  */
                 inline TLongId getQueryContextId(const TModelLevel ctxLen, bool isBackOff) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
@@ -477,7 +479,7 @@ namespace uva {
                     const TModelLevel bIdx = mGramEndIdx - ctxLen;
                     TModelLevel idx = bIdx;
 
-                    LOG_DEBUG3 << "Computing context hash for context length " << SSTR(ctxLen)
+                    LOG_DEBUG3 << "Computing context id for context length " << SSTR(ctxLen)
                             << " for a  " << (isBackOff ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
@@ -569,7 +571,8 @@ namespace uva {
                 AWordIndex * const m_p_word_index;
 
                 //Stores the pointer to the function that will be used to compute
-                //the context id from a word id and the previous context
+                //the context id from a word id and the previous context,
+                //Throws out_of_range in case the context can not be computed, e.g. does not exist.
                 TGetCtxIdFunct m_get_ctx_id_func;
 
                 //The actual storage for the cached context c string
