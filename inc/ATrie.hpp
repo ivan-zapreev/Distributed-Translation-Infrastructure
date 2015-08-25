@@ -222,43 +222,35 @@ namespace uva {
                     const TModelLevel level = mGram.level;
                     LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
 
-                    //Check that this is not an 1-Gram or N-Gram for those we need another method!
-                    if ((MIN_NGRAM_LEVEL < level) || (level < N)) {
-                        //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
+                    //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                        // 1. Compute the context hash defined by w1 w2 w3
-                        const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
+                    // 1. Compute the context hash defined by w1 w2 w3
+                    const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
 
-                        // 2. Compute the hash of w4
-                        const TextPieceReader & endWord = mGram.tokens[level - 1];
-                        const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
-                        LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
+                    // 2. Compute the hash of w4
+                    const TextPieceReader & endWord = mGram.tokens[level - 1];
+                    const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
 
-                        // 3. Insert the probability data into the trie
-                        TProbBackOffEntryPair& pbData = get_M_GramDataRef(level, wordId, ctxId);
+                    // 3. Insert the probability data into the trie
+                    TProbBackOffEntryPair& pbData = get_M_GramDataRef(level, wordId, ctxId);
 
-                        //Check that the probability data is not set yet, otherwise a warning!
-                        if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
-                            //If the probability is not zero then this word has been already seen!
-                            REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
-                                    pbData.prob, pbData.back_off,
-                                    mGram.prob, mGram.back_off);
-                        }
-
-                        //Set/Update the probability and back-off values for the word
-                        pbData.prob = mGram.prob;
-                        pbData.back_off = mGram.back_off;
-
-                        LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
-                                << pbData.prob << "," << pbData.back_off << ") for "
-                                << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
-                                << ctxId << ", wordHash = " << wordId << END_LOG;
-                    } else {
-
-                        stringstream msg;
-                        msg << "Internal error: The " << level << "-Grams are to be handled with another add method!";
-                        throw Exception(msg.str());
+                    //Check that the probability data is not set yet, otherwise a warning!
+                    if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                        //If the probability is not zero then this word has been already seen!
+                        REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
+                                pbData.prob, pbData.back_off,
+                                mGram.prob, mGram.back_off);
                     }
+
+                    //Set/Update the probability and back-off values for the word
+                    pbData.prob = mGram.prob;
+                    pbData.back_off = mGram.back_off;
+
+                    LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                            << pbData.prob << "," << pbData.back_off << ") for "
+                            << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
+                            << ctxId << ", wordHash = " << wordId << END_LOG;
                 };
 
                 /**
@@ -363,7 +355,7 @@ namespace uva {
                  * @return the reference to the storage structure
                  */
                 virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) = 0;
-                
+
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
