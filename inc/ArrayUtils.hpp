@@ -37,18 +37,34 @@ namespace uva {
             namespace array {
 
                 template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
-                bool binarySearch(ARR_ELEM_TYPE * array, INDEX_TYPE lowerbound, INDEX_TYPE upperbound, KEY_TYPE key, INDEX_TYPE & position) {
+                bool binarySearch(const ARR_ELEM_TYPE * array, INDEX_TYPE lowerbound, INDEX_TYPE upperbound, const KEY_TYPE key, INDEX_TYPE & position) {
                     // To start, find the subscript of the middle position.
                     position = (lowerbound + upperbound) / 2;
 
-                    while ((static_cast<KEY_TYPE> (array[position]) != key) && (lowerbound <= upperbound)) {
-                        if (static_cast<KEY_TYPE> (array[position]) > key) // If the number is > key, ..
+                    KEY_TYPE found_key = static_cast<KEY_TYPE> (array[position]);
+
+                    LOG_DEBUG3 << "Starting the binary search [l,u] = [" << lowerbound
+                            << ", " << upperbound << "], searched key: " << key
+                            << ", first considered pos: " << position
+                            << ", key: " << found_key << END_LOG;
+                    
+                    //Perform the search
+                    while ((found_key != key) && (lowerbound <= upperbound)) {
+                        
+                        //Decide on which way to go
+                        if (found_key > key) // If the number is > key, ..
                         { // decrease position by one.
                             upperbound = position - 1;
                         } else { // Else, increase position by one.
                             lowerbound = position + 1;
                         }
+                        
+                        //Get the next element
                         position = (lowerbound + upperbound) / 2;
+                        found_key = static_cast<KEY_TYPE> (array[position]);
+                        
+                        LOG_DEBUG3 << "Next considered pos: " << position
+                            << ", key: " << found_key << END_LOG;
                     }
 
                     //Return true if the element was found

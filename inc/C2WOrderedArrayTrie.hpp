@@ -52,7 +52,7 @@ namespace uva {
                 TShortId wordId;
                 TProbBackOffEntryPair data;
 
-                operator TShortId() {
+                operator TShortId() const {
                     return wordId;
                 }
             } TWordIdProbBackOffEntryPair;
@@ -76,11 +76,11 @@ namespace uva {
                 TShortId word_id;
                 TLogProbBackOff prob;
 
-                operator TShortId() {
+                operator TShortId() const {
                     return ctx_id;
                 }
 
-                operator TLongId() {
+                operator TLongId() const {
                     return word_id;
                 }
             } TCtxIdProbEntryPair;
@@ -135,6 +135,8 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
+                    LOG_DEBUG2 << "Adding 1-gram with wordId: " << wordId << END_LOG;
+
                     return m_1_gram_data[wordId];
                 };
 
@@ -148,6 +150,8 @@ namespace uva {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
+                    LOG_DEBUG2 << "Adding " << level << "-gram with wordId: " << wordId << ", ctxId: " << ctxId << "" << END_LOG;
+                    
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
 
@@ -186,6 +190,8 @@ namespace uva {
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     //Get the new n-gram index
                     const TShortId n_gram_idx = m_MN_gram_idx_cnts[N_GRAM_IDX]++;
+
+                    LOG_DEBUG2 << "Adding " << N << "-gram with wordId: " << wordId << ", ctxId: " << ctxId << "" << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
                     if (n_gram_idx >= m_MN_gram_size[N_GRAM_IDX]) {
