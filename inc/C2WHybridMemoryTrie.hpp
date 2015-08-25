@@ -39,8 +39,37 @@ using namespace uva::smt::tries::dictionary;
 namespace uva {
     namespace smt {
         namespace tries {
-            
-            
+
+            /**
+             * This structure stores two things the word id
+             * and the corresponding probability/back-off data.
+             * @param wordId the word id
+             * @param data the back-off and probability data
+             */
+            typedef struct {
+                TShortId wordId;
+                TProbBackOffEntryPair data;
+            } TWordIdProbBackOffEntryPair;
+
+            /**
+             * This structure is needed to store begin and end index to reference pieces of an array
+             * @param begin_idx the begin index
+             * @param end_idx the end index
+             */
+            typedef struct {
+                TShortId begin_idx;
+                TShortId end_idx;
+            } TSubArrReference;
+
+            /**
+             * Stores the information about the context it word id and corresponding probability
+             * This data structure is to be used for the N-Gram data, as there are no back-offs
+             */
+            typedef struct {
+                TShortId ctx_id;
+                TShortId word_id;
+                TLogProbBackOff prob;
+            } TCtxIdProbEntryPair;
 
             /**
              * This is the hybrid memory trie implementation class.
@@ -112,11 +141,27 @@ namespace uva {
 
             private:
                 //The offset, relative to the M-gram level M for the mgram mapping array index
-                const static TModelLevel MGRAM_MAPPING_IDX_OFFSET = 2;
+                const static TModelLevel MGRAM_IDX_OFFSET = 2;
+
+                // Stores the undefined index array value
+                static const TShortId UNDEFINED_ARR_IDX = 0;
+
+                //Stores the 1-gram data
+                TProbBackOffEntryPair * m_1_gram_data;
+
+                //Stores the M-gram context to data mappings for: 1 < M < N
+                //This is a two dimensional array
+                TSubArrReference * m_M_gram_ctx_2_data[N - MGRAM_IDX_OFFSET];
+                //Stores the M-gram data for the M levels: 1 < M < N
+                //This is a two dimensional array
+                TWordIdProbBackOffEntryPair * m_M_gram_data[N - MGRAM_IDX_OFFSET];
+
+                //Stores the N-gram data
+                TCtxIdProbEntryPair * m_N_gram_data;
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
-                const static TModelLevel NUM_IDX_COUNTERS = N - 2;
+                const static TModelLevel NUM_IDX_COUNTERS = N - MGRAM_IDX_OFFSET;
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
