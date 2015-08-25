@@ -85,6 +85,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
@@ -163,6 +164,7 @@
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
@@ -250,6 +252,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
           <commandLine>-m64</commandLine>
         </linkerTool>
@@ -326,6 +329,7 @@
           <commandLine>-O3 -std=c++0x -lrt -m64</commandLine>
         </ccTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
@@ -404,6 +408,7 @@
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>

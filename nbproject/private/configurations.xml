@@ -5,7 +5,7 @@
     <conf name="Release__Linux_" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>
@@ -38,7 +38,7 @@
     <conf name="Debug__Linux_" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>
@@ -104,7 +104,7 @@
     <conf name="Release__Centos_" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>
@@ -137,7 +137,7 @@
     <conf name="Debug__Centos_" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>

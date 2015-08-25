@@ -13,7 +13,7 @@ CND_BUILDDIR=build
 CND_DLIB_EXT=dylib
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/back-off-language-model-smt
+OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt
 OUTPUT_BASENAME=back-off-language-model-smt
 PACKAGE_TOP_DIR=back-off-language-model-smt/
 
