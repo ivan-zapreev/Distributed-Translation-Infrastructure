@@ -1,5 +1,5 @@
 /* 
- * File:   HybridMemoryTrie.cpp
+ * File:   W2CHybridMemoryTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
