@@ -430,13 +430,13 @@ namespace uva {
                  * @param tokens the tokens to be transformed into word hashes must have size <=N
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                inline void tokensToHashes(const vector<string> & tokens, TShortId wordHashes[N]) {
+                inline void tokensToId(const vector<string> & tokens, TShortId wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
                     for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
                         wordHashes[idx] = m_p_word_index->getId(*it);
-                        LOG_DEBUG1 << "hash('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
+                        LOG_DEBUG1 << "wordId('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
                 }
@@ -447,7 +447,7 @@ namespace uva {
                  */
                 inline void storeNGramHashes(const vector<string> & ngram) {
                     //First transform the given M-gram into word hashes.
-                    tokensToHashes(ngram, mGramWordIds);
+                    tokensToId(ngram, mGramWordIds);
                 }
 
                 /**
