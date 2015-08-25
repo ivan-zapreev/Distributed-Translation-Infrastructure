@@ -132,9 +132,12 @@ namespace uva {
             /**
              * This is a function type for the function that should be able to
              * provide a new (next) context id for a word id and a previous context.
+             * 
+             * WARNING: Must only be called for the M-gram level 1 < M <= N!
+             * 
              * @param wordId the word id
              * @param ctxId the context id
-             * @param level the M-gram level we are working with, must have M > 1 or UNDEF_NGRAM_LEVEL!
+             * @param level the M-gram level we are working with, must have 1 < M <= N or UNDEF_NGRAM_LEVEL!
              * @result the new context id
              */
             typedef std::function<TLongId(const TShortId wordId, const TLongId ctxId, const TModelLevel level) > TGetCtxIdFunct;
@@ -468,7 +471,7 @@ namespace uva {
                 /**
                  * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
                  * 
-                 * WARNING: Must not be called on M-grams with M <= 1!
+                 * WARNING: Must be called on M-grams with M > 1!
                  * 
                  * @param gram the N-gram with its tokens to create context for
                  * @return the resulting hash of the context(w1 w2 w3)

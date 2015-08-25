@@ -9,6 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
+      <itemPath>inc/ArrayUtils.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
       <itemPath>inc/CtxMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
@@ -100,6 +101,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -178,6 +181,8 @@
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -267,6 +272,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -343,6 +350,8 @@
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -422,6 +431,8 @@
       <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

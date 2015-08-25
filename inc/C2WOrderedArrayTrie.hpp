@@ -32,9 +32,11 @@
 #include "Logger.hpp"
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
+#include "ArrayUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
+using namespace uva::smt::utils::array;
 
 namespace uva {
     namespace smt {
@@ -49,6 +51,7 @@ namespace uva {
             typedef struct {
                 TShortId wordId;
                 TProbBackOffEntryPair data;
+                operator TShortId() { return wordId; }
             } TWordIdProbBackOffEntryPair;
 
             /**
@@ -183,7 +186,7 @@ namespace uva {
                     //Store the context and word ids
                     m_N_gram_data[n_gram_idx].ctx_id = ctxId;
                     m_N_gram_data[n_gram_idx].word_id = wordId;
-                    
+
                     //return the reference to the probability
                     return m_N_gram_data[n_gram_idx].prob;
                 };
@@ -225,7 +228,7 @@ namespace uva {
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must only be called for the M-gram level M > 1!
+                 * WARNING: Must only be called for the M-gram level 1 < M <= N!
                  * 
                  * @param wordId the current word id
                  * @param ctxId the previous context id
@@ -233,7 +236,29 @@ namespace uva {
                  * @return the resulting context
                  */
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
-                    throw Exception("TContextId getContextId(TWordId wordId, TContextId ctxId, const TModelLevel level)");
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    //First get the sub-array reference. 
+                    TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+
+                    //Check that there is data for the given context available
+                    if (ref.begin_idx != UNDEFINED_ARR_IDX) {
+                        TShortId result = UNDEFINED_ARR_IDX;
+                        //The data is available search for the word index in the array
+                        if( binarySearch<TWordIdProbBackOffEntryPair,TShortId,TShortId>(m_M_gram_data[mgram_idx], ref.begin_idx,ref.end_idx,wordId,result) ) {
+                            return result;
+                        } else {
+                            return UNDEFINED_ARR_IDX;
+                        }
+                    } else {
+                        stringstream msg;
+                        msg << "Unable to find M-gram context id for level: "
+                                << level << ", prev ctxId: " << ctxId
+                                << ", nothing present in that context!";
+                        throw Exception(msg.str());
+                    }
+
                 }
 
             };

@@ -167,7 +167,7 @@ namespace uva {
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must only be called for the M-gram level M > 1!
+                 * WARNING: Must only be called for the M-gram level 1 < M <= N!
                  * 
                  * @param wordId the current word id
                  * @param ctxId the previous context id
