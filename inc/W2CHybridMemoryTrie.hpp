@@ -226,7 +226,7 @@ namespace uva {
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
-                    if (wordId >= MIN_KNOWN_WORD_ID) {
+                    if (wordId >= MIN_KNOWN_WORD_ID && m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId] != NULL) {
                         return m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId]->at(ctxId);
                     } else {
                         LOG_DEBUG1 << "Can not compute context for level: " << level << ", wordId: "
