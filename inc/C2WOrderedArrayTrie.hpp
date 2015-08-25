@@ -51,7 +51,10 @@ namespace uva {
             typedef struct {
                 TShortId wordId;
                 TProbBackOffEntryPair data;
-                operator TShortId() { return wordId; }
+
+                operator TShortId() {
+                    return wordId;
+                }
             } TWordIdProbBackOffEntryPair;
 
             /**
@@ -72,6 +75,14 @@ namespace uva {
                 TShortId ctx_id;
                 TShortId word_id;
                 TLogProbBackOff prob;
+
+                operator TShortId() {
+                    return ctx_id;
+                }
+
+                operator TLongId() {
+                    return word_id;
+                }
             } TCtxIdProbEntryPair;
 
             /**
@@ -246,17 +257,23 @@ namespace uva {
                     if (ref.begin_idx != UNDEFINED_ARR_IDX) {
                         TShortId result = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if( binarySearch<TWordIdProbBackOffEntryPair,TShortId,TShortId>(m_M_gram_data[mgram_idx], ref.begin_idx,ref.end_idx,wordId,result) ) {
+                        if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.begin_idx, ref.end_idx, wordId, result)) {
                             return result;
                         } else {
-                            return UNDEFINED_ARR_IDX;
+                            stringstream msg;
+                            msg << "Unable to find M-gram context id for level: "
+                                    << level << ", prev ctxId: " << ctxId
+                                    << ", wordId: " << wordId << " wordId range: ["
+                                    << m_M_gram_data[mgram_idx][ref.begin_idx].wordId
+                                    << ", " << m_M_gram_data[mgram_idx][ref.end_idx].wordId << "]";
+                            throw out_of_range(msg.str());
                         }
                     } else {
                         stringstream msg;
                         msg << "Unable to find M-gram context id for level: "
                                 << level << ", prev ctxId: " << ctxId
                                 << ", nothing present in that context!";
-                        throw Exception(msg.str());
+                        throw out_of_range(msg.str());
                     }
 
                 }
