@@ -226,9 +226,14 @@ namespace uva {
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
-                    return m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId]->at(ctxId);
+                    if (wordId >= MIN_KNOWN_WORD_ID) {
+                        return m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId]->at(ctxId);
+                    } else {
+                        LOG_DEBUG1 << "Can not compute context for level: " << level << ", wordId: "
+                            << wordId << ", previous ctxId: " << ctxId << END_LOG;
+                        throw out_of_range("not found");
+                    }
                 }
-
             };
 
             typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapW2CHybridMemoryTrie;
