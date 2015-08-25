@@ -140,38 +140,6 @@ namespace uva {
             typedef std::function<TContextId(const TWordId wordId, const TContextId ctxId, const TModelLevel level) > TGetCtxIdFunct;
 
             /**
-             * This is a function type for the function that should be able to
-             * retrieve the data storage structure for the One gram with the given Id.
-             * If the storage structure does not exist, return a new one.
-             * @param wordId the One-gram id
-             * @return the reference to the storage structure
-             */
-            typedef std::function<TProbBackOffEntryPair & (const TWordId wordId) > TGet_1_GramDataFunct;
-
-            /**
-             * This is a function type for the function that should be able to
-             * retrieve the data storage structure for the M gram
-             * with the given M-gram level Id. M-gram context and last word Id.
-             * If the storage structure does not exist, return a new one.
-             * @param level the value of M in the M-gram
-             * @param wordId the id of the M-gram's last word
-             * @param ctxId the M-gram context (the M-gram's prefix) id
-             * @return the reference to the storage structure
-             */
-            typedef std::function<TProbBackOffEntryPair& (const TModelLevel level, const TWordId wordId, const TContextId ctxId) > TGet_M_GramDataFunct;
-
-            /**
-             * This is a function type for the function that should be able to
-             * retrieve the data storage structure for the N gram.
-             * Given the N-gram context and last word Id.
-             * If the storage structure does not exist, return a new one.
-             * @param wordId the id of the N-gram's last word
-             * @param ctxId the N-gram context (the N-gram's prefix) id
-             * @return the reference to the storage structure
-             */
-            typedef std::function<TLogProbBackOff& (const TWordId wordId, const TContextId ctxId) > TGet_N_GramDataFunct;
-
-            /**
              * This is a common abstract class for all possible Trie implementations
              * The purpose of having this as a template class is performance optimization.
              * It is a template class that has two template parameters:
@@ -188,15 +156,9 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit ATrie(AWordIndex * const _pWordIndex,
-                        TGetCtxIdFunct get_ctx_id_func,
-                        TGet_1_GramDataFunct make_1_gram_data_func,
-                        TGet_M_GramDataFunct make_M_gram_data_func,
-                        TGet_N_GramDataFunct make_N_gram_data_func)
+                        TGetCtxIdFunct get_ctx_id_func)
                 : m_p_word_index(_pWordIndex),
                 m_get_ctx_id_func(get_ctx_id_func),
-                m_make_1_gram_data_func(make_1_gram_data_func),
-                m_make_M_gram_data_func(make_M_gram_data_func),
-                m_make_N_gram_data_func(make_N_gram_data_func),
                 m_chached_context(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
                 m_chached_context_id(UNDEFINED_WORD_ID) {
                     //This one is needed for having a proper non-null word index pointer.
@@ -232,7 +194,7 @@ namespace uva {
                     //Compute it's hash value
                     TWordId wordHash = ATrie<N>::getWordIndex()->makeId(token);
                     //Get the word probability and back-off data reference
-                    TProbBackOffEntryPair & pbData = m_make_1_gram_data_func(wordHash);
+                    TProbBackOffEntryPair & pbData = make_1_GramDataRef(wordHash);
 
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
@@ -273,7 +235,7 @@ namespace uva {
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
-                    TProbBackOffEntryPair& pbData = m_make_M_gram_data_func(level, wordId, ctxId);
+                    TProbBackOffEntryPair& pbData = make_M_GramDataRef(level, wordId, ctxId);
 
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
@@ -312,7 +274,7 @@ namespace uva {
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
-                    TLogProbBackOff& pData = m_make_N_gram_data_func(wordId, ctxId);
+                    TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
 
                     //Check that the probability data is not set yet, otherwise a warning!
                     if (MONITORE_COLLISIONS && (pData != ZERO_LOG_PROB_WEIGHT)) {
@@ -373,7 +335,7 @@ namespace uva {
                  * @param wordId the One-gram id
                  * @return the reference to the storage structure
                  */
-                //virtual TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) = 0;
+                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -384,7 +346,7 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                //virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) = 0;
+                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -394,7 +356,7 @@ namespace uva {
                  * @param ctxId the N-gram context (the N-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                //virtual TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) = 0;
+                virtual TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) = 0;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -403,9 +365,6 @@ namespace uva {
                 ATrie(const ATrie& orig)
                 : m_p_word_index(NULL),
                 m_get_ctx_id_func(NULL),
-                m_make_1_gram_data_func(NULL),
-                m_make_M_gram_data_func(NULL),
-                m_make_N_gram_data_func(NULL),
                 m_chached_context(),
                 m_chached_context_id(UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
@@ -577,14 +536,6 @@ namespace uva {
                 //Stores the pointer to the function that will be used to compute
                 //the context id from a word id and the previous context
                 TGetCtxIdFunct m_get_ctx_id_func;
-
-                //These are the function pointer to the functions
-                //that allow to retrieve/make the data structures
-                //storing the 1/M/N gram probability and back-off
-                //weights. These make new entries if there was nothing.
-                TGet_1_GramDataFunct m_make_1_gram_data_func;
-                TGet_M_GramDataFunct m_make_M_gram_data_func;
-                TGet_N_GramDataFunct m_make_N_gram_data_func;
 
                 //The actual storage for the cached context c string
                 char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];

@@ -34,33 +34,12 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            /*
-            [&] (const TWordId wordId) {
-
-                return this->make_1_GramDataRef(wordId); },
-            [&] (const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
-
-                return this->make_M_GramDataRef(level, wordId, ctxId); },
-            [&] (const TWordId wordId, const TContextId ctxId) {
-
-                return this->make_N_GramDataRef(wordId, ctxId); }
-             */
-
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             HybridMemoryTrie<N, StorageFactory, StorageContainer>::HybridMemoryTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
             [&] (const TWordId wordId, const TContextId ctxId, const TModelLevel level) -> TContextId {
 
-                return this->getContextId(wordId, ctxId, level); },
-            [&] (const TWordId wordId) -> TProbBackOffEntryPair& {
-
-                return this->make_1_GramDataRef(wordId); },
-            [&] (const TModelLevel level, const TWordId wordId, const TContextId ctxId) -> TProbBackOffEntryPair& {
-
-                return this->make_M_GramDataRef(level, wordId, ctxId); },
-            [&] (const TWordId wordId, const TContextId ctxId) -> TLogProbBackOff&  {
-
-                return this->make_N_GramDataRef(wordId, ctxId); }),
+                return this->getContextId(wordId, ctxId, level); }),
             m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description
