@@ -91,7 +91,7 @@ namespace uva {
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
                                         [&] (const SRawNGram & gram) {
-                                            trie.add1Gram(gram); });
+                                            trie.add_1_Gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
                                 if (level == N) {
@@ -100,7 +100,7 @@ namespace uva {
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const SRawNGram & gram) {
-                                                trie.addNGram(gram); });
+                                                trie.add_N_Gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
@@ -108,7 +108,7 @@ namespace uva {
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const SRawNGram & gram) {
-                                                trie.addMGram(gram); });
+                                                trie.add_M_Gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }
                             }

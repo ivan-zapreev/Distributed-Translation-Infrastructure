@@ -44,16 +44,16 @@ namespace uva {
     namespace smt {
         namespace tries {
             //This is the id type size to be used as index
-            typedef TWordId TIndexSize;
+            typedef TWordId TIdIndex;
 
             //The type of key,value pairs to be stored
-            typedef pair< const TIndexSize, TIndexSize> TStorageMapEntry;
+            typedef pair< const TIdIndex, TIdIndex> TStorageMapEntry;
             //The typedef for the map allocator
             typedef GreedyMemoryAllocator< TStorageMapEntry > TStorageMapAllocator;
             //The unsigned map type
-            typedef unordered_map<TIndexSize, TIndexSize, std::hash<TIndexSize>, std::equal_to<TIndexSize>, TStorageMapAllocator > TStorageUnsignedMap;
+            typedef unordered_map<TIdIndex, TIdIndex, std::hash<TIdIndex>, std::equal_to<TIdIndex>, TStorageMapAllocator > TStorageUnsignedMap;
             //The unsigned map type
-            typedef map<TIndexSize, TIndexSize> TStorageMap;
+            typedef map<TIdIndex, TIdIndex> TStorageMap;
 
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
@@ -69,11 +69,11 @@ namespace uva {
                     delete m_p_map;
                 };
 
-                TIndexSize & operator[](const TIndexSize ctx_idx) {
+                TIdIndex & operator[](const TIdIndex ctx_idx) {
                     return m_p_map->operator[](ctx_idx);
                 };
 
-                const TIndexSize & at(const TIndexSize ctx_idx) const throw (out_of_range) {
+                const TIdIndex & at(const TIdIndex ctx_idx) const throw (out_of_range) {
                     return m_p_map->at(ctx_idx);
                 };
 

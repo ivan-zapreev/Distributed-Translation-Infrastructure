@@ -113,31 +113,13 @@ namespace uva {
                         const float _oGramMemFactor = __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
                         const float _mGramMemFactor = __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                         const float _nGramMemFactor = __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
-                
+
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
                 virtual void preAllocate(const size_t counts[N]);
-
-                /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * For more details @see ATrie
-                 */
-                virtual void add1Gram(const SRawNGram &oGram);
-
-                /**
-                 * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * For more details @see ATrie
-                 */
-                virtual void addMGram(const SRawNGram &mGram);
-
-                /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * For more details @see ATrie
-                 */
-                virtual void addNGram(const SRawNGram &nGram);
 
                 /**
                  * This method will get the N-gram in a form of a vector, e.g.:
@@ -151,6 +133,65 @@ namespace uva {
                  * The basic destructor
                  */
                 virtual ~CtxMultiHashMapTrie();
+
+            protected:
+
+                /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TProbBackOffEntryPair & get_1_GramDataRef(const TWordId wordId) {
+                    //Add hash key statistics
+                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                        hashSizes[0].first = min<TContextId>(wordId, hashSizes[0].first);
+                        hashSizes[0].second = max<TContextId>(wordId, hashSizes[0].second);
+                    }
+
+                    //Get the word probability and back-off data reference
+                    return pOneGramMap->operator[](wordId);
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                    //Store the N-tires from length 2 on and indexing starts
+                    //with 0, therefore "level-2". Get/Create the mapping for this
+                    //word in the Trie level of the N-gram
+                    TContextId keyContext = getContextId(wordId, ctxId);
+
+                    //Add hash key statistics
+                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                        hashSizes[level - 1].first = min<TContextId>(keyContext, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TContextId>(keyContext, hashSizes[level - 1].second);
+                    }
+
+                    return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                    //Data stores the N-tires from length 2 on, therefore "idx-1"
+                    //Get/Create the mapping for this word in the Trie level of the N-gram
+                    TContextId keyContext = getContextId(wordId, ctxId);
+
+                    //Add hash key statistics
+                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                        hashSizes[N - 1].first = min<TContextId>(keyContext, hashSizes[N - 1].first);
+                        hashSizes[N - 1].second = max<TContextId>(keyContext, hashSizes[N - 1].second);
+                    }
+                    
+                    return pNGramMap->operator[](keyContext);
+                };
 
             private:
                 //The One-Gram memory factor needed for the greedy allocator for the unordered_map
@@ -263,10 +304,10 @@ namespace uva {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     return szudzik(hash, context);
                 }
-                
+
             };
 
-            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveContextMultiHashMapTrie;
+            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveCtxMultiHashMapTrie;
         }
     }
 }

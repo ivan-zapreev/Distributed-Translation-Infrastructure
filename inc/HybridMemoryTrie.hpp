@@ -65,24 +65,6 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]);
 
                 /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * For more details @see ATrie
-                 */
-                virtual void add1Gram(const SRawNGram &oGram);
-
-                /**
-                 * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * For more details @see ATrie
-                 */
-                virtual void addMGram(const SRawNGram &mGram);
-
-                /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * For more details @see ATrie
-                 */
-                virtual void addNGram(const SRawNGram &nGram);
-
-                /**
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
@@ -94,6 +76,50 @@ namespace uva {
                  * The basic destructor
                  */
                 virtual ~HybridMemoryTrie();
+
+            protected:
+
+                /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TProbBackOffEntryPair & get_1_GramDataRef(const TWordId wordId) {
+                    //Get the word probability and back-off data reference
+                    return m_mgram_data[0][wordId];
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                    if (ctx_mapping == NULL) {
+                        ctx_mapping = m_storage_factory->create(level);
+                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << level << END_LOG;
+                    }
+                    TIdIndex & nextCtxId = (*ctx_mapping)[ctxId];
+                    nextCtxId = next_ctx_id[level - MGRAM_MAPPING_IDX_OFFSET]++;
+                    return m_mgram_data[level - 1][nextCtxId];
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                    if (ctx_mapping == NULL) {
+                        ctx_mapping = m_storage_factory->create(N);
+                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << N << END_LOG;
+                    }
+                    return (TLogProbBackOff &) (*ctx_mapping)[ctxId];
+                };
 
             private:
                 //The offset, relative to the M-gram level M for the mgram mapping array index
@@ -136,7 +162,7 @@ namespace uva {
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
                 const static TModelLevel NUM_IDX_COUNTERS = N - 2;
-                TIndexSize next_ctx_id[NUM_IDX_COUNTERS];
+                TIdIndex next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -151,7 +177,7 @@ namespace uva {
                 inline TContextId getContextId(TWordId wordId, TContextId ctxId, const TModelLevel level) {
                     return m_mgram_mapping[level - 1][wordId]->at(ctxId);
                 }
-                
+
             };
 
             typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapHybridMemoryTrie;

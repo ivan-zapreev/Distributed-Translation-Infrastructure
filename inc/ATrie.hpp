@@ -183,21 +183,121 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @param oGram the 1-Gram data
                  */
-                virtual void add1Gram(const SRawNGram &oGram) = 0;
+                void add_1_Gram(const SRawNGram &oGram) {
+                    //First get the token/word from the 1-Gram
+                    const TextPieceReader & token = oGram.tokens[0];
+
+                    LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
+
+                    //Compute it's hash value
+                    TWordId wordHash = ATrie<N>::getWordIndex()->makeId(token);
+                    //Get the word probability and back-off data reference
+                    TProbBackOffEntryPair & pbData = get_1_GramDataRef(wordHash);
+
+                    //Check that the probability data is not set yet, otherwise a warning!
+                    if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                        //If the probability is not zero then this word has been already seen!
+
+                        REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_ID,
+                                pbData.prob, pbData.back_off,
+                                oGram.prob, oGram.back_off);
+                    }
+
+                    //Set/Update the probability and back-off values for the word
+                    pbData.prob = oGram.prob;
+                    pbData.back_off = oGram.back_off;
+
+                    LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                            << pbData.prob << "," << pbData.back_off << ") for "
+                            << tokensToString<N>(oGram.tokens, oGram.level) << " wordHash = "
+                            << wordHash << END_LOG;
+                };
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @param mGram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void addMGram(const SRawNGram &mGram) = 0;
+                void add_M_Gram(const SRawNGram &mGram) {
+                    const TModelLevel level = mGram.level;
+                    LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
+
+                    //Check that this is not an 1-Gram or N-Gram for those we need another method!
+                    if ((MIN_NGRAM_LEVEL < level) || (level < N)) {
+                        //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
+
+                        // 1. Compute the context hash defined by w1 w2 w3
+                        const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
+
+                        // 2. Compute the hash of w4
+                        const TextPieceReader & endWord = mGram.tokens[level - 1];
+                        const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                        LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
+
+                        // 3. Insert the probability data into the trie
+                        TProbBackOffEntryPair& pbData = get_M_GramDataRef(level, wordId, ctxId);
+
+                        //Check that the probability data is not set yet, otherwise a warning!
+                        if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                            //If the probability is not zero then this word has been already seen!
+                            REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
+                                    pbData.prob, pbData.back_off,
+                                    mGram.prob, mGram.back_off);
+                        }
+
+                        //Set/Update the probability and back-off values for the word
+                        pbData.prob = mGram.prob;
+                        pbData.back_off = mGram.back_off;
+
+                        LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                                << pbData.prob << "," << pbData.back_off << ") for "
+                                << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
+                                << ctxId << ", wordHash = " << wordId << END_LOG;
+                    } else {
+
+                        stringstream msg;
+                        msg << "Internal error: The " << level << "-Grams are to be handled with another add method!";
+                        throw Exception(msg.str());
+                    }
+                };
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
                  * @param nGram the N-Gram data
                  */
-                virtual void addNGram(const SRawNGram &nGram) = 0;
+                void add_N_Gram(const SRawNGram &nGram) {
+                    LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
+
+                    //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
+
+                    // 1. Compute the context hash defined by w1 w2 w3
+                    const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
+
+                    // 2. Compute the hash of w4
+                    const TextPieceReader & endWord = nGram.tokens[N - 1];
+                    const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordId << END_LOG;
+
+                    // 3. Insert the probability data into the trie
+                    TLogProbBackOff& pData = get_N_GramDataRef(wordId, ctxId);
+
+                    //Check that the probability data is not set yet, otherwise a warning!
+                    if (MONITORE_COLLISIONS && (pData != ZERO_LOG_PROB_WEIGHT)) {
+                        //If the probability is not zero then this word has been already seen!
+
+                        REPORT_COLLISION_WARNING(N, nGram, wordId, ctxId,
+                                pData, UNDEFINED_LOG_PROB_WEIGHT,
+                                nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
+                    }
+
+                    //Set/Update the probability
+                    pData = nGram.prob;
+
+                    LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
+                            << tokensToString<N>(nGram.tokens, nGram.level) << " contextHash = "
+                            << ctxId << ", wordHash = " << wordId << END_LOG;
+                };
 
                 /**
                  * Returns the maximum length of the considered N-Grams
@@ -235,6 +335,35 @@ namespace uva {
 
             protected:
 
+                /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, return a new one.
+                 * @param wordId the One-gram id
+                 * @return the reference to the storage structure
+                 */
+                virtual TProbBackOffEntryPair & get_1_GramDataRef(const TWordId wordId) = 0;
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * @param level the value of M in the M-gram
+                 * @param wordId the id of the M-gram's last word
+                 * @param ctxId the M-gram context (the M-gram's prefix) id
+                 * @return the reference to the storage structure
+                 */
+                virtual TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) = 0;
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * @param wordId the id of the N-gram's last word
+                 * @param ctxId the N-gram context (the N-gram's prefix) id
+                 * @return the reference to the storage structure
+                 */
+                virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) = 0;
+                
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
