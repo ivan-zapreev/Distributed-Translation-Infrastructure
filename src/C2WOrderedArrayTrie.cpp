@@ -45,6 +45,10 @@ namespace uva {
                 //Initialize the array of counters
                 memset(m_MN_gram_size, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
                 memset(m_MN_gram_idx_cnts, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
+                        << "detections are: " << (MONITORE_COLLISIONS ? "ON" : "OFF")
+                        << " !" << END_LOG;
             }
 
             template<TModelLevel N>
