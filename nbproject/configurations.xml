@@ -35,6 +35,7 @@
                    projectFiles="true">
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
+      <itemPath>src/ATrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
       <itemPath>src/CtxMultiHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
@@ -137,6 +138,8 @@
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
@@ -217,6 +220,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -308,6 +313,8 @@
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
+      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
@@ -386,6 +393,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -467,6 +476,8 @@
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -65,14 +65,6 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]);
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * For more details @see ATrie
-                 */
-                virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
-
-                /**
                  * The basic destructor
                  */
                 virtual ~W2CHybridMemoryTrie();
@@ -90,20 +82,58 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) {
+                    //Get the word probability and back-off data reference
+                    return m_mgram_data[0][wordId];
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                    //Get the word mapping first
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
+
+                    //If the mappins is not there yet for the contexts then create it
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(level);
-                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << level << END_LOG;
+                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(level) << END_LOG;
                     }
-                    TShortId & nextCtxId = (*ctx_mapping)[ctxId];
-                    nextCtxId = next_ctx_id[level - MGRAM_MAPPING_IDX_OFFSET]++;
+
+                    //Add the new element to the context mapping
+                    TShortId & nextCtxId = ctx_mapping->operator[](ctxId);
+                    nextCtxId = next_ctx_id[level - MGRAM_IDX_OFFSET]++;
+
+                    //Return the reference to it
                     return m_mgram_data[level - 1][nextCtxId];
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                    //Try to find the word mapping first
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
+
+                    //If the mapping is present the search further, otherwise an exception
+                    if (ctx_mapping != NULL) {
+                        //Get the key context id end then obtain the data object reference
+                        const TShortId & keyCtxId = ctx_mapping->at(ctxId);
+                        return m_mgram_data[level - 1][keyCtxId];
+                    } else {
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(level) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                        throw out_of_range("not found");
+                    }
                 };
 
                 /**
@@ -113,17 +143,36 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_MAPPING_IDX_OFFSET][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
-                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << N << END_LOG;
+                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(N) << END_LOG;
                     }
-                    return (TLogProbBackOff &) (*ctx_mapping)[ctxId];
+                    return (TLogProbBackOff &) ctx_mapping->operator[](ctxId);
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
+                    //Try to find the word mapping first
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
+
+                    //If the mapping is present the search further, otherwise an exception
+                    if (ctx_mapping != NULL) {
+                        return (TLogProbBackOff &) ctx_mapping->at(ctxId);
+                    } else {
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(N) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                        throw out_of_range("not found");
+                    }
                 };
 
             private:
                 //The offset, relative to the M-gram level M for the mgram mapping array index
-                const static TModelLevel MGRAM_MAPPING_IDX_OFFSET = 2;
+                const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 //Stores the number of words
                 size_t m_word_arr_size;

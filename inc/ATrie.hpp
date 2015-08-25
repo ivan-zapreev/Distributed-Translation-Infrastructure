@@ -314,7 +314,7 @@ namespace uva {
                  *               probability and possibly some additional meta
                  *               data for the decoder.
                  */
-                virtual void queryNGram(const vector<string> & ngram, SProbResult & result) = 0;
+                void queryNGram(const vector<string> & ngram, SProbResult & result);
 
                 /**
                  * Allows to retrieve the stored word index, if any
@@ -341,6 +341,15 @@ namespace uva {
                 virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) = 0;
 
                 /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * @param wordId the One-gram id
+                 * @return the reference to the storage structure
+                 * @throw out_of_range in case the data can not be located
+                 */
+                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) = 0;
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -352,6 +361,18 @@ namespace uva {
                 virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * @param level the value of M in the M-gram
+                 * @param wordId the id of the M-gram's last word
+                 * @param ctxId the M-gram context (the M-gram's prefix) id
+                 * @return the reference to the storage structure
+                 * @throw out_of_range in case the data can not be located
+                 */
+                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
+
+                /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -360,6 +381,17 @@ namespace uva {
                  * @return the reference to the storage structure
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * @param wordId the id of the N-gram's last word
+                 * @param ctxId the N-gram context (the N-gram's prefix) id
+                 * @return the reference to the storage structure
+                 * @throw out_of_range in case the data can not be located
+                 */
+                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -432,20 +464,20 @@ namespace uva {
                  *          ^  ^
                  * Hash will be computed for the 3-gram prefix w3 w4.
                  * 
-                 * @param contextLength the length of the context to compute
+                 * @param ctxLen the length of the context to compute
                  * @param isBackOff is the boolean flag that determines whether
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
                  * @return the computed hash context
                  */
-                inline TLongId getQueryContextId(const TModelLevel contextLength, bool isBackOff) {
+                inline TLongId getQueryContextId(const TModelLevel ctxLen, bool isBackOff) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
-                    const TModelLevel bIdx = mGramEndIdx - contextLength;
+                    const TModelLevel bIdx = mGramEndIdx - ctxLen;
                     TModelLevel idx = bIdx;
 
-                    LOG_DEBUG3 << "Computing context hash for context length " << SSTR(contextLength)
+                    LOG_DEBUG3 << "Computing context hash for context length " << SSTR(ctxLen)
                             << " for a  " << (isBackOff ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
@@ -461,7 +493,7 @@ namespace uva {
                         idx++;
                     }
 
-                    LOG_DEBUG3 << "Resulting context hash for context length " << SSTR(contextLength)
+                    LOG_DEBUG3 << "Resulting context hash for context length " << SSTR(ctxLen)
                             << " of a  " << (isBackOff ? "back-off" : "probability")
                             << " computation is: " << SSTR(ctxId) << END_LOG;
 
@@ -549,13 +581,31 @@ namespace uva {
 
                 //The temporary data structure to store the N-gram query word hashes
                 TShortId mGramWordIds[N];
+
+                /**
+                 * This recursive function implements the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model. The
+                 * N-Gram hashes are obtained from the _wordHashes member
+                 * variable of the class. So it must be pre-set with proper
+                 * word hash values first!
+                 * @param level the M-gram level for which the probability is to be computed
+                 * @return the computed probability value
+                 */
+                TLogProbBackOff computeLogProbability(const TModelLevel level);
+
+                /**
+                 * This recursive function allows to get the back-off weight for the current context.
+                 * The N-Gram hashes are obtained from the pre-computed data member array _wordHashes
+                 * @param level the M-gram level for which the back-off weight is to be found,
+                 * is equal to the context length of the K-Gram in the caller function
+                 * @return the resulting back-off weight probability
+                 */
+                TLogProbBackOff getBackOffWeight(const TModelLevel level);
+
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches
             typedef ATrie<MAX_NGRAM_LEVEL> TFiveTrie;
-
-            //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ATrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace uva {
                 //Also initialize the M-gram index counters, for issuing context indexes
                 for (TModelLevel i = 0; i < NUM_M_N_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
-                    m_MN_gram_idx_cnts[i] = 1;
+                    m_MN_gram_idx_cnts[i] = FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
                     m_MN_gram_size[i] = counts[i + 1]+1;
                 }
@@ -109,12 +109,6 @@ namespace uva {
                 //There is no need to add extra elements here as the context index is not relevant.
                 m_N_gram_data = new TCtxIdProbEntryPair[counts[N - 1]];
                 memset(m_N_gram_data, 0, counts[N - 1] * sizeof (TCtxIdProbEntryPair));
-            }
-
-            template<TModelLevel N>
-            void C2WOrderedArrayTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
-                //ToDo: Implement
-                throw Exception("Not implemented: HybridMemoryTrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result)");
             }
 
             template<TModelLevel N>

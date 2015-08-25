@@ -103,12 +103,6 @@ namespace uva {
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result) {
-                //ToDo: Implement
-                throw Exception("Not implemented: HybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result)");
-            }
-
-            template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::~W2CHybridMemoryTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {

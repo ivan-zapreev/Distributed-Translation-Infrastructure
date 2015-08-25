@@ -87,7 +87,7 @@ namespace uva {
                 //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie
                 const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
             }
-            
+
             namespace __CtxToPBMapStorageFactory {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
@@ -99,9 +99,12 @@ namespace uva {
             //This is the small id type to be used for e.g. word ids
             typedef uint32_t TShortId;
             //The maximum word index/id value
-            const static TShortId MAX_SHORT_ID_VALUE  = UINT32_MAX;
+            const static TShortId MAX_SHORT_ID_VALUE = UINT32_MAX;
             //This is the long id type to be used for e.g. long context ids 
             typedef uint64_t TLongId;
+
+            //Combine two short ids into one long id in a bit fashion
+#define TShortId_TShortId_2_TLongId(first, second) (((TLongId) first) << 32) | second
         }
     }
 }

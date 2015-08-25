@@ -122,14 +122,6 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]);
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * For more details @see ATrie
-                 */
-                virtual void queryNGram(const vector<string> & ngram, SProbResult & result);
-
-                /**
                  * The basic destructor
                  */
                 virtual ~CtxMultiHashMapTrie();
@@ -153,6 +145,15 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) {
+                    return pOneGramMap->at(wordId);
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -162,15 +163,26 @@ namespace uva {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
-                    TLongId keyContext = getContextId(wordId, ctxId);
+                    const TLongId keyCtxId = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[level - 1].first = min<TLongId>(keyContext, hashSizes[level - 1].first);
-                        hashSizes[level - 1].second = max<TLongId>(keyContext, hashSizes[level - 1].second);
+                        hashSizes[level - 1].first = min<TLongId>(keyCtxId, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TLongId>(keyCtxId, hashSizes[level - 1].second);
                     }
 
-                    return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
+                    return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyCtxId);
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                        const TLongId keyCtxId = getContextId(wordId, ctxId);
+                        return pMGramMap[level - MGRAM_IDX_OFFSET]->at(keyCtxId);
                 };
 
                 /**
@@ -182,15 +194,26 @@ namespace uva {
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     //Data stores the N-tires from length 2 on, therefore "idx-1"
                     //Get/Create the mapping for this word in the Trie level of the N-gram
-                    TLongId keyContext = getContextId(wordId, ctxId);
+                    const TLongId keyCtxId = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[N - 1].first = min<TLongId>(keyContext, hashSizes[N - 1].first);
-                        hashSizes[N - 1].second = max<TLongId>(keyContext, hashSizes[N - 1].second);
+                        hashSizes[N - 1].first = min<TLongId>(keyCtxId, hashSizes[N - 1].first);
+                        hashSizes[N - 1].second = max<TLongId>(keyCtxId, hashSizes[N - 1].second);
                     }
-                    
-                    return pNGramMap->operator[](keyContext);
+
+                    return pNGramMap->operator[](keyCtxId);
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
+                    const TLongId keyCtxId = getContextId(wordId, ctxId);
+                    return pNGramMap->at(keyCtxId);
                 };
 
             private:
@@ -249,25 +272,6 @@ namespace uva {
                 : ATrie<N>(NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
-
-                /**
-                 * This recursive function implements the computation of the
-                 * N-Gram probabilities in the Back-Off Language Model. The
-                 * N-Gram hashes are obtained from the _wordHashes member
-                 * variable of the class. So it must be pre-set with proper
-                 * word hash values first!
-                 * @param contextLength this is the length of the considered context.
-                 * @return the computed probability value
-                 */
-                TLogProbBackOff computeLogProbability(const TModelLevel contextLength);
-
-                /**
-                 * This recursive function allows to get the back-off weight for the current context.
-                 * The N-Gram hashes are obtained from the pre-computed data memeber array _wordHashes
-                 * @param contextLength the current context length
-                 * @return the resulting back-off weight probability
-                 */
-                TLogProbBackOff getBackOffWeight(const TModelLevel contextLength);
 
                 /**
                  * This method must used to provide the N-gram count information
