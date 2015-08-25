@@ -63,7 +63,8 @@ namespace uva {
                         position = (lowerbound + upperbound) / 2;
                         found_key = static_cast<KEY_TYPE> (array[position]);
                         
-                        LOG_DEBUG3 << "Next considered pos: " << position
+                        LOG_DEBUG3 << "Next considered [l,u] = [" << lowerbound
+                            << ", " << upperbound << "], pos: " << position
                             << ", key: " << found_key << END_LOG;
                     }
 
