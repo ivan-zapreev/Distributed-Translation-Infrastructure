@@ -43,7 +43,7 @@ namespace uva {
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ATrie<N>(_pWordIndex,
-            [] (const TWordId wordId, const TContextId ctxId, const TModelLevel level) -> TContextId {
+            [] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
                 return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
             oGramMemFactor(_oGramMemFactor),
@@ -126,7 +126,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::getBackOffWeight(const TModelLevel contextLength) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TWordId & endWordHash = ATrie<N>::getBackOffNGramEndWordHash();
+                const TShortId & endWordHash = ATrie<N>::getBackOffNGramEndWordHash();
                 const TModelLevel backOfContextLength = contextLength - 1;
                 //Set the initial back-off weight value to undefined!
                 TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
@@ -136,11 +136,11 @@ namespace uva {
 
                 if (backOfContextLength > 0) {
                     //Compute the context hash
-                    TContextId contextHash = ATrie<N>::getQueryContextId(backOfContextLength, true);
+                    TLongId contextHash = ATrie<N>::getQueryContextId(backOfContextLength, true);
                     //Attempt to retrieve back-off weights
                     try {
                         //The context length plus one is M value of the M-Gram
-                        TContextId keyContext = getContextId(endWordHash, contextHash);
+                        TLongId keyContext = getContextId(endWordHash, contextHash);
                         TProbBackOffEntryPair & entry = pMGramMap[(backOfContextLength + 1) - MGRAM_IDX_OFFSET]->at(keyContext);
 
                         //Obtained the stored back-off weight
@@ -182,7 +182,7 @@ namespace uva {
             template<TModelLevel N>
             TLogProbBackOff CtxMultiHashMapTrie<N>::computeLogProbability(const TModelLevel contextLength) {
                 //Get the last word in the N-gram
-                const TWordId & endWordHash = ATrie<N>::getNGramEndWordHash();
+                const TShortId & endWordHash = ATrie<N>::getNGramEndWordHash();
 
                 LOG_DEBUG1 << "Computing probability for an " << (contextLength + 1)
                         << "-gram the context length is " << contextLength << END_LOG;
@@ -192,11 +192,11 @@ namespace uva {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
 
                     //Compute the context hash based on what is stored in _wordHashes and context length
-                    TContextId contextHash = ATrie<N>::getQueryContextId(contextLength, false);
+                    TLongId contextHash = ATrie<N>::getQueryContextId(contextLength, false);
 
                     //Attempt to retrieve probabilities
                     try {
-                        TContextId keyContext = getContextId(endWordHash, contextHash);
+                        TLongId keyContext = getContextId(endWordHash, contextHash);
                         if (contextLength == (N - 1)) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff & prob = pNGramMap->at(keyContext);

@@ -96,12 +96,12 @@ namespace uva {
 
         //The following type definitions are important for creating hashes
         namespace hashing {
-            //This is the smallest size which I've tested and it works for the hash without collisions
-            typedef uint32_t TWordId;
+            //This is the small id type to be used for e.g. word ids
+            typedef uint32_t TShortId;
             //The maximum word index/id value
-            const static TWordId MAX_WORD_ID_VALUE  = UINT32_MAX;
-            //This is the hash reference size which should be twice as long as the TWordHashSize
-            typedef uint64_t TContextId;
+            const static TShortId MAX_SHORT_ID_VALUE  = UINT32_MAX;
+            //This is the long id type to be used for e.g. long context ids 
+            typedef uint64_t TLongId;
         }
     }
 }

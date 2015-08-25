@@ -23,8 +23,8 @@
  * Created on August 24, 2015, 9:10 AM
  */
 
-#ifndef HYBRIDMEMORYTRIESTORAGE_HPP
-#define	HYBRIDMEMORYTRIESTORAGE_HPP
+#ifndef W2CHYBRIDMEMORYTRIESTORAGE_HPP
+#define	W2CHYBRIDMEMORYTRIESTORAGE_HPP
 
 #include <inttypes.h>       // std::uint32_t
 #include <utility>          // std::pair, std::make_pair
@@ -43,17 +43,15 @@ using namespace uva::smt::tries::alloc;
 namespace uva {
     namespace smt {
         namespace tries {
-            //This is the id type size to be used as index
-            typedef TWordId TIdIndex;
 
             //The type of key,value pairs to be stored
-            typedef pair< const TIdIndex, TIdIndex> TStorageMapEntry;
+            typedef pair< const TShortId, TShortId> TStorageMapEntry;
             //The typedef for the map allocator
             typedef GreedyMemoryAllocator< TStorageMapEntry > TStorageMapAllocator;
             //The unsigned map type
-            typedef unordered_map<TIdIndex, TIdIndex, std::hash<TIdIndex>, std::equal_to<TIdIndex>, TStorageMapAllocator > TStorageUnsignedMap;
+            typedef unordered_map<TShortId, TShortId, std::hash<TShortId>, std::equal_to<TShortId>, TStorageMapAllocator > TStorageUnsignedMap;
             //The unsigned map type
-            typedef map<TIdIndex, TIdIndex> TStorageMap;
+            typedef map<TShortId, TShortId> TStorageMap;
 
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
@@ -69,11 +67,11 @@ namespace uva {
                     delete m_p_map;
                 };
 
-                TIdIndex & operator[](const TIdIndex ctx_idx) {
+                TShortId & operator[](const TShortId ctx_idx) {
                     return m_p_map->operator[](ctx_idx);
                 };
 
-                const TIdIndex & at(const TIdIndex ctx_idx) const throw (out_of_range) {
+                const TShortId & at(const TShortId ctx_idx) const throw (out_of_range) {
                     return m_p_map->at(ctx_idx);
                 };
 

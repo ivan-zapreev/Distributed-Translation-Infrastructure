@@ -141,11 +141,11 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) {
+                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[0].first = min<TContextId>(wordId, hashSizes[0].first);
-                        hashSizes[0].second = max<TContextId>(wordId, hashSizes[0].second);
+                        hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
+                        hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
                     }
 
                     //Get the word probability and back-off data reference
@@ -158,16 +158,16 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
-                    TContextId keyContext = getContextId(wordId, ctxId);
+                    TLongId keyContext = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[level - 1].first = min<TContextId>(keyContext, hashSizes[level - 1].first);
-                        hashSizes[level - 1].second = max<TContextId>(keyContext, hashSizes[level - 1].second);
+                        hashSizes[level - 1].first = min<TLongId>(keyContext, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TLongId>(keyContext, hashSizes[level - 1].second);
                     }
 
                     return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyContext);
@@ -179,15 +179,15 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     //Data stores the N-tires from length 2 on, therefore "idx-1"
                     //Get/Create the mapping for this word in the Trie level of the N-gram
-                    TContextId keyContext = getContextId(wordId, ctxId);
+                    TLongId keyContext = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
-                        hashSizes[N - 1].first = min<TContextId>(keyContext, hashSizes[N - 1].first);
-                        hashSizes[N - 1].second = max<TContextId>(keyContext, hashSizes[N - 1].second);
+                        hashSizes[N - 1].first = min<TLongId>(keyContext, hashSizes[N - 1].first);
+                        hashSizes[N - 1].second = max<TLongId>(keyContext, hashSizes[N - 1].second);
                     }
                     
                     return pNGramMap->operator[](keyContext);
@@ -202,11 +202,11 @@ namespace uva {
                 const float nGramMemFactor;
 
                 //The type of key,value pairs to be stored in the One Grams map
-                typedef pair< const TWordId, TProbBackOffEntryPair> TOneGramEntry;
+                typedef pair< const TShortId, TProbBackOffEntryPair> TOneGramEntry;
                 //The typedef for the One Grams map allocator
                 typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
-                typedef unordered_map<TWordId, TProbBackOffEntryPair, std::hash<TWordId>, std::equal_to<TWordId>, TOneGramAllocator > TOneGramsMap;
+                typedef unordered_map<TShortId, TProbBackOffEntryPair, std::hash<TShortId>, std::equal_to<TShortId>, TOneGramAllocator > TOneGramsMap;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -217,29 +217,29 @@ namespace uva {
                 TOneGramsMap * pOneGramMap;
 
                 //The type of key,value pairs to be stored in the M Grams map
-                typedef pair< const TContextId, TProbBackOffEntryPair> TMGramEntry;
+                typedef pair< const TLongId, TProbBackOffEntryPair> TMGramEntry;
                 //The typedef for the M Grams map allocator
                 typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TContextId, TProbBackOffEntryPair, std::hash<TContextId>, std::equal_to<TContextId>, TMGramAllocator > TMGramsMap;
+                typedef unordered_map<TLongId, TProbBackOffEntryPair, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
                 TMGramAllocator * pMGramAlloc[N - MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
                 TMGramsMap * pMGramMap[N - MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
-                typedef pair< const TContextId, TLogProbBackOff> TNGramEntry;
+                typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
                 //The typedef for the N Grams map allocator
                 typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TContextId, TLogProbBackOff, std::hash<TContextId>, std::equal_to<TContextId>, TNGramAllocator > TNGramsMap;
+                typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                 //The actual data storage for the N Grams
                 TNGramAllocator * pNGramAlloc;
                 //The map storing the N-Grams, they do not have back-off values
                 TNGramsMap * pNGramMap;
 
                 //The structure for storing the hash key values statistics
-                pair<TContextId, TContextId> hashSizes[N];
+                pair<TLongId, TLongId> hashSizes[N];
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -300,7 +300,7 @@ namespace uva {
                  * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
                  * @return the resulting context
                  */
-                static inline TContextId getContextId(TWordId hash, TContextId context, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
+                static inline TLongId getContextId(TShortId hash, TLongId context, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     return szudzik(hash, context);
                 }

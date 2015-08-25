@@ -9,6 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
+      <itemPath>inc/C2WHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/CtxMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
@@ -16,13 +17,13 @@
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
-      <itemPath>inc/HybridMemoryTrie.hpp</itemPath>
-      <itemPath>inc/HybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
+      <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
+      <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -33,10 +34,11 @@
                    projectFiles="true">
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
+      <itemPath>src/C2WHybridMemoryTrie.cpp</itemPath>
       <itemPath>src/CtxMultiHashMapTrie.cpp</itemPath>
-      <itemPath>src/HybridMemoryTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
+      <itemPath>src/W2CHybridMemoryTrie.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -97,6 +99,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2WHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -111,10 +115,6 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -125,17 +125,23 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -171,6 +177,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2WHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -185,10 +193,6 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -199,17 +203,23 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -254,6 +264,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2WHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -268,10 +280,6 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -282,17 +290,23 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -326,6 +340,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2WHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -340,10 +356,6 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -354,17 +366,23 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -400,6 +418,8 @@
       </item>
       <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2WHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
@@ -414,10 +434,6 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/HybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -428,17 +444,23 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/HybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/CtxMultiHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>

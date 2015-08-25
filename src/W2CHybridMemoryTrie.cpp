@@ -22,7 +22,7 @@
  *
  * Created on August 21, 2015, 4:18 PM
  */
-#include "HybridMemoryTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 
@@ -35,9 +35,9 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            HybridMemoryTrie<N, StorageFactory, StorageContainer>::HybridMemoryTrie(AWordIndex * const p_word_index)
+            W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::W2CHybridMemoryTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
-            [&] (const TWordId wordId, const TContextId ctxId, const TModelLevel level) -> TContextId {
+            [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_storage_factory(NULL) {
@@ -45,7 +45,7 @@ namespace uva {
                 //N-gram probabilities in the C type container as its value! See description
                 //of the m_mgram_mapping data member.
                 const size_t float_size = sizeof (TLogProbBackOff);
-                const size_t idx_size = sizeof (TIdIndex);
+                const size_t idx_size = sizeof (TShortId);
                 if (float_size != idx_size) {
                     stringstream msg;
                     msg << "Unable to use " << __FILE__ << " for a trie as it expects ( sizeof(TLogProbBackOff) = "
@@ -53,19 +53,12 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
-                //This one is needed for having a proper non-null word index pointer.
-                if (p_word_index == NULL) {
-                    stringstream msg;
-                    msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
-                    throw Exception(msg.str());
-                }
-
                 //Initialize the array of counters
-                memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TIdIndex));
+                memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void HybridMemoryTrie<N, StorageFactory, StorageContainer>::preAllocate(const size_t counts[N]) {
+            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::preAllocate(const size_t counts[N]) {
                 //Store the number of words plus 2 because a word with index 0 is
                 //UNDEFINED and a word with index 1 is UNKNOWN (<unk>)
                 m_word_arr_size = counts[0] + 2;
@@ -106,13 +99,13 @@ namespace uva {
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void HybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result) {
+            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result) {
                 //ToDo: Implement
                 throw Exception("Not implemented: HybridMemoryTrie<N, StorageFactory, StorageContainer>::queryNGram(const vector<string> & ngram, SProbResult & result)");
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            HybridMemoryTrie<N, StorageFactory, StorageContainer>::~HybridMemoryTrie() {
+            W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::~W2CHybridMemoryTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the prob/back-off arrays per level
@@ -124,7 +117,7 @@ namespace uva {
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the word arrays per level
                     if (m_mgram_mapping[idx] != NULL) {
-                        for (TIdIndex widx = 0; widx < m_word_arr_size; widx++) {
+                        for (TShortId widx = 0; widx < m_word_arr_size; widx++) {
                             //Delete the C containers per word index
                             if (m_mgram_mapping[idx][widx] != NULL) {
                                 delete m_mgram_mapping[idx][widx];
@@ -139,7 +132,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage>;
+            template class W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage>;
         }
     }
 }

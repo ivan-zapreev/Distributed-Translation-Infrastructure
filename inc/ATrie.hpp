@@ -137,7 +137,7 @@ namespace uva {
              * @param level the M-gram level we are working with, must have M > 1 or UNDEF_NGRAM_LEVEL!
              * @result the new context id
              */
-            typedef std::function<TContextId(const TWordId wordId, const TContextId ctxId, const TModelLevel level) > TGetCtxIdFunct;
+            typedef std::function<TLongId(const TShortId wordId, const TLongId ctxId, const TModelLevel level) > TGetCtxIdFunct;
 
             /**
              * This is a common abstract class for all possible Trie implementations
@@ -192,7 +192,7 @@ namespace uva {
                     LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                     //Compute it's hash value
-                    TWordId wordHash = ATrie<N>::getWordIndex()->makeId(token);
+                    TShortId wordHash = ATrie<N>::getWordIndex()->makeId(token);
                     //Get the word probability and back-off data reference
                     TProbBackOffEntryPair & pbData = make_1_GramDataRef(wordHash);
 
@@ -227,11 +227,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
+                    const TLongId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(mGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
-                    const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TShortId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -266,11 +266,11 @@ namespace uva {
                     //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                     // 1. Compute the context hash defined by w1 w2 w3
-                    const TContextId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
+                    const TLongId ctxId = ATrie<N>::template getContextId<DebugLevel::DEBUG2>(nGram);
 
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = nGram.tokens[N - 1];
-                    const TWordId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
+                    const TShortId wordId = ATrie<N>::getWordIndex()->getId(endWord.str());
                     LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
@@ -335,7 +335,7 @@ namespace uva {
                  * @param wordId the One-gram id
                  * @return the reference to the storage structure
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) = 0;
+                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -346,7 +346,7 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) = 0;
+                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -356,7 +356,7 @@ namespace uva {
                  * @param ctxId the N-gram context (the N-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) = 0;
+                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -374,7 +374,7 @@ namespace uva {
                  * Gets the word hash for the end word of the back-off N-Gram
                  * @return the word hash for the end word of the back-off N-Gram
                  */
-                inline const TWordId & getBackOffNGramEndWordHash() {
+                inline const TShortId & getBackOffNGramEndWordHash() {
                     return mGramWordIds[N - 2];
                 }
 
@@ -382,7 +382,7 @@ namespace uva {
                  * Gets the word hash for the last word in the N-gram
                  * @return the word hash for the last word in the N-gram
                  */
-                inline const TWordId & getNGramEndWordHash() {
+                inline const TShortId & getNGramEndWordHash() {
                     return mGramWordIds[N - 1];
                 }
 
@@ -394,7 +394,7 @@ namespace uva {
                  * @param tokens the tokens to be transformed into word hashes must have size <=N
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                inline void tokensToHashes(const vector<string> & tokens, TWordId wordHashes[N]) {
+                inline void tokensToHashes(const vector<string> & tokens, TShortId wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - tokens.size();
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
@@ -436,7 +436,7 @@ namespace uva {
                  *                  we consider w1 w2 w3 w4 only
                  * @return the computed hash context
                  */
-                inline TContextId getQueryContextId(const TModelLevel contextLength, bool isBackOff) {
+                inline TLongId getQueryContextId(const TModelLevel contextLength, bool isBackOff) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
                     const TModelLevel bIdx = mGramEndIdx - contextLength;
@@ -447,7 +447,7 @@ namespace uva {
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    TContextId ctxId = mGramWordIds[idx];
+                    TLongId ctxId = mGramWordIds[idx];
                     LOG_DEBUG3 << "Word: " << SSTR(idx) << " id == initial context id: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
@@ -474,8 +474,8 @@ namespace uva {
                  * @return the resulting hash of the context(w1 w2 w3)
                  */
                 template<DebugLevel logLevel>
-                inline TContextId getContextId(const SRawNGram & gram) {
-                    TContextId ctxId;
+                inline TLongId getContextId(const SRawNGram & gram) {
+                    TLongId ctxId;
 
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (ATrie<N>::getCachedContextId(gram, ctxId)) {
@@ -490,7 +490,7 @@ namespace uva {
                         //Iterate and compute the hash:
                         for (int i = 1; i < (gram.level - 1); i++) {
                             const string & token = gram.tokens[i].str();
-                            const TWordId wordId = ATrie<N>::getWordIndex()->getId(token);
+                            const TShortId wordId = ATrie<N>::getWordIndex()->getId(token);
                             LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
                             ctxId = m_get_ctx_id_func(wordId, ctxId, i + 1);
                             LOGGER(logLevel) << "ctxId = createContext( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
@@ -509,7 +509,7 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool getCachedContextId(const SRawNGram &mGram, TContextId & result) {
+                inline bool getCachedContextId(const SRawNGram &mGram, TLongId & result) {
                     if (m_chached_context == mGram.context) {
                         result = m_chached_context_id;
                         LOG_DEBUG3 << "Cache match! " << m_chached_context << " == " << mGram.context << END_LOG;
@@ -523,7 +523,7 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void cacheContextId(const SRawNGram &mGram, TContextId & stx_id) {
+                inline void cacheContextId(const SRawNGram &mGram, TLongId & stx_id) {
                     m_chached_context.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_context_id = stx_id;
                     LOG_DEBUG3 << "Caching context = [ " << m_chached_context << " ], id = " << m_chached_context_id << END_LOG;
@@ -542,10 +542,10 @@ namespace uva {
                 //Stores the cached M-gram context (for 1 < M <= N )
                 TextPieceReader m_chached_context;
                 //Stores the cached M-gram context value (for 1 < M <= N )
-                TContextId m_chached_context_id;
+                TLongId m_chached_context_id;
 
                 //The temporary data structure to store the N-gram query word hashes
-                TWordId mGramWordIds[N];
+                TShortId mGramWordIds[N];
             };
 
             //Handy type definitions for the tries of different sizes and with.without caches

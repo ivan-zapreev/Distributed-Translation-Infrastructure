@@ -23,17 +23,16 @@
  * Created on August 21, 2015, 4:18 PM
  */
 
-#ifndef HYBRIDMEMORYTRIE_HPP
-#define	HYBRIDMEMORYTRIE_HPP
+#ifndef W2CHYBRIDMEMORYTRIE_HPP
+#define	W2CHYBRIDMEMORYTRIE_HPP
 
 #include <string>   // std::string
 
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "ATrie.hpp"
-#include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
-#include "HybridMemoryTrieStorage.hpp"
+#include "W2CHybridMemoryTrieStorage.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
@@ -43,19 +42,20 @@ namespace uva {
         namespace tries {
 
             /**
-             * This is the hybrid memory trie implementation class. It has two template parameters.
+             * This is the hybrid memory trie implementation class. It has three template parameters.
              * @param N the maximum number of levelns in the trie.
-             * @param C the container class to store context-to-prob_back_off_index pairs, must derive from ACtxToPBStorare
+             * @param StorageFactory the factory to create storage containers
+             * @param StorageContainer the storage container type that is created by the factory
              */
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            class HybridMemoryTrie : public ATrie<N> {
+            class W2CHybridMemoryTrie : public ATrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
-                explicit HybridMemoryTrie(AWordIndex * const p_word_index);
+                explicit W2CHybridMemoryTrie(AWordIndex * const p_word_index);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -75,7 +75,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~HybridMemoryTrie();
+                virtual ~W2CHybridMemoryTrie();
 
             protected:
 
@@ -84,7 +84,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) {
+                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
                     //Get the word probability and back-off data reference
                     return m_mgram_data[0][wordId];
                 };
@@ -95,13 +95,13 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(level);
                         LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << level << END_LOG;
                     }
-                    TIdIndex & nextCtxId = (*ctx_mapping)[ctxId];
+                    TShortId & nextCtxId = (*ctx_mapping)[ctxId];
                     nextCtxId = next_ctx_id[level - MGRAM_MAPPING_IDX_OFFSET]++;
                     return m_mgram_data[level - 1][nextCtxId];
                 };
@@ -112,7 +112,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_MAPPING_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
@@ -162,7 +162,7 @@ namespace uva {
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
                 const static TModelLevel NUM_IDX_COUNTERS = N - 2;
-                TIdIndex next_ctx_id[NUM_IDX_COUNTERS];
+                TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -174,13 +174,13 @@ namespace uva {
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
                  */
-                inline TContextId getContextId(TWordId wordId, TContextId ctxId, const TModelLevel level) {
+                inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     return m_mgram_mapping[level - 1][wordId]->at(ctxId);
                 }
 
             };
 
-            typedef HybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapHybridMemoryTrie;
+            typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapW2CHybridMemoryTrie;
         }
     }
 }

@@ -46,8 +46,8 @@ namespace uva {
              * @param str the string to hash
              * @return the resulting hash
              */
-            inline TWordId computeDjb2Hash(const string & str) {
-                TWordId hashVal = 5381;
+            inline TShortId computeDjb2Hash(const string & str) {
+                TShortId hashVal = 5381;
                 int c;
                 const char * c_str = str.c_str();
 
@@ -74,8 +74,8 @@ namespace uva {
 #define B 76963 /* another prime */
 #define C 86969 /* yet another prime */
 
-            inline TWordId computePrimesHash(const string & str) {
-                TWordId h = 31 /* also prime */;
+            inline TShortId computePrimesHash(const string & str) {
+                TShortId h = 31 /* also prime */;
                 const char * c_str = str.c_str();
                 while (*c_str) {
                     h = (h * A) ^ (c_str[0] * B);
@@ -84,10 +84,10 @@ namespace uva {
                 return h; // or return h % C;
             }
 
-            inline TWordId computeRSHash(const string & str) {
-                TWordId b = 378551;
-                TWordId a = 63689;
-                TWordId hash = 0;
+            inline TShortId computeRSHash(const string & str) {
+                TShortId b = 378551;
+                TShortId a = 63689;
+                TShortId hash = 0;
 
                 for (std::size_t i = 0; i < str.length(); i++) {
                     hash = hash * a + str[i];
@@ -106,7 +106,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TContextId cantor(TContextId x, TContextId y) {
+            inline TLongId cantor(TLongId x, TLongId y) {
                 return ((x + y)*(x + y + 1)) / 2 + y;
             }
 
@@ -119,11 +119,11 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void uncantor(const TContextId z, TWordId &x, TContextId &y) {
-                const TContextId w = floor((sqrt(8 * z + 1) - 1) / 2);
-                const TContextId t = (w * w + w) / 2;
+            inline void uncantor(const TLongId z, TShortId &x, TLongId &y) {
+                const TLongId w = floor((sqrt(8 * z + 1) - 1) / 2);
+                const TLongId t = (w * w + w) / 2;
                 y = (z - t);
-                x = (TWordId) (w - y);
+                x = (TShortId) (w - y);
             }
 
             /**
@@ -136,7 +136,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TContextId szudzik(TContextId x, TContextId y) {
+            inline TLongId szudzik(TLongId x, TLongId y) {
                 return ( x >= y ? (y + x + x * x) : (x + y * y));
             }
 
@@ -149,10 +149,10 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void unszudzik(const TContextId z, TWordId &x, TContextId &y) {
-                const TContextId zrf = floor(sqrt(z));
-                const TContextId zrfs = zrf * zrf;
-                const TContextId zmzrfs = z - zrfs;
+            inline void unszudzik(const TLongId z, TShortId &x, TLongId &y) {
+                const TLongId zrf = floor(sqrt(z));
+                const TLongId zrfs = zrf * zrf;
+                const TLongId zmzrfs = z - zrfs;
                 if (zmzrfs < zrf) {
                     x = zmzrfs;
                     y = zrf;

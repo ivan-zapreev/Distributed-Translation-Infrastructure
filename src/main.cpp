@@ -42,7 +42,7 @@
 #include "MemoryMappedFileReader.hpp"
 #include "FileStreamReader.hpp"
 #include "HashMapWordIndex.hpp"
-#include "HybridMemoryTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
         
 using namespace std;
 using namespace uva::smt;
