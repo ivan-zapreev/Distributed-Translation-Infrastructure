@@ -36,13 +36,25 @@ using namespace uva::smt::utils::text;
 namespace uva {
     namespace smt {
         namespace tries {
-
+            
             template<TModelLevel N>
             CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
-            : ATrie<N>(_pWordIndex, getContextId),
+            : ATrie<N>(_pWordIndex,
+            [] (const TWordId wordId, const TContextId ctxId, const TModelLevel level) -> TContextId {
+
+                return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); },
+            [&] (const TWordId wordId) -> TProbBackOffEntryPair& {
+
+                return this->make_1_GramDataRef(wordId); },
+            [&] (const TModelLevel level, const TWordId wordId, const TContextId ctxId) -> TProbBackOffEntryPair& {
+
+                return this->make_M_GramDataRef(level, wordId, ctxId); },
+            [&] (const TWordId wordId, const TContextId ctxId) -> TLogProbBackOff& {
+
+                return this->make_N_GramDataRef(wordId, ctxId); }),
             oGramMemFactor(_oGramMemFactor),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor) {

@@ -141,7 +141,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & get_1_GramDataRef(const TWordId wordId) {
+                TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) {
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
                         hashSizes[0].first = min<TContextId>(wordId, hashSizes[0].first);
@@ -158,7 +158,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
@@ -179,7 +179,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
                     //Data stores the N-tires from length 2 on, therefore "idx-1"
                     //Get/Create the mapping for this word in the Trie level of the N-gram
                     TContextId keyContext = getContextId(wordId, ctxId);
@@ -246,7 +246,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 CtxMultiHashMapTrie(const CtxMultiHashMapTrie& orig)
-                : ATrie<N>(NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
+                : ATrie<N>(NULL, NULL, NULL, NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

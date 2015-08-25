@@ -84,7 +84,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & get_1_GramDataRef(const TWordId wordId) {
+                TProbBackOffEntryPair & make_1_GramDataRef(const TWordId wordId) {
                     //Get the word probability and back-off data reference
                     return m_mgram_data[0][wordId];
                 };
@@ -95,7 +95,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
+                TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TWordId wordId, const TContextId ctxId) {
                     StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_MAPPING_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(level);
@@ -112,7 +112,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff& get_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
+                TLogProbBackOff& make_N_GramDataRef(const TWordId wordId, const TContextId ctxId) {
                     StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_MAPPING_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
