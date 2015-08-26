@@ -245,7 +245,7 @@ namespace uva {
                             Logger::stopProgressBar();
                             LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
                         } else {
-                            LOGGER(PROGRESS_ACTIVE_LEVEL) << "No need to do cultivating for " << level << "-Grams" << END_LOG;
+                            LOG_INFO3 << "No need to do cultivating for " << level << "-Grams" << END_LOG;
                         }
 
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram

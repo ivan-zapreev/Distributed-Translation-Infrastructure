@@ -60,7 +60,7 @@ namespace uva {
             static const DebugLevel LOGER_MAX_LEVEL = INFO3;
             
             //Defines the log level from which the detailed timing info is available
-            static const DebugLevel PROGRESS_ACTIVE_LEVEL = INFO3;
+            static const DebugLevel PROGRESS_ACTIVE_LEVEL = INFO2;
         }
 
         //The following type definitions are important for storing the Tries information
