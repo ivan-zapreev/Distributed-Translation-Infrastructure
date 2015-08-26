@@ -226,7 +226,8 @@ namespace uva {
                     //Get the new n-gram index
                     const TShortId n_gram_idx = m_MN_gram_idx_cnts[N_GRAM_IDX]++;
 
-                    LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << "" << END_LOG;
+                    LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with wordId: " << SSTR(wordId)
+                            << ", ctxId: " << SSTR(ctxId) << " @ index: " << SSTR(n_gram_idx) << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
                     if (n_gram_idx >= m_MN_gram_size[N_GRAM_IDX]) {
@@ -238,11 +239,6 @@ namespace uva {
                     //Store the context and word ids
                     m_N_gram_data[n_gram_idx].ctxId = ctxId;
                     m_N_gram_data[n_gram_idx].wordId = wordId;
-
-                    LOG_DEBUG3 << "Creating " << SSTR(N) << "-gram: TShortId_TShortId_2_TLongId(ctxId = "
-                            << SSTR(ctxId) << ", wordId = " << SSTR(wordId) << ") = "
-                            << SSTR(TShortId_TShortId_2_TLongId(ctxId, wordId))
-                            << " @ index " << SSTR(n_gram_idx) << END_LOG;
 
                     //return the reference to the probability
                     return m_N_gram_data[n_gram_idx].prob;
