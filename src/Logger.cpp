@@ -169,20 +169,24 @@ namespace uva {
 #define IS_ENOUGH_LOGGING_LEVEL(level) (( PROGRESS_ACTIVE_LEVEL <= LOGER_MAX_LEVEL ) && ( PROGRESS_ACTIVE_LEVEL <= level ))
 
             void Logger::startProgressBar(const string & msg) {
-                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel) && !isPBOn) {
-                    stringstream pref;
-                    pref << _debugLevelStr[INFO3] << ":\t" << msg << ":\t";
-                    prefix = pref.str();
+                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel)) {
+                    if (!isPBOn) {
+                        stringstream pref;
+                        pref << _debugLevelStr[PROGRESS_ACTIVE_LEVEL] << ":\t" << msg << ":\t";
+                        prefix = pref.str();
 
-                    //Output the time string
-                    cout << computeTimeString(beginTime, timeStrLen);
+                        //Output the time string
+                        cout << computeTimeString(beginTime, timeStrLen);
 
-                    //Store the current time
-                    beginTime = clock();
+                        //Store the current time
+                        beginTime = clock();
 
-                    //Update the update counter and set the progress bar on flag
-                    updateCounter = 0;
-                    isPBOn = true;
+                        //Update the update counter and set the progress bar on flag
+                        updateCounter = 0;
+                        isPBOn = true;
+                    }
+                } else {
+                    LOG_INFO << msg << END_LOG;
                 }
             }
 
@@ -197,6 +201,7 @@ namespace uva {
 
                         updateCounter = 0;
                     } else {
+
                         updateCounter++;
                     }
                 }
