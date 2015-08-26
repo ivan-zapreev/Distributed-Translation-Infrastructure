@@ -550,10 +550,12 @@ namespace uva {
                 inline bool getCachedContextId(const SRawNGram &mGram, TLongId & result) {
                     if (m_chached_context == mGram.context) {
                         result = m_chached_context_id;
-                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_context << "] == [" << mGram.context << << "]" END_LOG;
+                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_context << "] == [" << mGram.context
+                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level) << END_LOG;
                         return false;
                     } else {
-                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_context << "] != [" << mGram.context << << "]" END_LOG;
+                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_context << "] != [" << mGram.context
+                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)  << END_LOG;
                         return true;
                     }
                 }
@@ -565,7 +567,7 @@ namespace uva {
                  */
                 inline void setCacheContextId(const SRawNGram &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokensToString(mGram.tokens, mGram.level) << END_LOG;
+                            << ", for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level) << END_LOG;
 
                     m_chached_context.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_context_id = stx_id;
