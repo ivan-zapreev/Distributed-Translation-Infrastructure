@@ -47,7 +47,7 @@ namespace uva {
                 memset(m_MN_gram_idx_cnts, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (MONITORE_COLLISIONS ? "ON" : "OFF")
+                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
                         << " !" << END_LOG;
             }
 

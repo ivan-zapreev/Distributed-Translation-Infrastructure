@@ -206,8 +206,17 @@ namespace uva {
                 void add_N_Gram(const SRawNGram &nGram);
 
                 /**
+                 * This method allows to check if post processing should be called after
+                 * all the X level grams are read. This method is virtual.
+                 * @param level the level of the X-grams that were finished to be read
+                 */
+                virtual bool isPost_Grams(const TModelLevel level){
+                    return false;
+                }
+                
+                /**
                  * This method should be called after all the X level grams are read.
-                 * @param level the level of the M-grams that were finished to be read
+                 * @param level the level of the X-grams that were finished to be read
                  */
                 void post_Grams(const TModelLevel level){
                     switch( level ) {

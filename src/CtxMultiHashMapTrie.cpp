@@ -65,7 +65,7 @@ namespace uva {
                 }
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (MONITORE_COLLISIONS ? "ON" : "OFF")
+                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
                         << " !" << END_LOG;
             }
 

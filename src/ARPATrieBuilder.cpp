@@ -231,17 +231,22 @@ namespace uva {
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
 
-                        //Do the progress bard indicator
-                        stringstream msg;
-                        msg << "Cultivating " << level << "-Grams";
-                        Logger::startProgressBar(msg.str());
+                        //Check if the post gram actions are needed! If yes - perform.
+                        if (_trie.isPost_Grams(level)) {
+                            //Do the progress bard indicator
+                            stringstream msg;
+                            msg << "Cultivating " << level << "-Grams";
+                            Logger::startProgressBar(msg.str());
 
-                        //Do the post level actions
-                        _trie.post_Grams(level);
+                            //Do the post level actions
+                            _trie.post_Grams(level);
 
-                        //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
-                        LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
+                            //Stop the progress bar in case of no exception
+                            Logger::stopProgressBar();
+                            LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
+                        } else {
+                            LOGGER(PROGRESS_ACTIVE_LEVEL) << "No need to do cultivating for " << level << "-Grams" << END_LOG;
+                        }
 
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram
                         LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N

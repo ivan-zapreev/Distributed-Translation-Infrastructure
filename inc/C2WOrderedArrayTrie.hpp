@@ -162,7 +162,7 @@ namespace uva {
 
                     //Check that the array is continuous in indexes, so that we add
                     //context after context and not switching between different contexts!
-                    if (MONITORE_COLLISIONS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_MN_gram_idx_cnts[mgram_idx])) {
+                    if (DO_SANITY_CHECKS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_MN_gram_idx_cnts[mgram_idx])) {
                         stringstream msg;
                         msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
                                 << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
@@ -281,13 +281,20 @@ namespace uva {
                     }
                 };
 
+                virtual bool isPost_Grams(const TModelLevel level) {
+                    //Check the base class and we need to do post actions
+                    //for the N-grams. The N-grams level data has to be
+                    //sorted see post_N_Grams method implementation below.
+                    return (level == N) || ATrie<N>::isPost_Grams(level);
+                }
+
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX]);
-                    
+
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language

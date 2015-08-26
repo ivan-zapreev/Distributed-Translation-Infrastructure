@@ -75,8 +75,9 @@ namespace uva {
             //The considered maximum length of the N-gram
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
 
-            //Sets the collision detection on and off.
-            const bool MONITORE_COLLISIONS = true;
+            //Enables all sorts of internal sanity checks,
+            //e.g. sets the collision detection on and off.
+            const bool DO_SANITY_CHECKS = true;
 
             namespace __AHashMapTrie {
                 //The unordered map memory factor for the Word index in AHashMapTrie
