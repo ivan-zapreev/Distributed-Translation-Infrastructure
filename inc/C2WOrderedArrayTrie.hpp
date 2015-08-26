@@ -160,6 +160,16 @@ namespace uva {
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
 
+                    //Check that the array is continuous in indexes, so that we add
+                    //context after context and not switching between different contexts!
+                    if (MONITORE_COLLISIONS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx != m_MN_gram_idx_cnts[mgram_idx] + 1)) {
+                        stringstream msg;
+                        msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
+                                << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
+                                << ", next ref.endIdx = " << SSTR(m_MN_gram_idx_cnts[mgram_idx] + 1) << "!";
+                        throw Exception(msg.str());
+                    }
+
                     //Get the new index and increment - this will be the new end index
                     ref.endIdx = m_MN_gram_idx_cnts[mgram_idx]++;
 

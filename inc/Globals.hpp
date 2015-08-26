@@ -73,7 +73,7 @@ namespace uva {
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
 
             //Sets the collision detection on and off.
-            const bool MONITORE_COLLISIONS = false;
+            const bool MONITORE_COLLISIONS = true;
 
             namespace __AHashMapTrie {
                 //The unordered map memory factor for the Word index in AHashMapTrie
