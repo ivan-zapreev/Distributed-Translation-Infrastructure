@@ -163,8 +163,8 @@ namespace uva {
                         TGetCtxIdFunct get_ctx_id_func)
                 : m_p_word_index(_pWordIndex),
                 m_get_ctx_id_func(get_ctx_id_func),
-                m_chached_context(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
-                m_chached_context_id(UNDEFINED_WORD_ID) {
+                m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
+                m_chached_ctx_id(UNDEFINED_WORD_ID) {
                     //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
@@ -236,7 +236,7 @@ namespace uva {
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = mGram.tokens[level - 1];
                     const TShortId wordId = m_p_word_index->getId(endWord.str());
-                    LOG_DEBUG2 << "wordHash = computeHash('" << endWord.str() << "') = " << wordId << END_LOG;
+                    LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
                     TProbBackOffEntryPair& pbData = make_M_GramDataRef(level, wordId, ctxId);
@@ -275,7 +275,7 @@ namespace uva {
                     // 2. Compute the hash of w4
                     const TextPieceReader & endWord = nGram.tokens[N - 1];
                     const TShortId wordId = m_p_word_index->getId(endWord.str());
-                    LOG_DEBUG2 << "wordHash = computeHash('" << endWord << "') = " << wordId << END_LOG;
+                    LOG_DEBUG2 << "wordId = computeId('" << endWord << "') = " << wordId << END_LOG;
 
                     // 3. Insert the probability data into the trie
                     TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
@@ -401,8 +401,8 @@ namespace uva {
                 ATrie(const ATrie& orig)
                 : m_p_word_index(NULL),
                 m_get_ctx_id_func(NULL),
-                m_chached_context(),
-                m_chached_context_id(UNDEFINED_WORD_ID) {
+                m_chached_ctx(),
+                m_chached_ctx_id(UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -548,14 +548,16 @@ namespace uva {
                  * @return true if there was nothing cached, otherwise false
                  */
                 inline bool getCachedContextId(const SRawNGram &mGram, TLongId & result) {
-                    if (m_chached_context == mGram.context) {
-                        result = m_chached_context_id;
-                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_context << "] == [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level) << END_LOG;
+                    if (m_chached_ctx == mGram.context) {
+                        result = m_chached_ctx_id;
+                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
+                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                                << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
-                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_context << "] != [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)  << END_LOG;
+                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
+                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                                << ", cached ctxId: " << SSTR(m_chached_ctx_id)  << END_LOG;
                         return true;
                     }
                 }
@@ -569,11 +571,11 @@ namespace uva {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
                             << ", for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level) << END_LOG;
 
-                    m_chached_context.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
-                    m_chached_context_id = stx_id;
+                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
+                    m_chached_ctx_id = stx_id;
 
-                    LOG_DEBUG2 << "Cached context = [ " << m_chached_context
-                            << " ], id = " << m_chached_context_id << END_LOG;
+                    LOG_DEBUG2 << "Cached context = [ " << m_chached_ctx
+                            << " ], id = " << SSTR(m_chached_ctx_id) << END_LOG;
                 }
 
             private:
@@ -588,9 +590,9 @@ namespace uva {
                 //The actual storage for the cached context c string
                 char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
                 //Stores the cached M-gram context (for 1 < M <= N )
-                TextPieceReader m_chached_context;
+                TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
-                TLongId m_chached_context_id;
+                TLongId m_chached_ctx_id;
 
                 //The temporary data structure to store the N-gram query word hashes
                 TShortId mGramWordIds[N];
