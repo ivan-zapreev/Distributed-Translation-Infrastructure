@@ -167,7 +167,7 @@ namespace uva {
 
                 template<TModelLevel N>
                 void ARPATrieBuilder<N>::readNGrams(const TModelLevel level) {
-                    LOG_USAGE << "Start reading ARPA " << level << "-Grams." << END_LOG;
+                    LOG_USAGE << "Started reading " << level << "-Grams." << END_LOG;
                     //Do the progress bard indicator
                     Logger::startProgressBar();
 
@@ -230,7 +230,7 @@ namespace uva {
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
 
-                        LOG_USAGE << "Started post actions for " << level << "-Grams." << END_LOG;
+                        LOG_USAGE << "Started " << level << "-Grams post actions." << END_LOG;
                         //Do the progress bard indicator
                         Logger::startProgressBar();
 
