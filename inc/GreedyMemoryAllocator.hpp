@@ -202,13 +202,13 @@ namespace uva {
                     pointer allocate(size_type num, const_pointer cp = 0) {
                         const size_type bytes = num * sizeof (T);
 
-                        LOG_DEBUG3 << this << ": Allocating: " << SSTR(num)
+                        LOG_DEBUG4 << this << ": Allocating: " << SSTR(num)
                                 << " of " << typeid (T).name() << " elements, of " << SSTR(bytes)
                                 << " bytes. Available: " << SSTR(available()) << "/" << SSTR(max_size()) << END_LOG;
 
                         pointer const ptr = static_cast<pointer> (_manager.allocate(bytes));
 
-                        LOG_DEBUG3 << this << ": The pointer to the first allocated object is: " << ptr << END_LOG;
+                        LOG_DEBUG4 << this << ": The pointer to the first allocated object is: " << ptr << END_LOG;
                         return ptr;
                     }
 
@@ -219,7 +219,7 @@ namespace uva {
                      * @param num the number of objects to deallocate
                      */
                     void deallocate(pointer ptr, size_type num) {
-                        LOG_DEBUG3 << this << ": Requested to deallocate: " << SSTR(num)
+                        LOG_DEBUG4 << this << ": Requested to deallocate: " << SSTR(num)
                                 << " objects starting from: " << ptr << ". Ignoring!" << END_LOG;
                     }
 
