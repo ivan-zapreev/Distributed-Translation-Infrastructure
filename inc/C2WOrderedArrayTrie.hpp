@@ -296,6 +296,8 @@ namespace uva {
                                     LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
                                     return -1;
                                 } else {
+                                    //Update the progress bar status
+                                    Logger::updateProgressBar();
                                     LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
                                     return +1;
                                 }

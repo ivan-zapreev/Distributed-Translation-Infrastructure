@@ -167,7 +167,10 @@ namespace uva {
 
                 template<TModelLevel N>
                 void ARPATrieBuilder<N>::readNGrams(const TModelLevel level) {
-                    LOG_DEBUG << "Start reading ARPA " << level << "-Grams." << END_LOG;
+                    LOG_USAGE << "Start reading ARPA " << level << "-Grams." << END_LOG;
+                    //Do the progress bard indicator
+                    Logger::startProgressBar();
+
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
                     regexpStr << "\\\\" << level << "\\-grams\\:";
@@ -224,11 +227,20 @@ namespace uva {
                         pNGBuilder = NULL;
 
                         LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
 
-                        LOG_DEBUG << "Started post actions of " << level << "-Grams." << END_LOG;
+                        LOG_USAGE << "Started post actions for " << level << "-Grams." << END_LOG;
+                        //Do the progress bard indicator
+                        Logger::startProgressBar();
+
+                        //Do the post level actions
                         _trie.post_Grams(level);
+
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
                         LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
-                                
+
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram
                         LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
                                 << ", the current line is '" << _line << "'" << END_LOG;
@@ -298,14 +310,8 @@ namespace uva {
                         //Provide the N-Gram counts data to the Trie
                         _trie.preAllocate(counts);
 
-                        //Do the progress bard indicator
-                        Logger::startProgressBar();
-
                         //Read the N-grams, starting from 1-Grams
                         readNGrams(1);
-
-                        //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
                     } catch (...) {
                         //Stop the progress bar in case of an exception
                         Logger::stopProgressBar();
