@@ -225,6 +225,10 @@ namespace uva {
 
                         LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
 
+                        LOG_DEBUG << "Started post actions of " << level << "-Grams." << END_LOG;
+                        _trie.post_Grams(level);
+                        LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
+                                
                         //If we expect more N-grams then make a recursive call to read the higher order N-gram
                         LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
                                 << ", the current line is '" << _line << "'" << END_LOG;

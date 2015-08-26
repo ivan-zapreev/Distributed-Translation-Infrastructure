@@ -27,6 +27,7 @@
 #define	C2WORDEREDARRAYTRIE_HPP
 
 #include <string>   // std::string
+#include <cstdlib>  // std::qsort
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -279,6 +280,17 @@ namespace uva {
                                 << ", key " << SSTR(key) << END_LOG;
                         throw out_of_range("not found");
                     }
+                };
+
+                virtual void post_N_Grams() {
+                    //Call the base class method first
+                    ATrie<N>::post_N_Grams();
+
+                    //Order the N-gram array as it is not most likely unordered!
+                    qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
+                            [] (const void* first, const void* second) -> int {
+                                return ((TLongId) (TCtxIdProbEntryPair*)first) - ((TLongId) (TCtxIdProbEntryPair*)second);
+                            });
                 };
 
             private:

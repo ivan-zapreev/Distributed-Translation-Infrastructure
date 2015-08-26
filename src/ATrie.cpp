@@ -33,6 +33,107 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
+            void ATrie<N>::add_1_Gram(const SRawNGram &oGram) {
+                //First get the token/word from the 1-Gram
+                const TextPieceReader & token = oGram.tokens[0];
+
+                LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
+
+                //Compute it's hash value
+                TShortId wordHash = m_p_word_index->makeId(token);
+                //Get the word probability and back-off data reference
+                TProbBackOffEntryPair & pbData = make_1_GramDataRef(wordHash);
+
+                //Check that the probability data is not set yet, otherwise a warning!
+                if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                    //If the probability is not zero then this word has been already seen!
+
+                    REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_ID,
+                            pbData.prob, pbData.back_off,
+                            oGram.prob, oGram.back_off);
+                }
+
+                //Set/Update the probability and back-off values for the word
+                pbData.prob = oGram.prob;
+                pbData.back_off = oGram.back_off;
+
+                LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                        << pbData.prob << "," << pbData.back_off << ") for "
+                        << tokensToString<N>(oGram.tokens, oGram.level) << " wordHash = "
+                        << wordHash << END_LOG;
+            };
+
+            template<TModelLevel N>
+            void ATrie<N>::add_M_Gram(const SRawNGram &mGram) {
+                const TModelLevel level = mGram.level;
+                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
+
+                //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
+
+                // 1. Compute the context hash defined by w1 w2 w3
+                const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(mGram);
+
+                // 2. Compute the hash of w4
+                const TextPieceReader & endWord = mGram.tokens[level - 1];
+                const TShortId wordId = m_p_word_index->getId(endWord.str());
+                LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
+
+                // 3. Insert the probability data into the trie
+                TProbBackOffEntryPair& pbData = make_M_GramDataRef(level, wordId, ctxId);
+
+                //Check that the probability data is not set yet, otherwise a warning!
+                if (MONITORE_COLLISIONS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                    //If the probability is not zero then this word has been already seen!
+                    REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
+                            pbData.prob, pbData.back_off,
+                            mGram.prob, mGram.back_off);
+                }
+
+                //Set/Update the probability and back-off values for the word
+                pbData.prob = mGram.prob;
+                pbData.back_off = mGram.back_off;
+
+                LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
+                        << pbData.prob << "," << pbData.back_off << ") for "
+                        << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
+                        << ctxId << ", wordHash = " << wordId << END_LOG;
+            };
+
+            template<TModelLevel N>
+            void ATrie<N>::add_N_Gram(const SRawNGram &nGram) {
+                LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
+
+                //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
+
+                // 1. Compute the context hash defined by w1 w2 w3
+                const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(nGram);
+
+                // 2. Compute the hash of w4
+                const TextPieceReader & endWord = nGram.tokens[N - 1];
+                const TShortId wordId = m_p_word_index->getId(endWord.str());
+                LOG_DEBUG2 << "wordId = computeId('" << endWord << "') = " << wordId << END_LOG;
+
+                // 3. Insert the probability data into the trie
+                TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
+
+                //Check that the probability data is not set yet, otherwise a warning!
+                if (MONITORE_COLLISIONS && (pData != ZERO_LOG_PROB_WEIGHT)) {
+                    //If the probability is not zero then this word has been already seen!
+
+                    REPORT_COLLISION_WARNING(N, nGram, wordId, ctxId,
+                            pData, UNDEFINED_LOG_PROB_WEIGHT,
+                            nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
+                }
+
+                //Set/Update the probability
+                pData = nGram.prob;
+
+                LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
+                        << tokensToString<N>(nGram.tokens, nGram.level) << " contextHash = "
+                        << ctxId << ", wordHash = " << wordId << END_LOG;
+            };
+
+            template<TModelLevel N>
             TLogProbBackOff ATrie<N>::getBackOffWeight(const TModelLevel level) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TShortId & wordId = getBackOffNGramEndWordHash();
