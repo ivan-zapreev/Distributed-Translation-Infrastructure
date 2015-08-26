@@ -286,16 +286,11 @@ namespace uva {
                     ATrie<N>::post_N_Grams();
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
-                    sort<TCtxIdProbEntryPair,TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX]);
-
-                    //Order the N-gram array as it is not most likely unordered!
-                    //qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
-                    //        [] (const void* first, const void* second) -> int {
-                    //            //Update the progress bar status
-                    //            Logger::updateProgressBar();
-                    //            //NOTE: Since the array contains unique pairs there is no situation when they are equal! So we never return 0!
-                    //            return (((TLongId) (*(TCtxIdProbEntryPair*) first)) < ((TLongId) (*(TCtxIdProbEntryPair*) second))) ? -1 : +1;
-                    //        });
+                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX]);
+                    
+                    //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
+                    //Also, I did not yet see any performance advantages compared to sort
+                    //qsort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX]);
                 };
 
             private:

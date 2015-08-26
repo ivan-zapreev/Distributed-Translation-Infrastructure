@@ -86,19 +86,23 @@ namespace uva {
                 }
 
                 /**
-                 * This methos is used to do std::sort on an array of structures convertable to some simple comparable type.
+                 * This methos is used to do <algorithm> std::sort on an array
+                 * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
                  * @param ELEM_TYPE the array element type
-                 * @param BASE_TYPE the base type the array element type has to be custable to, the base type must have implemented "operator <"
+                 * @param BASE_TYPE the base type the array element type has to
+                 * be custable to, the base type must have implemented "operator <"
+                 * @param IS_PROGRESS if true the progress bar will be updated,
+                 * otherwise not, default is true
                  * @param array_begin the pointer to the array's first element
                  * @param array_end the pointer to the array's last element
                  */
-                template<typename ELEM_TYPE, typename BASE_TYPE, bool isProgressBar = true >
+                template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
                 void sort(ELEM_TYPE * array_begin, ELEM_TYPE * array_end) {
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     std::sort(array_begin, array_end,
                             [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
-                                if (isProgressBar) {
+                                if (IS_PROGRESS) {
                                     //Update the progress bar status
                                     Logger::updateProgressBar();
                                 }
@@ -106,15 +110,37 @@ namespace uva {
                                 return (((BASE_TYPE) first) < ((BASE_TYPE) second));
                             });
                 }
-                //Order the N-gram array as it is not most likely unordered!
-                //std::qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
-                //        [] (const void* first, const void* second) -> int {
-                //            //Update the progress bar status
-                //            Logger::updateProgressBar();
-                //            //NOTE: Since the array contains unique pairs there is no situation when they are equal! So we never return 0!
-                //            return (((TLongId) (*(TCtxIdProbEntryPair*) first)) < ((TLongId) (*(TCtxIdProbEntryPair*) second))) ? -1 : +1;
-                //        });
 
+                /**
+                 * This methos is used to do <cstdlib> std::qsort on an array of
+                 * structures convertable to some simple comparable type.
+                 * This method does the progress bar update, if needed. Note that,
+                 * this algorithm assumes that there are no duplicate elements
+                 * in the array. I.e. when two elements are compared (as the given
+                 * base type) one is always smaller than another! Thus, if used
+                 * on arrays with duplicates, can be slower than usual due to
+                 * extra element moving.
+                 * @param ELEM_TYPE the array element type
+                 * @param BASE_TYPE the base type the array element type has to
+                 * be custable to, the base type must have implemented "operator <"
+                 * @param IS_PROGRESS if true the progress bar will be updated,
+                 * otherwise not, default is true
+                 * @param array the pointer to the array's first element
+                 * @param size the number of array elements
+                 */
+                template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
+                void qsort(ELEM_TYPE * array, const size_t size) {
+                    //Order the N-gram array as it is not most likely unordered!
+                    std::qsort(array, size, sizeof (ELEM_TYPE),
+                            [] (const void* first, const void* second) -> int {
+                                if (IS_PROGRESS) {
+                                    //Update the progress bar status
+                                    Logger::updateProgressBar();
+                                }
+                                //NOTE: Since the array contains unique pairs there is no situation when they are equal! So we never return 0!
+                                return (((BASE_TYPE) (*(ELEM_TYPE*) first)) < ((BASE_TYPE) (*(ELEM_TYPE*) second))) ? -1 : +1;
+                            });
+                }
             }
         }
     }
