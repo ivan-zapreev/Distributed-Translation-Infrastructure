@@ -288,35 +288,23 @@ namespace uva {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
 
-                    //Order the N-gram array as it is not most likely unordered!
+                    //Order the N-gram array as it is unordered and we will binary search it later!
                     sort(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX],
                             [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair & second) -> bool {
-                                const TLongId lfirst = (TLongId) first;
-                                const TLongId lsecond = (TLongId) second;
-                                        //NOTE: Since the array contains unique pairs there is no situation when they are equal!
-                                        //Update the progress bar status
-                                        Logger::updateProgressBar();
-                                return (lfirst < lsecond);
+                                //Update the progress bar status
+                                Logger::updateProgressBar();
+                                //Return the result
+                                return (((TLongId) first) < ((TLongId) second));
                             });
 
                     //Order the N-gram array as it is not most likely unordered!
-                    /*
-                     qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
-                            [] (const void* first, const void* second) -> int {
-                                const TLongId lfirst = ((TLongId) (*(TCtxIdProbEntryPair*) first));
-                                const TLongId lsecond = ((TLongId) (*(TCtxIdProbEntryPair*) second));
-                                //NOTE: Since the array contains unique pairs there is no situation when they are equal!
-                                if (lfirst < lsecond) {
-                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
-                                    return -1;
-                                } else {
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
-                                    return +1;
-                                }
-                            });
-                     */
+                    //qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
+                    //        [] (const void* first, const void* second) -> int {
+                    //            //Update the progress bar status
+                    //            Logger::updateProgressBar();
+                    //            //NOTE: Since the array contains unique pairs there is no situation when they are equal! So we never return 0!
+                    //            return (((TLongId) (*(TCtxIdProbEntryPair*) first)) < ((TLongId) (*(TCtxIdProbEntryPair*) second))) ? -1 : +1;
+                    //        });
                 };
 
             private:
