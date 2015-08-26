@@ -291,17 +291,14 @@ namespace uva {
                             [] (const void* first, const void* second) -> int {
                                 const TLongId lfirst = ((TLongId) (*(TCtxIdProbEntryPair*) first));
                                 const TLongId lsecond = ((TLongId) (*(TCtxIdProbEntryPair*) second));
-                                        int result = lfirst - lsecond;
-                                if (result < 0) {
+                                //NOTE: Since the array contains unique pairs there is no situation when they are equal!
+                                if (lfirst < lsecond) {
                                     LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
+                                    return -1;
                                 } else {
-                                    if (result > 0) {
-                                        LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
-                                    } else {
-                                        LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " = " << SSTR(lsecond) << END_LOG;
-                                    }
+                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
+                                    return +1;
                                 }
-                                return result;
                             });
                 };
 
