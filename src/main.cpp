@@ -250,7 +250,7 @@ static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
         //First get the complete N-gram
         buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
 
-        LOG_DEBUG << line << ":" << END_LOG;
+        LOG_DEBUG << "Got query line [ "<< line << " ]" << END_LOG;
 
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();

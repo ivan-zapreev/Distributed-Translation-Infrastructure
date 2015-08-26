@@ -317,8 +317,16 @@ namespace uva {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
+                    LOG_DEBUG2 << "Searching for the context id of " << level
+                            << "-gram with wordId: " << wordId << ", ctxId: "
+                            << ctxId << END_LOG;
+                    
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+                    
+                    LOG_DEBUG2 << "Found context mapping for ctxId: " << ctxId
+                            << ", with beginIdx: " << ref.beginIdx << ", endIdx: "
+                            << ref.endIdx << END_LOG;
 
                     //Check that there is data for the given context available
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
@@ -340,9 +348,7 @@ namespace uva {
                                 << ", nothing present in that context!" << END_LOG;
                         throw out_of_range("not found");
                     }
-
                 }
-
             };
 
             typedef C2WOrderedArrayTrie<MAX_NGRAM_LEVEL> TFiveC2WOrderedArrayTrie;

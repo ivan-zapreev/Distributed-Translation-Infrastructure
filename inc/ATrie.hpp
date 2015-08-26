@@ -485,7 +485,7 @@ namespace uva {
 
                     //Compute the first words' hash
                     TLongId ctxId = mGramWordIds[idx];
-                    LOG_DEBUG3 << "Word: " << SSTR(idx) << " id == initial context id: " << SSTR(ctxId) << END_LOG;
+                    LOG_DEBUG3 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
                     //Compute the subsequent context ids
