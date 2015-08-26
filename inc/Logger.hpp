@@ -80,6 +80,7 @@ namespace uva {
 #define LOG_DEBUG1  LOGGER_DEBUG(DebugLevel::DEBUG1)
 #define LOG_DEBUG2  LOGGER_DEBUG(DebugLevel::DEBUG2)
 #define LOG_DEBUG3  LOGGER_DEBUG(DebugLevel::DEBUG3)
+#define LOG_DEBUG4  LOGGER_DEBUG(DebugLevel::DEBUG4)
 #define END_LOG     endl << flush
 
 
@@ -96,6 +97,7 @@ namespace uva {
 #define DEBUG1_PARAM_VALUE "DEBUG1"
 #define DEBUG2_PARAM_VALUE "DEBUG2"
 #define DEBUG3_PARAM_VALUE "DEBUG3"
+#define DEBUG4_PARAM_VALUE "DEBUG4"
 
             /**
              * This is a trivial logging facility that exchibits a singleton

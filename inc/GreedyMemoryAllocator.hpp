@@ -62,16 +62,16 @@ namespace uva {
                     //Compute the number of bytes needed to store these words
                     const size_t factoredNumElems = numEntries * factor;
                     
-                    LOG_DEBUG << "Computing the required storage for " << ctName
+                    LOG_DEBUG4 << "Computing the required storage for " << ctName
                             << ", numEntries=" << numEntries << ", factor=" << factor
                             << ", result=" << factoredNumElems << END_LOG;
 
                     //Allocate the allocator
-                    LOG_DEBUG << "Allocating the " << ctName << " allocator for " << factoredNumElems << " elements!" << END_LOG;
+                    LOG_DEBUG4 << "Allocating the " << ctName << " allocator for " << factoredNumElems << " elements!" << END_LOG;
                     *ppAllocator = new TAllocator(factoredNumElems);
 
                     //Allocate the map with the given allocator
-                    LOG_DEBUG << "Allocating the " << ctName << " container with the created allocator!" << END_LOG;
+                    LOG_DEBUG4 << "Allocating the " << ctName << " container with the created allocator!" << END_LOG;
                     *ppContainer = new TContaner(**ppAllocator);
                 }
 
@@ -88,7 +88,7 @@ namespace uva {
                     allocate_container<TContaner, TAllocator>(ppContainer, ppAllocator, numEntries, ctName, factor);
 
                     //Reserve some memory for the buckets!
-                    LOG_DEBUG << "Reserving " << numEntries << " buckets for the " << ctName << "!" << END_LOG;
+                    LOG_DEBUG4 << "Reserving " << numEntries << " buckets for the " << ctName << "!" << END_LOG;
                     (*ppContainer)->reserve(numEntries);
                 }
 
@@ -141,7 +141,7 @@ namespace uva {
                     GreedyMemoryAllocator(size_type numElems) throw () :
                     _manager(_storage),
                     _storage( numElems * sizeof (T) ) {
-                        LOG_DEBUG3 << this << ": Creating FixedMemoryAllocator for "
+                        LOG_DEBUG4 << this << ": Creating FixedMemoryAllocator for "
                                 << SSTR(numElems) << " " << typeid (T).name()
                                 << " elements of size " << SSTR(sizeof (T)) << END_LOG;
                     }
@@ -151,7 +151,7 @@ namespace uva {
                      */
                     GreedyMemoryAllocator(const GreedyMemoryAllocator& other) throw () :
                     _manager(other.getStorageRef()) {
-                        LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator copy constructor." << END_LOG;
+                        LOG_DEBUG4 << this << ": Calling the FixedMemoryAllocator copy constructor." << END_LOG;
                     }
 
                     /**
@@ -162,7 +162,7 @@ namespace uva {
                     template <typename U>
                     GreedyMemoryAllocator(const GreedyMemoryAllocator<U>& other) throw () :
                     _manager(other.getStorageRef()) {
-                        LOG_DEBUG3 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
+                        LOG_DEBUG4 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
 
                     /**
@@ -170,7 +170,7 @@ namespace uva {
                      */
                     virtual ~GreedyMemoryAllocator() throw () {
                         //Nothing to be done!
-                        LOG_DEBUG3 << this << ": " << __FUNCTION__ << END_LOG;
+                        LOG_DEBUG4 << this << ": " << __FUNCTION__ << END_LOG;
                     }
 
                     /**
@@ -179,7 +179,7 @@ namespace uva {
                      * @return the computed pointer
                      */
                     pointer address(reference obj) const {
-                        LOG_DEBUG3 << this << ": computing the object address: " << &obj << END_LOG;
+                        LOG_DEBUG4 << this << ": computing the object address: " << &obj << END_LOG;
                         return &obj;
                     }
 
@@ -189,7 +189,7 @@ namespace uva {
                      * @return the computed pointer
                      */
                     const_pointer address(const_reference obj) const {
-                        LOG_DEBUG3 << this << ": computing the const object address: " << &obj << END_LOG;
+                        LOG_DEBUG4 << this << ": computing the const object address: " << &obj << END_LOG;
                         return &obj;
                     }
 
@@ -245,7 +245,7 @@ namespace uva {
                      * @param value the type value to work with
                      */
                     void construct(pointer ptr, const value_type& value) {
-                        LOG_DEBUG3 << this << ": Calling constructor on: " << ptr << END_LOG;
+                        LOG_DEBUG4 << this << ": Calling constructor on: " << ptr << END_LOG;
                         ::new ((void*) ptr) value_type(value);
                     }
 
@@ -254,7 +254,7 @@ namespace uva {
                      * @param ptr the pointer to work with
                      */
                     void destroy(pointer ptr) {
-                        LOG_DEBUG3 << this << ": Calling destructor on: " << ptr << END_LOG;
+                        LOG_DEBUG4 << this << ": Calling destructor on: " << ptr << END_LOG;
                         ptr->~T();
                     }
 

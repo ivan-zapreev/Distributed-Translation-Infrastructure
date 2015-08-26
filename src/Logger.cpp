@@ -38,11 +38,12 @@ namespace uva {
         namespace logging {
             DebugLevel Logger::currLEvel = DebugLevel::RESULT;
 
-            const uint NUM_DEBUG_FLAGS = 12;
+            const uint NUM_DEBUG_FLAGS = 13;
             const char * Logger::_debugLevelStr[NUM_DEBUG_FLAGS] = {USAGE_PARAM_VALUE,
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, INFO1_PARAM_VALUE, INFO2_PARAM_VALUE, INFO3_PARAM_VALUE,
-                DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE};
+                DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE,
+                DEBUG4_PARAM_VALUE};
 
             //Initialize the progress bar chars array
             const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
@@ -116,7 +117,11 @@ namespace uva {
                                                         if (!level.compare(DEBUG3_PARAM_VALUE)) {
                                                             Logger::getReportingLevel() = DebugLevel::DEBUG3;
                                                         } else {
-                                                            isGoodLevel = false;
+                                                            if (!level.compare(DEBUG4_PARAM_VALUE)) {
+                                                                Logger::getReportingLevel() = DebugLevel::DEBUG4;
+                                                            } else {
+                                                                isGoodLevel = false;
+                                                            }
                                                         }
                                                     }
                                                 }

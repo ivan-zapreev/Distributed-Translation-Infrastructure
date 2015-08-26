@@ -81,7 +81,9 @@ namespace uva {
                 }
 
                 operator TLongId() const {
-                    return TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << ctxId << ", wordId = " << wordId << ") = " << key << END_LOG;
+                    return key;
                 }
             } TCtxIdProbEntryPair;
 
@@ -251,6 +253,7 @@ namespace uva {
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << ctxId << ", wordId = " << wordId << ") = " << key << END_LOG;
 
                     //Search for the index using binary search
                     TShortId idx;
@@ -324,7 +327,7 @@ namespace uva {
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
                     
-                    LOG_DEBUG2 << "Found context mapping for ctxId: " << SSTR(ctxId)
+                    LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
                             << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
                             << SSTR(ref.endIdx) << END_LOG;
 
