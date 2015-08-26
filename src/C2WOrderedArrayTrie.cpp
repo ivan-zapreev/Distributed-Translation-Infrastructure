@@ -90,7 +90,7 @@ namespace uva {
 
                 //Now also allocate the data for the 2-Grams, the number of 2-grams is m_MN_gram_size[0] 
                 m_M_gram_data[0] = new TWordIdProbBackOffEntryPair[m_MN_gram_size[0]];
-                memset(m_M_gram_data[0], 0, m_MN_gram_size[0] * sizeof (TSubArrReference));
+                memset(m_M_gram_data[0], 0, m_MN_gram_size[0] * sizeof (TWordIdProbBackOffEntryPair));
 
                 //Now the remaining elements can be added in a loop
                 for (TModelLevel i = 1; i < NUM_M_GRAM_LEVELS; i++) {
@@ -102,7 +102,7 @@ namespace uva {
                     //The m_MN_gram_size[i] stores the number of elements
                     //on the current level - the number of M-Grams.
                     m_M_gram_data[i] = new TWordIdProbBackOffEntryPair[m_MN_gram_size[i]];
-                    memset(m_M_gram_data[i], 0, m_MN_gram_size[i] * sizeof (TSubArrReference));
+                    memset(m_M_gram_data[i], 0, m_MN_gram_size[i] * sizeof (TWordIdProbBackOffEntryPair));
                 }
 
                 //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
