@@ -516,7 +516,7 @@ namespace uva {
                     TLongId ctxId;
 
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if (ATrie<N>::getCachedContextId(gram, ctxId)) {
+                    if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
 
@@ -535,7 +535,7 @@ namespace uva {
                         }
 
                         //Cache the newly computed context id for the given n-gram context
-                        ATrie<N>::cacheContextId(gram, ctxId);
+                        setCacheContextId(gram, ctxId);
                     }
 
                     return ctxId;
@@ -550,10 +550,12 @@ namespace uva {
                 inline bool getCachedContextId(const SRawNGram &mGram, TLongId & result) {
                     if (m_chached_context == mGram.context) {
                         result = m_chached_context_id;
-                        LOG_DEBUG3 << "Cache match! " << m_chached_context << " == " << mGram.context << END_LOG;
+                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_context << "] == [" << mGram.context << << "]" END_LOG;
                         return false;
+                    } else {
+                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_context << "] != [" << mGram.context << << "]" END_LOG;
+                        return true;
                     }
-                    return true;
                 }
 
                 /**
@@ -561,10 +563,15 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void cacheContextId(const SRawNGram &mGram, TLongId & stx_id) {
+                inline void setCacheContextId(const SRawNGram &mGram, TLongId & stx_id) {
+                    LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
+                            << ", for m-gram: " << tokensToString(mGram.tokens, mGram.level) << END_LOG;
+
                     m_chached_context.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_context_id = stx_id;
-                    LOG_DEBUG3 << "Caching context = [ " << m_chached_context << " ], id = " << m_chached_context_id << END_LOG;
+
+                    LOG_DEBUG2 << "Cached context = [ " << m_chached_context
+                            << " ], id = " << m_chached_context_id << END_LOG;
                 }
 
             private:
