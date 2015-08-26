@@ -232,6 +232,7 @@ namespace uva {
                         Logger::stopProgressBar();
 
                         //Do the progress bard indicator
+                        stringstream msg;
                         msg << "Started " << level << "-Grams post actions";
                         Logger::startProgressBar(msg.str());
 
