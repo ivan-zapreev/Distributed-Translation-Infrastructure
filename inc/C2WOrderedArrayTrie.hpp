@@ -289,7 +289,9 @@ namespace uva {
                     sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX]);
                     
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
-                    //Also, I did not yet see any performance advantages compared to sort
+                    //Also, I did not yet see any performance advantages compared to sort!
+                    //Actually the qsort provided here was 50% slower on a 20 Gb language
+                    //model when compared to the str::sort!
                     //qsort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX]);
                 };
 
