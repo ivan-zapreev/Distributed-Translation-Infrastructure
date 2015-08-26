@@ -83,7 +83,7 @@ namespace uva {
 
                 operator TLongId() const {
                     TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                    LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
                             << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
                     return key;
                 }
@@ -266,7 +266,7 @@ namespace uva {
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                    LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
                             << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
@@ -285,11 +285,23 @@ namespace uva {
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
-                    
+
                     //Order the N-gram array as it is not most likely unordered!
                     qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
                             [] (const void* first, const void* second) -> int {
-                                return ((TLongId) (*(TCtxIdProbEntryPair*)first)) - ((TLongId) (*(TCtxIdProbEntryPair*)second));
+                                const TLongId lfirst = ((TLongId) (*(TCtxIdProbEntryPair*) first));
+                                const TLongId lsecond = ((TLongId) (*(TCtxIdProbEntryPair*) second));
+                                        int result = lfirst - lsecond;
+                                if (result < 0) {
+                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
+                                } else {
+                                    if (result > 0) {
+                                        LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
+                                    } else {
+                                        LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " = " << SSTR(lsecond) << END_LOG;
+                                    }
+                                }
+                                return result;
                             });
                 };
 
