@@ -57,7 +57,7 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static const DebugLevel LOGER_MAX_LEVEL = DEBUG3;
+            static const DebugLevel LOGER_MAX_LEVEL = DEBUG4;
         }
 
         //The following type definitions are important for storing the Tries information
