@@ -287,24 +287,18 @@ namespace uva {
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
-                    
+
                     //Order the N-gram array as it is not most likely unordered!
-                    sort(m_N_gram_data, m_N_gram_data+m_MN_gram_size[N_GRAM_IDX],
-                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair& second) -> bool {
+                    sort(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX],
+                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair & second) -> bool {
                                 const TLongId lfirst = (TLongId) first;
                                 const TLongId lsecond = (TLongId) second;
-                                //NOTE: Since the array contains unique pairs there is no situation when they are equal!
-                                if (lfirst < lsecond) {
-                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
-                                    return true;
-                                } else {
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
-                                    return false;
-                                }
+                                        //NOTE: Since the array contains unique pairs there is no situation when they are equal!
+                                        //Update the progress bar status
+                                        Logger::updateProgressBar();
+                                return (lfirst < lsecond);
                             });
-                    
+
                     //Order the N-gram array as it is not most likely unordered!
                     /*
                      qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
