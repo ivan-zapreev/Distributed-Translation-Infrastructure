@@ -60,6 +60,9 @@ namespace uva {
             //The progress bar is not running first
             bool Logger::isPBOn = false;
 
+            //The action message to display
+            string Logger::prefix = "";
+
             //Initialize the progress bar begin time
             clock_t Logger::beginTime = 0;
             //Initialize the previous output time string length
@@ -148,8 +151,7 @@ namespace uva {
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
                 stringstream msg;
-                msg << _debugLevelStr[USAGE] << ":\t\t" << SSTR(hour) << " hour(s)\t"
-                        << SSTR(minute) << " minute(s)\t" << SSTR(second) << " second(s) ";
+                msg << prefix << SSTR(hour) << " hour(s) " << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
                 string result = msg.str();
                 timeStrLen = result.size();
                 return result;
@@ -163,8 +165,15 @@ namespace uva {
                 return result;
             }
 
-            void Logger::startProgressBar() {
-                if (!isPBOn) {
+            //This macro is used to check if we need to do the progress indications
+#define IS_ENOUGH_LOGGING_LEVEL(level) (( PROGRESS_ACTIVE_LEVEL <= LOGER_MAX_LEVEL ) && ( PROGRESS_ACTIVE_LEVEL <= level ))
+
+            void Logger::startProgressBar(const string & msg) {
+                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel) && !isPBOn) {
+                    stringstream pref;
+                    pref << _debugLevelStr[INFO3] << ":\t" << msg << ":\t";
+                    prefix = pref.str();
+
                     //Output the time string
                     cout << computeTimeString(beginTime, timeStrLen);
 
@@ -178,21 +187,23 @@ namespace uva {
             }
 
             void Logger::updateProgressBar() {
-                //Do not update each time to save on computations
-                if (updateCounter > (CLOCKS_PER_SEC / 4)) {
+                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel)) {
+                    //Do not update each time to save on computations
+                    if (updateCounter > (CLOCKS_PER_SEC / 4)) {
 
-                    //Output the current time
-                    cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
-                    cout.flush();
+                        //Output the current time
+                        cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
+                        cout.flush();
 
-                    updateCounter = 0;
-                } else {
-                    updateCounter++;
+                        updateCounter = 0;
+                    } else {
+                        updateCounter++;
+                    }
                 }
             }
 
             void Logger::stopProgressBar() {
-                if (isPBOn) {
+                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel) && isPBOn) {
                     //Clear the progress
                     cout << computeTimeClearString(timeStrLen) << "\n";
 
