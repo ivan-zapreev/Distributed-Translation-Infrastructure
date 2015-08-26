@@ -137,9 +137,11 @@ namespace uva {
                     }
                 }
                 if (isGoodLevel) {
-                    LOG_INFO << "The debugging level is set to: \'" << level
-                            << "\', maximum build level is '"
-                            << _debugLevelStr[LOGER_MAX_LEVEL] << "'" << END_LOG;
+                    LOG_INFO << "The requested debug level is: \'" << level
+                            << "\', the maximum build level is '"
+                            << _debugLevelStr[LOGER_MAX_LEVEL] << "'"
+                            << " the set level is '" << _debugLevelStr[currLEvel]
+                            << "'"<< END_LOG;
                 } else {
                     LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << level << "'" << END_LOG;
                 }
