@@ -148,8 +148,8 @@ namespace uva {
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
                 stringstream msg;
-                msg << _debugLevelStr[USAGE] << ":\t\tElapsed time: " << SSTR(hour) << " hour(s) "
-                        << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
+                msg << _debugLevelStr[USAGE] << ":\t\tElapsed time:\t" << SSTR(hour) << " hour(s)\t"
+                        << SSTR(minute) << " minute(s)\t" << SSTR(second) << " second(s) ";
                 string result = msg.str();
                 timeStrLen = result.size();
                 return result;
