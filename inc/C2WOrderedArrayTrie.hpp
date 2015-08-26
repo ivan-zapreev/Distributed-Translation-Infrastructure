@@ -82,7 +82,8 @@ namespace uva {
 
                 operator TLongId() const {
                     TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << ctxId << ", wordId = " << wordId << ") = " << key << END_LOG;
+                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                            << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
                     return key;
                 }
             } TCtxIdProbEntryPair;
@@ -238,6 +239,11 @@ namespace uva {
                     m_N_gram_data[n_gram_idx].ctxId = ctxId;
                     m_N_gram_data[n_gram_idx].wordId = wordId;
 
+                    LOG_DEBUG3 << "Creating " << SSTR(N) << "-gram: TShortId_TShortId_2_TLongId(ctxId = "
+                            << SSTR(ctxId) << ", wordId = " << SSTR(wordId) << ") = "
+                            << SSTR(TShortId_TShortId_2_TLongId(ctxId, wordId))
+                            << " @ index " << SSTR(n_gram_idx) << END_LOG;
+
                     //return the reference to the probability
                     return m_N_gram_data[n_gram_idx].prob;
                 };
@@ -253,7 +259,8 @@ namespace uva {
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << ctxId << ", wordId = " << wordId << ") = " << key << END_LOG;
+                    LOG_DEBUG3 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                            << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
                     TShortId idx;
@@ -323,10 +330,10 @@ namespace uva {
                     LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
                             << SSTR(ctxId) << END_LOG;
-                    
+
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
-                    
+
                     LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
                             << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
                             << SSTR(ref.endIdx) << END_LOG;
