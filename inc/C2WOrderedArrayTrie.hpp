@@ -26,8 +26,10 @@
 #ifndef C2WORDEREDARRAYTRIE_HPP
 #define	C2WORDEREDARRAYTRIE_HPP
 
-#include <string>   // std::string
-#include <cstdlib>  // std::qsort
+#include <string>       // std::string
+#include <cstdlib>      // std::qsort
+#include <algorithm>    // std::sort
+#include <iterator>     // std::begin std::end
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -285,9 +287,27 @@ namespace uva {
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
-
+                    
                     //Order the N-gram array as it is not most likely unordered!
-                    qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
+                    sort(m_N_gram_data, m_N_gram_data+m_MN_gram_size[N_GRAM_IDX],
+                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair& second) -> int {
+                                const TLongId lfirst = (TLongId) first;
+                                const TLongId lsecond = (TLongId) second;
+                                //NOTE: Since the array contains unique pairs there is no situation when they are equal!
+                                if (lfirst < lsecond) {
+                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
+                                    return -1;
+                                } else {
+                                    //Update the progress bar status
+                                    Logger::updateProgressBar();
+                                    LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
+                                    return +1;
+                                }
+                            });
+                    
+                    //Order the N-gram array as it is not most likely unordered!
+                    /*
+                     qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
                             [] (const void* first, const void* second) -> int {
                                 const TLongId lfirst = ((TLongId) (*(TCtxIdProbEntryPair*) first));
                                 const TLongId lsecond = ((TLongId) (*(TCtxIdProbEntryPair*) second));
@@ -302,6 +322,7 @@ namespace uva {
                                     return +1;
                                 }
                             });
+                     */
                 };
 
             private:
