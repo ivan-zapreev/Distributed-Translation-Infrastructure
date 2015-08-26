@@ -290,18 +290,18 @@ namespace uva {
                     
                     //Order the N-gram array as it is not most likely unordered!
                     sort(m_N_gram_data, m_N_gram_data+m_MN_gram_size[N_GRAM_IDX],
-                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair& second) -> int {
+                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair& second) -> bool {
                                 const TLongId lfirst = (TLongId) first;
                                 const TLongId lsecond = (TLongId) second;
                                 //NOTE: Since the array contains unique pairs there is no situation when they are equal!
                                 if (lfirst < lsecond) {
                                     LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " < " << SSTR(lsecond) << END_LOG;
-                                    return -1;
+                                    return true;
                                 } else {
                                     //Update the progress bar status
                                     Logger::updateProgressBar();
                                     LOG_DEBUG4 << "Comparing: " << SSTR(lfirst) << " > " << SSTR(lsecond) << END_LOG;
-                                    return +1;
+                                    return false;
                                 }
                             });
                     
