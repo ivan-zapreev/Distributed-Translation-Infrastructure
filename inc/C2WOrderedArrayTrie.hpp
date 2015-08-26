@@ -317,16 +317,16 @@ namespace uva {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
-                    LOG_DEBUG2 << "Searching for the context id of " << level
-                            << "-gram with wordId: " << wordId << ", ctxId: "
-                            << ctxId << END_LOG;
+                    LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
+                            << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
+                            << SSTR(ctxId) << END_LOG;
                     
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
                     
-                    LOG_DEBUG2 << "Found context mapping for ctxId: " << ctxId
-                            << ", with beginIdx: " << ref.beginIdx << ", endIdx: "
-                            << ref.endIdx << END_LOG;
+                    LOG_DEBUG2 << "Found context mapping for ctxId: " << SSTR(ctxId)
+                            << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
+                            << SSTR(ref.endIdx) << END_LOG;
 
                     //Check that there is data for the given context available
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
@@ -336,15 +336,15 @@ namespace uva {
                             return result;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for level: "
-                                    << level << ", wordId: " << wordId
-                                    << ", prev ctxId: " << ctxId << ", wordId range: ["
-                                    << m_M_gram_data[mgram_idx][ref.beginIdx].wordId
-                                    << ", " << m_M_gram_data[mgram_idx][ref.endIdx].wordId << "]" << END_LOG;
+                                    << SSTR(level) << ", wordId: " << SSTR(wordId)
+                                    << ", prev ctxId: " << SSTR(ctxId) << ", wordId range: ["
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId)
+                                    << ", " << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
                             throw out_of_range("not found");
                         }
                     } else {
                         LOG_DEBUG1 << "Unable to find M-gram context id for level: "
-                                << level << ", prev ctxId: " << ctxId
+                                << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                 << ", nothing present in that context!" << END_LOG;
                         throw out_of_range("not found");
                     }

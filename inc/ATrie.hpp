@@ -479,7 +479,7 @@ namespace uva {
                     const TModelLevel bIdx = mGramEndIdx - ctxLen;
                     TModelLevel idx = bIdx;
 
-                    LOG_DEBUG3 << "Computing context id for context length " << SSTR(ctxLen)
+                    LOG_DEBUG3 << "Computing ctxId for context length: " << SSTR(ctxLen)
                             << " for a  " << (isBackOff ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
@@ -490,8 +490,9 @@ namespace uva {
 
                     //Compute the subsequent context ids
                     for (; idx < eIdx;) {
+                        LOG_DEBUG3 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: " << SSTR(mGramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
                         ctxId = m_get_ctx_id_func(mGramWordIds[idx], ctxId, (idx - bIdx) + 1);
-                        LOG_DEBUG3 << "Idx: " << SSTR(idx) << ", getContextId(" << SSTR(mGramWordIds[idx]) << ", prevContextId) = " << SSTR(ctxId) << END_LOG;
+                        LOG_DEBUG3 << "getContextId(" << SSTR(mGramWordIds[idx]) << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
                         idx++;
                     }
 
