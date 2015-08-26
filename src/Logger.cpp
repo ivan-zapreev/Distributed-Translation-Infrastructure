@@ -151,8 +151,8 @@ namespace uva {
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
                 stringstream msg;
-                msg << prefix << SSTR(hour) << " hour(s) " << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
-                string result = msg.str();
+                msg << " " << SSTR(hour) << " hour(s) " << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
+                string result = prefix + msg.str();
                 timeStrLen = result.size();
                 return result;
             }
@@ -208,6 +208,7 @@ namespace uva {
                     cout << computeTimeClearString(timeStrLen) << "\n";
 
                     //Reset class variables
+                    prefix = "";
                     beginTime = 0;
                     timeStrLen = 0;
                     updateCounter = 0;
