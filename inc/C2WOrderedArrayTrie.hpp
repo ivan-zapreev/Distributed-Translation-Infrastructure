@@ -27,9 +27,6 @@
 #define	C2WORDEREDARRAYTRIE_HPP
 
 #include <string>       // std::string
-#include <cstdlib>      // std::qsort
-#include <algorithm>    // std::sort
-#include <iterator>     // std::begin std::end
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -289,13 +286,7 @@ namespace uva {
                     ATrie<N>::post_N_Grams();
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
-                    sort(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX],
-                            [] (const TCtxIdProbEntryPair& first, const TCtxIdProbEntryPair & second) -> bool {
-                                //Update the progress bar status
-                                Logger::updateProgressBar();
-                                //Return the result
-                                return (((TLongId) first) < ((TLongId) second));
-                            });
+                    sort<TCtxIdProbEntryPair,TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_size[N_GRAM_IDX]);
 
                     //Order the N-gram array as it is not most likely unordered!
                     //qsort(m_N_gram_data, m_MN_gram_size[N_GRAM_IDX], sizeof (TCtxIdProbEntryPair),
