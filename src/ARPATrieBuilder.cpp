@@ -169,7 +169,7 @@ namespace uva {
                 void ARPATrieBuilder<N>::readNGrams(const TModelLevel level) {
                     stringstream msg;
                     //Do the progress bard indicator
-                    msg << "Started reading " << level << "-Grams";
+                    msg << "Reading " << level << "-Grams";
                     Logger::startProgressBar(msg.str());
 
                     //The regular expression for matching the n-grams section
@@ -233,7 +233,7 @@ namespace uva {
 
                         //Do the progress bard indicator
                         stringstream msg;
-                        msg << "Started " << level << "-Grams post actions";
+                        msg << "Doing " << level << "-Grams post actions";
                         Logger::startProgressBar(msg.str());
 
                         //Do the post level actions
