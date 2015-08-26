@@ -155,14 +155,14 @@ namespace uva {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
-                    LOG_DEBUG2 << "Adding " << SSTR(level) << "-gram with wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << "" << END_LOG;
+                    LOG_DEBUG2 << "Adding\t" << SSTR(level) << "-gram with ctxId:\t" << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
 
                     //Check that the array is continuous in indexes, so that we add
                     //context after context and not switching between different contexts!
-                    if (MONITORE_COLLISIONS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx+1 != m_MN_gram_idx_cnts[mgram_idx])) {
+                    if (MONITORE_COLLISIONS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_MN_gram_idx_cnts[mgram_idx])) {
                         stringstream msg;
                         msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
                                 << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
@@ -236,8 +236,8 @@ namespace uva {
                     //Get the new n-gram index
                     const TShortId n_gram_idx = m_MN_gram_idx_cnts[N_GRAM_IDX]++;
 
-                    LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with wordId: " << SSTR(wordId)
-                            << ", ctxId: " << SSTR(ctxId) << " @ index: " << SSTR(n_gram_idx) << END_LOG;
+                    LOG_DEBUG2 << "Adding\t" << SSTR(N) << "-gram with ctxId:\t" << SSTR(ctxId)
+                            << ", wordId:\t" << SSTR(wordId) << " @ index:\t" << SSTR(n_gram_idx) << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
                     if (n_gram_idx >= m_MN_gram_size[N_GRAM_IDX]) {
