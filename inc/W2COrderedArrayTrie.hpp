@@ -376,7 +376,7 @@ namespace uva {
                     if ((ref.ptr != NULL) && (ref.size > 0)) {
                         TShortId localIdx = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (binarySearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId>(ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                        if (binarySearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
                             return localIdx;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "
@@ -450,35 +450,42 @@ namespace uva {
                 /**
                  * Allows to allocate word related data per word for the given M/N gram level
                  * @param WORD_ENTRY_TYPE the word entry type
+                 * @param allokWordBuckets if true then will preallocate some memory
+                 * for each word bucket! Default is false. Depending on the number of
+                 * words and n-grams in the given Trie level, plus the value of 
+                 *      __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT
+                 * This can have a drastic influence on MAX RSS.
                  * @param wordsArray the reference to the word entry array to initialize
                  * @param numMGrams the number of M-grams on this level
                  * @param numWords the number of words in the Trie
                  */
-                template<typename WORD_ENTRY_TYPE>
+                template<typename WORD_ENTRY_TYPE, bool allokWordBuckets = false >
                 void preAllocateWordsData(WORD_ENTRY_TYPE* & wordsArray, const TShortId numMGrams, const TShortId numWords) {
                     //Allocate memory and clean it for the liven level = (i + MGRAM_IDX_OFFSET)
                     wordsArray = new WORD_ENTRY_TYPE[m_num_word_ids];
                     memset(wordsArray, 0, m_num_word_ids * sizeof (WORD_ENTRY_TYPE));
 
-                    //Compute the average number of data elements per word on the given M-gram level
-                    const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
-                    /*
-                    //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
-                    const size_t fact_num_elems = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT), __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
+                    if (allokWordBuckets) {
+                        //Compute the average number of data elements per word on the given M-gram level
+                        const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
 
-                    //Allocate data per word, use the calloc in order to be able to realloc it!
-                    for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
-                        wordsArray[wordId].ptr = (typename WORD_ENTRY_TYPE::TElemType*) calloc(fact_num_elems, sizeof (typename WORD_ENTRY_TYPE::TElemType));
-                        wordsArray[wordId].capacity = fact_num_elems;
+                        //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
+                        const size_t fact_num_elems = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT), __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
 
-                        //Do the null pointer check if sanity
-                        if (DO_SANITY_CHECKS && (fact_num_elems > 0) && (wordsArray[wordId].ptr == NULL)) {
-                            stringstream msg;
-                            msg << "Ran out of memory when trying to allocate "
-                                    << fact_num_elems << " data elements for wordId: " << wordId;
-                            throw Exception(msg.str());
+                        //Allocate data per word, use the calloc in order to be able to realloc it!
+                        for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                            wordsArray[wordId].ptr = (typename WORD_ENTRY_TYPE::TElemType*) calloc(fact_num_elems, sizeof (typename WORD_ENTRY_TYPE::TElemType));
+                            wordsArray[wordId].capacity = fact_num_elems;
+
+                            //Do the null pointer check if sanity
+                            if (DO_SANITY_CHECKS && (fact_num_elems > 0) && (wordsArray[wordId].ptr == NULL)) {
+                                stringstream msg;
+                                msg << "Ran out of memory when trying to allocate "
+                                        << fact_num_elems << " data elements for wordId: " << wordId;
+                                throw Exception(msg.str());
+                            }
                         }
-                    }*/
+                    }
                 }
 
                 /**
