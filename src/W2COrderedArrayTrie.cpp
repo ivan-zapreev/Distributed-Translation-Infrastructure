@@ -49,6 +49,13 @@ namespace uva {
 
                 //ToDo: Optimize this and make mapping from enumeration to corresponding string.
                 switch (MEM_INC_TYPE) {
+                    case MemIncTypesEnum::CONSTANT:
+                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::CONSTANT" << END_LOG;
+                        m_get_capacity_inc_func = [] (const float fcap) -> float {
+                            //Return zero as then the minimum constant increase will be used!
+                            return 0;
+                        };
+                        break;
                     case MemIncTypesEnum::LINEAR:
                         LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LINEAR" << END_LOG;
                         m_get_capacity_inc_func = [] (const float fcap) -> float {
