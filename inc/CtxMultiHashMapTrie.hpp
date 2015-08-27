@@ -135,7 +135,7 @@ namespace uva {
                  */
                 virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
                         hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
                         hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
                     }
@@ -166,7 +166,7 @@ namespace uva {
                     const TLongId keyCtxId = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
                         hashSizes[level - 1].first = min<TLongId>(keyCtxId, hashSizes[level - 1].first);
                         hashSizes[level - 1].second = max<TLongId>(keyCtxId, hashSizes[level - 1].second);
                     }
@@ -197,7 +197,7 @@ namespace uva {
                     const TLongId keyCtxId = getContextId(wordId, ctxId);
 
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
+                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
                         hashSizes[N - 1].first = min<TLongId>(keyCtxId, hashSizes[N - 1].first);
                         hashSizes[N - 1].second = max<TLongId>(keyCtxId, hashSizes[N - 1].second);
                     }

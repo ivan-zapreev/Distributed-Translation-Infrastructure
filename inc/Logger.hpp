@@ -68,19 +68,19 @@ namespace uva {
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;
             //Here, the END_LOG is optional and is currently used for a new line only.
-#define LOG_USAGE   LOGGER(DebugLevel::USAGE)
-#define LOG_RESULT  LOGGER(DebugLevel::RESULT)
-#define LOG_ERROR   LOGGER(DebugLevel::ERROR)
-#define LOG_WARNING LOGGER(DebugLevel::WARNING)
-#define LOG_INFO    LOGGER(DebugLevel::INFO)
-#define LOG_INFO1    LOGGER(DebugLevel::INFO1)
-#define LOG_INFO2    LOGGER(DebugLevel::INFO2)
-#define LOG_INFO3    LOGGER(DebugLevel::INFO3)
-#define LOG_DEBUG   LOGGER_DEBUG(DebugLevel::DEBUG)
-#define LOG_DEBUG1  LOGGER_DEBUG(DebugLevel::DEBUG1)
-#define LOG_DEBUG2  LOGGER_DEBUG(DebugLevel::DEBUG2)
-#define LOG_DEBUG3  LOGGER_DEBUG(DebugLevel::DEBUG3)
-#define LOG_DEBUG4  LOGGER_DEBUG(DebugLevel::DEBUG4)
+#define LOG_USAGE   LOGGER(DebugLevelsEnum::USAGE)
+#define LOG_RESULT  LOGGER(DebugLevelsEnum::RESULT)
+#define LOG_ERROR   LOGGER(DebugLevelsEnum::ERROR)
+#define LOG_WARNING LOGGER(DebugLevelsEnum::WARNING)
+#define LOG_INFO    LOGGER(DebugLevelsEnum::INFO)
+#define LOG_INFO1    LOGGER(DebugLevelsEnum::INFO1)
+#define LOG_INFO2    LOGGER(DebugLevelsEnum::INFO2)
+#define LOG_INFO3    LOGGER(DebugLevelsEnum::INFO3)
+#define LOG_DEBUG   LOGGER_DEBUG(DebugLevelsEnum::DEBUG)
+#define LOG_DEBUG1  LOGGER_DEBUG(DebugLevelsEnum::DEBUG1)
+#define LOG_DEBUG2  LOGGER_DEBUG(DebugLevelsEnum::DEBUG2)
+#define LOG_DEBUG3  LOGGER_DEBUG(DebugLevelsEnum::DEBUG3)
+#define LOG_DEBUG4  LOGGER_DEBUG(DebugLevelsEnum::DEBUG4)
 #define END_LOG     endl << flush
 
 
@@ -126,7 +126,7 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& get(DebugLevel level) {
+                static inline std::ostream& get(DebugLevelsEnum level) {
                     return cout << _debugLevelStr[level] << ":\t";
                 }
 
@@ -135,7 +135,7 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& get(DebugLevel level, const char * file, const char * func, const char * line) {
+                static inline std::ostream& get(DebugLevelsEnum level, const char * file, const char * func, const char * line) {
                     return cout << _debugLevelStr[level] << " \t<" << file << "::" << func << "(...):" << line << ">:\t";
                 }
 
@@ -144,7 +144,7 @@ namespace uva {
                  * @return the reporting level to check
                  * @return true if the given reporting level is smaller or equal to the current, otherwise false
                  */
-                static inline bool isRelevantLevel(const DebugLevel& level) {
+                static inline bool isRelevantLevel(const DebugLevelsEnum& level) {
                     return level <= currLEvel;
                 };
 
@@ -152,7 +152,7 @@ namespace uva {
                  * Returns the reference to the internal log level variable
                  * @return the reference to the internal log level variable
                  */
-                static inline DebugLevel& getReportingLevel() {
+                static inline DebugLevelsEnum& getReportingLevel() {
                     return currLEvel;
                 };
 
@@ -227,7 +227,7 @@ namespace uva {
                 static string computeTimeClearString(const size_t length);
 
                 //Stores the current used message level
-                static DebugLevel currLEvel;
+                static DebugLevelsEnum currLEvel;
 
                 //Stores the progress bar characters
                 static const vector<string> progressChars;

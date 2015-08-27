@@ -468,7 +468,7 @@ namespace uva {
                  * @param gram the N-gram with its tokens to create context for
                  * @return the resulting hash of the context(w1 w2 w3)
                  */
-                template<DebugLevel logLevel>
+                template<DebugLevelsEnum logLevel>
                 inline TLongId getContextId(const SRawNGram & gram) {
                     TLongId ctxId;
 

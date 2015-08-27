@@ -49,7 +49,7 @@ namespace uva {
 
             //This enumeration stores all the available logging levels.
 
-            enum DebugLevel {
+            enum DebugLevelsEnum {
                 USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
                 INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
                 DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1,
@@ -57,10 +57,10 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static const DebugLevel LOGER_MAX_LEVEL = INFO3;
+            static const DebugLevelsEnum LOGER_MAX_LEVEL = INFO3;
             
             //Defines the log level from which the detailed timing info is available
-            static const DebugLevel PROGRESS_ACTIVE_LEVEL = INFO2;
+            static const DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
         }
 
         //The following type definitions are important for storing the Tries information
@@ -107,13 +107,17 @@ namespace uva {
                 //allocated amount of data
                 const float MAX_MEM_INC_PRCT = 0.1;
                 
-                enum MemGrowStrategy{ LINEAR = 0, LOG_2 = 1, LOG_10 = 2 };
+                //Stores the minimum capacity increase in number of elements
+                const size_t MIN_MEM_INC_NUM = 10;
+                
+                //Stores the possible memory increase types
+                enum MemIncTypesEnum{ LINEAR = 0, LOG_2 = 1, LOG_10 = 2 };
                 
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const MemGrowStrategy MEM_INC_TYPE = MemGrowStrategy::LOG_10;
+                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_10;
             }
         }
 

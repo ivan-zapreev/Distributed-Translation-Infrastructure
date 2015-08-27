@@ -36,7 +36,7 @@ using uva::smt::monitore::StatisticsMonitor;
 namespace uva {
     namespace smt {
         namespace logging {
-            DebugLevel Logger::currLEvel = DebugLevel::RESULT;
+            DebugLevelsEnum Logger::currLEvel = DebugLevelsEnum::RESULT;
 
             const uint NUM_DEBUG_FLAGS = 13;
             const char * Logger::_debugLevelStr[NUM_DEBUG_FLAGS] = {USAGE_PARAM_VALUE,
@@ -88,40 +88,40 @@ namespace uva {
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
                 if (!level.compare(USAGE_PARAM_VALUE)) {
-                    Logger::getReportingLevel() = DebugLevel::USAGE;
+                    Logger::getReportingLevel() = DebugLevelsEnum::USAGE;
                 } else {
                     if (!level.compare(RESULT_PARAM_VALUE)) {
-                        Logger::getReportingLevel() = DebugLevel::RESULT;
+                        Logger::getReportingLevel() = DebugLevelsEnum::RESULT;
                     } else {
                         if (!level.compare(WARNING_PARAM_VALUE)) {
-                            Logger::getReportingLevel() = DebugLevel::WARNING;
+                            Logger::getReportingLevel() = DebugLevelsEnum::WARNING;
                         } else {
                             if (!level.compare(INFO_PARAM_VALUE)) {
-                                Logger::getReportingLevel() = DebugLevel::INFO;
+                                Logger::getReportingLevel() = DebugLevelsEnum::INFO;
                             } else {
                                 if (!level.compare(INFO1_PARAM_VALUE)) {
-                                    Logger::getReportingLevel() = DebugLevel::INFO1;
+                                    Logger::getReportingLevel() = DebugLevelsEnum::INFO1;
                                 } else {
                                     if (!level.compare(INFO2_PARAM_VALUE)) {
-                                        Logger::getReportingLevel() = DebugLevel::INFO2;
+                                        Logger::getReportingLevel() = DebugLevelsEnum::INFO2;
                                     } else {
                                         if (!level.compare(INFO3_PARAM_VALUE)) {
-                                            Logger::getReportingLevel() = DebugLevel::INFO3;
+                                            Logger::getReportingLevel() = DebugLevelsEnum::INFO3;
                                         } else {
                                             if (!level.compare(DEBUG_PARAM_VALUE)) {
-                                                Logger::getReportingLevel() = DebugLevel::DEBUG;
+                                                Logger::getReportingLevel() = DebugLevelsEnum::DEBUG;
                                             } else {
                                                 if (!level.compare(DEBUG1_PARAM_VALUE)) {
-                                                    Logger::getReportingLevel() = DebugLevel::DEBUG1;
+                                                    Logger::getReportingLevel() = DebugLevelsEnum::DEBUG1;
                                                 } else {
                                                     if (!level.compare(DEBUG2_PARAM_VALUE)) {
-                                                        Logger::getReportingLevel() = DebugLevel::DEBUG2;
+                                                        Logger::getReportingLevel() = DebugLevelsEnum::DEBUG2;
                                                     } else {
                                                         if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                            Logger::getReportingLevel() = DebugLevel::DEBUG3;
+                                                            Logger::getReportingLevel() = DebugLevelsEnum::DEBUG3;
                                                         } else {
                                                             if (!level.compare(DEBUG4_PARAM_VALUE)) {
-                                                                Logger::getReportingLevel() = DebugLevel::DEBUG4;
+                                                                Logger::getReportingLevel() = DebugLevelsEnum::DEBUG4;
                                                             } else {
                                                                 isGoodLevel = false;
                                                             }

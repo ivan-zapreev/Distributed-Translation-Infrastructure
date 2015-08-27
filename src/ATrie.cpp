@@ -71,7 +71,7 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(mGram);
+                const TLongId ctxId = getContextId<DebugLevelsEnum::DEBUG2>(mGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = mGram.tokens[level - 1];
@@ -106,7 +106,7 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                const TLongId ctxId = getContextId<DebugLevel::DEBUG2>(nGram);
+                const TLongId ctxId = getContextId<DebugLevelsEnum::DEBUG2>(nGram);
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[N - 1];

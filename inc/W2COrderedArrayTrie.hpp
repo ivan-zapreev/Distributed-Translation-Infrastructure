@@ -28,6 +28,9 @@
 
 #include <string>       // std::string
 #include <cstdlib>      // std::calloc std::realloc std::free
+#include <functional>   // std::function 
+#include <cmath>        // std::log std::log10
+#include <algorithm>    // std::max
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -71,6 +74,13 @@ namespace uva {
                 virtual ~W2COrderedArrayTrie();
 
             protected:
+
+                /**
+                 * This is a function type for the function that should compute the capacity increase
+                 * @param the current capacity
+                 * @return the capacity increase
+                 */
+                typedef std::function<float (const float) > TCapacityIncFunct;
 
                 /**
                  * This structure is to store the word mapping to the data for
@@ -253,7 +263,7 @@ namespace uva {
                         if ((ref.ptr != NULL) && (ref.size > 0)) {
                             //Deallocate the unneeded memory, the false flag indicates that we need reduction.
                             reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
-                            
+
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
                             sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.ptr + ref.size);
@@ -312,6 +322,9 @@ namespace uva {
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
                 T_N_GramWordEntry * m_N_gram_word_2_data;
+
+                //Stores the pointer to the capacity computing function
+                TCapacityIncFunct m_get_capacity_inc_func;
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.
@@ -456,13 +469,25 @@ namespace uva {
 
                         //Do the null pointer check if sanity
                         if (DO_SANITY_CHECKS && (fact_num_elems > 0) && (wordsArray[wordId].ptr == NULL)) {
-
                             stringstream msg;
                             msg << "Ran out of memory when trying to allocate "
                                     << fact_num_elems << " data elements for wordId: " << wordId;
                             throw Exception(msg.str());
                         }
                     }
+                }
+
+                /**
+                 * Compute the new capacity given the provided one, this function used
+                 * the capacity increase function stored in m_get_capacity_inc_func.
+                 * @param capacity the current capacity
+                 * @return the proposed capacity increase, will be at least __W2COrderedArrayTrie::MIN_MEM_INC_NUM
+                 */
+                inline const size_t computeNewCapacity(const size_t capacity) {
+                    //Get the float capacity value, make it minimum of one element to avoid problems
+                    const float fcap = (capacity > 0) ? (float) capacity : 1.0;
+                    const size_t cap_inc = (size_t) m_get_capacity_inc_func(fcap);
+                    return capacity + max(cap_inc, __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
                 }
 
                 /**
@@ -477,7 +502,8 @@ namespace uva {
 
                     //Compute the new number of elements
                     if (isIncrease) {
-                        throw Exception("Implement: Compute new capacity!");
+                        //Compute the new capacity
+                        new_capacity = m_get_capacity_inc_func(wordEntry.capacity);
                     } else {
                         //Decrease the capacity to the current size, remove the unneeded
                         new_capacity = wordEntry.size;

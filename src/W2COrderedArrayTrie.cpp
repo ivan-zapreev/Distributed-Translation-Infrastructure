@@ -24,7 +24,7 @@
  */
 #include "W2COrderedArrayTrie.hpp"
 
-#include <inttypes.h>       // std::uint32_t
+#include <inttypes.h>   // std::uint32_t
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -34,16 +34,45 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            using namespace __W2COrderedArrayTrie;
+
             template<TModelLevel N>
             W2COrderedArrayTrie<N>::W2COrderedArrayTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
             [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
                 return this->getContextId(wordId, ctxId, level); }),
-            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
+            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL), m_get_capacity_inc_func(NULL) {
 
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
+
+                //ToDo: Optimize this and make mapping from enumeration to corresponding string.
+                switch (MEM_INC_TYPE) {
+                    case MemIncTypesEnum::LINEAR:
+                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LINEAR" << END_LOG;
+                        m_get_capacity_inc_func = [] (const float fcap) -> float {
+                            return (fcap * MAX_MEM_INC_PRCT);
+                        };
+                        break;
+                    case MemIncTypesEnum::LOG_2:
+                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LOG_2" << END_LOG;
+                        m_get_capacity_inc_func = [] (const float fcap) -> float {
+                            return MAX_MEM_INC_PRCT * fcap / log(fcap);
+                        };
+                        break;
+                    case MemIncTypesEnum::LOG_10:
+                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LOG_10" << END_LOG;
+                        m_get_capacity_inc_func = [] (const float fcap) -> float {
+                            //Get the float capacity value, make it minimum of one element to avoid problems
+                            return MAX_MEM_INC_PRCT * fcap / log10(fcap);
+                        };
+                        break;
+                    default:
+                        stringstream msg;
+                        msg << "Unrecognized memory allocation strategy: " << __W2COrderedArrayTrie::MEM_INC_TYPE;
+                        throw Exception(msg.str());
+                }
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
                         << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
