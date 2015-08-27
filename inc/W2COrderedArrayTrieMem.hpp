@@ -65,7 +65,7 @@ namespace uva {
                     //Stores the minimum allowed memory increment, in number of elements
                     size_t m_min_mem_inc;
                     //Stores the maximum allowed memory increment, in percent from the current number of elements
-                    float m_max_mem_inc_prct;
+                    float m_mem_inc_factor;
 
                 public:
 
@@ -74,13 +74,13 @@ namespace uva {
                      * @param stype the strategy type
                      * @param get_capacity_inc_func the strategy function
                      * @param min_mem_inc the minimum memory increase in number of elements
-                     * @param max_mem_inc_prct the maximum memory increase in percent
+                     * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
                      */
                     MemIncreaseStrategy(const MemIncTypesEnum & stype,
                             const TCapacityIncFunct get_capacity_inc_func,
-                            const size_t min_mem_inc, const float max_mem_inc_prct)
+                            const size_t min_mem_inc, const float mem_inc_factor)
                     : m_stype(stype), m_get_capacity_inc_func(get_capacity_inc_func),
-                    m_min_mem_inc(min_mem_inc), m_max_mem_inc_prct(max_mem_inc_prct) {
+                    m_min_mem_inc(min_mem_inc), m_mem_inc_factor(mem_inc_factor) {
                         if (m_min_mem_inc < 1) {
                             throw Exception("Inappropriate minimum memory increment!");
                         }
@@ -88,7 +88,7 @@ namespace uva {
 
                     MemIncreaseStrategy(const MemIncreaseStrategy & other)
                     : m_stype(other.m_stype), m_get_capacity_inc_func(other.m_get_capacity_inc_func),
-                    m_min_mem_inc(other.m_min_mem_inc), m_max_mem_inc_prct(other.m_max_mem_inc_prct) {
+                    m_min_mem_inc(other.m_min_mem_inc), m_mem_inc_factor(other.m_mem_inc_factor) {
                     }
 
                     /**
@@ -98,8 +98,8 @@ namespace uva {
                     string getStrategyStr() {
                         stringstream msg;
                         msg << _memIncTypesEnumStr[m_stype] << ", memory increments: Min = "
-                                << m_min_mem_inc << " elements, Max = "
-                                << m_max_mem_inc_prct << " percent.";
+                                << SSTR(m_min_mem_inc) << " elements, Factor = "
+                                << SSTR(m_mem_inc_factor) << " percent.";
                         return msg.str();
                     }
 
@@ -112,7 +112,7 @@ namespace uva {
                     inline const size_t computeNewCapacity(const size_t capacity) {
                         //Get the float capacity value, make it minimum of one element to avoid problems
                         const float fcap = (capacity > 0) ? (float) capacity : 1.0;
-                        const size_t cap_inc = (size_t) min(m_get_capacity_inc_func(fcap), m_max_mem_inc_prct * capacity);
+                        const size_t cap_inc = (size_t) (m_mem_inc_factor * m_get_capacity_inc_func(fcap));
                         return capacity + max(cap_inc, m_min_mem_inc);
                     }
                 };
@@ -121,11 +121,11 @@ namespace uva {
                  * This is a factory function allowing to ge the strategy object for the given parameters
                  * @param stype the strategy type
                  * @param min_mem_inc the minimum memory increment in number of elements
-                 * @param max_mem_inc_prct the maximum memory increment in percent relative to the current number of elements
+                 * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
                  * @return the pointer to a newly allocated strategy object
                  */
                 inline MemIncreaseStrategy * getMemIncreaseStrategy(const MemIncTypesEnum stype,
-                        const size_t min_mem_inc, const float max_mem_inc_prct) {
+                        const size_t min_mem_inc, const float mem_inc_factor) {
                     TCapacityIncFunct inc_func;
 
                     //ToDo: optimize this switch, it is pretty ugly, use a map or something
@@ -159,7 +159,7 @@ namespace uva {
                     }
 
                     //return the result object
-                    return new MemIncreaseStrategy(stype, inc_func, min_mem_inc, max_mem_inc_prct);
+                    return new MemIncreaseStrategy(stype, inc_func, min_mem_inc, mem_inc_factor);
                 }
             }
         }

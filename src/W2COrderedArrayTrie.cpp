@@ -48,7 +48,7 @@ namespace uva {
                 memset(m_M_gram_word_2_data, 0, NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
 
                 //Get the memory increase strategy
-                m_p_mem_strat = getMemIncreaseStrategy(MEM_INC_TYPE, MIN_MEM_INC_NUM, MAX_MEM_INC_PRCT);
+                m_p_mem_strat = getMemIncreaseStrategy(MEM_INC_TYPE, MIN_MEM_INC_NUM, MEM_INC_FACTOR);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
                 LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()

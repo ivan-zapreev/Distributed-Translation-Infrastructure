@@ -100,13 +100,12 @@ namespace uva {
             }
 
             namespace __W2COrderedArrayTrie {
-                //Stores the procent of the memory that will be allocated per word data 
+                //Stores the percent of the memory that will be allocated per word data 
                 //storage in one Trie level relative to the estimated number of needed data
                 const float INIT_MEM_ALLOC_PRCT = 0.5;
-                //Stores the maximum-initial memory increase for the case of more memory
-                //needed for word data storage in one Trie level relative to the already
-                //allocated amount of data
-                const float MAX_MEM_INC_PRCT = 0.3;
+                
+                //Stores the memory increment factor, the number we will multiply by the computed increment
+                const float MEM_INC_FACTOR = 0.3;
 
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 const size_t MIN_MEM_INC_NUM = 1;
