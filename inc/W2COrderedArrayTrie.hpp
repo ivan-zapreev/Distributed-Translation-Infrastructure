@@ -512,10 +512,15 @@ namespace uva {
                         new_capacity = wordEntry.size;
                     }
 
+                    LOG_DEBUG2 << "The estimated new capacity is " << SSTR(new_capacity)
+                            << ", the old capacity was " << SSTR(wordEntry.capacity) << END_LOG;
+
                     //Reallocate memory, potentially we get a new pointer!
                     wordEntry.ptr = (typename WORD_ENTRY_TYPE::TElemType*) realloc(wordEntry.ptr, new_capacity * sizeof (typename WORD_ENTRY_TYPE::TElemType));
+                    
                     //Clean the newly allocated memory
                     memset(wordEntry.ptr + wordEntry.size, 0, (new_capacity - wordEntry.capacity) * sizeof (typename WORD_ENTRY_TYPE::TElemType));
+                    
                     //Set the new capacity in
                     wordEntry.capacity = new_capacity;
 
