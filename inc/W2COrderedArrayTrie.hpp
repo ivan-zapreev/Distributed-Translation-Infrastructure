@@ -251,12 +251,12 @@ namespace uva {
 
                         //Check that the data for the given word is available
                         if ((ref.ptr != NULL) && (ref.size > 0)) {
+                            //Deallocate the unneeded memory, the false flag indicates that we need reduction.
+                            reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
+                            
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
                             sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.ptr + ref.size);
-
-                            //Deallocate the unneeded memory, the false flag indicates that we need reduction.
-                            reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
                         }
                     }
                 }
