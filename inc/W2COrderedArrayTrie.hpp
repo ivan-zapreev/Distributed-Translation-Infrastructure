@@ -139,78 +139,6 @@ namespace uva {
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
-                 * This method words for 1 < M <= N
-                 */
-                virtual TSubArrReference & make_M_N_GramEntry(const TModelLevel & level, const TShortId & wordId) {
-                    //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
-
-                    LOG_DEBUG2 << "Making entry for \t" << SSTR(level) << "-gram with wordId:\t" << SSTR(wordId) << END_LOG;
-
-                    //First get the sub-array reference. 
-                    TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
-
-                    //Check that the array is continuous in indexes, so that we add
-                    //context after context and not switching between different contexts!
-                    if (DO_SANITY_CHECKS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_M_N_gram_next_ctx_id[mgram_idx])) {
-                        stringstream msg;
-                        msg << "The " << SSTR(level) << " -gram wordId: " << SSTR(wordId)
-                                << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
-                                << ", next ref.endIdx = " << SSTR(m_M_N_gram_next_ctx_id[mgram_idx] + 1) << "!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Get the new index and increment - this will be the new end index
-                    ref.endIdx = m_M_N_gram_next_ctx_id[mgram_idx]++;
-
-                    //Check if we exceeded the maximum allowed number of M-grams
-                    if (DO_SANITY_CHECKS && (ref.endIdx >= m_M_N_gram_num_ctx_ids[mgram_idx])) {
-                        stringstream msg;
-                        msg << "The maximum allowed number of " << SSTR(level)
-                                << "-grams: " << SSTR(m_M_N_gram_num_ctx_ids[mgram_idx])
-                                << " is exceeded )!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Check if there are yet no elements for this context
-                    if (ref.beginIdx == UNDEFINED_ARR_IDX) {
-                        //There was no elements put into this contex, the begin index is then equal to the end index
-                        ref.beginIdx = ref.endIdx;
-                    }
-
-                    return ref;
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
-                 * For more details @see ATrie
-                 */
-                virtual const TSubArrReference& get_M_N_GramEntry(const TModelLevel & level, const TShortId & wordId) {
-                    //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
-
-                    LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
-                            << "-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                    //First get the sub-array reference. 
-                    const TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
-
-                    //Check if there are elements for this context
-                    if (ref.beginIdx != UNDEFINED_ARR_IDX) {
-                        return ref;
-                    } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(level)
-                                << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
-                        throw out_of_range("not found");
-                    }
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
@@ -298,20 +226,37 @@ namespace uva {
                     return (level > MIN_NGRAM_LEVEL) || ATrie<N>::isPost_Grams(level);
                 }
 
+                template<typename ARRAY_ELEM_TYPE>
+                void sort_M_N_Grams(const TModelLevel level, ARRAY_ELEM_TYPE * data) {
+                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
+                    for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                        //First get the sub-array reference. 
+                        TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
+                        //Check that the data for the given word is available
+                        if (ref.beginIdx != UNDEFINED_ARR_IDX) {
+                            //Order the N-gram array as it is unordered and we will binary search it later!
+                            //Note: We do not use qsort as it has worse performance than this method.
+                            sort<ARRAY_ELEM_TYPE, TShortId>(data + ref.beginIdx, data + ref.endIdx);
+                        }
+                    }
+                }
+
                 virtual void post_M_Grams(const TModelLevel level) {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
 
-                    //ToDo: Implement sorting by context Id of the data per word id
+                    //Sort the level's data
+                    sort_M_N_Grams(level, m_M_gram_data[level - MGRAM_IDX_OFFSET]);
                 }
 
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
 
-                    //Order the N-gram array as it is unordered and we will binary search it later!
-                    //Note: We do not use qsort as it has worse performance than this method.
-                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_M_N_gram_num_ctx_ids[N_GRAM_IDX]);
+                    //Sort the level's data
+                    sort_M_N_Grams(N, m_N_gram_data);
                 };
 
             private:
@@ -358,6 +303,78 @@ namespace uva {
                 TShortId m_M_N_gram_next_ctx_id[NUM_M_N_GRAM_LEVELS];
 
                 /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * This method words for 1 < M <= N
+                 */
+                TSubArrReference & make_M_N_GramEntry(const TModelLevel & level, const TShortId & wordId) {
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    LOG_DEBUG2 << "Making entry for \t" << SSTR(level) << "-gram with wordId:\t" << SSTR(wordId) << END_LOG;
+
+                    //First get the sub-array reference. 
+                    TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
+
+                    //Check that the array is continuous in indexes, so that we add
+                    //context after context and not switching between different contexts!
+                    if (DO_SANITY_CHECKS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_M_N_gram_next_ctx_id[mgram_idx])) {
+                        stringstream msg;
+                        msg << "The " << SSTR(level) << " -gram wordId: " << SSTR(wordId)
+                                << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
+                                << ", next ref.endIdx = " << SSTR(m_M_N_gram_next_ctx_id[mgram_idx] + 1) << "!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Get the new index and increment - this will be the new end index
+                    ref.endIdx = m_M_N_gram_next_ctx_id[mgram_idx]++;
+
+                    //Check if we exceeded the maximum allowed number of M-grams
+                    if (DO_SANITY_CHECKS && (ref.endIdx >= m_M_N_gram_num_ctx_ids[mgram_idx])) {
+                        stringstream msg;
+                        msg << "The maximum allowed number of " << SSTR(level)
+                                << "-grams: " << SSTR(m_M_N_gram_num_ctx_ids[mgram_idx])
+                                << " is exceeded )!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Check if there are yet no elements for this context
+                    if (ref.beginIdx == UNDEFINED_ARR_IDX) {
+                        //There was no elements put into this contex, the begin index is then equal to the end index
+                        ref.beginIdx = ref.endIdx;
+                    }
+
+                    return ref;
+                };
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                const TSubArrReference& get_M_N_GramEntry(const TModelLevel & level, const TShortId & wordId) {
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
+                            << "-gram with wordId: " << SSTR(wordId) << END_LOG;
+
+                    //First get the sub-array reference. 
+                    const TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
+
+                    //Check if there are elements for this context
+                    if (ref.beginIdx != UNDEFINED_ARR_IDX) {
+                        return ref;
+                    } else {
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(level)
+                                << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                        throw out_of_range("not found");
+                    }
+                };
+
+                /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
                  * WARNING: Must only be called for the M-gram level 1 < M <= N!
@@ -377,13 +394,13 @@ namespace uva {
                             << SSTR(ctxId) << END_LOG;
 
                     //First get the sub-array reference. 
-                    TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][ctxId];
+                    TSubArrReference & ref = m_M_N_gram_word_2_data[mgram_idx][wordId];
 
                     LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
                             << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
                             << SSTR(ref.endIdx) << END_LOG;
 
-                    //Check that there is data for the given context available
+                    //Check that the data for the given word is available
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
