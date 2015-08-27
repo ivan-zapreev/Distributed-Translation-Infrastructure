@@ -189,7 +189,11 @@ namespace uva {
                     LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
-                    throw Exception("Implement: get_M_GramDataRef()!");
+                    //Get the entry
+                    const TCtxIdProbBackOffEntry & ref = get_M_N_GramEntry<T_M_GramWordEntry>(N, m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId, ctxId);
+
+                    //Return the reference to the probability and back-off structure
+                    return ref.data;
                 };
 
                 /**
@@ -222,7 +226,11 @@ namespace uva {
                     LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
-                    throw Exception("Implement: get_N_GramDataRef!");
+                    //Get the entry
+                    const TCtxIdProbEntry & ref = get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId);
+
+                    //Return the reference to the probability
+                    return ref.prob;
                 };
 
                 virtual bool isPost_Grams(const TModelLevel level) {
@@ -369,14 +377,14 @@ namespace uva {
                  * @throw out_of_range if the index could not be found
                  */
                 template<typename WORD_ENTRY_TYPE>
-                const TShortId get_M_N_GramLocalEntryIdx(WORD_ENTRY_TYPE & ref, const TShortId & ctxId) {
+                const TShortId get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId & ctxId) {
                     LOG_DEBUG2 << "Getting sub arr data for ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Check if there is data to search in
                     if ((ref.ptr != NULL) && (ref.size > 0)) {
                         TShortId localIdx = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (binarySearch<TCtxIdProbBackOffEntry, TShortId, TShortId>(ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                        if (binarySearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId>(ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
                             return localIdx;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "
@@ -400,14 +408,14 @@ namespace uva {
                  * @param ctxId the context id we are after
                  */
                 template<typename WORD_ENTRY_TYPE>
-                const typename WORD_ENTRY_TYPE::TElemType & get_M_N_GramEntry(const TModelLevel & level, WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId, const TShortId & ctxId) {
+                const typename WORD_ENTRY_TYPE::TElemType & get_M_N_GramEntry(const TModelLevel & level, const WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId, const TShortId & ctxId) {
                     LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << END_LOG;
                     //Get the sub-array reference. 
                     const WORD_ENTRY_TYPE & ref = wordsArray[wordId];
 
                     //Get the local entry index
-                    const TShortId localIdx = get_M_N_GramLocalEntryIdx(ref, ctxId);
+                    const TShortId localIdx = get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctxId);
 
                     //Return the data located by the local index
                     return ref.ptr[localIdx];
