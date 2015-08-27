@@ -511,13 +511,14 @@ namespace uva {
                 void reallocateWordData(WORD_ENTRY_TYPE & wordEntry) {
                     size_t new_capacity;
 
-                    LOG_DEBUG3 << "Memory reallocation request: "
+                    LOG_DEBUG2 << "Memory reallocation request: "
                             << ((isIncrease) ? "increase" : "decrease") << END_LOG;
 
                     //Compute the new number of elements
                     if (isIncrease) {
                         //Compute the new capacity
                         new_capacity = computeNewCapacity(wordEntry.capacity);
+                        LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
                     } else {
                         //Decrease the capacity to the current size, remove the unneeded
                         new_capacity = wordEntry.size;
