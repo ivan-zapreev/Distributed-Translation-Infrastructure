@@ -52,7 +52,7 @@ namespace uva {
                     case MemIncTypesEnum::LINEAR:
                         LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LINEAR" << END_LOG;
                         m_get_capacity_inc_func = [] (const float fcap) -> float {
-                            return (fcap * MAX_MEM_INC_PRCT);
+                            return MAX_MEM_INC_PRCT * fcap;
                         };
                         break;
                     case MemIncTypesEnum::LOG_2:
