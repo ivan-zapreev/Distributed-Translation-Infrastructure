@@ -25,6 +25,7 @@
       <itemPath>inc/TextPieceReader.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
+      <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -41,6 +42,7 @@
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/W2CHybridMemoryTrie.cpp</itemPath>
+      <itemPath>src/W2COrderedArrayTrie.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -134,6 +136,8 @@
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
@@ -149,6 +153,8 @@
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -217,6 +223,8 @@
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
@@ -232,6 +240,8 @@
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -309,6 +319,8 @@
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
@@ -324,6 +336,8 @@
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -390,6 +404,8 @@
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
@@ -405,6 +421,8 @@
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -473,6 +491,8 @@
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
@@ -488,6 +508,8 @@
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>

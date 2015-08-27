@@ -1,5 +1,5 @@
 /* 
- * File:   C2WOrderedArrayTrie.cpp
+ * File:   W2COrderedArrayTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,9 +20,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on August 25, 2015, 11:27 PM
+ * Created on August 27, 2015, 08:33 PM
  */
-#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 
@@ -35,7 +35,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            C2WOrderedArrayTrie<N>::C2WOrderedArrayTrie(AWordIndex * const p_word_index)
+            W2COrderedArrayTrie<N>::W2COrderedArrayTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
             [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
@@ -52,7 +52,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
+            void W2COrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
                 //Compute and store the M-gram level sizes in terms of the number of M-grams per level
                 //Also initialize the M-gram index counters, for issuing context indexes
                 for (TModelLevel i = 0; i < NUM_M_N_GRAM_LEVELS; i++) {
@@ -85,24 +85,24 @@ namespace uva {
                 //The number of contexts is the number of words in previous level 1 i.e. counts[0]
                 //Yet we know that the word index begins with 2, due to UNDEFINED and UNKNOWN word ids
                 //Therefore for the 2-gram level contexts array we add two more elements
-                m_M_gram_ctx_2_data[0] = new TSubArrReference[one_gram_arr_size];
-                memset(m_M_gram_ctx_2_data[0], 0, one_gram_arr_size * sizeof (TSubArrReference));
+                m_MN_gram_word_2_data[0] = new TSubArrReference[one_gram_arr_size];
+                memset(m_MN_gram_word_2_data[0], 0, one_gram_arr_size * sizeof (TSubArrReference));
 
                 //Now also allocate the data for the 2-Grams, the number of 2-grams is m_MN_gram_size[0] 
-                m_M_gram_data[0] = new TWordIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[0]];
-                memset(m_M_gram_data[0], 0, m_MN_gram_num_ctx_ids[0] * sizeof (TWordIdProbBackOffEntryPair));
+                m_M_gram_data[0] = new TCtxIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[0]];
+                memset(m_M_gram_data[0], 0, m_MN_gram_num_ctx_ids[0] * sizeof (TCtxIdProbBackOffEntryPair));
 
                 //Now the remaining elements can be added in a loop
                 for (TModelLevel i = 1; i < NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
                     //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
-                    m_M_gram_ctx_2_data[i] = new TSubArrReference[m_MN_gram_num_ctx_ids[i-1]];
-                    memset(m_M_gram_ctx_2_data[i], 0, m_MN_gram_num_ctx_ids[i-1] * sizeof (TSubArrReference));
+                    m_MN_gram_word_2_data[i] = new TSubArrReference[m_MN_gram_num_ctx_ids[i-1]];
+                    memset(m_MN_gram_word_2_data[i], 0, m_MN_gram_num_ctx_ids[i-1] * sizeof (TSubArrReference));
                     //The m_MN_gram_size[i] stores the number of elements
                     //on the current level - the number of M-Grams.
-                    m_M_gram_data[i] = new TWordIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[i]];
-                    memset(m_M_gram_data[i], 0, m_MN_gram_num_ctx_ids[i] * sizeof (TWordIdProbBackOffEntryPair));
+                    m_M_gram_data[i] = new TCtxIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[i]];
+                    memset(m_M_gram_data[i], 0, m_MN_gram_num_ctx_ids[i] * sizeof (TCtxIdProbBackOffEntryPair));
                 }
 
                 //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
@@ -112,12 +112,12 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            C2WOrderedArrayTrie<N>::~C2WOrderedArrayTrie() {
+            W2COrderedArrayTrie<N>::~W2COrderedArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                     for (TModelLevel i = 0; i < NUM_M_GRAM_LEVELS; i++) {
-                        delete[] m_M_gram_ctx_2_data[i];
+                        delete[] m_MN_gram_word_2_data[i];
                         delete[] m_M_gram_data[i];
                     }
                     delete[] m_N_gram_data;
@@ -125,7 +125,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2WOrderedArrayTrie<MAX_NGRAM_LEVEL>;
+            template class W2COrderedArrayTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }
