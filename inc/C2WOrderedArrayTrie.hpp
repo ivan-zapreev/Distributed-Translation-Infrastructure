@@ -96,7 +96,7 @@ namespace uva {
                  */
                 typedef struct {
                     TShortId wordId;
-                    TProbBackOffEntryPair data;
+                    TProbBackOffEntry data;
 
                     operator TShortId() const {
                         return wordId;
@@ -133,7 +133,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
+                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
                     LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
                     return m_1_gram_data[wordId];
                 };
@@ -143,7 +143,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) {
+                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
                     LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                     return m_1_gram_data[wordId];
@@ -155,7 +155,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
@@ -205,7 +205,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
@@ -315,7 +315,7 @@ namespace uva {
                 static const TShortId FIRST_VALID_CTX_ID = UNDEFINED_ARR_IDX + 1;
 
                 //Stores the 1-gram data
-                TProbBackOffEntryPair * m_1_gram_data;
+                TProbBackOffEntry * m_1_gram_data;
 
                 //Stores the M-gram context to data mappings for: 1 < M < N
                 //This is a two dimensional array

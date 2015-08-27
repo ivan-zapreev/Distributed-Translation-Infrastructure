@@ -81,7 +81,7 @@ namespace uva {
             typedef struct {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
-            } TProbBackOffEntryPair;
+            } TProbBackOffEntry;
 
             /**
              * This structure is used to store the N-Gram data
@@ -296,7 +296,7 @@ namespace uva {
                  * @param wordId the One-gram id
                  * @return the reference to the storage structure
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) = 0;
+                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -305,7 +305,7 @@ namespace uva {
                  * @return the reference to the storage structure
                  * @throw out_of_range in case the data can not be located
                  */
-                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) = 0;
+                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -316,7 +316,7 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
+                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -328,7 +328,7 @@ namespace uva {
                  * @return the reference to the storage structure
                  * @throw out_of_range in case the data can not be located
                  */
-                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
+                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.

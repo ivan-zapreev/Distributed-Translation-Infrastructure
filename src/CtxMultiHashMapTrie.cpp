@@ -79,7 +79,7 @@ namespace uva {
                 reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams", oGramMemFactor);
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntryPair & pbData = pOneGramMap->operator[](UNKNOWN_WORD_ID);
+                TProbBackOffEntry & pbData = pOneGramMap->operator[](UNKNOWN_WORD_ID);
                 pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
             }

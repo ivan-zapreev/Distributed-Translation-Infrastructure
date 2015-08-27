@@ -42,7 +42,7 @@ namespace uva {
                 //Compute it's hash value
                 TShortId wordHash = m_p_word_index->makeId(token);
                 //Get the word probability and back-off data reference
-                TProbBackOffEntryPair & pbData = make_1_GramDataRef(wordHash);
+                TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
@@ -79,7 +79,7 @@ namespace uva {
                 LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
-                TProbBackOffEntryPair& pbData = make_M_GramDataRef(level, wordId, ctxId);
+                TProbBackOffEntry& pbData = make_M_GramDataRef(level, wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
@@ -154,7 +154,7 @@ namespace uva {
                         LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
 
                         //The context length plus one is M value of the M-Gram
-                        const TProbBackOffEntryPair& entry = get_M_GramDataRef(level, wordId, ctxId);
+                        const TProbBackOffEntry& entry = get_M_GramDataRef(level, wordId, ctxId);
 
                         //Obtained the stored back-off weight
                         back_off = entry.back_off;
@@ -173,7 +173,7 @@ namespace uva {
 
                     //Attempt to retrieve back-off weights
                     try {
-                        const TProbBackOffEntryPair & pbData = get_1_GramDataRef(wordId);
+                        const TProbBackOffEntry & pbData = get_1_GramDataRef(wordId);
 
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
                         back_off = pbData.back_off;
@@ -229,7 +229,7 @@ namespace uva {
                             //If we are looking for a M-Gram probability with 1 < M < N
 
                             //The context length plus one is M value of the M-Gram
-                            const TProbBackOffEntryPair& entry = get_M_GramDataRef(level, wordId, ctxId);
+                            const TProbBackOffEntry& entry = get_M_GramDataRef(level, wordId, ctxId);
 
                             LOG_DEBUG2 << "The " << level
                                     << "-Gram log_" << LOG_PROB_WEIGHT_BASE
@@ -262,7 +262,7 @@ namespace uva {
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
                     try {
-                        const TProbBackOffEntryPair & pbData = get_1_GramDataRef(wordId);
+                        const TProbBackOffEntry & pbData = get_1_GramDataRef(wordId);
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << wordId

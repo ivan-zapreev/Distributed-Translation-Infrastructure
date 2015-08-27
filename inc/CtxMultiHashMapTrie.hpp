@@ -110,9 +110,9 @@ namespace uva {
                  * the greedy allocator for the unordered_map
                  */
                 explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _oGramMemFactor = __ContextMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
-                        const float _mGramMemFactor = __ContextMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __ContextMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                        const float _oGramMemFactor = __CtxMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
+                        const float _mGramMemFactor = __CtxMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __CtxMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -133,7 +133,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
+                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevel::INFO3)) {
                         hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
@@ -149,7 +149,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) {
+                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
                     return pOneGramMap->at(wordId);
                 };
 
@@ -159,7 +159,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
@@ -180,7 +180,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                         const TLongId keyCtxId = getContextId(wordId, ctxId);
                         return pMGramMap[level - MGRAM_IDX_OFFSET]->at(keyCtxId);
                 };
@@ -225,11 +225,11 @@ namespace uva {
                 const float nGramMemFactor;
 
                 //The type of key,value pairs to be stored in the One Grams map
-                typedef pair< const TShortId, TProbBackOffEntryPair> TOneGramEntry;
+                typedef pair< const TShortId, TProbBackOffEntry> TOneGramEntry;
                 //The typedef for the One Grams map allocator
                 typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
-                typedef unordered_map<TShortId, TProbBackOffEntryPair, std::hash<TShortId>, std::equal_to<TShortId>, TOneGramAllocator > TOneGramsMap;
+                typedef unordered_map<TShortId, TProbBackOffEntry, std::hash<TShortId>, std::equal_to<TShortId>, TOneGramAllocator > TOneGramsMap;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -240,11 +240,11 @@ namespace uva {
                 TOneGramsMap * pOneGramMap;
 
                 //The type of key,value pairs to be stored in the M Grams map
-                typedef pair< const TLongId, TProbBackOffEntryPair> TMGramEntry;
+                typedef pair< const TLongId, TProbBackOffEntry> TMGramEntry;
                 //The typedef for the M Grams map allocator
                 typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TLongId, TProbBackOffEntryPair, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
+                typedef unordered_map<TLongId, TProbBackOffEntry, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
                 TMGramAllocator * pMGramAlloc[N - MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N

@@ -76,7 +76,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair & make_1_GramDataRef(const TShortId wordId) {
+                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
                     //Get the word probability and back-off data reference
                     return m_mgram_data[0][wordId];
                 };
@@ -86,7 +86,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair & get_1_GramDataRef(const TShortId wordId) {
+                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
                     //Get the word probability and back-off data reference
                     return m_mgram_data[0][wordId];
                 };
@@ -97,7 +97,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntryPair& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Get the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
 
@@ -121,7 +121,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Get the context id, note we use short ids here!
                     const TShortId nextCtxId = getContextId(wordId, ctxId, N);
                     
@@ -181,7 +181,7 @@ namespace uva {
                 // ...
                 // m_mgram_data[M][#M-Grams - 1] --//--
                 // m_mgram_data[M][#M-Grams] --//--
-                TProbBackOffEntryPair * m_mgram_data[N - 1];
+                TProbBackOffEntry * m_mgram_data[N - 1];
 
                 //M-Gram data for 1 < M <= N. This is a 2D array storing
                 //For each M-Gram level M an array of #words elements of
@@ -233,7 +233,7 @@ namespace uva {
                 }
             };
 
-            typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TMapW2CHybridTrie_N5;
+            typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUMapStorageFactory, CtxToPBUnorderedMapStorage> TMapW2CHybridTrie_N5;
         }
     }
 }

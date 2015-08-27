@@ -310,7 +310,7 @@ static void performTasks(const TAppParams& params) {
         //ToDo: Add the possibility to choose between the Tries from the command line!
 
         //Allocate the word dictionary
-        HashMapWordIndex dictionary(__AHashMapTrie::UM_WORD_INDEX_MEMORY_FACTOR);
+        HashMapWordIndex dictionary(__HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
         //TCtxMultiHashMapTrie_N5 trie(&dictionary);

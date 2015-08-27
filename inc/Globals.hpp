@@ -79,12 +79,12 @@ namespace uva {
             //e.g. sets the collision detection on and off.
             const bool DO_SANITY_CHECKS = true;
 
-            namespace __AHashMapTrie {
+            namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
                 const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
 
-            namespace __ContextMultiHashMapTrie {
+            namespace __CtxMultiHashMapTrie {
                 //The unordered map memory factor for the One-Grams in ContextMultiHashMapTrie
                 const float UM_O_GRAM_MEMORY_FACTOR = 2.6;
                 //The unordered map memory factor for the M-Grams in ContextMultiHashMapTrie
@@ -93,9 +93,27 @@ namespace uva {
                 const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
             }
 
-            namespace __CtxToPBMapStorageFactory {
+            namespace __CtxToPBUMapStorageFactory {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
+            }
+            
+            namespace __W2COrderedArrayTrie {
+                //Stores the procent of the memory that will be allocated per word data 
+                //storage in one Trie level relative to the estimated number of needed data
+                const float INIT_MEM_ALLOC_PRCT = 0.5;
+                //Stores the maximum-initial memory increase for the case of more memory
+                //needed for word data storage in one Trie level relative to the already
+                //allocated amount of data
+                const float MAX_MEM_INC_PRCT = 0.1;
+                
+                enum MemGrowStrategy{ LINEAR = 0, LOG_2 = 1, LOG_10 = 2 };
+                
+                //This constant stores true or false. If the value is true then the log2
+                //based memory increase strategy is used, otherwise it is log10 base.
+                //For log10 the percentage of memory increase drops slower than for log2
+                //with the growth of the #number of already allocated elements
+                const MemGrowStrategy MEM_INC_TYPE = MemGrowStrategy::LOG_10;
             }
         }
 

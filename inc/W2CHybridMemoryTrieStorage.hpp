@@ -84,7 +84,7 @@ namespace uva {
              * This is a factory class that should be used to produce containers of CtxToPBMapStorage.
              */
             template<TModelLevel N>
-            class CtxToPBUnorderedMapStorageFactory {
+            class CtxToPBUMapStorageFactory {
             public:
 
                 /**
@@ -93,7 +93,7 @@ namespace uva {
                  * @param factor the memory multiplication factor, by default
                  * __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR
                  */
-                CtxToPBUnorderedMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
+                CtxToPBUMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBUMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
                 {
                     for (size_t i = 1; i < N; i++) {
                         const GreedyMemoryStorage::size_type size = _counts[i] * factor;
@@ -108,7 +108,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~CtxToPBUnorderedMapStorageFactory() {
+                virtual ~CtxToPBUMapStorageFactory() {
                     for (size_t i = 1; i < N; i++) {
                         delete m_p_alloc[i - 1];
                     }

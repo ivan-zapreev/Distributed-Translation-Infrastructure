@@ -75,11 +75,11 @@ namespace uva {
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
                 const TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
                 TShortId one_gram_arr_size = counts[0] + EXTRA_NUMBER_OF_WORD_IDs;
-                m_1_gram_data = new TProbBackOffEntryPair[one_gram_arr_size];
-                memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntryPair));
+                m_1_gram_data = new TProbBackOffEntry[one_gram_arr_size];
+                memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntry));
 
                 //03) Insert the unknown word data into the allocated array
-                TProbBackOffEntryPair & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
                 pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
                 pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
 
