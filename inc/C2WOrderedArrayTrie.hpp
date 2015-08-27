@@ -23,8 +23,8 @@
  * Created on August 25, 2015, 11:10 AM
  */
 
-#ifndef W2CORDEREDARRAYTRIE_HPP
-#define	W2CORDEREDARRAYTRIE_HPP
+#ifndef C2WORDEREDARRAYTRIE_HPP
+#define	C2WORDEREDARRAYTRIE_HPP
 
 #include <string>       // std::string
 
