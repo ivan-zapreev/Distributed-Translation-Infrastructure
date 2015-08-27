@@ -503,8 +503,9 @@ namespace uva {
                 void reallocateWordData(WORD_ENTRY_TYPE & wordEntry) {
                     size_t new_capacity;
 
-                    LOG_DEBUG3 << "Memory reallocation request: " << ((isIncrease) ? "increase" : "decrease") << END_LOG;
-                    
+                    LOG_DEBUG3 << "Memory reallocation request: "
+                            << ((isIncrease) ? "increase" : "decrease") << END_LOG;
+
                     //Compute the new number of elements
                     if (isIncrease) {
                         //Compute the new capacity
@@ -515,14 +516,19 @@ namespace uva {
                     }
 
                     LOG_DEBUG2 << "The estimated new capacity is " << SSTR(new_capacity)
-                            << ", the old capacity was " << SSTR(wordEntry.capacity) << END_LOG;
+                            << ", the old capacity was " << SSTR(wordEntry.capacity)
+                            << ", used size: " << SSTR(wordEntry.size) << END_LOG;
 
                     //Reallocate memory, potentially we get a new pointer!
                     wordEntry.ptr = (typename WORD_ENTRY_TYPE::TElemType*) realloc(wordEntry.ptr, new_capacity * sizeof (typename WORD_ENTRY_TYPE::TElemType));
-                    
+
                     //Clean the newly allocated memory
-                    memset(wordEntry.ptr + wordEntry.size, 0, (new_capacity - wordEntry.capacity) * sizeof (typename WORD_ENTRY_TYPE::TElemType));
-                    
+                    if (isIncrease) {
+                        const size_t new_num_elem = (new_capacity - wordEntry.capacity);
+                        memset(wordEntry.ptr + wordEntry.size, 0,
+                                new_num_elem * sizeof (typename WORD_ENTRY_TYPE::TElemType));
+                    }
+
                     //Set the new capacity in
                     wordEntry.capacity = new_capacity;
 
