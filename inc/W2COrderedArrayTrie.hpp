@@ -470,6 +470,7 @@ namespace uva {
 
                     //Compute the average number of data elements per word on the given M-gram level
                     const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
+                    /*
                     //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
                     const size_t fact_num_elems = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT), __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
 
@@ -485,7 +486,7 @@ namespace uva {
                                     << fact_num_elems << " data elements for wordId: " << wordId;
                             throw Exception(msg.str());
                         }
-                    }
+                    }*/
                 }
 
                 /**
