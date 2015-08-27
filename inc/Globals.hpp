@@ -107,7 +107,7 @@ namespace uva {
                 //allocated amount of data
                 const float MAX_MEM_INC_PRCT = 0.1;
 
-                //Stores the minimum capacity increase in number of elements
+                //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 const size_t MIN_MEM_INC_NUM = 1;
 
                 //Stores the possible memory increase types
