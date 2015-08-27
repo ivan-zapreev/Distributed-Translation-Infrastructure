@@ -343,18 +343,10 @@ namespace uva {
                  */
                 template<typename WORD_ENTRY_TYPE>
                 typename WORD_ENTRY_TYPE::TElemType & make_M_N_GramEntry(WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId) {
-                    LOG_DEBUG2 << "Making entry for \tM-gram with wordId:\t" << SSTR(wordId) << END_LOG;
+                    LOG_DEBUG2 << "Making entry for M-gram with wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //First get the sub-array reference. 
                     WORD_ENTRY_TYPE & ref = wordsArray[wordId];
-
-                    //If sanity checks are enabled then check for a null pointer!
-                    if (DO_SANITY_CHECKS && (ref.ptr == NULL)) {
-                        stringstream msg;
-                        msg << "The M-gram wordId: " << SSTR(wordId)
-                                << " data array is NULL, capacity: " << ref.capacity << " !";
-                        throw Exception(msg.str());
-                    }
 
                     LOG_DEBUG2 << "Got the wordId: " << SSTR(wordId) << " data entry, capacity = "
                             << SSTR(ref.capacity) << ", size = " << SSTR(ref.size) << END_LOG;
