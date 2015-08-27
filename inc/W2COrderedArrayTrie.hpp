@@ -503,10 +503,12 @@ namespace uva {
                 void reallocateWordData(WORD_ENTRY_TYPE & wordEntry) {
                     size_t new_capacity;
 
+                    LOG_DEBUG3 << "Memory reallocation request: " << ((isIncrease) ? "increase" : "decrease") << END_LOG;
+                    
                     //Compute the new number of elements
                     if (isIncrease) {
                         //Compute the new capacity
-                        new_capacity = m_get_capacity_inc_func(wordEntry.capacity);
+                        new_capacity = computeNewCapacity(wordEntry.capacity);
                     } else {
                         //Decrease the capacity to the current size, remove the unneeded
                         new_capacity = wordEntry.size;
