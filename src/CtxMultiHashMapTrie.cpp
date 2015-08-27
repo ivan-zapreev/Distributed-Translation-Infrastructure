@@ -64,9 +64,7 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                        << " !" << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N>

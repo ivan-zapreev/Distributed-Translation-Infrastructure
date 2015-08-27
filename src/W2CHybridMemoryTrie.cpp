@@ -56,9 +56,7 @@ namespace uva {
                 //Initialize the array of counters
                 memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                        << " !" << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>

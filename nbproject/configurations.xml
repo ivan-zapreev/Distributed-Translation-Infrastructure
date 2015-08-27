@@ -26,6 +26,7 @@
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/W2COrderedArrayTrieMem.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -138,6 +139,8 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
@@ -224,6 +227,8 @@
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -321,6 +326,8 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
@@ -405,6 +412,8 @@
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -492,6 +501,8 @@
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>

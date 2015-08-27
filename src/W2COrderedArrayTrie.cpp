@@ -42,48 +42,17 @@ namespace uva {
             [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
                 return this->getContextId(wordId, ctxId, level); }),
-            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL), m_get_capacity_inc_func(NULL) {
+            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
 
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
 
-                //ToDo: Optimize this and make mapping from enumeration to corresponding string.
-                switch (MEM_INC_TYPE) {
-                    case MemIncTypesEnum::CONSTANT:
-                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::CONSTANT" << END_LOG;
-                        m_get_capacity_inc_func = [] (const float fcap) -> float {
-                            //Return zero as then the minimum constant increase will be used!
-                            return 0;
-                        };
-                        break;
-                    case MemIncTypesEnum::LINEAR:
-                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LINEAR" << END_LOG;
-                        m_get_capacity_inc_func = [] (const float fcap) -> float {
-                            return MAX_MEM_INC_PRCT * fcap;
-                        };
-                        break;
-                    case MemIncTypesEnum::LOG_2:
-                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LOG_2" << END_LOG;
-                        m_get_capacity_inc_func = [] (const float fcap) -> float {
-                            return MAX_MEM_INC_PRCT * fcap / log(fcap);
-                        };
-                        break;
-                    case MemIncTypesEnum::LOG_10:
-                        LOG_INFO3 << "The capacity increase strategy in " << __FILE__ << " is MemIncTypesEnum::LOG_10" << END_LOG;
-                        m_get_capacity_inc_func = [] (const float fcap) -> float {
-                            //Get the float capacity value, make it minimum of one element to avoid problems
-                            return MAX_MEM_INC_PRCT * fcap / log10(fcap);
-                        };
-                        break;
-                    default:
-                        stringstream msg;
-                        msg << "Unrecognized memory allocation strategy: " << __W2COrderedArrayTrie::MEM_INC_TYPE;
-                        throw Exception(msg.str());
-                }
+                //Get the memory increase strategy
+                m_p_mem_strat = getMemIncreaseStrategy(MEM_INC_TYPE, MIN_MEM_INC_NUM, MAX_MEM_INC_PRCT);
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                        << " !" << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
+                LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()
+                        << "' memory allocation strategy." << END_LOG;
             }
 
             template<TModelLevel N>
@@ -121,6 +90,7 @@ namespace uva {
                     }
                     deAllocateWordsData(m_N_gram_word_2_data);
                 }
+                delete m_p_mem_strat;
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

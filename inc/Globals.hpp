@@ -47,13 +47,14 @@ namespace uva {
 
         namespace logging {
 
-            //This enumeration stores all the available logging levels.
-
+            /**
+             * This enumeration stores all the available logging levels.
+             */
             enum DebugLevelsEnum {
                 USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
                 INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
                 DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1,
-                DEBUG4 = DEBUG3 + 1
+                DEBUG4 = DEBUG3 + 1, size = DEBUG4 + 1
             };
 
             //Defines the maximum logging level
@@ -105,21 +106,24 @@ namespace uva {
                 //Stores the maximum-initial memory increase for the case of more memory
                 //needed for word data storage in one Trie level relative to the already
                 //allocated amount of data
-                const float MAX_MEM_INC_PRCT = 0.1;
+                const float MAX_MEM_INC_PRCT = 0.3;
 
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 const size_t MIN_MEM_INC_NUM = 1;
 
-                //Stores the possible memory increase types
+                /**
+                 * Stores the possible memory increase types
+                 */
                 enum MemIncTypesEnum {
-                    CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1, LOG_10 = LOG_2 + 1
+                    CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
+                    LOG_10 = LOG_2 + 1, size = LOG_10 + 1
                 };
 
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::CONSTANT;
+                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
             }
         }
 

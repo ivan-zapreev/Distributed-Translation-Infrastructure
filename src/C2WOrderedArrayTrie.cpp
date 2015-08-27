@@ -50,9 +50,7 @@ namespace uva {
                 memset(m_M_N_gram_num_ctx_ids, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
                 memset(m_M_N_gram_next_ctx_id, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
-                        << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                        << " !" << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N>

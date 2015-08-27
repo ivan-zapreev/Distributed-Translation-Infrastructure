@@ -37,10 +37,12 @@
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
 #include "ArrayUtils.hpp"
+#include "W2COrderedArrayTrieMem.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::utils::array;
+using namespace uva::smt::tries::__W2COrderedArrayTrie;
 
 namespace uva {
     namespace smt {
@@ -74,13 +76,6 @@ namespace uva {
                 virtual ~W2COrderedArrayTrie();
 
             protected:
-
-                /**
-                 * This is a function type for the function that should compute the capacity increase
-                 * @param the current capacity
-                 * @return the capacity increase
-                 */
-                typedef std::function<float (const float) > TCapacityIncFunct;
 
                 /**
                  * This structure is to store the word mapping to the data for
@@ -331,8 +326,8 @@ namespace uva {
                 //This is a one dimensional array
                 T_N_GramWordEntry * m_N_gram_word_2_data;
 
-                //Stores the pointer to the capacity computing function
-                TCapacityIncFunct m_get_capacity_inc_func;
+                //Stores the memory increase strategy object
+                MemIncreaseStrategy * m_p_mem_strat;
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.
@@ -489,19 +484,6 @@ namespace uva {
                 }
 
                 /**
-                 * Compute the new capacity given the provided one, this function used
-                 * the capacity increase function stored in m_get_capacity_inc_func.
-                 * @param capacity the current capacity
-                 * @return the proposed capacity increase, will be at least __W2COrderedArrayTrie::MIN_MEM_INC_NUM
-                 */
-                inline const size_t computeNewCapacity(const size_t capacity) {
-                    //Get the float capacity value, make it minimum of one element to avoid problems
-                    const float fcap = (capacity > 0) ? (float) capacity : 1.0;
-                    const size_t cap_inc = (size_t) m_get_capacity_inc_func(fcap);
-                    return capacity + max(cap_inc, __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
-                }
-
-                /**
                  * Allows to reallocate the word entry data increasing or decreasing its capacity.
                  * @param WORD_ENTRY_TYPE the entry type
                  * @param isIncrease if true then the memory will be attempted to increase, otherwise decrease
@@ -517,7 +499,7 @@ namespace uva {
                     //Compute the new number of elements
                     if (isIncrease) {
                         //Compute the new capacity
-                        new_capacity = computeNewCapacity(wordEntry.capacity);
+                        new_capacity = m_p_mem_strat->computeNewCapacity(wordEntry.capacity);
                         LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
                     } else {
                         //Decrease the capacity to the current size, remove the unneeded
