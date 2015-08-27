@@ -108,7 +108,7 @@ namespace uva {
                 const float MAX_MEM_INC_PRCT = 0.1;
                 
                 //Stores the minimum capacity increase in number of elements
-                const size_t MIN_MEM_INC_NUM = 10;
+                const size_t MIN_MEM_INC_NUM = 1;
                 
                 //Stores the possible memory increase types
                 enum MemIncTypesEnum{ LINEAR = 0, LOG_2 = 1, LOG_10 = 2 };
@@ -117,7 +117,7 @@ namespace uva {
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_10;
+                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
             }
         }
 
