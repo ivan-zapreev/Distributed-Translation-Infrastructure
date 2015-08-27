@@ -23,6 +23,7 @@
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
+      <itemPath>inc/TrieTypeFactory.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
@@ -133,6 +134,8 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
@@ -221,6 +224,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -320,6 +325,8 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
@@ -406,6 +413,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -495,6 +504,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

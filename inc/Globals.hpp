@@ -39,7 +39,7 @@ namespace uva {
         //This is a delimiter used in the test files
         const char TOKEN_DELIMITER_CHAR = ' ';
         //The expected number of program arguments
-        const uint32_t EXPECTED_NUMBER_OF_ARGUMENTS = 3;
+        const uint32_t EXPECTED_NUMBER_OF_ARGUMENTS = 4;
         //The expected number of user arguments
         const uint32_t EXPECTED_USER_NUMBER_OF_ARGUMENTS = (EXPECTED_NUMBER_OF_ARGUMENTS - 1);
         //The number of bytes in one Mb

@@ -41,10 +41,7 @@
 #include "AFileReader.hpp"
 #include "MemoryMappedFileReader.hpp"
 #include "FileStreamReader.hpp"
-#include "HashMapWordIndex.hpp"
-#include "W2CHybridMemoryTrie.hpp"
-#include "C2WOrderedArrayTrie.hpp"
-#include "W2COrderedArrayTrie.hpp"
+#include "TrieTypeFactory.hpp"
 
 using namespace std;
 using namespace uva::smt;
@@ -65,6 +62,8 @@ typedef struct {
     string modelFileName;
     //The test file name
     string testFileName;
+    //The Trie type name
+    string trieTypeName;
 } TAppParams;
 
 /**
@@ -96,7 +95,7 @@ static void printUsage(const string name) {
     const string shortName = name.substr(lastSlashBeforeFileName + 1);
 
     LOG_USAGE << "Running: " << END_LOG;
-    LOG_USAGE << "  " << shortName.c_str() << " <model_file> <test_file> [debug-level]" << END_LOG;
+    LOG_USAGE << "  " << shortName.c_str() << " <model_file> <test_file> <trie_type> [debug-level]" << END_LOG;
     LOG_USAGE << "      <model_file> - a text file containing the back-off language model." << END_LOG;
     LOG_USAGE << "                     This file is supposed to be in ARPA format, see: " << END_LOG;
     LOG_USAGE << "                          http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html" << END_LOG;
@@ -105,6 +104,7 @@ static void printUsage(const string name) {
     LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
     LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
     LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
+    LOG_USAGE << "      <trie_type>  - the trie type, one of " << TrieTypeFactory::getTrieTypesStr() << END_LOG;
     LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
@@ -133,12 +133,13 @@ static void extractArguments(const uint argc, char const * const * const argv, T
     } else {
         params.modelFileName = argv[1];
         params.testFileName = argv[2];
+        params.trieTypeName =  argv[3];
         //Set the default reporting level information for the logger
         string errorLevelStr = RESULT_PARAM_VALUE;
 
         //The third argument should be a debug level, get it and try to set.
         if (argc > EXPECTED_NUMBER_OF_ARGUMENTS) {
-            errorLevelStr = argv[3];
+            errorLevelStr = argv[4];
         }
         Logger::setReportingLevel(errorLevelStr);
     }
@@ -313,14 +314,11 @@ static void performTasks(const TAppParams& params) {
         HashMapWordIndex dictionary(__HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
-        //TCtxMultiHashMapTrie_N5 trie(&dictionary);
-        //TMapW2CHybridTrie_N5 trie(&dictionary);
-        //TC2WOrderedArrayTrie_N5 trie(&dictionary);
-        TW2COrderedArrayTrie_N5 trie(&dictionary);
+        ATrie<MAX_NGRAM_LEVEL> * pTrie = TrieTypeFactory::getTrie<MAX_NGRAM_LEVEL>(params.trieTypeName, dictionary);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();
-        fillInTrie(modelFile, trie);
+        fillInTrie(modelFile, *pTrie);
         LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
         endTime = StatisticsMonitor::getCPUTime();
         LOG_INFO1 << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
@@ -344,9 +342,13 @@ static void performTasks(const TAppParams& params) {
         reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
         LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-        const double queryCPUTimes = readAndExecuteQueries(trie, testFile);
+        const double queryCPUTimes = readAndExecuteQueries(*pTrie, testFile);
         LOG_INFO1 << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
         testFile.close();
+        
+        //Deallocate the trie
+        LOG_USAGE << "Cleaning up memory ..." << END_LOG;
+        delete pTrie;
     } else {
         stringstream msg;
         msg << "One of the input files does not exist: " +
