@@ -348,8 +348,8 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
-                    LOG_DEBUG2 << "Got the wordId: " << SSTR(wordId) " data entry, capacity = "
-                            << ref.capacity << ", size = " << ref.size << END_LOG;
+                    LOG_DEBUG2 << "Got the wordId: " << SSTR(wordId) << " data entry, capacity = "
+                            << SSTR(ref.capacity) << ", size = " << SSTR(ref.size) << END_LOG;
 
                     //Check if we need to increase the capacity!
                     if (ref.size == ref.capacity) {
