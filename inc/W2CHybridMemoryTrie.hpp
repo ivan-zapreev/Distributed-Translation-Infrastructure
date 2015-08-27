@@ -101,7 +101,7 @@ namespace uva {
                     //Get the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
 
-                    //If the mappins is not there yet for the contexts then create it
+                    //If the mappings is not there yet for the contexts then create it
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(level);
                         LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(level) << END_LOG;
@@ -122,18 +122,11 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual const TProbBackOffEntryPair& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
-                    //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
-
-                    //If the mapping is present the search further, otherwise an exception
-                    if (ctx_mapping != NULL) {
-                        //Get the key context id end then obtain the data object reference
-                        const TShortId & keyCtxId = ctx_mapping->at(ctxId);
-                        return m_mgram_data[level - 1][keyCtxId];
-                    } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(level) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
-                        throw out_of_range("not found");
-                    }
+                    //Get the context id, note we use short ids here!
+                    const TShortId nextCtxId = getContextId(wordId, ctxId, N);
+                    
+                    //Return the data by the context
+                    return m_mgram_data[level - 1][nextCtxId];
                 };
 
                 /**
@@ -158,11 +151,12 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    //Try to find the word mapping first
+                   //Try to find the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
 
                     //If the mapping is present the search further, otherwise an exception
                     if (ctx_mapping != NULL) {
+                        //NOTE: we can not re-use the getContextId method here as we need a reference to data!
                         return (TLogProbBackOff &) ctx_mapping->at(ctxId);
                     } else {
                         LOG_DEBUG1 << "There are no elements @ level: " << SSTR(N) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
@@ -227,19 +221,19 @@ namespace uva {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
                     StorageContainer* ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
-                    
+
                     //Check that the context data is available
-                    if ( ctx_mapping != NULL) {
+                    if (ctx_mapping != NULL) {
                         return ctx_mapping->at(ctxId);
                     } else {
                         LOG_DEBUG1 << "Can not compute context for level: " << level << ", wordId: "
-                            << wordId << ", previous ctxId: " << ctxId << END_LOG;
+                                << wordId << ", previous ctxId: " << ctxId << END_LOG;
                         throw out_of_range("not found");
                     }
                 }
             };
 
-            typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TFiveMapW2CHybridMemoryTrie;
+            typedef W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUnorderedMapStorageFactory, CtxToPBUnorderedMapStorage> TMapW2CHybridTrie_N5;
         }
     }
 }

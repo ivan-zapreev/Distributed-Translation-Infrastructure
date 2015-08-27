@@ -167,22 +167,22 @@ namespace uva {
 
                     //Check that the array is continuous in indexes, so that we add
                     //context after context and not switching between different contexts!
-                    if (DO_SANITY_CHECKS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_MN_gram_next_ctx_id[mgram_idx])) {
+                    if (DO_SANITY_CHECKS && (ref.endIdx != UNDEFINED_ARR_IDX) && (ref.endIdx + 1 != m_M_N_gram_next_ctx_id[mgram_idx])) {
                         stringstream msg;
                         msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
                                 << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
-                                << ", next ref.endIdx = " << SSTR(m_MN_gram_next_ctx_id[mgram_idx] + 1) << "!";
+                                << ", next ref.endIdx = " << SSTR(m_M_N_gram_next_ctx_id[mgram_idx] + 1) << "!";
                         throw Exception(msg.str());
                     }
 
                     //Get the new index and increment - this will be the new end index
-                    ref.endIdx = m_MN_gram_next_ctx_id[mgram_idx]++;
+                    ref.endIdx = m_M_N_gram_next_ctx_id[mgram_idx]++;
 
                     //Check if we exceeded the maximum allowed number of M-grams
-                    if (DO_SANITY_CHECKS && (ref.endIdx >= m_MN_gram_num_ctx_ids[mgram_idx])) {
+                    if (DO_SANITY_CHECKS && (ref.endIdx >= m_M_N_gram_num_ctx_ids[mgram_idx])) {
                         stringstream msg;
                         msg << "The maximum allowed number of " << SSTR(level) << "-grams: "
-                                << SSTR(m_MN_gram_num_ctx_ids[mgram_idx]) << " is exceeded )!";
+                                << SSTR(m_M_N_gram_num_ctx_ids[mgram_idx]) << " is exceeded )!";
                         throw Exception(msg.str());
                     }
 
@@ -212,26 +212,11 @@ namespace uva {
                     LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
-                    //First get the sub-array reference. 
-                    const TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
-
-                    //Check if there are elements for this context
-                    if (ref.beginIdx != UNDEFINED_ARR_IDX) {
-                        TShortId idx;
-                        if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, idx)) {
-                            return m_M_gram_data[mgram_idx][idx].data;
-                        } else {
-                            LOG_DEBUG1 << "Unable to find " << SSTR(level) << "-gram data for ctxId: " << SSTR(ctxId)
-                                    << ", wordId: " << SSTR(wordId) << ", wordId range: ["
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId)
-                                    << ", " << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
-                            throw out_of_range("not found");
-                        }
-                    } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(level)
-                                << " for ctxId: " << SSTR(ctxId) << "!" << END_LOG;
-                        throw out_of_range("not found");
-                    }
+                    //Get the context id, note we use short ids here!
+                    TShortId nextCtxId = (TShortId) getContextId(wordId, ctxId, level);
+                    
+                    //Return the data by the context
+                    return m_M_gram_data[mgram_idx][nextCtxId].data;
                 };
 
                 /**
@@ -242,16 +227,16 @@ namespace uva {
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     //Get the new n-gram index
-                    const TShortId n_gram_idx = m_MN_gram_next_ctx_id[N_GRAM_IDX]++;
+                    const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[N_GRAM_IDX]++;
 
                     LOG_DEBUG2 << "Adding\t" << SSTR(N) << "-gram with ctxId:\t" << SSTR(ctxId)
                             << ", wordId:\t" << SSTR(wordId) << " @ index:\t" << SSTR(n_gram_idx) << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
-                    if (DO_SANITY_CHECKS && (n_gram_idx >= m_MN_gram_num_ctx_ids[N_GRAM_IDX])) {
+                    if (DO_SANITY_CHECKS && (n_gram_idx >= m_M_N_gram_num_ctx_ids[N_GRAM_IDX])) {
                         stringstream msg;
                         msg << "The maximum allowed number of " << SSTR(N) << "-grams: "
-                                << SSTR(m_MN_gram_num_ctx_ids[N_GRAM_IDX]) << " is exceeded )!";
+                                << SSTR(m_M_N_gram_num_ctx_ids[N_GRAM_IDX]) << " is exceeded )!";
                         throw Exception(msg.str());
                     }
 
@@ -280,7 +265,7 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx;
-                    if (binarySearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_MN_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
+                    if (binarySearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
                         //return the reference to the probability
                         return m_N_gram_data[idx].prob;
                     } else {
@@ -307,7 +292,7 @@ namespace uva {
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
                     //model when compared to the str::sort!
-                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_MN_gram_num_ctx_ids[N_GRAM_IDX]);
+                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_M_N_gram_num_ctx_ids[N_GRAM_IDX]);
                 };
 
             private:
@@ -343,9 +328,9 @@ namespace uva {
                 TCtxIdProbEntryPair * m_N_gram_data;
 
                 //Stores the maximum number of context id  per M-gram level: 1 < M <= N
-                TShortId m_MN_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_MN_gram_next_ctx_id[NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_N_gram_next_ctx_id[NUM_M_N_GRAM_LEVELS];
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -375,10 +360,10 @@ namespace uva {
 
                     //Check that there is data for the given context available
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
-                        TShortId result = UNDEFINED_ARR_IDX;
+                        TShortId nextCtxId = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, result)) {
-                            return result;
+                        if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                            return nextCtxId;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for level: "
                                     << SSTR(level) << ", wordId: " << SSTR(wordId)
@@ -396,7 +381,7 @@ namespace uva {
                 }
             };
 
-            typedef C2WOrderedArrayTrie<MAX_NGRAM_LEVEL> TFiveC2WOrderedArrayTrie;
+            typedef C2WOrderedArrayTrie<MAX_NGRAM_LEVEL> TC2WOrderedArrayTrie_N5;
         }
     }
 }

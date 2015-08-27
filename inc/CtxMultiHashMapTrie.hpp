@@ -311,7 +311,7 @@ namespace uva {
 
             };
 
-            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TFiveCtxMultiHashMapTrie;
+            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TCtxMultiHashMapTrie_N5;
         }
     }
 }

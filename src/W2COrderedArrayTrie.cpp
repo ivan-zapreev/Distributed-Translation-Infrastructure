@@ -40,11 +40,15 @@ namespace uva {
             [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
 
                 return this->getContextId(wordId, ctxId, level); }),
-            m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+
+                //Memset the M/N grams reference and data arrays
+                memset(m_M_N_gram_word_2_data, 0, NUM_M_N_GRAM_LEVELS * sizeof (TSubArrReference *));
+                memset(m_M_gram_data, 0, NUM_M_GRAM_LEVELS * sizeof (TCtxIdProbBackOffEntryPair *));
 
                 //Initialize the array of counters
-                memset(m_MN_gram_num_ctx_ids, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
-                memset(m_MN_gram_next_ctx_id, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_num_ctx_ids, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_next_ctx_id, 0, NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model. Collision "
                         << "detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
@@ -57,22 +61,18 @@ namespace uva {
                 //Also initialize the M-gram index counters, for issuing context indexes
                 for (TModelLevel i = 0; i < NUM_M_N_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
-                    m_MN_gram_next_ctx_id[i] = FIRST_VALID_CTX_ID;
+                    m_M_N_gram_next_ctx_id[i] = FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
-                    m_MN_gram_num_ctx_ids[i] = counts[i + 1]+1;
+                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + 1;
                 }
 
                 //01) Pre-allocate the word index
                 ATrie<N>::getWordIndex()->reserve(counts[0]);
 
                 //02) Pre-allocate the 1-Gram data
-                //The size of this array is made two elements larger than the number
-                //of 1-Grams is since we want to account for the word indexes that start
-                //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                const TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
-                TShortId one_gram_arr_size = counts[0] + EXTRA_NUMBER_OF_WORD_IDs;
-                m_1_gram_data = new TProbBackOffEntryPair[one_gram_arr_size];
-                memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntryPair));
+                m_num_word_ids = counts[0] + EXTRA_NUMBER_OF_WORD_IDs;
+                m_1_gram_data = new TProbBackOffEntryPair[m_num_word_ids];
+                memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntryPair));
 
                 //03) Insert the unknown word data into the allocated array
                 TProbBackOffEntryPair & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
@@ -84,29 +84,37 @@ namespace uva {
                 //First allocate the contexts to data mappings for the 2-grams (stored under index 0)
                 //The number of contexts is the number of words in previous level 1 i.e. counts[0]
                 //Yet we know that the word index begins with 2, due to UNDEFINED and UNKNOWN word ids
-                //Therefore for the 2-gram level contexts array we add two more elements
-                m_MN_gram_word_2_data[0] = new TSubArrReference[one_gram_arr_size];
-                memset(m_MN_gram_word_2_data[0], 0, one_gram_arr_size * sizeof (TSubArrReference));
+                //Therefore for the 2-gram level contexts array we add two more elements, just to simplify computations
+                m_M_N_gram_word_2_data[0] = new TSubArrReference[m_num_word_ids];
+                memset(m_M_N_gram_word_2_data[0], 0, m_num_word_ids * sizeof (TSubArrReference));
 
-                //Now also allocate the data for the 2-Grams, the number of 2-grams is m_MN_gram_size[0] 
-                m_M_gram_data[0] = new TCtxIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[0]];
-                memset(m_M_gram_data[0], 0, m_MN_gram_num_ctx_ids[0] * sizeof (TCtxIdProbBackOffEntryPair));
+                //Now also allocate the data for the 2-Grams, the number of 2-grams is m_M_N_gram_num_ctx_ids[0] 
+                m_M_gram_data[0] = new TCtxIdProbBackOffEntryPair[m_M_N_gram_num_ctx_ids[0]];
+                memset(m_M_gram_data[0], 0, m_M_N_gram_num_ctx_ids[0] * sizeof (TCtxIdProbBackOffEntryPair));
 
-                //Now the remaining elements can be added in a loop
+                //Now the remaining elements can be added in a loop, iterate until NUM_M_GRAM_LEVELS because
+                //for the last level - N-Gram the data is stored not in m_M_gram_data but in m_N_gram_data
                 for (TModelLevel i = 1; i < NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
-                    //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
+                    //level M = i + 2. The m_M_N_gram_num_ctx_ids[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
-                    m_MN_gram_word_2_data[i] = new TSubArrReference[m_MN_gram_num_ctx_ids[i-1]];
-                    memset(m_MN_gram_word_2_data[i], 0, m_MN_gram_num_ctx_ids[i-1] * sizeof (TSubArrReference));
+                    m_M_N_gram_word_2_data[i] = new TSubArrReference[m_M_N_gram_num_ctx_ids[i - 1]];
+                    memset(m_M_N_gram_word_2_data[i], 0, m_M_N_gram_num_ctx_ids[i - 1] * sizeof (TSubArrReference));
                     //The m_MN_gram_size[i] stores the number of elements
                     //on the current level - the number of M-Grams.
-                    m_M_gram_data[i] = new TCtxIdProbBackOffEntryPair[m_MN_gram_num_ctx_ids[i]];
-                    memset(m_M_gram_data[i], 0, m_MN_gram_num_ctx_ids[i] * sizeof (TCtxIdProbBackOffEntryPair));
+                    m_M_gram_data[i] = new TCtxIdProbBackOffEntryPair[m_M_N_gram_num_ctx_ids[i]];
+                    memset(m_M_gram_data[i], 0, m_M_N_gram_num_ctx_ids[i] * sizeof (TCtxIdProbBackOffEntryPair));
                 }
 
-                //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
-                //There is no need to add extra elements here as the context index is not relevant.
+                //05) Allocate the data for the N-Grams 
+                
+                //First allocate the N-Gram sub array mappings data in m_M_N_gram_word_2_data
+                const TShortId n_gram_id = N - MGRAM_IDX_OFFSET;
+                m_M_N_gram_word_2_data[n_gram_id] = new TSubArrReference[m_M_N_gram_num_ctx_ids[n_gram_id - 1]];
+                memset(m_M_N_gram_word_2_data[n_gram_id], 0, m_M_N_gram_num_ctx_ids[n_gram_id - 1] * sizeof (TSubArrReference));
+
+                //The number of elements is stored in counts[N - 1]. There is no need
+                //to add extra elements here as the context index is not relevant.
                 m_N_gram_data = new TCtxIdProbEntryPair[counts[N - 1]];
                 memset(m_N_gram_data, 0, counts[N - 1] * sizeof (TCtxIdProbEntryPair));
             }
@@ -117,9 +125,10 @@ namespace uva {
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                     for (TModelLevel i = 0; i < NUM_M_GRAM_LEVELS; i++) {
-                        delete[] m_MN_gram_word_2_data[i];
+                        delete[] m_M_N_gram_word_2_data[i];
                         delete[] m_M_gram_data[i];
                     }
+                    delete[] m_M_N_gram_word_2_data[N - MGRAM_IDX_OFFSET];
                     delete[] m_N_gram_data;
                 }
             }
