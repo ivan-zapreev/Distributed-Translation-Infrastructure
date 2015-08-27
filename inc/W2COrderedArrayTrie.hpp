@@ -224,9 +224,10 @@ namespace uva {
                 }
 
                 /**
-                 * The purpose of this local function is two fold.
-                 * First we compute the context index offset values.
-                 * Second we re-order the context data arrays per word.
+                 * The purpose of this local function is three fold:
+                 * 1. First we compute the context index offset values.
+                 * 2. Second we re-order the context data arrays per word.
+                 * 3. Free the unneeded memory allocated earlier.
                  * @param WORD_ENTRY_TYPE word array element type
                  * @param wordsArray the word array to work with
                  */
@@ -237,22 +238,25 @@ namespace uva {
                     //not matter much, but it is better to reserve 0 for
                     //an undefined context value
                     TShortId cio = FIRST_VALID_CTX_ID;
-                    
+
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
                     for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
                         //First get the sub-array reference. 
                         WORD_ENTRY_TYPE & ref = wordsArray[wordId];
-                        
+
                         //Assign the context index offset
                         ref.cio = cio;
                         //Compute the next context index offset, for the next word
                         cio += ref.size;
-                        
+
                         //Check that the data for the given word is available
                         if ((ref.ptr != NULL) && (ref.size > 0)) {
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
                             sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.ptr + ref.size);
+
+                            //Deallocate the unneeded memory, the false flag indicates that we need reduction.
+                            reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
                         }
                     }
                 }
@@ -417,7 +421,7 @@ namespace uva {
 
                     //Get the local entry index
                     const TShortId localIdx = get_M_N_GramLocalEntryIdx(ref, ctxId);
-                    
+
                     LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
                             << ", with ptr: " << SSTR(ref.ptr) << ", size: "
                             << SSTR(ref.size) << END_LOG;
