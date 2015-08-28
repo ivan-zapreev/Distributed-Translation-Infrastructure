@@ -263,12 +263,13 @@ namespace uva {
                         cio += ref.size;
 
                         //Check that the data for the given word is available
-                        if ((ref.ptr != NULL) && (ref.size > 0)) {
+                        if ((ref.ptr != NULL) && (ref.size > 1)) {
                             //Deallocate the unneeded memory, the false flag indicates that we need reduction.
                             reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
 
                             LOG_DEBUG2 << "Sorting the word " << SSTR(wordId) << " data, ptr: "
-                                    << SSTR(ref.ptr) << ", size: " << SSTR(ref.size) << END_LOG;
+                                    << SSTR(ref.ptr) << ", size: " << SSTR(ref.size)
+                                    << ", capacity: " << SSTR(ref.capacity) << END_LOG;
 
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
