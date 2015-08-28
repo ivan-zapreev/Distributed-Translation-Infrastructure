@@ -520,7 +520,7 @@ namespace uva {
                     //Clean the newly allocated memory
                     if (isIncrease) {
                         const size_t new_num_elem = (new_capacity - wordEntry.capacity);
-                        memset(wordEntry.ptr + wordEntry.size, 0,
+                        memset(wordEntry.ptr + wordEntry.capacity, 0,
                                 new_num_elem * sizeof (typename WORD_ENTRY_TYPE::TElemType));
                     }
 
@@ -529,7 +529,6 @@ namespace uva {
 
                     //Do the null pointer check if sanity
                     if (DO_SANITY_CHECKS && isIncrease && (new_capacity > 0) && (wordEntry.ptr == NULL)) {
-
                         stringstream msg;
                         msg << "Ran out of memory when trying to allocate "
                                 << new_capacity << " data elements for a wordId";
