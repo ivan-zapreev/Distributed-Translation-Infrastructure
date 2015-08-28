@@ -233,7 +233,7 @@ namespace uva {
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
-                    return (level > MIN_NGRAM_LEVEL) || ATrie<N>::isPost_Grams(level);
+                    return (level > ONE_GRAM_LEVEL) || ATrie<N>::isPost_Grams(level);
                 }
 
                 /**
@@ -405,6 +405,16 @@ namespace uva {
                     //Get the sub-array reference. 
                     const WORD_ENTRY_TYPE & ref = wordsArray[wordId];
 
+                    //Check that if this is the 2-Gram case and the previous context
+                    //id is 0 then it is the unknown word id, at least this is how it
+                    //is now in ATrie implementation, so we need to do a warning!
+                    if (DO_SANITY_CHECKS && ( level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID )) {
+                        LOG_WARNING << "Perhaps we are being paranoid but there "
+                                << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
+                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                    }
+
                     //Get the local entry index
                     const TShortId localIdx = get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctxId);
 
@@ -440,6 +450,16 @@ namespace uva {
                     //First get the sub-array reference. 
                     const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
 
+                    //Check that if this is the 2-Gram case and the previous context
+                    //id is 0 then it is the unknown word id, at least this is how it
+                    //is now in ATrie implementation, so we need to do a warning!
+                    if (DO_SANITY_CHECKS && ( level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID )) {
+                        LOG_WARNING << "Perhaps we are being paranoid but there "
+                                << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
+                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                    }
+                    
                     //Get the local entry index
                     const TShortId localIdx = get_M_N_GramLocalEntryIdx(ref, ctxId);
 

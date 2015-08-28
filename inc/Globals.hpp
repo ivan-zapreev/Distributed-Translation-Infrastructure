@@ -71,8 +71,10 @@ namespace uva {
 
             //Define the undefined N-gram level
             const TModelLevel UNDEF_NGRAM_LEVEL = 0u;
-            //Define the minimum possible N-gram level
-            const TModelLevel MIN_NGRAM_LEVEL = 1u;
+            //Define the 1-gram level value
+            const TModelLevel ONE_GRAM_LEVEL = 1u;
+            //Define the 2-gram level value
+            const TModelLevel TWO_GRAM_LEVEL = ONE_GRAM_LEVEL + 1;
             //The considered maximum length of the N-gram
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
 

@@ -222,7 +222,7 @@ namespace uva {
                  */
                 void post_Grams(const TModelLevel level) {
                     switch (level) {
-                        case MIN_NGRAM_LEVEL:
+                        case ONE_GRAM_LEVEL:
                             this->post_1_Grams();
                             break;
                         case N:
@@ -396,7 +396,7 @@ namespace uva {
                     TModelLevel idx = N - ngram.level;
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
                     for (TModelLevel i = 0; i < ngram.level; i++) {
-                        wordHashes[idx] = m_p_word_index->getId(ngram.tokens[i].str());
+                        wordHashes[idx] = m_p_word_index->getId(ngram.tokens[i].str(), false);
                         LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }

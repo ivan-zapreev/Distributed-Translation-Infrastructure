@@ -360,7 +360,10 @@ namespace uva {
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
                             << SSTR(ctxId) << END_LOG;
 
-                    //First get the sub-array reference. 
+                    //First get the sub-array reference. Note that, even if it is the 2-Gram
+                    //case and the previous word is unknown (ctxId == 0) we still can use
+                    //the ctxId to get the data entry. The reason is that we allocated memory
+                    //for it but being for an unknown word context it should have no data!
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
 
                     LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)

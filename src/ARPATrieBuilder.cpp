@@ -104,7 +104,7 @@ namespace uva {
                     //ARPA headers and we stumbled upon something meaningful,
                     //that actually must be the begin of the data section
                     if (m_line != END_OF_ARPA_FILE) {
-                        TModelLevel level = MIN_NGRAM_LEVEL;
+                        TModelLevel level = ONE_GRAM_LEVEL;
                         while (true) {
                             if (m_file.getLine(m_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << m_line << "'" << END_LOG;

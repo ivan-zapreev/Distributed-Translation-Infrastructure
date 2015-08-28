@@ -99,7 +99,7 @@ namespace uva {
                         stringstream msg;
                         msg << _memIncTypesEnumStr[m_stype] << ", memory increments: Min = "
                                 << SSTR(m_min_mem_inc) << " elements, Factor = "
-                                << SSTR(m_mem_inc_factor) << ".";
+                                << SSTR(m_mem_inc_factor);
                         return msg.str();
                     }
 

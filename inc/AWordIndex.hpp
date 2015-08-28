@@ -78,10 +78,14 @@ namespace uva {
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
+                     * @param isThrow if true then throws an exception if the word is not known,
+                     * if false then in the same situation will return UNKNOWN_WORD_HASH
                      * @param token the word to hash
                      * @return the resulting hash
+                     * @throw out_of_range exception if the given word is not known if isThrow == true,
+                     * otherwise return UNKNOWN_WORD_HASH
                      */
-                    virtual TShortId getId(const string & token) const = 0;
+                    virtual TShortId getId(const string & token, const bool isThrow = true) const = 0;
 
                     /**
                      * This function creates/gets an id for the given word.

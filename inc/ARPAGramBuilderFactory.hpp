@@ -77,22 +77,22 @@ namespace uva {
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
                         //Then check that the level values are correct!
-                        if (level < MIN_NGRAM_LEVEL || level > N) {
+                        if (level < ONE_GRAM_LEVEL || level > N) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
-                                    << "', but it must be within [" << MIN_NGRAM_LEVEL << ", " << N << "]!";
+                                    << "', but it must be within [" << ONE_GRAM_LEVEL << ", " << N << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
 
-                            if (level == MIN_NGRAM_LEVEL) {
+                            if (level == ONE_GRAM_LEVEL) {
                                 //If the level is at minimum it means we are filling in the dictionary
-                                LOG_DEBUG1 << "Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder..." << END_LOG;
+                                LOG_DEBUG1 << "Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
                                         [&] (const SRawNGram & gram) {
                                             trie.add_1_Gram(gram); });
-                                LOG_DEBUG2 << "DONE Instantiating the " << MIN_NGRAM_LEVEL << "-Gram builder!" << END_LOG;
+                                LOG_DEBUG2 << "DONE Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
                                 if (level == N) {
                                     //If the minimum is at maximum it means we are filling in the top N-gram level
