@@ -61,7 +61,7 @@ namespace uva {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
                     m_M_N_gram_next_ctx_id[i] = FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
-                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + 1;
+                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + FIRST_VALID_CTX_ID;
                 }
 
                 //01) Pre-allocate the word index
@@ -109,8 +109,8 @@ namespace uva {
 
                 //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
                 //There is no need to add extra elements here as the context index is not relevant.
-                m_N_gram_data = new TCtxIdProbEntryPair[counts[N - 1]];
-                memset(m_N_gram_data, 0, counts[N - 1] * sizeof (TCtxIdProbEntryPair));
+                m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[N_GRAM_IDX]];
+                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[N_GRAM_IDX] * sizeof (TCtxIdProbEntryPair));
             }
 
             template<TModelLevel N>
