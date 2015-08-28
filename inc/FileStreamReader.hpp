@@ -98,7 +98,7 @@ namespace uva {
 
                         //The line was successfully read, return false only
                         //if the pointer is null, then the file is read
-                        return m_curr_line != NULL;
+                        return (m_curr_line != NULL);
                     }
                 }
 
