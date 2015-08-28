@@ -1,0 +1,21 @@
+Time: system 98%, cpu kernel 1,00s, cpu user 27,22s, total 28,77s
+Memory: Max RSS 1009 Mb
+
+Time: system 98%, cpu kernel 1,73s, cpu user 48,75s, total 51,46s
+Memory: Max RSS 1805 Mb
+
+Time: system 98%, cpu kernel 3,22s, cpu user 94,25s, total 98,66s
+Memory: Max RSS 3227 Mb
+
+Time: system 98%, cpu kernel 6,39s, cpu user 172,56s, total 181,09s
+Memory: Max RSS 5934 Mb
+
+Time: system 98%, cpu kernel 11,19s, cpu user 322,11s, total 337,25s
+Memory: Max RSS 10803 Mb
+
+Time: system 98%, cpu kernel 14,25s, cpu user 454,14s, total 477,26s
+Memory: Max RSS 15268 Mb
+
+Time: system 99%, cpu kernel 15,48s, cpu user 586,49s, total 605,62s
+Memory: Max RSS 19384 Mb
+

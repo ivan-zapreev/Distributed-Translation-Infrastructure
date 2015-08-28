@@ -123,7 +123,7 @@ namespace uva {
                  */
                 virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Get the context id, note we use short ids here!
-                    const TShortId nextCtxId = getContextId(wordId, ctxId, N);
+                    const TShortId nextCtxId = getContextId(wordId, ctxId, level);
                     
                     //Return the data by the context
                     return m_mgram_data[level - 1][nextCtxId];
