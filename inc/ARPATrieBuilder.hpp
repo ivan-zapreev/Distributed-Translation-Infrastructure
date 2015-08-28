@@ -62,15 +62,15 @@ namespace uva {
                     virtual ~ARPATrieBuilder();
                 private:
                     //The reference to the trie to be build
-                    ATrie<N> & _trie;
+                    ATrie<N> & m_trie;
                     //The reference to the input file with language model
-                    TextPieceReader & _file;
+                    TextPieceReader & m_file;
                     //Stores the next line data
-                    TextPieceReader _line;
+                    TextPieceReader m_line;
                     //The regular expression for matching the n-gram amount entry of the data section
-                    const regex _ngAmountRegExp;
+                    const regex m_ngAmountRegExp;
                     //The regular expression for matching the n-grams section
-                    const regex _ngSectionRegExp;
+                    const regex m_ngSectionRegExp;
 
                     /**
                      * The copy constructor

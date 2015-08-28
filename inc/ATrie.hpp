@@ -172,7 +172,7 @@ namespace uva {
                         throw Exception(msg.str());
                     }
                     LOG_INFO3 << "Collision detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                        << " !" << END_LOG;
+                            << " !" << END_LOG;
                 };
 
                 /**
@@ -212,16 +212,16 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                virtual bool isPost_Grams(const TModelLevel level){
+                virtual bool isPost_Grams(const TModelLevel level) {
                     return false;
                 }
-                
+
                 /**
                  * This method should be called after all the X level grams are read.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                void post_Grams(const TModelLevel level){
-                    switch( level ) {
+                void post_Grams(const TModelLevel level) {
+                    switch (level) {
                         case MIN_NGRAM_LEVEL:
                             this->post_1_Grams();
                             break;
@@ -246,13 +246,12 @@ namespace uva {
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
-                 * @param ngram the given N-gram vector is expected to have
-                 *              exactly N elements (see the template parameters)
+                 * @param ngram the given M-Gram we are going to query!
                  * @param result the output parameter containing the the result
                  *               probability and possibly some additional meta
                  *               data for the decoder.
                  */
-                void queryNGram(const vector<string> & ngram, SProbResult & result);
+                void queryNGram(const SRawNGram & ngram, SProbResult & result);
 
                 /**
                  * Allows to retrieve the stored word index, if any
@@ -269,28 +268,31 @@ namespace uva {
                 };
 
             protected:
-                
+
                 /**
                  * This method will be called after all the 1-grams are read.
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  */
-                virtual void post_1_Grams(){};
-                
+                virtual void post_1_Grams() {
+                };
+
                 /**
                  * This method will be called after all the M-grams are read.
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  * @param level the level of the M-grams that were finished to be read
                  */
-                virtual void post_M_Grams(const TModelLevel level){};
-                
+                virtual void post_M_Grams(const TModelLevel level) {
+                };
+
                 /**
                  * This method will be called after all the N-grams are read.
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  */
-                virtual void post_N_Grams(){};
+                virtual void post_N_Grams() {
+                };
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -386,16 +388,16 @@ namespace uva {
                  * them in an array. Note that, M is the size of the tokens array.
                  * It is not checked, for the sake of performance but is assumed
                  * that M is <= N!
-                 * @param tokens the tokens to be transformed into word hashes must have size <=N
+                 * @param ngram the n-gram structure with the query ngram tokens
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                inline void tokensToId(const vector<string> & tokens, TShortId wordHashes[N]) {
+                inline void tokensToId(const SRawNGram & ngram, TShortId wordHashes[N]) {
                     //The start index depends on the value M of the given M-Gram
-                    TModelLevel idx = N - tokens.size();
-                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(tokens.size()) << "-gram:" << END_LOG;
-                    for (vector<string>::const_iterator it = tokens.begin(); it != tokens.end(); ++it) {
-                        wordHashes[idx] = m_p_word_index->getId(*it);
-                        LOG_DEBUG1 << "wordId('" << *it << "') = " << SSTR(wordHashes[idx]) << END_LOG;
+                    TModelLevel idx = N - ngram.level;
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
+                    for (TModelLevel i = 0; i < ngram.level; i++) {
+                        wordHashes[idx] = m_p_word_index->getId(ngram.tokens[i].str());
+                        LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
                 }
@@ -404,7 +406,7 @@ namespace uva {
                  * Converts the given tokens to hashes and stores it in mGramWordHashes
                  * @param ngram the n-gram tokens to convert to hashes
                  */
-                inline void storeNGramHashes(const vector<string> & ngram) {
+                inline void storeNGramHashes(const SRawNGram & ngram) {
                     //First transform the given M-gram into word hashes.
                     tokensToId(ngram, mGramWordIds);
                 }
@@ -516,7 +518,7 @@ namespace uva {
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
                                 << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
-                                << ", cached ctxId: " << SSTR(m_chached_ctx_id)  << END_LOG;
+                                << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
                 }

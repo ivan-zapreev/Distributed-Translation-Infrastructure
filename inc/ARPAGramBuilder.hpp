@@ -71,27 +71,36 @@ namespace uva {
                      */
                     bool parseLine(TextPieceReader & data);
 
+                    /**
+                     * Tokenise a given piece of text into a set of text peices
+                     * @param text the piece of text to tokenise
+                     * @param gram the gram container to put data into
+                     */
+                    static void parseToGramWords(TextPieceReader &text, SRawNGram & ngram);
+
                     virtual ~ARPAGramBuilder();
                 protected:
                     //The function that is to be used to add an N-gram to a trie
                     TAddGramFunct m_addGarmFunc;
+                    
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel m_level;
+                    
                     //The temporary storage for read pieces of text
                     TextPieceReader m_token;
+                    
                     //This is the N-Gram container to store the parsed N-gram data
                     SRawNGram m_ngram;
+                    
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;
                     static const unsigned short int MAX_NUM_TOKENS_NGRAM_STR;
 
                     /**
-                     * Tokenise a given piece of text into a set of text peices
-                     * @param text the piece of text to tokenise
-                     * @param delim the delimiter
-                     * @param elems the output array of text pieces
+                     * Parse the given text into a N-Gram entry from the ARPA file
+                     * @param line the piece of text to parse into the M-gram
                      */
-                    bool parseToGram(TextPieceReader &text, SRawNGram & gram);
+                    bool parseToGram(TextPieceReader &line);
 
                     /**
                      * The copy constructor

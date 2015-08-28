@@ -133,7 +133,7 @@ static void extractArguments(const uint argc, char const * const * const argv, T
     } else {
         params.modelFileName = argv[1];
         params.testFileName = argv[2];
-        params.trieTypeName =  argv[3];
+        params.trieTypeName = argv[3];
         //Set the default reporting level information for the logger
         string errorLevelStr = RESULT_PARAM_VALUE;
 
@@ -211,17 +211,14 @@ static void fillInTrie(AFileReader & fstr, ATrie<N> & trie) {
  * @param ngram the n-gram to transform
  * @return the resulting string
  */
-static string getNGramProbStr(const vector<string> & ngram) {
-    if (ngram.size() == 1) {
-        const string & token = *ngram.begin();
-        return token.empty() ? "<empty>" : token;
+static string getNGramProbStr(const SRawNGram & ngram) {
+    if (ngram.level == 1) {
+        return ngram.tokens[0].str().empty() ? "<empty>" : ngram.tokens[0].str();
     } else {
-        if (ngram.size() > 1) {
-            const vector<string>::const_iterator last_word_iter = (--ngram.end());
-            string result = *(last_word_iter) + " |";
-            for (vector<string>::const_iterator iter = ngram.begin();
-                    iter < last_word_iter; ++iter) {
-                result += string(" ") + *(iter);
+        if (ngram.level > 1) {
+            string result = ngram.tokens[ngram.level-1].str() + " |";
+            for (TModelLevel idx = 0; idx < (ngram.level-1); idx++) {
+                result += string(" ") + ngram.tokens[idx].str();
             }
             return result;
         } else {
@@ -237,22 +234,22 @@ static string getNGramProbStr(const vector<string> & ngram) {
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
 template<TModelLevel N>
-static double readAndExecuteQueries(ATrie<N> & trie, ifstream &testFile) {
+static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime = 0.0, startTime = 0.0, endTime = 0.0;
     //Will store the read line (word1 word2 word3 word4 word5)
-    string line;
+    TextPieceReader line;
     //Will store the N-gram [word1 word2 word3 word4 word5] corresponding to the line
-    vector<string> ngram;
+    SRawNGram ngram;
     //Will store the queue result for one N-Gram
     SProbResult result = {0,};
 
     //Read the test file line by line
-    while (getline(testFile, line)) {
+    while (testFile.getLine(line)) {
         //First get the complete N-gram
-        buildNGram(line, N, TOKEN_DELIMITER_CHAR, ngram);
+        ARPAGramBuilder::parseToGramWords(line, ngram);
 
-        LOG_DEBUG << "Got query line [ "<< line << " ]" << END_LOG;
+        LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();
@@ -299,7 +296,7 @@ static void performTasks(const TAppParams& params) {
     reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd, false);
 
     //Attempt to open the test file
-    ifstream testFile(params.testFileName.c_str());
+    FileStreamReader testFile(params.testFileName.c_str());
 
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
@@ -345,7 +342,7 @@ static void performTasks(const TAppParams& params) {
         const double queryCPUTimes = readAndExecuteQueries(*pTrie, testFile);
         LOG_INFO1 << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
         testFile.close();
-        
+
         //Deallocate the trie
         LOG_USAGE << "Cleaning up memory ..." << END_LOG;
         delete pTrie;

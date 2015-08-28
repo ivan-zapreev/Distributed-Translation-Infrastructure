@@ -58,7 +58,17 @@ namespace uva {
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                bool ARPAGramBuilder::parseToGram(TextPieceReader &line, SRawNGram & gram) {
+                void ARPAGramBuilder::parseToGramWords(TextPieceReader &text, SRawNGram & ngram) {
+                    //Re-set the level to zero
+                    ngram.level = 0;
+
+                    //Read the tokens one by one and do not forget to increment the level
+                    while (ngram.context.getSpace(ngram.tokens[ngram.level])) {
+                        ngram.level++;
+                    }
+                }
+
+                bool ARPAGramBuilder::parseToGram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.getTab(m_token)) {
                         //Try to parse it float
@@ -67,17 +77,19 @@ namespace uva {
 
                             //Read the all the N-Gram tokes, read until the tab as after the 
                             //tab there is a back-off weight or there is no tab in the line
-                            if (!line.getTab(gram.context)) {
+                            //The context will contain all the N-gram tokens now. No worries
+                            //though! The last one will be removed somewhat later! See below.
+                            if (!line.getTab(m_ngram.context)) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
                                         << "' when reading the " << m_level << "'th "
                                         << m_level << "-gram token!" << END_LOG;
                                 //The unexpected end of line, broken file format (?)
                                 return false;
                             }
-                            
+
                             //Read the N tokens of the N-gram - space separated
                             for (int i = 0; i < m_level; i++) {
-                                if (!gram.context.getSpace(gram.tokens[i])) {
+                                if (!m_ngram.context.getSpace(m_ngram.tokens[i])) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
                                             << "'th " << m_level << "-gram token!" << END_LOG;
@@ -85,13 +97,13 @@ namespace uva {
                                     return false;
                                 }
                             }
-                            
+
                             //Remove the last token from the context string
-                            if( m_level > MIN_NGRAM_LEVEL ) {
+                            if (m_level > MIN_NGRAM_LEVEL) {
                                 //The reduction factor for length is the length of the last N-gram token plus
                                 //one character which is the space symbol located between N-gram tokens.
-                                const size_t reduction = (gram.tokens[m_level-1].getLen() + 1);
-                                gram.context.set(gram.context.getBeginPtr(), gram.context.getLen() - reduction ) ;
+                                const size_t reduction = (m_ngram.tokens[m_level - 1].getLen() + 1);
+                                m_ngram.context.set(m_ngram.context.getBeginPtr(), m_ngram.context.getLen() - reduction);
                             }
 
                             //Now if there is something left it should be the back-off weight, otherwise we are done
@@ -117,7 +129,7 @@ namespace uva {
                             LOG_DEBUG3 << "Could not parse the the string '" << m_token.str()
                                     << "' as a probability!" << END_LOG;
                             //The first token was not a float, need to skip to another N-Gram section(?)
-                            
+
                             //Take the line and convert it into a string, then trim it.
                             string line = m_token.str();
                             trim(line);
@@ -138,7 +150,7 @@ namespace uva {
                     bool result = false;
 
                     //First tokenize as a pattern "prob \t gram \t back-off"
-                    if (parseToGram(line, m_ngram)) {
+                    if (parseToGram(line)) {
                         //Add the obtained N-gram data to the Trie
                         m_addGarmFunc(m_ngram);
                     } else {

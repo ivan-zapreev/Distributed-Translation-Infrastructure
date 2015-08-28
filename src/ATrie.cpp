@@ -283,8 +283,8 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ATrie<N>::queryNGram(const vector<string> & ngram, SProbResult & result) {
-                const TModelLevel level = ngram.size();
+            void ATrie<N>::queryNGram(const SRawNGram & ngram, SProbResult & result) {
+                const TModelLevel level = ngram.level;
                 //Check the number of elements in the N-Gram
                 if ((1 <= level) && (level <= N)) {
                     //First transform the given M-gram into word hashes.
