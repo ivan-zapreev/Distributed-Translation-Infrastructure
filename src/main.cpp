@@ -259,9 +259,8 @@ static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile)
             endTime = StatisticsMonitor::getCPUTime();
 
             //Print the results:
-            string request = getNGramProbStr(ngram);
-            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << request << " ) ) = " << SSTR(result.prob) << END_LOG;
-            LOG_INFO << "Prob( " << request << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
+            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << getNGramProbStr(ngram) << " ) ) = " << SSTR(result.prob) << END_LOG;
+            LOG_INFO << "Prob( " << getNGramProbStr(ngram) << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
             LOG_INFO2 << "CPU Time needed: " << SSTR(endTime - startTime) << " sec." << END_LOG;
 
             //update total time
