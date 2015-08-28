@@ -264,7 +264,7 @@ namespace uva {
                             << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
-                    TShortId idx;
+                    TShortId idx = UNDEFINED_ARR_IDX;
                     if (binarySearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
                         //return the reference to the probability
                         return m_N_gram_data[idx].prob;
