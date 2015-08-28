@@ -83,22 +83,25 @@ namespace uva {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
-                    m_file_stream.getline(m_curr_line, MAX_N_GRAM_STRING_LENGTH);
+                    if (m_file_stream.getline(m_curr_line, MAX_N_GRAM_STRING_LENGTH)) {
 
-                    //Check that it was properly read
-                    if (m_file_stream.bad()) {
-                        LOG_ERROR << "Error while reading the new line in the file!" << END_LOG;
-                        //If there was failure during reading the return a failed flag
-                        return false;
+                        //Check that it was properly read
+                        if (m_file_stream.bad()) {
+                            LOG_ERROR << "Error while reading the new line in the file!" << END_LOG;
+                            //If there was failure during reading the return a failed flag
+                            return false;
+                        } else {
+                            LOG_DEBUG2 << SSTR(this) << ": Read line '" << m_curr_line << "'" << END_LOG;
+
+                            //The line was properly read, set the values into the output variable
+                            out.set(m_curr_line, strlen(m_curr_line));
+
+                            //The line was successfully read, return true
+                            return true;
+                        }
                     } else {
-                        LOG_DEBUG2 << SSTR(this) << ": Read line '" << m_curr_line << "'" << END_LOG;
-
-                        //The line was properly read, set the values into the output variable
-                        out.set(m_curr_line, strlen(m_curr_line));
-
-                        //The line was successfully read, return false only
-                        //if the pointer is null, then the file is read
-                        return (m_curr_line != NULL);
+                        //This is the end of file or something...
+                        return false;
                     }
                 }
 
