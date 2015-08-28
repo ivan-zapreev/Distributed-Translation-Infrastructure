@@ -107,8 +107,7 @@ namespace uva {
                     memset(m_M_gram_data[i], 0, m_M_N_gram_num_ctx_ids[i] * sizeof (TWordIdProbBackOffEntryPair));
                 }
 
-                //05) Allocate the data for the N-Grams the number of elements is stored in counts[N - 1]
-                //There is no need to add extra elements here as the context index is not relevant.
+                //05) Allocate the data for the N-Grams.
                 m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[N_GRAM_IDX]];
                 memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[N_GRAM_IDX] * sizeof (TCtxIdProbEntryPair));
             }
