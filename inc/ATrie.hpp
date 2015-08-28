@@ -66,7 +66,7 @@ namespace uva {
             //The zero value for probability/back-off weight
             const TLogProbBackOff ZERO_LOG_PROB_WEIGHT = 0.0f;
             //The value indicating an undefined probability/back-off weight
-            const TLogProbBackOff UNDEFINED_LOG_PROB_WEIGHT = 99.0f;
+            const TLogProbBackOff UNDEFINED_LOG_PROB_WEIGHT = 100.0f;
             //The value of the minimal probability/back-off weight
             const TLogProbBackOff MINIMAL_LOG_PROB_WEIGHT = -10.0f;
             //The zerro like value for probability/back-off weight
@@ -449,6 +449,15 @@ namespace uva {
                     LOG_DEBUG3 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
+                    //Since the first word defines the second word context, and
+                    //if this word is unknown then there is definitely no data
+                    //for this N-gram in the trie ... so we through!
+                    if (ctxId < MIN_KNOWN_WORD_ID) {
+                        LOG_DEBUG1 << "The first " << SSTR(ctxLen + 1) << " wordId == "
+                                << SSTR(ctxId) << " so this word is not known, need to back-off!" << END_LOG;
+                        throw out_of_range("not found");
+                    }
+
                     //Compute the subsequent context ids
                     for (; idx < eIdx;) {
                         LOG_DEBUG3 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: " << SSTR(mGramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
@@ -465,7 +474,7 @@ namespace uva {
                 }
 
                 /**
-                 * This function computes the hash context of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
+                 * This function computes the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
                  * 
                  * WARNING: Must be called on M-grams with M > 1!
                  * 
