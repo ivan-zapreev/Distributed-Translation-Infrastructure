@@ -216,8 +216,8 @@ static string getNGramProbStr(const SRawNGram & ngram) {
         return ngram.tokens[0].str().empty() ? "<empty>" : ngram.tokens[0].str();
     } else {
         if (ngram.level > 1) {
-            string result = ngram.tokens[ngram.level-1].str() + " |";
-            for (TModelLevel idx = 0; idx < (ngram.level-1); idx++) {
+            string result = ngram.tokens[ngram.level - 1].str() + " |";
+            for (TModelLevel idx = 0; idx < (ngram.level - 1); idx++) {
                 result += string(" ") + ngram.tokens[idx].str();
             }
             return result;
@@ -251,19 +251,22 @@ static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile)
         //Parse the line into an N-Gram
         ARPAGramBuilder::parseToGramWords(line, ngram);
 
-        //Second qury the Trie for the results
-        startTime = StatisticsMonitor::getCPUTime();
-        trie.queryNGram(ngram, result);
-        endTime = StatisticsMonitor::getCPUTime();
+        //There can be an empty or "unreadable" line in the text file, just skip it ...
+        if (ngram.level > 0) {
+            //Second qury the Trie for the results
+            startTime = StatisticsMonitor::getCPUTime();
+            trie.queryNGram(ngram, result);
+            endTime = StatisticsMonitor::getCPUTime();
 
-        //Print the results:
-        string request = getNGramProbStr(ngram);
-        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << request << " ) ) = " << SSTR(result.prob) << END_LOG;
-        LOG_INFO << "Prob( " << request << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
-        LOG_INFO2 << "CPU Time needed: " << SSTR(endTime - startTime) << " sec." << END_LOG;
+            //Print the results:
+            string request = getNGramProbStr(ngram);
+            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << request << " ) ) = " << SSTR(result.prob) << END_LOG;
+            LOG_INFO << "Prob( " << request << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
+            LOG_INFO2 << "CPU Time needed: " << SSTR(endTime - startTime) << " sec." << END_LOG;
 
-        //update total time
-        totalTime += (endTime - startTime);
+            //update total time
+            totalTime += (endTime - startTime);
+        }
     }
 
     return totalTime;
