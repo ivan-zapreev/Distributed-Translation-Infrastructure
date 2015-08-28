@@ -246,10 +246,10 @@ static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile)
 
     //Read the test file line by line
     while (testFile.getLine(line)) {
-        //First get the complete N-gram
-        ARPAGramBuilder::parseToGramWords(line, ngram);
-
         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
+
+        //Parse the line into an N-Gram
+        ARPAGramBuilder::parseToGramWords(line, ngram);
 
         //Second qury the Trie for the results
         startTime = StatisticsMonitor::getCPUTime();

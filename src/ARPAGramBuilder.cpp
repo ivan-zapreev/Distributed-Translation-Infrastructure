@@ -63,7 +63,7 @@ namespace uva {
                     ngram.level = 0;
 
                     //Read the tokens one by one and do not forget to increment the level
-                    while (ngram.context.getSpace(ngram.tokens[ngram.level])) {
+                    while (text.getSpace(ngram.tokens[ngram.level])) {
                         ngram.level++;
                     }
                 }
