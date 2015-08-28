@@ -95,12 +95,12 @@ namespace uva {
                  * @param IS_PROGRESS if true the progress bar will be updated,
                  * otherwise not, default is true
                  * @param array_begin the pointer to the array's first element
-                 * @param array_end the pointer to the array's last element
+                 * @param array_size the size of the array
                  */
                 template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
-                void sort(ELEM_TYPE * array_begin, ELEM_TYPE * array_end) {
+                void sort(ELEM_TYPE * array_begin, const size_t array_size) {
                     //Order the N-gram array as it is unordered and we will binary search it later!
-                    std::sort(array_begin, array_end,
+                    std::sort(array_begin, array_begin + array_size,
                             [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
                                 if (IS_PROGRESS) {
                                     //Update the progress bar status

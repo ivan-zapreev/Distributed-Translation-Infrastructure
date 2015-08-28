@@ -287,14 +287,15 @@ namespace uva {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
                     
-                    LOG_INFO << "Sorting the N-gram's data: ptr: " << m_N_gram_data << ", size: " << m_M_N_gram_num_ctx_ids[N_GRAM_IDX] << END_LOG;
+                    LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
+                            << ", size: " << m_M_N_gram_num_ctx_ids[N_GRAM_IDX] << END_LOG;
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
                     //model when compared to the str::sort!
-                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_N_gram_data + m_M_N_gram_num_ctx_ids[N_GRAM_IDX]);
+                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_M_N_gram_num_ctx_ids[N_GRAM_IDX]);
                 };
 
             private:

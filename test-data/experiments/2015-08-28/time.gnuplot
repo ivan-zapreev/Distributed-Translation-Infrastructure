@@ -15,7 +15,7 @@ set style line 6 lt 5 linecolor rgb "blue" lw 1 pt 5
 #set datafile separator " "
 set key
 set auto x
-set xtics 1, 2, 9
+#set xtics 1, 2, 9
 set yrange [0:12]
 set grid
 

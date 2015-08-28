@@ -267,12 +267,12 @@ namespace uva {
                             //Deallocate the unneeded memory, the false flag indicates that we need reduction.
                             reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
 
-                            LOG_INFO << "Sorting the word " << SSTR(wordId) << " data, ptr: "
+                            LOG_DEBUG2 << "Sorting the word " << SSTR(wordId) << " data, ptr: "
                                     << SSTR(ref.ptr) << ", size: " << SSTR(ref.size) << END_LOG;
 
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
-                            sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.ptr + ref.size);
+                            sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.size);
                         }
                     }
                 }
