@@ -165,7 +165,7 @@ namespace uva {
                             << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Get the sub-array reference. 
-                    TCtxIdProbBackOffEntry & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId);
+                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId);
 
                     //Store the context and word ids
                     ref.ctxId = ctxId;
@@ -185,7 +185,7 @@ namespace uva {
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Get the entry
-                    const TCtxIdProbBackOffEntry & ref = get_M_N_GramEntry<T_M_GramWordEntry>(N, m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId, ctxId);
+                    const typename T_M_GramWordEntry::TElemType & ref = get_M_N_GramEntry<T_M_GramWordEntry>(N, m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId, ctxId);
 
                     //Return the reference to the probability and back-off structure
                     return ref.data;
@@ -202,7 +202,7 @@ namespace uva {
                             << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Get the sub-array reference. 
-                    TCtxIdProbEntry & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, wordId);
+                    typename T_N_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, wordId);
 
                     //Store the context and word ids
                     ref.ctxId = ctxId;
@@ -222,7 +222,7 @@ namespace uva {
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Get the entry
-                    const TCtxIdProbEntry & ref = get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId);
+                    const typename T_N_GramWordEntry::TElemType & ref = get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId);
 
                     //Return the reference to the probability
                     return ref.prob;
