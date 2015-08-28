@@ -96,8 +96,9 @@ namespace uva {
                         //The line was properly read, set the values into the output variable
                         out.set(m_curr_line, strlen(m_curr_line));
 
-                        //The line was successfully read
-                        return true;
+                        //The line was successfully read, return false only
+                        //if the pointer is null, then the file is read
+                        return m_curr_line != NULL;
                     }
                 }
 
