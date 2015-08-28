@@ -229,8 +229,8 @@ namespace uva {
                     //Get the new n-gram index
                     const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[N_GRAM_IDX]++;
 
-                    LOG_DEBUG2 << "Adding\t" << SSTR(N) << "-gram with ctxId:\t" << SSTR(ctxId)
-                            << ", wordId:\t" << SSTR(wordId) << " @ index:\t" << SSTR(n_gram_idx) << END_LOG;
+                    LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with ctxId: " << SSTR(ctxId)
+                            << ", wordId: " << SSTR(wordId) << " @ index: " << SSTR(n_gram_idx) << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
                     if (DO_SANITY_CHECKS && (n_gram_idx >= m_M_N_gram_num_ctx_ids[N_GRAM_IDX])) {

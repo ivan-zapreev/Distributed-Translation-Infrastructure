@@ -66,13 +66,17 @@ namespace uva {
                     }
 
                     //Do the binary search
-                    const ARR_ELEM_TYPE * ptr_begin = array + lowerbound;
-                    const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (bsearch(&key, ptr_begin,
-                            (upperbound - lowerbound) + 1,
-                            sizeof (ARR_ELEM_TYPE),
-                            [] (const void * p_a, const void * p_b) -> int {
+                    const ARR_ELEM_TYPE * arr_ptr = array + lowerbound;
+                    const size_t size = (upperbound - lowerbound) + 1;
+
+                    LOG_DEBUG3 << "Doing binary search in array: " << SSTR(arr_ptr)
+                            << ", size: " << SSTR(size) << END_LOG;
+
+                    const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (bsearch(&key, arr_ptr,
+                            size, sizeof (ARR_ELEM_TYPE), [] (const void * p_a, const void * p_b) -> int {
                                 const KEY_TYPE & v_a = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_a));
                                 const KEY_TYPE & v_b = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_b));
+                                        LOG_DEBUG3 << "Comparing: v_a = " << SSTR(v_a) << ", and v_b = " << SSTR(v_b) << END_LOG;
                                 if (v_a < v_b) {
                                     return -1;
                                 } else {
@@ -87,9 +91,13 @@ namespace uva {
                     //The resulting index is the difference between
                     //pointers, if the elements was found
                     if (result != NULL) {
-                        position = (INDEX_TYPE) (result - ptr_begin);
+                        //The found position is with respect to the beginning of the entire array
+                        position = (INDEX_TYPE) (result - array);
+                        LOG_DEBUG3 << "The element " << key << " is found, position : "
+                                << SSTR(position) << ", value: " << SSTR((KEY_TYPE) arr_ptr[position]) << END_LOG;
                         return true;
                     } else {
+                        LOG_DEBUG3 << "The element is NOT found" << END_LOG;
                         return false;
                     }
                 }
