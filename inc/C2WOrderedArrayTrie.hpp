@@ -286,6 +286,8 @@ namespace uva {
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
+                    
+                    LOG_INFO << "Sorting the N-gram's data: ptr: " << m_N_gram_data << ", size: " << m_M_N_gram_num_ctx_ids[N_GRAM_IDX] << END_LOG;
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
