@@ -78,7 +78,7 @@ namespace uva {
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            const bool DO_SANITY_CHECKS = false;
+            const bool DO_SANITY_CHECKS = true;
 
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie

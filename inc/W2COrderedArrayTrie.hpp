@@ -415,7 +415,7 @@ namespace uva {
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must only be called for the M-gram level 1 < M <= N!
+                 * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * 
                  * @param wordId the current word id
                  * @param ctxId the previous context id
@@ -426,6 +426,12 @@ namespace uva {
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
+                        stringstream msg;
+                        msg << "Unsupported level id: " << level;
+                        throw Exception(msg.str());
+                    }
 
                     LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "

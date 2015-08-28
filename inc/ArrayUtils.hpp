@@ -26,13 +26,17 @@
 #ifndef ARRAYUTILS_HPP
 #define	ARRAYUTILS_HPP
 
-#include <cstdlib>      // std::qsort
+#include <string>       // std::stringstream
+#include <cstdlib>      // std::qsort std::bsearch
 #include <algorithm>    // std::sort
 
 #include "Logger.hpp"
 #include "Globals.hpp"
+#include "Exceptions.hpp"
 
 using namespace std;
+using namespace uva::smt::exceptions;
+
 using uva::smt::logging::Logger;
 
 namespace uva {
@@ -41,48 +45,53 @@ namespace uva {
             namespace array {
 
                 /**
-                 * This is a binary search algorithm for some ordered array
+                 * This is a binary search algorithm for some ordered array.
+                 * WARNING: all the keys in the ordered argument array are expected to be different!
                  * @param array the pointer to the first array element
                  * @param lowerbound the initial left border index for searching
                  * @param upperbound the initial right border index for searching
                  * @param key the key we are searching for
                  * @param position the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
+                 * @throws Exception in case lowerbound is < 0 or lowerbound > upperbound, with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
                 bool binarySearch(const ARR_ELEM_TYPE * array, INDEX_TYPE lowerbound, INDEX_TYPE upperbound, const KEY_TYPE key, INDEX_TYPE & position) {
-                    // To start, find the subscript of the middle position.
-                    position = (lowerbound + upperbound) / 2;
-
-                    KEY_TYPE found_key = static_cast<KEY_TYPE> (array[position]);
-
-                    LOG_DEBUG3 << "Starting the binary search [l,u] = [" << lowerbound
-                            << ", " << upperbound << "], searched key: " << key
-                            << ", first considered pos: " << position
-                            << ", key: " << found_key << END_LOG;
-
-                    //Perform the search
-                    while ((found_key != key) && (lowerbound <= upperbound)) {
-
-                        //Decide on which way to go
-                        if (found_key > key) // If the number is > key, ..
-                        { // decrease position by one.
-                            upperbound = position - 1;
-                        } else { // Else, increase position by one.
-                            lowerbound = position + 1;
-                        }
-
-                        //Get the next element
-                        position = (lowerbound + upperbound) / 2;
-                        found_key = static_cast<KEY_TYPE> (array[position]);
-
-                        LOG_DEBUG3 << "Next considered [l,u] = [" << lowerbound
-                                << ", " << upperbound << "], pos: " << position
-                                << ", key: " << found_key << END_LOG;
+                    if (DO_SANITY_CHECKS && ((lowerbound < 0) || (lowerbound > upperbound))) {
+                        stringstream msg;
+                        msg << "Impossible binary search parameters, lowerbound = "
+                                << SSTR(lowerbound) << ", upperbound = "
+                                << SSTR(upperbound) << "!";
+                        throw Exception(msg.str());
                     }
 
-                    //Return true if the element was found
-                    return (lowerbound <= upperbound);
+                    //Do the binary search
+                    const ARR_ELEM_TYPE * ptr_begin = array + lowerbound;
+                    const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (bsearch(&key, ptr_begin,
+                            (upperbound - lowerbound) + 1,
+                            sizeof (ARR_ELEM_TYPE),
+                            [] (const void * p_a, const void * p_b) -> int {
+                                const KEY_TYPE & v_a = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_a));
+                                const KEY_TYPE & v_b = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_b));
+                                if (v_a < v_b) {
+                                    return -1;
+                                } else {
+                                    if (v_a > v_b) {
+                                        return +1;
+                                    } else {
+                                        return 0;
+                                    }
+                                }
+                            }));
+
+                    //The resulting index is the difference between
+                    //pointers, if the elements was found
+                    if (result != NULL) {
+                        position = (INDEX_TYPE) (result - ptr_begin);
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
 
                 /**
@@ -98,17 +107,20 @@ namespace uva {
                  * @param array_size the size of the array
                  */
                 template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
-                void sort(ELEM_TYPE * array_begin, const size_t array_size) {
-                    //Order the N-gram array as it is unordered and we will binary search it later!
-                    std::sort(array_begin, array_begin + array_size,
-                            [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
-                                if (IS_PROGRESS) {
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                }
-                                //Return the result
-                                return (((BASE_TYPE) first) < ((BASE_TYPE) second));
-                            });
+                void sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+                    //Do not do sorting if the array size is less than two
+                    if (array_size > 1) {
+                        //Order the N-gram array as it is unordered and we will binary search it later!
+                        std::sort(array_begin, array_begin + array_size,
+                                [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
+                                    if (IS_PROGRESS) {
+                                        //Update the progress bar status
+                                        Logger::updateProgressBar();
+                                    }
+                                    //Return the result
+                                    return (((BASE_TYPE) first) < ((BASE_TYPE) second));
+                                });
+                    }
                 }
 
                 /**

@@ -23,11 +23,9 @@
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
-      <itemPath>inc/TrieTypeFactory.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
-      <itemPath>inc/W2COrderedArrayTrieMem.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -58,8 +56,21 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
   </sourceRootList>
@@ -134,15 +145,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -173,12 +180,11 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <developmentMode>5</developmentMode>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall -Werror</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
@@ -225,15 +231,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -325,15 +327,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -414,15 +412,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -453,7 +447,6 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <developmentMode>5</developmentMode>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
@@ -505,15 +498,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/W2COrderedArrayTrieMem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>

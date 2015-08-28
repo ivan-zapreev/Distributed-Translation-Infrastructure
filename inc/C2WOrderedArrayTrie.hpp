@@ -214,7 +214,7 @@ namespace uva {
 
                     //Get the context id, note we use short ids here!
                     TShortId nextCtxId = (TShortId) getContextId(wordId, ctxId, level);
-                    
+
                     //Return the data by the context
                     return m_M_gram_data[mgram_idx][nextCtxId].data;
                 };
@@ -286,7 +286,7 @@ namespace uva {
                 virtual void post_N_Grams() {
                     //Call the base class method first
                     ATrie<N>::post_N_Grams();
-                    
+
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
                             << ", size: " << m_M_N_gram_num_ctx_ids[N_GRAM_IDX] << END_LOG;
 
@@ -338,7 +338,7 @@ namespace uva {
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must only be called for the M-gram level 1 < M <= N!
+                 * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * 
                  * @param wordId the current word id
                  * @param ctxId the previous context id
@@ -349,6 +349,12 @@ namespace uva {
                 inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+
+                    if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
+                        stringstream msg;
+                        msg << "Unsupported level id: " << level;
+                        throw Exception(msg.str());
+                    }
 
                     LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "

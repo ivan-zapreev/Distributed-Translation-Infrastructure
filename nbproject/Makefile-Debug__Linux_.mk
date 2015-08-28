@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-MacOSX
-CND_DLIB_EXT=dylib
+CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Debug__Linux_
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -51,8 +51,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall
-CXXFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall
+CCFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall -Werror
+CXXFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall -Werror
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -74,52 +74,52 @@ ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 ${OBJECTDIR}/src/ARPAGramBuilder.o: src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
 
 ${OBJECTDIR}/src/ARPATrieBuilder.o: src/ARPATrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
 ${OBJECTDIR}/src/ATrie.o: src/ATrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ATrie.o src/ATrie.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ATrie.o src/ATrie.cpp
 
 ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: src/C2WOrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
 
 ${OBJECTDIR}/src/CtxMultiHashMapTrie.o: src/CtxMultiHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CtxMultiHashMapTrie.o src/CtxMultiHashMapTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CtxMultiHashMapTrie.o src/CtxMultiHashMapTrie.cpp
 
 ${OBJECTDIR}/src/Logger.o: src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
 
 ${OBJECTDIR}/src/W2CHybridMemoryTrie.o: src/W2CHybridMemoryTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridMemoryTrie.o src/W2CHybridMemoryTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridMemoryTrie.o src/W2CHybridMemoryTrie.cpp
 
 ${OBJECTDIR}/src/W2COrderedArrayTrie.o: src/W2COrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2COrderedArrayTrie.o src/W2COrderedArrayTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2COrderedArrayTrie.o src/W2COrderedArrayTrie.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:
