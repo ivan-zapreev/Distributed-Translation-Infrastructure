@@ -144,23 +144,23 @@ namespace uva {
                  */
                 inline void trim(std::string& str,
                         const std::string& whitespace = WHITESPACES) {
-                    LOG_DEBUG3 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
+                    LOG_DEBUG4 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
                     if (str != "") {
                         const size_t strBegin = str.find_first_not_of(whitespace);
-                        LOG_DEBUG3 << "First not of whitespaces pos: " << strBegin << END_LOG;
+                        LOG_DEBUG4 << "First not of whitespaces pos: " << strBegin << END_LOG;
 
                         if (strBegin == std::string::npos) {
                             str = ""; // no content
                         } else {
                             const size_t strEnd = str.find_last_not_of(whitespace);
-                            LOG_DEBUG3 << "Last not of whitespaces pos: " << strEnd << END_LOG;
+                            LOG_DEBUG4 << "Last not of whitespaces pos: " << strEnd << END_LOG;
                             const size_t strRange = strEnd - strBegin + 1;
-                            LOG_DEBUG3 << "Need a substring: [" << strBegin << ", " << (strBegin + strRange - 1) << "]" << END_LOG;
+                            LOG_DEBUG4 << "Need a substring: [" << strBegin << ", " << (strBegin + strRange - 1) << "]" << END_LOG;
 
                             str = str.substr(strBegin, strRange);
                         }
                     }
-                    LOG_DEBUG3 << "The trimmed result is '" << str << "'" << END_LOG;
+                    LOG_DEBUG4 << "The trimmed result is '" << str << "'" << END_LOG;
                 }
 
                 /**
@@ -173,7 +173,7 @@ namespace uva {
                 inline void reduce(std::string& str,
                         const std::string& fill = " ",
                         const std::string& whitespace = WHITESPACES) {
-                    LOG_DEBUG3 << "Reducing the string '" << str << "', with white spaces" << END_LOG;
+                    LOG_DEBUG4 << "Reducing the string '" << str << "', with white spaces" << END_LOG;
                     if (str != "") {
                         // trim first
                         trim(str, whitespace);
@@ -190,7 +190,7 @@ namespace uva {
                             beginSpace = str.find_first_of(whitespace, newStart);
                         }
                     }
-                    LOG_DEBUG3 << "The reduced result is '" << str << "'" << END_LOG;
+                    LOG_DEBUG4 << "The reduced result is '" << str << "'" << END_LOG;
                 }
 
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')

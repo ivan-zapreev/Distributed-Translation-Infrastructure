@@ -118,7 +118,7 @@ namespace uva {
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
 
-                    LOG_DEBUG2 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
+                    LOG_DEBUG3 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
                             << SSTR((void*) m_beginPtr) << ", m_cursorPtr = "
                             << SSTR((void*) m_cursorPtr) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
@@ -199,21 +199,21 @@ namespace uva {
                     //Search for the next new line symbol in the remainder of the file
                     char * charPtr = static_cast<char *> (memchr(m_cursorPtr, delim, m_restLen));
 
-                    LOG_DEBUG3 << SSTR(this) << ": Searching for the character got: " << SSTR((void *) charPtr) << END_LOG;
+                    LOG_DEBUG4 << SSTR(this) << ": Searching for the character got: " << SSTR((void *) charPtr) << END_LOG;
 
                     //Check if we found a pointer to the new line
                     if (charPtr != NULL) {
                         //Compute the line length
                         size_t lineLen = charPtr - m_cursorPtr;
 
-                        LOG_DEBUG3 << SSTR(this) << ": The substring length is " << SSTR(lineLen) << END_LOG;
+                        LOG_DEBUG4 << SSTR(this) << ": The substring length is " << SSTR(lineLen) << END_LOG;
 
                         //Store the pointer to the remaining of the file
                         m_cursorPtr = charPtr + 1;
                         //Store the remaining length of the file
                         m_restLen -= (lineLen + 1);
 
-                        LOG_DEBUG3 << SSTR(this) << ": Resetting m_cursorPtr = "
+                        LOG_DEBUG4 << SSTR(this) << ": Resetting m_cursorPtr = "
                                 << SSTR((void *) m_cursorPtr) << ", m_restLen = "
                                 << m_restLen << END_LOG;
 
@@ -224,7 +224,7 @@ namespace uva {
                         //in case we were looking for the end of file
                         if (lineLen && delim == '\n' && '\r' == out_m_beginPtr[lineLen - 1]) {
                             out_m_len--;
-                            LOG_DEBUG3 << SSTR(this) << ": A \\\\r detected, resetting m_restLen = "
+                            LOG_DEBUG4 << SSTR(this) << ": A \\\\r detected, resetting m_restLen = "
                                     << m_restLen << END_LOG;
                         }
                     } else {
@@ -265,7 +265,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 virtual bool getLine(TextPieceReader& out) {
-                    LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
+                    LOG_DEBUG4 << SSTR(this) << ": Searching for a new line!" << END_LOG;
                     return getNext(out, '\n');
                 }
 
@@ -277,7 +277,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 virtual bool getSpace(TextPieceReader& out) {
-                    LOG_DEBUG3 << SSTR(this) << ": Searching for a space!" << END_LOG;
+                    LOG_DEBUG4 << SSTR(this) << ": Searching for a space!" << END_LOG;
                     return getNext(out, ' ');
                 }
 
@@ -289,7 +289,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 virtual bool getTab(TextPieceReader& out) {
-                    LOG_DEBUG3 << SSTR(this) << ": Searching for a tab!" << END_LOG;
+                    LOG_DEBUG4 << SSTR(this) << ": Searching for a tab!" << END_LOG;
                     return getNext(out, '\t');
                 }
 
@@ -372,12 +372,12 @@ namespace uva {
                  * @return the resulting line
                  */
                 inline const string & str() const {
-                    LOG_DEBUG3 << "m_is_gen_str = " << m_is_gen_str << END_LOG;
+                    LOG_DEBUG4 << "m_is_gen_str = " << m_is_gen_str << END_LOG;
                     if (m_is_gen_str) {
-                        LOG_DEBUG3 << "m_len = " << m_len << END_LOG;
+                        LOG_DEBUG4 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
                             if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                                LOG_DEBUG3 << "m_beginPtr = " << SSTR(m_beginPtr) << ", m_len = " << m_len << END_LOG;
+                                LOG_DEBUG4 << "m_beginPtr = " << SSTR(m_beginPtr) << ", m_len = " << m_len << END_LOG;
                                 m_str.assign(m_beginPtr, m_len);
                             } else {
                                 m_str = TEXT_TOO_LARGE_STR;
@@ -411,13 +411,13 @@ namespace uva {
                 stringstream data;
                 data << "[ ";
                 const TModelLevel num_tokens = min<TModelLevel>(level, N);
-                LOG_DEBUG3 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
+                LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
                 for (int i = 0; i < num_tokens; i++) {
-                    LOG_DEBUG3 << "Appending token[" << SSTR(i) << "] = '"
+                    LOG_DEBUG4 << "Appending token[" << SSTR(i) << "] = '"
                             << tokens[i].str() << "' to the string!" << END_LOG;
                     data << tokens[i].str() << " ";
                 }
-                LOG_DEBUG3 << "Done appending tokens!" << END_LOG;
+                LOG_DEBUG4 << "Done appending tokens!" << END_LOG;
                 data << "]";
                 return data.str();
             };

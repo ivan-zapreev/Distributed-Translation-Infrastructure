@@ -108,14 +108,14 @@ namespace uva {
                     const ARR_ELEM_TYPE * arr_ptr = array + l_idx;
                     const size_t size = (u_idx - l_idx) + 1;
 
-                    LOG_DEBUG3 << "Doing binary search in array: " << SSTR(arr_ptr)
+                    LOG_DEBUG4 << "Doing binary search in array: " << SSTR(arr_ptr)
                             << ", size: " << SSTR(size) << END_LOG;
 
                     const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (std::bsearch(&key, arr_ptr,
                             size, sizeof (ARR_ELEM_TYPE), [] (const void * p_a, const void * p_b) -> int {
                                 const KEY_TYPE & v_a = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_a));
                                 const KEY_TYPE & v_b = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_b));
-                                        LOG_DEBUG3 << "Comparing: v_a = " << SSTR(v_a) << ", and v_b = " << SSTR(v_b) << END_LOG;
+                                        LOG_DEBUG4 << "Comparing: v_a = " << SSTR(v_a) << ", and v_b = " << SSTR(v_b) << END_LOG;
                                 if (v_a < v_b) {
                                     return -1;
                                 } else {
@@ -132,11 +132,11 @@ namespace uva {
                     if (result != NULL) {
                         //The found position is with respect to the beginning of the entire array
                         mid_pos = (INDEX_TYPE) (result - array);
-                        LOG_DEBUG3 << "The element " << key << " is found, position : "
-                                << SSTR(mid_pos) << ", value: " << SSTR((KEY_TYPE) arr_ptr[mid_pos]) << END_LOG;
+                        LOG_DEBUG4 << "The element " << key << " is found, array[ "
+                                << SSTR(mid_pos) << " ] = " << SSTR((KEY_TYPE) array[mid_pos]) << END_LOG;
                         return true;
                     } else {
-                        LOG_DEBUG3 << "The element is NOT found" << END_LOG;
+                        LOG_DEBUG4 << "The element is NOT found" << END_LOG;
                         return false;
                     }
                 }
