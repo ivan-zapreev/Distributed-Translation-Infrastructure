@@ -253,7 +253,7 @@ namespace uva {
                     TShortId cio = FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
-                    for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                    for (TShortId wordId = UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
                         //First get the sub-array reference. 
                         WORD_ENTRY_TYPE & ref = wordsArray[wordId];
 
@@ -262,10 +262,29 @@ namespace uva {
                         //Compute the next context index offset, for the next word
                         cio += ref.size;
 
+                        if (DO_SANITY_CHECKS &&
+                                ((ref.size < 0) || (ref.capacity < 0) ||
+                                (ref.size > ref.capacity) ||
+                                ((ref.ptr == NULL) && ((ref.size != 0) || (ref.capacity != 0))) ||
+                                ((ref.ptr != NULL) && ((ref.size == 0) || (ref.capacity == 0))))) {
+                            stringstream msg;
+                            msg << "Wrong word data for wordId = " << SSTR(wordId)
+                                    << "ref.ptr = " << SSTR(ref.ptr) << ", ref.size = "
+                                    << SSTR(ref.size) << ", ref.capacity = "
+                                    << SSTR(ref.capacity) << wordId;
+                            throw Exception(msg.str());
+                        }
+
                         //Check that the data for the given word is available
                         if ((ref.ptr != NULL) && (ref.size > 1)) {
                             //Deallocate the unneeded memory, the false flag indicates that we need reduction.
-                            reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
+
+                            //Reduce capacity if there is unused memory
+                            if (ref.size < ref.capacity) {
+                                reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
+                                LOG_DEBUG4 << "Reallocated (decreased): ptr: " << SSTR(ref.ptr)
+                                        << ", ptr[0] = " << SSTR(ref.ptr[0].ctxId) << END_LOG;
+                            }
 
                             LOG_DEBUG2 << "Sorting the word " << SSTR(wordId) << " data, ptr: "
                                     << SSTR(ref.ptr) << ", size: " << SSTR(ref.size)
@@ -280,6 +299,7 @@ namespace uva {
 
                 virtual void post_M_Grams(const TModelLevel level) {
                     //Call the base class method first
+
                     ATrie<N>::post_N_Grams();
 
                     //Sort the level's data
@@ -288,6 +308,7 @@ namespace uva {
 
                 virtual void post_N_Grams() {
                     //Call the base class method first
+
                     ATrie<N>::post_N_Grams();
 
                     //Sort the level's data
@@ -353,6 +374,8 @@ namespace uva {
                     //Check if we need to increase the capacity!
                     if (ref.size == ref.capacity) {
                         reallocateWordData<WORD_ENTRY_TYPE>(ref);
+                        LOG_DEBUG4 << "Reallocated (increased): ptr: " << SSTR(ref.ptr)
+                                << ", ptr[0] = " << SSTR(ref.ptr[0].ctxId) << END_LOG;
                     }
 
                     //Return the next new element and increase the size!
@@ -369,13 +392,16 @@ namespace uva {
                  */
                 template<typename WORD_ENTRY_TYPE>
                 const TShortId get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId & ctxId) {
-                    LOG_DEBUG2 << "Getting sub arr data for ctxId: " << SSTR(ctxId) << END_LOG;
+                    LOG_DEBUG2 << "Searching sub array = " << SSTR(ref.ptr)
+                            << ", size = " << SSTR(ref.size) << " for ctxId: "
+                            << SSTR(ctxId) << END_LOG;
 
                     //Check if there is data to search in
                     if ((ref.ptr != NULL) && (ref.size > 0)) {
                         TShortId localIdx = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
                         if (bsearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                            LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
                             return localIdx;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "
@@ -408,7 +434,7 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && ( level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID )) {
+                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
@@ -419,6 +445,7 @@ namespace uva {
                     const TShortId localIdx = get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctxId);
 
                     //Return the data located by the local index
+
                     return ref.ptr[localIdx];
                 }
 
@@ -443,32 +470,42 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
-                    LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
+                    LOG_DEBUG2 << "Searching next ctxId for " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
                             << SSTR(ctxId) << END_LOG;
 
                     //First get the sub-array reference. 
                     const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
 
+                    if (DO_SANITY_CHECKS && ( ref.size > 0 )) {
+                        LOG_DEBUG3 << "ref.ptr: " << SSTR(ref.ptr) << ", ref.capacity: "
+                                << SSTR(ref.capacity) << ", ref.size: " << SSTR(ref.size)
+                                << ", ref.cio: " << SSTR(ref.cio) << ", ctxId range: ["
+                                << SSTR(ref.ptr[0].ctxId) << ", "
+                                << SSTR(ref.ptr[ref.size - 1].ctxId) << "]" << END_LOG;
+                    }
+
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && ( level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID )) {
+                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
                                 << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                     }
-                    
+
                     //Get the local entry index
                     const TShortId localIdx = get_M_N_GramLocalEntryIdx(ref, ctxId);
 
                     LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
-                            << ", with ptr: " << SSTR(ref.ptr) << ", size: "
-                            << SSTR(ref.size) << END_LOG;
+                            << ", with ptr = " << SSTR(ref.ptr) << ", size = "
+                            << SSTR(ref.size) << ", localIdx = " << SSTR(localIdx)
+                            << ", resulting ctxId = " << SSTR(ref.cio + localIdx) << END_LOG;
 
                     //return the context id which is the sum of the
                     //local index and the context index offset
+
                     return ref.cio + localIdx;
                 }
 
@@ -504,6 +541,7 @@ namespace uva {
 
                             //Do the null pointer check if sanity
                             if (DO_SANITY_CHECKS && (fact_num_elems > 0) && (wordsArray[wordId].ptr == NULL)) {
+
                                 stringstream msg;
                                 msg << "Ran out of memory when trying to allocate "
                                         << fact_num_elems << " data elements for wordId: " << wordId;
@@ -555,6 +593,7 @@ namespace uva {
 
                     //Do the null pointer check if sanity
                     if (DO_SANITY_CHECKS && isIncrease && (new_capacity > 0) && (wordEntry.ptr == NULL)) {
+
                         stringstream msg;
                         msg << "Ran out of memory when trying to allocate "
                                 << new_capacity << " data elements for a wordId";

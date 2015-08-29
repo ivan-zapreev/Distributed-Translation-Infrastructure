@@ -356,7 +356,7 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
-                    LOG_DEBUG2 << "Searching for the context id of " << SSTR(level)
+                    LOG_DEBUG2 << "Searching for the next ctxId of " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
                             << SSTR(ctxId) << END_LOG;
 
@@ -377,11 +377,11 @@ namespace uva {
                         if (bsearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             return nextCtxId;
                         } else {
-                            LOG_DEBUG1 << "Unable to find M-gram context id for level: "
-                                    << SSTR(level) << ", wordId: " << SSTR(wordId)
-                                    << ", prev ctxId: " << SSTR(ctxId) << ", wordId range: ["
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId)
-                                    << ", " << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
+                            LOG_DEBUG1 << "Unable to find M-gram ctxId for level: "
+                                    << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
+                                    << ", wordId: " << SSTR(wordId) << ", is not in the available range: ["
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId) << " ... "
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
                             throw out_of_range("not found");
                         }
                     } else {

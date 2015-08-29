@@ -45,46 +45,6 @@ namespace uva {
             namespace array {
 
                 /**
-                 * This is a search algorithm for some ordered array, implements binary search
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param mid_pos the out parameter that stores the found element index, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
-                bool search(const ARR_ELEM_TYPE * array, INDEX_TYPE l_idx, INDEX_TYPE u_idx, const KEY_TYPE key, INDEX_TYPE & mid_pos) {
-                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
-                        stringstream msg;
-                        msg << "Impossible binary search parameters, l_idx = "
-                                << SSTR(l_idx) << ", u_idx = "
-                                << SSTR(u_idx) << "!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Do the binary search
-                    mid_pos = (l_idx + u_idx) / 2;
-
-                    while (l_idx <= u_idx) {
-                        if (((KEY_TYPE) array[mid_pos]) < key) {
-                            l_idx = mid_pos + 1;
-                        } else {
-                            if (((KEY_TYPE) array[mid_pos]) == key) {
-                                u_idx = mid_pos - 1;
-                            } else {
-                                break;
-                            }
-                        }
-                        mid_pos = (l_idx + u_idx) / 2;
-                    }
-
-                    //If l_idx > u_idx then the element was not found
-                    return (l_idx <= u_idx);
-                }
-
-                /**
                  * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
