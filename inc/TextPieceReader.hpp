@@ -88,7 +88,7 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                TextPieceReader(void * beginPtr, const size_t len) : TextPieceReader() {
+                explicit TextPieceReader(void * beginPtr, const size_t len) : TextPieceReader() {
                     set(beginPtr, len);
                 }
 
@@ -103,6 +103,26 @@ namespace uva {
                     this->m_str = other.m_str;
                     this->m_cursorPtr = other.m_cursorPtr;
                     this->m_restLen = other.m_restLen;
+                }
+
+                /**
+                 * Allows to set the text
+                 * @param beginPtr the pointer to the beginning of the text
+                 * @param len the length of the text
+                 */
+                inline void set(void * beginPtr, const size_t len) {
+                    m_beginPtr = static_cast<char *> (beginPtr);
+                    m_len = len;
+                    m_is_gen_str = true;
+                    this->m_str = "";
+                    m_cursorPtr = m_beginPtr;
+                    m_restLen = m_len;
+
+                    LOG_DEBUG2 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
+                            << SSTR((void*) m_beginPtr) << ", m_cursorPtr = "
+                            << SSTR((void*) m_cursorPtr) << ", m_is_gen_str = "
+                            << m_is_gen_str << ", m_len = " << SSTR(m_len)
+                            << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
                 }
 
                 /**
@@ -139,25 +159,6 @@ namespace uva {
                  */
                 inline size_t getLen() const {
                     return m_len;
-                }
-
-                /**
-                 * Allows to set the text
-                 * @param beginPtr the pointer to the beginning of the text
-                 * @param len the length of the text
-                 */
-                inline void set(void * beginPtr, const size_t len) {
-                    m_beginPtr = static_cast<char *> (beginPtr);
-                    m_cursorPtr = m_beginPtr;
-                    m_is_gen_str = true;
-                    m_len = len;
-                    m_restLen = m_len;
-
-                    LOG_DEBUG2 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
-                            << SSTR((void*) m_beginPtr) << ", m_cursorPtr = "
-                            << SSTR((void*) m_cursorPtr) << ", m_is_gen_str = "
-                            << m_is_gen_str << ", m_len = " << SSTR(m_len)
-                            << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
                 }
 
                 /**
@@ -371,13 +372,13 @@ namespace uva {
                  * @return the resulting line
                  */
                 inline const string & str() const {
+                    LOG_DEBUG3 << "m_is_gen_str = " << m_is_gen_str << END_LOG;
                     if (m_is_gen_str) {
+                        LOG_DEBUG3 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
                             if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                                char data[m_len + 1];
-                                strncpy(data, m_beginPtr, m_len);
-                                data[m_len] = '\0';
-                                m_str = data;
+                                LOG_DEBUG3 << "m_beginPtr = " << SSTR(m_beginPtr) << ", m_len = " << m_len << END_LOG;
+                                m_str.assign(m_beginPtr, m_len);
                             } else {
                                 m_str = TEXT_TOO_LARGE_STR;
                             }
@@ -409,9 +410,14 @@ namespace uva {
             inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
                 stringstream data;
                 data << "[ ";
-                for (int i = 0; i < min<TModelLevel>(level, N); i++) {
+                const TModelLevel num_tokens = min<TModelLevel>(level, N);
+                LOG_DEBUG3 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
+                for (int i = 0; i < num_tokens; i++) {
+                    LOG_DEBUG3 << "Appending token[" << SSTR(i) << "] = '"
+                            << tokens[i].str() << "' to the string!" << END_LOG;
                     data << tokens[i].str() << " ";
                 }
+                LOG_DEBUG3 << "Done appending tokens!" << END_LOG;
                 data << "]";
                 return data.str();
             };

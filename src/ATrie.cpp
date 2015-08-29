@@ -66,7 +66,8 @@ namespace uva {
             template<TModelLevel N>
             void ATrie<N>::add_M_Gram(const SRawNGram &mGram) {
                 const TModelLevel level = mGram.level;
-                LOG_DEBUG << "Adding a " << level << "-Gram " << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << SSTR(level) << "-Gram "
+                        << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 

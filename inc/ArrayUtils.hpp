@@ -111,7 +111,7 @@ namespace uva {
                     LOG_DEBUG3 << "Doing binary search in array: " << SSTR(arr_ptr)
                             << ", size: " << SSTR(size) << END_LOG;
 
-                    const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (bsearch(&key, arr_ptr,
+                    const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (std::bsearch(&key, arr_ptr,
                             size, sizeof (ARR_ELEM_TYPE), [] (const void * p_a, const void * p_b) -> int {
                                 const KEY_TYPE & v_a = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_a));
                                 const KEY_TYPE & v_b = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_b));

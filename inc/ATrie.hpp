@@ -165,6 +165,10 @@ namespace uva {
                 m_get_ctx_id_func(get_ctx_id_func),
                 m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
                 m_chached_ctx_id(UNDEFINED_WORD_ID) {
+                    //Clear the memory for the buffer and initialize it
+                    memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof(char) );
+                    m_context_c_str[0] = '\0';
+                    
                     //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
