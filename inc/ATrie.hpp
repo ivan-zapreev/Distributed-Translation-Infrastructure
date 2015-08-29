@@ -432,7 +432,8 @@ namespace uva {
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
                  * @return the computed context id
-                 * @throws out_of_range in case the context could not be computed, the context M-gram is not present in the trie
+                 * @throws out_of_range in case the context could not be computed, 
+                 * the context M-gram is not present in the trie
                  */
                 inline TLongId getQueryContextId(const TModelLevel ctxLen, bool isBackOff) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));

@@ -375,7 +375,7 @@ namespace uva {
                     if ((ref.ptr != NULL) && (ref.size > 0)) {
                         TShortId localIdx = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (binarySearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                        if (bsearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
                             return localIdx;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "

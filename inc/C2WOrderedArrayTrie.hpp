@@ -265,7 +265,7 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = UNDEFINED_ARR_IDX;
-                    if (binarySearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
+                    if (bsearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
                         //return the reference to the probability
                         return m_N_gram_data[idx].prob;
                     } else {
@@ -374,7 +374,7 @@ namespace uva {
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (binarySearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (bsearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             return nextCtxId;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for level: "

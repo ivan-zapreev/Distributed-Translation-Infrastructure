@@ -45,29 +45,68 @@ namespace uva {
             namespace array {
 
                 /**
-                 * This is a binary search algorithm for some ordered array.
-                 * WARNING: all the keys in the ordered argument array are expected to be different!
+                 * This is a search algorithm for some ordered array, implements binary search
                  * @param array the pointer to the first array element
-                 * @param lowerbound the initial left border index for searching
-                 * @param upperbound the initial right border index for searching
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param position the out parameter that stores the found element index, if any
+                 * @param mid_pos the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
-                 * @throws Exception in case lowerbound is < 0 or lowerbound > upperbound, with sanity checks on
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
-                bool binarySearch(const ARR_ELEM_TYPE * array, INDEX_TYPE lowerbound, INDEX_TYPE upperbound, const KEY_TYPE key, INDEX_TYPE & position) {
-                    if (DO_SANITY_CHECKS && ((lowerbound < 0) || (lowerbound > upperbound))) {
+                bool search(const ARR_ELEM_TYPE * array, INDEX_TYPE l_idx, INDEX_TYPE u_idx, const KEY_TYPE key, INDEX_TYPE & mid_pos) {
+                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
                         stringstream msg;
-                        msg << "Impossible binary search parameters, lowerbound = "
-                                << SSTR(lowerbound) << ", upperbound = "
-                                << SSTR(upperbound) << "!";
+                        msg << "Impossible binary search parameters, l_idx = "
+                                << SSTR(l_idx) << ", u_idx = "
+                                << SSTR(u_idx) << "!";
                         throw Exception(msg.str());
                     }
 
                     //Do the binary search
-                    const ARR_ELEM_TYPE * arr_ptr = array + lowerbound;
-                    const size_t size = (upperbound - lowerbound) + 1;
+                    mid_pos = (l_idx + u_idx) / 2;
+
+                    while (l_idx <= u_idx) {
+                        if (((KEY_TYPE) array[mid_pos]) < key) {
+                            l_idx = mid_pos + 1;
+                        } else {
+                            if (((KEY_TYPE) array[mid_pos]) == key) {
+                                u_idx = mid_pos - 1;
+                            } else {
+                                break;
+                            }
+                        }
+                        mid_pos = (l_idx + u_idx) / 2;
+                    }
+
+                    //If l_idx > u_idx then the element was not found
+                    return (l_idx <= u_idx);
+                }
+
+                /**
+                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param mid_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
+                bool bsearch(const ARR_ELEM_TYPE * array, INDEX_TYPE l_idx, INDEX_TYPE u_idx, const KEY_TYPE key, INDEX_TYPE & mid_pos) {
+                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
+                        stringstream msg;
+                        msg << "Impossible binary search parameters, l_idx = "
+                                << SSTR(l_idx) << ", u_idx = "
+                                << SSTR(u_idx) << "!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Do the binary search
+                    const ARR_ELEM_TYPE * arr_ptr = array + l_idx;
+                    const size_t size = (u_idx - l_idx) + 1;
 
                     LOG_DEBUG3 << "Doing binary search in array: " << SSTR(arr_ptr)
                             << ", size: " << SSTR(size) << END_LOG;
@@ -92,9 +131,9 @@ namespace uva {
                     //pointers, if the elements was found
                     if (result != NULL) {
                         //The found position is with respect to the beginning of the entire array
-                        position = (INDEX_TYPE) (result - array);
+                        mid_pos = (INDEX_TYPE) (result - array);
                         LOG_DEBUG3 << "The element " << key << " is found, position : "
-                                << SSTR(position) << ", value: " << SSTR((KEY_TYPE) arr_ptr[position]) << END_LOG;
+                                << SSTR(mid_pos) << ", value: " << SSTR((KEY_TYPE) arr_ptr[mid_pos]) << END_LOG;
                         return true;
                     } else {
                         LOG_DEBUG3 << "The element is NOT found" << END_LOG;
