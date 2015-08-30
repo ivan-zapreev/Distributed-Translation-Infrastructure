@@ -86,7 +86,7 @@ namespace uva {
             //The value of the minimal probability weight
             const TLogProbBackOff MIN_LOG_PROB_WEIGHT = -10.0f;
             //The value of the unknown word probability weight
-            const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = MIN_LOG_PROB_WEIGHT;
+            const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = ZERO_LOG_PROB_WEIGHT;
             
             //Define the undefined N-gram level
             const TModelLevel UNDEF_NGRAM_LEVEL = 0u;
