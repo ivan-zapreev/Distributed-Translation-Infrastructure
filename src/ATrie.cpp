@@ -291,7 +291,7 @@ namespace uva {
                     ATrie<N>::storeNGramHashes(ngram);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
-                    result.prob = computeLogProbability(level);
+                    result.prob = max(computeLogProbability(level), ZERO_LOG_PROB_WEIGHT);
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 } else {
