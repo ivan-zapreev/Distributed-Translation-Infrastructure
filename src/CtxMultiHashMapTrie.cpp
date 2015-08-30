@@ -56,11 +56,11 @@ namespace uva {
                 }
 
                 //Perform an error check! This container has a lower bound on the N level.
-                if (N < BGRAM_LEVEL_VALUE) {
+                if (N < TWO_GRAM_LEVEL) {
 
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
-                            << "', but for '" << __FILE__ << "' it must be >= " << BGRAM_LEVEL_VALUE << "!";
+                            << "', but for '" << __FILE__ << "' it must be >= " << TWO_GRAM_LEVEL << "!";
                     throw Exception(msg.str());
                 }
 
@@ -78,8 +78,8 @@ namespace uva {
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntry & pbData = pOneGramMap->operator[](UNKNOWN_WORD_ID);
-                pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
-                pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
+                pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
+                pbData.back_off = ZERO_BACK_OFF_WEIGHT;
             }
 
             template<TModelLevel N>

@@ -55,23 +55,6 @@ namespace uva {
                         << prevProb << "," << prevBackOff << ") to ("                                        \
                         << newProb << "," << newBackOff << ")" << END_LOG;
 
-            //Stores the Bi-Gram level value
-            const TModelLevel BGRAM_LEVEL_VALUE = 2;
-
-            //The type used for storing log probabilities and back-off values
-            typedef float TLogProbBackOff;
-
-            //The base of the logarithm for stored probabilities/back-off weights
-            const TLogProbBackOff LOG_PROB_WEIGHT_BASE = 10.0;
-            //The zero value for probability/back-off weight
-            const TLogProbBackOff ZERO_LOG_PROB_WEIGHT = 0.0f;
-            //The value indicating an undefined probability/back-off weight
-            const TLogProbBackOff UNDEFINED_LOG_PROB_WEIGHT = 100.0f;
-            //The value of the minimal probability/back-off weight
-            const TLogProbBackOff MINIMAL_LOG_PROB_WEIGHT = -10.0f;
-            //The zerro like value for probability/back-off weight
-            const TLogProbBackOff ZERRO_LOG_PROB_WEIGHT = -100.0f;
-
             /**
              * This structure is used to define the trivial probability/
              * back-off pari to be stored for M-grams with 1 <= M < N

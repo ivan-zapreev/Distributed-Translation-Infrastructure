@@ -118,7 +118,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.back_off << END_LOG;
                             } else {
                                 //There is no back-off so set it to zero
-                                m_ngram.back_off = ZERO_LOG_PROB_WEIGHT;
+                                m_ngram.back_off = ZERO_BACK_OFF_WEIGHT;
                                 LOG_DEBUG2 << "The parsed N-gram '" << line.str()
                                         << "' does not have back-off using: " << m_ngram.back_off << END_LOG;
                             }

@@ -45,7 +45,7 @@ namespace uva {
                 TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
                     REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_ID,
@@ -83,7 +83,7 @@ namespace uva {
                 TProbBackOffEntry& pbData = make_M_GramDataRef(level, wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_LOG_PROB_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
@@ -118,12 +118,12 @@ namespace uva {
                 TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pData != ZERO_LOG_PROB_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pData != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
                     REPORT_COLLISION_WARNING(N, nGram, wordId, ctxId,
-                            pData, UNDEFINED_LOG_PROB_WEIGHT,
-                            nGram.prob, UNDEFINED_LOG_PROB_WEIGHT);
+                            pData, UNDEF_LOG_PROB_WEIGHT,
+                            nGram.prob, UNDEF_LOG_PROB_WEIGHT);
                 }
 
                 //Set/Update the probability
@@ -140,7 +140,7 @@ namespace uva {
                 const TShortId & wordId = getBackOffNGramEndWordHash();
                 const TModelLevel boCtxLen = level - 1;
                 //Set the initial back-off weight value to undefined!
-                TLogProbBackOff back_off = ZERO_LOG_PROB_WEIGHT;
+                TLogProbBackOff back_off = ZERO_BACK_OFF_WEIGHT;
 
                 LOG_DEBUG1 << "Computing back-off for an " << level
                         << "-gram the context length is " << boCtxLen << END_LOG;
@@ -273,12 +273,11 @@ namespace uva {
                         return pbData.prob;
                     } catch (out_of_range e) {
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
-                                << wordId << " returning:" << MINIMAL_LOG_PROB_WEIGHT
+                                << wordId << " returning:" << ZERO_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
-
-                        return MINIMAL_LOG_PROB_WEIGHT;
+                        return ZERO_LOG_PROB_WEIGHT;
                     }
                 }
             }

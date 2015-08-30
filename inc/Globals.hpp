@@ -69,6 +69,25 @@ namespace uva {
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
 
+            //The type used for storing log probabilities and back-off values
+            typedef float TLogProbBackOff;
+
+            //The zero value for back-off weight
+            const TLogProbBackOff ZERO_BACK_OFF_WEIGHT = 0.0f;
+            //The zero value for probability weight
+            const TLogProbBackOff ZERO_PROBABILITY_WEIGHT = 0.0f;
+            //The zero like value for log probability weight
+            const TLogProbBackOff ZERO_LOG_PROB_WEIGHT = -100.0f;
+
+            //The base of the logarithm for stored probabilities/back-off weights
+            const TLogProbBackOff LOG_PROB_WEIGHT_BASE = 10.0;
+            //The value indicating an undefined probability/back-off weight
+            const TLogProbBackOff UNDEF_LOG_PROB_WEIGHT = 100.0f;
+            //The value of the minimal probability weight
+            const TLogProbBackOff MIN_LOG_PROB_WEIGHT = -10.0f;
+            //The value of the unknown word probability weight
+            const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = MIN_LOG_PROB_WEIGHT;
+            
             //Define the undefined N-gram level
             const TModelLevel UNDEF_NGRAM_LEVEL = 0u;
             //Define the 1-gram level value
@@ -105,7 +124,7 @@ namespace uva {
                 //Stores the percent of the memory that will be allocated per word data 
                 //storage in one Trie level relative to the estimated number of needed data
                 const float INIT_MEM_ALLOC_PRCT = 0.5;
-                
+
                 //Stores the memory increment factor, the number we will multiply by the computed increment
                 const float MEM_INC_FACTOR = 0.3;
 

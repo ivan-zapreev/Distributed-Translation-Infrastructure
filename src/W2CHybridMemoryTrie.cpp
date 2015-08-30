@@ -80,8 +80,8 @@ namespace uva {
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntry & pbData = m_mgram_data[0][UNKNOWN_WORD_ID];
-                pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
-                pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
+                pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
+                pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
                 //Allocate more memory for probabilities and back off weight for
                 //the remaining M-gram levels until M < N. For M==N there is no

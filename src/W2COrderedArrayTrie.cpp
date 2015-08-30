@@ -67,8 +67,8 @@ namespace uva {
 
                 //03) Insert the unknown word data into the allocated array
                 TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
-                pbData.prob = MINIMAL_LOG_PROB_WEIGHT;
-                pbData.back_off = UNDEFINED_LOG_PROB_WEIGHT;
+                pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
+                pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
                 //04) Allocate data for the M-grams
 
