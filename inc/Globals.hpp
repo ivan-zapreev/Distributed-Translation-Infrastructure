@@ -66,6 +66,11 @@ namespace uva {
 
         //The following type definitions are important for storing the Tries information
         namespace tries {
+
+            //Enables all sorts of internal sanity checks,
+            //e.g. sets the collision detection on and off.
+            const bool DO_SANITY_CHECKS = false;
+            
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
 
@@ -96,10 +101,6 @@ namespace uva {
             const TModelLevel TWO_GRAM_LEVEL = ONE_GRAM_LEVEL + 1;
             //The considered maximum length of the N-gram
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
-
-            //Enables all sorts of internal sanity checks,
-            //e.g. sets the collision detection on and off.
-            const bool DO_SANITY_CHECKS = false;
 
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
