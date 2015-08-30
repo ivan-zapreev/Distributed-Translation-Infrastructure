@@ -247,18 +247,29 @@ namespace uva {
                                 << wordId << ", " << ctxId
                                 << "), need to back off!" << END_LOG;
 
-                        const TLogProbBackOff back_off = getBackOffWeight(ctxLen);
+                        //Compute the probability first
                         const TLogProbBackOff probability = computeLogProbability(ctxLen);
 
-                        LOG_DEBUG1 << "getBackOffWeight(" << ctxLen << ") = " << back_off
-                                << ", computeLogProbability(" << ctxLen << ") = "
-                                << probability << END_LOG;
+                        LOG_DEBUG1 << "computeLogProbability(" << ctxLen
+                                << ") = " << probability << END_LOG;
 
-                        LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
-                                << " + " << probability << " = " << (back_off + probability) << END_LOG;
+                        //If the probability is not zero then go on with computing the back-off
+                        if (probability > ZERO_LOG_PROB_WEIGHT) {
+                            const TLogProbBackOff back_off = getBackOffWeight(ctxLen);
 
-                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
-                        return back_off + probability;
+                            LOG_DEBUG1 << "getBackOffWeight(" << ctxLen
+                                    << ") = " << back_off << END_LOG;
+
+                            LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
+                                    << " + " << probability << " = " << (back_off + probability) << END_LOG;
+
+                            //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
+                            return back_off + probability;
+                        } else {
+                            //If the probability is zero then no need to compute the back-off can just stop
+                            //This is because the back-off is supposed to make the probability even smaller
+                            return ZERO_LOG_PROB_WEIGHT;
+                        }
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
@@ -291,7 +302,7 @@ namespace uva {
                     ATrie<N>::storeNGramHashes(ngram);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
-                    result.prob = max(computeLogProbability(level), ZERO_LOG_PROB_WEIGHT);
+                    result.prob = computeLogProbability(level);
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 } else {
