@@ -76,8 +76,10 @@ namespace uva {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
+                        
+                        
                         //Then check that the level values are correct!
-                        if (level < ONE_GRAM_LEVEL || level > N) {
+                        if ( DO_SANITY_CHECKS && (level < ONE_GRAM_LEVEL || level > N) ) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
                                     << "', but it must be within [" << ONE_GRAM_LEVEL << ", " << N << "]!";

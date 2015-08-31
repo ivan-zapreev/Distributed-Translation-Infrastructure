@@ -81,7 +81,7 @@ namespace uva {
                             const size_t min_mem_inc, const float mem_inc_factor)
                     : m_stype(stype), m_get_capacity_inc_func(get_capacity_inc_func),
                     m_min_mem_inc(min_mem_inc), m_mem_inc_factor(mem_inc_factor) {
-                        if (m_min_mem_inc < 1) {
+                        if (DO_SANITY_CHECKS && (m_min_mem_inc < 1)) {
                             throw Exception("Inappropriate minimum memory increment!");
                         }
                     }

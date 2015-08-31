@@ -130,7 +130,7 @@ namespace uva {
                     //Tokenise the line
                     tokenize(line, delim, ngram);
                     //Check that the number of words in the N-gram is proper
-                    if (ngram.size() < 1 || ngram.size() > n) {
+                    if (DO_SANITY_CHECKS && (ngram.size() < 1 || ngram.size() > n)) {
                         stringstream msg;
                         msg << "The line '" << line << "' is not with in [0, " << n << "] as expected!";
                         throw Exception(msg.str());

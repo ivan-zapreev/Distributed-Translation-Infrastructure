@@ -170,17 +170,17 @@ namespace uva {
                  */
                 template<const size_t LEN_LIMIT>
                 inline void copy_string(const TextPieceReader& other) {
-                    if (LEN_LIMIT >= other.m_len) {
-                        //Copy the data
-                        (void) strncpy(m_beginPtr, other.m_beginPtr, (size_t) other.m_len);
-                        //Re-set the other members using the available standard method
-                        set(m_beginPtr, other.m_len);
-                    } else {
+                    if (DO_SANITY_CHECKS && (LEN_LIMIT < other.m_len)) {
                         stringstream msg;
                         msg << "Unable to copy the string data to the target, "
                                 << "maximum copy length is " << LEN_LIMIT
                                 << ", the source length is " << other.m_len << "!";
                         throw Exception(msg.str());
+                    } else {
+                        //Copy the data
+                        (void) strncpy(m_beginPtr, other.m_beginPtr, (size_t) other.m_len);
+                        //Re-set the other members using the available standard method
+                        set(m_beginPtr, other.m_len);
                     }
                 }
 
@@ -300,13 +300,15 @@ namespace uva {
                  * @return 
                  */
                 inline char operator[](size_t idx) {
-                    if (idx < m_len) {
-                        return m_beginPtr[idx];
-                    } else {
+
+                    if (DO_SANITY_CHECKS && (idx >= m_len)) {
                         stringstream msg;
                         msg << "The improper index '" << idx
                                 << "' must be within [0, " << m_len << "]!";
                         throw Exception(msg.str());
+                    } else {
+
+                        return m_beginPtr[idx];
                     }
                 }
 
@@ -318,6 +320,7 @@ namespace uva {
                     if (other.m_len == m_len) {
                         return !strncmp(m_beginPtr, other.m_beginPtr, m_len);
                     } else {
+
                         return false;
                     }
                 }
@@ -327,6 +330,7 @@ namespace uva {
                  * @param other text piece to compare with
                  */
                 inline bool operator!=(const TextPieceReader & other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -339,6 +343,7 @@ namespace uva {
                     if (len == m_len) {
                         return !strncmp(m_beginPtr, other, m_len);
                     } else {
+
                         return false;
                     }
                 }
@@ -348,6 +353,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const char * other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -356,6 +362,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator==(const string & other) const {
+
                     return this->operator==(other.c_str());
                 }
 
@@ -364,6 +371,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const string & other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -383,6 +391,7 @@ namespace uva {
                                 m_str = TEXT_TOO_LARGE_STR;
                             }
                         } else {
+
                             m_str = TEXT_NOTHING_STR;
                         }
                         m_is_gen_str = false;
@@ -398,6 +407,7 @@ namespace uva {
              * @return the output stream
              */
             inline ostream& operator<<(ostream &output, const TextPieceReader & val) {
+
                 return output << val.str();
             };
 

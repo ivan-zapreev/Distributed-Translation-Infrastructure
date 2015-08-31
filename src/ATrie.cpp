@@ -296,8 +296,13 @@ namespace uva {
             template<TModelLevel N>
             void ATrie<N>::queryNGram(const SRawNGram & ngram, SProbResult & result) {
                 const TModelLevel level = ngram.level;
+
                 //Check the number of elements in the N-Gram
-                if ((1 <= level) && (level <= N)) {
+                if (DO_SANITY_CHECKS && ((level < 1) || (N < level))) {
+                    stringstream msg;
+                    msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
+                    throw Exception(msg.str());
+                } else {
                     //First transform the given M-gram into word hashes.
                     ATrie<N>::storeNGramHashes(ngram);
 
@@ -305,10 +310,6 @@ namespace uva {
                     result.prob = computeLogProbability(level);
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
-                } else {
-                    stringstream msg;
-                    msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
-                    throw Exception(msg.str());
                 }
             }
 

@@ -149,16 +149,18 @@ namespace uva {
                 m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
                 m_chached_ctx_id(UNDEFINED_WORD_ID) {
                     //Clear the memory for the buffer and initialize it
-                    memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof(char) );
+                    memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
-                    
+
                     //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
                         msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
                         throw Exception(msg.str());
                     }
-                    LOG_INFO3 << "Collision detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF")
+                    
+                    LOG_INFO3 << "Collision detections are: "
+                            << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
                 };
 
