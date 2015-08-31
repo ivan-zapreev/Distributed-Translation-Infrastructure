@@ -70,8 +70,34 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>src</Elem>
@@ -90,7 +116,7 @@
           <developmentMode>5</developmentMode>
         </cTool>
         <ccTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
@@ -284,7 +310,7 @@
           <developmentMode>5</developmentMode>
         </cTool>
         <ccTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>g++ -std=c++0x -m64</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
@@ -383,6 +409,7 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <developmentMode>6</developmentMode>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
