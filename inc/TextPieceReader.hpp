@@ -300,14 +300,12 @@ namespace uva {
                  * @return 
                  */
                 inline char operator[](size_t idx) {
-
                     if (DO_SANITY_CHECKS && (idx >= m_len)) {
                         stringstream msg;
                         msg << "The improper index '" << idx
                                 << "' must be within [0, " << m_len << "]!";
                         throw Exception(msg.str());
                     } else {
-
                         return m_beginPtr[idx];
                     }
                 }
@@ -320,7 +318,6 @@ namespace uva {
                     if (other.m_len == m_len) {
                         return !strncmp(m_beginPtr, other.m_beginPtr, m_len);
                     } else {
-
                         return false;
                     }
                 }
@@ -330,7 +327,6 @@ namespace uva {
                  * @param other text piece to compare with
                  */
                 inline bool operator!=(const TextPieceReader & other) const {
-
                     return !this->operator==(other);
                 }
 
@@ -353,7 +349,6 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const char * other) const {
-
                     return !this->operator==(other);
                 }
 
@@ -362,7 +357,6 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator==(const string & other) const {
-
                     return this->operator==(other.c_str());
                 }
 
@@ -371,7 +365,6 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const string & other) const {
-
                     return !this->operator==(other);
                 }
 
@@ -391,7 +384,6 @@ namespace uva {
                                 m_str = TEXT_TOO_LARGE_STR;
                             }
                         } else {
-
                             m_str = TEXT_NOTHING_STR;
                         }
                         m_is_gen_str = false;
@@ -407,7 +399,6 @@ namespace uva {
              * @return the output stream
              */
             inline ostream& operator<<(ostream &output, const TextPieceReader & val) {
-
                 return output << val.str();
             };
 
