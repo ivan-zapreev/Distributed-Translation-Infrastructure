@@ -36,23 +36,25 @@ using namespace uva::smt::utils::text;
 namespace uva {
     namespace smt {
         namespace tries {
-            
+
             template<TModelLevel N>
             CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ATrie<N>(_pWordIndex,
-            [] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
+            [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
             oGramMemFactor(_oGramMemFactor),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor) {
-                //Initialize the hash statistics map
-                for (int i = 0; i < N; i++) {
-                    hashSizes[i].first = UINT64_MAX;
-                    hashSizes[i].second = 0;
+                if (DO_SANITY_CHECKS) {
+                    //Initialize the hash statistics map
+                    for (int i = 0; i < N; i++) {
+                        hashSizes[i].first = UINT64_MAX;
+                        hashSizes[i].second = 0;
+                    }
                 }
 
                 //Perform an error check! This container has a lower bound on the N level.
@@ -123,9 +125,11 @@ namespace uva {
 
             template<TModelLevel N>
             CtxMultiHashMapTrie<N>::~CtxMultiHashMapTrie() {
-                //Print the hash sizes statistics
-                for (int i = 0; i < N; i++) {
-                    LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                if (DO_SANITY_CHECKS) {
+                    //Print the hash sizes statistics
+                    for (int i = 0; i < N; i++) {
+                        LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                    }
                 }
 
                 //Deallocate One-Grams

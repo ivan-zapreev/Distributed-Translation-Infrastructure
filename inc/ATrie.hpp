@@ -109,7 +109,7 @@ namespace uva {
              * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
              */
             struct SProbResult {
-                float prob;
+                TLogProbBackOff prob;
             };
 
             /**
@@ -119,12 +119,12 @@ namespace uva {
              * WARNING: Must only be called for the M-gram level 1 < M <= N!
              * 
              * @param wordId the word id
-             * @param ctxId the context id
+             * @param ctxId the in/out parameter that is a context id, the input is the previous context id, the output is the next context id
              * @param level the M-gram level we are working with, must have 1 < M <= N or UNDEF_NGRAM_LEVEL!
-             * @result the new context id
-             * @throw out_of_range in case the context can not be computed, e.g. does not exist.
+             * @result true if the next context id could be computed, otherwise false
+             * @throw nothign
              */
-            typedef std::function<TLongId(const TShortId wordId, const TLongId ctxId, const TModelLevel level) > TGetCtxIdFunct;
+            typedef std::function<bool (const TShortId wordId, TLongId & ctxId, const TModelLevel level) > TGetCtxIdFunct;
 
             /**
              * This is a common abstract class for all possible Trie implementations
@@ -158,7 +158,7 @@ namespace uva {
                         msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
                         throw Exception(msg.str());
                     }
-                    
+
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
@@ -295,10 +295,11 @@ namespace uva {
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, throws an exception.
                  * @param wordId the One-gram id
-                 * @return the reference to the storage structure
-                 * @throw out_of_range in case the data can not be located
+                 * @param ppData[out] the pointer to a pointer to the found data
+                 * @return true if the element was found, otherwise false
+                 * @throw nothing
                  */
-                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) = 0;
+                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -309,7 +310,7 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
+                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, TLongId ctxId) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -318,10 +319,12 @@ namespace uva {
                  * @param level the value of M in the M-gram
                  * @param wordId the id of the M-gram's last word
                  * @param ctxId the M-gram context (the M-gram's prefix) id
-                 * @return the reference to the storage structure
-                 * @throw out_of_range in case the data can not be located
+                 * @param ppData[out] the pointer to a pointer to the found data
+                 * @return true if the element was found, otherwise false
+                 * @throw nothing
                  */
-                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) = 0;
+                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
+                        TLongId ctxId, const TProbBackOffEntry **ppData) = 0;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -334,15 +337,15 @@ namespace uva {
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
+                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * @param wordId the id of the N-gram's last word
                  * @param ctxId the N-gram context (the N-gram's prefix) id
-                 * @return the reference to the storage structure
-                 * @throw out_of_range in case the data can not be located
+                 * @param ppData[out] the pointer to a pointer to the found data
+                 * @return true if the probability was found, otherwise false
+                 * @throw nothing
                  */
-                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
+                virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
+                        TLogProbBackOff & prob) = 0;
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
@@ -385,7 +388,8 @@ namespace uva {
                     TModelLevel idx = N - ngram.level;
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
                     for (TModelLevel i = 0; i < ngram.level; i++) {
-                        wordHashes[idx] = m_p_word_index->getId(ngram.tokens[i].str(), false);
+                        //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
+                        m_p_word_index->getId(ngram.tokens[i].str(), wordHashes[idx]);
                         LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                         idx++;
                     }
@@ -420,23 +424,24 @@ namespace uva {
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
-                 * @return the computed context id
-                 * @throws out_of_range in case the context could not be computed, 
-                 * the context M-gram is not present in the trie
+                 * @param ctxId [out] the context id to be computed
+                 * @return the true if the context could be computed, otherwise false
+                 * @throws nothing
                  */
-                inline TLongId getQueryContextId(const TModelLevel ctxLen, bool isBackOff) {
+                template<bool isBackOff>
+                inline bool getQueryContextId(const TModelLevel ctxLen, TLongId & ctxId) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
                     const TModelLevel bIdx = mGramEndIdx - ctxLen;
                     TModelLevel idx = bIdx;
 
-                    LOG_DEBUG3 << "Computing ctxId for context length: " << SSTR(ctxLen)
+                    LOG_DEBUG1 << "Computing ctxId for context length: " << SSTR(ctxLen)
                             << " for a  " << (isBackOff ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    TLongId ctxId = mGramWordIds[idx];
-                    LOG_DEBUG3 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
+                    ctxId = mGramWordIds[idx];
+                    LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
                     //Since the first word defines the second word context, and
@@ -444,23 +449,29 @@ namespace uva {
                     //for this N-gram in the trie ... so we through!
                     if (ctxId < MIN_KNOWN_WORD_ID) {
                         LOG_DEBUG1 << "The first " << SSTR(ctxLen + 1) << " wordId == "
-                                << SSTR(ctxId) << " so this word is not known, need to back-off!" << END_LOG;
-                        throw out_of_range("not found");
+                                << SSTR(ctxId) << " i.e. <unk>, need to back-off!" << END_LOG;
+                        return false;
+                    } else {
+                        //Compute the subsequent context ids
+                        for (; idx < eIdx;) {
+                            LOG_DEBUG1 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: "
+                                    << SSTR(mGramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
+                            if (m_get_ctx_id_func(mGramWordIds[idx], ctxId, (idx - bIdx) + 1)) {
+                                LOG_DEBUG1 << "getContextId(" << SSTR(mGramWordIds[idx])
+                                        << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
+                                idx++;
+                            } else {
+                                //The next context id could not be retrieved
+                                return false;
+                            }
+                        }
+
+                        LOG_DEBUG1 << "Resulting context hash for context length " << SSTR(ctxLen)
+                                << " of a  " << (isBackOff ? "back-off" : "probability")
+                                << " computation is: " << SSTR(ctxId) << END_LOG;
+
+                        return true;
                     }
-
-                    //Compute the subsequent context ids
-                    for (; idx < eIdx;) {
-                        LOG_DEBUG3 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: " << SSTR(mGramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
-                        ctxId = m_get_ctx_id_func(mGramWordIds[idx], ctxId, (idx - bIdx) + 1);
-                        LOG_DEBUG3 << "getContextId(" << SSTR(mGramWordIds[idx]) << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
-                        idx++;
-                    }
-
-                    LOG_DEBUG3 << "Resulting context hash for context length " << SSTR(ctxLen)
-                            << " of a  " << (isBackOff ? "back-off" : "probability")
-                            << " computation is: " << SSTR(ctxId) << END_LOG;
-
-                    return ctxId;
                 }
 
                 /**
@@ -469,36 +480,70 @@ namespace uva {
                  * WARNING: Must be called on M-grams with M > 1!
                  * 
                  * @param gram the N-gram with its tokens to create context for
-                 * @return the resulting hash of the context(w1 w2 w3)
+                 * @param the resulting hash of the context(w1 w2 w3)
+                 * @return true if the context was found otherwise false
                  */
                 template<DebugLevelsEnum logLevel>
-                inline TLongId getContextId(const SRawNGram & gram) {
-                    TLongId ctxId;
-
+                inline bool getContextId(const SRawNGram & gram, TLongId &ctxId) {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
                         const string & token = gram.tokens[0].str();
+                        TShortId wordId;
 
-                        //There is no id cached for this M-gram context - compute it
-                        ctxId = m_p_word_index->getId(token);
+                        //There is no id cached for this M-gram context - find it
+                        if (m_p_word_index->getId(token, wordId)) {
+                            //The first word id is the first context id
+                            ctxId = wordId;
+                            LOGGER(logLevel) << "ctxId = getId('" << token
+                                    << "') = " << SSTR(ctxId) << END_LOG;
 
-                        LOGGER(logLevel) << "ctxId = getId('" << token << "') = " << SSTR(ctxId) << END_LOG;
+                            //Iterate and compute the hash:
+                            for (int i = 1; i < (gram.level - 1); i++) {
+                                const string & token = gram.tokens[i].str();
+                                if (m_p_word_index->getId(token, wordId)) {
+                                    LOGGER(logLevel) << "wordId = getId('" << token
+                                            << "') = " << SSTR(wordId) << END_LOG;
+                                    if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {
+                                        LOGGER(logLevel) << "ctxId = computeCtxId( "
+                                                << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
+                                    } else {
+                                        //The next context id could not be computed
+                                        LOGGER(logLevel) << "The next context for wordId: "
+                                                << SSTR(wordId) << " and ctxId: "
+                                                << SSTR(ctxId) << "on level: " << SSTR((i + 1))
+                                                << "could not be computed!" << END_LOG;
+                                        return false;
+                                    }
+                                } else {
+                                    //The next word Id was not found, it is
+                                    //unknown, so we can stop searching
+                                    LOGGER(logLevel) << "The wordId for '" << token
+                                            << "' could not be found!" << END_LOG;
+                                    return false;
+                                }
+                            }
 
-                        //Iterate and compute the hash:
-                        for (int i = 1; i < (gram.level - 1); i++) {
-                            const string & token = gram.tokens[i].str();
-                            const TShortId wordId = m_p_word_index->getId(token);
-                            LOGGER(logLevel) << "wordId = getId('" << token << "') = " << SSTR(wordId) << END_LOG;
-                            ctxId = m_get_ctx_id_func(wordId, ctxId, i + 1);
-                            LOGGER(logLevel) << "ctxId = createContext( wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
+                            //Cache the newly computed context id for the given n-gram context
+                            setCacheContextId(gram, ctxId);
+
+                            //The context Id was found in the Trie
+                            LOGGER(logLevel) << "The ctxId could be computed, "
+                                    << "it's value is: " << SSTR(ctxId) << END_LOG;
+                            return true;
+                        } else {
+                            //The context id could not be computed as
+                            //the first N-gram's word is already unknown
+                            LOGGER(logLevel) << "The wordId for '" << token
+                                    << "' could not be found!" << END_LOG;
+                            return false;
                         }
-
-                        //Cache the newly computed context id for the given n-gram context
-                        setCacheContextId(gram, ctxId);
+                    } else {
+                        //The context Id was found in the cache
+                        LOGGER(logLevel) << "The ctxId was found in cache, "
+                                << "it's value is: " << SSTR(ctxId) << END_LOG;
+                        return true;
                     }
-
-                    return ctxId;
                 }
 
                 /**
@@ -554,8 +599,42 @@ namespace uva {
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
 
-                //The temporary data structure to store the N-gram query word hashes
+                //The temporary data structure to store the N-gram query word ids
                 TShortId mGramWordIds[N];
+
+                /**
+                 * This function should be called in case we can not get the probability for
+                 * the given M-gram and we want to compute it's back-off probability instead
+                 * @param ctxLen the length of the context for the M-gram for which we could
+                 * not get the probability from the trie.
+                 * @param prob [out] the reference to the probability to be found/computed
+                 */
+                inline void getProbabilityBackOff(const TModelLevel ctxLen, TLogProbBackOff & prob) {
+                    //Compute the lover level probability
+                    getProbability(ctxLen, prob);
+
+                    LOG_DEBUG1 << "getProbability(" << ctxLen
+                            << ") = " << prob << END_LOG;
+
+                    //If the probability is not zero then go on with computing the
+                    //back-off. Otherwise it does not make sence to compute back-off.
+                    if (prob > ZERO_LOG_PROB_WEIGHT) {
+                        TLogProbBackOff back_off;
+                        if (!getBackOffWeight(ctxLen, back_off)) {
+                            //Set the back-off weight value to zero as there is no back-off found!
+                            back_off = ZERO_BACK_OFF_WEIGHT;
+                        }
+
+                        LOG_DEBUG1 << "getBackOffWeight(" << ctxLen
+                                << ") = " << back_off << END_LOG;
+
+                        LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
+                                << " + " << prob << " = " << (back_off + prob) << END_LOG;
+
+                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
+                        prob += back_off;
+                    }
+                }
 
                 /**
                  * This recursive function implements the computation of the
@@ -564,18 +643,19 @@ namespace uva {
                  * variable of the class. So it must be pre-set with proper
                  * word hash values first!
                  * @param level the M-gram level for which the probability is to be computed
-                 * @return the computed probability value
+                 * @param prob [out] the reference to the probability to be found/computed
                  */
-                TLogProbBackOff computeLogProbability(const TModelLevel level);
+                void getProbability(const TModelLevel level, TLogProbBackOff & prob);
 
                 /**
                  * This recursive function allows to get the back-off weight for the current context.
                  * The N-Gram hashes are obtained from the pre-computed data member array _wordHashes
                  * @param level the M-gram level for which the back-off weight is to be found,
                  * is equal to the context length of the K-Gram in the caller function
+                 * @param back_off [out] the back-off weight to be computed
                  * @return the resulting back-off weight probability
                  */
-                TLogProbBackOff getBackOffWeight(const TModelLevel level);
+                bool getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off);
 
             };
 

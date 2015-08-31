@@ -80,26 +80,22 @@ namespace uva {
 
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
-                     * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_HASH
-                     * @param isThrow if true then throws an exception if the word is not known,
-                     * if false then in the same situation will return UNKNOWN_WORD_HASH
+                     * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
-                     * @return the resulting hash
-                     * @throw out_of_range exception if the given word is not known if isThrow == true,
-                     * otherwise return UNKNOWN_WORD_HASH
+                     * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
+                     * @return true if the word id is found, otherwise false
                      */
-                    virtual TShortId getId(const string & token, const bool isThrow = true) const {
-                        if (isThrow) {
-                            return _pWordIndexMap->at(token);
+                    virtual bool getId(const string & token, TShortId &wordId) const {
+                        TWordIndexMapConstIter result = _pWordIndexMap->find(token);
+                        if (result == _pWordIndexMap->end()) {
+                            LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
+                                    << UNKNOWN_WORD_STR << "', id: "
+                                    << SSTR(UNKNOWN_WORD_ID) << END_LOG;
+                            wordId = UNKNOWN_WORD_ID;
+                            return false;
                         } else {
-                            try {
-                                return _pWordIndexMap->at(token);
-                            } catch (out_of_range e) {
-                                LOG_INFO2 << "Word: '" << token << "' is not known! Mapping it to: '"
-                                        << UNKNOWN_WORD_STR << "', id: "
-                                        << SSTR(UNKNOWN_WORD_ID) << END_LOG;
-                            }
-                            return UNKNOWN_WORD_ID;
+                            wordId = result->second;
+                            return true;
                         }
                     }
 
@@ -152,6 +148,7 @@ namespace uva {
 
                     //The word index map type
                     typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                    typedef TWordIndexMap::const_iterator TWordIndexMapConstIter;
 
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
                     TWordIndexAllocator * _pWordIndexAlloc;

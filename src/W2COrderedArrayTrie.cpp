@@ -39,7 +39,7 @@ namespace uva {
             template<TModelLevel N>
             W2COrderedArrayTrie<N>::W2COrderedArrayTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
-            [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
+            [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {

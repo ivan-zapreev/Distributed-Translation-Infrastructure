@@ -37,7 +37,7 @@ namespace uva {
             template<TModelLevel N>
             C2WOrderedArrayTrie<N>::C2WOrderedArrayTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
-            [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
+            [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_1_gram_data(NULL), m_N_gram_data(NULL) {

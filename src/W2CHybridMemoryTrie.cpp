@@ -37,7 +37,7 @@ namespace uva {
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::W2CHybridMemoryTrie(AWordIndex * const p_word_index)
             : ATrie<N>(p_word_index,
-            [&] (const TShortId wordId, const TLongId ctxId, const TModelLevel level) -> TLongId {
+            [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_storage_factory(NULL) {

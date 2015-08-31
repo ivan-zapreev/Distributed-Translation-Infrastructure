@@ -86,9 +86,13 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
+                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
                     //Get the word probability and back-off data reference
-                    return m_mgram_data[0][wordId];
+
+                    *ppData = &m_mgram_data[0][wordId];
+
+                    //The data should always be present, unless of course this is a bad index!
+                    return true;
                 };
 
                 /**
@@ -121,12 +125,16 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
+                        TLongId ctxId, const TProbBackOffEntry **ppData) {
                     //Get the context id, note we use short ids here!
-                    const TShortId nextCtxId = getContextId(wordId, ctxId, level);
-                    
-                    //Return the data by the context
-                    return m_mgram_data[level - 1][nextCtxId];
+                    if (getContextId(wordId, ctxId, level)) {
+                        //Return the data by the context
+                        *ppData = &m_mgram_data[level - 1][ctxId];
+                        return true;
+                    } else {
+                        return false;
+                    }
                 };
 
                 /**
@@ -139,28 +147,41 @@ namespace uva {
                     StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
-                        LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(N) << END_LOG;
+                        LOG_DEBUG3 << "Allocating storage for level " << SSTR(N)
+                                << ", wordId " << SSTR(wordId) << END_LOG;
                     }
+
+                    LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(N)
+                            << ", wordId " << SSTR(wordId)
+                            << ", ctxId " << SSTR(ctxId) << END_LOG;
                     return (TLogProbBackOff &) ctx_mapping->operator[](ctxId);
                 };
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
+                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                   //Try to find the word mapping first
+                virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
+                        TLogProbBackOff & prob) {
+                    //Try to find the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
 
                     //If the mapping is present the search further, otherwise an exception
                     if (ctx_mapping != NULL) {
-                        //NOTE: we can not re-use the getContextId method here as we need a reference to data!
-                        return (TLogProbBackOff &) ctx_mapping->at(ctxId);
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                        if (result == ctx_mapping->end()) {
+                            //The data could not be found
+                            return false;
+                        } else {
+                            //The data could be found
+                            LOG_DEBUG1 << "Found the probability value: " << SSTR((TLogProbBackOff) result->second)
+                                    << ", wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+                            prob = (TLogProbBackOff &) result->second;
+                            return true;
+                        }
                     } else {
                         LOG_DEBUG1 << "There are no elements @ level: " << SSTR(N) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
-                        throw out_of_range("not found");
+                        return false;
                     }
                 };
 
@@ -213,22 +234,36 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level 1 < M <= N!
                  * 
                  * @param wordId the current word id
-                 * @param ctxId the previous context id
+                 * @param ctxId [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
+                 * @throw nothing
                  */
-                inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
+                inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
+                    //Retrieve the context data for the given word
                     StorageContainer* ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
 
                     //Check that the context data is available
                     if (ctx_mapping != NULL) {
-                        return ctx_mapping->at(ctxId);
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                        if (result == ctx_mapping->end()) {
+                            LOG_DEBUG2 << "Can not find ctxId: " << SSTR(ctxId) << " for level: "
+                                    << SSTR(level) << ", wordId: " << SSTR(wordId) << END_LOG;
+                            return false;
+                        } else {
+                            LOG_DEBUG2 << "Found next ctxId: " << SSTR(result->second)
+                                    << " for level: " << SSTR(level) << ", wordId: "
+                                    << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                            ctxId = result->second;
+                            return true;
+                        }
                     } else {
-                        LOG_DEBUG1 << "Can not compute context for level: " << level << ", wordId: "
-                                << wordId << ", previous ctxId: " << ctxId << END_LOG;
-                        throw out_of_range("not found");
+                        LOG_DEBUG2 << "No context data for: " << SSTR(level)
+                                << ", wordId: " << SSTR(wordId) << END_LOG;
+                        return false;
                     }
                 }
             };

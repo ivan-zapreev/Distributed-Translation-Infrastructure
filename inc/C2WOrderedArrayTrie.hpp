@@ -116,10 +116,6 @@ namespace uva {
                     TShortId wordId;
                     TLogProbBackOff prob;
 
-                    operator TShortId() const {
-                        return ctxId;
-                    }
-
                     operator TLongId() const {
                         TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
                         LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
@@ -143,10 +139,13 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
+                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
                     LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
-                    return m_1_gram_data[wordId];
+                    *ppData = &m_1_gram_data[wordId];
+
+                    //The data should always be present, unless of course this is a bad index!
+                    return true;
                 };
 
                 /**
@@ -159,8 +158,8 @@ namespace uva {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
-                    LOG_DEBUG2 << "Adding\t" << SSTR(level) << "-gram with ctxId:\t"
-                            << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
+                    LOG_DEBUG2 << "Adding " << SSTR(level) << "-gram with ctxId: "
+                            << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
 
                     //First get the sub-array reference. 
                     TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
@@ -205,7 +204,8 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
+                        TLongId ctxId, const TProbBackOffEntry **ppData) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
@@ -213,10 +213,14 @@ namespace uva {
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Get the context id, note we use short ids here!
-                    TShortId nextCtxId = (TShortId) getContextId(wordId, ctxId, level);
-
-                    //Return the data by the context
-                    return m_M_gram_data[mgram_idx][nextCtxId].data;
+                    if (getContextId(wordId, ctxId, level)) {
+                        //Return the data by the context
+                        *ppData = &m_M_gram_data[mgram_idx][ctxId].data;
+                        return true;
+                    } else {
+                        //The data could not be found
+                        return false;
+                    }
                 };
 
                 /**
@@ -244,35 +248,40 @@ namespace uva {
                     m_N_gram_data[n_gram_idx].ctxId = ctxId;
                     m_N_gram_data[n_gram_idx].wordId = wordId;
 
+                    //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    LOG_DEBUG4 << "Storing N-Gram: TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                            << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
+
                     //return the reference to the probability
                     return m_N_gram_data[n_gram_idx].prob;
                 };
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
+                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
+                virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
+                        TLogProbBackOff & prob) {
                     LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
+                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
                             << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
                     TShortId idx = UNDEFINED_ARR_IDX;
-                    if (bsearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[NUM_M_N_GRAM_LEVELS - 1], key, idx)) {
+                    if (bsearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[N_GRAM_IDX], key, idx)) {
                         //return the reference to the probability
-                        return m_N_gram_data[idx].prob;
+                        prob = m_N_gram_data[idx].prob;
+                        return true;
                     } else {
                         LOG_DEBUG1 << "Unable to find " << SSTR(N) << "-gram data for ctxId: "
                                 << SSTR(ctxId) << ", wordId: " << SSTR(wordId)
                                 << ", key " << SSTR(key) << END_LOG;
-                        throw out_of_range("not found");
+                        return false;
                     }
                 };
 
@@ -341,12 +350,12 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * 
                  * @param wordId the current word id
-                 * @param ctxId the previous context id
+                 * @param ctxId [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
-                 * @throw out_of_range in case the context can not be computed, e.g. does not exist.
+                 * @throw nothing
                  */
-                inline TLongId getContextId(TShortId wordId, TLongId ctxId, const TModelLevel level) {
+                inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
                     //Compute the m-gram index
                     const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
 
@@ -375,20 +384,23 @@ namespace uva {
                         TShortId nextCtxId = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
                         if (bsearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
-                            return nextCtxId;
+                            LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
+                                    << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
+                            ctxId = nextCtxId;
+                            return true;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram ctxId for level: "
                                     << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                     << ", wordId: " << SSTR(wordId) << ", is not in the available range: ["
                                     << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId) << " ... "
                                     << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
-                            throw out_of_range("not found");
+                            return false;
                         }
                     } else {
                         LOG_DEBUG1 << "Unable to find M-gram context id for level: "
                                 << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                 << ", nothing present in that context!" << END_LOG;
-                        throw out_of_range("not found");
+                        return false;
                     }
                 }
             };

@@ -73,7 +73,7 @@ namespace uva {
 
                     const ARR_ELEM_TYPE * result = static_cast<const ARR_ELEM_TYPE*> (std::bsearch(&key, arr_ptr,
                             size, sizeof (ARR_ELEM_TYPE), [] (const void * p_a, const void * p_b) -> int {
-                                const KEY_TYPE & v_a = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_a));
+                                const KEY_TYPE & v_a = *(static_cast<const KEY_TYPE*> (p_a));
                                 const KEY_TYPE & v_b = (const KEY_TYPE) *(static_cast<const ARR_ELEM_TYPE*> (p_b));
                                         LOG_DEBUG4 << "Comparing: v_a = " << SSTR(v_a) << ", and v_b = " << SSTR(v_b) << END_LOG;
                                 if (v_a < v_b) {

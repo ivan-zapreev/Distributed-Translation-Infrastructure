@@ -9,6 +9,7 @@
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
       <itemPath>inc/ATrie.hpp</itemPath>
+      <itemPath>./inc/AWordIndex.hpp</itemPath>
       <itemPath>inc/ArrayUtils.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
       <itemPath>inc/CtxMultiHashMapTrie.hpp</itemPath>
@@ -17,12 +18,14 @@
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
+      <itemPath>./inc/HashMapWordIndex.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
+      <itemPath>./inc/TrieTypeFactory.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
@@ -107,6 +110,12 @@
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -193,6 +202,12 @@
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -289,6 +304,12 @@
           <commandLine>-m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -374,6 +395,12 @@
           <commandLine>-lrt -m64</commandLine>
         </linkerTool>
       </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
@@ -460,6 +487,12 @@
           <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
         </linkerTool>
       </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">

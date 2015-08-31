@@ -59,6 +59,8 @@ namespace uva {
             class CtxToPBUnorderedMapStorage {
             public:
 
+                typedef TStorageUnsignedMap::const_iterator const_iterator;
+
                 CtxToPBUnorderedMapStorage(TStorageMapAllocator & alloc) {
                     m_p_map = new TStorageUnsignedMap(alloc);
                 };
@@ -66,13 +68,21 @@ namespace uva {
                 virtual ~CtxToPBUnorderedMapStorage() {
                     delete m_p_map;
                 };
-
-                TShortId & operator[](const TShortId ctx_idx) {
+                
+                inline TShortId & operator[](const TShortId ctx_idx) {
                     return m_p_map->operator[](ctx_idx);
                 };
 
-                const TShortId & at(const TShortId ctx_idx) const throw (out_of_range) {
+                inline const TShortId & at(const TShortId ctx_idx) const throw (out_of_range) {
                     return m_p_map->at(ctx_idx);
+                };
+
+                inline const_iterator find(const TShortId ctx_idx) {
+                    return m_p_map->find(ctx_idx);
+                };
+
+                inline const_iterator end() {
+                    return m_p_map->end();
                 };
 
             private:

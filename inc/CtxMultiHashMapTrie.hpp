@@ -134,10 +134,12 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
-                    //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
-                        hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
+                    if (DO_SANITY_CHECKS) {
+                        //Add hash key statistics
+                        if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                            hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
+                            hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
+                        }
                     }
 
                     //Get the word probability and back-off data reference
@@ -149,8 +151,14 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry & get_1_GramDataRef(const TShortId wordId) {
-                    return pOneGramMap->at(wordId);
+                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+                    TOneGramsMapConstIter result = pOneGramMap->find(wordId);
+                    if (result == pOneGramMap->end()) {
+                        return false;
+                    } else {
+                        *ppData = &result->second;
+                        return true;
+                    }
                 };
 
                 /**
@@ -159,19 +167,22 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                virtual TProbBackOffEntry & make_M_GramDataRef(const TModelLevel level, const TShortId wordId, TLongId ctxId) {
                     //Store the N-tires from length 2 on and indexing starts
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
-                    const TLongId keyCtxId = getContextId(wordId, ctxId);
+
+                    //Note: there is no need to check on the result of the function
+                    //as in this Trie the context can always be computed!
+                    (void) getContextId(wordId, ctxId);
 
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[level - 1].first = min<TLongId>(keyCtxId, hashSizes[level - 1].first);
-                        hashSizes[level - 1].second = max<TLongId>(keyCtxId, hashSizes[level - 1].second);
+                    if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                        hashSizes[level - 1].first = min<TLongId>(ctxId, hashSizes[level - 1].first);
+                        hashSizes[level - 1].second = max<TLongId>(ctxId, hashSizes[level - 1].second);
                     }
 
-                    return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](keyCtxId);
+                    return pMGramMap[level - MGRAM_IDX_OFFSET]->operator[](ctxId);
                 };
 
                 /**
@@ -180,9 +191,24 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual const TProbBackOffEntry& get_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
-                        const TLongId keyCtxId = getContextId(wordId, ctxId);
-                        return pMGramMap[level - MGRAM_IDX_OFFSET]->at(keyCtxId);
+                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
+                        TLongId ctxId, const TProbBackOffEntry **ppData) {
+                    //Get the next context id
+                    if (getContextId(wordId, ctxId)) {
+                        //Search for the map for that context id
+                        TMGramsMap::const_iterator result = pMGramMap[level - MGRAM_IDX_OFFSET]->find(ctxId);
+                        if (result == pMGramMap[level - MGRAM_IDX_OFFSET]->end()) {
+                            //There is no data found under this context
+                            return false;
+                        } else {
+                            //There is data found under this context
+                            *ppData = &result->second;
+                            return true;
+                        }
+                    } else {
+                        //The context id could not be found
+                        return false;
+                    }
                 };
 
                 /**
@@ -191,29 +217,45 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
+                virtual TLogProbBackOff & make_N_GramDataRef(const TShortId wordId, TLongId ctxId) {
                     //Data stores the N-tires from length 2 on, therefore "idx-1"
                     //Get/Create the mapping for this word in the Trie level of the N-gram
-                    const TLongId keyCtxId = getContextId(wordId, ctxId);
+
+                    //Note: there is no need to check on the result of the function
+                    //as in this Trie the context can always be computed!
+                    (void) getContextId(wordId, ctxId);
 
                     //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[N - 1].first = min<TLongId>(keyCtxId, hashSizes[N - 1].first);
-                        hashSizes[N - 1].second = max<TLongId>(keyCtxId, hashSizes[N - 1].second);
+                    if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                        hashSizes[N - 1].first = min<TLongId>(ctxId, hashSizes[N - 1].first);
+                        hashSizes[N - 1].second = max<TLongId>(ctxId, hashSizes[N - 1].second);
                     }
 
-                    return pNGramMap->operator[](keyCtxId);
+                    return pNGramMap->operator[](ctxId);
                 };
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
+                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                virtual const TLogProbBackOff& get_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    const TLongId keyCtxId = getContextId(wordId, ctxId);
-                    return pNGramMap->at(keyCtxId);
+                virtual bool get_N_GramProb(const TShortId wordId, TLongId ctxId,
+                        TLogProbBackOff & prob) {
+                    //Get the next context id
+                    if (getContextId(wordId, ctxId)) {
+                        //Search for the map for that context id
+                        TNGramsMap::const_iterator result = pNGramMap->find(ctxId);
+                        if (result == pNGramMap->end()) {
+                            //There is no data found under this context
+                            return false;
+                        } else {
+                            //There is data found under this context
+                            prob = result->second;
+                            return true;
+                        }
+                    } else {
+                        //The context id could not be found
+                        return false;
+                    }
                 };
 
             private:
@@ -230,6 +272,7 @@ namespace uva {
                 typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
                 //The One Grams map type
                 typedef unordered_map<TShortId, TProbBackOffEntry, std::hash<TShortId>, std::equal_to<TShortId>, TOneGramAllocator > TOneGramsMap;
+                typedef TOneGramsMap::const_iterator TOneGramsMapConstIter;
                 //The actual data storage for the One Grams
                 TOneGramAllocator * pOneGramAlloc;
                 //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
@@ -268,7 +311,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                CtxMultiHashMapTrie(const CtxMultiHashMapTrie& orig)
+                CtxMultiHashMapTrie(const CtxMultiHashMapTrie & orig)
                 : ATrie<N>(NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
@@ -300,13 +343,16 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level M > 1!
                  * 
                  * @param wordId the current word id
-                 * @param ctxId the previous context id
+                 * @param ctxId [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
                  * @return the resulting context
+                 * @throw nothing
                  */
-                static inline TLongId getContextId(TShortId hash, TLongId context, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
+                static inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
                     //Use the Szudzik algorithm as it outperforms Cantor
-                    return szudzik(hash, context);
+                    ctxId = szudzik(wordId, ctxId);
+                    //The context can always be computed
+                    return true;
                 }
 
             };
