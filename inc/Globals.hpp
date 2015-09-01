@@ -108,8 +108,6 @@ namespace uva {
             }
 
             namespace __CtxMultiHashMapTrie {
-                //The unordered map memory factor for the One-Grams in ContextMultiHashMapTrie
-                const float UM_O_GRAM_MEMORY_FACTOR = 2.6;
                 //The unordered map memory factor for the M-Grams in ContextMultiHashMapTrie
                 const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
                 //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie

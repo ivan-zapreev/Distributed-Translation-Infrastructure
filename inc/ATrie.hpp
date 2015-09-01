@@ -364,7 +364,7 @@ namespace uva {
                  * @return the word hash for the end word of the back-off N-Gram
                  */
                 inline const TShortId & getBackOffNGramEndWordHash() {
-                    return mGramWordIds[N - 2];
+                    return m_GramWordIds[N - 2];
                 }
 
                 /**
@@ -372,7 +372,7 @@ namespace uva {
                  * @return the word hash for the last word in the N-gram
                  */
                 inline const TShortId & getNGramEndWordHash() {
-                    return mGramWordIds[N - 1];
+                    return m_GramWordIds[N - 1];
                 }
 
                 /**
@@ -401,7 +401,7 @@ namespace uva {
                  */
                 inline void storeNGramHashes(const SRawNGram & ngram) {
                     //First transform the given M-gram into word hashes.
-                    tokensToId(ngram, mGramWordIds);
+                    tokensToId(ngram, m_GramWordIds);
                 }
 
                 /**
@@ -440,7 +440,7 @@ namespace uva {
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    ctxId = mGramWordIds[idx];
+                    ctxId = m_GramWordIds[idx];
                     LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
@@ -455,9 +455,9 @@ namespace uva {
                         //Compute the subsequent context ids
                         for (; idx < eIdx;) {
                             LOG_DEBUG1 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: "
-                                    << SSTR(mGramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
-                            if (m_get_ctx_id_func(mGramWordIds[idx], ctxId, (idx - bIdx) + 1)) {
-                                LOG_DEBUG1 << "getContextId(" << SSTR(mGramWordIds[idx])
+                                    << SSTR(m_GramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
+                            if (m_get_ctx_id_func(m_GramWordIds[idx], ctxId, (idx - bIdx) + 1)) {
+                                LOG_DEBUG1 << "getContextId(" << SSTR(m_GramWordIds[idx])
                                         << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
                                 idx++;
                             } else {
@@ -600,7 +600,7 @@ namespace uva {
                 TLongId m_chached_ctx_id;
 
                 //The temporary data structure to store the N-gram query word ids
-                TShortId mGramWordIds[N];
+                TShortId m_GramWordIds[N];
 
                 /**
                  * This function should be called in case we can not get the probability for

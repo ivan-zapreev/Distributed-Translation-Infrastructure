@@ -110,7 +110,6 @@ namespace uva {
                  * the greedy allocator for the unordered_map
                  */
                 explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _oGramMemFactor = __CtxMultiHashMapTrie::UM_O_GRAM_MEMORY_FACTOR,
                         const float _mGramMemFactor = __CtxMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                         const float _nGramMemFactor = __CtxMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
@@ -143,7 +142,7 @@ namespace uva {
                     }
 
                     //Get the word probability and back-off data reference
-                    return pOneGramMap->operator[](wordId);
+                    return m_1_gram_data[wordId];
                 };
 
                 /**
@@ -152,13 +151,9 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
-                    TOneGramsMapConstIter result = pOneGramMap->find(wordId);
-                    if (result == pOneGramMap->end()) {
-                        return false;
-                    } else {
-                        *ppData = &result->second;
-                        return true;
-                    }
+                    //The data is always present.
+                    *ppData = &m_1_gram_data[wordId];
+                    return true;
                 };
 
                 /**
@@ -259,28 +254,16 @@ namespace uva {
                 };
 
             private:
-                //The One-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float oGramMemFactor;
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float mGramMemFactor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float nGramMemFactor;
 
-                //The type of key,value pairs to be stored in the One Grams map
-                typedef pair< const TShortId, TProbBackOffEntry> TOneGramEntry;
-                //The typedef for the One Grams map allocator
-                typedef GreedyMemoryAllocator< TOneGramEntry > TOneGramAllocator;
-                //The One Grams map type
-                typedef unordered_map<TShortId, TProbBackOffEntry, std::hash<TShortId>, std::equal_to<TShortId>, TOneGramAllocator > TOneGramsMap;
-                typedef TOneGramsMap::const_iterator TOneGramsMapConstIter;
-                //The actual data storage for the One Grams
-                TOneGramAllocator * pOneGramAlloc;
-                //The map storing the One-Grams: I.e. the word indexes and the word probabilities.
-                //NOTE: Using an array here in place of an unordered hash map gave 
-                //some 25 Mb reduction on a 20 Gb model ... this is negligible. As
-                //the memory statistics is not accurate that could just be noise! Also,
-                //I see that there are typically not so many 1-Grams an plenty of 5-grams
-                TOneGramsMap * pOneGramMap;
+                //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
+                static const TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
+
+                //Stores the 1-gram data
+                TProbBackOffEntry * m_1_gram_data;
 
                 //The type of key,value pairs to be stored in the M Grams map
                 typedef pair< const TLongId, TProbBackOffEntry> TMGramEntry;
@@ -312,7 +295,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 CtxMultiHashMapTrie(const CtxMultiHashMapTrie & orig)
-                : ATrie<N>(NULL, NULL), oGramMemFactor(0.0), mGramMemFactor(0.0), nGramMemFactor(0.0) {
+                : ATrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

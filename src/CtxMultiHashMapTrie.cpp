@@ -39,16 +39,15 @@ namespace uva {
 
             template<TModelLevel N>
             CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
-                    const float _oGramMemFactor,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ATrie<N>(_pWordIndex,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
-            oGramMemFactor(_oGramMemFactor),
             mGramMemFactor(_mGramMemFactor),
-            nGramMemFactor(_nGramMemFactor) {
+            nGramMemFactor(_nGramMemFactor),
+                        m_1_gram_data(NULL) {
                 if (DO_SANITY_CHECKS) {
                     //Initialize the hash statistics map
                     for (int i = 0; i < N; i++) {
@@ -73,13 +72,15 @@ namespace uva {
             void CtxMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
 
-                const size_t numEntries = counts[0] + 1; //Add an extra element for the <unknown/> word
+                const size_t num_word_ids = counts[0] + EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
 
-                //Reserve the memory for the map
-                reserve_mem_unordered_map<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc, numEntries, "1-Grams", oGramMemFactor);
+                //Pre-allocate the 1-Gram data
+                m_1_gram_data = new TProbBackOffEntry[num_word_ids];
+                memset(m_1_gram_data, 0, num_word_ids * sizeof (TProbBackOffEntry));
+                
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntry & pbData = pOneGramMap->operator[](UNKNOWN_WORD_ID);
+                TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
             }
@@ -133,7 +134,9 @@ namespace uva {
                 }
 
                 //Deallocate One-Grams
-                deallocate_container<TOneGramsMap, TOneGramAllocator>(&pOneGramMap, &pOneGramAlloc);
+                if (m_1_gram_data != NULL) {
+                    delete[] m_1_gram_data;
+                }
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
                 for (int idx = 0; idx < (N - 2); idx++) {

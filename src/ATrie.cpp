@@ -251,7 +251,7 @@ namespace uva {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
                     TLongId ctxId;
 
-                    //Compute the context hash based on what is stored in _wordHashes and context length
+                    //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (getQueryContextId<false>(ctxLen, ctxId)) {
 
                         LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
