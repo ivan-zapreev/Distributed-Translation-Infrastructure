@@ -156,6 +156,8 @@ namespace uva {
             const static TShortId MAX_SHORT_ID_VALUE = UINT32_MAX;
             //This is the long id type to be used for e.g. long context ids 
             typedef uint64_t TLongId;
+            //The signed version of the long id, is used in binary searches and such
+            typedef int64_t TSLongId;
 
             //Combine two short ids into one long id in a bit fashion
 #define TShortId_TShortId_2_TLongId(first, second) (((TLongId) first) << 32) | second
