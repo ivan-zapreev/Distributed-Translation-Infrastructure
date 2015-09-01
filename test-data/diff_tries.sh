@@ -10,13 +10,13 @@ if [ "$#" -ne ${NUM_PARAMS} ]; then
 fi
 
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2wa info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2wa.out
-../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} cmhm info3  | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.cmhm.out
+../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dm info3  | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2dm.out
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ca info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "' memory allocation strategy." > release.w2ca.out
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ch info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.w2ch.out
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dh info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2dh.out
 
-echo "\n----> c2wa vs. cmhm"
-diff release.c2wa.out release.cmhm.out > diff.c2wa.cmhm.out
+echo "\n----> c2wa vs. c2dm"
+diff release.c2wa.out release.c2dm.out > diff.c2wa.c2dm.out
 cat diff.c2wa.cmhm.out
 
 echo "\n----> c2wa vs. w2ca"
