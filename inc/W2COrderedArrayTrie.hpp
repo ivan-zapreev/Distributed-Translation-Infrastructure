@@ -400,12 +400,12 @@ namespace uva {
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param mid_pos the out parameter that stores the found element index, if any
+                 * @param found_pos the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE>
-                inline bool bsearch(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & mid_pos) {
+                inline bool bsearch(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
                     if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
                         stringstream msg;
                         msg << "Impossible binary search parameters, l_idx = "
@@ -419,6 +419,7 @@ namespace uva {
                     //account the overflows, although these are also not that threatening
                     //the reason is that the actual array index is TShortId and we use
                     //for index iterations a much longer but signed data type TLongId
+                    TSLongId mid_pos;
                     while (l_idx <= u_idx) {
                         mid_pos = (l_idx + u_idx) / 2;
                         LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
@@ -436,6 +437,7 @@ namespace uva {
                             } else {
                                 LOG_DEBUG4 << "The key " << SSTR(key) << " is found @ mid_pos = "
                                         << SSTR(mid_pos) << END_LOG;
+                                found_pos = mid_pos;
                                 break;
                             }
                         }
