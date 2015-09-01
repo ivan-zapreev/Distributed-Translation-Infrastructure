@@ -1,5 +1,5 @@
 /* 
- * File:   ContextMultiHashMapTrie.hpp
+ * File:   C2DHashMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on August 14, 2015, 1:53 PM
  */
 
-#ifndef CTXMULTIHASHMAPTRIE_HPP
-#define	CTXMULTIHASHMAPTRIE_HPP
+#ifndef C2DHASHMAPTRIE_HPP
+#define	C2DHASHMAPTRIE_HPP
 
 /**
  * We actually have several choices:
@@ -77,7 +77,7 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class CtxMultiHashMapTrie : public ATrie<N> {
+            class C2DHashMapTrie : public ATrie<N> {
             public:
 
                 /**
@@ -105,7 +105,7 @@ namespace uva {
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
+                explicit C2DHashMapTrie(AWordIndex * const _pWordIndex,
                         const float _mGramMemFactor = __CtxMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                         const float _nGramMemFactor = __CtxMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
@@ -119,7 +119,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~CtxMultiHashMapTrie();
+                virtual ~C2DHashMapTrie();
 
             protected:
 
@@ -288,7 +288,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                CtxMultiHashMapTrie(const CtxMultiHashMapTrie & orig)
+                C2DHashMapTrie(const C2DHashMapTrie & orig)
                 : ATrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
@@ -334,7 +334,7 @@ namespace uva {
 
             };
 
-            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TCtxMultiHashMapTrie_N5;
+            typedef C2DHashMapTrie<MAX_NGRAM_LEVEL> TCtxMultiHashMapTrie_N5;
         }
     }
 }

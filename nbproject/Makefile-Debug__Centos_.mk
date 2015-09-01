@@ -38,9 +38,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/ATrie.o \
+	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
-	${OBJECTDIR}/src/CtxMultiHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
@@ -87,6 +87,11 @@ ${OBJECTDIR}/src/ATrie.o: src/ATrie.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ATrie.o src/ATrie.cpp
 
+${OBJECTDIR}/src/C2DHashMapTrie.o: src/C2DHashMapTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DHashMapTrie.o src/C2DHashMapTrie.cpp
+
 ${OBJECTDIR}/src/C2DMapArrayTrie.o: src/C2DMapArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -96,11 +101,6 @@ ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: src/C2WOrderedArrayTrie.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
-
-${OBJECTDIR}/src/CtxMultiHashMapTrie.o: src/CtxMultiHashMapTrie.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CtxMultiHashMapTrie.o src/CtxMultiHashMapTrie.cpp
 
 ${OBJECTDIR}/src/Logger.o: src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

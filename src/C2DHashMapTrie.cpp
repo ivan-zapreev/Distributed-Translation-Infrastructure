@@ -22,7 +22,7 @@
  *
  * Created on August 14, 2015, 1:53 PM
  */
-#include "CtxMultiHashMapTrie.hpp"
+#include "C2DHashMapTrie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
@@ -38,13 +38,13 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
+            C2DHashMapTrie<N>::C2DHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ATrie<N>(_pWordIndex,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
+                return C2DHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor),
                         m_1_gram_data(NULL) {
@@ -69,7 +69,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            void C2DHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
 
                 const size_t num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
@@ -86,7 +86,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            void C2DHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
@@ -99,7 +99,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            void C2DHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
@@ -109,7 +109,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
+            void C2DHashMapTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
 
                 ATrie<N>::preAllocate(counts);
@@ -125,7 +125,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            CtxMultiHashMapTrie<N>::~CtxMultiHashMapTrie() {
+            C2DHashMapTrie<N>::~C2DHashMapTrie() {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics
                     for (int i = 0; i < N; i++) {
@@ -148,7 +148,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class CtxMultiHashMapTrie<MAX_NGRAM_LEVEL>;
+            template class C2DHashMapTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }
