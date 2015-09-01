@@ -109,9 +109,9 @@ namespace uva {
 
             namespace __C2DMapArrayTrie {
                 //The unordered map memory factor for the M-Grams in C2DMapArrayTrie
-                const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
+                const float UM_M_GRAM_MEMORY_FACTOR = 2.1;
                 //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
-                const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
+                const float UM_N_GRAM_MEMORY_FACTOR = 2.0;
             }
 
             namespace __CtxMultiHashMapTrie {
