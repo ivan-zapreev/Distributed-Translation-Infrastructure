@@ -81,7 +81,7 @@ namespace uva {
                                     return new TW2COrderedArrayTrie_N5(&dictionary);
                                 } else {
                                     if (trie_type == C2DMapArrayTrie_STR) {
-                                        return new C2DMapArrayTrie_N5(&dictionary);
+                                        return new TC2DMapArrayTrie_N5(&dictionary);
                                     } else {
                                         stringstream msg;
                                         msg << "Unrecognized trie type: " + trie_type;
