@@ -414,44 +414,37 @@ namespace uva {
                                 << SSTR(u_idx) << "!";
                         throw Exception(msg.str());
                     } else {
-                        //In case we are not adding the new N-grams to the trie but querying it,
-                        //we might first want to check that the searched ctxId is in the range.
-                        //If it is not then we do not even need to start searching! The element is not there.
-                        if ((key < array[l_idx].ctxId) || (key > array[u_idx].ctxId)) {
-                            return false;
-                        } else {
-                            //NOTE: Do the binary search, note that we do not take care of index
-                            //underflows as they are signed. Yet, we might want to take into
-                            //account the overflows, although these are also not that threatening
-                            //the reason is that the actual array index is TShortId and we use
-                            //for index iterations a much longer but signed data type TLongId
-                            TSLongId mid_pos;
-                            while (l_idx <= u_idx) {
-                                mid_pos = (l_idx + u_idx) / 2;
-                                LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
-                                        << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
+                        //NOTE: Do the binary search, note that we do not take care of index
+                        //underflows as they are signed. Yet, we might want to take into
+                        //account the overflows, although these are also not that threatening
+                        //the reason is that the actual array index is TShortId and we use
+                        //for index iterations a much longer but signed data type TLongId
+                        TSLongId mid_pos;
+                        while (l_idx <= u_idx) {
+                            mid_pos = (l_idx + u_idx) / 2;
+                            LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
+                                    << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
 
-                                if (key < array[mid_pos].ctxId) {
-                                    LOG_DEBUG4 << "The key " << SSTR(key) << " < array["
+                            if (key < array[mid_pos].ctxId) {
+                                LOG_DEBUG4 << "The key " << SSTR(key) << " < array["
+                                        << SSTR(mid_pos) << "] = " << SSTR(array[mid_pos].ctxId) << END_LOG;
+                                u_idx = mid_pos - 1;
+                            } else {
+                                if (key > array[mid_pos].ctxId) {
+                                    LOG_DEBUG4 << "The key " << SSTR(key) << " > array["
                                             << SSTR(mid_pos) << "] = " << SSTR(array[mid_pos].ctxId) << END_LOG;
-                                    u_idx = mid_pos - 1;
+                                    l_idx = mid_pos + 1;
                                 } else {
-                                    if (key > array[mid_pos].ctxId) {
-                                        LOG_DEBUG4 << "The key " << SSTR(key) << " > array["
-                                                << SSTR(mid_pos) << "] = " << SSTR(array[mid_pos].ctxId) << END_LOG;
-                                        l_idx = mid_pos + 1;
-                                    } else {
-                                        LOG_DEBUG4 << "The key " << SSTR(key) << " is found @ mid_pos = "
-                                                << SSTR(mid_pos) << END_LOG;
-                                        found_pos = mid_pos;
-                                        break;
-                                    }
+                                    LOG_DEBUG4 << "The key " << SSTR(key) << " is found @ mid_pos = "
+                                            << SSTR(mid_pos) << END_LOG;
+                                    found_pos = mid_pos;
+                                    break;
                                 }
                             }
-
-                            //Return true if the element was found
-                            return (l_idx <= u_idx);
                         }
+
+                        //Return true if the element was found
+                        return (l_idx <= u_idx);
                     }
                 }
 
