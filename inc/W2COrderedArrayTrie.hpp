@@ -107,6 +107,10 @@ namespace uva {
                     TShortId ctxId;
                     TProbBackOffEntry data;
 
+                    /**
+                     * Is used in the array sorting
+                     * @return the ctxId field of the structure
+                     */
                     operator TShortId() const {
                         return ctxId;
                     }
@@ -123,6 +127,10 @@ namespace uva {
                     TShortId ctxId;
                     TLogProbBackOff prob;
 
+                    /**
+                     * Is used in the array sorting
+                     * @return the ctxId field of the structure
+                     */
                     operator TShortId() const {
                         return ctxId;
                     }
@@ -395,60 +403,6 @@ namespace uva {
                 };
 
                 /**
-                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE>
-                inline bool bsearch(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
-                    //Do sanity checks if needed
-                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
-                        stringstream msg;
-                        msg << "Impossible binary search parameters, l_idx = "
-                                << SSTR(l_idx) << ", u_idx = "
-                                << SSTR(u_idx) << "!";
-                        throw Exception(msg.str());
-                    } else {
-                        //NOTE: Do the binary search, note that we do not take care of index
-                        //underflows as they are signed. Yet, we might want to take into
-                        //account the overflows, although these are also not that threatening
-                        //the reason is that the actual array index is TShortId and we use
-                        //for index iterations a much longer but signed data type TLongId
-                        TSLongId mid_pos;
-                        while (l_idx <= u_idx) {
-                            mid_pos = (l_idx + u_idx) / 2;
-                            LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
-                                    << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
-
-                            if (key < array[mid_pos].ctxId) {
-                                LOG_DEBUG4 << "The key " << SSTR(key) << " < array["
-                                        << SSTR(mid_pos) << "] = " << SSTR(array[mid_pos].ctxId) << END_LOG;
-                                u_idx = mid_pos - 1;
-                            } else {
-                                if (key > array[mid_pos].ctxId) {
-                                    LOG_DEBUG4 << "The key " << SSTR(key) << " > array["
-                                            << SSTR(mid_pos) << "] = " << SSTR(array[mid_pos].ctxId) << END_LOG;
-                                    l_idx = mid_pos + 1;
-                                } else {
-                                    LOG_DEBUG4 << "The key " << SSTR(key) << " is found @ mid_pos = "
-                                            << SSTR(mid_pos) << END_LOG;
-                                    found_pos = mid_pos;
-                                    break;
-                                }
-                            }
-                        }
-
-                        //Return true if the element was found
-                        return (l_idx <= u_idx);
-                    }
-                }
-
-                /**
                  * For the given M-gram defined by the word id and a context id it allows to retrieve local index where the m-gram's entry is stored.
                  * This method words for 1 < M <= N.
                  * @param WORD_ENTRY_TYPE the word entry type
@@ -467,8 +421,7 @@ namespace uva {
                     //Check if there is data to search in
                     if ((ref.ptr != NULL) && (ref.size > 0)) {
                         //The data is available search for the word index in the array
-                        //if (bsearch<typename WORD_ENTRY_TYPE::TElemType, TShortId, TShortId > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
-                        if (bsearch<typename WORD_ENTRY_TYPE::TElemType > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                        if (bsearch_ctxId<typename WORD_ENTRY_TYPE::TElemType > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
                             LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
                             return true;
                         } else {

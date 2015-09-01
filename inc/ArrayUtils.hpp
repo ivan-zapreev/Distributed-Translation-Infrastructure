@@ -44,6 +44,130 @@ namespace uva {
         namespace utils {
             namespace array {
 
+                //NOTE: Do the binary search, note that we do not take care of index
+                //underflows as they are signed. Yet, we might want to take into
+                //account the overflows, although these are also not that threatening
+                //the reason is that the actual array index is TShortId and we use
+                //for index iterations a much longer but signed data type TLongId
+#define BSEARCH_ONE_FIELD(FIELD_NAME)                                                               \
+                if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {                         \
+                        stringstream msg;                                                           \
+                        msg << "Impossible binary search parameters, l_idx = "                      \
+                                << SSTR(l_idx) << ", u_idx = "                                      \
+                                << SSTR(u_idx) << "!";                                              \
+                        throw Exception(msg.str());                                                 \
+                    } else {                                                                        \
+                        TSLongId mid_pos;                                                           \
+                        while (l_idx <= u_idx) {                                                    \
+                            mid_pos = (l_idx + u_idx) / 2;                                          \
+                            LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
+                                    << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;   \
+                            if (key < array[mid_pos].FIELD_NAME) {                                  \
+                                u_idx = mid_pos - 1;                                                \
+                            } else {                                                                \
+                                if (key > array[mid_pos].FIELD_NAME) {                              \
+                                    l_idx = mid_pos + 1;                                            \
+                                } else {                                                            \
+                                    LOG_DEBUG4 << "The found mid_pos = "                            \
+                                            << SSTR(mid_pos) << END_LOG;                            \
+                                    found_pos = mid_pos;                                            \
+                                    return true;                                                    \
+                                }                                                                   \
+                            }                                                                       \
+                        }                                                                           \
+                        return false;                                                               \
+                    }
+
+                //NOTE: Do the binary search, note that we do not take care of index
+                //underflows as they are signed. Yet, we might want to take into
+                //account the overflows, although these are also not that threatening
+                //the reason is that the actual array index is TShortId and we use
+                //for index iterations a much longer but signed data type TLongId
+#define BSEARCH_TWO_FIELDS(FIELD_ONE,FIELD_TWO)                                                     \
+                if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {                         \
+                        stringstream msg;                                                           \
+                        msg << "Impossible binary search parameters, l_idx = "                      \
+                                << SSTR(l_idx) << ", u_idx = "                                      \
+                                << SSTR(u_idx) << "!";                                              \
+                        throw Exception(msg.str());                                                 \
+                    } else {                                                                        \
+                        TSLongId mid_pos;                                                           \
+                        while (l_idx <= u_idx) {                                                    \
+                            mid_pos = (l_idx + u_idx) / 2;                                          \
+                            LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
+                                    << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;   \
+                            if (key1 == array[mid_pos].FIELD_ONE) {                                     \
+                                if (key2 < array[mid_pos].FIELD_TWO) {                                  \
+                                    u_idx = mid_pos - 1;                                                \
+                                } else {                                                                \
+                                    if (key2 > array[mid_pos].FIELD_TWO) {                              \
+                                        l_idx = mid_pos + 1;                                            \
+                                    } else {                                                            \
+                                        LOG_DEBUG4 << "The found mid_pos = "                            \
+                                                << SSTR(mid_pos) << END_LOG;                            \
+                                        found_pos = mid_pos;                                            \
+                                        return true;                                                    \
+                                    }                                                                   \
+                                }                                                                       \
+                            } else {                                                                \
+                                if (key1 < array[mid_pos].FIELD_ONE) {                              \
+                                    u_idx = mid_pos - 1;                                            \
+                                } else {                                                            \
+                                    l_idx = mid_pos + 1;                                            \
+                                }                                                                   \
+                            }                                                                       \
+                        }                                                                           \
+                        return false;                                                               \
+                    }
+
+                /**
+                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE>
+                inline bool bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
+                    BSEARCH_TWO_FIELDS(wordId, ctxId);
+                }
+
+                /**
+                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE>
+                inline bool bsearch_wordId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
+                    BSEARCH_ONE_FIELD(wordId);
+                }
+
+                /**
+                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE>
+                inline bool bsearch_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
+                    BSEARCH_ONE_FIELD(ctxId);
+                }
+
                 /**
                  * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
                  * @param array the pointer to the first array element

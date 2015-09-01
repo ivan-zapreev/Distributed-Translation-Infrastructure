@@ -112,14 +112,14 @@ namespace uva {
                  * @param prob the probability data
                  */
                 typedef struct {
-                    TShortId ctxId;
                     TShortId wordId;
+                    TShortId ctxId;
                     TLogProbBackOff prob;
 
                     operator TLongId() const {
-                        TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                        LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
-                                << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
+                        TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
+                        LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
+                                << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
                         return key;
                     }
                 } TCtxIdProbEntryPair;
@@ -249,9 +249,9 @@ namespace uva {
                     m_N_gram_data[n_gram_idx].wordId = wordId;
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG4 << "Storing N-Gram: TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
-                            << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
+                    const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
+                    LOG_DEBUG4 << "Storing N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
+                            << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
 
                     //return the reference to the probability
                     return m_N_gram_data[n_gram_idx].prob;
@@ -267,13 +267,13 @@ namespace uva {
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(ctxId = " << SSTR(ctxId)
-                            << ", wordId = " << SSTR(wordId) << ") = " << SSTR(key) << END_LOG;
+                    const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
+                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
+                            << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
                     TShortId idx = UNDEFINED_ARR_IDX;
-                    if (bsearch<TCtxIdProbEntryPair, TShortId, TLongId>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[N_GRAM_IDX], key, idx)) {
+                    if (bsearch_wordId_ctxId<TCtxIdProbEntryPair>(m_N_gram_data, FIRST_VALID_CTX_ID, m_M_N_gram_num_ctx_ids[N_GRAM_IDX], wordId, ctxId, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
                         return true;
@@ -383,7 +383,7 @@ namespace uva {
                     if (ref.beginIdx != UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (bsearch<TWordIdProbBackOffEntryPair, TShortId, TShortId>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (bsearch_wordId<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
