@@ -144,14 +144,16 @@ namespace uva {
 
                     //Obtain the context key and then create a new mapping
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    
                     //Get the next context id
-                    const TModelLevel idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
                     TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
+                    
                     //Store the context mapping inside the map
                     pMGramMap[idx]->operator[](key) = nextCtxId;
 
                     //Return the reference to the piece of memory
-                    return m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][nextCtxId];
+                    return m_M_gram_data[idx][nextCtxId];
                 };
 
                 /**
