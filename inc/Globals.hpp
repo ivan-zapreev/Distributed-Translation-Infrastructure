@@ -165,7 +165,7 @@ namespace uva {
             typedef int64_t TSLongId;
 
             //Combine two short ids into one long id in a bit fashion
-#define TShortId_TShortId_2_TLongId(first, second) (((TLongId) first) << 32) | second
+#define TShortId_TShortId_2_TLongId(first, second) ((((TLongId) first) << 32) | second)
         }
     }
 }
