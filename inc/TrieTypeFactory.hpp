@@ -109,7 +109,7 @@ namespace uva {
             };
 
             //Initialize constants
-            const string TrieTypeFactory::TCtxMultiHashMapTrie_STR = string("cmhm");
+            const string TrieTypeFactory::TCtxMultiHashMapTrie_STR = string("c2dm");
             const string TrieTypeFactory::TMapW2CHybridTrie_STR = string("w2ch");
             const string TrieTypeFactory::TC2WOrderedArrayTrie_STR = string("c2wa");
             const string TrieTypeFactory::TW2COrderedArrayTrie_STR = string("w2ca");
