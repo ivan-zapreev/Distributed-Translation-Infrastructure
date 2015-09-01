@@ -107,10 +107,17 @@ namespace uva {
                 const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
 
-            namespace __CtxMultiHashMapTrie {
-                //The unordered map memory factor for the M-Grams in ContextMultiHashMapTrie
+            namespace __C2DMapArrayTrie {
+                //The unordered map memory factor for the M-Grams in C2DMapArrayTrie
                 const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
-                //The unordered map memory factor for the N-Grams in ContextMultiHashMapTrie
+                //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
+                const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
+            }
+
+            namespace __CtxMultiHashMapTrie {
+                //The unordered map memory factor for the M-Grams in CtxMultiHashMapTrie
+                const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
+                //The unordered map memory factor for the N-Grams in CtxMultiHashMapTrie
                 const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
             }
 

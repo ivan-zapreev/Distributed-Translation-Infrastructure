@@ -1,5 +1,5 @@
 /* 
- * File:   ContextMultiHashMapTrie.hpp
+ * File:   C2DMapArrayTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,24 +20,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on August 14, 2015, 1:53 PM
+ * Created on September 1, 2015, 15:15 PM
  */
 
-#ifndef CTXMULTIHASHMAPTRIE_HPP
-#define	CTXMULTIHASHMAPTRIE_HPP
+#ifndef C2DMAPARRAYTRIE_HPP
+#define	C2DMAPARRAYTRIE_HPP
 
-/**
- * We actually have several choices:
- * 
- * Continue to use <ext/hash_map.h> and use -Wno-deprecated to stop the warning
- * 
- * Use <tr1/unordered_map> and std::tr1::unordered_map
- * 
- * Use <unordered_map> and std::unordered_map and -std=c++0x
- * 
- * We will need to test which one runs better, it is an unordered_map for now.
- * http://www.cplusplus.com/reference/unordered_map/unordered_map/
- */
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
 
@@ -58,27 +46,24 @@ namespace uva {
         namespace tries {
 
             /**
-             * This is a HashMpa based ATrie interface implementation class.
-             * Note 1: This implementation uses the unsigned long for the hashes it is not optimal
-             * Note 2: the unordered_map might be not as efficient as a hash_map with respect to memory usage but it is supposed to be faster
+             * This is a hybrid trie implementation inspired by the four other ones:
              * 
-             * This implementation is chosen because it resembles the ordered array implementation from:
-             *      "Faster and Smaller N -Gram Language Models"
-             *      Adam Pauls Dan Klein
-             *      Computer Science Division
-             *      University of California, Berkeley
+             * W2COrderedArrayTrie, C2WOrderedArrayTrie,
+             * CtxMultiHashMapTrie, and W2CHybridMemoryTrie
              * 
-             * and unordered_maps showed good performance in:
-             *      "Efficient in-memory data structures for n-grams indexing"
-             *       Daniel Robenek, Jan Platoˇs, and V ́aclav Sn ́aˇsel
-             *       Department of Computer Science, FEI, VSB – Technical University of Ostrava
-             *       17. listopadu 15, 708 33, Ostrava-Poruba, Czech Republic
-             *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
-             * 
+             * It tries to be as much memory efficient as speed efficient. More
+             * specifically we store as much data as possible in an array form in
+             * order to get optimal memory consumption and having short and easily
+             * definable context index. Yet, we use unordered maps for the sake of
+             * speeding up queries, as they allow us to realize (wordId, ctxId) to ctxId
+             * in the most efficient manner. The lookup should be just O(1) whereas in
+             * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel N>
-            class CtxMultiHashMapTrie : public ATrie<N> {
+            class C2DMapArrayTrie : public ATrie<N> {
             public:
+                //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
+                static const TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -100,14 +85,16 @@ namespace uva {
                  * there is no other better way, for fine tuning the memory usage.
                  * 
                  * @param _pWordIndex the word index to be used
+                 * @param _oGramMemFactor The One-Gram memory factor needed for
+                 * the greedy allocator for the unordered_map
                  * @param _mGramMemFactor The M-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __CtxMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __CtxMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                explicit C2DMapArrayTrie(AWordIndex * const _pWordIndex,
+                        const float _mGramMemFactor = __C2DMapArrayTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __C2DMapArrayTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -119,7 +106,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~CtxMultiHashMapTrie();
+                virtual ~C2DMapArrayTrie();
 
             protected:
 
@@ -129,14 +116,6 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
-                    if (DO_SANITY_CHECKS) {
-                        //Add hash key statistics
-                        if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                            hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
-                            hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
-                        }
-                    }
-
                     //Get the word probability and back-off data reference
                     return m_1_gram_data[wordId];
                 };
@@ -163,17 +142,16 @@ namespace uva {
                     //with 0, therefore "level-2". Get/Create the mapping for this
                     //word in the Trie level of the N-gram
 
-                    //Note: there is no need to check on the result of the function
-                    //as in this Trie the context can always be computed!
-                    (void) getContextId(wordId, ctxId);
+                    //Obtain the context key and then create a new mapping
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    //Get the next context id
+                    const TModelLevel idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
+                    //Store the context mapping inside the map
+                    pMGramMap[idx]->operator[](key) = nextCtxId;
 
-                    //Add hash key statistics
-                    if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[level - 1].first = min<TLongId>(ctxId, hashSizes[level - 1].first);
-                        hashSizes[level - 1].second = max<TLongId>(ctxId, hashSizes[level - 1].second);
-                    }
-
-                    return pMGramMap[level - ATrie<N>::MGRAM_IDX_OFFSET]->operator[](ctxId);
+                    //Return the reference to the piece of memory
+                    return m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][nextCtxId];
                 };
 
                 /**
@@ -185,18 +163,10 @@ namespace uva {
                 virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
                         TLongId ctxId, const TProbBackOffEntry **ppData) {
                     //Get the next context id
-                    if (getContextId(wordId, ctxId)) {
-                        //Search for the map for that context id
-                        const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
-                        TMGramsMap::const_iterator result = pMGramMap[idx]->find(ctxId);
-                        if (result == pMGramMap[idx]->end()) {
-                            //There is no data found under this context
-                            return false;
-                        } else {
-                            //There is data found under this context
-                            *ppData = &result->second;
-                            return true;
-                        }
+                    if (getContextId(wordId, ctxId, level)) {
+                        //There is data found under this context
+                        *ppData = &m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][ctxId];
+                        return true;
                     } else {
                         //The context id could not be found
                         return false;
@@ -210,20 +180,8 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TLogProbBackOff & make_N_GramDataRef(const TShortId wordId, TLongId ctxId) {
-                    //Data stores the N-tires from length 2 on, therefore "idx-1"
-                    //Get/Create the mapping for this word in the Trie level of the N-gram
-
-                    //Note: there is no need to check on the result of the function
-                    //as in this Trie the context can always be computed!
-                    (void) getContextId(wordId, ctxId);
-
-                    //Add hash key statistics
-                    if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[N - 1].first = min<TLongId>(ctxId, hashSizes[N - 1].first);
-                        hashSizes[N - 1].second = max<TLongId>(ctxId, hashSizes[N - 1].second);
-                    }
-
-                    return pNGramMap->operator[](ctxId);
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    return pNGramMap->operator[](key);
                 };
 
                 /**
@@ -232,43 +190,48 @@ namespace uva {
                  */
                 virtual bool get_N_GramProb(const TShortId wordId, TLongId ctxId,
                         TLogProbBackOff & prob) {
-                    //Get the next context id
-                    if (getContextId(wordId, ctxId)) {
-                        //Search for the map for that context id
-                        TNGramsMap::const_iterator result = pNGramMap->find(ctxId);
-                        if (result == pNGramMap->end()) {
-                            //There is no data found under this context
-                            return false;
-                        } else {
-                            //There is data found under this context
-                            prob = result->second;
-                            return true;
-                        }
-                    } else {
-                        //The context id could not be found
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+
+                    //Search for the map for that context id
+                    TNGramsMap::const_iterator result = pNGramMap->find(key);
+                    if (result == pNGramMap->end()) {
+                        //There is no data found under this context
                         return false;
+                    } else {
+                        //There is data found under this context
+                        prob = result->second;
+                        return true;
                     }
                 };
 
             private:
+
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float mGramMemFactor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float nGramMemFactor;
+                
+                //Stores the context id counters per M-gram level: 1 < M < N
+                TShortId m_M_gram_next_ctx_id[ATrie<N>::NUM_M_GRAM_LEVELS];
+                //Stores the context id counters per M-gram level: 1 < M <= N
+                TShortId m_M_gram_num_ctx_ids[ATrie<N>::NUM_M_N_GRAM_LEVELS];
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //The type of key,value pairs to be stored in the M Grams map
-                typedef pair< const TLongId, TProbBackOffEntry> TMGramEntry;
+                typedef pair< const TLongId, TShortId> TMGramEntry;
                 //The typedef for the M Grams map allocator
                 typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
                 //The N Grams map type
-                typedef unordered_map<TLongId, TProbBackOffEntry, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
+                typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[N - ATrie<N>::MGRAM_IDX_OFFSET];
+                TMGramAllocator * pMGramAlloc[ATrie<N>::NUM_M_GRAM_LEVELS];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[N - ATrie<N>::MGRAM_IDX_OFFSET];
+                TMGramsMap * pMGramMap[ATrie<N>::NUM_M_GRAM_LEVELS];
+                //Stores the M-gram data for the M levels: 1 < M < N
+                //This is a two dimensional array
+                TProbBackOffEntry * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -281,14 +244,11 @@ namespace uva {
                 //The map storing the N-Grams, they do not have back-off values
                 TNGramsMap * pNGramMap;
 
-                //The structure for storing the hash key values statistics
-                pair<TLongId, TLongId> hashSizes[N];
-
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                CtxMultiHashMapTrie(const CtxMultiHashMapTrie & orig)
+                C2DMapArrayTrie(const C2DMapArrayTrie & orig)
                 : ATrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
@@ -317,7 +277,7 @@ namespace uva {
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
                  * 
-                 * WARNING: Must only be called for the M-gram level M > 1!
+                 * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * 
                  * @param wordId the current word id
                  * @param ctxId [in] - the previous context id, [out] - the next context id
@@ -325,16 +285,26 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                static inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
-                    //Use the Szudzik algorithm as it outperforms Cantor
-                    ctxId = szudzik(wordId, ctxId);
-                    //The context can always be computed
-                    return true;
+                inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+
+                    //Search for the map for that context id
+                    const TModelLevel idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
+                    if (result == pMGramMap[idx]->end()) {
+                        //There is no data found under this context
+                        return false;
+                    } else {
+                        //Update the context with the found value uf the next context
+                        ctxId = result->second;
+                        //The context can always be computed
+                        return true;
+                    }
                 }
 
             };
 
-            typedef CtxMultiHashMapTrie<MAX_NGRAM_LEVEL> TCtxMultiHashMapTrie_N5;
+            typedef C2DMapArrayTrie<MAX_NGRAM_LEVEL> TC2DMapArrayTrie_N5;
         }
     }
 }

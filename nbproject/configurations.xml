@@ -11,6 +11,7 @@
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>./inc/AWordIndex.hpp</itemPath>
       <itemPath>inc/ArrayUtils.hpp</itemPath>
+      <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
       <itemPath>inc/CtxMultiHashMapTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
@@ -40,6 +41,7 @@
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/ATrie.cpp</itemPath>
+      <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
       <itemPath>src/CtxMultiHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
@@ -154,6 +156,8 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -191,6 +195,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -246,6 +252,8 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -283,6 +291,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -348,6 +358,8 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -385,6 +397,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -440,6 +454,8 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -477,6 +493,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -532,6 +550,8 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CtxMultiHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -569,6 +589,8 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>

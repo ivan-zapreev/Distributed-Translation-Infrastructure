@@ -1,5 +1,5 @@
 /* 
- * File:   ContextContextMultiHashMapTrie.cpp
+ * File:   C2DMapArrayTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,9 +20,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on August 14, 2015, 1:53 PM
+ * Created on September 1, 2015, 15:15 PM
  */
-#include "CtxMultiHashMapTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
@@ -38,23 +38,16 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            CtxMultiHashMapTrie<N>::CtxMultiHashMapTrie(AWordIndex * const _pWordIndex,
+            C2DMapArrayTrie<N>::C2DMapArrayTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ATrie<N>(_pWordIndex,
-            [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
+            [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return CtxMultiHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
+                return C2DMapArrayTrie<N>::getContextId(wordId, ctxId, level); }),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor),
-                        m_1_gram_data(NULL) {
-                if (DO_SANITY_CHECKS) {
-                    //Initialize the hash statistics map
-                    for (int i = 0; i < N; i++) {
-                        hashSizes[i].first = UINT64_MAX;
-                        hashSizes[i].second = 0;
-                    }
-                }
+            m_1_gram_data(NULL) {
 
                 //Perform an error check! This container has a lower bound on the N level.
                 if (N < TWO_GRAM_LEVEL) {
@@ -65,19 +58,33 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
+                //Memset the M grams reference and data arrays
+                memset(pMGramAlloc, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
+                memset(pMGramMap, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
+                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffEntry *));
+
+                //Initialize the array of counters
+                memset(m_M_gram_num_ctx_ids, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_gram_next_ctx_id, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
+                
+                //Initialize the N-gram level data
+                pNGramAlloc = NULL;
+                pNGramMap = NULL;
+                
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            void C2DMapArrayTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
 
-                const size_t num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
+                //Add an extra element(3) for the <unknown/> word
+                const size_t num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
                 memset(m_1_gram_data, 0, num_word_ids * sizeof (TProbBackOffEntry));
-                
+
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
@@ -86,20 +93,27 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            void C2DMapArrayTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
-                for (int idx = 1; idx < (N - 1); idx++) {
+                for (int idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     //Get the number of elements to pre-allocate
 
-                    const uint numEntries = counts[idx];
+                    //Get the number of the M-grams on this level
+                    const uint num_grams = counts[idx+1];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", mGramMemFactor);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx], num_grams, "M-Grams", mGramMemFactor);
+
+                    //Get the number of M-gram indexes on this level
+                    const uint num_ngram_idx = m_M_gram_num_ctx_ids[idx];
+                    
+                    m_M_gram_data[idx] = new TProbBackOffEntry[num_ngram_idx];
+                    memset(m_M_gram_data[idx], 0, num_ngram_idx * sizeof (TProbBackOffEntry));
                 }
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            void C2DMapArrayTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
@@ -109,10 +123,18 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void CtxMultiHashMapTrie<N>::preAllocate(const size_t counts[N]) {
+            void C2DMapArrayTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
-
                 ATrie<N>::preAllocate(counts);
+                
+                //Compute and store the M-gram level sizes in terms of the number of M-gram indexes per level
+                //Also initialize the M-gram index counters, for issuing context indexes
+                for (TModelLevel i = 0; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                    //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
+                    m_M_gram_next_ctx_id[i] = ATrie<N>::FIRST_VALID_CTX_ID;
+                    //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
+                    m_M_gram_num_ctx_ids[i] = counts[i + 1] + ATrie<N>::FIRST_VALID_CTX_ID;
+                }
 
                 //Pre-allocate 0-Grams
                 preAllocateOGrams(counts);
@@ -125,22 +147,16 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            CtxMultiHashMapTrie<N>::~CtxMultiHashMapTrie() {
-                if (DO_SANITY_CHECKS) {
-                    //Print the hash sizes statistics
-                    for (int i = 0; i < N; i++) {
-                        LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
-                    }
-                }
-
+            C2DMapArrayTrie<N>::~C2DMapArrayTrie() {
                 //Deallocate One-Grams
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                 }
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
-                for (int idx = 0; idx < (N - 2); idx++) {
+                for (int idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
+                    delete[] m_M_gram_data[idx];
                 }
 
                 //Deallocate N-Grams
@@ -148,7 +164,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class CtxMultiHashMapTrie<MAX_NGRAM_LEVEL>;
+            template class C2DMapArrayTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

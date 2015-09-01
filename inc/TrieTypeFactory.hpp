@@ -33,6 +33,7 @@
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
 #include "HashMapWordIndex.hpp"
+#include "C2DMapArrayTrie.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
@@ -54,6 +55,7 @@ namespace uva {
                 static const string TMapW2CHybridTrie_STR;
                 static const string TC2WOrderedArrayTrie_STR;
                 static const string TW2COrderedArrayTrie_STR;
+                static const string C2DMapArrayTrie_STR;
 
             public:
 
@@ -78,9 +80,13 @@ namespace uva {
                                 if (trie_type == TW2COrderedArrayTrie_STR) {
                                     return new TW2COrderedArrayTrie_N5(&dictionary);
                                 } else {
-                                    stringstream msg;
-                                    msg << "Unrecognized trie type: " + trie_type;
-                                    throw Exception(msg.str());
+                                    if (trie_type == C2DMapArrayTrie_STR) {
+                                        return new C2DMapArrayTrie_N5(&dictionary);
+                                    } else {
+                                        stringstream msg;
+                                        msg << "Unrecognized trie type: " + trie_type;
+                                        throw Exception(msg.str());
+                                    }
                                 }
                             }
                         }
@@ -96,7 +102,8 @@ namespace uva {
                     text << "{" << TCtxMultiHashMapTrie_STR << ", "
                             << TMapW2CHybridTrie_STR << ", "
                             << TC2WOrderedArrayTrie_STR << ", "
-                            << TW2COrderedArrayTrie_STR << "}";
+                            << TW2COrderedArrayTrie_STR << ", "
+                            << C2DMapArrayTrie_STR << "}";
                     return text.str();
                 }
             };
@@ -106,6 +113,7 @@ namespace uva {
             const string TrieTypeFactory::TMapW2CHybridTrie_STR = string("w2ch");
             const string TrieTypeFactory::TC2WOrderedArrayTrie_STR = string("c2wa");
             const string TrieTypeFactory::TW2COrderedArrayTrie_STR = string("w2ca");
+            const string TrieTypeFactory::C2DMapArrayTrie_STR = string("c2dh"); 
         }
     }
 }

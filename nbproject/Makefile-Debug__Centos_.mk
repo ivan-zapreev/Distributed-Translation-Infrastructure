@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/ATrie.o \
+	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
 	${OBJECTDIR}/src/CtxMultiHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
@@ -85,6 +86,11 @@ ${OBJECTDIR}/src/ATrie.o: src/ATrie.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ATrie.o src/ATrie.cpp
+
+${OBJECTDIR}/src/C2DMapArrayTrie.o: src/C2DMapArrayTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DMapArrayTrie.o src/C2DMapArrayTrie.cpp
 
 ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: src/C2WOrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

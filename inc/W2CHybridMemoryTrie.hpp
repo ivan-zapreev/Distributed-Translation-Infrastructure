@@ -83,7 +83,6 @@ namespace uva {
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
                 virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
@@ -102,8 +101,10 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                    const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
+                    
                     //Get the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[idx][wordId];
 
                     //If the mappings is not there yet for the contexts then create it
                     if (ctx_mapping == NULL) {
@@ -113,7 +114,7 @@ namespace uva {
 
                     //Add the new element to the context mapping
                     TShortId & nextCtxId = ctx_mapping->operator[](ctxId);
-                    nextCtxId = next_ctx_id[level - MGRAM_IDX_OFFSET]++;
+                    nextCtxId = next_ctx_id[idx]++;
 
                     //Return the reference to it
                     return m_mgram_data[level - 1][nextCtxId];
@@ -122,7 +123,6 @@ namespace uva {
                 /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
                 virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
@@ -140,11 +140,10 @@ namespace uva {
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
                         LOG_DEBUG3 << "Allocating storage for level " << SSTR(N)
@@ -164,9 +163,9 @@ namespace uva {
                 virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
                         TLogProbBackOff & prob) {
                     //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[N - MGRAM_IDX_OFFSET][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
 
-                    //If the mapping is present the search further, otherwise an exception
+                    //If the mapping is present the search further, otherwise return false
                     if (ctx_mapping != NULL) {
                         typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
                         if (result == ctx_mapping->end()) {
@@ -186,8 +185,6 @@ namespace uva {
                 };
 
             private:
-                //The offset, relative to the M-gram level M for the mgram mapping array index
-                const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 //Stores the number of words
                 size_t m_word_arr_size;
@@ -243,7 +240,7 @@ namespace uva {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
                     //Retrieve the context data for the given word
-                    StorageContainer* ctx_mapping = m_mgram_mapping[level - MGRAM_IDX_OFFSET][wordId];
+                    StorageContainer* ctx_mapping = m_mgram_mapping[level - ATrie<N>::MGRAM_IDX_OFFSET][wordId];
 
                     //Check that the context data is available
                     if (ctx_mapping != NULL) {

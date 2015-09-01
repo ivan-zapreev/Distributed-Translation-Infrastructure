@@ -176,7 +176,7 @@ namespace uva {
                             << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Get the sub-array reference. 
-                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId);
+                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET], wordId);
 
                     //Store the context and word ids
                     ref.ctxId = ctxId;
@@ -198,7 +198,7 @@ namespace uva {
 
                     //Get the entry
                     const typename T_M_GramWordEntry::TElemType * pEntry;
-                    if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
+                    if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
                         //Return the pointer to the probability and back-off structure
                         *ppData = &pEntry->data;
                         return true;
@@ -270,7 +270,7 @@ namespace uva {
                     //The initial value is 1, although in this Trie it should
                     //not matter much, but it is better to reserve 0 for
                     //an undefined context value
-                    TShortId cio = FIRST_VALID_CTX_ID;
+                    TShortId cio = ATrie<N>::FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
                     for (TShortId wordId = UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
@@ -323,7 +323,7 @@ namespace uva {
                     ATrie<N>::post_N_Grams();
 
                     //Sort the level's data
-                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - MGRAM_IDX_OFFSET]);
+                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET]);
                 }
 
                 virtual void post_N_Grams() {
@@ -336,26 +336,6 @@ namespace uva {
                 };
 
             private:
-                //The offset, relative to the M-gram level M for the mgram mapping array index
-                const static TModelLevel MGRAM_IDX_OFFSET = 2;
-
-                //Will store the the number of M levels such that 1 < M < N.
-                const static TModelLevel NUM_M_GRAM_LEVELS = N - MGRAM_IDX_OFFSET;
-
-                //Will store the the number of M levels such that 1 < M < N.
-                const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
-
-                //Compute the N-gram index in m_MN_gram_size and  m_MN_gram_idx_cnts
-                static const TModelLevel N_GRAM_IDX = N - MGRAM_IDX_OFFSET;
-
-                // Stores the undefined index array value
-                static const TShortId UNDEFINED_ARR_IDX = 0;
-
-                // Stores the undefined index array value
-                static const TShortId FIRST_VALID_CTX_ID = UNDEFINED_ARR_IDX + 1;
-
-                //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                static const TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
 
                 //Stores the number of used word ids
                 TShortId m_num_word_ids;
@@ -365,7 +345,7 @@ namespace uva {
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                T_M_GramWordEntry * m_M_gram_word_2_data[NUM_M_GRAM_LEVELS];
+                T_M_GramWordEntry * m_M_gram_word_2_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
@@ -491,7 +471,7 @@ namespace uva {
                  */
                 inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
 
                     if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
                         stringstream msg;
