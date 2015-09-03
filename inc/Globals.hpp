@@ -69,7 +69,7 @@ namespace uva {
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            const bool DO_SANITY_CHECKS = false;
+            const bool DO_SANITY_CHECKS = true;
             
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;

@@ -414,7 +414,7 @@ namespace uva {
                 const TModelLevel num_tokens = min<TModelLevel>(level, N);
                 LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
                 for (int i = 0; i < num_tokens; i++) {
-                    LOG_DEBUG4 << "Appending token[" << SSTR(i) << "] = '"
+                    LOG_DEBUG4 << "Appending token [" << SSTR(i) << "] = '"
                             << tokens[i].str() << "' to the string!" << END_LOG;
                     data << tokens[i].str() << " ";
                 }

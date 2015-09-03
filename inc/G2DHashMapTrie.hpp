@@ -31,6 +31,7 @@
 #include "Exceptions.hpp"
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
+#include "ATrie.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -40,6 +41,43 @@ using namespace uva::smt::tries::dictionary;
 namespace uva {
     namespace smt {
         namespace tries {
+
+            /**
+             * This class represents a dynamic M-Gram id.
+             * It stores the byte-array that contains the id and its length.
+             * All bytes in this array are meaningful.
+             */
+            class M_Gram_Id
+            {
+            public: 
+                M_Gram_Id(){}
+                virtual ~M_Gram_Id(){}
+            private:
+                //Stores the pinter to the id data
+                uint8_t * id;
+                //Stores the length of the id
+                uint8_t len;
+            };
+
+            /**
+             * This template structure is used for storing trie hash map elements
+             * Each element contains and id of the m-gram and its payload -
+             * the probability/back-off data, the latter is the template parameter
+             */
+            template<typename PAYLOAD_TYPE>
+            struct STrieHashMapEntry {
+                M_Gram_Id id;
+                PAYLOAD_TYPE data;
+            };
+
+            /**
+             * The wrapper structure for the templated structure above.
+             * Just a technicality, to be able to access the type easily
+             */
+            template<typename PAYLOAD_TYPE>
+            struct TTrieHashMapEntry {
+                typedef STrieHashMapEntry<PAYLOAD_TYPE> type;
+            };
 
             /**
              * This is a Gram to Data trie that is implemented as a HashMap.
@@ -54,7 +92,9 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit G2DHashMapTrie(AWordIndex * const _pWordIndex)
-                : ATrie<N>(_pWordIndex), m_num_word_ids(0), m_1_gram_data(NULL) {
+                : ATrie<N>(_pWordIndex), m_1_gram_data(NULL) {
+                    //Initialize the array of number of gram ids per level
+                    memset(m_gram_num_ids, 0, N * sizeof (TShortId));
                 }
 
                 /**
@@ -66,6 +106,21 @@ namespace uva {
                     //Call the base-class
                     ALayeredTrie<N>::preAllocate(counts);
 
+                    //02) Pre-allocate the 1-Gram data
+                    m_gram_num_ids[0] = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                    m_1_gram_data = new TProbBackOffEntry[m_gram_num_ids[0]];
+                    memset(m_1_gram_data, 0, m_gram_num_ids[0] * sizeof (TProbBackOffEntry));
+
+                    //03) Insert the unknown word data into the allocated array
+                    TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
+                    pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
+                    pbData.back_off = ZERO_BACK_OFF_WEIGHT;
+
+                    //Copy the counts to the local storage
+                    for (TModelLevel level = 1; level < N; level++) {
+                        m_gram_num_ids[level] = counts[level];
+                    }
+
                     //ToDo: Implement
                     throw Exception("Pre-allocate the trie levels");
                 };
@@ -76,8 +131,11 @@ namespace uva {
                  * @see ATrie
                  */
                 virtual void add_1_Gram(const T_M_Gram &oGram) {
-                    //ToDo: Implement
-                    throw Exception("add_1_Gram");
+                    //Register a new word, and the word id will be the one-gram id
+                    const TShortId oneGramId = ATrie<N>::getWordIndex()->makeId(oGram.tokens[0]);
+                    //Store the probability data in the one gram data storage, under its id
+                    m_1_gram_data[oneGramId].prob = oGram.prob;
+                    m_1_gram_data[oneGramId].back_off = oGram.back_off;
                 };
 
                 /**
@@ -85,7 +143,21 @@ namespace uva {
                  * @see ATrie
                  */
                 virtual void add_M_Gram(const T_M_Gram &mGram) {
-                    //ToDo: Implement
+                    //Compute the hash value for the given M-gram, it must
+                    //be the M-Gram id in the M-Gram data storage
+                    const TShortId mGramHash = mGram.hash < m_gram_num_ids[mGram.level]>();
+
+                    //If the sanity check is on then check on that the id is within the range
+                    if (DO_SANITY_CHECKS && ((mGramHash < 0) || (mGramHash >= m_gram_num_ids[mGram.level]))) {
+                        stringstream msg;
+                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString(mGram.tokens, mGram.level)
+                                << " was given an incorrect hash: " << SSTR(mGramHash)
+                                << ", must be within [0, " << SSTR(m_gram_num_ids[mGram.level]) << "]";
+                        throw Exception(msg.str());
+                    }
+
+                    //ToDo: Create a new M-Gram Id (unique) and then add it to the data
+
                     throw Exception("add_M_Gram");
                 };
 
@@ -114,18 +186,22 @@ namespace uva {
                  * The basic class destructor
                  */
                 virtual ~G2DHashMapTrie() {
+                    //Check that the one grams were allocated, if yes then the rest must have been either
+                    if (m_1_gram_data != NULL) {
+                        delete[] m_1_gram_data;
+                    }
                 };
 
             protected:
-                
-                
-            private:
 
-                //Stores the number of used word ids
-                TShortId m_num_word_ids;
+
+            private:
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
+
+                //Stores the number of gram ids/buckets per level
+                TShortId m_gram_num_ids[N];
             };
         }
     }

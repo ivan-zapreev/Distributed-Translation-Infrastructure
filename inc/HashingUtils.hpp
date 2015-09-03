@@ -56,7 +56,7 @@ namespace uva {
                        +(uint32_t)(((const uint8_t *)(d))[0]) )
 #endif
 
-            inline uint32_t computePaulHsiehHash(const char * data, int len) {
+            inline uint32_t computePaulHsiehHash(const char * data, uint32_t len) {
                 uint32_t hash = len, tmp;
                 int rem;
 

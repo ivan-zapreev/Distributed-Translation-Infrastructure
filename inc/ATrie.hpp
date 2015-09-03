@@ -32,8 +32,10 @@
 #include "Exceptions.hpp"
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
+#include "HashingUtils.hpp"
 
 using namespace std;
+using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
@@ -71,6 +73,40 @@ namespace uva {
                 TextPieceReader context;
                 TextPieceReader tokens[MAX_NGRAM_LEVEL];
                 TModelLevel level;
+
+                /**
+                 * This function allows to compute the hash of the given M-Gram
+                 * It assumes, which should hold, that the memory pointed by the tokens is continuous
+                 * @return the hash value of the given token
+                 */
+                template<size_t number_buckets>
+                inline TShortId hash() {
+                    //Compute the length of the gram tokens in memory, including spaces between
+                    const char * beginFirtPtr = tokens[0].getBeginCStr();
+                    const TextPieceReader & last = tokens[level - 1];
+                    const char * beginLastPtr = last.getBeginCStr();
+                    const size_t totalLen = (beginLastPtr - beginFirtPtr) + last.getLen();
+
+                    //If the sanity check is on then test that the memory is continuous
+                    //Compute the same length but with a longer iterative algorithms
+                    if (DO_SANITY_CHECKS) {
+                        //Compute the exact length
+                        size_t exactTotalLen = level - 1 ; //The number of spaces in between tokens
+                        for (TModelLevel idx = 0; idx < level; idx++) {
+                            exactTotalLen += tokens[idx].getLen();
+                        }
+                        //Check that the exact and fast computed lengths are the same
+                        if (exactTotalLen != totalLen) {
+                            stringstream msg;
+                            msg << "The memory allocation for M-gram tokens is not continuous: totalLen ("  <<
+                                    SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
+                            throw Exception(msg.str());
+                        }
+                    }
+
+                    //Compute the hash using the gram tokens with spaces with them
+                    return computePaulHsiehHash(beginFirtPtr, totalLen) % number_buckets;
+                }
             } T_M_Gram;
 
             /**
@@ -236,11 +272,11 @@ namespace uva {
                  */
                 virtual void post_N_Grams() {
                 };
-                
+
             private:
                 //Stores the reference to the word index to be used
                 AWordIndex * const m_p_word_index;
-                
+
             };
         }
     }
