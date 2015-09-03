@@ -39,20 +39,6 @@ using namespace std;
 namespace uva {
     namespace smt {
         namespace hashing {
-
-            /**
-             * The hashing function wrapper base class
-             */
-            template<typename T>
-            class Hash {
-            public:
-                /**
-                 * The type name for the hashing function
-                 * @param the string to hash
-                 * @return the TShortId - the hash value
-                 */
-                virtual TShortId operator()(const T &param) const = 0;
-            };
             
             /**
              * The following is the Paul Hsieh implementation of a string hashing function
@@ -188,9 +174,9 @@ namespace uva {
              * @param param the string to hash
              * @return the resulting hash
              */
-            class StringHash : public Hash<string> {
+            class StringHash {
             public:
-                virtual TShortId operator()(const string &param) const {
+                inline TShortId operator()(const string &param) const {
                     return computePaulHsiehHash(param);
                 }
             };
