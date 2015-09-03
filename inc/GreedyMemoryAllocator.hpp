@@ -55,13 +55,18 @@ namespace uva {
                  * Note that, this functions is meant to be used with the unordered_map allocator
                  * @param ppContainer the pointer to the container pointer
                  * @param ppAllocator the pointer to the allocator pointer
+                 * @param numEntries the number of entries to pre-allocate for
+                 * @param ctName the container name for logging purposes
+                 * @param factor the memory multiplication factor, default is UNORDERED_MAP_MEMORY_FACTOR.
+                 * This is how many times memory we will allocate (than needed to store numEntries elems) 
                  */
-                template<typename TContaner, typename TAllocator >
+                template<typename TContaner, typename TAllocator>
                 void allocate_container(TContaner ** ppContainer, TAllocator ** ppAllocator,
-                        const size_t numEntries, const string ctName, const float factor) {
+                        const size_t numEntries, const string ctName,
+                        const float factor = UNORDERED_MAP_MEMORY_FACTOR) {
                     //Compute the number of bytes needed to store these words
                     const size_t factoredNumElems = numEntries * factor;
-                    
+
                     LOG_DEBUG4 << "Computing the required storage for " << ctName
                             << ", numEntries=" << numEntries << ", factor=" << factor
                             << ", result=" << factoredNumElems << END_LOG;
@@ -80,10 +85,15 @@ namespace uva {
                  * Note that, this functions is meant to be used with the unordered_map allocator
                  * @param ppContainer the pointer to the container pointer
                  * @param ppAllocator the pointer to the allocator pointer
+                 * @param numEntries the number of entries to pre-allocate for
+                 * @param ctName the container name for logging purposes
+                 * @param factor the memory multiplication factor, default is UNORDERED_MAP_MEMORY_FACTOR.
+                 * This is how many times memory we will allocate (than needed to store numEntries elems) 
                  */
-                template<typename TContaner, typename TAllocator >
+                template<typename TContaner, typename TAllocator>
                 void reserve_mem_unordered_map(TContaner ** ppContainer, TAllocator ** ppAllocator,
-                        const size_t numEntries, const string ctName, const float factor = UNORDERED_MAP_MEMORY_FACTOR) {
+                        const size_t numEntries, const string ctName,
+                        const float factor = UNORDERED_MAP_MEMORY_FACTOR) {
                     //Call the generic allocation function with the appropriate factor
                     allocate_container<TContaner, TAllocator>(ppContainer, ppAllocator, numEntries, ctName, factor);
 
@@ -140,7 +150,7 @@ namespace uva {
                      */
                     GreedyMemoryAllocator(size_type numElems) throw () :
                     _manager(_storage),
-                    _storage( numElems * sizeof (T) ) {
+                    _storage(numElems * sizeof (T)) {
                         LOG_DEBUG4 << this << ": Creating FixedMemoryAllocator for "
                                 << SSTR(numElems) << " " << typeid (T).name()
                                 << " elements of size " << SSTR(sizeof (T)) << END_LOG;
@@ -276,7 +286,7 @@ namespace uva {
 
                     /**
                      * The default constructor
-                     */                    
+                     */
                     GreedyMemoryAllocator() throw () :
                     _manager(_storage), _storage(0) {
                         throw Exception("The default constructor is not to be used!");

@@ -35,12 +35,14 @@
 #include "Exceptions.hpp"
 #include "TextPieceReader.hpp"
 #include "GreedyMemoryAllocator.hpp"
+#include "HashingUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
 using namespace uva::smt::hashing;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::tries::alloc;
+using namespace uva::smt::hashing;
 
 namespace uva {
     namespace smt {
@@ -71,7 +73,8 @@ namespace uva {
                         const size_t numWords = num_words + 1; //Add an extra element for the <unknown/> word
 
                         //Reserve the memory for the map
-                        reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc, numWords, "WordIndex", _wordIndexMemFactor);
+                        reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc,
+                                numWords, "WordIndex", _wordIndexMemFactor);
 
                         //Register the unknown word with the first available hash value
                         TShortId& hash = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
@@ -147,7 +150,7 @@ namespace uva {
                     typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
                     //The word index map type
-                    typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                    typedef unordered_map<string, TShortId, StringHash, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
                     typedef TWordIndexMap::const_iterator TWordIndexMapConstIter;
 
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
