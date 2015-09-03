@@ -273,7 +273,7 @@ namespace uva {
                     TShortId cio = ALayeredTrie<N>::FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
-                    for (TShortId wordId = UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                    for (TShortId wordId = AWordIndex::UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
                         //First get the sub-array reference. 
                         WORD_ENTRY_TYPE & ref = wordsArray[wordId];
 
@@ -438,11 +438,11 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
-                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
-                                << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(AWordIndex::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                     }
 
                     //Get the local entry index
@@ -497,11 +497,11 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
-                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
-                                << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(AWordIndex::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                     }
 
                     //Get the local entry index and then use it to compute the next context id
@@ -548,7 +548,7 @@ namespace uva {
                         const size_t fact_num_elems = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT), __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
 
                         //Allocate data per word, use the calloc in order to be able to realloc it!
-                        for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                        for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
                             wordsArray[wordId].ptr = (typename WORD_ENTRY_TYPE::TElemType*) calloc(fact_num_elems, sizeof (typename WORD_ENTRY_TYPE::TElemType));
                             wordsArray[wordId].capacity = fact_num_elems;
 
@@ -624,7 +624,7 @@ namespace uva {
                 template<typename WORD_ENTRY_TYPE>
                 void deAllocateWordsData(WORD_ENTRY_TYPE* & wordEntry) {
                     //Allocate data per word, use the calloc in order to be able to realloc it!
-                    for (TShortId wordId = MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                    for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
                         if (wordEntry[wordId].ptr != NULL) {
                             free(wordEntry[wordId].ptr);
                         }

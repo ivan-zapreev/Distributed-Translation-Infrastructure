@@ -54,7 +54,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit G2DHashMapTrie(AWordIndex * const _pWordIndex)
-                : ATrie<N>(_pWordIndex) {
+                : ATrie<N>(_pWordIndex), m_num_word_ids(0), m_1_gram_data(NULL) {
                 }
 
                 /**
@@ -64,7 +64,7 @@ namespace uva {
                  */
                 virtual void preAllocate(const size_t counts[N]) {
                     //Call the base-class
-                    ATrie<N>::preAllocate(counts);
+                    ALayeredTrie<N>::preAllocate(counts);
 
                     //ToDo: Implement
                     throw Exception("Pre-allocate the trie levels");
@@ -117,7 +117,15 @@ namespace uva {
                 };
 
             protected:
+                
+                
             private:
+
+                //Stores the number of used word ids
+                TShortId m_num_word_ids;
+
+                //Stores the 1-gram data
+                TProbBackOffEntry * m_1_gram_data;
             };
         }
     }

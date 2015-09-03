@@ -70,15 +70,15 @@ namespace uva {
                      */
                     virtual void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
-                        const size_t numWords = num_words + 1; //Add an extra element for the <unknown/> word
+                        const size_t numWords = num_words + MIN_KNOWN_WORD_ID; //Add an extra elements for the <unknown/> word
 
                         //Reserve the memory for the map
                         reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc,
                                 numWords, "WordIndex", _wordIndexMemFactor);
 
                         //Register the unknown word with the first available hash value
-                        TShortId& hash = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
-                        hash = UNKNOWN_WORD_ID;
+                        TShortId& wordId = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
+                        wordId = UNKNOWN_WORD_ID;
                     };
 
                     /**

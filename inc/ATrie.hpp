@@ -106,9 +106,7 @@ namespace uva {
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
                 virtual void preAllocate(const size_t counts[N]) {
-                    //Compute the number of words to be stored
-                    //Add an extra element for the <unknown/> word
-                    m_p_word_index->reserve(counts[0] + 1);
+                    m_p_word_index->reserve(counts[0]);
                 };
 
                 /**

@@ -79,7 +79,7 @@ namespace uva {
                 //Compute the number of words to be stored
 
                 //Add an extra element(3) for the <unknown/> word
-                const size_t num_word_ids = counts[0] + ALayeredTrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
+                const size_t num_word_ids = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
@@ -87,7 +87,7 @@ namespace uva {
 
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
             }

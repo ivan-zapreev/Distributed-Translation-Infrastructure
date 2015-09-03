@@ -55,7 +55,10 @@ namespace uva {
 
             template<TModelLevel N>
             void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
-                //Compute and store the M-gram level sizes in terms of the number of M-grams per level
+                //01) Pre-allocate the word index super class call
+                ALayeredTrie<N>::preAllocate(counts);
+
+                //02) Compute and store the M-gram level sizes in terms of the number of M-grams per level
                 //Also initialize the M-gram index counters, for issuing context indexes
                 for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
@@ -64,24 +67,20 @@ namespace uva {
                     m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + ALayeredTrie<N>::FIRST_VALID_CTX_ID;
                 }
 
-                //01) Pre-allocate the word index
-                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
-
-                //02) Pre-allocate the 1-Gram data
+                //03) Pre-allocate the 1-Gram data
                 //The size of this array is made two elements larger than the number
                 //of 1-Grams is since we want to account for the word indexes that start
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                const TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
-                TShortId one_gram_arr_size = counts[0] + EXTRA_NUMBER_OF_WORD_IDs;
+                TShortId one_gram_arr_size = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                 m_1_gram_data = new TProbBackOffEntry[one_gram_arr_size];
                 memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntry));
 
-                //03) Insert the unknown word data into the allocated array
-                TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
+                //04) Insert the unknown word data into the allocated array
+                TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
-                //04) Allocate data for the M-grams
+                //05) Allocate data for the M-grams
 
                 //First allocate the contexts to data mappings for the 2-grams (stored under index 0)
                 //The number of contexts is the number of words in previous level 1 i.e. counts[0]
@@ -107,7 +106,7 @@ namespace uva {
                     memset(m_M_gram_data[i], 0, m_M_N_gram_num_ctx_ids[i] * sizeof (TWordIdProbBackOffEntryPair));
                 }
 
-                //05) Allocate the data for the N-Grams.
+                //06) Allocate the data for the N-Grams.
                 m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
                 memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntryPair));
             }

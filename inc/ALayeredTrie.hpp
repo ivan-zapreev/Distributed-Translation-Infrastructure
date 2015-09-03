@@ -84,9 +84,6 @@ namespace uva {
                 //Will store the the number of M levels such that 1 < M < N.
                 const static TModelLevel NUM_M_GRAM_LEVELS = N - MGRAM_IDX_OFFSET;
 
-                //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                const static TShortId EXTRA_NUMBER_OF_WORD_IDs = 2;
-
                 //Will store the the number of M levels such that 1 < M <= N.
                 const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
 
@@ -108,7 +105,7 @@ namespace uva {
                 : ATrie<N>(_pWordIndex),
                 m_get_ctx_id_func(get_ctx_id_func),
                 m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
-                m_chached_ctx_id(UNDEFINED_WORD_ID) {
+                m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
@@ -234,7 +231,7 @@ namespace uva {
                 : ATrie<N>(NULL),
                 m_get_ctx_id_func(NULL),
                 m_chached_ctx(),
-                m_chached_ctx_id(UNDEFINED_WORD_ID) {
+                m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -306,7 +303,7 @@ namespace uva {
                     //Since the first word defines the second word context, and
                     //if this word is unknown then there is definitely no data
                     //for this N-gram in the trie ... so we through!
-                    if (ctxId < MIN_KNOWN_WORD_ID) {
+                    if (ctxId < AWordIndex::MIN_KNOWN_WORD_ID) {
                         LOG_DEBUG1 << "The first " << SSTR(ctxLen + 1) << " wordId == "
                                 << SSTR(ctxId) << " i.e. <unk>, need to back-off!" << END_LOG;
                         return false;

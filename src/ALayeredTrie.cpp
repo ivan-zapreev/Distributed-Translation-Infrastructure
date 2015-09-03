@@ -48,7 +48,7 @@ namespace uva {
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(N, oGram, wordHash, UNDEFINED_WORD_ID,
+                    REPORT_COLLISION_WARNING(N, oGram, wordHash, AWordIndex::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
                             oGram.prob, oGram.back_off);
                 }
@@ -175,7 +175,7 @@ namespace uva {
 
                 if (boCtxLen > 0) {
                     //Attempt to retrieve back-off weights
-                    TLongId ctxId = UNDEFINED_WORD_ID;
+                    TLongId ctxId = AWordIndex::UNDEFINED_WORD_ID;
                     //Compute the context hash
                     if (getQueryContextId<true>(boCtxLen, ctxId)) {
                         LOG_DEBUG << "Got query context id: " << ctxId << END_LOG;

@@ -57,16 +57,16 @@ namespace uva {
 
             template<TModelLevel N>
             void W2COrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
-                //01) Pre-allocate the word index
-                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
+                //01) Pre-allocate the word index super class call
+                ALayeredTrie<N>::preAllocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                m_num_word_ids = counts[0] + ALayeredTrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
+                m_num_word_ids = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                 m_1_gram_data = new TProbBackOffEntry[m_num_word_ids];
                 memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
 
                 //03) Insert the unknown word data into the allocated array
-                TProbBackOffEntry & pbData = m_1_gram_data[UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 

@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ALayeredTrie.o \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
+	${OBJECTDIR}/src/AWordIndex.o \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
@@ -86,6 +87,11 @@ ${OBJECTDIR}/src/ARPATrieBuilder.o: src/ARPATrieBuilder.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
+
+${OBJECTDIR}/src/AWordIndex.o: src/AWordIndex.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
 
 ${OBJECTDIR}/src/C2DHashMapTrie.o: src/C2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

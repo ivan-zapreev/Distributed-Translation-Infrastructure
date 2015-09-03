@@ -41,19 +41,6 @@ namespace uva {
         namespace tries {
             namespace dictionary {
 
-                //Stores the string representation of an unknown word
-                const string UNKNOWN_WORD_STR = "<unk>";
-
-                //Stores the word hash for an unknown word, is 0
-                //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                const TShortId UNDEFINED_WORD_ID = static_cast<TShortId> (0);
-
-                //Stores the word id for an unknown word, it must have value 1
-                const TShortId UNKNOWN_WORD_ID = static_cast<TShortId> (UNDEFINED_WORD_ID + 1);
-
-                //Stores the minimum known word id, it must have value 2
-                const TShortId MIN_KNOWN_WORD_ID = static_cast<TShortId> (UNKNOWN_WORD_ID + 1);
-
                 /**
                  * This abstract class is used to represent the word dictionary.
                  * It contains no specific implementation but is more of an interface.
@@ -68,6 +55,22 @@ namespace uva {
                  */
                 class AWordIndex {
                 public:
+
+                    //Stores the string representation of an unknown word
+                    const static string UNKNOWN_WORD_STR;
+
+                    //Stores the word hash for an unknown word, is 0
+                    //WARNING! MUST BE 0 as this is the value of a default initialized integer!
+                    const static TShortId UNDEFINED_WORD_ID;
+
+                    //Stores the word id for an unknown word, it must have value 1
+                    const static TShortId UNKNOWN_WORD_ID;
+
+                    //Stores the minimum known word id, it must have value 2
+                    const static TShortId MIN_KNOWN_WORD_ID;
+
+                    //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
+                    const static TShortId EXTRA_NUMBER_OF_WORD_IDs;
 
                     /**
                      * This method should be used to pre-allocate the word index
@@ -97,7 +100,6 @@ namespace uva {
                      */
                     virtual ~AWordIndex() {
                     };
-
                 };
             }
         }

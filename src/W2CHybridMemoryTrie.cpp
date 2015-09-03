@@ -61,12 +61,12 @@ namespace uva {
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::preAllocate(const size_t counts[N]) {
+                //01) Pre-allocate the word index super class call
+                ALayeredTrie<N>::preAllocate(counts);
+                
                 //Store the number of words plus 2 because a word with index 0 is
                 //UNDEFINED and a word with index 1 is UNKNOWN (<unk>)
-                m_word_arr_size = counts[0] + 2;
-
-                //01) Pre-allocate the word index
-                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
+                m_word_arr_size = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);
@@ -79,7 +79,7 @@ namespace uva {
                 memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (TProbBackOffEntry));
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntry & pbData = m_mgram_data[0][UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_mgram_data[0][AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
