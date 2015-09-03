@@ -515,9 +515,6 @@ namespace uva {
                 bool getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off);
 
             };
-
-            //Handy type definitions for the tries of different sizes and with.without caches
-            typedef ALayeredTrie<MAX_NGRAM_LEVEL> TFiveTrie;
         }
     }
 }
