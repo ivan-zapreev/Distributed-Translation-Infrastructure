@@ -32,7 +32,7 @@
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
 #include "Logger.hpp"
-#include "ALayeredTrie.hpp"
+#include "ATrie.hpp"
 #include "C2DHashMapTrie.hpp"
 #include "ARPATrieBuilder.hpp"
 #include "Globals.hpp"
@@ -193,7 +193,7 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
  * @param trie the trie to put the data into
  */
 template<TModelLevel N>
-static void fillInTrie(AFileReader & fstr, ALayeredTrie<N> & trie) {
+static void fillInTrie(AFileReader & fstr, ATrie<N> & trie) {
     //A trie container and the corps file stream are already instantiated and are given
 
     //A.1. Create the TrieBuilder and give the trie to it
@@ -234,7 +234,7 @@ static string getNGramProbStr(const T_M_Gram & ngram) {
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
 template<TModelLevel N>
-static double readAndExecuteQueries(ALayeredTrie<N> & trie, FileStreamReader &testFile) {
+static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime = 0.0, startTime = 0.0, endTime = 0.0;
     //Will store the read line (word1 word2 word3 word4 word5)
@@ -313,7 +313,7 @@ static void performTasks(const TAppParams& params) {
         HashMapWordIndex dictionary(__HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR);
 
         //Create a trie and pass it to the algorithm method
-        ALayeredTrie<MAX_NGRAM_LEVEL> * pTrie = TrieTypeFactory::getTrie<MAX_NGRAM_LEVEL>(params.trieTypeName, dictionary);
+        ATrie<MAX_NGRAM_LEVEL> * pTrie = TrieTypeFactory::getTrie<MAX_NGRAM_LEVEL>(params.trieTypeName, dictionary);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();

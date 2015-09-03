@@ -72,7 +72,7 @@ namespace uva {
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
                     template<TModelLevel N>
-                    static inline void getBuilder(const TModelLevel level, ALayeredTrie<N> & trie, ARPAGramBuilder **ppBuilder) {
+                    static inline void getBuilder(const TModelLevel level, ATrie<N> & trie, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;

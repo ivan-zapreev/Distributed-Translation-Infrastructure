@@ -47,7 +47,7 @@ namespace uva {
                 static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ALayeredTrie<N> & trie, TextPieceReader & file) :
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, TextPieceReader & file) :
                 m_trie(trie), m_file(file), m_line(), m_ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
