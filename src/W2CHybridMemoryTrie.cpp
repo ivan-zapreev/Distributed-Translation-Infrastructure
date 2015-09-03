@@ -64,9 +64,8 @@ namespace uva {
                 //01) Pre-allocate the word index super class call
                 ALayeredTrie<N>::preAllocate(counts);
                 
-                //Store the number of words plus 2 because a word with index 0 is
-                //UNDEFINED and a word with index 1 is UNKNOWN (<unk>)
-                m_word_arr_size = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
+                //Compute the number of words to be stored
+                m_word_arr_size = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);

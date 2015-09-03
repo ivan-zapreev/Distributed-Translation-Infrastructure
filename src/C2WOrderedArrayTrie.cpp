@@ -71,7 +71,7 @@ namespace uva {
                 //The size of this array is made two elements larger than the number
                 //of 1-Grams is since we want to account for the word indexes that start
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                TShortId one_gram_arr_size = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
+                const TShortId one_gram_arr_size = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[one_gram_arr_size];
                 memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntry));
 

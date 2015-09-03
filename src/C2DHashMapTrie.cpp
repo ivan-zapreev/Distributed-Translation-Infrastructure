@@ -71,9 +71,8 @@ namespace uva {
             template<TModelLevel N>
             void C2DHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
-
-                const size_t num_word_ids = counts[0] + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
-
+                const size_t num_word_ids = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
                 memset(m_1_gram_data, 0, num_word_ids * sizeof (TProbBackOffEntry));

@@ -79,6 +79,12 @@ namespace uva {
                     virtual void reserve(const size_t num_words) = 0;
 
                     /**
+                     * Allows to get the total words count including the unknown and undefined words
+                     * @param num_words the number of words in the language model
+                     */
+                    virtual size_t getTotalWordsCount(const size_t num_words) = 0;
+                    
+                    /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
