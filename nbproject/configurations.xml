@@ -17,6 +17,7 @@
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
+      <itemPath>inc/G2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
@@ -169,6 +170,8 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
@@ -266,6 +269,8 @@
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -375,6 +380,8 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
@@ -473,6 +480,8 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
@@ -570,6 +579,8 @@
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
       </item>
