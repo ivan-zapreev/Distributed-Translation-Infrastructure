@@ -177,7 +177,10 @@ namespace uva {
             class StringHash {
             public:
                 inline TShortId operator()(const string &param) const {
-                    return computePaulHsiehHash(param);
+                    //return computePaulHsiehHash(param);   //This one showed the worst speed on a test run
+                    //return computeDjb2Hash(param); 
+                    //return computePrimesHash(param);
+                    return computeRSHash(param);            //This one showed the best speed on a test run
                 }
             };
 

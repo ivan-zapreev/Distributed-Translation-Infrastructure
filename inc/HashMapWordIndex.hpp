@@ -150,7 +150,7 @@ namespace uva {
                     typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
 
                     //The word index map type
-                    typedef unordered_map<string, TShortId, StringHash, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                    typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
                     typedef TWordIndexMap::const_iterator TWordIndexMapConstIter;
 
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
