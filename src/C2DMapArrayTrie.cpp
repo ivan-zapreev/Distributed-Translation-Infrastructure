@@ -41,7 +41,7 @@ namespace uva {
             C2DMapArrayTrie<N>::C2DMapArrayTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
-            : ATrie<N>(_pWordIndex,
+            : ALayeredTrie<N>(_pWordIndex,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return C2DMapArrayTrie<N>::getContextId(wordId, ctxId, level); }),
@@ -59,13 +59,13 @@ namespace uva {
                 }
 
                 //Memset the M grams reference and data arrays
-                memset(pMGramAlloc, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
-                memset(pMGramMap, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
-                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffEntry *));
+                memset(pMGramAlloc, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
+                memset(pMGramMap, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
+                memset(m_M_gram_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffEntry *));
 
                 //Initialize the array of counters
-                memset(m_M_gram_num_ctx_ids, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
-                memset(m_M_gram_next_ctx_id, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_gram_num_ctx_ids, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_gram_next_ctx_id, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TShortId));
                 
                 //Initialize the N-gram level data
                 pNGramAlloc = NULL;
@@ -79,7 +79,7 @@ namespace uva {
                 //Compute the number of words to be stored
 
                 //Add an extra element(3) for the <unknown/> word
-                const size_t num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
+                const size_t num_word_ids = counts[0] + ALayeredTrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
@@ -95,7 +95,7 @@ namespace uva {
             template<TModelLevel N>
             void C2DMapArrayTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
-                for (int idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                for (int idx = 0; idx < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     //Get the number of elements to pre-allocate
 
                     //Get the number of the M-grams on this level
@@ -125,15 +125,15 @@ namespace uva {
             template<TModelLevel N>
             void C2DMapArrayTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
-                ATrie<N>::preAllocate(counts);
+                ALayeredTrie<N>::preAllocate(counts);
                 
                 //Compute and store the M-gram level sizes in terms of the number of M-gram indexes per level
                 //Also initialize the M-gram index counters, for issuing context indexes
-                for (TModelLevel i = 0; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
-                    m_M_gram_next_ctx_id[i] = ATrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_gram_next_ctx_id[i] = ALayeredTrie<N>::FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
-                    m_M_gram_num_ctx_ids[i] = counts[i + 1] + ATrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_gram_num_ctx_ids[i] = counts[i + 1] + ALayeredTrie<N>::FIRST_VALID_CTX_ID;
                 }
 
                 //Pre-allocate 0-Grams
@@ -154,7 +154,7 @@ namespace uva {
                 }
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
-                for (int idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                for (int idx = 0; idx < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
                     delete[] m_M_gram_data[idx];
                 }

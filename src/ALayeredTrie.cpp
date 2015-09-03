@@ -22,7 +22,7 @@
  *
  * Created on August 25, 2015, 29:27 PM
  */
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -33,14 +33,14 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            void ATrie<N>::add_1_Gram(const SRawNGram &oGram) {
+            void ALayeredTrie<N>::add_1_Gram(const T_M_Gram &oGram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = oGram.tokens[0];
 
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TShortId wordHash = m_p_word_index->makeId(token);
+                TShortId wordHash = ATrie<N>::getWordIndex()->makeId(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
@@ -64,7 +64,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void ATrie<N>::add_M_Gram(const SRawNGram &mGram) {
+            void ALayeredTrie<N>::add_M_Gram(const T_M_Gram &mGram) {
                 const TModelLevel level = mGram.level;
                 LOG_DEBUG << "Adding a " << SSTR(level) << "-Gram "
                         << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
@@ -84,7 +84,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = mGram.tokens[level - 1];
                 TShortId wordId;
-                isFound = m_p_word_index->getId(endWord.str(), wordId);
+                isFound = ATrie<N>::getWordIndex()->getId(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -116,7 +116,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void ATrie<N>::add_N_Gram(const SRawNGram &nGram) {
+            void ALayeredTrie<N>::add_N_Gram(const T_M_Gram &nGram) {
                 LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
@@ -134,7 +134,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[N - 1];
                 TShortId wordId;
-                isFound = m_p_word_index->getId(endWord.str(), wordId);
+                isFound = ATrie<N>::getWordIndex()->getId(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -165,7 +165,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            bool ATrie<N>::getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off) {
+            bool ALayeredTrie<N>::getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TShortId & wordId = getBackOffNGramEndWordHash();
                 const TModelLevel boCtxLen = level - 1;
@@ -237,7 +237,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ATrie<N>::getProbability(const TModelLevel level, TLogProbBackOff & prob) {
+            void ALayeredTrie<N>::getProbability(const TModelLevel level, TLogProbBackOff & prob) {
                 //Compute the context length of the given M-Gram
                 const TModelLevel ctxLen = level - 1;
                 //Get the last word in the N-gram
@@ -334,7 +334,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ATrie<N>::queryNGram(const SRawNGram & ngram, SProbResult & result) {
+            void ALayeredTrie<N>::queryNGram(const T_M_Gram & ngram, TQueryResult & result) {
                 const TModelLevel level = ngram.level;
 
                 //Check the number of elements in the N-Gram
@@ -344,7 +344,7 @@ namespace uva {
                     throw Exception(msg.str());
                 } else {
                     //First transform the given M-gram into word hashes.
-                    ATrie<N>::storeNGramHashes(ngram);
+                    ALayeredTrie<N>::storeNGramHashes(ngram);
 
                     //Go on with a recursive procedure of computing the N-Gram probabilities
                     getProbability(level, result.prob);
@@ -354,7 +354,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ATrie<MAX_NGRAM_LEVEL>;
+            template class ALayeredTrie<MAX_NGRAM_LEVEL>;
         }
     }
 }

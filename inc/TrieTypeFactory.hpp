@@ -27,7 +27,7 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "HashMapWordIndex.hpp"
 #include "W2CHybridMemoryTrie.hpp"
 #include "C2WOrderedArrayTrie.hpp"
@@ -67,7 +67,7 @@ namespace uva {
                  * @throws Exception if the trie type name is not recognized
                  */
                 template<TModelLevel N>
-                static inline ATrie<N>* getTrie(const string trie_type, HashMapWordIndex &dictionary) {
+                static inline ALayeredTrie<N>* getTrie(const string trie_type, HashMapWordIndex &dictionary) {
                     if (trie_type == TCtxMultiHashMapTrie_STR) {
                         return new TCtxMultiHashMapTrie_N5(&dictionary);
                     } else {

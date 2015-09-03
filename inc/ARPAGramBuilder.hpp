@@ -29,7 +29,7 @@
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
 
-#include <ATrie.hpp>
+#include <ALayeredTrie.hpp>
 
 #include "Globals.hpp"
 #include <Exceptions.hpp>
@@ -43,7 +43,7 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                typedef std::function<void (const SRawNGram&) > TAddGramFunct;
+                typedef std::function<void (const T_M_Gram&) > TAddGramFunct;
 
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
@@ -76,7 +76,7 @@ namespace uva {
                      * @param text the piece of text to tokenise
                      * @param gram the gram container to put data into
                      */
-                    static void parseToGramWords(TextPieceReader &text, SRawNGram & ngram);
+                    static void parseToGramWords(TextPieceReader &text, T_M_Gram & ngram);
 
                     virtual ~ARPAGramBuilder();
                 protected:
@@ -90,7 +90,7 @@ namespace uva {
                     TextPieceReader m_token;
                     
                     //This is the N-Gram container to store the parsed N-gram data
-                    SRawNGram m_ngram;
+                    T_M_Gram m_ngram;
                     
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;

@@ -58,7 +58,7 @@ namespace uva {
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                void ARPAGramBuilder::parseToGramWords(TextPieceReader &text, SRawNGram & ngram) {
+                void ARPAGramBuilder::parseToGramWords(TextPieceReader &text, T_M_Gram & ngram) {
                     //Re-set the level to zero
                     ngram.level = 0;
 

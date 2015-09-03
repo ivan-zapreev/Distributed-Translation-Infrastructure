@@ -38,14 +38,14 @@ namespace uva {
 
             template<TModelLevel N>
             W2COrderedArrayTrie<N>::W2COrderedArrayTrie(AWordIndex * const p_word_index)
-            : ATrie<N>(p_word_index,
+            : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
 
                 //Memset the M/N grams reference and data arrays
-                memset(m_M_gram_word_2_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
+                memset(m_M_gram_word_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
 
                 //Get the memory increase strategy
                 m_p_mem_strat = getMemIncreaseStrategy(MEM_INC_TYPE, MIN_MEM_INC_NUM, MEM_INC_FACTOR);
@@ -58,10 +58,10 @@ namespace uva {
             template<TModelLevel N>
             void W2COrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index
-                ATrie<N>::getWordIndex()->reserve(counts[0]);
+                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
 
                 //02) Pre-allocate the 1-Gram data
-                m_num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
+                m_num_word_ids = counts[0] + ALayeredTrie<N>::EXTRA_NUMBER_OF_WORD_IDs;
                 m_1_gram_data = new TProbBackOffEntry[m_num_word_ids];
                 memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
 
@@ -72,7 +72,7 @@ namespace uva {
 
                 //04) Allocate data for the M-grams
 
-                for (TModelLevel i = 0; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
                     preAllocateWordsData<T_M_GramWordEntry>(m_M_gram_word_2_data[i], counts[i + 1], counts[0]);
                 }
 
@@ -85,7 +85,7 @@ namespace uva {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
-                    for (TModelLevel i = 0; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                    for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
                         deAllocateWordsData(m_M_gram_word_2_data[i]);
                     }
                     deAllocateWordsData(m_N_gram_word_2_data);

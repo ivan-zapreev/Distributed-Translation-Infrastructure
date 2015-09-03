@@ -72,7 +72,7 @@ namespace uva {
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
                     template<TModelLevel N>
-                    static inline void getBuilder(const TModelLevel level, ATrie<N> & trie, ARPAGramBuilder **ppBuilder) {
+                    static inline void getBuilder(const TModelLevel level, ALayeredTrie<N> & trie, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
@@ -92,7 +92,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
-                                        [&] (const SRawNGram & gram) {
+                                        [&] (const T_M_Gram & gram) {
                                             trie.add_1_Gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
@@ -101,7 +101,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
-                                            [&] (const SRawNGram & gram) {
+                                            [&] (const T_M_Gram & gram) {
                                                 trie.add_N_Gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
                                 } else {
@@ -109,7 +109,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
-                                            [&] (const SRawNGram & gram) {
+                                            [&] (const T_M_Gram & gram) {
                                                 trie.add_M_Gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }

@@ -35,9 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/ALayeredTrie.o \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
-	${OBJECTDIR}/src/ATrie.o \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
@@ -72,6 +72,11 @@ ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
 	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -lrt -m64
 
+${OBJECTDIR}/src/ALayeredTrie.o: nbproject/Makefile-${CND_CONF}.mk src/ALayeredTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ALayeredTrie.o src/ALayeredTrie.cpp
+
 ${OBJECTDIR}/src/ARPAGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -81,11 +86,6 @@ ${OBJECTDIR}/src/ARPATrieBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPATr
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
-
-${OBJECTDIR}/src/ATrie.o: nbproject/Makefile-${CND_CONF}.mk src/ATrie.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ATrie.o src/ATrie.cpp
 
 ${OBJECTDIR}/src/C2DHashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

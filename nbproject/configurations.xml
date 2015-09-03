@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>inc/AFileReader.hpp</itemPath>
+      <itemPath>inc/ALayeredTrie.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilder.hpp</itemPath>
       <itemPath>inc/ARPAGramBuilderFactory.hpp</itemPath>
       <itemPath>inc/ARPATrieBuilder.hpp</itemPath>
@@ -38,9 +39,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>src/ALayeredTrie.cpp</itemPath>
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
-      <itemPath>src/ATrie.cpp</itemPath>
       <itemPath>src/C2DHashMapTrie.cpp</itemPath>
       <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
@@ -146,6 +147,8 @@
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -190,11 +193,11 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -242,6 +245,8 @@
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -286,11 +291,11 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -348,6 +353,8 @@
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -392,11 +399,11 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -444,6 +451,8 @@
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -488,11 +497,11 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -540,6 +549,8 @@
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
@@ -584,11 +595,11 @@
       </item>
       <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ATrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>

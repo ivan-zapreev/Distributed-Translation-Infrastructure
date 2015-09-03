@@ -29,7 +29,7 @@
 #include <fstream>      // std::ifstream
 #include <regex>        // std::regex, std::regex_match
 
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "TextPieceReader.hpp"
 
 using namespace std;
@@ -52,7 +52,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, TextPieceReader & file);
+                    ARPATrieBuilder(ALayeredTrie<N> & trie, TextPieceReader & file);
 
                     /**
                      * This function will read from the file and build the trie
@@ -62,7 +62,7 @@ namespace uva {
                     virtual ~ARPATrieBuilder();
                 private:
                     //The reference to the trie to be build
-                    ATrie<N> & m_trie;
+                    ALayeredTrie<N> & m_trie;
                     //The reference to the input file with language model
                     TextPieceReader & m_file;
                     //Stores the next line data

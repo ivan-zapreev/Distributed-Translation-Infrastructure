@@ -43,7 +43,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
@@ -77,7 +77,7 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class C2DHashMapTrie : public ATrie<N> {
+            class C2DHashMapTrie : public ALayeredTrie<N> {
             public:
 
                 /**
@@ -173,7 +173,7 @@ namespace uva {
                         hashSizes[level - 1].second = max<TLongId>(ctxId, hashSizes[level - 1].second);
                     }
 
-                    return pMGramMap[level - ATrie<N>::MGRAM_IDX_OFFSET]->operator[](ctxId);
+                    return pMGramMap[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET]->operator[](ctxId);
                 };
 
                 /**
@@ -187,7 +187,7 @@ namespace uva {
                     //Get the next context id
                     if (getContextId(wordId, ctxId)) {
                         //Search for the map for that context id
-                        const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
+                        const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
                         TMGramsMap::const_iterator result = pMGramMap[idx]->find(ctxId);
                         if (result == pMGramMap[idx]->end()) {
                             //There is no data found under this context
@@ -266,9 +266,9 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TProbBackOffEntry, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[N - ATrie<N>::MGRAM_IDX_OFFSET];
+                TMGramAllocator * pMGramAlloc[N - ALayeredTrie<N>::MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[N - ATrie<N>::MGRAM_IDX_OFFSET];
+                TMGramsMap * pMGramMap[N - ALayeredTrie<N>::MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -289,7 +289,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DHashMapTrie(const C2DHashMapTrie & orig)
-                : ATrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
+                : ALayeredTrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

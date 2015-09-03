@@ -31,7 +31,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
@@ -60,7 +60,7 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel N>
-            class C2DMapArrayTrie : public ATrie<N> {
+            class C2DMapArrayTrie : public ALayeredTrie<N> {
             public:
                 //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
                 static const TModelLevel MGRAM_IDX_OFFSET = 2;
@@ -146,7 +146,7 @@ namespace uva {
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
                     
                     //Get the next context id
-                    const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
+                    const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
                     TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
                     
                     //Store the context mapping inside the map
@@ -167,7 +167,7 @@ namespace uva {
                     //Get the next context id
                     if (getContextId(wordId, ctxId, level)) {
                         //There is data found under this context
-                        *ppData = &m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][ctxId];
+                        *ppData = &m_M_gram_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET][ctxId];
                         return true;
                     } else {
                         //The context id could not be found
@@ -214,9 +214,9 @@ namespace uva {
                 const float nGramMemFactor;
                 
                 //Stores the context id counters per M-gram level: 1 < M < N
-                TShortId m_M_gram_next_ctx_id[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TShortId m_M_gram_next_ctx_id[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_M_gram_num_ctx_ids[ATrie<N>::NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_gram_num_ctx_ids[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
@@ -228,12 +228,12 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TMGramAllocator * pMGramAlloc[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TMGramsMap * pMGramMap[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TProbBackOffEntry * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TProbBackOffEntry * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -251,7 +251,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DMapArrayTrie(const C2DMapArrayTrie & orig)
-                : ATrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
+                : ALayeredTrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -291,7 +291,7 @@ namespace uva {
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                     //Search for the map for that context id
-                    const TModelLevel idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
                     TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
                     if (result == pMGramMap[idx]->end()) {
                         //There is no data found under this context

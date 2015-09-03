@@ -41,7 +41,7 @@ namespace uva {
             C2DHashMapTrie<N>::C2DHashMapTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
-            : ATrie<N>(_pWordIndex,
+            : ALayeredTrie<N>(_pWordIndex,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return C2DHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
@@ -72,7 +72,7 @@ namespace uva {
             void C2DHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
 
-                const size_t num_word_ids = counts[0] + ATrie<N>::EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
+                const size_t num_word_ids = counts[0] + ALayeredTrie<N>::EXTRA_NUMBER_OF_WORD_IDs; //Add an extra element(3) for the <unknown/> word
 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
@@ -112,7 +112,7 @@ namespace uva {
             void C2DHashMapTrie<N>::preAllocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
 
-                ATrie<N>::preAllocate(counts);
+                ALayeredTrie<N>::preAllocate(counts);
 
                 //Pre-allocate 0-Grams
                 preAllocateOGrams(counts);

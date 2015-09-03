@@ -34,7 +34,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "AWordIndex.hpp"
 #include "ArrayUtils.hpp"
 #include "W2COrderedArrayTrieMem.hpp"
@@ -54,7 +54,7 @@ namespace uva {
              * @param N the maximum number of levels in the trie.
              */
             template<TModelLevel N>
-            class W2COrderedArrayTrie : public ATrie<N> {
+            class W2COrderedArrayTrie : public ALayeredTrie<N> {
             public:
 
                 /**
@@ -176,7 +176,7 @@ namespace uva {
                             << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Get the sub-array reference. 
-                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET], wordId);
+                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET], wordId);
 
                     //Store the context and word ids
                     ref.ctxId = ctxId;
@@ -198,7 +198,7 @@ namespace uva {
 
                     //Get the entry
                     const typename T_M_GramWordEntry::TElemType * pEntry;
-                    if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
+                    if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
                         //Return the pointer to the probability and back-off structure
                         *ppData = &pEntry->data;
                         return true;
@@ -253,7 +253,7 @@ namespace uva {
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
-                    return (level > ONE_GRAM_LEVEL) || ATrie<N>::isPost_Grams(level);
+                    return (level > ONE_GRAM_LEVEL) || ALayeredTrie<N>::isPost_Grams(level);
                 }
 
                 /**
@@ -270,7 +270,7 @@ namespace uva {
                     //The initial value is 1, although in this Trie it should
                     //not matter much, but it is better to reserve 0 for
                     //an undefined context value
-                    TShortId cio = ATrie<N>::FIRST_VALID_CTX_ID;
+                    TShortId cio = ALayeredTrie<N>::FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
                     for (TShortId wordId = UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
@@ -320,16 +320,16 @@ namespace uva {
                 virtual void post_M_Grams(const TModelLevel level) {
                     //Call the base class method first
 
-                    ATrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_N_Grams();
 
                     //Sort the level's data
-                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N>::MGRAM_IDX_OFFSET]);
+                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET]);
                 }
 
                 virtual void post_N_Grams() {
                     //Call the base class method first
 
-                    ATrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_N_Grams();
 
                     //Sort the level's data
                     post_M_N_Grams<T_N_GramWordEntry>(m_N_gram_word_2_data);
@@ -345,7 +345,7 @@ namespace uva {
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                T_M_GramWordEntry * m_M_gram_word_2_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+                T_M_GramWordEntry * m_M_gram_word_2_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
@@ -471,7 +471,7 @@ namespace uva {
                  */
                 inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
 
                     if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
                         stringstream msg;

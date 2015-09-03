@@ -30,7 +30,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "AWordIndex.hpp"
 #include "ArrayUtils.hpp"
 
@@ -53,7 +53,7 @@ namespace uva {
              * @param N the maximum number of levels in the trie.
              */
             template<TModelLevel N>
-            class C2WOrderedArrayTrie : public ATrie<N> {
+            class C2WOrderedArrayTrie : public ALayeredTrie<N> {
             public:
 
                 /**
@@ -156,7 +156,7 @@ namespace uva {
                  */
                 virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
 
                     LOG_DEBUG2 << "Adding " << SSTR(level) << "-gram with ctxId: "
                             << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
@@ -166,7 +166,7 @@ namespace uva {
 
                     //Check that the array is continuous in indexes, so that we add
                     //context after context and not switching between different contexts!
-                    if (DO_SANITY_CHECKS && (ref.endIdx != ATrie<N>::UNDEFINED_ARR_IDX)
+                    if (DO_SANITY_CHECKS && (ref.endIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX)
                             && (ref.endIdx + 1 != m_M_N_gram_next_ctx_id[mgram_idx])) {
                         stringstream msg;
                         msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
@@ -187,7 +187,7 @@ namespace uva {
                     }
 
                     //Check if there are yet no elements for this context
-                    if (ref.beginIdx == ATrie<N>::UNDEFINED_ARR_IDX) {
+                    if (ref.beginIdx == ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
                         //There was no elements put into this contex, the begin index is then equal to the end index
                         ref.beginIdx = ref.endIdx;
                     }
@@ -208,7 +208,7 @@ namespace uva {
                 virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
                         TLongId ctxId, const TProbBackOffEntry **ppData) {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
 
                     LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
@@ -232,16 +232,16 @@ namespace uva {
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
                     //Get the new n-gram index
-                    const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR]++;
+                    const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]++;
 
                     LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with ctxId: " << SSTR(ctxId)
                             << ", wordId: " << SSTR(wordId) << " @ index: " << SSTR(n_gram_idx) << END_LOG;
 
                     //Check if we exceeded the maximum allowed number of M-grams
-                    if (DO_SANITY_CHECKS && (n_gram_idx >= m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR])) {
+                    if (DO_SANITY_CHECKS && (n_gram_idx >= m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR])) {
                         stringstream msg;
                         msg << "The maximum allowed number of " << SSTR(N) << "-grams: "
-                                << SSTR(m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR]) << " is exceeded )!";
+                                << SSTR(m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]) << " is exceeded )!";
                         throw Exception(msg.str());
                     }
 
@@ -273,9 +273,9 @@ namespace uva {
                             << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
-                    TShortId idx = ATrie<N>::UNDEFINED_ARR_IDX;
-                    if (bsearch_wordId_ctxId<TCtxIdProbEntryPair>(m_N_gram_data, ATrie<N>::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
+                    TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
+                    if (bsearch_wordId_ctxId<TCtxIdProbEntryPair>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
+                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
                         return true;
@@ -291,22 +291,22 @@ namespace uva {
                     //Check the base class and we need to do post actions
                     //for the N-grams. The N-grams level data has to be
                     //sorted see post_N_Grams method implementation below.
-                    return (level == N) || ATrie<N>::isPost_Grams(level);
+                    return (level == N) || ALayeredTrie<N>::isPost_Grams(level);
                 }
 
                 virtual void post_N_Grams() {
                     //Call the base class method first
-                    ATrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_N_Grams();
 
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
-                            << ", size: " << m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
+                            << ", size: " << m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
                     //model when compared to the str::sort!
-                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR]);
+                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]);
                 };
 
             private:
@@ -316,18 +316,18 @@ namespace uva {
 
                 //Stores the M-gram context to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                TSubArrReference * m_M_gram_ctx_2_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TSubArrReference * m_M_gram_ctx_2_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TWordIdProbBackOffEntryPair * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TWordIdProbBackOffEntryPair * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
 
                 //Stores the N-gram data
                 TCtxIdProbEntryPair * m_N_gram_data;
 
                 //Stores the maximum number of context id  per M-gram level: 1 < M <= N
-                TShortId m_M_N_gram_num_ctx_ids[ATrie<N>::NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_M_N_gram_next_ctx_id[ATrie<N>::NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_N_gram_next_ctx_id[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -342,7 +342,7 @@ namespace uva {
                  */
                 inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - ATrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
 
                     if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
                         stringstream msg;
@@ -365,8 +365,8 @@ namespace uva {
                             << SSTR(ref.endIdx) << END_LOG;
 
                     //Check that there is data for the given context available
-                    if (ref.beginIdx != ATrie<N>::UNDEFINED_ARR_IDX) {
-                        TShortId nextCtxId = ATrie<N>::UNDEFINED_ARR_IDX;
+                    if (ref.beginIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
+                        TShortId nextCtxId = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
                         if (bsearch_wordId<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "

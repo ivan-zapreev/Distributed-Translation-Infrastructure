@@ -36,7 +36,7 @@ namespace uva {
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::W2CHybridMemoryTrie(AWordIndex * const p_word_index)
-            : ATrie<N>(p_word_index,
+            : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
@@ -66,7 +66,7 @@ namespace uva {
                 m_word_arr_size = counts[0] + 2;
 
                 //01) Pre-allocate the word index
-                ATrie<N>::getWordIndex()->reserve(counts[0]);
+                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);

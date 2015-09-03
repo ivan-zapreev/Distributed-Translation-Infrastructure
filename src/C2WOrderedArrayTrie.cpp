@@ -36,19 +36,19 @@ namespace uva {
 
             template<TModelLevel N>
             C2WOrderedArrayTrie<N>::C2WOrderedArrayTrie(AWordIndex * const p_word_index)
-            : ATrie<N>(p_word_index,
+            : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }),
             m_1_gram_data(NULL), m_N_gram_data(NULL) {
 
                 //Memset the M grams reference and data arrays
-                memset(m_M_gram_ctx_2_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
-                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TWordIdProbBackOffEntryPair *));
+                memset(m_M_gram_ctx_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
+                memset(m_M_gram_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TWordIdProbBackOffEntryPair *));
 
                 //Initialize the array of counters
-                memset(m_M_N_gram_num_ctx_ids, 0, ATrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
-                memset(m_M_N_gram_next_ctx_id, 0, ATrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_num_ctx_ids, 0, ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_next_ctx_id, 0, ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
@@ -57,15 +57,15 @@ namespace uva {
             void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
                 //Compute and store the M-gram level sizes in terms of the number of M-grams per level
                 //Also initialize the M-gram index counters, for issuing context indexes
-                for (TModelLevel i = 0; i < ATrie<N>::NUM_M_N_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
-                    m_M_N_gram_next_ctx_id[i] = ATrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_N_gram_next_ctx_id[i] = ALayeredTrie<N>::FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
-                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + ATrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + ALayeredTrie<N>::FIRST_VALID_CTX_ID;
                 }
 
                 //01) Pre-allocate the word index
-                ATrie<N>::getWordIndex()->reserve(counts[0]);
+                ALayeredTrie<N>::getWordIndex()->reserve(counts[0]);
 
                 //02) Pre-allocate the 1-Gram data
                 //The size of this array is made two elements larger than the number
@@ -95,7 +95,7 @@ namespace uva {
                 memset(m_M_gram_data[0], 0, m_M_N_gram_num_ctx_ids[0] * sizeof (TWordIdProbBackOffEntryPair));
 
                 //Now the remaining elements can be added in a loop
-                for (TModelLevel i = 1; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 1; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
                     //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
@@ -108,8 +108,8 @@ namespace uva {
                 }
 
                 //05) Allocate the data for the N-Grams.
-                m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
-                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntryPair));
+                m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
+                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntryPair));
             }
 
             template<TModelLevel N>
@@ -117,7 +117,7 @@ namespace uva {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
-                    for (TModelLevel i = 0; i < ATrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                    for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
                         delete[] m_M_gram_ctx_2_data[i];
                         delete[] m_M_gram_data[i];
                     }

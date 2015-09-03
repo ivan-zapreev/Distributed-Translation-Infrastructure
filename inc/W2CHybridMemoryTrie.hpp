@@ -30,7 +30,7 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
+#include "ALayeredTrie.hpp"
 #include "AWordIndex.hpp"
 #include "W2CHybridMemoryTrieStorage.hpp"
 
@@ -48,7 +48,7 @@ namespace uva {
              * @param StorageContainer the storage container type that is created by the factory
              */
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            class W2CHybridMemoryTrie : public ATrie<N> {
+            class W2CHybridMemoryTrie : public ALayeredTrie<N> {
             public:
 
                 /**
@@ -101,7 +101,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
-                    const TModelLevel idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
+                    const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
                     
                     //Get the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[idx][wordId];
@@ -143,7 +143,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
                     if (ctx_mapping == NULL) {
                         ctx_mapping = m_storage_factory->create(N);
                         LOG_DEBUG3 << "Allocating storage for level " << SSTR(N)
@@ -163,7 +163,7 @@ namespace uva {
                 virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
                         TLogProbBackOff & prob) {
                     //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[ATrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR][wordId];
 
                     //If the mapping is present the search further, otherwise return false
                     if (ctx_mapping != NULL) {
@@ -240,7 +240,7 @@ namespace uva {
                     LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                             << wordId << ", ctxId: " << ctxId << END_LOG;
                     //Retrieve the context data for the given word
-                    StorageContainer* ctx_mapping = m_mgram_mapping[level - ATrie<N>::MGRAM_IDX_OFFSET][wordId];
+                    StorageContainer* ctx_mapping = m_mgram_mapping[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET][wordId];
 
                     //Check that the context data is available
                     if (ctx_mapping != NULL) {
