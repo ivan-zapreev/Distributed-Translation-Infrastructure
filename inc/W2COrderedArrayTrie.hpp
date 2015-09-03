@@ -632,8 +632,6 @@ namespace uva {
                     delete[] wordEntry;
                 }
             };
-
-            typedef W2COrderedArrayTrie<MAX_NGRAM_LEVEL> TW2COrderedArrayTrie_N5;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace uva {
                 virtual void preAllocate(const size_t counts[N]) {
                     //Call the base-class
                     ATrie<N>::preAllocate(counts);
-                    
+
                     //ToDo: Implement
                     throw Exception("Pre-allocate the trie levels");
                 };

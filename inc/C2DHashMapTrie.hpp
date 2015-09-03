@@ -331,10 +331,7 @@ namespace uva {
                     //The context can always be computed
                     return true;
                 }
-
             };
-
-            typedef C2DHashMapTrie<MAX_NGRAM_LEVEL> TCtxMultiHashMapTrie_N5;
         }
     }
 }

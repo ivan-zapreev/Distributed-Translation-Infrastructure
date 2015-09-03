@@ -27,13 +27,16 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
-#include "ALayeredTrie.hpp"
+
+#include "ATrie.hpp"
 #include "HashMapWordIndex.hpp"
+
+#include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
-#include "HashMapWordIndex.hpp"
 #include "C2DMapArrayTrie.hpp"
+#include "G2DHashMapTrie.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
@@ -51,11 +54,12 @@ namespace uva {
              */
             class TrieTypeFactory {
             private:
-                static const string TCtxMultiHashMapTrie_STR;
-                static const string TMapW2CHybridTrie_STR;
+                static const string TC2DHashMapTrie_STR;
+                static const string TW2CHybridMemoryTrie_STR;
                 static const string TC2WOrderedArrayTrie_STR;
                 static const string TW2COrderedArrayTrie_STR;
                 static const string C2DMapArrayTrie_STR;
+                static const string G2DHashMapTrie_STR;
 
             public:
 
@@ -67,25 +71,29 @@ namespace uva {
                  * @throws Exception if the trie type name is not recognized
                  */
                 template<TModelLevel N>
-                static inline ALayeredTrie<N>* getTrie(const string trie_type, HashMapWordIndex &dictionary) {
-                    if (trie_type == TCtxMultiHashMapTrie_STR) {
-                        return new TCtxMultiHashMapTrie_N5(&dictionary);
+                static inline ATrie<N>* getTrie(const string trie_type, HashMapWordIndex &dictionary) {
+                    if (trie_type == TC2DHashMapTrie_STR) {
+                        return new C2DHashMapTrie<N>(&dictionary);
                     } else {
-                        if (trie_type == TMapW2CHybridTrie_STR) {
-                            return new TMapW2CHybridTrie_N5(&dictionary);
+                        if (trie_type == TW2CHybridMemoryTrie_STR) {
+                            return new typename TW2CHybridMemoryTrie<N>::type(&dictionary);
                         } else {
                             if (trie_type == TC2WOrderedArrayTrie_STR) {
-                                return new TC2WOrderedArrayTrie_N5(&dictionary);
+                                return new C2WOrderedArrayTrie<N>(&dictionary);
                             } else {
                                 if (trie_type == TW2COrderedArrayTrie_STR) {
-                                    return new TW2COrderedArrayTrie_N5(&dictionary);
+                                    return new W2COrderedArrayTrie<N>(&dictionary);
                                 } else {
                                     if (trie_type == C2DMapArrayTrie_STR) {
-                                        return new TC2DMapArrayTrie_N5(&dictionary);
+                                        return new C2DMapArrayTrie<N>(&dictionary);
                                     } else {
-                                        stringstream msg;
-                                        msg << "Unrecognized trie type: " + trie_type;
-                                        throw Exception(msg.str());
+                                        if (trie_type == G2DHashMapTrie_STR) {
+                                            return new G2DHashMapTrie<N>(&dictionary);
+                                        } else {
+                                            stringstream msg;
+                                            msg << "Unrecognized trie type: " + trie_type;
+                                            throw Exception(msg.str());
+                                        }
                                     }
                                 }
                             }
@@ -99,21 +107,23 @@ namespace uva {
                  */
                 static inline string getTrieTypesStr() {
                     stringstream text;
-                    text << "{" << TCtxMultiHashMapTrie_STR << ", "
-                            << TMapW2CHybridTrie_STR << ", "
+                    text << "{" << TC2DHashMapTrie_STR << ", "
+                            << TW2CHybridMemoryTrie_STR << ", "
                             << TC2WOrderedArrayTrie_STR << ", "
                             << TW2COrderedArrayTrie_STR << ", "
-                            << C2DMapArrayTrie_STR << "}";
+                            << C2DMapArrayTrie_STR << ", "
+                            << G2DHashMapTrie_STR << "}";
                     return text.str();
                 }
             };
 
             //Initialize constants
-            const string TrieTypeFactory::TCtxMultiHashMapTrie_STR = string("c2dm");
-            const string TrieTypeFactory::TMapW2CHybridTrie_STR = string("w2ch");
+            const string TrieTypeFactory::TC2DHashMapTrie_STR = string("c2dm");
+            const string TrieTypeFactory::TW2CHybridMemoryTrie_STR = string("w2ch");
             const string TrieTypeFactory::TC2WOrderedArrayTrie_STR = string("c2wa");
             const string TrieTypeFactory::TW2COrderedArrayTrie_STR = string("w2ca");
-            const string TrieTypeFactory::C2DMapArrayTrie_STR = string("c2dh"); 
+            const string TrieTypeFactory::C2DMapArrayTrie_STR = string("c2dh");
+            const string TrieTypeFactory::G2DHashMapTrie_STR = string("g2dm");
         }
     }
 }

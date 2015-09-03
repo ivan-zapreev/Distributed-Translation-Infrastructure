@@ -305,8 +305,6 @@ namespace uva {
                 }
 
             };
-
-            typedef C2DMapArrayTrie<MAX_NGRAM_LEVEL> TC2DMapArrayTrie_N5;
         }
     }
 }

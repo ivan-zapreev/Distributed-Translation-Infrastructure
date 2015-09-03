@@ -389,8 +389,6 @@ namespace uva {
                     }
                 }
             };
-
-            typedef C2WOrderedArrayTrie<MAX_NGRAM_LEVEL> TC2WOrderedArrayTrie_N5;
         }
     }
 }
