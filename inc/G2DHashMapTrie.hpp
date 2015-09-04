@@ -94,7 +94,7 @@ namespace uva {
                 explicit G2DHashMapTrie(AWordIndex * const _pWordIndex)
                 : ATrie<N>(_pWordIndex), m_1_gram_data(NULL) {
                     //Initialize the array of number of gram ids per level
-                    memset(m_gram_num_ids, 0, N * sizeof (TShortId));
+                    memset(num_buckets, 0, N * sizeof (TShortId));
                 }
 
                 /**
@@ -107,9 +107,9 @@ namespace uva {
                     ALayeredTrie<N>::preAllocate(counts);
 
                     //02) Pre-allocate the 1-Gram data
-                    m_gram_num_ids[0] = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
-                    m_1_gram_data = new TProbBackOffEntry[m_gram_num_ids[0]];
-                    memset(m_1_gram_data, 0, m_gram_num_ids[0] * sizeof (TProbBackOffEntry));
+                    num_buckets[0] = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                    m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
+                    memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
                     //03) Insert the unknown word data into the allocated array
                     TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
@@ -118,7 +118,7 @@ namespace uva {
 
                     //Copy the counts to the local storage
                     for (TModelLevel level = 1; level < N; level++) {
-                        m_gram_num_ids[level] = counts[level];
+                        num_buckets[level] = counts[level];
                     }
 
                     //ToDo: Implement
@@ -145,14 +145,16 @@ namespace uva {
                 virtual void add_M_Gram(const T_M_Gram &mGram) {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const TShortId mGramHash = mGram.hash < m_gram_num_ids[mGram.level]>();
+                    const TShortId mGramHash = mGram.hash();
+                    //Compute the bucket Id from the M-Gram hash
+                    const TShortId bucketId = mGramHash % num_buckets[mGram.level];
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((mGramHash < 0) || (mGramHash >= m_gram_num_ids[mGram.level]))) {
+                    if (DO_SANITY_CHECKS && ((bucketId < 0) || (bucketId >= num_buckets[mGram.level]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString(mGram.tokens, mGram.level)
-                                << " was given an incorrect hash: " << SSTR(mGramHash)
-                                << ", must be within [0, " << SSTR(m_gram_num_ids[mGram.level]) << "]";
+                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                                << " was given an incorrect hash: " << SSTR(bucketId)
+                                << ", must be within [0, " << SSTR(num_buckets[mGram.level]) << "]";
                         throw Exception(msg.str());
                     }
 
@@ -201,7 +203,7 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //Stores the number of gram ids/buckets per level
-                TShortId m_gram_num_ids[N];
+                TShortId num_buckets[N];
             };
         }
     }

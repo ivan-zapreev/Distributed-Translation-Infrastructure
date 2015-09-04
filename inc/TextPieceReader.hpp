@@ -60,7 +60,7 @@ namespace uva {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
-                char * m_beginPtr;
+                const char * m_beginPtr;
                 //The length of the line
                 size_t m_len;
 
@@ -70,7 +70,7 @@ namespace uva {
                 mutable string m_str;
 
                 //The pointer to the unread remainder of the file
-                char * m_cursorPtr;
+                const char * m_cursorPtr;
                 //The remaining length of the file to read
                 size_t m_restLen;
 
@@ -110,8 +110,8 @@ namespace uva {
                  * @param beginPtr the pointer to the beginning of the text
                  * @param len the length of the text
                  */
-                inline void set(void * beginPtr, const size_t len) {
-                    m_beginPtr = static_cast<char *> (beginPtr);
+                inline void set(const void * beginPtr, const size_t len) {
+                    m_beginPtr = static_cast<const char *> (beginPtr);
                     m_len = len;
                     m_is_gen_str = true;
                     this->m_str = "";
@@ -131,7 +131,7 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the beginning of the text
                  */
-                inline char * getBeginCStr() {
+                inline const char * getBeginCStr() const {
                     return m_beginPtr;
                 }
 
@@ -141,7 +141,7 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the remainder of the text
                  */
-                inline char * getRestCStr() {
+                inline const char * getRestCStr() const {
                     return m_cursorPtr;
                 }
 
@@ -149,7 +149,7 @@ namespace uva {
                  * Allows to get the pointer to the beginning of the text
                  * @return the pointer to the beginning of the text
                  */
-                inline void * getBeginPtr() const {
+                inline const void * getBeginPtr() const {
                     return (void *) m_beginPtr;
                 }
 
@@ -178,7 +178,8 @@ namespace uva {
                         throw Exception(msg.str());
                     } else {
                         //Copy the data
-                        (void) strncpy(m_beginPtr, other.m_beginPtr, (size_t) other.m_len);
+                        (void) strncpy(const_cast<char * >(m_beginPtr),
+                                other.m_beginPtr, (size_t) other.m_len);
                         //Re-set the other members using the available standard method
                         set(m_beginPtr, other.m_len);
                     }
@@ -190,7 +191,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getNext(TextPieceReader& out, const char delim) {
-                    char * out_m_beginPtr = NULL;
+                    const char * out_m_beginPtr = NULL;
                     size_t out_m_len = 0;
 
                     //The next line begins where we stopped

@@ -79,13 +79,12 @@ namespace uva {
                  * It assumes, which should hold, that the memory pointed by the tokens is continuous
                  * @return the hash value of the given token
                  */
-                template<size_t number_buckets>
-                inline TShortId hash() {
+                inline TShortId hash() const {
                     //Compute the length of the gram tokens in memory, including spaces between
-                    const char * beginFirtPtr = tokens[0].getBeginCStr();
+                    const char * beginFirstPtr = tokens[0].getBeginCStr();
                     const TextPieceReader & last = tokens[level - 1];
                     const char * beginLastPtr = last.getBeginCStr();
-                    const size_t totalLen = (beginLastPtr - beginFirtPtr) + last.getLen();
+                    const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
 
                     //If the sanity check is on then test that the memory is continuous
                     //Compute the same length but with a longer iterative algorithms
@@ -105,7 +104,7 @@ namespace uva {
                     }
 
                     //Compute the hash using the gram tokens with spaces with them
-                    return computePaulHsiehHash(beginFirtPtr, totalLen) % number_buckets;
+                    return computePaulHsiehHash(beginFirstPtr, totalLen);
                 }
             } T_M_Gram;
 

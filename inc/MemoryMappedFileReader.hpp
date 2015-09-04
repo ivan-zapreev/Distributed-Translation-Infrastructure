@@ -174,13 +174,13 @@ namespace uva {
                  */
                 virtual void close() {
                     // Release the memory (unnecessary because the program exits).
-                    void * filePtr = TextPieceReader::getBeginPtr();
+                    const void * filePtr = TextPieceReader::getBeginPtr();
                     const size_t len = TextPieceReader::getLen();
                     if (filePtr != NULL) {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;
                         //Release the memory
-                        int err = munmap(filePtr, len);
+                        int err = munmap(const_cast<void*>(filePtr), len);
                         LOG_DEBUG << "Result of munmap is: " << err << END_LOG;
                         //Re-set the internals!
                         set(NULL, 0);
