@@ -29,14 +29,21 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
-#include "TextPieceReader.hpp"
-#include "AWordIndex.hpp"
+
 #include "ATrie.hpp"
+#include "AWordIndex.hpp"
+
+#include "TextPieceReader.hpp"
+
+#include "ArrayUtils.hpp"
+#include "DynamicMemoryArrays.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
+using namespace __G2DHashMapTrie;
 
 namespace uva {
     namespace smt {
@@ -47,11 +54,14 @@ namespace uva {
              * It stores the byte-array that contains the id and its length.
              * All bytes in this array are meaningful.
              */
-            class M_Gram_Id
-            {
-            public: 
-                M_Gram_Id(){}
-                virtual ~M_Gram_Id(){}
+            class M_Gram_Id {
+            public:
+
+                M_Gram_Id() {
+                }
+
+                virtual ~M_Gram_Id() {
+                }
             private:
                 //Stores the pinter to the id data
                 uint8_t * id;
@@ -65,18 +75,20 @@ namespace uva {
              * the probability/back-off data, the latter is the template parameter
              */
             template<typename PAYLOAD_TYPE>
-            struct STrieHashMapEntry {
+            struct S_M_GramData {
                 M_Gram_Id id;
                 PAYLOAD_TYPE data;
             };
 
             /**
-             * The wrapper structure for the templated structure above.
-             * Just a technicality, to be able to access the type easily
+             * This structure represents a trie level entry bucket
+             * it stores the bucket capacity, size and the pointer to its elements.
              */
             template<typename PAYLOAD_TYPE>
-            struct TTrieHashMapEntry {
-                typedef STrieHashMapEntry<PAYLOAD_TYPE> type;
+            struct STrieBucket {
+                S_M_GramData<PAYLOAD_TYPE> * grams;
+                uint8_t capacity;
+                uint8_t size;
             };
 
             /**
@@ -92,9 +104,20 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit G2DHashMapTrie(AWordIndex * const _pWordIndex)
-                : ATrie<N>(_pWordIndex), m_1_gram_data(NULL) {
+                : ATrie<N>(_pWordIndex), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                     //Initialize the array of number of gram ids per level
                     memset(num_buckets, 0, N * sizeof (TShortId));
+
+                    //Clear the M-Gram bucket arrays
+                    memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket));
+
+                    //Get the memory increase strategy
+                    m_p_mem_strat = getMemIncreaseStrategy(__G2DHashMapTrie::MEM_INC_TYPE,
+                            __G2DHashMapTrie::MIN_MEM_INC_NUM, __G2DHashMapTrie::MEM_INC_FACTOR);
+
+                    LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
+                    LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()
+                            << "' memory allocation strategy." << END_LOG;
                 }
 
                 /**
@@ -116,13 +139,15 @@ namespace uva {
                     pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                     pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
-                    //Copy the counts to the local storage
-                    for (TModelLevel level = 1; level < N; level++) {
-                        num_buckets[level] = counts[level];
+                    //Compute the number of M-Gram level buckets and pre-allocate them
+                    for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                        num_buckets[idx + 1] = counts[idx + 1];
+                        m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                     }
 
-                    //ToDo: Implement
-                    throw Exception("Pre-allocate the trie levels");
+                    //Compute the number of N-Gram level buckets and pre-allocate them
+                    num_buckets[N - 1] = counts[N - 1];
+                    m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
                 };
 
                 /**
@@ -190,7 +215,14 @@ namespace uva {
                 virtual ~G2DHashMapTrie() {
                     //Check that the one grams were allocated, if yes then the rest must have been either
                     if (m_1_gram_data != NULL) {
+                        //De-allocate one grams
                         delete[] m_1_gram_data;
+                        //De-allocate M-Grams
+                        for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                            delete[] m_M_gram_data[idx];
+                        }
+                        //De-allocate N-Grams
+                        delete[] m_N_gram_data;
                     }
                 };
 
@@ -202,8 +234,19 @@ namespace uva {
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
+                //These are arrays of buckets for M-Gram levels with 1 < M < N
+                typedef STrieBucket<TProbBackOffEntry> TProbBackOffBucket;
+                TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+
+                //This is an array of buckets for the N-Gram level
+                typedef STrieBucket<TLogProbBackOff> TProbBucket;
+                TProbBucket * m_N_gram_data;
+
                 //Stores the number of gram ids/buckets per level
                 TShortId num_buckets[N];
+
+                //Stores the memory increase strategy object
+                MemIncreaseStrategy * m_p_mem_strat;
             };
         }
     }

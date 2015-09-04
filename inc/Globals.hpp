@@ -102,6 +102,16 @@ namespace uva {
             //The considered maximum length of the N-gram
             const TModelLevel MAX_NGRAM_LEVEL = 5u;
 
+            namespace alloc {
+                /**
+                 * Stores the possible memory increase types
+                 */
+                enum MemIncTypesEnum {
+                    CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
+                    LOG_10 = LOG_2 + 1, size = LOG_10 + 1
+                };
+            }            
+            
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
                 const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
@@ -125,8 +135,26 @@ namespace uva {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
             }
+            
+            namespace __G2DHashMapTrie {
+                //Stores the memory increment factor, the number we will multiply by the computed increment
+                const float MEM_INC_FACTOR = 0.3;
+
+                //Stores the minimum capacity increase in number of elements, must be >= 1!!!
+                const size_t MIN_MEM_INC_NUM = 1;
+
+                //This constant stores true or false. If the value is true then the log2
+                //based memory increase strategy is used, otherwise it is log10 base.
+                //For log10 the percentage of memory increase drops slower than for log2
+                //with the growth of the #number of already allocated elements
+                const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+            }
 
             namespace __W2COrderedArrayTrie {
+                //In case set to true will pre-allocate memory per word for storing contexts
+                //This can speed up the filling in of the trie but at the same time it can
+                //have a drastic effect on RSS - the maximum RSS can grow significantly
+                const bool PRE_ALLOCATE_MEMORY = false;
                 //Stores the percent of the memory that will be allocated per word data 
                 //storage in one Trie level relative to the estimated number of needed data
                 const float INIT_MEM_ALLOC_PRCT = 0.5;
@@ -137,19 +165,11 @@ namespace uva {
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 const size_t MIN_MEM_INC_NUM = 1;
 
-                /**
-                 * Stores the possible memory increase types
-                 */
-                enum MemIncTypesEnum {
-                    CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
-                    LOG_10 = LOG_2 + 1, size = LOG_10 + 1
-                };
-
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
+                const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
             }
         }
 

@@ -78,23 +78,6 @@ namespace uva {
             template<TModelLevel N>
             class ALayeredTrie : public ATrie<N> {
             public:
-                //The offset, relative to the M-gram level M for the mgram mapping array index
-                const static TModelLevel MGRAM_IDX_OFFSET = 2;
-
-                //Will store the the number of M levels such that 1 < M < N.
-                const static TModelLevel NUM_M_GRAM_LEVELS = N - MGRAM_IDX_OFFSET;
-
-                //Will store the the number of M levels such that 1 < M <= N.
-                const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
-
-                // Stores the undefined index array value
-                static const TShortId UNDEFINED_ARR_IDX = 0;
-
-                // Stores the undefined index array value
-                static const TShortId FIRST_VALID_CTX_ID = UNDEFINED_ARR_IDX + 1;
-                
-                //Compute the N-gram index in in the arrays for M and N grams
-                static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = N - MGRAM_IDX_OFFSET;
 
                 /**
                  * The basic constructor

@@ -37,11 +37,12 @@
 #include "ALayeredTrie.hpp"
 #include "AWordIndex.hpp"
 #include "ArrayUtils.hpp"
-#include "W2COrderedArrayTrieMem.hpp"
+#include "DynamicMemoryArrays.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::utils::array;
+using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::__W2COrderedArrayTrie;
 
 namespace uva {
@@ -524,23 +525,24 @@ namespace uva {
 
                 /**
                  * Allows to allocate word related data per word for the given M/N gram level
-                 * @param WORD_ENTRY_TYPE the word entry type
-                 * @param allokWordBuckets if true then will preallocate some memory
-                 * for each word bucket! Default is false. Depending on the number of
-                 * words and n-grams in the given Trie level, plus the value of 
+                 * Depends on the global __W2COrderedArrayTrie::PRE_ALLOCATE_MEMORY if true
+                 * then will preallocate some memory for each word bucket! Default is false.
+                 * Depending on the number of words and n-grams in the given Trie level,
+                 * plus the value of:
                  *      __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT
                  * This can have a drastic influence on MAX RSS.
+                 * @param WORD_ENTRY_TYPE the word entry type
                  * @param wordsArray the reference to the word entry array to initialize
                  * @param numMGrams the number of M-grams on this level
                  * @param numWords the number of words in the Trie
                  */
-                template<typename WORD_ENTRY_TYPE, bool allokWordBuckets = false >
+                template<typename WORD_ENTRY_TYPE>
                 void preAllocateWordsData(WORD_ENTRY_TYPE* & wordsArray, const TShortId numMGrams, const TShortId numWords) {
                     //Allocate memory and clean it for the liven level = (i + MGRAM_IDX_OFFSET)
                     wordsArray = new WORD_ENTRY_TYPE[m_num_word_ids];
                     memset(wordsArray, 0, m_num_word_ids * sizeof (WORD_ENTRY_TYPE));
 
-                    if (allokWordBuckets) {
+                    if (__W2COrderedArrayTrie::PRE_ALLOCATE_MEMORY) {
                         //Compute the average number of data elements per word on the given M-gram level
                         const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
 

@@ -15,6 +15,7 @@
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/DynamicMemoryArrays.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
       <itemPath>inc/G2DHashMapTrie.hpp</itemPath>
@@ -168,6 +169,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
@@ -271,6 +274,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -386,6 +391,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
@@ -490,6 +497,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
@@ -593,6 +602,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
       </item>

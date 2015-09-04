@@ -1,5 +1,5 @@
 /* 
- * File:   W2COrderedArrayTrieMem.hpp
+ * File:   DynamicMemoryArrays.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -33,13 +33,13 @@
 
 using namespace std;
 
-#ifndef W2CORDEREDARRAYTRIEMEM_HPP
-#define	W2CORDEREDARRAYTRIEMEM_HPP
+#ifndef DYNAMICMEMORYARRAYS_HPP
+#define	DYNAMICMEMORYARRAYS_HPP
 
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace __W2COrderedArrayTrie {
+            namespace alloc {
                 /**
                  * This is a function type for the function that should compute the capacity increase
                  * @param the first argument is the current capacity as float
@@ -107,7 +107,7 @@ namespace uva {
                      * Compute the new capacity given the provided one, this function used
                      * the capacity increase function stored in m_get_capacity_inc_func.
                      * @param capacity the current capacity
-                     * @return the proposed capacity increase, will be at least __W2COrderedArrayTrie::MIN_MEM_INC_NUM
+                     * @return the proposed capacity increase
                      */
                     inline const size_t computeNewCapacity(const size_t capacity) {
                         //Get the float capacity value, make it minimum of one element to avoid problems
@@ -154,7 +154,7 @@ namespace uva {
                             break;
                         default:
                             stringstream msg;
-                            msg << "Unrecognized memory allocation strategy: " << __W2COrderedArrayTrie::MEM_INC_TYPE;
+                            msg << "Unrecognized memory allocation strategy: " << stype;
                             throw Exception(msg.str());
                     }
 
