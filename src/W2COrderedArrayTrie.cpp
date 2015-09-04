@@ -87,9 +87,9 @@ namespace uva {
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                     for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
-                        deAllocateWordsData(m_M_gram_word_2_data[i]);
+                        delete[] m_M_gram_word_2_data[i];
                     }
-                    deAllocateWordsData(m_N_gram_word_2_data);
+                    delete[] m_N_gram_word_2_data;
                 }
                 delete m_p_mem_strat;
             }

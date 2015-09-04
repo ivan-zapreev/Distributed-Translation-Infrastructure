@@ -125,7 +125,7 @@ namespace uva {
             protected:
 
                 /**
-                 * This structure is to store the word mapping to the data for
+                 * This class is to store the word mapping to the data for
                  * the 1< M <= N grams. Demending on whether M == N or not this
                  * structure is to be instantiated with a different template
                  * parameter - defines the stored data.
@@ -135,18 +135,17 @@ namespace uva {
                  * @param cio the context index offset for computing the next contex index.
                  */
                 template<typename ARRAY_ELEM_TYPE>
-                struct SSubArrayReference {
-                    ARRAY_ELEM_TYPE * ptr;
-                    TShortId capacity;
-                    TShortId size;
+                class WordDataEntry : public DynamicStackArray<ARRAY_ELEM_TYPE> {
+                public:
                     TShortId cio;
                     typedef ARRAY_ELEM_TYPE TElemType;
                 };
 
                 //The entries for the M-grams to store information about the end words
-                typedef SSubArrayReference<TCtxIdProbBackOffEntry> T_M_GramWordEntry;
+
+                typedef WordDataEntry<TCtxIdProbBackOffEntry> T_M_GramWordEntry;
                 //The entries for the N-grams to store information about the end words
-                typedef SSubArrayReference<TCtxIdProbEntry> T_N_GramWordEntry;
+                typedef WordDataEntry<TCtxIdProbEntry> T_N_GramWordEntry;
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -155,6 +154,7 @@ namespace uva {
                  */
                 virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
                     LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
+
                     return m_1_gram_data[wordId];
                 };
 
@@ -169,6 +169,7 @@ namespace uva {
                     *ppData = &m_1_gram_data[wordId];
 
                     //The data should always be present, unless of course this is a bad index!
+
                     return true;
                 };
 
@@ -189,6 +190,7 @@ namespace uva {
                     ref.ctxId = ctxId;
 
                     //Return the reference to the newly allocated element
+
                     return ref.data;
                 };
 
@@ -211,6 +213,7 @@ namespace uva {
                         return true;
                     } else {
                         //The data could not be found
+
                         return false;
                     }
                 };
@@ -232,6 +235,7 @@ namespace uva {
                     ref.ctxId = ctxId;
 
                     //return the reference to the probability
+
                     return ref.prob;
                 };
 
@@ -251,6 +255,7 @@ namespace uva {
                         prob = pEntry->prob;
                         return true;
                     } else {
+
                         return false;
                     }
                 };
@@ -260,6 +265,7 @@ namespace uva {
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
+
                     return (level > ONE_GRAM_LEVEL) || ALayeredTrie<N>::isPost_Grams(level);
                 }
 
@@ -287,40 +293,13 @@ namespace uva {
                         //Assign the context index offset
                         ref.cio = cio;
                         //Compute the next context index offset, for the next word
-                        cio += ref.size;
+                        cio += ref.get_size();
 
-                        if (DO_SANITY_CHECKS &&
-                                ((ref.size < 0) || (ref.capacity < 0) ||
-                                (ref.size > ref.capacity) ||
-                                ((ref.ptr == NULL) && ((ref.size != 0) || (ref.capacity != 0))) ||
-                                ((ref.ptr != NULL) && ((ref.size == 0) || (ref.capacity == 0))))) {
-                            stringstream msg;
-                            msg << "Wrong word data for wordId = " << SSTR(wordId)
-                                    << "ref.ptr = " << SSTR(ref.ptr) << ", ref.size = "
-                                    << SSTR(ref.size) << ", ref.capacity = "
-                                    << SSTR(ref.capacity) << wordId;
-                            throw Exception(msg.str());
-                        }
+                        //Reduce capacity if there is unused memory
+                        ref.shrink();
 
-                        //Check that the data for the given word is available
-                        if ((ref.ptr != NULL) && (ref.size > 1)) {
-                            //Deallocate the unneeded memory, the false flag indicates that we need reduction.
-
-                            //Reduce capacity if there is unused memory
-                            if (ref.size < ref.capacity) {
-                                reallocateWordData<WORD_ENTRY_TYPE, false>(ref);
-                                LOG_DEBUG4 << "Reallocated (decreased): ptr: " << SSTR(ref.ptr)
-                                        << ", ptr[0] = " << SSTR(ref.ptr[0].ctxId) << END_LOG;
-                            }
-
-                            LOG_DEBUG2 << "Sorting the word " << SSTR(wordId) << " data, ptr: "
-                                    << SSTR(ref.ptr) << ", size: " << SSTR(ref.size)
-                                    << ", capacity: " << SSTR(ref.capacity) << END_LOG;
-
-                            //Order the N-gram array as it is unordered and we will binary search it later!
-                            //Note: We do not use qsort as it has worse performance than this method.
-                            my_sort<typename WORD_ENTRY_TYPE::TElemType > (ref.ptr, ref.size);
-                        }
+                        //Order the N-gram array as it is unordered and we will binary search it later!
+                        ref.sort();
                     }
                 }
 
@@ -372,21 +351,8 @@ namespace uva {
                 typename WORD_ENTRY_TYPE::TElemType & make_M_N_GramEntry(WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId) {
                     LOG_DEBUG2 << "Making entry for M-gram with wordId:\t" << SSTR(wordId) << END_LOG;
 
-                    //First get the sub-array reference. 
-                    WORD_ENTRY_TYPE & ref = wordsArray[wordId];
-
-                    LOG_DEBUG2 << "Got the wordId: " << SSTR(wordId) << " data entry, capacity = "
-                            << SSTR(ref.capacity) << ", size = " << SSTR(ref.size) << END_LOG;
-
-                    //Check if we need to increase the capacity!
-                    if (ref.size == ref.capacity) {
-                        reallocateWordData<WORD_ENTRY_TYPE>(ref);
-                        LOG_DEBUG4 << "Reallocated (increased): ptr: " << SSTR(ref.ptr)
-                                << ", ptr[0] = " << SSTR(ref.ptr[0].ctxId) << END_LOG;
-                    }
-
-                    //Return the next new element and increase the size!
-                    return ref.ptr[ref.size++];
+                    //Return the next new element new/free!
+                    return wordsArray[wordId].get_new();
                 };
 
                 /**
@@ -401,24 +367,23 @@ namespace uva {
                  */
                 template<typename WORD_ENTRY_TYPE>
                 bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctxId, TShortId & localIdx) {
-                    LOG_DEBUG2 << "Searching sub array = " << SSTR(ref.ptr)
-                            << ", size = " << SSTR(ref.size) << " for ctxId: "
-                            << SSTR(ctxId) << END_LOG;
+                    LOG_DEBUG2 << "Searching word data entry for ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Check if there is data to search in
-                    if ((ref.ptr != NULL) && (ref.size > 0)) {
+                    if (ref.has_data()) {
                         //The data is available search for the word index in the array
-                        if (bsearch_ctxId<typename WORD_ENTRY_TYPE::TElemType > (ref.ptr, 0, ref.size - 1, ctxId, localIdx)) {
+                        if (bsearch_ctxId<typename WORD_ENTRY_TYPE::TElemType > (ref.get_data(), 0, ref.get_size() - 1, ctxId, localIdx)) {
                             LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
                             return true;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "
-                                    << SSTR(ctxId) << ", ctxId range: [" << SSTR(ref.ptr[0].ctxId)
-                                    << ", " << SSTR(ref.ptr[ref.size - 1].ctxId) << "]" << END_LOG;
+                                    << SSTR(ctxId) << ", ctxId range: [" << SSTR(ref[0].ctxId)
+                                    << ", " << SSTR(ref[ref.get_size() - 1].ctxId) << "]" << END_LOG;
                             return false;
                         }
                     } else {
                         LOG_DEBUG1 << "Unable to find M-gram word id data for a word, nothing is present!" << END_LOG;
+
                         return false;
                     }
                 }
@@ -456,11 +421,12 @@ namespace uva {
                     TShortId localIdx;
                     if (get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctxId, localIdx)) {
                         //Return the pointer to the data located by the local index
-                        *ppData = &ref.ptr[localIdx];
+                        *ppData = &ref[localIdx];
                         return true;
                     } else {
                         LOG_DEBUG2 << "Unable to find data entry for " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
+
                         return false;
                     }
                 }
@@ -493,12 +459,10 @@ namespace uva {
                     //First get the sub-array reference. 
                     const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
 
-                    if (DO_SANITY_CHECKS && (ref.size > 0)) {
-                        LOG_DEBUG3 << "ref.ptr: " << SSTR(ref.ptr) << ", ref.capacity: "
-                                << SSTR(ref.capacity) << ", ref.size: " << SSTR(ref.size)
-                                << ", ref.cio: " << SSTR(ref.cio) << ", ctxId range: ["
-                                << SSTR(ref.ptr[0].ctxId) << ", "
-                                << SSTR(ref.ptr[ref.size - 1].ctxId) << "]" << END_LOG;
+                    if (DO_SANITY_CHECKS && ref.has_data()) {
+                        LOG_DEBUG3 << "ref.size: " << SSTR(ref.get_size()) << ", ref.cio: "
+                                << SSTR(ref.cio) << ", ctxId range: [" << SSTR(ref[0].ctxId) << ", "
+                                << SSTR(ref[ref.get_size() - 1].ctxId) << "]" << END_LOG;
                     }
 
                     //Check that if this is the 2-Gram case and the previous context
@@ -516,9 +480,9 @@ namespace uva {
                     //If the local entry index could be found then compute the next ctxId
                     if (get_M_N_GramLocalEntryIdx(ref, ctxId, localIdx)) {
                         LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
-                                << ", with ptr = " << SSTR(ref.ptr) << ", size = "
-                                << SSTR(ref.size) << ", localIdx = " << SSTR(localIdx)
-                                << ", resulting ctxId = " << SSTR(ref.cio + localIdx) << END_LOG;
+                                << ", size = " << SSTR(ref.get_size()) << ", localIdx = "
+                                << SSTR(localIdx) << ", resulting ctxId = "
+                                << SSTR(ref.cio + localIdx) << END_LOG;
 
                         //The next ctxId is the sum of the local index and the context index offset
                         ctxId = ref.cio + localIdx;
@@ -544,31 +508,22 @@ namespace uva {
                  */
                 template<typename WORD_ENTRY_TYPE>
                 void preAllocateWordsData(WORD_ENTRY_TYPE* & wordsArray, const TShortId numMGrams, const TShortId numWords) {
-                    //Allocate memory and clean it for the liven level = (i + MGRAM_IDX_OFFSET)
+                    //Allocate dynamic array entries and initialize it with the memory increase strategy
                     wordsArray = new WORD_ENTRY_TYPE[m_num_word_ids];
-                    memset(wordsArray, 0, m_num_word_ids * sizeof (WORD_ENTRY_TYPE));
 
+                    //Compute the initial capacity
+                    size_t capacity = 0;
                     if (__W2COrderedArrayTrie::PRE_ALLOCATE_MEMORY) {
                         //Compute the average number of data elements per word on the given M-gram level
                         const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
-
                         //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
-                        const size_t fact_num_elems = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT), __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
+                        capacity = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT),
+                                __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
+                    }
 
-                        //Allocate data per word, use the calloc in order to be able to realloc it!
-                        for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
-                            wordsArray[wordId].ptr = (typename WORD_ENTRY_TYPE::TElemType*) calloc(fact_num_elems, sizeof (typename WORD_ENTRY_TYPE::TElemType));
-                            wordsArray[wordId].capacity = fact_num_elems;
-
-                            //Do the null pointer check if sanity
-                            if (DO_SANITY_CHECKS && (fact_num_elems > 0) && (wordsArray[wordId].ptr == NULL)) {
-
-                                stringstream msg;
-                                msg << "Ran out of memory when trying to allocate "
-                                        << fact_num_elems << " data elements for wordId: " << wordId;
-                                throw Exception(msg.str());
-                            }
-                        }
+                    //Set the memory strategy and capacity into the word entries
+                    for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                        wordsArray[wordId].set_mem_strat(m_p_mem_strat, capacity);
                     }
                 }
 

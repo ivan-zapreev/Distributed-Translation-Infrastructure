@@ -173,20 +173,44 @@ namespace uva {
 
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
-                     * @param p_mem_strat the memory increase strategy pointer, not NULL!
+                     * @param mem_strat the memory increase strategy, not NULL!
+                     * @param capacity the initial capacity to allocate
                      */
-                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat, size_t capacity)
-                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(p_mem_strat) {
-                        //Reallocate to the desired capacity
-                        reallocate(capacity);
+                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat, const size_t capacity)
+                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
+                        //Set the initial capacity and memory strategy via one method
+                        set_mem_strat(p_mem_strat, capacity);
                     }
 
                     /**
                      * The basic constructor, does not pre-allocate any memory
-                     * @param p_mem_strategy the memory increase strategy pointer, not NULL!
+                     * @param mem_strategy the memory increase strategy, not NULL
                      */
                     DynamicStackArray(const MemIncreaseStrategy * p_mem_strat)
-                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(p_mem_strat) {
+                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
+                        //Set the initial capacity and memory strategy via one method
+                        set_mem_strat(p_mem_strat, 0);
+                    }
+
+                    /**
+                     * The basic constructor, does not pre-allocate any memory
+                     */
+                    DynamicStackArray()
+                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
+                        set_mem_strat(NULL, 0);
+                    }
+
+                    /**
+                     * Allows to set the memory allocation strategy
+                     * @param p_mem_strat the memory increase strategy, not NULL!
+                     */
+                    inline void set_mem_strat(const MemIncreaseStrategy * p_mem_strat, const size_t capacity) {
+                        //Store the memory allocation strategy
+                        m_p_mem_strat = p_mem_strat;
+                        //Reallocate to the desired capacity, if needed
+                        if (capacity > 0) {
+                            reallocate(capacity);
+                        }
                     }
 
                     /**
@@ -202,7 +226,7 @@ namespace uva {
                         //Return the new/free element
                         return m_ptr[m_size++];
                     }
-                    
+
                     /**
                      * De-allocated the un-used memory, if any
                      */
@@ -219,7 +243,7 @@ namespace uva {
                      * @return the reference to the array element under the given index
                      * @throws out_of_range exception if the index is outside the array size.
                      */
-                    inline ELEMENT_TYPE & operator[](TShortId idx) {
+                    inline const ELEMENT_TYPE & operator[](TShortId idx) const {
                         if (idx < m_size) {
                             return m_ptr[idx];
                         } else {
@@ -229,33 +253,43 @@ namespace uva {
                             throw out_of_range(msg.str());
                         }
                     }
-                    
+
                     /**
                      * Allows to retrieve the currently used number of elements 
                      * @return the number of elements stored in the stack array.
                      */
-                    inline size_t get_size() {
+                    inline size_t get_size() const {
                         return m_size;
                     }
-                    
+
                     /**
                      * Allows to get the pointer to the stored data, note that this
                      * pointer is only guaranteed to be valid until a new element
                      * is added to the array, due to possible memory reallocation
                      * @return the pointer to the data array
                      */
-                    inline ELEMENT_TYPE * get_data() {
+                    inline const ELEMENT_TYPE * get_data() const {
                         return m_ptr;
                     }
-                    
+
+                    /**
+                     * Allows to check if there is data stored
+                     * @return true if there is at least one data element stored otherwise false
+                     */
+                    inline bool has_data() const {
+                        return (m_ptr != NULL) && (m_size > 0);
+                    }
+
                     /**
                      * Allows to sort the data stored in this stack array.
                      * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
                      */
                     inline void sort() {
-                        my_sort<ELEMENT_TYPE>(m_ptr, m_size);
+                        if (m_size > 1) {
+                            my_sort<ELEMENT_TYPE>(m_ptr, m_size);
+                        }
                     }
-                    
+
                     /**
                      * The basic destructor
                      */
@@ -265,7 +299,6 @@ namespace uva {
                         }
                     }
 
-                protected:
 
                 private:
                     //The pointer to the stored array elements
@@ -275,7 +308,7 @@ namespace uva {
                     //Stores the number of used elements, the size of this array
                     size_t m_size;
                     //Stores the memory increase strategy
-                    const MemIncreaseStrategy * const m_p_mem_strat;
+                    const MemIncreaseStrategy * m_p_mem_strat;
 
                     /**
                      * This methods allows to reallocate the data to the new capacity
