@@ -135,10 +135,18 @@ namespace uva {
                  * @param cio the context index offset for computing the next contex index.
                  */
                 template<typename ARRAY_ELEM_TYPE>
-                class WordDataEntry : public DynamicStackArray<ARRAY_ELEM_TYPE> {
+                class WordDataEntry : public ADynamicStackArray<ARRAY_ELEM_TYPE> {
                 public:
                     TShortId cio;
                     typedef ARRAY_ELEM_TYPE TElemType;
+
+                    /**
+                     * Allows to get the memory allocation strategy, from the child
+                     * @return the memory strategy
+                     */
+                    virtual const MemIncreaseStrategy * get_mem_strat() {
+                        return W2COrderedArrayTrie::m_p_mem_strat;
+                    };
                 };
 
                 //The entries for the M-grams to store information about the end words
@@ -338,7 +346,7 @@ namespace uva {
                 T_N_GramWordEntry * m_N_gram_word_2_data;
 
                 //Stores the memory increase strategy object
-                MemIncreaseStrategy * m_p_mem_strat;
+                const static MemIncreaseStrategy * m_p_mem_strat;
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.
@@ -519,11 +527,11 @@ namespace uva {
                         //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
                         capacity = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT),
                                 __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
-                    }
 
-                    //Set the memory strategy and capacity into the word entries
-                    for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
-                        wordsArray[wordId].set_mem_strat(m_p_mem_strat, capacity);
+                        //Pre-allocate capacity
+                        for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                            wordsArray[wordId].pre_allocate(capacity);
+                        }
                     }
                 }
 

@@ -168,47 +168,33 @@ namespace uva {
                  * This class represents a dynamic memory array and stores the main methods needed for its operation
                  */
                 template<typename ELEMENT_TYPE>
-                class DynamicStackArray {
+                class ADynamicStackArray {
                 public:
 
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
-                     * @param mem_strat the memory increase strategy, not NULL!
                      * @param capacity the initial capacity to allocate
                      */
-                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat, const size_t capacity)
-                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
+                    ADynamicStackArray(const size_t capacity)
+                    : m_ptr(NULL), m_capacity(0), m_size(0) {
                         //Set the initial capacity and memory strategy via one method
-                        set_mem_strat(p_mem_strat, capacity);
-                    }
-
-                    /**
-                     * The basic constructor, does not pre-allocate any memory
-                     * @param mem_strategy the memory increase strategy, not NULL
-                     */
-                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat)
-                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
-                        //Set the initial capacity and memory strategy via one method
-                        set_mem_strat(p_mem_strat, 0);
+                        pre_allocate(capacity);
                     }
 
                     /**
                      * The basic constructor, does not pre-allocate any memory
                      */
-                    DynamicStackArray()
-                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(NULL) {
-                        set_mem_strat(NULL, 0);
+                    ADynamicStackArray()
+                    : m_ptr(NULL), m_capacity(0), m_size(0) {
                     }
 
                     /**
-                     * Allows to set the memory allocation strategy
-                     * @param p_mem_strat the memory increase strategy, not NULL!
+                     * Allows pre-allocate some capacity
+                     * @param capacity the capacity to pre-allocate
                      */
-                    inline void set_mem_strat(const MemIncreaseStrategy * p_mem_strat, const size_t capacity) {
-                        //Store the memory allocation strategy
-                        m_p_mem_strat = p_mem_strat;
+                    inline void pre_allocate(const size_t capacity) {
                         //Reallocate to the desired capacity, if needed
-                        if (capacity > 0) {
+                        if (capacity > m_capacity) {
                             reallocate(capacity);
                         }
                     }
@@ -293,12 +279,17 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    virtual ~DynamicStackArray() {
+                    virtual ~ADynamicStackArray() {
                         if (m_ptr != NULL) {
                             free(m_ptr);
                         }
                     }
 
+                    /**
+                     * Allows to get the memory allocation strategy, from the child
+                     * @return the memory strategy
+                     */
+                    virtual const MemIncreaseStrategy * get_mem_strat() = 0;
 
                 private:
                     //The pointer to the stored array elements
@@ -307,8 +298,6 @@ namespace uva {
                     size_t m_capacity;
                     //Stores the number of used elements, the size of this array
                     size_t m_size;
-                    //Stores the memory increase strategy
-                    const MemIncreaseStrategy * m_p_mem_strat;
 
                     /**
                      * This methods allows to reallocate the data to the new capacity
@@ -357,7 +346,7 @@ namespace uva {
                         //Compute the new number of elements
                         if (IS_INC) {
                             //Compute the new capacity
-                            new_capacity = m_p_mem_strat->computeNewCapacity(m_capacity);
+                            new_capacity = get_mem_strat()->computeNewCapacity(m_capacity);
                             LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
                         } else {
                             //Decrease the capacity to the current size, remove the unneeded
