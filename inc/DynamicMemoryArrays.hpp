@@ -30,6 +30,7 @@
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
+#include "ArrayUtils.hpp"
 
 using namespace std;
 
@@ -95,7 +96,7 @@ namespace uva {
                      * Allows to retrieve the strategy name
                      * @return the strategy name
                      */
-                    string getStrategyStr() {
+                    string getStrategyStr() const {
                         stringstream msg;
                         msg << _memIncTypesEnumStr[m_stype] << ", memory increments: Min = "
                                 << SSTR(m_min_mem_inc) << " elements, Factor = "
@@ -109,7 +110,7 @@ namespace uva {
                      * @param capacity the current capacity
                      * @return the proposed capacity increase
                      */
-                    inline const size_t computeNewCapacity(const size_t capacity) {
+                    inline const size_t computeNewCapacity(const size_t capacity) const {
                         //Get the float capacity value, make it minimum of one element to avoid problems
                         const float fcap = (capacity > 0) ? (float) capacity : 1.0;
                         const size_t cap_inc = (size_t) (m_mem_inc_factor * m_get_capacity_inc_func(fcap));
@@ -160,7 +161,179 @@ namespace uva {
 
                     //return the result object
                     return new MemIncreaseStrategy(stype, inc_func, min_mem_inc, mem_inc_factor);
-                }
+                };
+
+                /**
+                 * This class represents a dynamic memory array and stores the main methods needed for its operation
+                 */
+                template<typename ELEMENT_TYPE>
+                class DynamicStackArray {
+                public:
+
+                    /**
+                     * The basic constructor, that allows to pre-allocate some memory
+                     * @param p_mem_strat the memory increase strategy pointer, not NULL!
+                     */
+                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat, size_t capacity)
+                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(p_mem_strat) {
+                        //Reallocate to the desired capacity
+                        reallocate(capacity);
+                    }
+
+                    /**
+                     * The basic constructor, does not pre-allocate any memory
+                     * @param p_mem_strategy the memory increase strategy pointer, not NULL!
+                     */
+                    DynamicStackArray(const MemIncreaseStrategy * p_mem_strat)
+                    : m_ptr(NULL), m_capacity(0), m_size(0), m_p_mem_strat(p_mem_strat) {
+                    }
+
+                    /**
+                     * Allows to retrieve the next new/unused element.
+                     * Reallocates memory, if needed, to get space for the new element
+                     * @return the next new element
+                     */
+                    inline ELEMENT_TYPE & get_new() {
+                        //Allocate more memory if needed
+                        if (m_size == m_capacity) {
+                            reallocate<true>();
+                        }
+                        //Return the new/free element
+                        return m_ptr[m_size++];
+                    }
+                    
+                    /**
+                     * De-allocated the un-used memory, if any
+                     */
+                    inline void shrink() {
+                        //If there is space to free, do it
+                        if (m_size < m_capacity) {
+                            reallocate<false>();
+                        }
+                    }
+
+                    /**
+                     * This operator allows to retrieve the reference to an array element by the given index
+                     * @param idx the array element index
+                     * @return the reference to the array element under the given index
+                     * @throws out_of_range exception if the index is outside the array size.
+                     */
+                    inline ELEMENT_TYPE & operator[](TShortId idx) {
+                        if (idx < m_size) {
+                            return m_ptr[idx];
+                        } else {
+                            stringstream msg;
+                            msg << "Invalid index: " << SSTR(idx) << ", size: "
+                                    << SSTR(m_size) << ", capacity: " << SSTR(m_capacity);
+                            throw out_of_range(msg.str());
+                        }
+                    }
+                    
+                    /**
+                     * Allows to retrieve the currently used number of elements 
+                     * @return the number of elements stored in the stack array.
+                     */
+                    inline size_t get_size() {
+                        return m_size;
+                    }
+                    
+                    /**
+                     * Allows to get the pointer to the stored data, note that this
+                     * pointer is only guaranteed to be valid until a new element
+                     * is added to the array, due to possible memory reallocation
+                     * @return the pointer to the data array
+                     */
+                    inline ELEMENT_TYPE * get_data() {
+                        return m_ptr;
+                    }
+                    
+                    /**
+                     * Allows to sort the data stored in this stack array.
+                     */
+                    template<typename T>
+                    inline void sort() {
+                        sort<ELEMENT_TYPE, T>(m_ptr, m_size);
+                    }
+                    
+                    /**
+                     * The basic destructor
+                     */
+                    virtual ~DynamicStackArray() {
+                        if (m_ptr != NULL) {
+                            free(m_ptr);
+                        }
+                    }
+
+                protected:
+
+                private:
+                    //The pointer to the stored array elements
+                    ELEMENT_TYPE * m_ptr;
+                    //Stores the capacity - already allocated memory for this array
+                    size_t m_capacity;
+                    //Stores the number of used elements, the size of this array
+                    size_t m_size;
+                    //Stores the memory increase strategy
+                    const MemIncreaseStrategy * const m_p_mem_strat;
+
+                    /**
+                     * This methods allows to reallocate the data to the new capacity
+                     * @param new_capacity the desired new capacity
+                     */
+                    void reallocate(size_t new_capacity) {
+                        LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
+                                << ", the old capacity was " << SSTR(m_capacity)
+                                << ", used size: " << SSTR(m_size) << END_LOG;
+
+                        //Reallocate memory, potentially we get a new pointer!
+                        m_ptr = (ELEMENT_TYPE*) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
+
+                        //Clean the newly allocated memory
+                        if (new_capacity > m_capacity) {
+                            const size_t new_num_elem = (new_capacity - m_capacity);
+                            memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
+                        }
+
+                        //Set the new capacity in
+                        m_capacity = new_capacity;
+
+                        //Do the null pointer check if sanity
+                        if (DO_SANITY_CHECKS && (new_capacity > m_capacity)
+                                && (new_capacity > 0) && (m_ptr == NULL)) {
+                            stringstream msg;
+                            msg << "Ran out of memory when trying to allocate "
+                                    << new_capacity << " data elements for a wordId";
+                            throw Exception(msg.str());
+                        }
+                    }
+
+                    /**
+                     * Allows to reallocate the word entry data increasing or decreasing its capacity.
+                     * How much memory will exactly be allocated depends on the memory increase strategy,
+                     * the current capacity and the IS_INC flag.
+                     * @param IS_INC if true then the memory will be attempted to increase, otherwise decrease
+                     */
+                    template<bool IS_INC = true >
+                    void reallocate() {
+                        size_t new_capacity;
+
+                        LOG_DEBUG2 << "Memory reallocation request: "
+                                << ((IS_INC) ? "increase" : "decrease") << END_LOG;
+
+                        //Compute the new number of elements
+                        if (IS_INC) {
+                            //Compute the new capacity
+                            new_capacity = m_p_mem_strat->computeNewCapacity(m_capacity);
+                            LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
+                        } else {
+                            //Decrease the capacity to the current size, remove the unneeded
+                            new_capacity = m_size;
+                        }
+
+                        //Reallocate to the computed new capacity
+                        reallocate();
+                    }
+                };
             }
         }
     }
