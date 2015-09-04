@@ -48,6 +48,52 @@ using namespace uva::smt::tries::__W2COrderedArrayTrie;
 namespace uva {
     namespace smt {
         namespace tries {
+            namespace __W2COrderedArrayTrie {
+
+                /**
+                 * This structure stores two things the context id
+                 * and the corresponding probability/back-off data.
+                 * It is used to store the M-gram data for levels 1 < M < N.
+                 * @param ctxId the context id
+                 * @param data the back-off and probability data
+                 */
+                typedef struct {
+                    TShortId ctxId;
+                    TProbBackOffEntry data;
+                } TCtxIdProbBackOffEntry;
+
+                /**
+                 * This is the less operator implementation
+                 * @param one the first object to compare
+                 * @param two the second object to compare
+                 * @return true if ctxId of one is smaller than ctxId of two, otherwise false
+                 */
+                inline bool operator<(const TCtxIdProbBackOffEntry& one, const TCtxIdProbBackOffEntry& two) {
+                    return one.ctxId < two.ctxId;
+                }
+
+                /**
+                 * Stores the information about the context id and corresponding probability
+                 * This data structure is to be used for the N-Gram data, as there are no back-offs
+                 * It is used to store the N-gram data for the last Trie level N.
+                 * @param ctxId the context id
+                 * @param prob the probability data
+                 */
+                typedef struct {
+                    TShortId ctxId;
+                    TLogProbBackOff prob;
+                } TCtxIdProbEntry;
+
+                /**
+                 * This is the less operator implementation
+                 * @param one the first object to compare
+                 * @param two the second object to compare
+                 * @return true if ctxId of one is smaller than ctxId of two, otherwise false
+                 */
+                inline bool operator<(const TCtxIdProbEntry& one, const TCtxIdProbEntry& two) {
+                    return one.ctxId < two.ctxId;
+                }
+            }
 
             /**
              * This is the Context to word array memory trie implementation class.
@@ -96,46 +142,6 @@ namespace uva {
                     TShortId cio;
                     typedef ARRAY_ELEM_TYPE TElemType;
                 };
-
-                /**
-                 * This structure stores two things the context id
-                 * and the corresponding probability/back-off data.
-                 * It is used to store the M-gram data for levels 1 < M < N.
-                 * @param ctxId the context id
-                 * @param data the back-off and probability data
-                 */
-                typedef struct {
-                    TShortId ctxId;
-                    TProbBackOffEntry data;
-
-                    /**
-                     * Is used in the array sorting
-                     * @return the ctxId field of the structure
-                     */
-                    operator TShortId() const {
-                        return ctxId;
-                    }
-                } TCtxIdProbBackOffEntry;
-
-                /**
-                 * Stores the information about the context id and corresponding probability
-                 * This data structure is to be used for the N-Gram data, as there are no back-offs
-                 * It is used to store the N-gram data for the last Trie level N.
-                 * @param ctxId the context id
-                 * @param prob the probability data
-                 */
-                typedef struct {
-                    TShortId ctxId;
-                    TLogProbBackOff prob;
-
-                    /**
-                     * Is used in the array sorting
-                     * @return the ctxId field of the structure
-                     */
-                    operator TShortId() const {
-                        return ctxId;
-                    }
-                } TCtxIdProbEntry;
 
                 //The entries for the M-grams to store information about the end words
                 typedef SSubArrayReference<TCtxIdProbBackOffEntry> T_M_GramWordEntry;
@@ -313,7 +319,7 @@ namespace uva {
 
                             //Order the N-gram array as it is unordered and we will binary search it later!
                             //Note: We do not use qsort as it has worse performance than this method.
-                            sort<typename WORD_ENTRY_TYPE::TElemType, TShortId > (ref.ptr, ref.size);
+                            my_sort<typename WORD_ENTRY_TYPE::TElemType > (ref.ptr, ref.size);
                         }
                     }
                 }

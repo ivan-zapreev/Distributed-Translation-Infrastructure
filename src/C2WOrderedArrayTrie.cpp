@@ -107,8 +107,8 @@ namespace uva {
                 }
 
                 //06) Allocate the data for the N-Grams.
-                m_N_gram_data = new TCtxIdProbEntryPair[m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
-                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntryPair));
+                m_N_gram_data = new TCtxIdProbEntry[m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
+                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
             }
 
             template<TModelLevel N>

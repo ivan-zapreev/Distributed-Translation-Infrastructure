@@ -33,6 +33,7 @@
 #include "ArrayUtils.hpp"
 
 using namespace std;
+using namespace uva::smt::utils::array;
 
 #ifndef DYNAMICMEMORYARRAYS_HPP
 #define	DYNAMICMEMORYARRAYS_HPP
@@ -249,10 +250,10 @@ namespace uva {
                     
                     /**
                      * Allows to sort the data stored in this stack array.
+                     * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
                      */
-                    template<typename T>
                     inline void sort() {
-                        sort<ELEMENT_TYPE, T>(m_ptr, m_size);
+                        my_sort<ELEMENT_TYPE>(m_ptr, m_size);
                     }
                     
                     /**

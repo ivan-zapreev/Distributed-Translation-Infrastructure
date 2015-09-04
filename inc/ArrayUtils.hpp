@@ -237,8 +237,8 @@ namespace uva {
                  * @param array_begin the pointer to the array's first element
                  * @param array_size the size of the array
                  */
-                template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
-                void sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+                template<typename ELEM_TYPE, bool IS_PROGRESS = true >
+                void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
                     //Do not do sorting if the array size is less than two
                     if (array_size > 1) {
                         //Order the N-gram array as it is unordered and we will binary search it later!
@@ -249,7 +249,7 @@ namespace uva {
                                         Logger::updateProgressBar();
                                     }
                                     //Return the result
-                                    return (((BASE_TYPE) first) < ((BASE_TYPE) second));
+                                    return (first < second);
                                 });
                     }
                 }

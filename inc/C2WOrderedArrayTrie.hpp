@@ -41,6 +41,49 @@ using namespace uva::smt::utils::array;
 namespace uva {
     namespace smt {
         namespace tries {
+            namespace __C2WOrderedArrayTrie {
+
+                /**
+                 * Stores the information about the context id, word id and corresponding probability
+                 * This data structure is to be used for the N-Gram data, as there are no back-offs
+                 * It is used to store the N-gram data for the last Trie level N.
+                 * @param ctxId the context id
+                 * @param wordId the word id
+                 * @param prob the probability data
+                 */
+                typedef struct {
+                    TShortId wordId;
+                    TShortId ctxId;
+                    TLogProbBackOff prob;
+                } TCtxIdProbData;
+
+                /**
+                 * This is the less operator implementation
+                 * @param one the first object to compare
+                 * @param two the second object to compare
+                 * @return true if (wordId,ctxId) of one is smaller than (wordId,ctxId) of two, otherwise false
+                 */
+                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                    const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
+                    const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
+                    return (key1 < key2);
+                    /* ToDo: An alternative for testing, which is faster?
+                    if (one.wordId < two.wordId) {
+                        return true;
+                    } else {
+                        if (one.wordId > two.wordId) {
+                            return false;
+                        } else {
+                            if (one.ctxId < two.ctxId) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                     */
+                };
+            }
 
             /**
              * This is the Context to word array memory trie implementation class.
@@ -97,33 +140,10 @@ namespace uva {
                 typedef struct {
                     TShortId wordId;
                     TProbBackOffEntry data;
-
-                    operator TShortId() const {
-                        return wordId;
-                    }
                 } TWordIdProbBackOffEntryPair;
 
-                /**
-                 * Stores the information about the context id, word id and corresponding probability
-                 * This data structure is to be used for the N-Gram data, as there are no back-offs
-                 * It is used to store the N-gram data for the last Trie level N.
-                 * @param ctxId the context id
-                 * @param wordId the word id
-                 * @param prob the probability data
-                 */
-                typedef struct {
-                    TShortId wordId;
-                    TShortId ctxId;
-                    TLogProbBackOff prob;
-
-                    operator TLongId() const {
-                        TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
-                        LOG_DEBUG4 << "TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
-                                << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
-                        return key;
-                    }
-                } TCtxIdProbEntryPair;
-
+                typedef __C2WOrderedArrayTrie::TCtxIdProbData TCtxIdProbEntry;
+                
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, return a new one.
@@ -274,7 +294,7 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    if (bsearch_wordId_ctxId<TCtxIdProbEntryPair>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
+                    if (bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
                             m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
@@ -306,7 +326,7 @@ namespace uva {
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
                     //model when compared to the str::sort!
-                    sort<TCtxIdProbEntryPair, TLongId>(m_N_gram_data, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]);
+                    my_sort<TCtxIdProbEntry>(m_N_gram_data, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]);
                 };
 
             private:
@@ -322,7 +342,7 @@ namespace uva {
                 TWordIdProbBackOffEntryPair * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
 
                 //Stores the N-gram data
-                TCtxIdProbEntryPair * m_N_gram_data;
+                TCtxIdProbEntry * m_N_gram_data;
 
                 //Stores the maximum number of context id  per M-gram level: 1 < M <= N
                 TShortId m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
