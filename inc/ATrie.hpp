@@ -90,14 +90,14 @@ namespace uva {
                     //Compute the same length but with a longer iterative algorithms
                     if (DO_SANITY_CHECKS) {
                         //Compute the exact length
-                        size_t exactTotalLen = level - 1 ; //The number of spaces in between tokens
+                        size_t exactTotalLen = level - 1; //The number of spaces in between tokens
                         for (TModelLevel idx = 0; idx < level; idx++) {
                             exactTotalLen += tokens[idx].getLen();
                         }
                         //Check that the exact and fast computed lengths are the same
                         if (exactTotalLen != totalLen) {
                             stringstream msg;
-                            msg << "The memory allocation for M-gram tokens is not continuous: totalLen ("  <<
+                            msg << "The memory allocation for M-gram tokens is not continuous: totalLen (" <<
                                     SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
                             throw Exception(msg.str());
                         }
@@ -134,7 +134,7 @@ namespace uva {
 
                 //Will store the the number of M levels such that 1 < M <= N.
                 const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
-                
+
                 //Compute the N-gram index in in the arrays for M and N grams
                 static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = N - MGRAM_IDX_OFFSET;
 
@@ -158,7 +158,9 @@ namespace uva {
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
                 virtual void preAllocate(const size_t counts[N]) {
-                    m_p_word_index->reserve(counts[0]);
+                    if (m_p_word_index != NULL) {
+                        m_p_word_index->reserve(counts[0]);
+                    }
                 };
 
                 /**
@@ -253,14 +255,18 @@ namespace uva {
                  * @param wordHashes the out array parameter to store the hashes.
                  */
                 inline void tokensToId(const T_M_Gram & ngram, TShortId wordHashes[N]) {
-                    //The start index depends on the value M of the given M-Gram
-                    TModelLevel idx = N - ngram.level;
-                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
-                    for (TModelLevel i = 0; i < ngram.level; i++) {
-                        //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                        m_p_word_index->getId(ngram.tokens[i].str(), wordHashes[idx]);
-                        LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
-                        idx++;
+                    if (m_p_word_index != NULL) {
+                        //The start index depends on the value M of the given M-Gram
+                        TModelLevel idx = N - ngram.level;
+                        LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
+                        for (TModelLevel i = 0; i < ngram.level; i++) {
+                            //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
+                            m_p_word_index->getId(ngram.tokens[i].str(), wordHashes[idx]);
+                            LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
+                            idx++;
+                        }
+                    } else {
+                        throw Exception("The m_p_word_index is not set!");
                     }
                 }
 
