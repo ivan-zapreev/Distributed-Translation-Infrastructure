@@ -9,10 +9,15 @@ if [ "$#" -ne ${NUM_PARAMS} ]; then
    exit 1
 fi
 
+echo "c2wa"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2wa info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2wa.out
+echo "c2dm"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dm info3  | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2dm.out
+echo "w2ca"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ca info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "' memory allocation strategy." > release.w2ca.out
+echo "w2ch"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ch info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.w2ch.out
+echo "c2dh"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dh info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2dh.out
 
 echo "\n----> c2wa vs. c2dm"

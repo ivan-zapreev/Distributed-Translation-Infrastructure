@@ -354,7 +354,7 @@ namespace uva {
                         }
 
                         //Reallocate to the computed new capacity
-                        reallocate();
+                        reallocate(new_capacity);
                     }
                 };
             }
