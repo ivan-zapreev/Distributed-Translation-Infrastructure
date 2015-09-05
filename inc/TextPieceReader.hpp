@@ -198,7 +198,7 @@ namespace uva {
                     out_m_beginPtr = m_cursorPtr;
 
                     //Search for the next new line symbol in the remainder of the file
-                    char * charPtr = static_cast<char *> (memchr(m_cursorPtr, delim, m_restLen));
+                    const char * charPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
 
                     LOG_DEBUG4 << SSTR(this) << ": Searching for the character got: " << SSTR((void *) charPtr) << END_LOG;
 
