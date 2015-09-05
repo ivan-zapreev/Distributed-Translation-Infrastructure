@@ -127,7 +127,7 @@ namespace uva {
                  */
                 virtual void preAllocate(const size_t counts[N]) {
                     //Call the base-class
-                    ALayeredTrie<N>::preAllocate(counts);
+                    ATrie<N>::preAllocate(counts);
 
                     //02) Pre-allocate the 1-Gram data
                     num_buckets[0] = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
