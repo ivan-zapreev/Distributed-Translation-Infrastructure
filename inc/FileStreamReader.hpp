@@ -79,6 +79,11 @@ namespace uva {
                     }
                 }
 
+                virtual void reset() {
+                    m_file_stream.clear();
+                    m_file_stream.seekg(0, std::ios::beg);
+                };
+
                 virtual bool getLine(TextPieceReader& out) {
                     LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
 

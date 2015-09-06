@@ -331,7 +331,7 @@ namespace uva {
                         TShortId wordId;
 
                         //There is no id cached for this M-gram context - find it
-                        if (ATrie<N>::getWordIndex()->getId(token, wordId)) {
+                        if (ATrie<N>::getWordIndex()->get_word_id(token, wordId)) {
                             //The first word id is the first context id
                             ctxId = wordId;
                             LOGGER(logLevel) << "ctxId = getId('" << token
@@ -340,7 +340,7 @@ namespace uva {
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
                                 const string & token = gram.tokens[i].str();
-                                if (ATrie<N>::getWordIndex()->getId(token, wordId)) {
+                                if (ATrie<N>::getWordIndex()->get_word_id(token, wordId)) {
                                     LOGGER(logLevel) << "wordId = getId('" << token
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {

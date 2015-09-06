@@ -29,7 +29,8 @@
 #include "Exceptions.hpp"
 
 #include "ATrie.hpp"
-#include "HashMapWordIndex.hpp"
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
 
 #include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
@@ -66,29 +67,29 @@ namespace uva {
                 /**
                  * Instantiate a trie for the given string name
                  * @param trie_type the trie type name
-                 * @param dictionary the dictionary to be used
                  * @return the instance of trie
                  * @throws Exception if the trie type name is not recognized
                  */
                 template<TModelLevel N>
-                static inline ATrie<N>* getTrie(const string trie_type, HashMapWordIndex &dictionary) {
+                static inline ATrie<N>* getTrie(const string trie_type) {
+                    const size_t memory_factor = __HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR;
                     if (trie_type == TC2DHashMapTrie_STR) {
-                        return new C2DHashMapTrie<N>(&dictionary);
+                        return new C2DHashMapTrie<N>(new BasicWordIndex(memory_factor));
                     } else {
                         if (trie_type == TW2CHybridMemoryTrie_STR) {
-                            return new typename TW2CHybridMemoryTrie<N>::type(&dictionary);
+                            return new typename TW2CHybridMemoryTrie<N>::type(new BasicWordIndex(memory_factor));
                         } else {
                             if (trie_type == TC2WOrderedArrayTrie_STR) {
-                                return new C2WOrderedArrayTrie<N>(&dictionary);
+                                return new C2WOrderedArrayTrie<N>(new BasicWordIndex(memory_factor));
                             } else {
                                 if (trie_type == TW2COrderedArrayTrie_STR) {
-                                    return new W2COrderedArrayTrie<N>(&dictionary);
+                                    return new W2COrderedArrayTrie<N>(new BasicWordIndex(memory_factor));
                                 } else {
                                     if (trie_type == C2DMapArrayTrie_STR) {
-                                        return new C2DMapArrayTrie<N>(&dictionary);
+                                        return new C2DMapArrayTrie<N>(new BasicWordIndex(memory_factor));
                                     } else {
                                         if (trie_type == G2DHashMapTrie_STR) {
-                                            return new G2DHashMapTrie<N>(&dictionary);
+                                            return new G2DHashMapTrie<N>(new CountingWordIndex(memory_factor));
                                         } else {
                                             stringstream msg;
                                             msg << "Unrecognized trie type: " + trie_type;

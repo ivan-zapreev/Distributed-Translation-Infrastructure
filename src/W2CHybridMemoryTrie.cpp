@@ -65,7 +65,7 @@ namespace uva {
                 ALayeredTrie<N>::preAllocate(counts);
                 
                 //Compute the number of words to be stored
-                m_word_arr_size = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                m_word_arr_size = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);

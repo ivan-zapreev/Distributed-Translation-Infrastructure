@@ -12,9 +12,11 @@
       <itemPath>inc/ATrie.hpp</itemPath>
       <itemPath>./inc/AWordIndex.hpp</itemPath>
       <itemPath>inc/ArrayUtils.hpp</itemPath>
+      <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/CountingWordIndex.hpp</itemPath>
       <itemPath>inc/DynamicMemoryArrays.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
@@ -22,8 +24,6 @@
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
-      <itemPath>./inc/HashMapWordIndex.hpp</itemPath>
-      <itemPath>inc/HashMapWordIndex.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
@@ -145,8 +145,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -163,11 +161,15 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -182,8 +184,6 @@
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -251,8 +251,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -269,11 +267,15 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -288,8 +290,6 @@
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -367,8 +367,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -385,11 +383,15 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -404,8 +406,6 @@
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -473,8 +473,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -491,11 +489,15 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -510,8 +512,6 @@
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -579,8 +579,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -597,11 +595,15 @@
       </item>
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -616,8 +618,6 @@
       <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/HashMapWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>

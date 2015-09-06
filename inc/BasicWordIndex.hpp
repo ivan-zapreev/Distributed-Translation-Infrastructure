@@ -1,5 +1,5 @@
 /* 
- * File:   HashMapWordIndex.hpp
+ * File:   BasicWordIndex.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,9 +23,8 @@
  * Created on August 21, 2015, 12:41 PM
  */
 
-#ifndef HASHMAPWORDINDEX_HPP
-#define	HASHMAPWORDINDEX_HPP
-
+#ifndef BASICWORDINDEX_HPP
+#define	BASICWORDINDEX_HPP
 
 #include <string>   // std::string
 
@@ -42,7 +41,6 @@ using namespace uva::smt::file;
 using namespace uva::smt::hashing;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::tries::alloc;
-using namespace uva::smt::hashing;
 
 namespace uva {
     namespace smt {
@@ -52,7 +50,7 @@ namespace uva {
                 /**
                  * This is a hash-map based implementation of the word index.
                  */
-                class HashMapWordIndex : public AWordIndex {
+                class BasicWordIndex : public AWordIndex {
                 public:
 
                     /**
@@ -60,7 +58,7 @@ namespace uva {
                      * @param  wordIndexMemFactor the assigned memory factor for
                      * storage allocation in the unordered_map used for the word index
                      */
-                    HashMapWordIndex(const float wordIndexMemFactor)
+                    BasicWordIndex(const float wordIndexMemFactor)
                     : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(wordIndexMemFactor) {
                     };
 
@@ -68,7 +66,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    virtual size_t getTotalWordsCount(const size_t num_words) {
+                    virtual size_t get_words_count(const size_t num_words) {
                         return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                     };
 
@@ -79,7 +77,7 @@ namespace uva {
                     virtual void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
                         //Add an extra elements for the <unknown/> word
-                        const size_t numWords = getTotalWordsCount(num_words);
+                        const size_t numWords = get_words_count(num_words);
 
                         //Reserve the memory for the map
                         reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc,
@@ -97,7 +95,7 @@ namespace uva {
                      * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
                      * @return true if the word id is found, otherwise false
                      */
-                    virtual bool getId(const string & token, TShortId &wordId) const {
+                    virtual bool get_word_id(const string & token, TShortId &wordId) const {
                         TWordIndexMapConstIter result = _pWordIndexMap->find(token);
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
@@ -117,7 +115,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TShortId makeId(const TextPieceReader & token) {
+                    virtual TShortId register_word(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
                         TShortId& hash = _pWordIndexMap->operator[](token.str());
 
@@ -135,7 +133,7 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    virtual ~HashMapWordIndex() {
+                    virtual ~BasicWordIndex() {
                         deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                     };
                 protected:
@@ -144,13 +142,11 @@ namespace uva {
                      * The copy constructor, is made private as we do not intend to copy this class objects
                      * @param orig the object to copy from
                      */
-                    HashMapWordIndex(const HashMapWordIndex & other)
+                    BasicWordIndex(const BasicWordIndex & other)
                     : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL),
                     _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(0.0) {
                         throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                     }
-
-                private:
 
                     //The type of key,value pairs to be stored in the word index
                     typedef pair< const string, TShortId> TWordIndexEntry;

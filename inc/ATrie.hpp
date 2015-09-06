@@ -148,7 +148,7 @@ namespace uva {
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit ATrie(AWordIndex * const _pWordIndex)
+                explicit ATrie(AWordIndex * _pWordIndex)
                 : m_p_word_index(_pWordIndex) {
                 }
 
@@ -242,6 +242,9 @@ namespace uva {
                  * The basic class destructor
                  */
                 virtual ~ATrie() {
+                    if (m_p_word_index != NULL) {
+                        delete m_p_word_index;
+                    }
                 };
 
             protected:
@@ -261,7 +264,7 @@ namespace uva {
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
                         for (TModelLevel i = 0; i < ngram.level; i++) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            m_p_word_index->getId(ngram.tokens[i].str(), wordHashes[idx]);
+                            m_p_word_index->get_word_id(ngram.tokens[i].str(), wordHashes[idx]);
                             LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
                             idx++;
                         }
@@ -297,7 +300,7 @@ namespace uva {
 
             private:
                 //Stores the reference to the word index to be used
-                AWordIndex * const m_p_word_index;
+                AWordIndex * m_p_word_index;
 
             };
         }

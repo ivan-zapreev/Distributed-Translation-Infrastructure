@@ -130,7 +130,7 @@ namespace uva {
                     ATrie<N>::preAllocate(counts);
 
                     //02) Pre-allocate the 1-Gram data
-                    num_buckets[0] = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                    num_buckets[0] = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
                     m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
                     memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
@@ -157,7 +157,7 @@ namespace uva {
                  */
                 virtual void add_1_Gram(const T_M_Gram &oGram) {
                     //Register a new word, and the word id will be the one-gram id
-                    const TShortId oneGramId = ATrie<N>::getWordIndex()->makeId(oGram.tokens[0]);
+                    const TShortId oneGramId = ATrie<N>::getWordIndex()->register_word(oGram.tokens[0]);
                     //Store the probability data in the one gram data storage, under its id
                     m_1_gram_data[oneGramId].prob = oGram.prob;
                     m_1_gram_data[oneGramId].back_off = oGram.back_off;

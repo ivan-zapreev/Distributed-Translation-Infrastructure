@@ -69,7 +69,7 @@ namespace uva {
                 ALayeredTrie<N>::preAllocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                m_num_word_ids = ATrie<N>::getWordIndex()->getTotalWordsCount(counts[0]);
+                m_num_word_ids = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[m_num_word_ids];
                 memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
 

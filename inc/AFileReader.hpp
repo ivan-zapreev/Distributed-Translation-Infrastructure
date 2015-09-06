@@ -61,6 +61,13 @@ namespace uva {
                 virtual operator bool() const = 0;
                 
                 /**
+                 * This method allows to reset the reading process and start reading
+                 * the file from th first line again. The default implementation
+                 * throws an exception.
+                 */
+                virtual void reset() {throw Exception("Not implemented for this File reader type!");};
+                
+                /**
                  * Allows to close the file
                  */
                 virtual void close() {};

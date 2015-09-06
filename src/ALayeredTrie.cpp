@@ -40,7 +40,7 @@ namespace uva {
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TShortId wordHash = ATrie<N>::getWordIndex()->makeId(token);
+                TShortId wordHash = ATrie<N>::getWordIndex()->register_word(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
@@ -84,7 +84,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = mGram.tokens[level - 1];
                 TShortId wordId;
-                isFound = ATrie<N>::getWordIndex()->getId(endWord.str(), wordId);
+                isFound = ATrie<N>::getWordIndex()->get_word_id(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -134,7 +134,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = nGram.tokens[N - 1];
                 TShortId wordId;
-                isFound = ATrie<N>::getWordIndex()->getId(endWord.str(), wordId);
+                isFound = ATrie<N>::getWordIndex()->get_word_id(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;

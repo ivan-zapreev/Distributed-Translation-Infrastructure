@@ -82,7 +82,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    virtual size_t getTotalWordsCount(const size_t num_words) = 0;
+                    virtual size_t get_words_count(const size_t num_words) = 0;
                     
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
@@ -91,15 +91,40 @@ namespace uva {
                      * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
                      * @return true if the word id is found, otherwise false
                      */
-                    virtual bool getId(const string & token, TShortId &wordId) const = 0;
+                    virtual bool get_word_id(const string & token, TShortId &wordId) const = 0;
 
+                    /**
+                     * This method is to be used when the word counting is needed.
+                     * The main application here is to first count the number of
+                     * word usages and then distribute the word ids in such a way
+                     * that the most used words get the lowest ids.
+                     * If not re-implemented throws an exception.
+                     * @param token the word to count
+                     */
+                    virtual void count_word(const TextPieceReader & token) {throw Exception("Word count is not needed!");};
+                    
+                    /**
+                     * This method allows to indicate whether word counting is
+                     * needed by the given implementation of the word index.
+                     * The default implementation always returns false.
+                     * @return true if the word counting is needed, otherwise false.
+                     */
+                    virtual bool is_word_count_needed(){return false;};
+                    
+                    /**
+                     * Should be called if the word count is needed
+                     * after all the words have been counted.
+                     * If not re-implemented throws an exception.
+                     */
+                    virtual void post_word_count() {throw Exception("Word count is not needed!");};
+                    
                     /**
                      * This function creates/gets an id for the given word.
                      * Note: The ids must be unique and continuous!
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TShortId makeId(const TextPieceReader & token) = 0;
+                    virtual TShortId register_word(const TextPieceReader & token) = 0;
 
                     /**
                      * The basic destructor
