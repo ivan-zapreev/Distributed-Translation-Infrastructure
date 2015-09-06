@@ -47,13 +47,13 @@ namespace uva {
                 static const char NGRAM_COUNTS_DELIM = '=';
 
                 template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, TextPieceReader & file) :
-                m_trie(trie), m_file(file), m_line(), m_ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, AFileReader & file) :
+                m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
                 ARPATrieBuilder<N>::ARPATrieBuilder(const ARPATrieBuilder<N>& orig) :
-                m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ngAmountRegExp("ngram [[:d:]]+=[[:d:]]+") {
+                m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
                 template<TModelLevel N>
@@ -61,7 +61,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readHeaders() {
+                void ARPATrieBuilder<N>::read_headers() {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
@@ -97,7 +97,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readData(size_t counts[N]) {
+                void ARPATrieBuilder<N>::read_data(size_t counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
@@ -115,7 +115,7 @@ namespace uva {
                                 //If the line is empty then we keep reading
                                 if (m_line != "") {
                                     //Check that the next line contains the meaningful N-gram amount information!
-                                    if (regex_match(m_line.str(), m_ngAmountRegExp)) {
+                                    if (regex_match(m_line.str(), m_ng_amount_reg_exp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
                                         //Later we might want to read the numbers and then check them against the
                                         //actual number of provided n-grams but for now it is not needed. 
@@ -166,7 +166,7 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
-                void ARPATrieBuilder<N>::readNGrams(const TModelLevel level) {
+                void ARPATrieBuilder<N>::read_grams(const TModelLevel level) {
                     stringstream msg;
                     //Do the progress bard indicator
                     msg << "Reading ARPA " << level << "-Grams";
@@ -182,7 +182,7 @@ namespace uva {
                     if (regex_match(m_line.str(), ngSectionRegExp)) {
                         //Declare the pointer to the N-Grma builder
                         ARPAGramBuilder *pNGBuilder = NULL;
-                        ARPAGramBuilderFactory::getBuilder<N>(level, m_trie, &pNGBuilder);
+                        ARPAGramBuilderFactory::get_builder<N>(level, m_trie, &pNGBuilder);
 
                         try {
                             //The counter of the N-grams
@@ -197,7 +197,7 @@ namespace uva {
                                     if (m_line != "") {
                                         //Pass the given N-gram string to the N-Gram Builder. If the
                                         //N-gram is not matched then stop the loop and move on
-                                        if (pNGBuilder->parseLine(m_line)) {
+                                        if (pNGBuilder->parse_line(m_line)) {
                                             //If there was no match then it is something else
                                             //than the given level N-gram so we move on
                                             LOG_DEBUG << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
@@ -232,14 +232,14 @@ namespace uva {
                         Logger::stopProgressBar();
 
                         //Check if the post gram actions are needed! If yes - perform.
-                        if (m_trie.isPost_Grams(level)) {
+                        if (m_trie.is_post_grams(level)) {
                             //Do the progress bard indicator
                             stringstream msg;
                             msg << "Cultivating " << level << "-Grams";
                             Logger::startProgressBar(msg.str());
 
                             //Do the post level actions
-                            m_trie.post_Grams(level);
+                            m_trie.post_grams(level);
 
                             //Stop the progress bar in case of no exception
                             Logger::stopProgressBar();
@@ -257,7 +257,7 @@ namespace uva {
                             //There are still N-Gram levels to read
                             if (m_line != END_OF_ARPA_FILE) {
                                 //We did not encounter the \end\ tag yet so do recursion to the next level
-                                readNGrams(level + 1);
+                                read_grams(level + 1);
                             } else {
                                 //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                                 LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
@@ -286,6 +286,80 @@ namespace uva {
                     }
                 }
 
+                /**
+                 * If the word counts are needed then we are starting
+                 * on reading the M-gram section of the ARPA file.
+                 * All we need to do is then read all the words in
+                 * M-Gram sections and count them with the word index.
+                 */
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::get_word_counts(const TModelLevel level) {
+                    AWordIndex * p_word_index = m_trie.get_word_index();
+
+                    //The regular expression for matching the n-grams section
+                    stringstream regexpStr;
+                    regexpStr << "\\\\" << level << "\\-grams\\:";
+                    LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
+                    const regex ngSectionRegExp(regexpStr.str());
+
+                    //Check if the line that was input is the header of the N-grams section for N=level
+                    if (regex_match(m_line.str(), ngSectionRegExp)) {
+                        //The tokens array to put words into
+                        TextPieceReader tokens[level];
+
+                        //Read the current level N-grams and add them to the trie
+                        while (m_file.getLine(m_line)) {
+                            //If this is not an empty line
+                            if (m_line != "") {
+                                //Parse line to words without probabilities and back-offs
+                                //If it is not the M-gram line then we stop break
+                                if (ARPAGramBuilder::gram_line_to_tokens(m_line, tokens, level)) {
+                                    //Add words to the index: count them
+                                    for (size_t idx = 0; idx < level; idx++) {
+                                        p_word_index->count_word(tokens[idx]);
+                                    }
+                                } else {
+                                    //This is not an expected M-gram
+                                    break;
+                                }
+                            }
+
+                            //Update the progress bar status
+                            Logger::updateProgressBar();
+                        }
+
+                        //Test if we need to move on or we are done or an error is detected
+                        if ((level < N) && (m_line != END_OF_ARPA_FILE)) {
+                            //There are still N-Gram levels to read
+                            //We did not encounter the \end\ tag yet so do recursion to the next level
+                            get_word_counts(level + 1);
+                        }
+                    }
+                }
+
+                /**
+                 * This method should be called after the word counting is done.
+                 * Then we can re-start reading the file and move forward to the
+                 * one gram section again. After this method we can proceed
+                 * reading M-grams and add them to the trie.
+                 */
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::return_to_grams() {
+                    //Reset the file
+                    m_file.reset();
+
+                    //Read the first line from the file
+                    m_file.getLine(m_line);
+
+                    //Skip on ARPA headers
+                    read_headers();
+
+                    //Read the DATA section of ARPA
+                    size_t counts[N];
+                    read_data(counts);
+                }
+
+
                 //Iterate through the ARPA file and fill in the back-off model of the trie
                 //Note that, this file reader will be made ads flexible as possible,
                 //in other words is will ignore as much data as possible and will report
@@ -307,18 +381,22 @@ namespace uva {
                         m_file.getLine(m_line);
 
                         //Skip on ARPA headers
-                        readHeaders();
+                        read_headers();
 
                         //Read the DATA section of ARPA
-                        readData(counts);
+                        read_data(counts);
 
                         //Provide the N-Gram counts data to the Trie
-                        m_trie.preAllocate(counts);
+                        m_trie.pre_allocate(counts);
 
-                        //ToDo: Check if we need another pass for words counting.
+                        //Check if we need another pass for words counting.
+                        if (m_trie.get_word_index()->need_word_counts()) {
+                            get_word_counts();
+                            return_to_grams();
+                        }
 
                         //Read the N-grams, starting from 1-Grams
-                        readNGrams(1);
+                        read_grams(1);
                     } catch (...) {
                         //Stop the progress bar in case of an exception
                         Logger::stopProgressBar();

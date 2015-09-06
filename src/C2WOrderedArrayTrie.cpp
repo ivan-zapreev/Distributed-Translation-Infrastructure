@@ -54,9 +54,9 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2WOrderedArrayTrie<N>::preAllocate(const size_t counts[N]) {
+            void C2WOrderedArrayTrie<N>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N>::preAllocate(counts);
+                ALayeredTrie<N>::pre_allocate(counts);
 
                 //02) Compute and store the M-gram level sizes in terms of the number of M-grams per level
                 //Also initialize the M-gram index counters, for issuing context indexes
@@ -71,7 +71,7 @@ namespace uva {
                 //The size of this array is made two elements larger than the number
                 //of 1-Grams is since we want to account for the word indexes that start
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                const TShortId one_gram_arr_size = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
+                const TShortId one_gram_arr_size = ATrie<N>::get_word_index()->get_words_count(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[one_gram_arr_size];
                 memset(m_1_gram_data, 0, one_gram_arr_size * sizeof (TProbBackOffEntry));
 

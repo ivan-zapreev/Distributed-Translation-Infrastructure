@@ -157,7 +157,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
-                virtual void preAllocate(const size_t counts[N]) {
+                virtual void pre_allocate(const size_t counts[N]) {
                     if (m_p_word_index != NULL) {
                         m_p_word_index->reserve(counts[0]);
                     }
@@ -168,28 +168,28 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @param oGram the 1-Gram data
                  */
-                virtual void add_1_Gram(const T_M_Gram &oGram) = 0;
+                virtual void add_1_gram(const T_M_Gram &oGram) = 0;
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @param mGram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void add_M_Gram(const T_M_Gram &mGram) = 0;
+                virtual void add_m_gram(const T_M_Gram &mGram) = 0;
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
                  * @param nGram the N-Gram data
                  */
-                virtual void add_N_Gram(const T_M_Gram &nGram) = 0;
+                virtual void add_n_gram(const T_M_Gram &nGram) = 0;
 
                 /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                virtual bool isPost_Grams(const TModelLevel level) {
+                virtual bool is_post_grams(const TModelLevel level) {
                     return false;
                 }
 
@@ -197,16 +197,16 @@ namespace uva {
                  * This method should be called after all the X level grams are read.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                void post_Grams(const TModelLevel level) {
+                void post_grams(const TModelLevel level) {
                     switch (level) {
                         case ONE_GRAM_LEVEL:
-                            this->post_1_Grams();
+                            this->post_1_grams();
                             break;
                         case N:
-                            this->post_N_Grams();
+                            this->post_n_grams();
                             break;
                         default:
-                            this->post_M_Grams(level);
+                            this->post_m_grams(level);
                             break;
                     }
                 };
@@ -215,7 +215,7 @@ namespace uva {
                  * Returns the maximum length of the considered N-Grams
                  * @return the maximum length of the considered N-Grams
                  */
-                TModelLevel getNGramLevel() const {
+                TModelLevel get_max_level() const {
                     return N;
                 }
 
@@ -228,13 +228,13 @@ namespace uva {
                  *               probability and possibly some additional meta
                  *               data for the decoder.
                  */
-                virtual void queryNGram(const T_M_Gram & ngram, TQueryResult & result) = 0;
+                virtual void query(const T_M_Gram & ngram, TQueryResult & result) = 0;
 
                 /**
                  * Allows to retrieve the stored word index, if any
                  * @return the pointer to the stored word index or NULL if none
                  */
-                inline AWordIndex * getWordIndex() {
+                inline AWordIndex * get_word_index() {
                     return m_p_word_index;
                 }
 
@@ -257,7 +257,7 @@ namespace uva {
                  * @param ngram the n-gram structure with the query ngram tokens
                  * @param wordHashes the out array parameter to store the hashes.
                  */
-                inline void tokensToId(const T_M_Gram & ngram, TShortId wordHashes[N]) {
+                inline void tokens_to_id(const T_M_Gram & ngram, TShortId wordHashes[N]) {
                     if (m_p_word_index != NULL) {
                         //The start index depends on the value M of the given M-Gram
                         TModelLevel idx = N - ngram.level;
@@ -278,7 +278,7 @@ namespace uva {
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  */
-                virtual void post_1_Grams() {
+                virtual void post_1_grams() {
                 };
 
                 /**
@@ -287,7 +287,7 @@ namespace uva {
                  * If overridden must be called from the child method.
                  * @param level the level of the M-grams that were finished to be read
                  */
-                virtual void post_M_Grams(const TModelLevel level) {
+                virtual void post_m_grams(const TModelLevel level) {
                 };
 
                 /**
@@ -295,7 +295,7 @@ namespace uva {
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  */
-                virtual void post_N_Grams() {
+                virtual void post_n_grams() {
                 };
 
             private:

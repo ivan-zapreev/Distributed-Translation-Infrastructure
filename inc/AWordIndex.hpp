@@ -109,7 +109,7 @@ namespace uva {
                      * The default implementation always returns false.
                      * @return true if the word counting is needed, otherwise false.
                      */
-                    virtual bool is_word_count_needed(){return false;};
+                    virtual bool need_word_counts(){return false;};
                     
                     /**
                      * Should be called if the word count is needed

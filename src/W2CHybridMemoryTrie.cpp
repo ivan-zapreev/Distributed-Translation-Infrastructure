@@ -60,12 +60,12 @@ namespace uva {
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::preAllocate(const size_t counts[N]) {
+            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N>::preAllocate(counts);
+                ALayeredTrie<N>::pre_allocate(counts);
                 
                 //Compute the number of words to be stored
-                m_word_arr_size = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
+                m_word_arr_size = ATrie<N>::get_word_index()->get_words_count(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);

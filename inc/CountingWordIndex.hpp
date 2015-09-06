@@ -104,7 +104,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @return true 
                      */
-                    virtual bool is_word_count_needed() {
+                    virtual bool need_word_counts() {
                         return true;
                     };
 

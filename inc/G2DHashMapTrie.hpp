@@ -125,12 +125,12 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @see ATrie
                  */
-                virtual void preAllocate(const size_t counts[N]) {
+                virtual void pre_allocate(const size_t counts[N]) {
                     //Call the base-class
-                    ATrie<N>::preAllocate(counts);
+                    ATrie<N>::pre_allocate(counts);
 
                     //02) Pre-allocate the 1-Gram data
-                    num_buckets[0] = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
+                    num_buckets[0] = ATrie<N>::get_word_index()->get_words_count(counts[0]);
                     m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
                     memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
@@ -155,9 +155,9 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                virtual void add_1_Gram(const T_M_Gram &oGram) {
+                virtual void add_1_gram(const T_M_Gram &oGram) {
                     //Register a new word, and the word id will be the one-gram id
-                    const TShortId oneGramId = ATrie<N>::getWordIndex()->register_word(oGram.tokens[0]);
+                    const TShortId oneGramId = ATrie<N>::get_word_index()->register_word(oGram.tokens[0]);
                     //Store the probability data in the one gram data storage, under its id
                     m_1_gram_data[oneGramId].prob = oGram.prob;
                     m_1_gram_data[oneGramId].back_off = oGram.back_off;
@@ -167,7 +167,7 @@ namespace uva {
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
-                virtual void add_M_Gram(const T_M_Gram &mGram) {
+                virtual void add_m_gram(const T_M_Gram &mGram) {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const TShortId mGramHash = mGram.hash();
@@ -193,7 +193,7 @@ namespace uva {
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                virtual void add_N_Gram(const T_M_Gram &nGram) {
+                virtual void add_n_gram(const T_M_Gram &nGram) {
                     //ToDo: Implement
                     throw Exception("add_N_Gram");
                 };
@@ -204,7 +204,7 @@ namespace uva {
                  * and will compute and return the Language Model Probability for it
                  * @see ATrie
                  */
-                virtual void queryNGram(const T_M_Gram & ngram, TQueryResult & result) {
+                virtual void query(const T_M_Gram & ngram, TQueryResult & result) {
                     //ToDo: Implement
                     throw Exception("queryNGram");
                 };

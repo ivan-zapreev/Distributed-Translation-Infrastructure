@@ -46,29 +46,19 @@ namespace uva {
                 const unsigned short int ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
                 ARPAGramBuilder::ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc)
-                : m_addGarmFunc(addGarmFunc), m_level(level), m_token(), m_ngram({0,}) {
+                : m_add_garm_func(addGarmFunc), m_level(level), m_token(), m_ngram({0,}) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
                     m_ngram.level = m_level;
                 }
 
                 ARPAGramBuilder::ARPAGramBuilder(const ARPAGramBuilder& orig)
-                : m_addGarmFunc(orig.m_addGarmFunc), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram) {
+                : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram) {
                 }
 
                 ARPAGramBuilder::~ARPAGramBuilder() {
                 }
 
-                void ARPAGramBuilder::parseToGramWords(TextPieceReader &text, T_M_Gram & ngram) {
-                    //Re-set the level to zero
-                    ngram.level = 0;
-
-                    //Read the tokens one by one and do not forget to increment the level
-                    while (text.getSpace(ngram.tokens[ngram.level])) {
-                        ngram.level++;
-                    }
-                }
-
-                bool ARPAGramBuilder::parseToGram(TextPieceReader &line) {
+                bool ARPAGramBuilder::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.getTab(m_token)) {
                         //Try to parse it float
@@ -144,15 +134,15 @@ namespace uva {
                     }
                 }
 
-                bool ARPAGramBuilder::parseLine(TextPieceReader & line) {
+                bool ARPAGramBuilder::parse_line(TextPieceReader & line) {
                     LOG_DEBUG << "Processing the " << m_level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
                     //First tokenize as a pattern "prob \t gram \t back-off"
-                    if (parseToGram(line)) {
+                    if (parse_to_gram(line)) {
                         //Add the obtained N-gram data to the Trie
-                        m_addGarmFunc(m_ngram);
+                        m_add_garm_func(m_ngram);
                     } else {
                         //If we could not parse the line to gram then it should
                         //be the beginning of the next m-gram section

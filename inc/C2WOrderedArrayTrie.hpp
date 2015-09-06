@@ -110,7 +110,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void preAllocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[N]);
 
                 /**
                  * The basic destructor
@@ -307,16 +307,16 @@ namespace uva {
                     }
                 };
 
-                virtual bool isPost_Grams(const TModelLevel level) {
+                virtual bool is_post_grams(const TModelLevel level) {
                     //Check the base class and we need to do post actions
                     //for the N-grams. The N-grams level data has to be
                     //sorted see post_N_Grams method implementation below.
-                    return (level == N) || ALayeredTrie<N>::isPost_Grams(level);
+                    return (level == N) || ALayeredTrie<N>::is_post_grams(level);
                 }
 
-                virtual void post_N_Grams() {
+                virtual void post_n_grams() {
                     //Call the base class method first
-                    ALayeredTrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_n_grams();
 
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
                             << ", size: " << m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;

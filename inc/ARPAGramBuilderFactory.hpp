@@ -72,7 +72,7 @@ namespace uva {
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
                     template<TModelLevel N>
-                    static inline void getBuilder(const TModelLevel level, ATrie<N> & trie, ARPAGramBuilder **ppBuilder) {
+                    static inline void get_builder(const TModelLevel level, ATrie<N> & trie, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
@@ -93,7 +93,7 @@ namespace uva {
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
                                         [&] (const T_M_Gram & gram) {
-                                            trie.add_1_Gram(gram); });
+                                            trie.add_1_gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder!" << END_LOG;
                             } else {
                                 if (level == N) {
@@ -102,7 +102,7 @@ namespace uva {
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const T_M_Gram & gram) {
-                                                trie.add_N_Gram(gram); });
+                                                trie.add_n_gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
@@ -110,7 +110,7 @@ namespace uva {
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const T_M_Gram & gram) {
-                                                trie.add_M_Gram(gram); });
+                                                trie.add_m_gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }
                             }

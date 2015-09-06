@@ -249,13 +249,13 @@ static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile)
         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
         //Parse the line into an N-Gram
-        ARPAGramBuilder::parseToGramWords(line, ngram);
+        ARPAGramBuilder::gram_to_tokens(line, ngram);
 
         //There can be an empty or "unreadable" line in the text file, just skip it ...
         if (ngram.level > 0) {
             //Second qury the Trie for the results
             startTime = StatisticsMonitor::getCPUTime();
-            trie.queryNGram(ngram, result);
+            trie.query(ngram, result);
             endTime = StatisticsMonitor::getCPUTime();
 
             //Print the results:

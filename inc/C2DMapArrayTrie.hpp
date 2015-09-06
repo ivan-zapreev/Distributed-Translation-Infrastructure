@@ -101,7 +101,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void preAllocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[N]);
 
                 /**
                  * The basic destructor

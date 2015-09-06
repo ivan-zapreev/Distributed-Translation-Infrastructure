@@ -69,29 +69,90 @@ namespace uva {
                      * @result returns true if the provided line is NOT recognized
                      *         as the N-Gram of the specified level.
                      */
-                    bool parseLine(TextPieceReader & data);
+                    bool parse_line(TextPieceReader & data);
 
                     /**
-                     * Tokenise a given piece of text into a set of text peices
+                     * Tokenise a given piece of text into a set of text peices.
+                     * The text piece should be a M-gram line from ARPA file with
+                     * tab separated probability and back-off and space separated words.
+                     * The back-off is optional
+                     * @param text the piece of text to tokenise
+                     * @param gram the gram container to put data into
+                     * @param level the expected M-gram level
+                     * @return true if the M-gram was successfully parsed
+                     */
+                    static bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens, const TModelLevel level) {
+                        TextPieceReader storage;
+                        //First read text until the first tab, it should be present if it is a M-gram line
+                        if (text.getTab(storage)) {
+                            //There should be some text left it it is an M-gram
+                            if (text.hasMore()) {
+                                //Read until the next tab or end of line into the storage
+                                if (text.getTab(storage)) {
+                                    //Note storage should contain all the space separated M-gram tokens, read them
+                                    TModelLevel idx = 0;
+                                    while (storage.getSpace(tokens[idx])) {
+                                        idx++;
+                                    }
+                                    //We should read exactly as many tokens as expected
+                                    if (idx == level) {
+                                        //We read as many tokens as there should be
+                                        return true;
+                                    } else {
+                                        //We read fewer tokens! This is not an M-gram we expected
+                                        LOG_WARNING << "Read only " << SSTR(idx) << " words from a "
+                                                << SSTR(level) << "-gram: [" << text.str()
+                                                << "], expected: " << SSTR(level) << END_LOG;
+                                        return false;
+                                    }
+                                } else {
+                                    //Unexpected end of text
+                                    return false;
+                                }
+                            } else {
+                                LOG_DEBUG1 << " Encountered [" << SSTR(text.str())
+                                        << "] while trying to parse an " << SSTR(level)
+                                        << "-gram." << END_LOG;
+                                //There is nothing left, this is definitely not an M-gram!
+                                return false;
+                            }
+                        } else {
+                            //Unexpected end of text
+                            return false;
+                        }
+                    }
+
+                    /**
+                     * Tokenise a given piece of text into a set of text peices.
+                     * The text piece should be a M-gram piece - a space separated
+                     * string of words.
                      * @param text the piece of text to tokenise
                      * @param gram the gram container to put data into
                      */
-                    static void parseToGramWords(TextPieceReader &text, T_M_Gram & ngram);
+                    static inline void gram_to_tokens(TextPieceReader &text, T_M_Gram & ngram) {
+                        //Re-set the level to zero
+                        ngram.level = 0;
+
+                        //Read the tokens one by one and do not forget to increment the level
+                        while (text.getSpace(ngram.tokens[ngram.level])) {
+                            ngram.level++;
+                        }
+                    }
 
                     virtual ~ARPAGramBuilder();
                 protected:
                     //The function that is to be used to add an N-gram to a trie
-                    TAddGramFunct m_addGarmFunc;
-                    
+                    TAddGramFunct m_add_garm_func;
+
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel m_level;
-                    
+
                     //The temporary storage for read pieces of text
                     TextPieceReader m_token;
-                    
+
                     //This is the N-Gram container to store the parsed N-gram data
                     T_M_Gram m_ngram;
-                    
+
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;
                     static const unsigned short int MAX_NUM_TOKENS_NGRAM_STR;
@@ -100,13 +161,13 @@ namespace uva {
                      * Parse the given text into a N-Gram entry from the ARPA file
                      * @param line the piece of text to parse into the M-gram
                      */
-                    bool parseToGram(TextPieceReader &line);
+                    bool parse_to_gram(TextPieceReader & line);
 
                     /**
                      * The copy constructor
                      * @param orig the other builder to copy
                      */
-                    ARPAGramBuilder(const ARPAGramBuilder& orig);
+                    ARPAGramBuilder(const ARPAGramBuilder & orig);
 
                 };
             }

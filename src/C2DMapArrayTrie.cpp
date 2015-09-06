@@ -77,7 +77,7 @@ namespace uva {
             template<TModelLevel N>
             void C2DMapArrayTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
-                const size_t num_word_ids = ATrie<N>::getWordIndex()->get_words_count(counts[0]);
+                const size_t num_word_ids = ATrie<N>::get_word_index()->get_words_count(counts[0]);
 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
@@ -121,9 +121,9 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DMapArrayTrie<N>::preAllocate(const size_t counts[N]) {
+            void C2DMapArrayTrie<N>::pre_allocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
-                ALayeredTrie<N>::preAllocate(counts);
+                ALayeredTrie<N>::pre_allocate(counts);
                 
                 //Compute and store the M-gram level sizes in terms of the number of M-gram indexes per level
                 //Also initialize the M-gram index counters, for issuing context indexes

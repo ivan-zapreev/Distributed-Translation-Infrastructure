@@ -110,21 +110,21 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @param oGram the 1-Gram data
                  */
-                virtual void add_1_Gram(const T_M_Gram &oGram);
+                virtual void add_1_gram(const T_M_Gram &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @param mGram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void add_M_Gram(const T_M_Gram &mGram);
+                virtual void add_m_gram(const T_M_Gram &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
                  * @param nGram the N-Gram data
                  */
-                virtual void add_N_Gram(const T_M_Gram &nGram);
+                virtual void add_n_gram(const T_M_Gram &nGram);
 
                 /**
                  * This method will get the N-gram in a form of a vector, e.g.:
@@ -132,7 +132,7 @@ namespace uva {
                  * and will compute and return the Language Model Probability for it
                  * @see ATrie
                  */
-                virtual void queryNGram(const T_M_Gram & ngram, TQueryResult & result);
+                virtual void query(const T_M_Gram & ngram, TQueryResult & result);
 
                 /**
                  * The basic class destructor
@@ -240,7 +240,7 @@ namespace uva {
                  */
                 inline void storeNGramHashes(const T_M_Gram & ngram) {
                     //First transform the given M-gram into word hashes.
-                    ATrie<N>::tokensToId(ngram, m_GramWordIds);
+                    ATrie<N>::tokens_to_id(ngram, m_GramWordIds);
                 }
 
                 /**
@@ -331,7 +331,7 @@ namespace uva {
                         TShortId wordId;
 
                         //There is no id cached for this M-gram context - find it
-                        if (ATrie<N>::getWordIndex()->get_word_id(token, wordId)) {
+                        if (ATrie<N>::get_word_index()->get_word_id(token, wordId)) {
                             //The first word id is the first context id
                             ctxId = wordId;
                             LOGGER(logLevel) << "ctxId = getId('" << token
@@ -340,7 +340,7 @@ namespace uva {
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
                                 const string & token = gram.tokens[i].str();
-                                if (ATrie<N>::getWordIndex()->get_word_id(token, wordId)) {
+                                if (ATrie<N>::get_word_index()->get_word_id(token, wordId)) {
                                     LOGGER(logLevel) << "wordId = getId('" << token
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {

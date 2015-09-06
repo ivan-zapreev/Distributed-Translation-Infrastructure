@@ -115,7 +115,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void preAllocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[N]);
 
                 /**
                  * The basic destructor
@@ -268,13 +268,13 @@ namespace uva {
                     }
                 };
 
-                virtual bool isPost_Grams(const TModelLevel level) {
+                virtual bool is_post_grams(const TModelLevel level) {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > ONE_GRAM_LEVEL) || ALayeredTrie<N>::isPost_Grams(level);
+                    return (level > ONE_GRAM_LEVEL) || ALayeredTrie<N>::is_post_grams(level);
                 }
 
                 /**
@@ -311,19 +311,19 @@ namespace uva {
                     }
                 }
 
-                virtual void post_M_Grams(const TModelLevel level) {
+                virtual void post_m_grams(const TModelLevel level) {
                     //Call the base class method first
 
-                    ALayeredTrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_n_grams();
 
                     //Sort the level's data
                     post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET]);
                 }
 
-                virtual void post_N_Grams() {
+                virtual void post_n_grams() {
                     //Call the base class method first
 
-                    ALayeredTrie<N>::post_N_Grams();
+                    ALayeredTrie<N>::post_n_grams();
 
                     //Sort the level's data
                     post_M_N_Grams<T_N_GramWordEntry>(m_N_gram_word_2_data);

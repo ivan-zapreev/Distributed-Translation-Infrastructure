@@ -30,7 +30,9 @@
 #include <regex>        // std::regex, std::regex_match
 
 #include "ATrie.hpp"
+
 #include "TextPieceReader.hpp"
+#include "AFileReader.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
@@ -52,7 +54,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, TextPieceReader & file);
+                    ARPATrieBuilder(ATrie<N> & trie, AFileReader & file);
 
                     /**
                      * This function will read from the file and build the trie
@@ -64,13 +66,13 @@ namespace uva {
                     //The reference to the trie to be build
                     ATrie<N> & m_trie;
                     //The reference to the input file with language model
-                    TextPieceReader & m_file;
+                    AFileReader & m_file;
                     //Stores the next line data
                     TextPieceReader m_line;
                     //The regular expression for matching the n-gram amount entry of the data section
-                    const regex m_ngAmountRegExp;
+                    const regex m_ng_amount_reg_exp;
                     //The regular expression for matching the n-grams section
-                    const regex m_ngSectionRegExp;
+                    const regex m_ng_section_reg_exp;
 
                     /**
                      * The copy constructor
@@ -82,7 +84,7 @@ namespace uva {
                      * This method is used to read and process the ARPA headers
                      * @param line the in/out parameter storing the last read line
                      */
-                    void readHeaders();
+                    void read_headers();
 
                     /**
                      * This method is used to read and process the ARPA data section
@@ -90,14 +92,55 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void readData(size_t counts[N]);
+                    void read_data(size_t counts[N]);
+
+                    /**
+                     * If the word counts are needed then we are starting
+                     * on reading the M-gram section of the ARPA file.
+                     * All we need to do is then read all the words in
+                     * M-Gram sections and count them with the word index.
+                     */
+                    void get_word_counts() {
+                        stringstream msg;
+                        //Do the progress bard indicator
+                        msg << "Counting words in ARPA file";
+                        Logger::startProgressBar(msg.str());
+                        
+                        //Start recursive counting of words
+                        get_word_counts(1);
+                        
+                        //Perform the post counting actions;
+                        m_trie.get_word_index()->post_word_count();
+
+                        LOG_DEBUG << "Finished counting words in ARPA file" << END_LOG;
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
+                        
+                    }
+
+                    /**
+                     * If the word counts are needed then we are starting
+                     * on reading the M-gram section of the ARPA file.
+                     * All we need to do is then read all the words in
+                     * M-Gram sections and count them with the word index.
+                     * @param level the M-gram level we are counting words for.
+                     */
+                    void get_word_counts(const TModelLevel level);
+
+                    /**
+                     * This method should be called after the word counting is done.
+                     * Then we can re-start reading the file and move forward to the
+                     * one gram section again. After this method we can proceed
+                     * reading M-grams and add them to the trie.
+                     */
+                    void return_to_grams();
 
                     /**
                      * This recursive method is used to read and process the ARPA N-Grams.
                      * @param line the in/out parameter storing the last read line
                      * @param level the level we are to read
                      */
-                    void readNGrams(const TModelLevel level);
+                    void read_grams(const TModelLevel level);
                 };
             }
         }
