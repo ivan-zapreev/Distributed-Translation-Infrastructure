@@ -297,6 +297,11 @@ namespace uva {
                 void ARPATrieBuilder<N>::build() {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
+                    //Declare an array of N-Gram counts, that is to be filled from the
+                    //headers. This data will be used to pre-allocate memory for the Trie 
+                    size_t counts[N];
+                    memset(counts, 0, N * sizeof (size_t));
+
                     try {
                         //Read the first line from the file
                         m_file.getLine(m_line);
@@ -304,18 +309,13 @@ namespace uva {
                         //Skip on ARPA headers
                         readHeaders();
 
-                        //Declare an array of N-Gram counts, that is to be filled from the
-                        //headers. This data will be used to pre-allocate memory for the Trie 
-                        size_t counts[N];
-                        for (int i = 0; i < N; i++) {
-                            counts[i] = 0;
-                        }
-
                         //Read the DATA section of ARPA
                         readData(counts);
 
                         //Provide the N-Gram counts data to the Trie
                         m_trie.preAllocate(counts);
+
+                        //ToDo: Check if we need another pass for words counting.
 
                         //Read the N-grams, starting from 1-Grams
                         readNGrams(1);
