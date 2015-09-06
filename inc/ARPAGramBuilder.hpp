@@ -81,7 +81,7 @@ namespace uva {
                      * @param level the expected M-gram level
                      * @return true if the M-gram was successfully parsed
                      */
-                    static bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens, const TModelLevel level) {
+                    static inline bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens, const TModelLevel level) {
                         TextPieceReader storage;
                         //First read text until the first tab, it should be present if it is a M-gram line
                         if (text.getTab(storage)) {
@@ -107,6 +107,8 @@ namespace uva {
                                     }
                                 } else {
                                     //Unexpected end of text
+                                    LOG_WARNING << "An unexpected end of line '" << text.str()
+                                            << "' when reading the " << level << "-gram!" << END_LOG;
                                     return false;
                                 }
                             } else {
@@ -118,6 +120,8 @@ namespace uva {
                             }
                         } else {
                             //Unexpected end of text
+                            LOG_WARNING << "An unexpected end of line '" << text.str()
+                                    << "' when reading the " << level << "-gram!" << END_LOG;
                             return false;
                         }
                     }
