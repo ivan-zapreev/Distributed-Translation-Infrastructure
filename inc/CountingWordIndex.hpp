@@ -115,11 +115,14 @@ namespace uva {
                     virtual void post_word_count() {
                         //All the words have been filled in, it is time to give them ids.
 
+                        //00. Remove the <unk> word from the Map as it must get fixed index
+                        BasicWordIndex::_pWordIndexMap->erase(AWordIndex::UNKNOWN_WORD_STR);
+                        
                         //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
                         const size_t num_words = BasicWordIndex::_pWordIndexMap->size();
                         __CountingWordIndex::TWordInfo * word_infos = new __CountingWordIndex::TWordInfo[num_words];
                         
-                        //02. Copy the word information from the map into that array
+                        //02. Copy the word information from the map into that array.
                         BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::_pWordIndexMap->begin();
                         for (size_t idx = 0; iter != BasicWordIndex::_pWordIndexMap->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
@@ -132,23 +135,18 @@ namespace uva {
 
                         //04. Iterate through the array and assign the new word ids
                         //    into the _pWordIndexMap using the BasicWordIndex::_nextNewWordId
-                        for(BasicWordIndex::_nextNewWordId = 0;
-                                BasicWordIndex::_nextNewWordId < num_words;
-                                ++BasicWordIndex::_nextNewWordId) {
+                        for(size_t idx = 0; idx < num_words; ++idx) {
                             //Get the next word
                             string & word = word_infos[BasicWordIndex::_nextNewWordId].word;
                             //Give it the next index
-                            BasicWordIndex::_pWordIndexMap->operator[](word) = BasicWordIndex::_nextNewWordId;
+                            BasicWordIndex::_pWordIndexMap->operator[](word) = BasicWordIndex::_nextNewWordId++;
                         }
 
                         //05. Delete the temporary sorted array
                         delete[] word_infos;
-
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        //WARNING: The minimum word id and the unknown word id are now not fixed any more!
-                        //We need to make sure that these constants are not used in the tries! Each time one
-                        //Needs the minimum word (?) id or the unknown word id(!) they should ask the word index!
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        
+                        //06. Put back the <unk> word with its fixed index into the map
+                        BasicWordIndex::_pWordIndexMap->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
                     };
                 };
             }
