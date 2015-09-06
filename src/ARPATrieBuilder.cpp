@@ -309,6 +309,7 @@ namespace uva {
 
                         //Read the current level N-grams and add them to the trie
                         while (m_file.getLine(m_line)) {
+                            LOG_DEBUG1 << "Reading " << SSTR(level) << "-gram, got: [" << m_line.str() << "]";
                             //If this is not an empty line
                             if (m_line != "") {
                                 //Parse line to words without probabilities and back-offs
@@ -320,6 +321,7 @@ namespace uva {
                                     }
                                 } else {
                                     //This is not an expected M-gram
+                                    LOG_DEBUG1 << "Stopping words counting in M-gram level: " << SSTR(level) << END_LOG;
                                     break;
                                 }
                             }
@@ -328,12 +330,18 @@ namespace uva {
                             Logger::updateProgressBar();
                         }
 
+                        LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
+
                         //Test if we need to move on or we are done or an error is detected
                         if ((level < N) && (m_line != END_OF_ARPA_FILE)) {
+                            LOG_DEBUG1 << "Finished counting words in " << SSTR(level)
+                                    << "-grams, going to the next level" << END_LOG;
                             //There are still N-Gram levels to read
                             //We did not encounter the \end\ tag yet so do recursion to the next level
                             get_word_counts(level + 1);
                         }
+                        LOG_DEBUG1 << "Finished counting words in "
+                                << SSTR(level) << "-grams" << END_LOG;
                     }
                 }
 
