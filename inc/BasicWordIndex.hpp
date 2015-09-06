@@ -121,9 +121,8 @@ namespace uva {
 
                         if (hash == UNDEFINED_WORD_ID) {
                             //If the word hash is not defined yet, then issue it a new hash id
-                            hash = _nextNewWordId;
+                            hash = _nextNewWordId++;
                             LOG_DEBUG2 << "Word: '" << token.str() << "' is not known yet, issuing it a new id: " << SSTR(hash) << END_LOG;
-                            _nextNewWordId++;
                         }
 
                         //Use the Prime numbers hashing algorithm as it outperforms djb2
