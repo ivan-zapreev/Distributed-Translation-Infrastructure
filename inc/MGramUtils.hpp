@@ -126,7 +126,7 @@ namespace uva {
                  */
                 static inline uint8_t get_number_of_bits(const TShortId wordId) {
                     return log2_32(wordId);
-                }
+                };
 
                 /**
                  * Stores the multipliers up to and including level 6
@@ -160,7 +160,7 @@ namespace uva {
                     for (size_t idx = 0; idx < NUM_TOKENS; ++idx) {
                         id_type += (len_bits[idx] - 1) * gram_id_type_mult[idx];
                     }
-                }
+                };
 
                 /**
                  * Allows to delete the allocated M-Gram id. If the id is NULL nothing is done.
@@ -172,7 +172,7 @@ namespace uva {
                         delete[] m_gram_id;
                         m_gram_id = NULL;
                     }
-                }
+                };
 
                 /**
                  * This method is needed to compute the M-gram id.
@@ -254,7 +254,7 @@ namespace uva {
                     }
 
                     return true;
-                }
+                };
 
                 /**
                  * This function allows to create an 2-gram id for a given 2-gram
@@ -290,7 +290,7 @@ namespace uva {
                  */
                 static inline bool create_2_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     return create_gram_id<M_GRAM_2_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_2>(tokens, p_word_idx, m_gram_id);
-                }
+                };
 
                 /**
                  * This function allows to create an 3-gram id for a given 3-gram
@@ -304,7 +304,7 @@ namespace uva {
                  */
                 static inline bool create_3_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     return create_gram_id<M_GRAM_3_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_3>(tokens, p_word_idx, m_gram_id);
-                }
+                };
 
                 /**
                  * This function allows to create an 4-gram id for a given 4-gram
@@ -318,7 +318,7 @@ namespace uva {
                  */
                 static inline bool create_4_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     return create_gram_id<M_GRAM_4_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_4>(tokens, p_word_idx, m_gram_id);
-                }
+                };
 
                 /**
                  * This function allows to create an 5-gram id for a given 5-gram
@@ -332,7 +332,7 @@ namespace uva {
                  */
                 static inline bool create_5_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     return create_gram_id<M_GRAM_5_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_5>(tokens, p_word_idx, m_gram_id);
-                }
+                };
 
                 /**
                  * Define the function pointer to a create x-gram id function for some X-gram level x
@@ -361,7 +361,7 @@ namespace uva {
 
                     //Call the appropriate function, use array instead of switch, should be faster.
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
-                }
+                };
 
                 /**
                  * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -372,7 +372,7 @@ namespace uva {
                  * @param m_gram_id the given M-gram id
                  * @return the M-gram id length in bytes
                  */
-                template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS>
+                template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS >
                 uint8_t get_gram_id_len(const T_M_Gram_Id & m_gram_id) {
                     //Declare and initialize the id length, the initial values is
                     //what we need to store the type. Note that, the maximum number
@@ -411,8 +411,7 @@ namespace uva {
                     //Note that in the loop above we have "coeff = len_bits[idx] - 1"
                     //Therefore, here we add the number of tokens to account for this -1's
                     return NUM_BITS_TO_STORE_BYTES(id_len_bits + NUM_TOKENS);
-
-                }
+                };
 
                 /**
                  * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -422,7 +421,7 @@ namespace uva {
                 static inline uint8_t get_2_gram_id_len(const T_M_Gram_Id & m_gram_id) {
 
                     return get_gram_id_len<M_GRAM_2_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_2>(m_gram_id);
-                }
+                };
 
                 /**
                  * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -432,7 +431,7 @@ namespace uva {
                 static inline uint8_t get_3_gram_id_len(const T_M_Gram_Id & m_gram_id) {
 
                     return get_gram_id_len<M_GRAM_3_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_3>(m_gram_id);
-                }
+                };
 
                 /**
                  * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -442,7 +441,7 @@ namespace uva {
                 static inline uint8_t get_4_gram_id_len(const T_M_Gram_Id & m_gram_id) {
 
                     return get_gram_id_len<M_GRAM_4_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_4>(m_gram_id);
-                }
+                };
 
                 /**
                  * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -452,7 +451,7 @@ namespace uva {
                 static inline uint8_t get_5_gram_id_len(const T_M_Gram_Id & m_gram_id) {
 
                     return get_gram_id_len<M_GRAM_5_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_5>(m_gram_id);
-                }
+                };
 
                 /**
                  * Define the function pointer to a get x-gram id length for some X-gram level x
@@ -486,7 +485,43 @@ namespace uva {
                     } else {
                         throw Exception("get_m_gram_id_length: A NULL pointer M-gram id!");
                     }
-                }
+                };
+
+                /**
+                 * Allows to compare two M-Gram ids depending on the template flag it is a different operator
+                 * @param IS_LESS if true the it is a is_less compare, if false then is_more
+                 * @param one the first M-gram id
+                 * @param two the second M-gram id
+                 * @return true if "one < two" otherwise false
+                 */
+                template<bool IS_LESS>
+                static inline bool compare(const T_M_Gram_Id & one, const T_M_Gram_Id & two, const TModelLevel level) {
+                    //Get the M-gram type ids
+                    TShortId type_one;
+                    //ToDo: Implement
+                    TShortId type_two;
+                    //ToDo: Implement
+
+                    if (type_one < type_two) {
+                        //The first id type is smaller
+                        return IS_LESS;
+                    } else {
+                        if (type_one > type_two) {
+                            //The second id type is smaller
+                            return !IS_LESS;
+                        } else {
+                            //The id types are the same! Compare the ids themselves
+
+                            //Get one of the lengths
+                            const uint8_t len = get_m_gram_id_len(one, level);
+
+                            //Start comparing the ids byte by byte but not from the fist
+                            //bytes as this is where the id type information is stored 
+
+                            //ToDo: Implement
+                        }
+                    }
+                };
             }
         }
     }
