@@ -157,6 +157,18 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to delete the allocated M-Gram id. If the id is NULL nothing is done.
+                 * If the id is not null then its memory is freed and the id is set to NULL.
+                 * @param m_gram_id the m-gram to delete (free memory for)
+                 */
+                static inline void delete_gram_id(M_Gram_Id & m_gram_id) {
+                    if (m_gram_id != NULL) {
+                        delete[] m_gram_id;
+                        m_gram_id = NULL;
+                    }
+                }
+
+                /**
                  * This method is needed to compute the M-gram id.
                  * This implementation should work up to 6-grams! If we use it for
                  * 7-grams then the internal computations will overflow!
@@ -164,7 +176,11 @@ namespace uva {
                  * @param NUM_TOKENS the number of tokens in the M-gram
                  * @param tokens the M-gram tokens
                  * @param p_word_idx the word index
-                 * @param m_gram_id the resulting m-gram id
+                 * @param m_gram_id the resulting m-gram id, if NULL new memory
+                 * will be allocated for the id, otherwise the pointer will be
+                 * used to store the id. It is then assumed that there is enough
+                 * memory allocated to store the id. For an M-gram it is (4*M)
+                 * bytes that is needed to store the longed M-gram id.
                  * @return true if the m-gram id could be computed, otherwise false
                  */
                 template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS>
@@ -205,11 +221,14 @@ namespace uva {
                         }
                     }
 
-                    //Determine the size of id in bytes, divide with rounding up
-                    const uint8_t id_len_bytes = (id_len_bits + 7) / 8;
+                    //Allocate the id memory if there was nothing pre-allocated yet
+                    if (m_gram_id == NULL) {
+                        //Determine the size of id in bytes, divide with rounding up
+                        const uint8_t id_len_bytes = (id_len_bits + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8;
 
-                    //Allocate the id memory
-                    m_gram_id = new uint8_t[id_len_bytes];
+                        //Allocate memory
+                        m_gram_id = new uint8_t[id_len_bytes];
+                    }
 
                     //Determine the type id value from the bit lengths of the words
                     TShortId id_type_value = 0;
