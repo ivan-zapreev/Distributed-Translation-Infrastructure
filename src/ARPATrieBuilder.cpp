@@ -104,7 +104,7 @@ namespace uva {
                     //ARPA headers and we stumbled upon something meaningful,
                     //that actually must be the begin of the data section
                     if (m_line != END_OF_ARPA_FILE) {
-                        TModelLevel level = ONE_GRAM_LEVEL;
+                        TModelLevel level = M_GRAM_LEVEL_1;
                         while (true) {
                             if (m_file.getLine(m_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << m_line << "'" << END_LOG;
@@ -415,7 +415,7 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder< MAX_NGRAM_LEVEL >;
+                template class ARPATrieBuilder< M_GRAM_LEVEL_MAX >;
             }
         }
     }

@@ -189,7 +189,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -222,6 +222,8 @@
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -299,7 +301,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -332,6 +334,8 @@
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -419,7 +423,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -452,6 +456,8 @@
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -529,7 +535,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -562,6 +568,8 @@
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -639,7 +647,7 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -672,6 +680,8 @@
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>

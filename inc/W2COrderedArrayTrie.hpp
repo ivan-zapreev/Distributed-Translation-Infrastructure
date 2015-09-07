@@ -274,7 +274,7 @@ namespace uva {
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > ONE_GRAM_LEVEL) || ALayeredTrie<N>::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || ALayeredTrie<N>::is_post_grams(level);
                 }
 
                 /**
@@ -418,7 +418,7 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
@@ -476,7 +476,7 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == TWO_GRAM_LEVEL) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)

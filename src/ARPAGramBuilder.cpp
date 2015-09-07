@@ -89,7 +89,7 @@ namespace uva {
                             }
 
                             //Remove the last token from the context string
-                            if (m_level > ONE_GRAM_LEVEL) {
+                            if (m_level > M_GRAM_LEVEL_1) {
                                 //The reduction factor for length is the length of the last N-gram token plus
                                 //one character which is the space symbol located between N-gram tokens.
                                 const size_t reduction = (m_ngram.tokens[m_level - 1].getLen() + 1);

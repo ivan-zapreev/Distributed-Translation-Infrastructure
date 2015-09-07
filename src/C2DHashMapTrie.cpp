@@ -57,11 +57,11 @@ namespace uva {
                 }
 
                 //Perform an error check! This container has a lower bound on the N level.
-                if (N < TWO_GRAM_LEVEL) {
+                if (N < M_GRAM_LEVEL_2) {
 
                     stringstream msg;
                     msg << "The requested N-gram level is '" << N
-                            << "', but for '" << __FILE__ << "' it must be >= " << TWO_GRAM_LEVEL << "!";
+                            << "', but for '" << __FILE__ << "' it must be >= " << M_GRAM_LEVEL_2 << "!";
                     throw Exception(msg.str());
                 }
 
@@ -147,7 +147,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2DHashMapTrie<MAX_NGRAM_LEVEL>;
+            template class C2DHashMapTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

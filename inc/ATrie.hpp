@@ -34,13 +34,13 @@
 
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
-#include "MGramUtils.hpp"
+#include "MGrams.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::utils;
+using namespace uva::smt::tries::mgrams;
 
 namespace uva {
     namespace smt {
@@ -148,7 +148,7 @@ namespace uva {
                  */
                 void post_grams(const TModelLevel level) {
                     switch (level) {
-                        case ONE_GRAM_LEVEL:
+                        case M_GRAM_LEVEL_1:
                             this->post_1_grams();
                             break;
                         case N:

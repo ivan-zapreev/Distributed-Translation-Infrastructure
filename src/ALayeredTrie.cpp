@@ -354,7 +354,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ALayeredTrie<MAX_NGRAM_LEVEL>;
+            template class ALayeredTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

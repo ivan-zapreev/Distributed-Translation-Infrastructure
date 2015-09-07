@@ -79,22 +79,22 @@ namespace uva {
                         
                         
                         //Then check that the level values are correct!
-                        if ( DO_SANITY_CHECKS && (level < ONE_GRAM_LEVEL || level > N) ) {
+                        if ( DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > N) ) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
-                                    << "', but it must be within [" << ONE_GRAM_LEVEL << ", " << N << "]!";
+                                    << "', but it must be within [" << M_GRAM_LEVEL_1 << ", " << N << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
 
-                            if (level == ONE_GRAM_LEVEL) {
+                            if (level == M_GRAM_LEVEL_1) {
                                 //If the level is at minimum it means we are filling in the dictionary
-                                LOG_DEBUG1 << "Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder..." << END_LOG;
+                                LOG_DEBUG1 << "Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder(level,
                                         [&] (const T_M_Gram & gram) {
                                             trie.add_1_gram(gram); });
-                                LOG_DEBUG2 << "DONE Instantiating the " << ONE_GRAM_LEVEL << "-Gram builder!" << END_LOG;
+                                LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
                             } else {
                                 if (level == N) {
                                     //If the minimum is at maximum it means we are filling in the top N-gram level

@@ -127,7 +127,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CHybridMemoryTrie<MAX_NGRAM_LEVEL, CtxToPBUMapStorageFactory, CtxToPBUnorderedMapStorage>;
+            template class W2CHybridMemoryTrie<M_GRAM_LEVEL_MAX, CtxToPBUMapStorageFactory, CtxToPBUnorderedMapStorage>;
         }
     }
 }

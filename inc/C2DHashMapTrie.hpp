@@ -325,7 +325,7 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                static inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level = UNDEF_NGRAM_LEVEL) {
+                static inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level = M_GRAM_LEVEL_UNDEF) {
                     //Use the Szudzik algorithm as it outperforms Cantor
                     ctxId = szudzik(wordId, ctxId);
                     //The context can always be computed

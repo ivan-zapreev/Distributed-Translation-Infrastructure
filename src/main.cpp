@@ -310,7 +310,7 @@ static void performTasks(const TAppParams& params) {
         //ToDo: Add the possibility to choose between the Tries from the command line!
 
         //Create a trie and pass it to the algorithm method
-        ATrie<MAX_NGRAM_LEVEL> * pTrie = TrieTypeFactory::getTrie<MAX_NGRAM_LEVEL>(params.trieTypeName);
+        ATrie<M_GRAM_LEVEL_MAX> * pTrie = TrieTypeFactory::getTrie<M_GRAM_LEVEL_MAX>(params.trieTypeName);
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();

@@ -70,7 +70,7 @@ namespace uva {
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
             const bool DO_SANITY_CHECKS = true;
-            
+
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint16_t TModelLevel;
 
@@ -92,17 +92,12 @@ namespace uva {
             const TLogProbBackOff MIN_LOG_PROB_WEIGHT = -10.0f;
             //The value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = ZERO_LOG_PROB_WEIGHT;
-            
-            //Define the undefined N-gram level
-            const TModelLevel UNDEF_NGRAM_LEVEL = 0u;
-            //Define the 1-gram level value
-            const TModelLevel ONE_GRAM_LEVEL = 1u;
-            //Define the 2-gram level value
-            const TModelLevel TWO_GRAM_LEVEL = ONE_GRAM_LEVEL + 1;
-            //The considered maximum length of the N-gram
-            const TModelLevel MAX_NGRAM_LEVEL = 5u;
+
+            //The considered maximum length of the N-gram 
+            const static TModelLevel M_GRAM_LEVEL_MAX = 5u;
 
             namespace alloc {
+
                 /**
                  * Stores the possible memory increase types
                  */
@@ -110,8 +105,8 @@ namespace uva {
                     CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
                     LOG_10 = LOG_2 + 1, size = LOG_10 + 1
                 };
-            }            
-            
+            }
+
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
                 const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
@@ -135,7 +130,7 @@ namespace uva {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
             }
-            
+
             namespace __G2DHashMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
                 const float MEM_INC_FACTOR = 0.3;

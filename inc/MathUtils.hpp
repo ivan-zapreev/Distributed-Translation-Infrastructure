@@ -123,28 +123,70 @@ namespace uva {
 #define NUM_BITS_REMAINDER(number_of_bits) ((number_of_bits) % NUM_BITS_IN_UINT_8)
                 //Computes the whole number of bytes needed to store the given amount of bits
 #define NUM_BITS_TO_STORE_BYTES(number_of_bits) (((number_of_bits) + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8)
+                //Allows to convert the number of bytes into the number of bits
+#define BYTES_TO_BITS(number_of_bytes) ((number_of_bytes) * NUM_BITS_IN_UINT_8)
 
                 /**
-                 * Allows to copy bits from one array to another
-                 * @param SIZE_FROM_ARR_BITS the size of the from array in bits
+                 * Allows to copy single bits one by one from one byte array to another
                  * @param p_source the byte array to copy from
                  * @param p_target the byte array to copy to (must be of sufficient capacity)
-                 * @param from_pos the position to start copying bits from
-                 * @param to_pos the position to start placing bits from
+                 * @param from_pos_bit the bit index (left to right) to start copying bits from
+                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
+                 * @param num_bits the number of bits to copy
                  */
-                template<uint32_t SIZE_FROM_ARR_BITS>
-                static inline void copy_bits(const uint8_t * p_source, uint32_t from_pos,
-                        uint8_t * p_target, uint32_t to_pos) {
+                static inline void copy_single_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
                     //Copy bits one by one
-                    while (from_pos < SIZE_FROM_ARR_BITS) {
+                    const uint8_t end_pos_bit = (from_pos_bit + num_bits);
+                    while (from_pos_bit < end_pos_bit) {
                         //Copy one bit
-                        copy_bit(p_source[BYTE_IDX(from_pos)],
-                                REMAINING_BIT_IDX(from_pos),
-                                p_target[BYTE_IDX(to_pos)],
-                                REMAINING_BIT_IDX(to_pos));
+                        copy_bit(p_source[BYTE_IDX(from_pos_bit)],
+                                REMAINING_BIT_IDX(from_pos_bit),
+                                p_target[BYTE_IDX(to_pos_bit)],
+                                REMAINING_BIT_IDX(to_pos_bit));
                         //Increment the positions
-                        from_pos++;
-                        to_pos++;
+                        from_pos_bit++;
+                        to_pos_bit++;
+                    }
+                };
+
+                /**
+                 * Allows to copy bits from one byte array to another
+                 * @param p_source the byte array to copy from
+                 * @param p_target the byte array to copy to (must be of sufficient capacity)
+                 * @param from_pos_bit the bit index (left to right) to start copying bits from
+                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
+                 * @param num_bits the number of bits to copy
+                 */
+                static inline void copy_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
+
+                    //Depending on whether the bits are byte aligned, we have two copying strategies.
+                    if ((REMAINING_BIT_IDX(from_pos_bit) > 0) || (REMAINING_BIT_IDX(to_pos_bit) > 0)) {
+                        //If there is no byte alignment: Copy bits one by one
+                        copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+                    } else {
+                        //If there is byte alignment then we can fast copy
+                        //some whole bytes and then the remaining bits.
+
+                        //1. Copy as many whole bytes as possible
+                        const uint8_t num_full_bytes = NUM_FULL_BYTES(num_bits);
+                        if (num_full_bytes > 0) {
+                            const uint8_t from_pos_byte = BYTE_IDX(from_pos_bit);
+                            const uint8_t to_pos_byte = BYTE_IDX(to_pos_bit);
+                            memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_full_bytes);
+                        }
+
+                        //2. Copy the remaining bits one by one
+                        const uint8_t num_rem_bits = NUM_BITS_REMAINDER(num_bits);
+                        if (num_rem_bits > 0) {
+                            //Compute the number of remaining bytes to copy
+                            const uint8_t num_copied_bits = BYTES_TO_BITS(num_full_bytes);
+                            //Copy the remaining bytes
+                            copy_bits(p_source, from_pos_bit + num_copied_bits,
+                                    p_target, to_pos_bit + num_copied_bits,
+                                    num_rem_bits);
+                        }
                     }
                 };
 
@@ -156,61 +198,38 @@ namespace uva {
                  * @param p_target the byte array to copy bits into, must have sufficient capacity
                  * @param bit_pos the position into which the pits are to be copied
                  */
-                static inline void copy_end_bits(const uint32_t source, const uint8_t num_bits,
-                        uint8_t * p_target, const uint32_t to_pos) {
+                static inline void copy_end_bits_to_pos(const uint32_t source, const uint8_t num_bits,
+                        uint8_t * p_target, const uint32_t to_pos_bit) {
                     //First transform he source uint into an array of bytes
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
 
                     //Compute the position to start copying from
-                    uint8_t from_pos = (NUM_BITS_IN_UINT_32 - num_bits);
+                    const uint8_t from_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
 
-                    //Depending on whether the bits are byte aligned, we have two copying strategies.
-                    if ((REMAINING_BIT_IDX(from_pos) > 0) || (REMAINING_BIT_IDX(to_pos) > 0)) {
-                        //If there is no byte alignment: Copy bits one by one
-                        copy_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos, p_target, to_pos);
-                    } else {
-                        //If there is byte alignment then we can fast copy
-                        //some whole bytes and then the remaining bits.
-
-                        //1. Copy as many whole bytes as possible
-                        const uint8_t num_full_bytes = NUM_FULL_BYTES(num_bits);
-                        if (num_full_bytes > 0) {
-                            memcpy(p_target, p_source, num_full_bytes);
-                        }
-
-                        //2. Copy the remaining bits one by one
-                        const uint8_t num_rem_bits = NUM_BITS_REMAINDER(num_bits);
-                        if (num_rem_bits > 0) {
-                            //Compute the number of remaining bytes to copy
-                            const uint8_t num_copied_bits = num_full_bytes * NUM_BITS_IN_UINT_8;
-                            //Copy the remaining bytes
-                            copy_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos + num_copied_bits,
-                                    p_target, to_pos + num_copied_bits);
-                        }
-                    }
+                    //Copy the given number of bits from and to defined targets and positions 
+                    copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                 };
 
                 /**
                  * This function allows to copy the given number of bits from the
                  * beginning of the given byte array into the end of the given
                  * target variable.
+                 * @param num_bits the number of bits to copy
                  * @param p_source the byte array with data to copy from
-                 * @param NUM_BITS_TO_COPY the number of bits to copy
                  * @param target the variable to put the bits at the end of
                  */
-                template<uint8_t NUM_BITS_TO_COPY>
+                template<uint8_t num_bits>
                 static inline void copy_begin_bits_to_end(const uint8_t * p_source, uint32_t & target) {
                     //Convert the id_type storing variable into an array of bytes
                     uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
-                    
-                    //NOTE: We could try to do more efficient byte copying for the full bytes but
-                    //for what this method is currently used the data is not byte aligned!
-                    //So there is nothing really to improve, here at the moment.
-                    
-                    //Copy the needed NUM_BITS_TO_COPY bytes from the beginning
-                    //of p_source, and put them at the end of the target array:
-                    copy_bits<NUM_BITS_TO_COPY>(p_source, 0,
-                            p_target, NUM_BITS_IN_UINT_32 - NUM_BITS_TO_COPY);
+
+                    //The position to start copying from
+                    const uint8_t from_pos_bit = 0;
+                    //The position to start copying to
+                    const uint8_t to_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
+
+                    //Copy the given number of bits from and to defined targets and positions 
+                    copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                 };
             }
         }

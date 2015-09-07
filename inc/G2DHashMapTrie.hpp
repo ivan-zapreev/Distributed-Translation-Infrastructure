@@ -57,9 +57,9 @@ namespace uva {
                  * Each element contains and id of the m-gram and its payload -
                  * the probability/back-off data, the latter is the template parameter
                  */
-                template<typename PAYLOAD_TYPE>
+                template<typename PAYLOAD_TYPE, typename M_GRAM_ID_TYPE>
                 struct S_M_GramData {
-                    T_M_Gram_Id id;
+                    M_GRAM_ID_TYPE * id;
                     PAYLOAD_TYPE data;
                 };
 
@@ -67,9 +67,9 @@ namespace uva {
                  * This structure represents a trie level entry bucket
                  * it stores the bucket capacity, size and the pointer to its elements.
                  */
-                template<typename PAYLOAD_TYPE>
+                template<typename PAYLOAD_TYPE, typename M_GRAM_ID_TYPE>
                 struct STrieBucket {
-                    S_M_GramData<PAYLOAD_TYPE> * grams;
+                    S_M_GramData<PAYLOAD_TYPE, M_GRAM_ID_TYPE> * grams;
                     uint8_t capacity;
                     uint8_t size;
                 };
@@ -219,11 +219,11 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry> TProbBackOffBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry, T_Compressed_M_Gram_Id<N> > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff> TProbBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff, T_Compressed_M_Gram_Id<N> > TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
