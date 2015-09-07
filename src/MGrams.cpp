@@ -50,7 +50,12 @@ namespace uva {
         namespace tries {
             namespace mgrams {
 
-                //The memory in bits needed to store different M-gram id types in the M-gram id byte arrays
+                //The memory in bits needed to store different M-gram id types in
+                //the M-gram id byte arrays
+                //ToDo: These are the minimum values, if used then we use fewest memory
+                //but the data is not byte aligned. Therefore some bit copying operations
+                //are not done efficiently. Perhaps it is worth trying to round these
+                //values up to full bytes, this can improve performance @ some memory costs.
                 template<TModelLevel M_GRAM_LEVEL>
                 const uint8_t T_Compressed_M_Gram_Id<M_GRAM_LEVEL>::M_GRAM_2_ID_TYPE_LEN_BITS = 10;
                 template<TModelLevel M_GRAM_LEVEL>
