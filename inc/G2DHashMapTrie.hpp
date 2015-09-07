@@ -59,7 +59,7 @@ namespace uva {
                  */
                 template<typename PAYLOAD_TYPE>
                 struct S_M_GramData {
-                    M_Gram_Id id;
+                    T_M_Gram_Id id;
                     PAYLOAD_TYPE data;
                 };
 

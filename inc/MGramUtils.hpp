@@ -103,7 +103,7 @@ namespace uva {
                 } T_M_Gram;
 
                 //The M-gram Id will be an array of bytes which will be of a variable length
-                typedef uint8_t * M_Gram_Id;
+                typedef uint8_t * T_M_Gram_Id;
 
                 //The M-gram levels supported by the create function for M-gram id
                 const static TModelLevel M_GRAM_LEVEL_2 = 2;
@@ -112,6 +112,12 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_5 = 5;
                 const static TModelLevel M_GRAM_LEVEL_6 = 6;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7;
+
+                //The memory in bits needed to store different M-gram id types in the M-gram id byte arrays
+                static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
+                static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
+                static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
+                static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
 
                 /**
                  * This method allows to get the number of bits needed to store this word id
@@ -151,7 +157,7 @@ namespace uva {
                     }
 
                     //Compute the M-gram id type. Here we use the pre-computed multipliers
-                    for (size_t idx = 0; idx < NUM_TOKENS; +idx) {
+                    for (size_t idx = 0; idx < NUM_TOKENS; ++idx) {
                         id_type += (len_bits[idx] - 1) * gram_id_type_mult[idx];
                     }
                 }
@@ -161,7 +167,7 @@ namespace uva {
                  * If the id is not null then its memory is freed and the id is set to NULL.
                  * @param m_gram_id the m-gram to delete (free memory for)
                  */
-                static inline void delete_gram_id(M_Gram_Id & m_gram_id) {
+                static inline void delete_gram_id(T_M_Gram_Id & m_gram_id) {
                     if (m_gram_id != NULL) {
                         delete[] m_gram_id;
                         m_gram_id = NULL;
@@ -184,7 +190,7 @@ namespace uva {
                  * @return true if the m-gram id could be computed, otherwise false
                  */
                 template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS>
-                static inline bool create_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
+                static inline bool create_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     //Declare and initialize the id length, the initial values is
                     //what we need to store the type. Note that, the maximum number
                     //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
@@ -220,14 +226,16 @@ namespace uva {
                             return false;
                         }
                     }
+                    //Determine the size of id in bytes, divide with rounding up
+                    const uint8_t id_len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
 
                     //Allocate the id memory if there was nothing pre-allocated yet
                     if (m_gram_id == NULL) {
-                        //Determine the size of id in bytes, divide with rounding up
-                        const uint8_t id_len_bytes = (id_len_bits + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8;
-
                         //Allocate memory
                         m_gram_id = new uint8_t[id_len_bytes];
+                    } else {
+                        //Clean the memory
+                        memset(m_gram_id, 0, id_len_bytes);
                     }
 
                     //Determine the type id value from the bit lengths of the words
@@ -280,8 +288,8 @@ namespace uva {
                  * @param m_gram_id [out] the reference to the M-gram id to be created
                  * @return true if the M-gram id could be created, otherwise false
                  */
-                static inline bool create_2_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
-                    return create_gram_id<10, 2>(tokens, p_word_idx, m_gram_id);
+                static inline bool create_2_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
+                    return create_gram_id<M_GRAM_2_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_2>(tokens, p_word_idx, m_gram_id);
                 }
 
                 /**
@@ -294,8 +302,8 @@ namespace uva {
                  * @param m_gram_id [out] the reference to the M-gram id to be created
                  * @return true if the M-gram id could be created, otherwise false
                  */
-                static inline bool create_3_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
-                    return create_gram_id<15, 3>(tokens, p_word_idx, m_gram_id);
+                static inline bool create_3_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
+                    return create_gram_id<M_GRAM_3_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_3>(tokens, p_word_idx, m_gram_id);
                 }
 
                 /**
@@ -308,8 +316,8 @@ namespace uva {
                  * @param m_gram_id [out] the reference to the M-gram id to be created
                  * @return true if the M-gram id could be created, otherwise false
                  */
-                static inline bool create_4_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
-                    return create_gram_id<20, 4>(tokens, p_word_idx, m_gram_id);
+                static inline bool create_4_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
+                    return create_gram_id<M_GRAM_4_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_4>(tokens, p_word_idx, m_gram_id);
                 }
 
                 /**
@@ -322,14 +330,14 @@ namespace uva {
                  * @param m_gram_id [out] the reference to the M-gram id to be created
                  * @return true if the M-gram id could be created, otherwise false
                  */
-                static inline bool create_5_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
-                    return create_gram_id<25, 5>(tokens, p_word_idx, m_gram_id);
+                static inline bool create_5_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
+                    return create_gram_id<M_GRAM_5_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_5>(tokens, p_word_idx, m_gram_id);
                 }
 
                 /**
                  * Define the function pointer to a create x-gram id function for some X-gram level x
                  */
-                typedef bool(*create_x_gram_id)(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id);
+                typedef bool(*create_x_gram_id)(const TextPieceReader *tokens, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id);
 
                 //This is an array of functions for creating m-grams per specific m-gram level m
                 const static create_x_gram_id create_x_gram_funcs[] = {create_2_gram_id, create_3_gram_id, create_4_gram_id, create_5_gram_id};
@@ -341,7 +349,7 @@ namespace uva {
                  * @param m_gram_id [out] the reference to the M-gram id to be created
                  * @return true if the M-gram id could be created, otherwise false
                  */
-                static inline bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
+                static inline bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_M_Gram_Id & m_gram_id) {
                     if (DO_SANITY_CHECKS && ((gram.level < M_GRAM_LEVEL_2) || (gram.level > M_GRAM_LEVEL_5))) {
                         stringstream msg;
                         msg << "create_m_gram_id: Unsupported m-gram level: "
@@ -353,6 +361,131 @@ namespace uva {
 
                     //Call the appropriate function, use array instead of switch, should be faster.
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
+                }
+
+                /**
+                 * Allows to extract the M-gram id length from the given M-gram level M and id
+                 * This implementation should work up to 6-grams! If we use it for
+                 * 7-grams then the internal computations will overflow!
+                 * @param MAX_ID_TYPE_LEN_BITS the maximum number of bites needed to store the id type in bits
+                 * @param NUM_TOKENS the number of tokens in the M-gram
+                 * @param m_gram_id the given M-gram id
+                 * @return the M-gram id length in bytes
+                 */
+                template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS>
+                uint8_t get_gram_id_len(const T_M_Gram_Id & m_gram_id) {
+                    //Declare and initialize the id length, the initial values is
+                    //what we need to store the type. Note that, the maximum number
+                    //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
+                    //bits. For a 6-gram we get 30+32+32+32+32+32+32 = 222 bits,
+                    //for a 7-gram we get 35+32+32+32+32+32+32+32 = 259 bits!
+                    //This is when we get an overflow here if we use uint8_t to
+                    //store the length in bits will overflow. Therefore the sanity check.
+                    uint8_t id_len_bits = MAX_ID_TYPE_LEN_BITS;
+
+                    //Do the sanity check for against overflows
+                    if (DO_SANITY_CHECKS && (NUM_TOKENS > M_GRAM_LEVEL_6)) {
+                        stringstream msg;
+                        msg << "get_gram_id_len: Unsupported m-gram level: "
+                                << SSTR(NUM_TOKENS) << ", must be within ["
+                                << SSTR(M_GRAM_LEVEL_2) << ", "
+                                << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
+                        throw Exception(msg.str());
+                    }
+
+                    //1. ToDo: Extract the id_type from the M-gram
+                    TShortId id_type;
+                    copy_begin_bits_to_end<MAX_ID_TYPE_LEN_BITS>(m_gram_id, id_type);
+
+                    //2. Compute the M-gram id length from the M-gram id type.
+                    //   Here we use the pre-computed multipliers we add the
+                    //   final bits at the end of the function.
+                    uint8_t coeff;
+                    for (size_t idx = (NUM_TOKENS - 1); idx >= 0; --idx) {
+
+                        coeff = id_type / gram_id_type_mult[idx];
+                        id_type -= coeff * gram_id_type_mult[idx];
+                        id_len_bits += coeff;
+                    }
+
+                    //Note that in the loop above we have "coeff = len_bits[idx] - 1"
+                    //Therefore, here we add the number of tokens to account for this -1's
+                    return NUM_BITS_TO_STORE_BYTES(id_len_bits + NUM_TOKENS);
+
+                }
+
+                /**
+                 * Allows to extract the M-gram id length from the given M-gram level M and id
+                 * @param m_gram_id the given M-gram id
+                 * @return the M-gram id length in bytes
+                 */
+                static inline uint8_t get_2_gram_id_len(const T_M_Gram_Id & m_gram_id) {
+
+                    return get_gram_id_len<M_GRAM_2_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_2>(m_gram_id);
+                }
+
+                /**
+                 * Allows to extract the M-gram id length from the given M-gram level M and id
+                 * @param m_gram_id the given M-gram id
+                 * @return the M-gram id length in bytes
+                 */
+                static inline uint8_t get_3_gram_id_len(const T_M_Gram_Id & m_gram_id) {
+
+                    return get_gram_id_len<M_GRAM_3_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_3>(m_gram_id);
+                }
+
+                /**
+                 * Allows to extract the M-gram id length from the given M-gram level M and id
+                 * @param m_gram_id the given M-gram id
+                 * @return the M-gram id length in bytes
+                 */
+                static inline uint8_t get_4_gram_id_len(const T_M_Gram_Id & m_gram_id) {
+
+                    return get_gram_id_len<M_GRAM_4_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_4>(m_gram_id);
+                }
+
+                /**
+                 * Allows to extract the M-gram id length from the given M-gram level M and id
+                 * @param m_gram_id the given M-gram id
+                 * @return the M-gram id length in bytes
+                 */
+                static inline uint8_t get_5_gram_id_len(const T_M_Gram_Id & m_gram_id) {
+
+                    return get_gram_id_len<M_GRAM_5_ID_TYPE_LEN_BITS, M_GRAM_LEVEL_5>(m_gram_id);
+                }
+
+                /**
+                 * Define the function pointer to a get x-gram id length for some X-gram level x
+                 */
+                typedef uint8_t(*get_x_gram_id_len)(const T_M_Gram_Id & m_gram_id);
+
+                //This is an array of functions for creating m-grams per specific m-gram level m
+                const static get_x_gram_id_len get_x_gram_id_len_funcs[] = {get_2_gram_id_len, get_3_gram_id_len, get_4_gram_id_len, get_5_gram_id_len};
+
+                /**
+                 * Allows to extract the M-gram id length in bytes
+                 * Note that this method is applicable only for M-grams with M <= 6;
+                 * @param m_gram_id the M-gram id to extract the length for
+                 * @param level the M-gram level
+                 * @return the M-gram id length in bytes
+                 */
+                static inline uint8_t get_m_gram_id_len(const T_M_Gram_Id & m_gram_id, const TModelLevel level) {
+                    //Do the sanity check for against overflows
+                    if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
+                        stringstream msg;
+                        msg << "get_m_gram_id_len: Unsupported m-gram level: "
+                                << SSTR(level) << ", must be within ["
+                                << SSTR(M_GRAM_LEVEL_2) << ", "
+                                << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
+                        throw Exception(msg.str());
+                    }
+
+                    if (m_gram_id != NULL) {
+                        //Call the appropriate function, use array instead of switch should be faster.
+                        return get_x_gram_id_len_funcs[level - M_GRAM_LEVEL_2](m_gram_id);
+                    } else {
+                        throw Exception("get_m_gram_id_length: A NULL pointer M-gram id!");
+                    }
                 }
             }
         }

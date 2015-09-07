@@ -105,7 +105,7 @@ namespace uva {
                     } else {
                         target &= ~copy_bits[tbit_idx];
                     }
-                }
+                };
 
                 //The number of bits in the uint8_t
                 static const uint8_t NUM_BITS_IN_UINT_8 = 8;
@@ -121,6 +121,8 @@ namespace uva {
 #define NUM_FULL_BYTES(number_of_bits) ((number_of_bits) / NUM_BITS_IN_UINT_8)
                 //Computes the number of remaining bits if converted to bytes in n bits
 #define NUM_BITS_REMAINDER(number_of_bits) ((number_of_bits) % NUM_BITS_IN_UINT_8)
+                //Computes the whole number of bytes needed to store the given amount of bits
+#define NUM_BITS_TO_STORE_BYTES(number_of_bits) (((number_of_bits) + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8)
 
                 /**
                  * Allows to copy bits from one array to another
@@ -131,7 +133,7 @@ namespace uva {
                  * @param to_pos the position to start placing bits from
                  */
                 template<uint32_t SIZE_FROM_ARR_BITS>
-                static inline void copy_end_bits(const uint8_t * p_source, uint32_t from_pos,
+                static inline void copy_bits(const uint8_t * p_source, uint32_t from_pos,
                         uint8_t * p_target, uint32_t to_pos) {
                     //Copy bits one by one
                     while (from_pos < SIZE_FROM_ARR_BITS) {
@@ -144,7 +146,7 @@ namespace uva {
                         from_pos++;
                         to_pos++;
                     }
-                }
+                };
 
                 /**
                  * Allows to copy the given number of bits (starting from the end)
@@ -165,7 +167,7 @@ namespace uva {
                     //Depending on whether the bits are byte aligned, we have two copying strategies.
                     if ((REMAINING_BIT_IDX(from_pos) > 0) || (REMAINING_BIT_IDX(to_pos) > 0)) {
                         //If there is no byte alignment: Copy bits one by one
-                        copy_end_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos, p_target, to_pos);
+                        copy_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos, p_target, to_pos);
                     } else {
                         //If there is byte alignment then we can fast copy
                         //some whole bytes and then the remaining bits.
@@ -182,11 +184,28 @@ namespace uva {
                             //Compute the number of remaining bytes to copy
                             const uint8_t num_copied_bits = num_full_bytes * NUM_BITS_IN_UINT_8;
                             //Copy the remaining bytes
-                            copy_end_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos + num_copied_bits,
+                            copy_bits<NUM_BITS_IN_UINT_32>(p_source, from_pos + num_copied_bits,
                                     p_target, to_pos + num_copied_bits);
                         }
                     }
-                }
+                };
+                
+                /**
+                 * This function allows to copy the given number of bits from the
+                 * beginning of the given byte array into the end of the given
+                 * target variable.
+                 * @param p_source the byte array with data to copy from
+                 * @param NUM_BITS_TO_COPY the number of bits to copy
+                 * @param target the variable to put the bits at the end of
+                 */
+                template<uint8_t NUM_BITS_TO_COPY>
+                static inline void copy_begin_bits_to_end(const uint8_t * p_source, uint32_t & target) {
+                    //Convert the id_type storing variable into an array of bytes
+                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+                    //Copy the needed NUM_BITS_TO_COPY bytes from the beginning
+                    //of p_source, and put them at the end of the target array:
+                    copy_bits<NUM_BITS_TO_COPY>(p_source, 0, p_target, NUM_BITS_IN_UINT_32 - NUM_BITS_TO_COPY);
+                };
             }
         }
     }
