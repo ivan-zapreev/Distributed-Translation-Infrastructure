@@ -305,7 +305,7 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), ngSectionRegExp)) {
                         //The tokens array to put words into
-                        TextPieceReader tokens[level];
+                        TextPieceReader tokens[N];
 
                         //Read the current level N-grams and add them to the trie
                         while (m_file.getLine(m_line)) {

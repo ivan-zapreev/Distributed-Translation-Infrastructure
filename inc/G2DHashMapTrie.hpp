@@ -32,7 +32,6 @@
 
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
-#include "MGramUtils.hpp"
 
 #include "TextPieceReader.hpp"
 
@@ -40,11 +39,12 @@
 #include "DynamicMemoryArrays.hpp"
 
 using namespace std;
+
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::utils;
+
 using namespace __G2DHashMapTrie;
 
 namespace uva {
