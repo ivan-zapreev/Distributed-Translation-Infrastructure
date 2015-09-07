@@ -87,7 +87,7 @@ namespace uva {
                 /*
                  * Gets a byte with the bit on the given position set to 1, the rest are zero
                  */
-                static uint8_t copy_bits[] = {
+                static uint8_t copy_bits_array[] = {
                     0x00000001, 0x00000002, 0x00000004, 0x00000008,
                     0x00000010, 0x00000020, 0x00000040, 0x00000080
                 };
@@ -100,10 +100,10 @@ namespace uva {
                  * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
                  */
                 static inline void copy_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
-                    if (source & copy_bits[sbit_idx]) {
-                        target |= copy_bits[tbit_idx];
+                    if (source & copy_bits_array[sbit_idx]) {
+                        target |= copy_bits_array[tbit_idx];
                     } else {
-                        target &= ~copy_bits[tbit_idx];
+                        target &= ~copy_bits_array[tbit_idx];
                     }
                 };
 
@@ -189,7 +189,7 @@ namespace uva {
                         }
                     }
                 };
-                
+
                 /**
                  * This function allows to copy the given number of bits from the
                  * beginning of the given byte array into the end of the given
@@ -202,9 +202,15 @@ namespace uva {
                 static inline void copy_begin_bits_to_end(const uint8_t * p_source, uint32_t & target) {
                     //Convert the id_type storing variable into an array of bytes
                     uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+                    
+                    //NOTE: We could try to do more efficient byte copying for the full bytes but
+                    //for what this method is currently used the data is not byte aligned!
+                    //So there is nothing really to improve, here at the moment.
+                    
                     //Copy the needed NUM_BITS_TO_COPY bytes from the beginning
                     //of p_source, and put them at the end of the target array:
-                    copy_bits<NUM_BITS_TO_COPY>(p_source, 0, p_target, NUM_BITS_IN_UINT_32 - NUM_BITS_TO_COPY);
+                    copy_bits<NUM_BITS_TO_COPY>(p_source, 0,
+                            p_target, NUM_BITS_IN_UINT_32 - NUM_BITS_TO_COPY);
                 };
             }
         }
