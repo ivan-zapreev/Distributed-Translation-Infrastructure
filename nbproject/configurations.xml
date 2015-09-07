@@ -189,6 +189,10 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -294,6 +298,10 @@
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -411,6 +419,10 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -517,6 +529,10 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -622,6 +638,10 @@
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>

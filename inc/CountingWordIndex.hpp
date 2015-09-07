@@ -67,7 +67,7 @@ namespace uva {
                         return (one.count > two.count);
                     }
                 }
-                
+
                 /**
                  * This is a hash-map based implementation of the word index
                  * which extends the basic word index by word counting. This
@@ -114,15 +114,19 @@ namespace uva {
                      */
                     virtual void post_word_count() {
                         //All the words have been filled in, it is time to give them ids.
+                        LOG_DEBUG1 << "Starting the post word counting actions!" << END_LOG;
 
                         //00. Remove the <unk> word from the Map as it must get fixed index
+                        LOG_DEBUG2 << "Remove the <unk> word from the Map as it must get fixed index" << END_LOG;
                         BasicWordIndex::_pWordIndexMap->erase(AWordIndex::UNKNOWN_WORD_STR);
-                        
+
                         //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
+                        LOG_DEBUG2 << "Create an array of words info objects from BasicWordIndex::_pWordIndexMap" << END_LOG;
                         const size_t num_words = BasicWordIndex::_pWordIndexMap->size();
                         __CountingWordIndex::TWordInfo * word_infos = new __CountingWordIndex::TWordInfo[num_words];
-                        
+
                         //02. Copy the word information from the map into that array.
+                        LOG_DEBUG2 << "Copy the word information from the map into that array." << END_LOG;
                         BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::_pWordIndexMap->begin();
                         for (size_t idx = 0; iter != BasicWordIndex::_pWordIndexMap->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
@@ -131,22 +135,31 @@ namespace uva {
 
                         //03. Sort the array of word info object in order to get
                         //    the most used words in the beginning of the array
+                        LOG_DEBUG2 << "Sort the array of word info object in order to get "
+                                << "the most used words in the beginning of the array" << END_LOG;
                         my_sort<__CountingWordIndex::TWordInfo>(word_infos, num_words);
 
                         //04. Iterate through the array and assign the new word ids
                         //    into the _pWordIndexMap using the BasicWordIndex::_nextNewWordId
-                        for(size_t idx = 0; idx < num_words; ++idx) {
+                        LOG_DEBUG2 << "Iterate through the array and assign the new word ids "
+                                << "into the _pWordIndexMap using the BasicWordIndex::_nextNewWordId" << END_LOG;
+                        for (size_t idx = 0; idx < num_words; ++idx) {
                             //Get the next word
-                            string & word = word_infos[BasicWordIndex::_nextNewWordId].word;
+                            string & word = word_infos[idx].word;
                             //Give it the next index
                             BasicWordIndex::_pWordIndexMap->operator[](word) = BasicWordIndex::_nextNewWordId++;
+                            LOG_DEBUG3 << "Word [" << word << "] gets id: " << SSTR(BasicWordIndex::_nextNewWordId - 1) << END_LOG;
                         }
 
                         //05. Delete the temporary sorted array
+                        LOG_DEBUG2 << "Delete the temporary sorted array" << END_LOG;
                         delete[] word_infos;
-                        
+
                         //06. Put back the <unk> word with its fixed index into the map
+                        LOG_DEBUG2 << "Put back the <unk> word with its fixed index into the map" << END_LOG;
                         BasicWordIndex::_pWordIndexMap->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
+
+                        LOG_DEBUG1 << "Finished the post word counting actions!" << END_LOG;
                     };
                 };
             }

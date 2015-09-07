@@ -32,6 +32,7 @@
 
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
+#include "MGramUtils.hpp"
 
 #include "TextPieceReader.hpp"
 
@@ -43,53 +44,36 @@ using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
+using namespace uva::smt::tries::utils;
 using namespace __G2DHashMapTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            /**
-             * This class represents a dynamic M-Gram id.
-             * It stores the byte-array that contains the id and its length.
-             * All bytes in this array are meaningful.
-             */
-            class M_Gram_Id {
-            public:
+            namespace __G2DHashMapTrie {
+                /**
+                 * This template structure is used for storing trie hash map elements
+                 * Each element contains and id of the m-gram and its payload -
+                 * the probability/back-off data, the latter is the template parameter
+                 */
+                template<typename PAYLOAD_TYPE>
+                struct S_M_GramData {
+                    M_Gram_Id id;
+                    PAYLOAD_TYPE data;
+                };
 
-                M_Gram_Id() {
-                }
-
-                virtual ~M_Gram_Id() {
-                }
-            private:
-                //Stores the pinter to the id data
-                uint8_t * id;
-                //Stores the length of the id
-                uint8_t len;
-            };
-
-            /**
-             * This template structure is used for storing trie hash map elements
-             * Each element contains and id of the m-gram and its payload -
-             * the probability/back-off data, the latter is the template parameter
-             */
-            template<typename PAYLOAD_TYPE>
-            struct S_M_GramData {
-                M_Gram_Id id;
-                PAYLOAD_TYPE data;
-            };
-
-            /**
-             * This structure represents a trie level entry bucket
-             * it stores the bucket capacity, size and the pointer to its elements.
-             */
-            template<typename PAYLOAD_TYPE>
-            struct STrieBucket {
-                S_M_GramData<PAYLOAD_TYPE> * grams;
-                uint8_t capacity;
-                uint8_t size;
-            };
+                /**
+                 * This structure represents a trie level entry bucket
+                 * it stores the bucket capacity, size and the pointer to its elements.
+                 */
+                template<typename PAYLOAD_TYPE>
+                struct STrieBucket {
+                    S_M_GramData<PAYLOAD_TYPE> * grams;
+                    uint8_t capacity;
+                    uint8_t size;
+                };
+            }
 
             /**
              * This is a Gram to Data trie that is implemented as a HashMap.
@@ -235,11 +219,11 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef STrieBucket<TProbBackOffEntry> TProbBackOffBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry> TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef STrieBucket<TLogProbBackOff> TProbBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff> TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level

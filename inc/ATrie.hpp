@@ -30,15 +30,17 @@
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
+#include "Logger.hpp"
+
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
-#include "HashingUtils.hpp"
+#include "MGramUtils.hpp"
 
 using namespace std;
-using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
+using namespace uva::smt::tries::utils;
 
 namespace uva {
     namespace smt {
@@ -54,59 +56,6 @@ namespace uva {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
             } TProbBackOffEntry;
-
-            /**
-             * This structure is used to store the N-Gram data
-             * of the back-off Language Model.
-             * @param prob stores the log_10 probability of the N-Gram Must be
-             *             a negative value
-             * @param back_off stores the log_10 back-off weight (probability)
-             *        of the N-gram can be 0 is the probability is not available
-             * @param context stores the n-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
-             * @param tokens stores the N-gram words the size of this vector
-             *        defines the N-gram level.
-             * @param level stores the number of meaningful elements in the tokens, the value of N for the N-gram
-             */
-            typedef struct {
-                TLogProbBackOff prob;
-                TLogProbBackOff back_off;
-                TextPieceReader context;
-                TextPieceReader tokens[MAX_NGRAM_LEVEL];
-                TModelLevel level;
-
-                /**
-                 * This function allows to compute the hash of the given M-Gram
-                 * It assumes, which should hold, that the memory pointed by the tokens is continuous
-                 * @return the hash value of the given token
-                 */
-                inline TShortId hash() const {
-                    //Compute the length of the gram tokens in memory, including spaces between
-                    const char * beginFirstPtr = tokens[0].getBeginCStr();
-                    const TextPieceReader & last = tokens[level - 1];
-                    const char * beginLastPtr = last.getBeginCStr();
-                    const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
-
-                    //If the sanity check is on then test that the memory is continuous
-                    //Compute the same length but with a longer iterative algorithms
-                    if (DO_SANITY_CHECKS) {
-                        //Compute the exact length
-                        size_t exactTotalLen = level - 1; //The number of spaces in between tokens
-                        for (TModelLevel idx = 0; idx < level; idx++) {
-                            exactTotalLen += tokens[idx].getLen();
-                        }
-                        //Check that the exact and fast computed lengths are the same
-                        if (exactTotalLen != totalLen) {
-                            stringstream msg;
-                            msg << "The memory allocation for M-gram tokens is not continuous: totalLen (" <<
-                                    SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
-                            throw Exception(msg.str());
-                        }
-                    }
-
-                    //Compute the hash using the gram tokens with spaces with them
-                    return computePaulHsiehHash(beginFirstPtr, totalLen);
-                }
-            } T_M_Gram;
 
             /**
              * This data structure is to be used to return the N-Gram query result.
