@@ -38,6 +38,7 @@
 
 using namespace std;
 using namespace uva::utils::math::log2;
+using namespace uva::utils::math::bits;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
@@ -109,6 +110,8 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_3 = 3;
                 const static TModelLevel M_GRAM_LEVEL_4 = 4;
                 const static TModelLevel M_GRAM_LEVEL_5 = 5;
+                const static TModelLevel M_GRAM_LEVEL_6 = 6;
+                const static TModelLevel M_GRAM_LEVEL_7 = 7;
 
                 /**
                  * This method allows to get the number of bits needed to store this word id
@@ -119,18 +122,77 @@ namespace uva {
                     return log2_32(wordId);
                 }
 
-                
-                template<uint8_t KEY_LEN_BITS, TModelLevel NUM_TOKENS>
+                /**
+                 * Stores the multipliers up to and including level 6
+                 */
+                const static uint32_t gram_id_type_mult[] = {1, 32, 32 * 32, 32 * 32 * 32, 32 * 32 * 32 * 32, 32 * 32 * 32 * 32 * 32};
+
+                /**
+                 * This method is needed to compute the id type identifier.
+                 * Can compute the id type for M-grams until (including) M = 6
+                 * The type is computed as in a 32-based numeric system, e.g. for M==5:
+                 *          (len_bits[0]-1)*32^0 + (len_bits[1]-1)*32^1 +
+                 *          (len_bits[2]-1)*32^2 + (len_bits[3]-1)*32^3 +
+                 *          (len_bits[4]-1)*32^4
+                 * @param the number of word ids
+                 * @param len_bits the bits needed per word id
+                 * @param id_type [out] the resulting id type the initial value is expected to be 0
+                 */
+                template<TModelLevel NUM_TOKENS>
+                void get_gram_id_type(uint8_t len_bits[NUM_TOKENS], TShortId & id_type) {
+                    //Do the sanity check for against overflows
+                    if (DO_SANITY_CHECKS && (NUM_TOKENS > M_GRAM_LEVEL_6)) {
+                        stringstream msg;
+                        msg << "get_gram_id_type: Unsupported m-gram level: "
+                                << SSTR(NUM_TOKENS) << ", must be within ["
+                                << SSTR(M_GRAM_LEVEL_2) << ", "
+                                << SSTR(M_GRAM_LEVEL_6) << "], insufficient multipliers!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Compute the M-gram id type. Here we use the pre-computed multipliers
+                    for (size_t idx = 0; idx < NUM_TOKENS; +idx) {
+                        id_type += (len_bits[idx] - 1) * gram_id_type_mult[idx];
+                    }
+                }
+
+                /**
+                 * This method is needed to compute the M-gram id.
+                 * This implementation should work up to 6-grams! If we use it for
+                 * 7-grams then the internal computations will overflow!
+                 * @param MAX_ID_TYPE_LEN_BITS the maximum number of bites needed to store the id type in bits
+                 * @param NUM_TOKENS the number of tokens in the M-gram
+                 * @param tokens the M-gram tokens
+                 * @param p_word_idx the word index
+                 * @param m_gram_id the resulting m-gram id
+                 * @return true if the m-gram id could be computed, otherwise false
+                 */
+                template<uint8_t MAX_ID_TYPE_LEN_BITS, TModelLevel NUM_TOKENS>
                 static inline bool create_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, M_Gram_Id & m_gram_id) {
-                    //Declare and initialize the id length, the initial
-                    //values is what we need to store the type
-                    uint8_t id_len_bits = KEY_LEN_BITS;
+                    //Declare and initialize the id length, the initial values is
+                    //what we need to store the type. Note that, the maximum number
+                    //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
+                    //bits. For a 6-gram we get 30+32+32+32+32+32+32 = 222 bits,
+                    //for a 7-gram we get 35+32+32+32+32+32+32+32 = 259 bits!
+                    //This is when we get an overflow here if we use uint8_t to
+                    //store the length in bits will overflow. Therefore the sanity check.
+                    uint8_t id_len_bits = MAX_ID_TYPE_LEN_BITS;
+
+                    //Do the sanity check for against overflows
+                    if (DO_SANITY_CHECKS && (NUM_TOKENS > M_GRAM_LEVEL_6)) {
+                        stringstream msg;
+                        msg << "create_gram_id: Unsupported m-gram level: "
+                                << SSTR(NUM_TOKENS) << ", must be within ["
+                                << SSTR(M_GRAM_LEVEL_2) << ", "
+                                << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
+                        throw Exception(msg.str());
+                    }
 
                     //Obtain the word ids and their lengths in bits and
                     //the total length in bits needed to store the key
                     TShortId wordIds[NUM_TOKENS];
                     uint8_t len_bits[NUM_TOKENS];
-                    for (size_t idx = (NUM_TOKENS - 1); idx >= 0; --idx) {
+                    for (size_t idx = 0; idx < NUM_TOKENS; ++idx) {
                         //Get the word id if possible
                         if (p_word_idx->get_word_id(tokens[idx].str(), wordIds[idx])) {
                             //Get the number of bits needed to store this id
@@ -142,18 +204,31 @@ namespace uva {
                             return false;
                         }
                     }
-                    
-                    //ToDo: Determine the size of id in bytes
-                    
-                    //ToDo: Allocate the id memory
-                    
-                    //ToDo: Determine the type id value from the bit lengths of the words
-                    
-                    //ToDo: Append the id type to the id
-                    
-                    //ToDo: Append the word id meaningful bits to the id in reverse order
+
+                    //Determine the size of id in bytes, divide with rounding up
+                    const uint8_t id_len_bytes = (id_len_bits + 7) / 8;
+
+                    //Allocate the id memory
+                    m_gram_id = new uint8_t[id_len_bytes];
+
+                    //Determine the type id value from the bit lengths of the words
+                    TShortId id_type_value = 0;
+                    get_gram_id_type<NUM_TOKENS>(len_bits, id_type_value);
+
+                    //Append the id type to the M-gram id
+                    uint8_t to_bit_pos = 0;
+                    copy_end_bits(id_type_value, MAX_ID_TYPE_LEN_BITS, m_gram_id, to_bit_pos);
+                    to_bit_pos += MAX_ID_TYPE_LEN_BITS;
+
+                    //Append the word id meaningful bits to the id in reverse order
+                    for (size_t idx = (NUM_TOKENS - 1); idx >= 0; --idx) {
+                        copy_end_bits(wordIds[idx], len_bits[idx], m_gram_id, to_bit_pos);
+                        to_bit_pos += len_bits[idx];
+                    }
+
+                    return true;
                 }
-                
+
                 /**
                  * This function allows to create an 2-gram id for a given 2-gram
                  * 
@@ -162,10 +237,11 @@ namespace uva {
                  * another word id, In total we have 32^2 possible 2-gram id
                  * lengths, if we only use meaningful bits of the word id for
                  * instance:
-                 *       1-1 both really need just one bite
-                 *       1-2 the first needs one and another two
-                 *       2-1 the first needs two and another one
-                 *       and so forth.
+                 *       01-01 both really need just one bite
+                 *       01-02 the first needs one and another two
+                 *       02-01 the first needs two and another one
+                 *       ...
+                 *       32-32 both need 32 bits
                  * 
                  * 2) These 32^2 = 1,024 combinations uniquely identify the
                  * type of stored id. So this can be an uid of the gram id type.
