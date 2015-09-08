@@ -151,7 +151,7 @@ namespace uva {
                     //be the M-Gram id in the M-Gram data storage
                     const TShortId gramHash = gram.hash();
                     //Compute the bucket Id from the M-Gram hash
-                    bucket_idx = gramHash % num_buckets[gram.level];
+                    bucket_idx = gramHash % num_buckets[gram.level - 1];
 
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level]))) {
