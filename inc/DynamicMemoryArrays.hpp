@@ -186,6 +186,7 @@ namespace uva {
                      */
                     ADynamicStackArray()
                     : m_ptr(NULL), m_capacity(0), m_size(0) {
+                        LOG_DEBUG4 << "Calling the default constructor: ADynamicStackArray()" << END_LOG;
                     }
 
                     /**
@@ -205,10 +206,14 @@ namespace uva {
                      * @return the next new element
                      */
                     inline ELEMENT_TYPE & get_new() {
+                        LOG_DEBUG2 << "Requesting a new DynamicStackArray element, m_size = "
+                                << SSTR(m_size) << ", m_capacity = " << SSTR(m_capacity) << END_LOG;
+
                         //Allocate more memory if needed
                         if (m_size == m_capacity) {
                             reallocate<true>();
                         }
+                        
                         //Return the new/free element
                         return m_ptr[m_size++];
                     }
