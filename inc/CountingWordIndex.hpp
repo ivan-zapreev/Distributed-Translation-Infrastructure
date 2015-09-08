@@ -96,7 +96,7 @@ namespace uva {
                      */
                     virtual void count_word(const TextPieceReader & token) {
                         //Misuse the internal word index map for storing the word counts in it.
-                        LOG_DEBUG13 << "Counting word: [" << token.str() << "]" << END_LOG;
+                        LOG_DEBUG3 << "Counting word: [" << token.str() << "]" << END_LOG;
                         BasicWordIndex::_pWordIndexMap->operator[](token.str()) += 1;
                     };
 
