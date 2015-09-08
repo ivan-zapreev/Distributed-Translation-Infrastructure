@@ -44,7 +44,7 @@ namespace uva {
         namespace logging {
 
             //This Macro is used to convert numerival values to proper strings!
-#define SSTR( x ) std::dec << x
+#define SSTR( x ) std::dec << (x)
 
             //The macros needed to get the line sting for proper printing in cout
 #define STRINGIZE(x) STRINGIZE2(x)
