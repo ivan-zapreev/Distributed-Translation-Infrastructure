@@ -107,13 +107,13 @@ namespace uva {
                         TModelLevel level = M_GRAM_LEVEL_1;
                         while (true) {
                             if (m_file.getLine(m_line)) {
-                                LOG_DEBUG1 << "Read data (?) line: '" << m_line << "'" << END_LOG;
+                                LOG_DEBUG1 << "Read data (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                 //Update the progress bar status
                                 Logger::updateProgressBar();
 
                                 //If the line is empty then we keep reading
-                                if (m_line != "") {
+                                if (m_line.str() != "") {
                                     //Check that the next line contains the meaningful N-gram amount information!
                                     if (regex_match(m_line.str(), m_ng_amount_reg_exp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
