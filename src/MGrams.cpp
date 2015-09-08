@@ -338,6 +338,11 @@ namespace uva {
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
                 };
 
+                template<TModelLevel M_GRAM_LEVEL>
+                void T_Compressed_M_Gram_Id::get_m_gram_id_type(uint8_t & id_type) {
+                    copy_begin_bits_to_end < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2]>(m_gram_id, id_type);
+                }
+
                 bool T_Compressed_M_Gram_Id::create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
                     return ::uva::smt::tries::mgrams::create_m_gram_id(gram, p_word_idx, m_gram_id);
                 }
@@ -345,8 +350,8 @@ namespace uva {
                 T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
                     if (!create_m_gram_id(gram, p_word_idx)) {
                         stringstream msg;
-                        msg << "Could not create an " << SSTR(gram.level) << "-gram id for: "
-                                << tokensToString(gram);
+                        msg << "Could not create an " << SSTR(gram.level)
+                                << "-gram id for: " << tokensToString(gram);
                         throw Exception(msg.str());
                     }
                 }

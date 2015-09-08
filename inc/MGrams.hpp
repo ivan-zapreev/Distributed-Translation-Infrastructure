@@ -167,15 +167,19 @@ namespace uva {
 
                     /**
                      * Allows to extract the M-gram id length in bytes
-                     * Note that this method is applicable only for M-grams with M <= 6;
-                     * @param m_gram_id the M-gram id to extract the length for
-                     * @param level the M-gram level
                      * @return the M-gram id length in bytes
                      */
                     template<TModelLevel M_GRAM_LEVEL>
                     inline uint8_t get_m_gram_id_len() {
                         return get_m_gram_id_len<M_GRAM_LEVEL>(m_gram_id);
                     }
+
+                    /**
+                     * Allows to get the M-gram id type
+                     * @param id_type [out] the M-gram id type
+                     */
+                    template<TModelLevel M_GRAM_LEVEL>
+                    void get_m_gram_id_type(uint8_t & id_type);
 
                 protected:
                     //This should store the unique identifier of the M-gram allocated with a new operator
@@ -205,11 +209,9 @@ namespace uva {
                         const T_Compressed_M_Gram_Id & two) {
                     //Get the M-gram type ids
                     TShortId type_one;
-                    //ToDo: Implement
+                    one.get_m_gram_id_type<M_GRAM_LEVEL>(type_one);
                     TShortId type_two;
-                    //ToDo: Implement
-
-                    throw Exception("ToDo: static inline bool compare(const T_M_Gram_Id & one, const T_M_Gram_Id & two, const TModelLevel level)");
+                    two.get_m_gram_id_type<M_GRAM_LEVEL>(type_two);
 
                     if (type_one < type_two) {
                         //The first id type is smaller
@@ -228,6 +230,8 @@ namespace uva {
                             //bytes as this is where the id type information is stored 
 
                             //ToDo: Implement
+
+                            throw Exception("ToDo: static inline bool compare(const T_M_Gram_Id & one, const T_M_Gram_Id & two, const TModelLevel level)");
                         }
                     }
                 };
