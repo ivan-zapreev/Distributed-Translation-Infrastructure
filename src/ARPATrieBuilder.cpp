@@ -317,6 +317,7 @@ namespace uva {
                                 if (ARPAGramBuilder::gram_line_to_tokens(m_line, tokens, level)) {
                                     //Add words to the index: count them
                                     for (size_t idx = 0; idx < level; idx++) {
+                                        LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index.";
                                         p_word_index->count_word(tokens[idx]);
                                     }
                                 } else {
