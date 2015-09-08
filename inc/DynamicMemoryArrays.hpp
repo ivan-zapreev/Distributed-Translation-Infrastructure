@@ -318,7 +318,8 @@ namespace uva {
                         LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
                                 << ", the old capacity was " << SSTR(m_capacity)
                                 << ", used size: " << SSTR(m_size) << ", ptr: "
-                                << SSTR(m_ptr) << END_LOG;
+                                << SSTR(m_ptr) << ", elem size: "
+                                << SSTR(sizeof (ELEMENT_TYPE)) << END_LOG;
 
                         //Reallocate memory, potentially we get a new pointer!
                         m_ptr = (ELEMENT_TYPE*) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
