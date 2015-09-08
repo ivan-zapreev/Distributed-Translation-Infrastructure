@@ -281,7 +281,7 @@ static void performTasks(const TAppParams& params) {
     //Declare time variables for CPU times in seconds
     double startTime, endTime;
     //Declare the statistics monitor and its data
-    TMemotyUsage memStatStart = {}, memStatEnd = {};
+    TMemotyUsage memStatStart = {0,}, memStatEnd = {0,};
 
     LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatStart);
