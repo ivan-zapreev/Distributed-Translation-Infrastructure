@@ -119,8 +119,8 @@ namespace uva {
                     m_restLen = m_len;
 
                     LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_beginPtr = "
-                            << SSTR((uint64_t) m_beginPtr) << ", m_cursorPtr = "
-                            << SSTR((uint64_t) m_cursorPtr) << ", m_is_gen_str = "
+                            << SSTR(static_cast<uint64_t>(m_beginPtr)) << ", m_cursorPtr = "
+                            << SSTR(static_cast<uint64_t>(m_cursorPtr)) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
                 }
@@ -191,11 +191,11 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 inline bool getNext(TextPieceReader& out, const char delim) {
-                    LOG_DEBUG3 << SSTR((uint64_t) m_cursorPtr) << END_LOG;
+                    LOG_DEBUG3 << SSTR(static_cast<uint64_t>(m_cursorPtr)) << END_LOG;
                     //The next line begins where we stopped
                     const char * out_m_beginPtr = m_cursorPtr;
 
-                    LOG_DEBUG3 << SSTR((uint64_t) out_m_beginPtr) << END_LOG;
+                    LOG_DEBUG3 << SSTR(static_cast<uint64_t>(out_m_beginPtr)) << END_LOG;
 
                     //The next line length is first zero
                     size_t out_m_len = 0;
@@ -203,7 +203,7 @@ namespace uva {
                     //Search for the next new line symbol in the remainder of the file
                     const char * charPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
 
-                    LOG_DEBUG4 << "Searching for the character got: " << SSTR((uint64_t) charPtr) << END_LOG;
+                    LOG_DEBUG4 << "Searching for the character got: " << SSTR(static_cast<uint64_t>(charPtr)) << END_LOG;
 
                     //Check if we found a pointer to the new line
                     if (charPtr != NULL) {
@@ -218,7 +218,7 @@ namespace uva {
                         m_restLen -= (lineLen + 1);
 
                         LOG_DEBUG4 << "Resetting m_cursorPtr = "
-                                << SSTR((uint64_t) m_cursorPtr) << ", m_restLen = "
+                                << SSTR(static_cast<uint64_t>(m_cursorPtr)) << ", m_restLen = "
                                 << m_restLen << END_LOG;
 
                         //Set the resulting length of the line
@@ -382,7 +382,7 @@ namespace uva {
                         LOG_DEBUG4 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
                             if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                               LOG_DEBUG4 << "m_beginPtr = " << SSTR((uint64_t) m_beginPtr)
+                               LOG_DEBUG4 << "m_beginPtr = " << SSTR(static_cast<uint64_t>(m_beginPtr))
                                  << ", m_len = " << SSTR(m_len) << END_LOG;
                                 m_str.assign(m_beginPtr, m_len);
                             } else {
