@@ -99,7 +99,7 @@ namespace uva {
                  * @param target the target byte
                  * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
                  */
-                static inline void copy_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
+                static inline void copy_one_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
                     if (source & copy_bits_array[sbit_idx]) {
                         target |= copy_bits_array[tbit_idx];
                     } else {
@@ -140,7 +140,7 @@ namespace uva {
                     const uint8_t end_pos_bit = (from_pos_bit + num_bits);
                     while (from_pos_bit < end_pos_bit) {
                         //Copy one bit
-                        copy_bit(p_source[BYTE_IDX(from_pos_bit)],
+                        copy_one_bit(p_source[BYTE_IDX(from_pos_bit)],
                                 REMAINING_BIT_IDX(from_pos_bit),
                                 p_target[BYTE_IDX(to_pos_bit)],
                                 REMAINING_BIT_IDX(to_pos_bit));

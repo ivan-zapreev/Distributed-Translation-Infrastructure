@@ -135,7 +135,7 @@ namespace uva {
                     //Compute the M-gram id type. Here we use the pre-computed multipliers
                     for (size_t idx = 0; idx < M_GRAM_LEVEL; ++idx) {
                         LOG_DEBUG3 << "len_bits[" << SSTR(idx) << "] = " << SSTR((uint32_t) len_bits[idx]) << END_LOG;
-                        id_type += ((uint32_t)len_bits[idx] - 1) * gram_id_type_mult[idx];
+                        id_type += ((uint32_t) len_bits[idx] - 1) * gram_id_type_mult[idx];
                     }
                     LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                 };
@@ -250,7 +250,7 @@ namespace uva {
                     uint8_t id_len_bits = ID_TYPE_LEN_BITS;
 
                     LOG_DEBUG2 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
-                            << "id type length: " << SSTR((uint32_t)ID_TYPE_LEN_BITS) << END_LOG;
+                            << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BITS) << END_LOG;
 
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
@@ -304,6 +304,9 @@ namespace uva {
                         copy_end_bits_to_pos(wordIds[idx], len_bits[idx], *m_p_p_gram_id, to_bit_pos);
                         to_bit_pos += len_bits[idx];
                     }
+
+                    LOG_DEBUG2 << "Finished making the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
+                            << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BITS) << END_LOG;
 
                     return true;
                 };
