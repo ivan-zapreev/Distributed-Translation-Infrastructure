@@ -125,7 +125,7 @@ namespace uva {
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
                      */
-                    
+
                     LOG_DEBUG3 << SSTR((void*) m_beginPtr) << END_LOG;
                     LOG_DEBUG3 << "--------------------" << END_LOG;
                     LOG_DEBUG3 << SSTR((void*) m_cursorPtr) << END_LOG;
@@ -189,7 +189,7 @@ namespace uva {
                         throw Exception(msg.str());
                     } else {
                         //Copy the data
-                        (void) strncpy(const_cast<char * >(m_beginPtr),
+                        (void) strncpy(const_cast<char *> (m_beginPtr),
                                 other.m_beginPtr, (size_t) other.m_len);
                         //Re-set the other members using the available standard method
                         set(m_beginPtr, other.m_len);
@@ -393,7 +393,14 @@ namespace uva {
                         LOG_DEBUG4 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
                             if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                                LOG_DEBUG4 << "m_beginPtr = " << SSTR(m_beginPtr) << ", m_len = " << m_len << END_LOG;
+                                /*
+                               LOG_DEBUG4 << "m_beginPtr = " << SSTR((void*) m_beginPtr)
+                                 << ", m_len = " << SSTR(m_len) << END_LOG;
+                                 */
+                                LOG_DEBUG4 << SSTR((void *) m_beginPtr) << END_LOG;
+                                LOG_DEBUG4 << "--------------------" << END_LOG;
+                                LOG_DEBUG4 << SSTR(m_len) << END_LOG;
+                                LOG_DEBUG4 << "--------------------" << END_LOG;
                                 m_str.assign(m_beginPtr, m_len);
                             } else {
                                 m_str = TEXT_TOO_LARGE_STR;
