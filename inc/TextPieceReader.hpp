@@ -127,9 +127,13 @@ namespace uva {
                      */
                     
                     LOG_DEBUG3 << SSTR((void*) m_beginPtr) << END_LOG;
+                    LOG_DEBUG3 << "--------------------" << END_LOG;
                     LOG_DEBUG3 << SSTR((void*) m_cursorPtr) << END_LOG;
+                    LOG_DEBUG3 << "--------------------" << END_LOG;
                     LOG_DEBUG3 << SSTR(m_len) << END_LOG;
+                    LOG_DEBUG3 << "--------------------" << END_LOG;
                     LOG_DEBUG3 << SSTR(m_restLen) << END_LOG;
+                    LOG_DEBUG3 << "--------------------" << END_LOG;
                 }
 
                 /**
