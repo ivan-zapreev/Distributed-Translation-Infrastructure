@@ -119,7 +119,7 @@ namespace uva {
                  * @param id_type [out] the resulting id type the initial value is expected to be 0
                  */
                 template<TModelLevel M_GRAM_LEVEL>
-                void get_gram_id_type(uint8_t len_bits[M_GRAM_LEVEL], TShortId & id_type) {
+                void get_gram_id_type(uint8_t len_bits[M_GRAM_LEVEL], uint32_t & id_type) {
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
                         stringstream msg;
@@ -134,8 +134,8 @@ namespace uva {
 
                     //Compute the M-gram id type. Here we use the pre-computed multipliers
                     for (size_t idx = 0; idx < M_GRAM_LEVEL; ++idx) {
-                        LOG_DEBUG3 << "len_bits[" << SSTR(idx) << "] = " << SSTR(len_bits[idx]) << END_LOG;
-                        id_type += (len_bits[idx] - 1) * gram_id_type_mult[idx];
+                        LOG_DEBUG3 << "len_bits[" << SSTR(idx) << "] = " << SSTR((uint32_t) len_bits[idx]) << END_LOG;
+                        id_type += ((uint32_t)len_bits[idx] - 1) * gram_id_type_mult[idx];
                     }
                     LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                 };
@@ -250,7 +250,7 @@ namespace uva {
                     uint8_t id_len_bits = ID_TYPE_LEN_BITS;
 
                     LOG_DEBUG2 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
-                            << "id type length: " << SSTR(ID_TYPE_LEN_BITS) << END_LOG;
+                            << "id type length: " << SSTR((uint32_t)ID_TYPE_LEN_BITS) << END_LOG;
 
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
@@ -291,7 +291,7 @@ namespace uva {
                     }
 
                     //Determine the type id value from the bit lengths of the words
-                    TShortId id_type_value = 0;
+                    uint32_t id_type_value = 0;
                     get_gram_id_type<M_GRAM_LEVEL>(len_bits, id_type_value);
 
                     //Append the id type to the M-gram id
