@@ -146,6 +146,17 @@ namespace uva {
                     T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
 
                     /**
+                     * The basic copy constructor. Copies the pointer to the m-gram
+                     * id and resets it to NULL in the object it was copied from!
+                     * NOTE: This is needed for the sorting algorithm std::sort
+                     * Otherwise the data is deleted by the called destructor
+                     * and we have no need to do deep copy of data!
+                     */
+                    T_Compressed_M_Gram_Id(const T_Compressed_M_Gram_Id & other) {
+                        throw Exception("This spoils all the fun! Turn back to the situation of a basic type gram id!!!!");
+                    }
+
+                    /**
                      * The basic constructor that allocates maximum memory
                      * needed to store the M-gram id of the given level.
                      * @param level the level of the M-grams this object will store id for.
@@ -180,6 +191,7 @@ namespace uva {
                      */
                     ~T_Compressed_M_Gram_Id() {
                         if (m_p_gram_id != NULL) {
+                            LOG_INFO3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
                             delete[] m_p_gram_id;
                         }
                     }

@@ -28,6 +28,7 @@
 
 #include <cstdint>      //  std::uint8_t std::uint32_t 
 #include <cstring>      //  std::memcpy
+#include <bitset>       //  std::bitset
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -84,29 +85,6 @@ namespace uva {
 
             namespace bits {
 
-                /*
-                 * Gets a byte with the bit on the given position set to 1, the rest are zero
-                 */
-                static uint8_t copy_bits_array[] = {
-                    0x00000001, 0x00000002, 0x00000004, 0x00000008,
-                    0x00000010, 0x00000020, 0x00000040, 0x00000080
-                };
-
-                /**
-                 * Allows to copy the bit value within a byte from one byte to another
-                 * @param source the source byte
-                 * @param sbit_idx the source byte idx to copy from, the bit index should start from 0 and go until 7!
-                 * @param target the target byte
-                 * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
-                 */
-                static inline void copy_one_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
-                    if (source & copy_bits_array[sbit_idx]) {
-                        target |= copy_bits_array[tbit_idx];
-                    } else {
-                        target &= ~copy_bits_array[tbit_idx];
-                    }
-                };
-
                 //The number of bits in the uint8_t
                 static const uint8_t NUM_BITS_IN_UINT_8 = 8;
                 //The number of bits in the uint32_t
@@ -126,6 +104,38 @@ namespace uva {
                 //Allows to convert the number of bytes into the number of bits
 #define BYTES_TO_BITS(number_of_bytes) ((number_of_bytes) * NUM_BITS_IN_UINT_8)
 
+                /*
+                 * Gets a byte with the bit on the given position set to 1, the rest are zero
+                 * The array is ordered as if the bits would have a reversed order, this is
+                 * needed as we treat them as an array, so we inverse the bit index
+                 */
+                static uint8_t copy_bits_array[] = {
+                    0x00000080, 0x00000040, 0x00000020, 0x00000010,
+                    0x00000008, 0x00000004, 0x00000002, 0x00000001
+                };
+
+                /**
+                 * Allows to copy the bit value within a byte from one byte to another
+                 * @param source the source byte
+                 * @param sbit_idx the source byte idx to copy from, the bit index should start from 0 and go until 7!
+                 * @param target the target byte
+                 * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
+                 */
+                static inline void copy_one_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
+                    LOG_DEBUG4 << "Source bits: " << bitset<NUM_BITS_IN_UINT_8>(source) << END_LOG;
+                    LOG_DEBUG4 << "Target bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
+
+                    if (source & copy_bits_array[sbit_idx]) {
+                        LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is ON" << END_LOG;
+                        target |= copy_bits_array[tbit_idx];
+                    } else {
+                        LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is OFF" << END_LOG;
+                        target &= ~copy_bits_array[tbit_idx];
+                    }
+
+                    LOG_DEBUG4 << "Result bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
+                };
+
                 /**
                  * Allows to copy single bits one by one from one byte array to another
                  * @param p_source the byte array to copy from
@@ -138,12 +148,21 @@ namespace uva {
                         uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
                     //Copy bits one by one
                     const uint8_t end_pos_bit = (from_pos_bit + num_bits);
+
+                    LOG_DEBUG4 << "from_pos_bit = " << SSTR((uint32_t) from_pos_bit)
+                            << ", end_pos_bit = " << SSTR((uint32_t) end_pos_bit) << END_LOG;
+
                     while (from_pos_bit < end_pos_bit) {
+                        LOG_DEBUG4 << "BYTE_IDX(from_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(from_pos_bit))
+                                << ", REMAINING_BIT_IDX(from_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(from_pos_bit))
+                                << ", BYTE_IDX(to_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(to_pos_bit))
+                                << ", REMAINING_BIT_IDX(to_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(to_pos_bit)) << END_LOG;
                         //Copy one bit
                         copy_one_bit(p_source[BYTE_IDX(from_pos_bit)],
                                 REMAINING_BIT_IDX(from_pos_bit),
                                 p_target[BYTE_IDX(to_pos_bit)],
                                 REMAINING_BIT_IDX(to_pos_bit));
+
                         //Increment the positions
                         from_pos_bit++;
                         to_pos_bit++;
@@ -198,13 +217,31 @@ namespace uva {
                  * @param p_target the byte array to copy bits into, must have sufficient capacity
                  * @param bit_pos the position into which the pits are to be copied
                  */
-                static inline void copy_end_bits_to_pos(const uint32_t source, const uint8_t num_bits,
+                static inline void copy_end_bits_to_pos(uint32_t source, const uint8_t num_bits,
                         uint8_t * p_target, const uint32_t to_pos_bit) {
-                    
-                    LOG_DEBUG3 << "Copying end bits from " << SSTR(source) << " to position: " << SSTR(to_pos_bit) << END_LOG;
-                    
-                    //First transform he source uint into an array of bytes
+
+                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bits) << " end bits from "
+                            << bitset<NUM_BITS_IN_UINT_32>(source)
+                            << " to position: " << SSTR(to_pos_bit) << END_LOG;
+
+                    //First transform the source uint into an array of bytes, taking
+                    //care of endianness:
+                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+                    //https://en.wikipedia.org/wiki/Endianness
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+                    source = __builtin_bswap32(source);
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                    //This should work fine, no inversions or transformations are needed
+#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#endif
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
+
+                    LOG_DEBUG4 << "Converted source: "
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[0])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[1])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[2])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
 
                     //Compute the position to start copying from
                     const uint8_t from_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
@@ -223,6 +260,9 @@ namespace uva {
                  */
                 template<uint8_t num_bits>
                 static inline void copy_begin_bits_to_end(const uint8_t * p_source, uint32_t & target) {
+                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bits)
+                            << " bits to " << bitset<NUM_BITS_IN_UINT_32>(target) << END_LOG;
+
                     //Convert the id_type storing variable into an array of bytes
                     uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
 
@@ -233,6 +273,17 @@ namespace uva {
 
                     //Copy the given number of bits from and to defined targets and positions 
                     copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+
+                    //Now re-order the target uint, taking care of endianness:
+                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+                    //https://en.wikipedia.org/wiki/Endianness
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+                    target = __builtin_bswap32(target);
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                    //This should work fine, no inversions or transformations are needed
+#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#endif
                 };
             }
         }

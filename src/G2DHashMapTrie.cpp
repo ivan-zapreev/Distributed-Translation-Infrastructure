@@ -177,7 +177,6 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::query(const T_M_Gram & ngram, TQueryResult & result) {
                 //ToDo: Implement
-                throw Exception("queryNGram");
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

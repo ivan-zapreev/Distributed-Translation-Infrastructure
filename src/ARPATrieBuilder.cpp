@@ -365,6 +365,7 @@ namespace uva {
 
                     //Read the DATA section of ARPA
                     size_t counts[N];
+                    memset(counts, 0, N * sizeof (size_t));
                     read_data(counts);
                 }
 

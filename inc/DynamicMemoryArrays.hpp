@@ -291,6 +291,13 @@ namespace uva {
                      */
                     virtual ~ADynamicStackArray() {
                         if (m_ptr != NULL) {
+                            //Call the destructors on the allocated objects
+                            for (size_t idx = 0; idx < m_size; ++idx) {
+                                LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
+                                        << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
+                                m_ptr[idx].~ELEMENT_TYPE();
+                            }
+                            //Free the allocated arrays
                             free(m_ptr);
                         }
                     }
@@ -324,11 +331,16 @@ namespace uva {
                         m_ptr = (ELEMENT_TYPE*) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
 
                         LOG_DEBUG2 << "Memory is reallocated ptr: " << SSTR(m_ptr) << END_LOG;
-                        
+
                         //Clean the newly allocated memory
                         if (new_capacity > m_capacity) {
-                            const size_t new_num_elem = (new_capacity - m_capacity);
-                            memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
+                            //const size_t new_num_elem = (new_capacity - m_capacity);
+                            //memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
+                            for (size_t idx = m_capacity; idx < new_capacity; ++idx) {
+                                new(static_cast<void *> (&m_ptr[idx])) ELEMENT_TYPE();
+                                LOG_INFO3 << "Creating a new element [" << SSTR(idx)
+                                        << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
+                            }
                         }
 
                         //Set the new capacity in
@@ -337,7 +349,7 @@ namespace uva {
                         LOG_DEBUG2 << "The end capacity is " << SSTR(m_capacity)
                                 << ", used size: " << SSTR(m_size) << ", ptr: "
                                 << SSTR(m_ptr) << END_LOG;
-                        
+
                         //Do the null pointer check if sanity
                         if (DO_SANITY_CHECKS && (new_capacity > m_capacity)
                                 && (new_capacity > 0) && (m_ptr == NULL)) {

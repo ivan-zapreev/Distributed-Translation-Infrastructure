@@ -99,7 +99,7 @@ namespace uva {
                  * @return the number of bits needed to store this word id
                  */
                 static inline uint8_t get_number_of_bits(const TShortId wordId) {
-                    return log2_32(wordId);
+                    return log2_32(wordId) + 1;
                 };
 
                 /**
@@ -176,23 +176,27 @@ namespace uva {
                     }
 
                     //1. ToDo: Extract the id_type from the M-gram
-                    TShortId id_type;
+                    uint32_t id_type = 0;
                     copy_begin_bits_to_end<ID_TYPE_LEN_BITS>(m_gram_id, id_type);
 
                     //2. Compute the M-gram id length from the M-gram id type.
                     //   Here we use the pre-computed multipliers we add the
                     //   final bits at the end of the function.
-                    uint8_t coeff;
+                    uint8_t coeff = 0;
                     for (int idx = (M_GRAM_LEVEL - 1); idx >= 0; --idx) {
                         //"coeff = len_bits[idx] - 1"
-                        coeff = id_type / gram_id_type_mult[idx];
+                        coeff = (uint8_t) (id_type / gram_id_type_mult[idx]);
+                        LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(gram_id_type_mult[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
                         id_type -= coeff * gram_id_type_mult[idx];
                         id_len_bits += coeff;
                     }
 
+                    LOG_DEBUG3 << "id_len_bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
+                    LOG_DEBUG3 << "id_len_bits: " << SSTR((uint32_t) M_GRAM_LEVEL) << END_LOG;
+
                     //Note that in the loop above we have "coeff = len_bits[idx] - 1"
                     //Therefore, here we add the number of tokens to account for this -1's
-                    len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits + M_GRAM_LEVEL);
+                    len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits + (uint8_t) M_GRAM_LEVEL);
                 };
 
                 /**
@@ -271,6 +275,9 @@ namespace uva {
                         if (p_word_idx->get_word_id(tokens[idx].str(), wordIds[idx])) {
                             //Get the number of bits needed to store this id
                             len_bits[idx] = get_number_of_bits(wordIds[idx]);
+                            LOG_DEBUG3 << "Word [ " << tokens[idx].str() << " ] id: "
+                                    << SSTR(wordIds[idx]) << " len. in bits: "
+                                    << SSTR((uint32_t) len_bits[idx]) << END_LOG;
                             //Compute the total gram id length in bits
                             id_len_bits += len_bits[idx];
                         } else {
@@ -278,17 +285,21 @@ namespace uva {
                             return false;
                         }
                     }
+                    LOG_DEBUG3 << "Total len. in bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
+
                     //Determine the size of id in bytes, divide with rounding up
                     const uint8_t id_len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
+
+                    LOG_DEBUG3 << "Total len. in bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
                     //Allocate the id memory if there was nothing pre-allocated yet
                     if (*m_p_p_gram_id == NULL) {
                         //Allocate memory
                         *m_p_p_gram_id = new uint8_t[id_len_bytes];
-                    } else {
-                        //Clean the memory
-                        memset(*m_p_p_gram_id, 0, id_len_bytes);
+                        LOG_INFO3 << "Created a Compressed_M_Gram_Id: " << SSTR((void *) *m_p_p_gram_id) << END_LOG;
                     }
+                    //Clean the memory
+                    memset(*m_p_p_gram_id, 0, id_len_bytes);
 
                     //Determine the type id value from the bit lengths of the words
                     uint32_t id_type_value = 0;
@@ -388,9 +399,9 @@ namespace uva {
                     constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2];
 
                     //Get the M-gram type ids
-                    TShortId type_one;
+                    TShortId type_one = 0;
                     copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(one.m_p_gram_id, type_one);
-                    TShortId type_two;
+                    TShortId type_two = 0;
                     copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(two.m_p_gram_id, type_two);
 
                     if (type_one < type_two) {
@@ -404,8 +415,15 @@ namespace uva {
                             //The id types are the same! Compare the ids themselves
 
                             //Get one of the lengths, as they both are the same
-                            uint8_t id_len_bytes;
+                            uint8_t id_len_bytes = 0;
                             get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (one.m_p_gram_id, id_len_bytes);
+
+                            LOG_DEBUG3 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS) << END_LOG;
+                            LOG_DEBUG3 << "-----------------------------------------------------" << END_LOG;
+                            LOG_DEBUG3 << "idx: " << SSTR((uint32_t) NUM_FULL_BYTES(ID_TYPE_LEN_BITS)) << END_LOG;
+                            LOG_DEBUG3 << "-----------------------------------------------------" << END_LOG;
+                            LOG_DEBUG3 << "id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
+                            LOG_DEBUG3 << "-----------------------------------------------------" << END_LOG;
 
                             //Start comparing the ids byte by byte but not from the fist
                             //bytes as this is where the id type information is stored,

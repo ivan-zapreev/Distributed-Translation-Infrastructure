@@ -178,9 +178,12 @@ namespace uva {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " is done" << END_LOG;
 
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
                             //Update the progress bar status
@@ -188,6 +191,7 @@ namespace uva {
                             //Return the result
                             return is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
                         });
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " is done" << END_LOG;
                     }
                 }
 
