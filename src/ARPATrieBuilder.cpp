@@ -65,10 +65,10 @@ namespace uva {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
-                        LOG_DEBUG1 << "Read header (?) line: '" << m_line << "'" << END_LOG;
+                        LOG_DEBUG1 << "Read header (?) line: '" << m_line.str() << "'" << END_LOG;
 
                         //If the line is empty then we keep reading
-                        if (m_line != "") {
+                        if (m_line.hasMore() && (m_line.str() != "")) {
                             //If the line begins with "<" then it could be a header
                             //or something else that we do not need to read or
                             //interpret! Therefore we skip it and read on, otherwise
@@ -113,7 +113,7 @@ namespace uva {
                                 Logger::updateProgressBar();
 
                                 //If the line is empty then we keep reading
-                                if (m_line != "") {
+                                if (m_line.hasMore() && (m_line != "")) {
                                     //Check that the next line contains the meaningful N-gram amount information!
                                     if (regex_match(m_line.str(), m_ng_amount_reg_exp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
@@ -191,10 +191,10 @@ namespace uva {
                             while (true) {
                                 //Try to read the next line
                                 if (m_file.getLine(m_line)) {
-                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << m_line << "'" << END_LOG;
+                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                     //Empty lines will just be skipped
-                                    if (m_line != "") {
+                                    if (m_line.hasMore() && (m_line.str() != "")) {
                                         //Pass the given N-gram string to the N-Gram Builder. If the
                                         //N-gram is not matched then stop the loop and move on
                                         if (pNGBuilder->parse_line(m_line)) {
@@ -311,7 +311,7 @@ namespace uva {
                         while (m_file.getLine(m_line)) {
                             LOG_DEBUG1 << "Reading " << SSTR(level) << "-gram, got: [" << m_line.str() << "]";
                             //If this is not an empty line
-                            if (m_line != "") {
+                            if (m_line.hasMore() && (m_line.str() != "")) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
                                 if (ARPAGramBuilder::gram_line_to_tokens(m_line, tokens, level)) {
