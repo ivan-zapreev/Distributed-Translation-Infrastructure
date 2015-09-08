@@ -343,7 +343,7 @@ namespace uva {
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
                 }
 
-                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) : m_gram_id(NULL) {
                     if (!set_m_gram_id(gram, p_word_idx)) {
                         stringstream msg;
                         msg << "Could not create an " << SSTR(gram.level)
@@ -352,7 +352,7 @@ namespace uva {
                     }
                 }
 
-                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const TModelLevel level) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const TModelLevel level) : m_gram_id(NULL) {
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                         stringstream msg;
@@ -417,7 +417,7 @@ namespace uva {
                 };
 
                 /***********************************************************************************************************************/
-                
+
                 /**
                  * Define the function pointer to compare two X-grams of the given level X
                  */
