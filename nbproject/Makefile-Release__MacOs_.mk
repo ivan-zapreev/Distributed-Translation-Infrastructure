@@ -55,8 +55,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-O3
-CXXFLAGS=-O3
+CCFLAGS=-O3 -Wall -Werror
+CXXFLAGS=-O3 -Wall -Werror
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -73,7 +73,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
-	g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -m64
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -m64 -Wall -Werror
 
 ${OBJECTDIR}/src/ALayeredTrie.o: nbproject/Makefile-${CND_CONF}.mk src/ALayeredTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

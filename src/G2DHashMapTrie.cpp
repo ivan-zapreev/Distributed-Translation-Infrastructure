@@ -47,7 +47,7 @@ namespace uva {
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
-                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket));
+                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 if (m_p_mem_strat == NULL) {
                     //Get the memory increase strategy
@@ -157,7 +157,7 @@ namespace uva {
             void G2DHashMapTrie<N>::post_m_grams(const TModelLevel level) {
                 //Call the base class method first
                 ATrie<N>::post_m_grams(level);
-                
+
                 //Compute the M-gram level index
                 const TModelLevel level_idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
 
