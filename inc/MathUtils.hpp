@@ -158,13 +158,13 @@ namespace uva {
                  * @param to_pos_bit  the bit index (left to right) to start placing bits to
                  * @param num_bits the number of bits to copy
                  */
-                static inline void copy_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                static inline void copy_all_bits(const uint8_t * p_source, uint32_t from_pos_bit,
                         uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
 
                     //Depending on whether the bits are byte aligned, we have two copying strategies.
                     if ((REMAINING_BIT_IDX(from_pos_bit) > 0) || (REMAINING_BIT_IDX(to_pos_bit) > 0)) {
                         //If there is no byte alignment: Copy bits one by one
-                        copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+                        copy_single_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                     } else {
                         //If there is byte alignment then we can fast copy
                         //some whole bytes and then the remaining bits.
@@ -183,7 +183,7 @@ namespace uva {
                             //Compute the number of remaining bytes to copy
                             const uint8_t num_copied_bits = BYTES_TO_BITS(num_full_bytes);
                             //Copy the remaining bytes
-                            copy_bits(p_source, from_pos_bit + num_copied_bits,
+                            copy_single_bits(p_source, from_pos_bit + num_copied_bits,
                                     p_target, to_pos_bit + num_copied_bits,
                                     num_rem_bits);
                         }
@@ -200,6 +200,9 @@ namespace uva {
                  */
                 static inline void copy_end_bits_to_pos(const uint32_t source, const uint8_t num_bits,
                         uint8_t * p_target, const uint32_t to_pos_bit) {
+                    
+                    LOG_DEBUG3 << "Copying end bits from " << SSTR(source) << " to position: " << SSTR(to_pos_bit) << END_LOG;
+                    
                     //First transform he source uint into an array of bytes
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
 
@@ -207,7 +210,7 @@ namespace uva {
                     const uint8_t from_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
 
                     //Copy the given number of bits from and to defined targets and positions 
-                    copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                 };
 
                 /**
@@ -229,7 +232,7 @@ namespace uva {
                     const uint8_t to_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
 
                     //Copy the given number of bits from and to defined targets and positions 
-                    copy_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                 };
             }
         }
