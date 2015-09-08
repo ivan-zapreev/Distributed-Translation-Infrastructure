@@ -179,8 +179,8 @@ namespace uva {
                      * WARNING: It is made non-virtual to be usable with the @see ADynamicStackArray class
                      */
                     ~T_Compressed_M_Gram_Id() {
-                        if (m_gram_id != NULL) {
-                            delete[] m_gram_id;
+                        if (m_p_gram_id != NULL) {
+                            delete[] m_p_gram_id;
                         }
                     }
 
@@ -196,7 +196,7 @@ namespace uva {
 
                 protected:
                     //This should store the unique identifier of the M-gram allocated with a new operator
-                    uint8_t * m_gram_id;
+                    uint8_t * m_p_gram_id;
                 };
 
                 /**
