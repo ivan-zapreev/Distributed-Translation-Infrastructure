@@ -26,6 +26,7 @@
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
+      <itemPath>inc/MGrams.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
@@ -50,6 +51,7 @@
       <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
+      <itemPath>src/MGrams.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/W2CHybridMemoryTrie.cpp</itemPath>
       <itemPath>src/W2COrderedArrayTrie.cpp</itemPath>
@@ -191,8 +193,6 @@
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -302,8 +302,6 @@
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -425,8 +423,6 @@
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -537,8 +533,6 @@
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
@@ -648,8 +642,6 @@
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>

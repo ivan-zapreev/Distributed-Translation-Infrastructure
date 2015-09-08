@@ -113,9 +113,17 @@ namespace uva {
                 } T_M_Gram;
 
                 /**
+                 * This function allows to convert the M-gram tokens into a string representation. 
+                 * @param gram  the M-Gram to work with
+                 */
+                template<TModelLevel N = M_GRAM_LEVEL_MAX>
+                inline string tokensToString(const T_M_Gram & gram) {
+                    return tokensToString<N>(gram.tokens, gram.level);
+                };
+
+                /**
                  * The compressed implementation of the M-gram id class
                  */
-                template<TModelLevel M_GRAM_LEVEL>
                 class T_Compressed_M_Gram_Id {
                 public:
 
@@ -125,12 +133,48 @@ namespace uva {
                     static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS;
                     static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS;
 
+                    /**
+                     * The basic constructor to create an M-Gram id
+                     * @param gram the M-gram to create the id for
+                     * @param p_word_idx the word index
+                     * @throw Exception if an id could not be created.
+                     */
                     T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
+
+                    /**
+                     * The basic constructor that allocates maximum memory
+                     * needed to store the M-gram id of the given level.
+                     * @param level the level of the M-grams this object will store id for.
+                     */
+                    T_Compressed_M_Gram_Id(const TModelLevel level);
+
+                    /**
+                     * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
+                     * The memory will not be re-allocated to it is assumed theat this instance was created with
+                     * the one argument constructor of this class allocated maximum needed memory for this level.
+                     * The argument M-gram level must be smaller or equal to  the level this object was created with.
+                     * @param gram the M-gram to create the id for
+                     * @param p_word_idx the word index
+                     * @return true if the M-gram id could be created, otherwise false
+                     */
+                    bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
 
                     virtual ~T_Compressed_M_Gram_Id() {
                         if (m_gram_id != NULL) {
                             delete[] m_gram_id;
                         }
+                    }
+
+                    /**
+                     * Allows to extract the M-gram id length in bytes
+                     * Note that this method is applicable only for M-grams with M <= 6;
+                     * @param m_gram_id the M-gram id to extract the length for
+                     * @param level the M-gram level
+                     * @return the M-gram id length in bytes
+                     */
+                    template<TModelLevel M_GRAM_LEVEL>
+                    inline uint8_t get_m_gram_id_len() {
+                        return get_m_gram_id_len<M_GRAM_LEVEL>(m_gram_id);
                     }
 
                 protected:
@@ -144,10 +188,8 @@ namespace uva {
                      * @param level the M-gram level
                      * @return the M-gram id length in bytes
                      */
-                    static uint8_t get_m_gram_id_len(const uint8_t * & m_gram_id);
-
-                    template<bool IS_LESS, TModelLevel N> friend bool compare(const T_Compressed_M_Gram_Id<N> & one, const T_Compressed_M_Gram_Id<N> & two);
-
+                    template<TModelLevel M_GRAM_LEVEL>
+                    static uint8_t get_m_gram_id_len(const uint8_t * m_gram_id);
                 };
 
                 /**
@@ -159,8 +201,8 @@ namespace uva {
                  */
                 template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
                 static inline bool compare(
-                        const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & one,
-                        const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & two) {
+                        const T_Compressed_M_Gram_Id & one,
+                        const T_Compressed_M_Gram_Id & two) {
                     //Get the M-gram type ids
                     TShortId type_one;
                     //ToDo: Implement
@@ -180,7 +222,7 @@ namespace uva {
                             //The id types are the same! Compare the ids themselves
 
                             //Get one of the lengths
-                            const uint8_t len = T_Compressed_M_Gram_Id<M_GRAM_LEVEL>::get_m_gram_id_len(one.m_gram_id);
+                            const uint8_t len = one.get_m_gram_id_len<M_GRAM_LEVEL>();
 
                             //Start comparing the ids byte by byte but not from the fist
                             //bytes as this is where the id type information is stored 
@@ -189,17 +231,6 @@ namespace uva {
                         }
                     }
                 };
-
-                template<TModelLevel M_GRAM_LEVEL>
-                bool operator<(const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & one, const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & two) {
-                    return compare<true>(one, two);
-                }
-
-                template<TModelLevel M_GRAM_LEVEL>
-                bool operator>(const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & one, const T_Compressed_M_Gram_Id<M_GRAM_LEVEL> & two) {
-                    return compare<false>(one, two);
-                }
-
             }
         }
     }

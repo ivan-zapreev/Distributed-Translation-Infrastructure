@@ -161,7 +161,7 @@ namespace uva {
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucketId < 0) || (bucketId >= num_buckets[mGram.level]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString<N>(mGram)
                                 << " was given an incorrect hash: " << SSTR(bucketId)
                                 << ", must be within [0, " << SSTR(num_buckets[mGram.level]) << "]";
                         throw Exception(msg.str());
@@ -219,11 +219,11 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry, T_Compressed_M_Gram_Id<N> > TProbBackOffBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry, T_Compressed_M_Gram_Id > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff, T_Compressed_M_Gram_Id<N> > TProbBucket;
+                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff, T_Compressed_M_Gram_Id > TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level

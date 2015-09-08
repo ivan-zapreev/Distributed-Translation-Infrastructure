@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
 	${OBJECTDIR}/src/Logger.o \
+	${OBJECTDIR}/src/MGrams.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
 	${OBJECTDIR}/src/W2COrderedArrayTrie.o \
@@ -112,6 +113,11 @@ ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
+
+${OBJECTDIR}/src/MGrams.o: nbproject/Makefile-${CND_CONF}.mk src/MGrams.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MGrams.o src/MGrams.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: nbproject/Makefile-${CND_CONF}.mk src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

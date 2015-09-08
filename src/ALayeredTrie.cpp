@@ -59,7 +59,7 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(oGram.tokens, oGram.level) << " wordHash = "
+                        << tokensToString<N>(oGram) << " wordHash = "
                         << wordHash << END_LOG;
             };
 
@@ -67,7 +67,7 @@ namespace uva {
             void ALayeredTrie<N>::add_m_gram(const T_M_Gram &mGram) {
                 const TModelLevel level = mGram.level;
                 LOG_DEBUG << "Adding a " << SSTR(level) << "-Gram "
-                        << tokensToString<N>(mGram.tokens, mGram.level) << " to the Trie" << END_LOG;
+                        << tokensToString<N>(mGram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -77,7 +77,7 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(mGram.tokens, mGram.level);
+                    msg << "Could not get ctxId for " << tokensToString<N>(mGram);
                     throw Exception(msg.str());
                 }
 
@@ -88,7 +88,7 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(mGram.tokens, mGram.level);
+                    msg << "Could not get end wordId for " << tokensToString<N>(mGram);
                     throw Exception(msg.str());
                 }
 
@@ -111,13 +111,13 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(mGram.tokens, mGram.level) << " contextHash = "
+                        << tokensToString<N>(mGram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
             template<TModelLevel N>
             void ALayeredTrie<N>::add_n_gram(const T_M_Gram &nGram) {
-                LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram.tokens, nGram.level) << " to the Trie" << END_LOG;
+                LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -127,7 +127,7 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(nGram.tokens, nGram.level);
+                    msg << "Could not get ctxId for " << tokensToString<N>(nGram);
                     throw Exception(msg.str());
                 }
 
@@ -138,7 +138,7 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(nGram.tokens, nGram.level);
+                    msg << "Could not get end wordId for " << tokensToString<N>(nGram);
                     throw Exception(msg.str());
                 }
                 
@@ -160,7 +160,7 @@ namespace uva {
                 pData = nGram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokensToString<N>(nGram.tokens, nGram.level) << " contextHash = "
+                        << tokensToString<N>(nGram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 

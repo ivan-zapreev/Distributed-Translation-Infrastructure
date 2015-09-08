@@ -408,7 +408,7 @@ namespace uva {
              * @param tokens the tokens to print
              * @return the resulting string
              */
-            template<TModelLevel N>
+            template<TModelLevel N = M_GRAM_LEVEL_MAX>
             inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
                 stringstream data;
                 data << "[ ";

@@ -48,7 +48,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(N, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.level << "-Gram : " << tokensToString<N>(gram.tokens, gram.level)  \
+            LOG_WARNING << "The " << gram.level << "-Gram : " << tokensToString<N>(gram)                     \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -395,12 +395,12 @@ namespace uva {
                     if (m_chached_ctx == mGram.context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                                << "], for m-gram: " << tokensToString<N>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level)
+                                << "], for m-gram: " << tokensToString<N>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
@@ -413,7 +413,7 @@ namespace uva {
                  */
                 inline void setCacheContextId(const T_M_Gram &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokensToString<N>(mGram.tokens, mGram.level) << END_LOG;
+                            << ", for m-gram: " << tokensToString<N>(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_ctx_id = stx_id;
