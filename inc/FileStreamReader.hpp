@@ -62,12 +62,12 @@ namespace uva {
                  */
                 FileStreamReader(const char * fileName)
                 : AFileReader(), m_file_stream(fileName, ifstream::in), m_curr_line(NULL) {
-                    LOG_DEBUG << SSTR(this) << ": Opened the file '"
+                    LOG_DEBUG << "Opened the file '"
                             << fileName << "' is_open: " << (bool) m_file_stream
                             << ", attempting to allocate " << MAX_N_GRAM_STRING_LENGTH
                             << " bytes for a buffer" << END_LOG;
                     m_curr_line = new char[MAX_N_GRAM_STRING_LENGTH];
-                    LOG_DEBUG << SSTR(this) << ": Allocated " << MAX_N_GRAM_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
+                    LOG_DEBUG << "Allocated " << MAX_N_GRAM_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
 
                     LOG_INFO3 << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
@@ -85,7 +85,7 @@ namespace uva {
                 };
 
                 virtual bool getLine(TextPieceReader& out) {
-                    LOG_DEBUG3 << SSTR(this) << ": Searching for a new line!" << END_LOG;
+                    LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
                     if (m_file_stream.getline(m_curr_line, MAX_N_GRAM_STRING_LENGTH)) {
@@ -96,7 +96,7 @@ namespace uva {
                             //If there was failure during reading the return a failed flag
                             return false;
                         } else {
-                            LOG_DEBUG2 << SSTR(this) << ": Read line '" << m_curr_line << "'" << END_LOG;
+                            LOG_DEBUG2 << "Read line '" << m_curr_line << "'" << END_LOG;
 
                             //The line was properly read, set the values into the output variable
                             out.set(m_curr_line, strlen(m_curr_line));
