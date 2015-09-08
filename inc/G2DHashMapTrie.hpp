@@ -150,15 +150,17 @@ namespace uva {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const TShortId gramHash = gram.hash();
+                    //Compute the index in the array of bucket sizes
+                    const TModelLevel buckes_size_idx = gram.level - 1;
                     //Compute the bucket Id from the M-Gram hash
-                    bucket_idx = gramHash % num_buckets[gram.level - 1];
+                    bucket_idx = gramHash % num_buckets[buckes_size_idx];
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level]))) {
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[buckes_size_idx]))) {
                         stringstream msg;
                         msg << "The " << SSTR(gram.level) << "-gram: " << tokensToString<N>(gram)
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[gram.level]) << "]";
+                                << ", must be within [0, " << SSTR(num_buckets[buckes_size_idx]) << "]";
                         throw Exception(msg.str());
                     }
                 }
