@@ -118,22 +118,11 @@ namespace uva {
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
 
-                    /*
                     LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_beginPtr = "
                             << SSTR((uint64_t) m_beginPtr) << ", m_cursorPtr = "
                             << SSTR((uint64_t) m_cursorPtr) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
-                     */
-
-                    LOG_DEBUG3 << SSTR((uint64_t) m_beginPtr) << END_LOG;
-                    LOG_DEBUG3 << "--------------------" << END_LOG;
-                    LOG_DEBUG3 << SSTR((uint64_t) m_cursorPtr) << END_LOG;
-                    LOG_DEBUG3 << "--------------------" << END_LOG;
-                    LOG_DEBUG3 << SSTR(m_len) << END_LOG;
-                    LOG_DEBUG3 << "--------------------" << END_LOG;
-                    LOG_DEBUG3 << SSTR(m_restLen) << END_LOG;
-                    LOG_DEBUG3 << "--------------------" << END_LOG;
                 }
 
                 /**
@@ -393,14 +382,8 @@ namespace uva {
                         LOG_DEBUG4 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
                             if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                                /*
                                LOG_DEBUG4 << "m_beginPtr = " << SSTR((uint64_t) m_beginPtr)
                                  << ", m_len = " << SSTR(m_len) << END_LOG;
-                                 */
-                                LOG_DEBUG4 << SSTR((uint64_t) m_beginPtr) << END_LOG;
-                                LOG_DEBUG4 << "--------------------" << END_LOG;
-                                LOG_DEBUG4 << SSTR(m_len) << END_LOG;
-                                LOG_DEBUG4 << "--------------------" << END_LOG;
                                 m_str.assign(m_beginPtr, m_len);
                             } else {
                                 m_str = TEXT_TOO_LARGE_STR;
