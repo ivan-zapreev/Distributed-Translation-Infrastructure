@@ -130,10 +130,14 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
+                    LOG_DEBUG2 << "Computing the " << SSTR(M_GRAM_LEVEL) << "-gram id type" << END_LOG;
+
                     //Compute the M-gram id type. Here we use the pre-computed multipliers
                     for (size_t idx = 0; idx < M_GRAM_LEVEL; ++idx) {
+                        LOG_DEBUG3 << "len_bits[" << SSTR(idx) << "] = " << SSTR(len_bits[idx]) << END_LOG;
                         id_type += (len_bits[idx] - 1) * gram_id_type_mult[idx];
                     }
+                    LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                 };
 
                 /**
@@ -245,6 +249,9 @@ namespace uva {
                     //store the length in bits will overflow. Therefore the sanity check.
                     uint8_t id_len_bits = ID_TYPE_LEN_BITS;
 
+                    LOG_DEBUG2 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
+                            << "id type length: " << SSTR(ID_TYPE_LEN_BITS) << END_LOG;
+
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
                         stringstream msg;
@@ -338,6 +345,8 @@ namespace uva {
                                 << SSTR(M_GRAM_LEVEL_5) << "]";
                         throw Exception(msg.str());
                     }
+
+                    LOG_DEBUG2 << "Creating the " << SSTR(gram.level) << "-gram id for: " << tokensToString(gram) << END_LOG;
 
                     //Call the appropriate function, use array instead of switch, should be faster.
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, &m_p_gram_id);

@@ -334,6 +334,10 @@ namespace uva {
                         //Set the new capacity in
                         m_capacity = new_capacity;
 
+                        LOG_DEBUG2 << "The end capacity is " << SSTR(m_capacity)
+                                << ", used size: " << SSTR(m_size) << ", ptr: "
+                                << SSTR(m_ptr) << END_LOG;
+                        
                         //Do the null pointer check if sanity
                         if (DO_SANITY_CHECKS && (new_capacity > m_capacity)
                                 && (new_capacity > 0) && (m_ptr == NULL)) {
