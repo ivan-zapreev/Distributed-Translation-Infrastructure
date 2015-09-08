@@ -227,15 +227,15 @@ namespace uva {
                  * @param M_GRAM_LEVEL the number of tokens in the M-gram
                  * @param tokens the M-gram tokens
                  * @param p_word_idx the word index
-                 * @param m_gram_id the resulting m-gram id, if NULL new memory
-                 * will be allocated for the id, otherwise the pointer will be
-                 * used to store the id. It is then assumed that there is enough
-                 * memory allocated to store the id. For an M-gram it is (4*M)
-                 * bytes that is needed to store the longed M-gram id.
+                 * @param m_p_p_gram_id the pointer to the pointer to store the M-gram id data pointer.
+                 * If (*m_p_p_gram_id == NULL) new memory will be allocated for the id, otherwise the
+                 * pointer will be used to store the id. It is then assumed that there is enough memory
+                 * allocated to store the id. For an M-gram it is (4*M) bytes that is needed to store
+                 * the longed M-gram id.
                  * @return true if the m-gram id could be computed, otherwise false
                  */
                 template<uint8_t ID_TYPE_LEN_BITS, TModelLevel M_GRAM_LEVEL>
-                static inline bool create_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                static inline bool create_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id) {
                     //Declare and initialize the id length, the initial values is
                     //what we need to store the type. Note that, the maximum number
                     //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
@@ -275,12 +275,12 @@ namespace uva {
                     const uint8_t id_len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
 
                     //Allocate the id memory if there was nothing pre-allocated yet
-                    if (m_gram_id == NULL) {
+                    if (*m_p_p_gram_id == NULL) {
                         //Allocate memory
-                        m_gram_id = new uint8_t[id_len_bytes];
+                        *m_p_p_gram_id = new uint8_t[id_len_bytes];
                     } else {
                         //Clean the memory
-                        memset(m_gram_id, 0, id_len_bytes);
+                        memset(*m_p_p_gram_id, 0, id_len_bytes);
                     }
 
                     //Determine the type id value from the bit lengths of the words
@@ -289,42 +289,42 @@ namespace uva {
 
                     //Append the id type to the M-gram id
                     uint8_t to_bit_pos = 0;
-                    copy_end_bits_to_pos(id_type_value, ID_TYPE_LEN_BITS, m_gram_id, to_bit_pos);
+                    copy_end_bits_to_pos(id_type_value, ID_TYPE_LEN_BITS, *m_p_p_gram_id, to_bit_pos);
                     to_bit_pos += ID_TYPE_LEN_BITS;
 
                     //Append the word id meaningful bits to the id in reverse order
                     for (int idx = (M_GRAM_LEVEL - 1); idx >= 0; --idx) {
-                        copy_end_bits_to_pos(wordIds[idx], len_bits[idx], m_gram_id, to_bit_pos);
+                        copy_end_bits_to_pos(wordIds[idx], len_bits[idx], *m_p_p_gram_id, to_bit_pos);
                         to_bit_pos += len_bits[idx];
                     }
 
                     return true;
                 };
 
-                static inline bool create_2_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                static inline bool create_2_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id) {
                     return create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_2 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
-                            (tokens, p_word_idx, m_gram_id);
+                            (tokens, p_word_idx, m_p_p_gram_id);
                 }
 
-                static inline bool create_3_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                static inline bool create_3_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id) {
                     return create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_3 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_3 >
-                            (tokens, p_word_idx, m_gram_id);
+                            (tokens, p_word_idx, m_p_p_gram_id);
                 }
 
-                static inline bool create_4_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                static inline bool create_4_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id) {
                     return create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_4 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_4 >
-                            (tokens, p_word_idx, m_gram_id);
+                            (tokens, p_word_idx, m_p_p_gram_id);
                 }
 
-                static inline bool create_5_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                static inline bool create_5_gram_id(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id) {
                     return create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_5 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_5 >
-                            (tokens, p_word_idx, m_gram_id);
+                            (tokens, p_word_idx, m_p_p_gram_id);
                 }
 
                 /**
                  * Define the function pointer to a create x-gram id function for some X-gram level x
                  */
-                typedef bool(*create_x_gram_id)(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * & m_gram_id);
+                typedef bool(*create_x_gram_id)(const TextPieceReader *tokens, const AWordIndex * p_word_idx, uint8_t * * m_p_p_gram_id);
 
                 //This is an array of functions for creating m-grams per specific m-gram level m
                 const static create_x_gram_id create_x_gram_funcs[] = {create_2_gram_id, create_3_gram_id, create_4_gram_id, create_5_gram_id};
@@ -340,10 +340,10 @@ namespace uva {
                     }
 
                     //Call the appropriate function, use array instead of switch, should be faster.
-                    return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
+                    return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, &m_p_gram_id);
                 }
 
-                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) : m_gram_id(NULL) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) : m_p_gram_id(NULL) {
                     if (!set_m_gram_id(gram, p_word_idx)) {
                         stringstream msg;
                         msg << "Could not create an " << SSTR(gram.level)
@@ -352,7 +352,7 @@ namespace uva {
                     }
                 }
 
-                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const TModelLevel level) : m_gram_id(NULL) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const TModelLevel level) : m_p_gram_id(NULL) {
                     //Do the sanity check for against overflows
                     if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                         stringstream msg;
@@ -364,10 +364,10 @@ namespace uva {
                     }
 
                     //Allocate maximum memory that could be needed to store the given M-gram level id
-                    m_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                    m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
                 }
 
-                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id() : m_gram_id(NULL) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id() : m_p_gram_id(NULL) {
                 }
 
                 template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
@@ -377,9 +377,9 @@ namespace uva {
 
                     //Get the M-gram type ids
                     TShortId type_one;
-                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(one.m_gram_id, type_one);
+                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(one.m_p_gram_id, type_one);
                     TShortId type_two;
-                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(two.m_gram_id, type_two);
+                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(two.m_p_gram_id, type_two);
 
                     if (type_one < type_two) {
                         //The first id type is smaller
@@ -393,16 +393,16 @@ namespace uva {
 
                             //Get one of the lengths, as they both are the same
                             uint8_t id_len_bytes;
-                            get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (one.m_gram_id, id_len_bytes);
+                            get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (one.m_p_gram_id, id_len_bytes);
 
                             //Start comparing the ids byte by byte but not from the fist
                             //bytes as this is where the id type information is stored,
                             //start with the first byte that contains key information
                             for (uint8_t idx = NUM_FULL_BYTES(ID_TYPE_LEN_BITS); idx < id_len_bytes; ++idx) {
-                                if (one.m_gram_id[idx] < two.m_gram_id[idx]) {
+                                if (one.m_p_gram_id[idx] < two.m_p_gram_id[idx]) {
                                     return IS_LESS;
                                 } else {
-                                    if (one.m_gram_id[idx] > two.m_gram_id[idx]) {
+                                    if (one.m_p_gram_id[idx] > two.m_p_gram_id[idx]) {
                                         return !IS_LESS;
                                     } else {
                                         //Nothing to return yet, so far the values are equal, keep iterating
