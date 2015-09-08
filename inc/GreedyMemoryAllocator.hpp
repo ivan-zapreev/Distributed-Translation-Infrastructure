@@ -151,7 +151,7 @@ namespace uva {
                     GreedyMemoryAllocator(size_type numElems) throw () :
                     _manager(_storage),
                     _storage(numElems * sizeof (T)) {
-                        LOG_DEBUG4 << this << ": Creating FixedMemoryAllocator for "
+                        LOG_DEBUG4 << "Creating FixedMemoryAllocator for "
                                 << SSTR(numElems) << " " << typeid (T).name()
                                 << " elements of size " << SSTR(sizeof (T)) << END_LOG;
                     }
@@ -161,7 +161,7 @@ namespace uva {
                      */
                     GreedyMemoryAllocator(const GreedyMemoryAllocator& other) throw () :
                     _manager(other.getStorageRef()) {
-                        LOG_DEBUG4 << this << ": Calling the FixedMemoryAllocator copy constructor." << END_LOG;
+                        LOG_DEBUG4 << "Calling the FixedMemoryAllocator copy constructor." << END_LOG;
                     }
 
                     /**
@@ -172,7 +172,7 @@ namespace uva {
                     template <typename U>
                     GreedyMemoryAllocator(const GreedyMemoryAllocator<U>& other) throw () :
                     _manager(other.getStorageRef()) {
-                        LOG_DEBUG4 << this << ": Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
+                        LOG_DEBUG4 << "Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
 
                     /**
@@ -180,7 +180,7 @@ namespace uva {
                      */
                     virtual ~GreedyMemoryAllocator() throw () {
                         //Nothing to be done!
-                        LOG_DEBUG4 << this << ": " << __FUNCTION__ << END_LOG;
+                        LOG_DEBUG4 << "" << __FUNCTION__ << END_LOG;
                     }
 
                     /**
@@ -189,7 +189,7 @@ namespace uva {
                      * @return the computed pointer
                      */
                     pointer address(reference obj) const {
-                        LOG_DEBUG4 << this << ": computing the object address: " << &obj << END_LOG;
+                        LOG_DEBUG4 << "computing the object address: " << &obj << END_LOG;
                         return &obj;
                     }
 
@@ -199,7 +199,7 @@ namespace uva {
                      * @return the computed pointer
                      */
                     const_pointer address(const_reference obj) const {
-                        LOG_DEBUG4 << this << ": computing the const object address: " << &obj << END_LOG;
+                        LOG_DEBUG4 << "computing the const object address: " << &obj << END_LOG;
                         return &obj;
                     }
 
@@ -212,13 +212,13 @@ namespace uva {
                     pointer allocate(size_type num, const_pointer cp = 0) {
                         const size_type bytes = num * sizeof (T);
 
-                        LOG_DEBUG4 << this << ": Allocating: " << SSTR(num)
+                        LOG_DEBUG4 << "Allocating: " << SSTR(num)
                                 << " of " << typeid (T).name() << " elements, of " << SSTR(bytes)
                                 << " bytes. Available: " << SSTR(available()) << "/" << SSTR(max_size()) << END_LOG;
 
                         pointer const ptr = static_cast<pointer> (_manager.allocate(bytes));
 
-                        LOG_DEBUG4 << this << ": The pointer to the first allocated object is: " << ptr << END_LOG;
+                        LOG_DEBUG4 << "The pointer to the first allocated object is: " << ptr << END_LOG;
                         return ptr;
                     }
 
@@ -229,7 +229,7 @@ namespace uva {
                      * @param num the number of objects to deallocate
                      */
                     void deallocate(pointer ptr, size_type num) {
-                        LOG_DEBUG4 << this << ": Requested to deallocate: " << SSTR(num)
+                        LOG_DEBUG4 << "Requested to deallocate: " << SSTR(num)
                                 << " objects starting from: " << ptr << ". Ignoring!" << END_LOG;
                     }
 
@@ -255,7 +255,7 @@ namespace uva {
                      * @param value the type value to work with
                      */
                     void construct(pointer ptr, const value_type& value) {
-                        LOG_DEBUG4 << this << ": Calling constructor on: " << ptr << END_LOG;
+                        LOG_DEBUG4 << "Calling constructor on: " << ptr << END_LOG;
                         ::new ((void*) ptr) value_type(value);
                     }
 
@@ -264,7 +264,7 @@ namespace uva {
                      * @param ptr the pointer to work with
                      */
                     void destroy(pointer ptr) {
-                        LOG_DEBUG4 << this << ": Calling destructor on: " << ptr << END_LOG;
+                        LOG_DEBUG4 << "Calling destructor on: " << ptr << END_LOG;
                         ptr->~T();
                     }
 

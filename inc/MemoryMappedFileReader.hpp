@@ -115,7 +115,7 @@ namespace uva {
                  */
                 MemoryMappedFileReader(const char * fileName) : AFileReader(), m_fileDesc(0) {
                     m_fileDesc = open(fileName, O_RDONLY);
-                    LOG_DEBUG << SSTR(this) << ": Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
+                    LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
                     if (m_fileDesc != UNDEFINED_FILE_DESCRIPTOR) {
                         // set the errno to default value 
@@ -143,7 +143,7 @@ namespace uva {
 #else
                             void * beginPtr = mmap(NULL, len, PROT_READ, MAP_PRIVATE | MAP_POPULATE, m_fileDesc, 0);
 #endif
-                            LOG_DEBUG << SSTR(this) << ": Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
+                            LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
                             TextPieceReader::set(beginPtr, len);
