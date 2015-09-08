@@ -323,6 +323,8 @@ namespace uva {
                         //Reallocate memory, potentially we get a new pointer!
                         m_ptr = (ELEMENT_TYPE*) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
 
+                        LOG_DEBUG2 << "Memory is reallocated ptr: " << SSTR(m_ptr) << END_LOG;
+                        
                         //Clean the newly allocated memory
                         if (new_capacity > m_capacity) {
                             const size_t new_num_elem = (new_capacity - m_capacity);
