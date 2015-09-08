@@ -83,6 +83,17 @@ namespace uva {
                 };
 
                 /**
+                 * Stores the maximum number of bits  up to and including level 6
+                 */
+                static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
+                    2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
+                    3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
+                    4 * sizeof (TShortId), // 4 TShortId values for 4 word ids
+                    5 * sizeof (TShortId), // 5 TShortId values for 5 word ids
+                    6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
+                };
+
+                /**
                  * This method allows to get the number of bits needed to store this word id
                  * @param wordId the word id to analyze
                  * @return the number of bits needed to store this word id
@@ -132,10 +143,10 @@ namespace uva {
                  * @param ID_TYPE_LEN_BITS the maximum number of bites needed to store the id type in bits
                  * @param M_GRAM_LEVEL the number of tokens in the M-gram
                  * @param m_gram_id the given M-gram id
-                 * @return the M-gram id length in bytes
+                 * @param len_bytes [out] the M-gram id length in bytes
                  */
                 template<uint8_t ID_TYPE_LEN_BITS, TModelLevel M_GRAM_LEVEL >
-                uint8_t get_gram_id_len(const uint8_t * m_gram_id) {
+                void get_gram_id_len(const uint8_t * m_gram_id, uint8_t & len_bytes) {
                     //Declare and initialize the id length, the initial values is
                     //what we need to store the type. Note that, the maximum number
                     //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
@@ -145,14 +156,19 @@ namespace uva {
                     //store the length in bits will overflow. Therefore the sanity check.
                     uint8_t id_len_bits = ID_TYPE_LEN_BITS;
 
-                    //Do the sanity check for against overflows
-                    if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
-                        stringstream msg;
-                        msg << "get_gram_id_len: Unsupported m-gram level: "
-                                << SSTR(M_GRAM_LEVEL) << ", must be within ["
-                                << SSTR(M_GRAM_LEVEL_2) << ", "
-                                << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
-                        throw Exception(msg.str());
+                    //If needed, do the sanity checks
+                    if (DO_SANITY_CHECKS) {
+                        if (m_gram_id == NULL) {
+                            throw Exception("get_m_gram_id_length: A NULL pointer M-gram id!");
+                        }
+                        if (M_GRAM_LEVEL > M_GRAM_LEVEL_6) {
+                            stringstream msg;
+                            msg << "get_gram_id_len: Unsupported m-gram level: "
+                                    << SSTR(M_GRAM_LEVEL) << ", must be within ["
+                                    << SSTR(M_GRAM_LEVEL_2) << ", "
+                                    << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
+                            throw Exception(msg.str());
+                        }
                     }
 
                     //1. ToDo: Extract the id_type from the M-gram
@@ -172,7 +188,7 @@ namespace uva {
 
                     //Note that in the loop above we have "coeff = len_bits[idx] - 1"
                     //Therefore, here we add the number of tokens to account for this -1's
-                    return NUM_BITS_TO_STORE_BYTES(id_len_bits + M_GRAM_LEVEL);
+                    len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits + M_GRAM_LEVEL);
                 };
 
                 /**
@@ -338,11 +354,6 @@ namespace uva {
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
                 };
 
-                template<TModelLevel M_GRAM_LEVEL>
-                void T_Compressed_M_Gram_Id::get_m_gram_id_type(uint8_t & id_type) {
-                    copy_begin_bits_to_end < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2]>(m_gram_id, id_type);
-                }
-
                 bool T_Compressed_M_Gram_Id::create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
                     return ::uva::smt::tries::mgrams::create_m_gram_id(gram, p_word_idx, m_gram_id);
                 }
@@ -356,32 +367,67 @@ namespace uva {
                     }
                 }
 
-                /**
-                 * Allows to extract the M-gram id length in bytes
-                 * Note that this method is applicable only for M-grams with M <= 6;
-                 * @param m_gram_id the M-gram id to extract the length for
-                 * @param level the M-gram level
-                 * @return the M-gram id length in bytes
-                 */
-                template<TModelLevel M_GRAM_LEVEL>
-                uint8_t T_Compressed_M_Gram_Id::get_m_gram_id_len(const uint8_t* m_gram_id) {
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const TModelLevel level) {
                     //Do the sanity check for against overflows
-                    if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
+                    if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                         stringstream msg;
-                        msg << "get_m_gram_id_len: Unsupported m-gram level: "
-                                << SSTR(M_GRAM_LEVEL) << ", must be within ["
+                        msg << "T_Compressed_M_Gram_Id: Unsupported m-gram level: "
+                                << SSTR(level) << ", must be within ["
                                 << SSTR(M_GRAM_LEVEL_2) << ", "
-                                << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
+                                << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
                         throw Exception(msg.str());
                     }
 
-                    if (m_gram_id != NULL) {
-                        //Call the appropriate function, use array instead of switch should be faster.
-                        return get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (m_gram_id);
+                    //Allocate maximum memory that could be needed to store the given M-gram level id
+                    m_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                }
+
+                template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
+                bool T_Compressed_M_Gram_Id::compare(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    //Get the id len in bits
+                    constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2];
+
+                    //Get the M-gram type ids
+                    TShortId type_one;
+                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(one.m_gram_id, type_one);
+                    TShortId type_two;
+                    copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(two.m_gram_id, type_two);
+
+                    if (type_one < type_two) {
+                        //The first id type is smaller
+                        return IS_LESS;
                     } else {
-                        throw Exception("get_m_gram_id_length: A NULL pointer M-gram id!");
+                        if (type_one > type_two) {
+                            //The second id type is smaller
+                            return !IS_LESS;
+                        } else {
+                            //The id types are the same! Compare the ids themselves
+
+                            //Get one of the lengths, as they both are the same
+                            uint8_t id_len_bytes;
+                            get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (one.m_gram_id, id_len_bytes);
+
+                            //Start comparing the ids byte by byte but not from the fist
+                            //bytes as this is where the id type information is stored,
+                            //start with the first byte that contains key information
+                            for (uint8_t idx = NUM_FULL_BYTES(ID_TYPE_LEN_BITS); idx < id_len_bytes; ++idx) {
+                                if (one.m_gram_id[idx] < two.m_gram_id[idx]) {
+                                    return IS_LESS;
+                                } else {
+                                    if (one.m_gram_id[idx] > two.m_gram_id[idx]) {
+                                        return !IS_LESS;
+                                    } else {
+                                        //Nothing to return yet, so far the values are equal, keep iterating
+                                    }
+                                }
+                            }
+                            
+                            //We've finished iterating and since we are still here, the ids are equal
+                            return !IS_LESS;
+                        }
                     }
                 };
+
             }
         }
     }

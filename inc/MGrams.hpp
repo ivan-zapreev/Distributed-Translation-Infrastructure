@@ -165,37 +165,6 @@ namespace uva {
                         }
                     }
 
-                    /**
-                     * Allows to extract the M-gram id length in bytes
-                     * @return the M-gram id length in bytes
-                     */
-                    template<TModelLevel M_GRAM_LEVEL>
-                    inline uint8_t get_m_gram_id_len() {
-                        return get_m_gram_id_len<M_GRAM_LEVEL>(m_gram_id);
-                    }
-
-                    /**
-                     * Allows to get the M-gram id type
-                     * @param id_type [out] the M-gram id type
-                     */
-                    template<TModelLevel M_GRAM_LEVEL>
-                    void get_m_gram_id_type(uint8_t & id_type);
-
-                protected:
-                    //This should store the unique identifier of the M-gram allocated with a new operator
-                    uint8_t * m_gram_id;
-
-                    /**
-                     * Allows to extract the M-gram id length in bytes
-                     * Note that this method is applicable only for M-grams with M <= 6;
-                     * @param m_gram_id the M-gram id to extract the length for
-                     * @param level the M-gram level
-                     * @return the M-gram id length in bytes
-                     */
-                    template<TModelLevel M_GRAM_LEVEL>
-                    static uint8_t get_m_gram_id_len(const uint8_t * m_gram_id);
-                };
-
                 /**
                  * Allows to compare two M-Gram ids depending on the template flag it is a different operator
                  * @param IS_LESS if true the it is a is_less compare, if false then is_more
@@ -204,36 +173,11 @@ namespace uva {
                  * @return true if "one < two" otherwise false
                  */
                 template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
-                static inline bool compare(
-                        const T_Compressed_M_Gram_Id & one,
-                        const T_Compressed_M_Gram_Id & two) {
-                    //Get the M-gram type ids
-                    TShortId type_one;
-                    one.get_m_gram_id_type<M_GRAM_LEVEL>(type_one);
-                    TShortId type_two;
-                    two.get_m_gram_id_type<M_GRAM_LEVEL>(type_two);
+                static bool compare( const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two);
 
-                    if (type_one < type_two) {
-                        //The first id type is smaller
-                        return IS_LESS;
-                    } else {
-                        if (type_one > type_two) {
-                            //The second id type is smaller
-                            return !IS_LESS;
-                        } else {
-                            //The id types are the same! Compare the ids themselves
-
-                            //Get one of the lengths
-                            const uint8_t len = one.get_m_gram_id_len<M_GRAM_LEVEL>();
-
-                            //Start comparing the ids byte by byte but not from the fist
-                            //bytes as this is where the id type information is stored 
-
-                            //ToDo: Implement
-
-                            throw Exception("ToDo: static inline bool compare(const T_M_Gram_Id & one, const T_M_Gram_Id & two, const TModelLevel level)");
-                        }
-                    }
+                protected:
+                    //This should store the unique identifier of the M-gram allocated with a new operator
+                    uint8_t * m_gram_id;
                 };
             }
         }
