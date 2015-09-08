@@ -118,11 +118,18 @@ namespace uva {
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
 
+                    /*
                     LOG_DEBUG3 << SSTR(this) << ": Setting the data to BasicTextPiece: m_beginPtr = "
                             << SSTR((void*) m_beginPtr) << ", m_cursorPtr = "
                             << SSTR((void*) m_cursorPtr) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
+                     */
+                    
+                    LOG_DEBUG3 << SSTR((void*) m_beginPtr) << END_LOG;
+                    LOG_DEBUG3 << SSTR((void*) m_cursorPtr) << END_LOG;
+                    LOG_DEBUG3 << SSTR(m_len) << END_LOG;
+                    LOG_DEBUG3 << SSTR(m_restLen) << END_LOG;
                 }
 
                 /**
