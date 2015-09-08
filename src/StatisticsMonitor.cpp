@@ -60,7 +60,7 @@ namespace uva {
 
             void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Exception) {
                 LOG_WARNING << "Unable to obtain memory usage statistics on Mac OS yet!" << END_LOG;
-                memStat = {0,};
+                memStat = {};
             }
 #else
 

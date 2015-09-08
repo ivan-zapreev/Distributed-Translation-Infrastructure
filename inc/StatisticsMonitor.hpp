@@ -43,7 +43,7 @@ namespace uva {
              * or which are swapped out.
              * For more information see http://man7.org/linux/man-pages/man5/proc.5.html
              */
-            typedef struct {
+            struct SMemotyUsage {
                 //Virtual memory size in Kb
                 int vmsize;
                 //Peak virtual memory size in Kb
@@ -52,7 +52,11 @@ namespace uva {
                 int vmrss;
                 //Peak resident set size in Kb
                 int vmhwm;
-            } TMemotyUsage;
+                
+                SMemotyUsage() : vmsize(0), vmpeak(0), vmrss(0), vmhwm(0) {}
+            };
+            
+            typedef SMemotyUsage TMemotyUsage;
 
             /**
              * This class is responsible for monitoring the program statistics, such as the used memory and CPU times.
