@@ -328,7 +328,6 @@ namespace uva {
                     if (len == m_len) {
                         return !strncmp(m_beginPtr, other, m_len);
                     } else {
-
                         return false;
                     }
                 }

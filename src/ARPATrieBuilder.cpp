@@ -113,7 +113,7 @@ namespace uva {
                                 Logger::updateProgressBar();
 
                                 //If the line is empty then we keep reading
-                                if (m_line.str() != "") {
+                                if (m_line != "") {
                                     //Check that the next line contains the meaningful N-gram amount information!
                                     if (regex_match(m_line.str(), m_ng_amount_reg_exp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
