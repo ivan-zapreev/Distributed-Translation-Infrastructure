@@ -186,7 +186,6 @@ namespace uva {
                      */
                     ADynamicStackArray()
                     : m_ptr(NULL), m_capacity(0), m_size(0) {
-                        LOG_DEBUG4 << "Calling the default constructor: ADynamicStackArray()" << END_LOG;
                     }
 
                     /**
