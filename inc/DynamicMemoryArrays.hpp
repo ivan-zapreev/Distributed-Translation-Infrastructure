@@ -271,9 +271,15 @@ namespace uva {
                      * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
                      */
                     inline void sort() {
-                        if (m_size > 1) {
-                            my_sort<ELEMENT_TYPE>(m_ptr, m_size);
-                        }
+                        my_sort<ELEMENT_TYPE>(m_ptr, m_size);
+                    }
+
+                    /**
+                     * Allows to sort the data stored in this stack array.
+                     * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
+                     */
+                    inline void sort(typename T_IS_COMPARE_FUNC<ELEMENT_TYPE>::func_type is_less_func) {
+                        my_sort<ELEMENT_TYPE>(m_ptr, m_size, is_less_func);
                     }
 
                     /**

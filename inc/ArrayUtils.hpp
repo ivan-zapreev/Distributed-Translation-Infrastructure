@@ -29,6 +29,7 @@
 #include <string>       // std::stringstream
 #include <cstdlib>      // std::qsort std::bsearch
 #include <algorithm>    // std::sort
+#include <functional>   // std::function
 
 #include "Logger.hpp"
 #include "Globals.hpp"
@@ -226,12 +227,37 @@ namespace uva {
                 }
 
                 /**
+                 * Define the function type for the comparison function
+                 */
+                template<typename ELEM_TYPE>
+                struct T_IS_COMPARE_FUNC {
+                    typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &)> func_type;
+                };
+
+                /**
                  * This methos is used to do <algorithm> std::sort on an array
                  * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
                  * @param ELEM_TYPE the array element type
-                 * @param BASE_TYPE the base type the array element type has to
-                 * be custable to, the base type must have implemented "operator <"
+                 * @param array_begin the pointer to the array's first element
+                 * @param array_size the size of the array
+                 * @param is_less_func the is-less function
+                 */
+                template<typename ELEM_TYPE>
+                void my_sort(ELEM_TYPE * array_begin, const TShortId array_size,
+                        typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_type is_less_func) {
+                    //Do not do sorting if the array size is less than two
+                    if (array_size > 1) {
+                        //Order the N-gram array as it is unordered and we will binary search it later!
+                        std::sort(array_begin, array_begin + array_size, is_less_func);
+                    }
+                }
+
+                /**
+                 * This methos is used to do <algorithm> std::sort on an array
+                 * of structures convertable to some simple comparable type.
+                 * This method does the progress bar update, if needed
+                 * @param ELEM_TYPE the array element type
                  * @param IS_PROGRESS if true the progress bar will be updated,
                  * otherwise not, default is true
                  * @param array_begin the pointer to the array's first element
@@ -239,19 +265,15 @@ namespace uva {
                  */
                 template<typename ELEM_TYPE, bool IS_PROGRESS = true >
                 void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
-                    //Do not do sorting if the array size is less than two
-                    if (array_size > 1) {
-                        //Order the N-gram array as it is unordered and we will binary search it later!
-                        std::sort(array_begin, array_begin + array_size,
-                                [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
-                                    if (IS_PROGRESS) {
-                                        //Update the progress bar status
-                                        Logger::updateProgressBar();
-                                    }
-                                    //Return the result
-                                    return (first < second);
-                                });
-                    }
+                    my_sort<ELEM_TYPE>(array_begin, array_size,
+                            [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
+                                if (IS_PROGRESS) {
+                                    //Update the progress bar status
+                                    Logger::updateProgressBar();
+                                }
+                                //Return the result
+                                return (first < second);
+                            });
                 }
 
                 /**

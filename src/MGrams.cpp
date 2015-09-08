@@ -329,18 +329,7 @@ namespace uva {
                 //This is an array of functions for creating m-grams per specific m-gram level m
                 const static create_x_gram_id create_x_gram_funcs[] = {create_2_gram_id, create_3_gram_id, create_4_gram_id, create_5_gram_id};
 
-                /**
-                 * This function allows to create an M-gram id for a given M-gram
-                 * 
-                 * This implementation should work up to 6-grams! If we use it for
-                 * 7-grams then the internal computations will overflow!
-                 * 
-                 * @param gram the M-gram to create the id for
-                 * @param p_word_idx the used word index
-                 * @param m_gram_id [out] the reference to the M-gram id to be created
-                 * @return true if the M-gram id could be created, otherwise false
-                 */
-                static inline bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, uint8_t * & m_gram_id) {
+                bool T_Compressed_M_Gram_Id::set_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
                     if (DO_SANITY_CHECKS && ((gram.level < M_GRAM_LEVEL_2) || (gram.level > M_GRAM_LEVEL_5))) {
                         stringstream msg;
                         msg << "create_m_gram_id: Unsupported m-gram level: "
@@ -352,14 +341,10 @@ namespace uva {
 
                     //Call the appropriate function, use array instead of switch, should be faster.
                     return create_x_gram_funcs[gram.level - M_GRAM_LEVEL_2](gram.tokens, p_word_idx, m_gram_id);
-                };
-
-                bool T_Compressed_M_Gram_Id::create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
-                    return ::uva::smt::tries::mgrams::create_m_gram_id(gram, p_word_idx, m_gram_id);
                 }
 
                 T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx) {
-                    if (!create_m_gram_id(gram, p_word_idx)) {
+                    if (!set_m_gram_id(gram, p_word_idx)) {
                         stringstream msg;
                         msg << "Could not create an " << SSTR(gram.level)
                                 << "-gram id for: " << tokensToString(gram);
@@ -380,6 +365,9 @@ namespace uva {
 
                     //Allocate maximum memory that could be needed to store the given M-gram level id
                     m_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                }
+
+                T_Compressed_M_Gram_Id::T_Compressed_M_Gram_Id() : m_gram_id(NULL) {
                 }
 
                 template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
@@ -421,12 +409,65 @@ namespace uva {
                                     }
                                 }
                             }
-                            
+
                             //We've finished iterating and since we are still here, the ids are equal
                             return !IS_LESS;
                         }
                     }
                 };
+
+                /***********************************************************************************************************************/
+                
+                /**
+                 * Define the function pointer to compare two X-grams of the given level X
+                 */
+                typedef bool(* is_compare_grams_id_func)(const T_Compressed_M_Gram_Id &, const T_Compressed_M_Gram_Id &);
+
+                static inline bool is_less_2_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<true, M_GRAM_LEVEL_2>(one, two);
+                }
+
+                static inline bool is_less_3_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<true, M_GRAM_LEVEL_3>(one, two);
+                }
+
+                static inline bool is_less_4_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<true, M_GRAM_LEVEL_4>(one, two);
+                }
+
+                static inline bool is_less_5_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<true, M_GRAM_LEVEL_5>(one, two);
+                }
+
+                //This is an array of functions for comparing x-grams of level x
+                const static is_compare_grams_id_func is_less_x_grams_id_funcs[] = {is_less_2_grams_id, is_less_3_grams_id, is_less_4_grams_id, is_less_5_grams_id};
+
+                bool is_less_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level) {
+                    return is_less_x_grams_id_funcs[level - M_GRAM_LEVEL_2](one, two);
+                }
+
+                static inline bool is_more_2_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<false, M_GRAM_LEVEL_2>(one, two);
+                }
+
+                static inline bool is_more_3_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<false, M_GRAM_LEVEL_3>(one, two);
+                }
+
+                static inline bool is_more_4_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<false, M_GRAM_LEVEL_4>(one, two);
+                }
+
+                static inline bool is_more_5_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two) {
+                    return T_Compressed_M_Gram_Id::compare<false, M_GRAM_LEVEL_5>(one, two);
+                }
+
+                //This is an array of functions for comparing x-grams of level x
+                const static is_compare_grams_id_func is_more_x_grams_id_funcs[] = {is_more_2_grams_id, is_more_3_grams_id, is_more_4_grams_id, is_more_5_grams_id};
+
+                bool is_more_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level) {
+                    return is_more_x_grams_id_funcs[level - M_GRAM_LEVEL_2](one, two);
+                }
 
             }
         }

@@ -51,6 +51,7 @@
       <itemPath>src/C2DHashMapTrie.cpp</itemPath>
       <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
+      <itemPath>src/G2DHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/MGrams.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
@@ -224,6 +225,8 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
@@ -335,6 +338,8 @@
       <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -458,6 +463,8 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
@@ -570,6 +577,8 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
@@ -681,6 +690,8 @@
       <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>

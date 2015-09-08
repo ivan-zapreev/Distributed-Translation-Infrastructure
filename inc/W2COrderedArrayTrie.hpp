@@ -221,7 +221,6 @@ namespace uva {
                         return true;
                     } else {
                         //The data could not be found
-
                         return false;
                     }
                 };
@@ -242,8 +241,7 @@ namespace uva {
                     //Store the context and word ids
                     ref.ctxId = ctxId;
 
-                    //return the reference to the probability
-
+                    //Return the reference to the probability
                     return ref.prob;
                 };
 
@@ -263,7 +261,7 @@ namespace uva {
                         prob = pEntry->prob;
                         return true;
                     } else {
-
+                        //The data could not be found
                         return false;
                     }
                 };
@@ -313,8 +311,7 @@ namespace uva {
 
                 virtual void post_m_grams(const TModelLevel level) {
                     //Call the base class method first
-
-                    ALayeredTrie<N>::post_n_grams();
+                    ALayeredTrie<N>::post_m_grams(level);
 
                     //Sort the level's data
                     post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET]);
@@ -322,7 +319,6 @@ namespace uva {
 
                 virtual void post_n_grams() {
                     //Call the base class method first
-
                     ALayeredTrie<N>::post_n_grams();
 
                     //Sort the level's data
@@ -356,7 +352,7 @@ namespace uva {
                  * @param wordId the word id we need the new context entry from
                  */
                 template<typename WORD_ENTRY_TYPE>
-                typename WORD_ENTRY_TYPE::TElemType & make_M_N_GramEntry(WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId) {
+                static inline typename WORD_ENTRY_TYPE::TElemType & make_M_N_GramEntry(WORD_ENTRY_TYPE* wordsArray, const TShortId & wordId) {
                     LOG_DEBUG2 << "Making entry for M-gram with wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Return the next new element new/free!

@@ -32,6 +32,7 @@
 
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
+#include "MGrams.hpp"
 
 #include "TextPieceReader.hpp"
 
@@ -44,34 +45,26 @@ using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
-
-using namespace __G2DHashMapTrie;
+using namespace uva::smt::tries::mgrams;
+using namespace uva::smt::tries::__G2DHashMapTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
             namespace __G2DHashMapTrie {
+
                 /**
                  * This template structure is used for storing trie hash map elements
                  * Each element contains and id of the m-gram and its payload -
                  * the probability/back-off data, the latter is the template parameter
                  */
-                template<typename PAYLOAD_TYPE, typename M_GRAM_ID_TYPE>
+                template<typename M_GRAM_ID_TYPE, typename PAYLOAD_TYPE>
                 struct S_M_GramData {
-                    M_GRAM_ID_TYPE * id;
-                    PAYLOAD_TYPE data;
-                };
+                    M_GRAM_ID_TYPE m_gram_id;
+                    PAYLOAD_TYPE payload;
 
-                /**
-                 * This structure represents a trie level entry bucket
-                 * it stores the bucket capacity, size and the pointer to its elements.
-                 */
-                template<typename PAYLOAD_TYPE, typename M_GRAM_ID_TYPE>
-                struct STrieBucket {
-                    S_M_GramData<PAYLOAD_TYPE, M_GRAM_ID_TYPE> * grams;
-                    uint8_t capacity;
-                    uint8_t size;
+                    typedef M_GRAM_ID_TYPE TMGramIdType;
                 };
             }
 
@@ -87,100 +80,48 @@ namespace uva {
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit G2DHashMapTrie(AWordIndex * const _pWordIndex)
-                : ATrie<N>(_pWordIndex), m_1_gram_data(NULL), m_N_gram_data(NULL) {
-                    //Initialize the array of number of gram ids per level
-                    memset(num_buckets, 0, N * sizeof (TShortId));
-
-                    //Clear the M-Gram bucket arrays
-                    memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket));
-
-                    //Get the memory increase strategy
-                    m_p_mem_strat = getMemIncreaseStrategy(__G2DHashMapTrie::MEM_INC_TYPE,
-                            __G2DHashMapTrie::MIN_MEM_INC_NUM, __G2DHashMapTrie::MEM_INC_FACTOR);
-
-                    LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
-                    LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()
-                            << "' memory allocation strategy." << END_LOG;
-                }
+                explicit G2DHashMapTrie(AWordIndex * const _pWordIndex);
 
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]) {
-                    //Call the base-class
-                    ATrie<N>::pre_allocate(counts);
-
-                    //02) Pre-allocate the 1-Gram data
-                    num_buckets[0] = ATrie<N>::get_word_index()->get_words_count(counts[0]);
-                    m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
-                    memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
-
-                    //03) Insert the unknown word data into the allocated array
-                    TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
-                    pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
-                    pbData.back_off = ZERO_BACK_OFF_WEIGHT;
-
-                    //Compute the number of M-Gram level buckets and pre-allocate them
-                    for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                        num_buckets[idx + 1] = counts[idx + 1];
-                        m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
-                    }
-
-                    //Compute the number of N-Gram level buckets and pre-allocate them
-                    num_buckets[N - 1] = counts[N - 1];
-                    m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
-                };
+                virtual void pre_allocate(const size_t counts[N]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                virtual void add_1_gram(const T_M_Gram &oGram) {
-                    //Register a new word, and the word id will be the one-gram id
-                    const TShortId oneGramId = ATrie<N>::get_word_index()->register_word(oGram.tokens[0]);
-                    //Store the probability data in the one gram data storage, under its id
-                    m_1_gram_data[oneGramId].prob = oGram.prob;
-                    m_1_gram_data[oneGramId].back_off = oGram.back_off;
-                };
+                virtual void add_1_gram(const T_M_Gram &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
-                virtual void add_m_gram(const T_M_Gram &mGram) {
-                    //Compute the hash value for the given M-gram, it must
-                    //be the M-Gram id in the M-Gram data storage
-                    const TShortId mGramHash = mGram.hash();
-                    //Compute the bucket Id from the M-Gram hash
-                    const TShortId bucketId = mGramHash % num_buckets[mGram.level];
-
-                    //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucketId < 0) || (bucketId >= num_buckets[mGram.level]))) {
-                        stringstream msg;
-                        msg << "The " << SSTR(mGram.level) << "-gram: " << tokensToString<N>(mGram)
-                                << " was given an incorrect hash: " << SSTR(bucketId)
-                                << ", must be within [0, " << SSTR(num_buckets[mGram.level]) << "]";
-                        throw Exception(msg.str());
-                    }
-
-                    //ToDo: Create a new M-Gram Id (unique) and then add it to the data
-
-                    throw Exception("add_M_Gram");
-                };
+                virtual void add_m_gram(const T_M_Gram &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                virtual void add_n_gram(const T_M_Gram &nGram) {
-                    //ToDo: Implement
-                    throw Exception("add_N_Gram");
-                };
+                virtual void add_n_gram(const T_M_Gram &nGram);
+
+                /**
+                 * This method allows to check if post processing should be called after
+                 * all the X level grams are read. This method is virtual.
+                 * @see ATrie
+                 */
+                virtual bool is_post_grams(const TModelLevel level) {
+                    //Check the base class and we need to do post actions
+                    //for all the M-grams with 1 < M <= N. The M-grams level
+                    //data has to be ordered per bucket per id, see
+                    //post_M_Grams, and post_N_Grams methods below.
+
+                    return (level > M_GRAM_LEVEL_1) || ATrie<N>::is_post_grams(level);
+                }
 
                 /**
                  * This method will get the N-gram in a form of a vector, e.g.:
@@ -188,50 +129,106 @@ namespace uva {
                  * and will compute and return the Language Model Probability for it
                  * @see ATrie
                  */
-                virtual void query(const T_M_Gram & ngram, TQueryResult & result) {
-                    //ToDo: Implement
-                    throw Exception("queryNGram");
-                };
+                virtual void query(const T_M_Gram & ngram, TQueryResult & result);
 
                 /**
                  * The basic class destructor
                  */
-                virtual ~G2DHashMapTrie() {
-                    //Check that the one grams were allocated, if yes then the rest must have been either
-                    if (m_1_gram_data != NULL) {
-                        //De-allocate one grams
-                        delete[] m_1_gram_data;
-                        //De-allocate M-Grams
-                        for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                            delete[] m_M_gram_data[idx];
-                        }
-                        //De-allocate N-Grams
-                        delete[] m_N_gram_data;
-                    }
-                };
+                virtual ~G2DHashMapTrie();
 
             protected:
 
+                virtual void post_m_grams(const TModelLevel level);
+                virtual void post_n_grams();
+
+                /**
+                 * Allows to get the bucket index for the given M-gram
+                 * @param gram the M-gram to compute the bucked index for
+                 * @param bucket_idx the resulting bucket index
+                 */
+                inline void get_bucket_id(const T_M_Gram &gram, TShortId & bucket_idx) {
+                    //Compute the hash value for the given M-gram, it must
+                    //be the M-Gram id in the M-Gram data storage
+                    const TShortId gramHash = gram.hash();
+                    //Compute the bucket Id from the M-Gram hash
+                    bucket_idx = gramHash % num_buckets[gram.level];
+
+                    //If the sanity check is on then check on that the id is within the range
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level]))) {
+                        stringstream msg;
+                        msg << "The " << SSTR(gram.level) << "-gram: " << tokensToString<N>(gram)
+                                << " was given an incorrect hash: " << SSTR(bucket_idx)
+                                << ", must be within [0, " << SSTR(num_buckets[gram.level]) << "]";
+                        throw Exception(msg.str());
+                    }
+                }
+
+                /**
+                 * Performs the post-processing actions on the buckets in the given M-gram level
+                 * @param BUCKET_TYPE the sort of buckets we should work with
+                 * @param buckets the pointer to the array of buckets to process
+                 * @param level the M-gram level value M
+                 */
+                template<typename BUCKET_TYPE>
+                void post_M_N_Grams(BUCKET_TYPE * buckets, const TModelLevel level) {
+                    //Iterate through all buckets and shrink/sort sub arrays
+                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[level - 1]; ++bucket_idx) {
+                        //First get the sub-array reference. 
+                        BUCKET_TYPE & ref = buckets[bucket_idx];
+
+                        //Reduce capacity if there is unused memory
+                        ref.shrink();
+
+                        //Order the N-gram array as it is unordered and we will binary search it later!
+                        ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
+                            //Update the progress bar status
+                            Logger::updateProgressBar();
+                            //Return the result
+                            return is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
+                        });
+                    }
+                }
 
             private:
+
+                /**
+                 * This structure represents a trie level entry bucket
+                 * it stores the bucket capacity, size and the pointer to its elements.
+                 */
+                template<typename ARRAY_ELEM_TYPE>
+                class STrieBucket : public ADynamicStackArray<ARRAY_ELEM_TYPE> {
+                public:
+                    typedef ARRAY_ELEM_TYPE TElemType;
+
+                    /**
+                     * Allows to get the memory allocation strategy, from the child
+                     * @return the memory strategy
+                     */
+                    virtual const MemIncreaseStrategy * get_mem_strat() {
+                        return G2DHashMapTrie::m_p_mem_strat;
+                    };
+                };
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef __G2DHashMapTrie::STrieBucket<TProbBackOffEntry, T_Compressed_M_Gram_Id > TProbBackOffBucket;
+                typedef S_M_GramData<T_Compressed_M_Gram_Id, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef STrieBucket<T_M_Gram_Prob_Back_Off_Entry> TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef __G2DHashMapTrie::STrieBucket<TLogProbBackOff, T_Compressed_M_Gram_Id > TProbBucket;
+                typedef S_M_GramData<T_Compressed_M_Gram_Id, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef STrieBucket<T_M_Gram_Prob_Entry> TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
                 TShortId num_buckets[N];
 
                 //Stores the memory increase strategy object
-                MemIncreaseStrategy * m_p_mem_strat;
+                const static MemIncreaseStrategy * m_p_mem_strat;
             };
+
         }
     }
 }

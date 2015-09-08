@@ -123,6 +123,10 @@ namespace uva {
 
                 /**
                  * The compressed implementation of the M-gram id class
+                 * 
+                 * WARNING: Do not inherit from this class, or do it carefully as its destructor is not virtual!
+                 * 
+                 * NOTE: We could have made this class "final" but Netbeans does not understand this C++11 keyword yet
                  */
                 class T_Compressed_M_Gram_Id {
                 public:
@@ -149,36 +153,69 @@ namespace uva {
                     T_Compressed_M_Gram_Id(const TModelLevel level);
 
                     /**
+                     * The basic constructor that does not allocate any memory.
+                     * Creates an empty id that is to be filled in with the
+                     *      @see T_Compressed_M_Gram_Id::set_m_gram_id(const T_M_Gram & , const AWordIndex * )
+                     *  method.
+                     */
+                    T_Compressed_M_Gram_Id();
+
+                    /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
-                     * The memory will not be re-allocated to it is assumed theat this instance was created with
-                     * the one argument constructor of this class allocated maximum needed memory for this level.
-                     * The argument M-gram level must be smaller or equal to  the level this object was created with.
+                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
+                     * as needed to store the given id.
+                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed
+                     * theat this instance was created with the one argument constructor of this class allocated
+                     * maximum needed memory for this level. Then the argument M-gram level must be smaller or
+                     * equal to  the level this object was created with.
                      * @param gram the M-gram to create the id for
                      * @param p_word_idx the word index
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
+                    bool set_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
 
-                    virtual ~T_Compressed_M_Gram_Id() {
+                    /**
+                     * This is a basic destructor.
+                     * WARNING: It is made non-virtual to be usable with the @see ADynamicStackArray class
+                     */
+                    ~T_Compressed_M_Gram_Id() {
                         if (m_gram_id != NULL) {
                             delete[] m_gram_id;
                         }
                     }
 
-                /**
-                 * Allows to compare two M-Gram ids depending on the template flag it is a different operator
-                 * @param IS_LESS if true the it is a is_less compare, if false then is_more
-                 * @param one the first M-gram id
-                 * @param two the second M-gram id
-                 * @return true if "one < two" otherwise false
-                 */
-                template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
-                static bool compare( const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two);
+                    /**
+                     * Allows to compare two M-Gram ids depending on the template flag it is a different operator
+                     * @param IS_LESS if true the it is a is_less compare, if false then is_more
+                     * @param one the first M-gram id
+                     * @param two the second M-gram id
+                     * @return true if "one < two" otherwise false
+                     */
+                    template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
+                    static bool compare(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two);
 
                 protected:
                     //This should store the unique identifier of the M-gram allocated with a new operator
                     uint8_t * m_gram_id;
                 };
+
+                /**
+                 * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                 * @param one the first M-gram to compare
+                 * @param two the second M-gram to compare
+                 * @param level the M-grams' level M
+                 * @return true if the first M-gram is "smaller" than the second, otherwise false
+                 */
+                bool is_less_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level);
+
+                /**
+                 * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                 * @param one the first M-gram to compare
+                 * @param two the second M-gram to compare
+                 * @param level the M-grams' level M
+                 * @return true if the first M-gram is "larger" than the second, otherwise false
+                 */
+                bool is_more_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level);
             }
         }
     }
