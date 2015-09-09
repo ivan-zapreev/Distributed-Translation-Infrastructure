@@ -210,7 +210,7 @@ namespace uva {
                  * it stores the bucket capacity, size and the pointer to its elements.
                  */
                 template<typename ELEMENT_TYPE, typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-                class STrieBucket : public ADynamicStackArray<ELEMENT_TYPE, DESTRUCTOR> {
+                class STrieBucket : public ADynamicStackArray<ELEMENT_TYPE,  uint8_t, DESTRUCTOR> {
                 public:
                     typedef ELEMENT_TYPE TElemType;
 

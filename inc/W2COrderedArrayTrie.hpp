@@ -135,7 +135,7 @@ namespace uva {
                  * @param cio the context index offset for computing the next contex index.
                  */
                 template<typename ARRAY_ELEM_TYPE>
-                class WordDataEntry : public ADynamicStackArray<ARRAY_ELEM_TYPE> {
+                class WordDataEntry : public ADynamicStackArray<ARRAY_ELEM_TYPE,  uint16_t> {
                 public:
                     TShortId cio;
                     typedef ARRAY_ELEM_TYPE TElemType;

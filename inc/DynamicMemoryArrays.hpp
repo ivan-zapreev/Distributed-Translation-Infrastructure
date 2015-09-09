@@ -180,19 +180,21 @@ namespace uva {
                 /**
                  * This class represents a dynamic memory array and stores the main methods needed for its operation
                  * @param ELEMENT_TYPE the array element type
-                 * @param DO_DESTROY if true then a "void destroy()" method will be called on the
-                 *  array element when destruction of this storage before memory is deallocated
+                 * @param SIZE_T the type is to be used for the size, capacity and index variables, should be an unsigned type!
+                 * @param DESTRUCTOR the destructor function to be used on the elements when the container is deleted, default is NULL
                  */
-                template<typename ELEMENT_TYPE,
-                        typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = (typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr)NULL>
+                template<typename ELEMENT_TYPE, typename SIZE_T,
+                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = (typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr)NULL>
                 class ADynamicStackArray {
                 public:
+                    //Stores the maximum value allowed by SIZE_T
+                    static const size_t MAX_SIZE_TYPE_VALUE;
 
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
                      * @param capacity the initial capacity to allocate
                      */
-                    ADynamicStackArray(const size_t capacity)
+                    ADynamicStackArray(const SIZE_T capacity)
                     : m_ptr(NULL), m_capacity(0), m_size(0) {
                         //Set the initial capacity and memory strategy via one method
                         pre_allocate(capacity);
@@ -209,7 +211,7 @@ namespace uva {
                      * Allows pre-allocate some capacity
                      * @param capacity the capacity to pre-allocate
                      */
-                    inline void pre_allocate(const size_t capacity) {
+                    inline void pre_allocate(const SIZE_T capacity) {
                         //Reallocate to the desired capacity, if needed
                         if (capacity > m_capacity) {
                             reallocate(capacity);
@@ -250,7 +252,7 @@ namespace uva {
                      * @return the reference to the array element under the given index
                      * @throws out_of_range exception if the index is outside the array size.
                      */
-                    inline const ELEMENT_TYPE & operator[](TShortId idx) const {
+                    inline const ELEMENT_TYPE & operator[](SIZE_T idx) const {
                         if (idx < m_size) {
                             return m_ptr[idx];
                         } else {
@@ -265,7 +267,7 @@ namespace uva {
                      * Allows to retrieve the currently used number of elements 
                      * @return the number of elements stored in the stack array.
                      */
-                    inline size_t get_size() const {
+                    inline SIZE_T get_size() const {
                         return m_size;
                     }
 
@@ -308,9 +310,9 @@ namespace uva {
                      */
                     virtual ~ADynamicStackArray() {
                         if (m_ptr != NULL) {
-                            if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR ) {
+                            if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
                                 //Call the destructors on the allocated objects
-                                for (size_t idx = 0; idx < m_size; ++idx) {
+                                for (SIZE_T idx = 0; idx < m_size; ++idx) {
                                     LOG_DEBUG3 << "Deallocating an element [" << SSTR(idx)
                                             << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
                                     DESTRUCTOR(m_ptr[idx]);
@@ -331,15 +333,15 @@ namespace uva {
                     //The pointer to the stored array elements
                     ELEMENT_TYPE * m_ptr;
                     //Stores the capacity - already allocated memory for this array
-                    size_t m_capacity;
+                    SIZE_T m_capacity;
                     //Stores the number of used elements, the size of this array
-                    size_t m_size;
+                    SIZE_T m_size;
 
                     /**
                      * This methods allows to reallocate the data to the new capacity
                      * @param new_capacity the desired new capacity
                      */
-                    void reallocate(size_t new_capacity) {
+                    void reallocate(SIZE_T new_capacity) {
                         LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
                                 << ", the old capacity was " << SSTR(m_capacity)
                                 << ", used size: " << SSTR(m_size) << ", ptr: "
@@ -355,7 +357,7 @@ namespace uva {
                         if (new_capacity > m_capacity) {
                             //const size_t new_num_elem = (new_capacity - m_capacity);
                             //memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
-                            for (size_t idx = m_capacity; idx < new_capacity; ++idx) {
+                            for (SIZE_T idx = m_capacity; idx < new_capacity; ++idx) {
                                 new(static_cast<void *> (&m_ptr[idx])) ELEMENT_TYPE();
                                 LOG_DEBUG3 << "Creating a new element [" << SSTR(idx)
                                         << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
@@ -387,7 +389,7 @@ namespace uva {
                      */
                     template<bool IS_INC = true >
                     void reallocate() {
-                        size_t new_capacity;
+                        SIZE_T new_capacity;
 
                         LOG_DEBUG2 << "Memory reallocation request: "
                                 << ((IS_INC) ? "increase" : "decrease") << END_LOG;
@@ -395,7 +397,24 @@ namespace uva {
                         //Compute the new number of elements
                         if (IS_INC) {
                             //Compute the new capacity
-                            new_capacity = get_mem_strat()->computeNewCapacity(m_capacity);
+                            size_t advised_capacity = get_mem_strat()->computeNewCapacity(m_capacity);
+                            //Check if the given capacity passes within the maximum allowed values for capacity etc
+                            if (advised_capacity <= MAX_SIZE_TYPE_VALUE) {
+                                //If it passes then set it in
+                                new_capacity = (SIZE_T) advised_capacity;
+                            } else {
+                                //If it does not pass then try to see if we can still allocate something
+                                if (m_capacity < MAX_SIZE_TYPE_VALUE) {
+                                    //If we can still allocate more, then go to the max!
+                                    new_capacity = MAX_SIZE_TYPE_VALUE;
+                                } else {
+                                    //We are already at full capacity! Panic!!!!
+                                    stringstream msg;
+                                    msg << "Unable to increase the capacity, reached the maximum of "
+                                            << SSTR(MAX_SIZE_TYPE_VALUE) << " allowed by the data type!";
+                                    throw Exception(msg.str());
+                                }
+                            }
                             LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
                         } else {
                             //Decrease the capacity to the current size, remove the unneeded
@@ -406,6 +425,56 @@ namespace uva {
                         reallocate(new_capacity);
                     }
                 };
+
+                //Stores the maximum values of the available unsigned types until and including uint64_t.
+                static const size_t MAX_U_TYPE_VALUES[] = {
+#ifdef __INT8_TYPE__
+                    UINT8_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT16_TYPE__
+                    UINT16_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT24_TYPE__
+                    UINT24_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT32_TYPE__
+                    UINT32_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT40_TYPE__
+                    UINT40_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT48_TYPE__
+                    UINT48_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT56_TYPE__
+                    UINT56_MAX,
+#else
+                    0,
+#endif
+#ifdef __INT64_TYPE__
+                    UINT64_MAX
+#else
+                    0,
+#endif
+                };
+
+                //Get the maximum value for the given template type
+                template<typename ELEMENT_TYPE, typename SIZE_T,
+                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
+                const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (SIZE_T) - 1];
+
             }
         }
     }
