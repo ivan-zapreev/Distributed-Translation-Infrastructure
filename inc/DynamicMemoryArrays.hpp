@@ -202,18 +202,18 @@ namespace uva {
                      * The basic constructor, that allows to pre-allocate some memory
                      * @param capacity the initial capacity to allocate
                      */
-                    ADynamicStackArray(const SIZE_T capacity)
-                    : m_ptr(NULL), m_capacity(0), m_size(0) {
-                        //Set the initial capacity and memory strategy via one method
-                        pre_allocate(capacity);
-                    }
+                    //ADynamicStackArray(const SIZE_T capacity)
+                    //: m_ptr(NULL), m_capacity(0), m_size(0) {
+                    //    //Set the initial capacity and memory strategy via one method
+                    //    pre_allocate(capacity);
+                    //}
 
                     /**
                      * The basic constructor, does not pre-allocate any memory
                      */
-                    ADynamicStackArray()
-                    : m_ptr(NULL), m_capacity(0), m_size(0) {
-                    }
+                    //ADynamicStackArray()
+                    //: m_ptr(NULL), m_capacity(0), m_size(0) {
+                    //}
 
                     /**
                      * Allows pre-allocate some capacity

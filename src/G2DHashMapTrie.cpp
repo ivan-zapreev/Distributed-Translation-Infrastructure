@@ -46,9 +46,20 @@ namespace uva {
                 //Clear the M-Gram bucket arrays
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
+                LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
+                        << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << "' memory allocation strategy." << END_LOG;
+            };
+
+            template<typename ELEMENT_TYPE, typename SIZE_T>
+            struct My_test {
+                //The pointer to the stored array elements
+                ELEMENT_TYPE * m_ptr;
+                //Stores the capacity - already allocated memory for this array
+                SIZE_T m_capacity;
+                //Stores the number of used elements, the size of this array
+                SIZE_T m_size;
             };
 
             template<TModelLevel N>
@@ -65,8 +76,9 @@ namespace uva {
                 TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
-                
-                LOG_DEBUG1 << "sizeof(TProbBackOffBucket)= " << sizeof(TProbBackOffBucket) << END_LOG;
+
+                LOG_INFO3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
+                LOG_INFO3 << "sizeof(My_test)= " << sizeof (My_test<T_M_Gram_Prob_Back_Off_Entry,uint8_t>) << END_LOG;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
@@ -74,7 +86,8 @@ namespace uva {
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
-                LOG_DEBUG1 << "sizeof(TProbBucket)= " << sizeof(TProbBucket) << END_LOG;
+                LOG_INFO3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
+                LOG_INFO3 << "sizeof(My_test)= " << sizeof (My_test<T_M_Gram_Prob_Entry,uint8_t>) << END_LOG;
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
