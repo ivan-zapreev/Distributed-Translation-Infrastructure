@@ -149,7 +149,8 @@ namespace uva {
                             string & word = word_infos[idx].word;
                             //Give it the next index
                             BasicWordIndex::_pWordIndexMap->operator[](word) = BasicWordIndex::_nextNewWordId++;
-                            LOG_DEBUG3 << "Word [" << word << "] gets id: " << SSTR(BasicWordIndex::_nextNewWordId - 1) << END_LOG;
+                            LOG_DEBUG4 << "Word [" << word << "], count: " << SSTR(word_infos[idx].count)
+                                    << " gets id: " << SSTR(BasicWordIndex::_nextNewWordId - 1) << END_LOG;
                         }
 
                         //05. Delete the temporary sorted array
