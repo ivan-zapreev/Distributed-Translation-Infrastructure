@@ -70,6 +70,9 @@ namespace uva {
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                 };
 
+                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                
                 template<typename ELEMENT_TYPE>
                 static inline void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
                     Comp_M_Gram_Id::destroy(elem.m_gram_id);
@@ -217,13 +220,11 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef __G2DHashMapTrie::S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBackOffBucket;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry> > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef __G2DHashMapTrie::S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
-                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBucket;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
