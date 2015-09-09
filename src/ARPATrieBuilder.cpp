@@ -160,8 +160,6 @@ namespace uva {
                         throw Exception(msg.str());
                     }
 
-                    LOG_INFO << "Expected number of M-grams per level: " << arrayToString<size_t, N>(counts) << END_LOG;
-
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
 
@@ -395,6 +393,9 @@ namespace uva {
 
                         //Read the DATA section of ARPA
                         read_data(counts);
+
+                        LOG_INFO << "Expected number of M-grams per level: "
+                                << arrayToString<size_t, N>(counts) << END_LOG;
 
                         //Provide the N-Gram counts data to the Trie
                         m_trie.pre_allocate(counts);
