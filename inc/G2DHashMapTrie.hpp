@@ -66,6 +66,11 @@ namespace uva {
 
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                 };
+
+                template<typename ELEMENT_TYPE>
+                static inline void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
+                    Comp_M_Gram_Id::destroy(elem.m_gram_id);
+                }
             }
 
             /**
@@ -178,20 +183,20 @@ namespace uva {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " ..." << END_LOG;
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
-                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " is done" << END_LOG;
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
-                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " ..." << END_LOG;
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
                             //Update the progress bar status
                             Logger::updateProgressBar();
                             //Return the result
-                            return Compressed_M_Gram_Id::is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
+                            return Comp_M_Gram_Id::is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
                         });
-                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " is done" << END_LOG;
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
                 }
 
@@ -201,10 +206,10 @@ namespace uva {
                  * This structure represents a trie level entry bucket
                  * it stores the bucket capacity, size and the pointer to its elements.
                  */
-                template<typename ARRAY_ELEM_TYPE>
-                class STrieBucket : public ADynamicStackArray<ARRAY_ELEM_TYPE> {
+                template<typename ELEMENT_TYPE, typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
+                class STrieBucket : public ADynamicStackArray<ELEMENT_TYPE, DESTRUCTOR> {
                 public:
-                    typedef ARRAY_ELEM_TYPE TElemType;
+                    typedef ELEMENT_TYPE TElemType;
 
                     /**
                      * Allows to get the memory allocation strategy, from the child
@@ -220,12 +225,12 @@ namespace uva {
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
                 typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef STrieBucket<T_M_Gram_Prob_Back_Off_Entry> TProbBackOffBucket;
+                typedef STrieBucket<T_M_Gram_Prob_Back_Off_Entry, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
                 typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
-                typedef STrieBucket<T_M_Gram_Prob_Entry> TProbBucket;
+                typedef STrieBucket<T_M_Gram_Prob_Entry, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level

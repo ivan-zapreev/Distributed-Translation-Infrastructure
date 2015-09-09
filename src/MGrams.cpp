@@ -49,7 +49,7 @@ namespace uva {
     namespace smt {
         namespace tries {
             namespace mgrams {
-                namespace Compressed_M_Gram_Id {
+                namespace Comp_M_Gram_Id {
 
                     //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                     static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {

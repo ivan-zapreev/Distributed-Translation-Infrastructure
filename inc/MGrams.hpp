@@ -129,7 +129,7 @@ namespace uva {
                  * Made in form of a namespace for the sake of minimizing the
                  * memory consumption
                  */
-                namespace Compressed_M_Gram_Id {
+                namespace Comp_M_Gram_Id {
 
                     //The memory in bits needed to store different M-gram id types in
                     //the M-gram id byte arrays

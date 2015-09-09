@@ -26,6 +26,7 @@
 #include <functional>   // std::function 
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
+#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -165,9 +166,22 @@ namespace uva {
                 };
 
                 /**
-                 * This class represents a dynamic memory array and stores the main methods needed for its operation
+                 * The element deallocator function type for the ADynamicStackArray
                  */
-                template<typename ELEMENT_TYPE>
+                template<typename ELEM_TYPE>
+                struct ELEMENT_DEALLOC_FUNC {
+                    typedef std::function<void(ELEM_TYPE &) > func_type;
+                    typedef void(* func_ptr)(ELEM_TYPE &);
+                };
+
+                /**
+                 * This class represents a dynamic memory array and stores the main methods needed for its operation
+                 * @param ELEMENT_TYPE the array element type
+                 * @param DO_DESTROY if true then a "void destroy()" method will be called on the
+                 *  array element when destruction of this storage before memory is deallocated
+                 */
+                template<typename ELEMENT_TYPE,
+                        typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = (typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr)NULL>
                 class ADynamicStackArray {
                 public:
 
@@ -291,11 +305,13 @@ namespace uva {
                      */
                     virtual ~ADynamicStackArray() {
                         if (m_ptr != NULL) {
-                            //Call the destructors on the allocated objects
-                            for (size_t idx = 0; idx < m_size; ++idx) {
-                                LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
-                                        << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
-                                m_ptr[idx].~ELEMENT_TYPE();
+                            if (DESTRUCTOR != NULL) {
+                                //Call the destructors on the allocated objects
+                                for (size_t idx = 0; idx < m_size; ++idx) {
+                                    LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
+                                            << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
+                                    DESTRUCTOR(m_ptr[idx]);
+                                }
                             }
                             //Free the allocated arrays
                             free(m_ptr);
