@@ -76,15 +76,19 @@ namespace uva {
                 TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
+                
+                LOG_INFO3 << "sizeof(TProbBackOffBucket)= " << sizeof(TProbBackOffBucket) << END_LOG;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = counts[idx + 1] / 2;
+                    num_buckets[idx + 1] = counts[idx + 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
+                LOG_INFO3 << "sizeof(TProbBucket)= " << sizeof(TProbBucket) << END_LOG;
+
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[N - 1] = counts[N - 1] / 2;
+                num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 

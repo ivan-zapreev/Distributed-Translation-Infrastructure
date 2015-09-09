@@ -133,16 +133,21 @@ namespace uva {
 
             namespace __G2DHashMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                const float MEM_INC_FACTOR = 0.3;
+                static const float MEM_INC_FACTOR = 0.3;
 
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
-                const size_t MIN_MEM_INC_NUM = 1;
+                static const size_t MIN_MEM_INC_NUM = 1;
 
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+                static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+                
+                //This is the factor that is used to define the number of buckets in
+                //the G2DHashMapTrie. The number of buckets per trie level is defined as
+                //the number of M-grams in this level divided by this factor value 
+                static const size_t NUMBER_OF_BUCKETS_FACTOR = 2;
             }
 
             namespace __W2COrderedArrayTrie {
