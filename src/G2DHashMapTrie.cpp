@@ -52,16 +52,6 @@ namespace uva {
                         << "' memory allocation strategy." << END_LOG;
             };
 
-            template<typename ELEMENT_TYPE, typename SIZE_T>
-            struct My_test {
-                //The pointer to the stored array elements
-                ELEMENT_TYPE * m_ptr;
-                //Stores the capacity - already allocated memory for this array
-                SIZE_T m_capacity;
-                //Stores the number of used elements, the size of this array
-                SIZE_T m_size;
-            };
-
             template<TModelLevel N>
             void G2DHashMapTrie<N>::pre_allocate(const size_t counts[N]) {
                 //Call the base-class
@@ -78,7 +68,6 @@ namespace uva {
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
                 LOG_INFO3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
-                LOG_INFO3 << "sizeof(My_test)= " << sizeof (My_test<T_M_Gram_Prob_Back_Off_Entry,uint8_t>) << END_LOG;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
@@ -87,7 +76,6 @@ namespace uva {
                 }
 
                 LOG_INFO3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
-                LOG_INFO3 << "sizeof(My_test)= " << sizeof (My_test<T_M_Gram_Prob_Entry,uint8_t>) << END_LOG;
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;

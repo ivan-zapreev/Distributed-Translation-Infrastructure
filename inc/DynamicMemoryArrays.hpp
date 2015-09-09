@@ -88,7 +88,7 @@ namespace uva {
                             throw Exception("Inappropriate minimum memory increment!");
                         }
                     }
-                    
+
                     MemIncreaseStrategy()
                     : m_stype(MemIncTypesEnum::UNDEFINED), m_get_capacity_inc_func(NULL),
                     m_min_mem_inc(0), m_mem_inc_factor(0) {
@@ -195,25 +195,55 @@ namespace uva {
                     //Stores the maximum value allowed by SIZE_T
                     static const size_t MAX_SIZE_TYPE_VALUE;
 
+                    //Stores the size of the array where the data is packed
+                    static const size_t PARAMETERS_SIZE_BYTES;
+
                     //Make the element type publicly available
                     typedef ELEMENT_TYPE TElemType;
-                    
+
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
                      * @param capacity the initial capacity to allocate
                      */
-                    //ADynamicStackArray(const SIZE_T capacity)
-                    //: m_ptr(NULL), m_capacity(0), m_size(0) {
-                    //    //Set the initial capacity and memory strategy via one method
-                    //    pre_allocate(capacity);
-                    //}
+                    ADynamicStackArray(const SIZE_T capacity)
+                    : ADynamicStackArray() {
+                        //Set the initial capacity and memory strategy via one method
+                        pre_allocate(capacity);
+                    }
 
                     /**
                      * The basic constructor, does not pre-allocate any memory
                      */
-                    //ADynamicStackArray()
-                    //: m_ptr(NULL), m_capacity(0), m_size(0) {
-                    //}
+                    ADynamicStackArray() {
+                        //Initialize the array
+                        memset(m_params, 0, PARAMETERS_SIZE_BYTES);
+                    }
+
+
+#define EXTRACT_P(NAME_PTR)  \
+   ELEMENT_TYPE * NAME_PTR;  \
+   extract_m_ptr(NAME_PTR);
+
+#define EXTRACT_C(NAME_CAPACITY)        \
+    SIZE_T NAME_CAPACITY;               \
+    extract_m_capacity(NAME_CAPACITY);  \
+
+#define EXTRACT_S(NAME_SIZE)    \
+    SIZE_T NAME_SIZE;           \
+    extract_m_size(NAME_SIZE);
+
+#define EXTRACT_PC(NAME_PTR, NAME_CAPACITY) \
+        EXTRACT_P(NAME_PTR);                \
+        EXTRACT_C(NAME_CAPACITY);
+
+#define EXTRACT_PS(NAME_PTR, NAME_SIZE) \
+        EXTRACT_P(NAME_PTR);            \
+        EXTRACT_S(NAME_SIZE);
+
+#define EXTRACT_PCS(NAME_PTR, NAME_CAPACITY, NAME_SIZE) \
+                             EXTRACT_P(NAME_PTR);       \
+                             EXTRACT_C(NAME_CAPACITY);  \
+                             EXTRACT_S(NAME_SIZE);
 
                     /**
                      * Allows pre-allocate some capacity
@@ -221,8 +251,10 @@ namespace uva {
                      */
                     inline void pre_allocate(const SIZE_T capacity) {
                         //Reallocate to the desired capacity, if needed
+                        EXTRACT_PC(m_ptr, m_capacity);
+
                         if (capacity > m_capacity) {
-                            reallocate(capacity);
+                            reallocate(m_ptr, m_capacity, capacity);
                         }
                     }
 
@@ -232,25 +264,35 @@ namespace uva {
                      * @return the next new element
                      */
                     inline ELEMENT_TYPE & get_new() {
+                        EXTRACT_PCS(m_ptr, m_capacity, m_size);
+
                         LOG_DEBUG2 << "Requesting a new DynamicStackArray element, m_size = "
                                 << SSTR(m_size) << ", m_capacity = " << SSTR(m_capacity) << END_LOG;
 
                         //Allocate more memory if needed
                         if (m_size == m_capacity) {
-                            reallocate<true>();
+                            reallocate<true>(m_ptr, m_capacity, m_size);
                         }
 
+                        //Get the reference to the new element
+                        ELEMENT_TYPE & new_element = m_ptr[m_size++];
+
+                        //Store the new size
+                        store_m_size(m_size);
+
                         //Return the new/free element
-                        return m_ptr[m_size++];
+                        return new_element;
                     }
 
                     /**
                      * De-allocated the un-used memory, if any
                      */
                     inline void shrink() {
+                        EXTRACT_PCS(m_ptr, m_capacity, m_size);
+
                         //If there is space to free, do it
                         if (m_size < m_capacity) {
-                            reallocate<false>();
+                            reallocate<false>(m_ptr, m_capacity, m_size);
                         }
                     }
 
@@ -261,9 +303,12 @@ namespace uva {
                      * @throws out_of_range exception if the index is outside the array size.
                      */
                     inline const ELEMENT_TYPE & operator[](SIZE_T idx) const {
+                        EXTRACT_S(m_size);
                         if (idx < m_size) {
+                            EXTRACT_P(m_ptr);
                             return m_ptr[idx];
                         } else {
+                            EXTRACT_C(m_capacity);
                             stringstream msg;
                             msg << "Invalid index: " << SSTR(idx) << ", size: "
                                     << SSTR(m_size) << ", capacity: " << SSTR(m_capacity);
@@ -276,6 +321,7 @@ namespace uva {
                      * @return the number of elements stored in the stack array.
                      */
                     inline SIZE_T get_size() const {
+                        EXTRACT_S(m_size);
                         return m_size;
                     }
 
@@ -286,6 +332,7 @@ namespace uva {
                      * @return the pointer to the data array
                      */
                     inline const ELEMENT_TYPE * get_data() const {
+                        EXTRACT_P(m_ptr);
                         return m_ptr;
                     }
 
@@ -294,6 +341,7 @@ namespace uva {
                      * @return true if there is at least one data element stored otherwise false
                      */
                     inline bool has_data() const {
+                        EXTRACT_PS(m_ptr, m_size);
                         return (m_ptr != NULL) && (m_size > 0);
                     }
 
@@ -302,6 +350,7 @@ namespace uva {
                      * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
                      */
                     inline void sort() {
+                        EXTRACT_PS(m_ptr, m_size);
                         my_sort<ELEMENT_TYPE>(m_ptr, m_size);
                     }
 
@@ -310,6 +359,7 @@ namespace uva {
                      * How th data is sorted is defined by the < operator of the ELEMENT_TYPE
                      */
                     inline void sort(typename T_IS_COMPARE_FUNC<ELEMENT_TYPE>::func_type is_less_func) {
+                        EXTRACT_PS(m_ptr, m_size);
                         my_sort<ELEMENT_TYPE>(m_ptr, m_size, is_less_func);
                     }
 
@@ -317,8 +367,10 @@ namespace uva {
                      * The basic destructor
                      */
                     ~ADynamicStackArray() {
+                        EXTRACT_P(m_ptr);
                         if (m_ptr != NULL) {
                             if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
+                                EXTRACT_S(m_size);
                                 //Call the destructors on the allocated objects
                                 for (SIZE_T idx = 0; idx < m_size; ++idx) {
                                     LOG_DEBUG4 << "Deallocating an element [" << SSTR(idx)
@@ -333,25 +385,60 @@ namespace uva {
 
                 private:
                     //The pointer to the stored array elements
-                    ELEMENT_TYPE * m_ptr;
+                    //static ELEMENT_TYPE * m_ptr;
                     //Stores the capacity - already allocated memory for this array
-                    SIZE_T m_capacity;
+                    //static SIZE_T m_capacity;
                     //Stores the number of used elements, the size of this array
-                    SIZE_T m_size;
+                    //static SIZE_T m_size;
+
+                    //A memory efficient storage for the parameters in a form of a byte array
+                    //The first m_capacity, is then m_ptr, then m_size
+                    uint8_t m_params[PARAMETERS_SIZE_BYTES];
+
+                    typedef ELEMENT_TYPE * ELEMENT_TYPE_PTR;
+
+                    inline void store_m_capacity(const SIZE_T m_capacity) {
+                        store_bytes<0, SIZE_T > (m_params, m_capacity);
+                    }
+
+                    inline void extract_m_capacity(SIZE_T & m_capacity) const {
+                        extract_bytes<0, SIZE_T > (m_params, m_capacity);
+                    }
+
+                    inline void store_m_ptr(const ELEMENT_TYPE_PTR m_ptr) {
+                        store_bytes<sizeof (SIZE_T), ELEMENT_TYPE_PTR > (m_params, m_ptr);
+                    }
+
+                    inline void extract_m_ptr(ELEMENT_TYPE_PTR & m_ptr) const {
+                        extract_bytes<sizeof (SIZE_T), ELEMENT_TYPE_PTR > (m_params, m_ptr);
+                    }
+
+                    inline void store_m_size(const SIZE_T m_size) {
+                        store_bytes<sizeof (ELEMENT_TYPE_PTR) + sizeof (SIZE_T), SIZE_T > (m_params, m_size);
+                    }
+
+                    inline void extract_m_size(SIZE_T & m_size) const {
+                        extract_bytes<sizeof (ELEMENT_TYPE_PTR) + sizeof (SIZE_T), SIZE_T > (m_params, m_size);
+                    }
 
                     /**
                      * This methods allows to reallocate the data to the new capacity
                      * @param new_capacity the desired new capacity
                      */
-                    void reallocate(SIZE_T new_capacity) {
+                    void reallocate(ELEMENT_TYPE_PTR & m_ptr, SIZE_T & m_capacity, SIZE_T new_capacity) {
                         LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
                                 << ", the old capacity was " << SSTR(m_capacity)
-                                << ", used size: " << SSTR(m_size) << ", ptr: "
-                                << SSTR(m_ptr) << ", elem size: "
+                                << ", ptr: " << SSTR((void*) m_ptr) << ", elem size: "
                                 << SSTR(sizeof (ELEMENT_TYPE)) << END_LOG;
 
                         //Reallocate memory, potentially we get a new pointer!
-                        m_ptr = (ELEMENT_TYPE*) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
+                        ELEMENT_TYPE_PTR new_ptr = (ELEMENT_TYPE_PTR) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
+
+                        //If the pointer has changed - change the value and store it!
+                        if (new_ptr != m_ptr) {
+                            m_ptr = new_ptr;
+                            store_m_ptr(m_ptr);
+                        }
 
                         LOG_DEBUG2 << "Memory is reallocated ptr: " << SSTR(m_ptr) << END_LOG;
 
@@ -368,10 +455,10 @@ namespace uva {
 
                         //Set the new capacity in
                         m_capacity = new_capacity;
+                        store_m_capacity(m_capacity);
 
                         LOG_DEBUG2 << "The end capacity is " << SSTR(m_capacity)
-                                << ", used size: " << SSTR(m_size) << ", ptr: "
-                                << SSTR(m_ptr) << END_LOG;
+                                << ", ptr: " << SSTR(m_ptr) << END_LOG;
 
                         //Do the null pointer check if sanity
                         if (DO_SANITY_CHECKS && (new_capacity > m_capacity)
@@ -390,7 +477,7 @@ namespace uva {
                      * @param IS_INC if true then the memory will be attempted to increase, otherwise decrease
                      */
                     template<bool IS_INC = true >
-                    void reallocate() {
+                    void reallocate(ELEMENT_TYPE_PTR & m_ptr, SIZE_T & m_capacity, SIZE_T & m_size) {
                         SIZE_T new_capacity;
 
                         LOG_DEBUG2 << "Memory reallocation request: "
@@ -424,7 +511,7 @@ namespace uva {
                         }
 
                         //Reallocate to the computed new capacity
-                        reallocate(new_capacity);
+                        reallocate(m_ptr, m_capacity, new_capacity);
                     }
                 };
 
@@ -477,6 +564,10 @@ namespace uva {
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
                 const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (SIZE_T) - 1];
 
+                //Get the number of bytes needed to store data
+                template<typename ELEMENT_TYPE, typename SIZE_T,
+                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
+                const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE) + 2 * sizeof (SIZE_T));
             }
         }
     }

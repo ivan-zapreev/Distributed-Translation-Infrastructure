@@ -285,6 +285,28 @@ namespace uva {
                     throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
 #endif
                 };
+
+                /**
+                 * Allows to place the given data into the byte array
+                 * @param BEGIN_BYTE_IDX the array index from which start placing the data
+                 * @param DATA_TYPE the data type of the data to be placed
+                 * @param array the array to place data into
+                 * @param data the data to be placed
+                 */
+                template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
+                void store_bytes(const uint8_t * array, const DATA_TYPE data) {
+                }
+
+                /**
+                 * Allows to extract data from the given position in the byte array
+                 * @param BEGIN_BYTE_IDX the array index from which start reading the data
+                 * @param DATA_TYPE the data type of the data to be extracted
+                 * @param array the array to extract data from
+                 * @param data the data to store the extracted
+                 */
+                template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
+                void extract_bytes(const uint8_t * array, DATA_TYPE & data) {
+                }
             }
         }
     }
