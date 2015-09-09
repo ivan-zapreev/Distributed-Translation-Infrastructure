@@ -33,6 +33,10 @@
                     <type>1</type>
                 </confElem>
                 <confElem>
+                    <name>Debug__MacOs_</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
                     <name>Release__Centos_</name>
                     <type>1</type>
                 </confElem>
