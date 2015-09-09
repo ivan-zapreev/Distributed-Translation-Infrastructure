@@ -50,7 +50,7 @@ namespace uva {
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
-                        << "' memory allocation strategy." << END_LOG;
+                        << " memory allocation strategy." << END_LOG;
 
                 LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_Prob_Back_Off_Entry) << END_LOG;
                 LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
