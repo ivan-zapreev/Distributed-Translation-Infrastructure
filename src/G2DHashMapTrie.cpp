@@ -66,7 +66,7 @@ namespace uva {
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
                 
-                LOG_INFO3 << "sizeof(TProbBackOffBucket)= " << sizeof(TProbBackOffBucket) << END_LOG;
+                LOG_DEBUG1 << "sizeof(TProbBackOffBucket)= " << sizeof(TProbBackOffBucket) << END_LOG;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
@@ -74,7 +74,7 @@ namespace uva {
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
-                LOG_INFO3 << "sizeof(TProbBucket)= " << sizeof(TProbBucket) << END_LOG;
+                LOG_DEBUG1 << "sizeof(TProbBucket)= " << sizeof(TProbBucket) << END_LOG;
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;

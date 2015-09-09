@@ -321,7 +321,7 @@ namespace uva {
                             if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
                                 //Call the destructors on the allocated objects
                                 for (SIZE_T idx = 0; idx < m_size; ++idx) {
-                                    LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
+                                    LOG_DEBUG4 << "Deallocating an element [" << SSTR(idx)
                                             << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
                                     DESTRUCTOR(m_ptr[idx]);
                                 }
