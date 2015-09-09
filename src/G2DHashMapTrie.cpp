@@ -26,6 +26,7 @@
 #include "G2DHashMapTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
+#include <algorithm>    // std::max
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -50,7 +51,7 @@ namespace uva {
                         << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << "' memory allocation strategy." << END_LOG;
-                
+
                 LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_Prob_Back_Off_Entry) << END_LOG;
                 LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
                 LOG_DEBUG3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
@@ -71,15 +72,17 @@ namespace uva {
                 TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
-                
+
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = counts[idx + 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
+                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR,
+                            __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR);
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
+                num_buckets[N - 1] = max(counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR,
+                        __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR);
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
@@ -91,6 +94,7 @@ namespace uva {
                     delete[] m_1_gram_data;
                     //De-allocate M-Grams
                     for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+
                         delete[] m_M_gram_data[idx];
                     }
                     //De-allocate N-Grams
@@ -101,6 +105,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::add_1_gram(const T_M_Gram &oGram) {
                 //Register a new word, and the word id will be the one-gram id
+
                 const TShortId oneGramId = ATrie<N>::get_word_index()->register_word(oGram.tokens[0]);
                 //Store the probability data in the one gram data storage, under its id
                 m_1_gram_data[oneGramId].prob = oGram.prob;
@@ -110,6 +115,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::add_m_gram(const T_M_Gram &mGram) {
                 //Get the bucket index
+
                 TShortId bucket_idx;
                 get_bucket_id(mGram, bucket_idx);
 
@@ -131,6 +137,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::add_n_gram(const T_M_Gram &nGram) {
                 //Get the bucket index
+
                 TShortId bucket_idx;
                 get_bucket_id(nGram, bucket_idx);
 
@@ -148,6 +155,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::post_m_grams(const TModelLevel level) {
                 //Call the base class method first
+
                 ATrie<N>::post_m_grams(level);
 
                 //Compute the M-gram level index
@@ -160,6 +168,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::post_n_grams() {
                 //Call the base class method first
+
                 ATrie<N>::post_n_grams();
 
                 //Sort the level's data
