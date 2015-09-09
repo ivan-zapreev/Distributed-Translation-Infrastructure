@@ -74,9 +74,12 @@ namespace uva {
                 typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
                 
                 template<typename ELEMENT_TYPE>
-                static inline void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
+                void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
                     Comp_M_Gram_Id::destroy(elem.m_gram_id);
                 };
+                
+                template void destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry>(T_M_Gram_Prob_Back_Off_Entry &elem);
+                template void destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry>(T_M_Gram_Prob_Entry &elem);
 
                 template<typename M_GRAM_ID_TYPE, typename PAYLOAD_TYPE>
                 const MemIncreaseStrategy S_M_GramData<M_GRAM_ID_TYPE, PAYLOAD_TYPE>::m_mem_strat =
