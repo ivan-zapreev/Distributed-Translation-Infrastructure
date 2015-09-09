@@ -147,7 +147,7 @@ namespace uva {
                 //This is the factor that is used to define the number of buckets in
                 //the G2DHashMapTrie. The number of buckets per trie level is defined as
                 //the number of M-grams in this level divided by this factor value 
-                static const size_t NUMBER_OF_BUCKETS_FACTOR = 32;
+                static const size_t NUMBER_OF_BUCKETS_FACTOR = 64;
             }
 
             namespace __W2COrderedArrayTrie {
