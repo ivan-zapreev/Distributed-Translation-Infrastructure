@@ -130,7 +130,7 @@ namespace uva {
                 T_M_Gram_Prob_Back_Off_Entry & data = m_M_gram_data[level_idx][bucket_idx].get_new();
 
                 //Create the M-gram id
-                data.m_gram_id.set_m_gram_id(mGram, this->get_word_index());
+                Compressed_M_Gram_Id::set_m_gram_id(mGram, this->get_word_index(), data.m_gram_id);
 
                 //Set the probability and back-off data
                 data.payload.prob = mGram.prob;
@@ -147,7 +147,7 @@ namespace uva {
                 T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].get_new();
 
                 //Create the M-gram id
-                data.m_gram_id.set_m_gram_id(nGram, this->get_word_index());
+                Compressed_M_Gram_Id::set_m_gram_id(nGram, this->get_word_index(), data.m_gram_id);
 
                 //Set the probability data
                 data.payload = nGram.prob;

@@ -121,55 +121,67 @@ namespace uva {
                     return tokensToString<N>(gram.tokens, gram.level);
                 };
 
+                //Define the basic type as an alias for the compressed M-Gram id
+                typedef uint8_t * T_Comp_M_Gram_Id_Ptr;
+
                 /**
                  * The compressed implementation of the M-gram id class
-                 * 
-                 * WARNING: Do not inherit from this class, or do it carefully as its destructor is not virtual!
-                 * 
-                 * NOTE: We could have made this class "final" but Netbeans does not understand this C++11 keyword yet
+                 * Made in form of a namespace for the sake of minimizing the
+                 * memory consumption
                  */
-                class T_Compressed_M_Gram_Id {
-                public:
+                namespace Compressed_M_Gram_Id {
 
-                    //The memory in bits needed to store different M-gram id types in the M-gram id byte arrays
-                    static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS;
-                    static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS;
-                    static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS;
-                    static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS;
+                    //The memory in bits needed to store different M-gram id types in
+                    //the M-gram id byte arrays
+                    //ToDo: These are the minimum values, if used then we use fewest memory
+                    //but the data is not byte aligned. Therefore some bit copying operations
+                    //are not done efficiently. Perhaps it is worth trying to round these
+                    //values up to full bytes, this can improve performance @ some memory costs.
+
+                    //The number of bites needed to store a 2-gram id type
+                    //Possible id types: 32^2 = 1,024
+                    //The number of bits needed to store the type is log_2(1,024) = 10
+                    const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
+                    //The number of bites needed to store a 3-gram id type
+                    //Possible id types: 32^3 = 32,768
+                    //The number of bits needed to store the type is log_2(32,768) = 15
+                    const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
+                    //The number of bites needed to store a 4-gram id type
+                    //Possible id types: 32^4 = 1,048,576
+                    //The number of bits needed to store the type is log_2(1,048,576) = 20
+                    const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
+                    //The number of bites needed to store a 5-gram id type
+                    //Possible id types: 32^5 = 33,554,432
+                    //The number of bits needed to store the type is log_2(33,554,432) = 25
+                    const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
 
                     /**
                      * The basic constructor to create an M-Gram id
                      * @param gram the M-gram to create the id for
                      * @param p_word_idx the word index
+                     * @param m_p_gram_id the pointer to initialize
                      * @throw Exception if an id could not be created.
                      */
-                    T_Compressed_M_Gram_Id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
-
-                    /**
-                     * The basic copy constructor. Copies the pointer to the m-gram
-                     * id and resets it to NULL in the object it was copied from!
-                     * NOTE: This is needed for the sorting algorithm std::sort
-                     * Otherwise the data is deleted by the called destructor
-                     * and we have no need to do deep copy of data!
-                     */
-                    T_Compressed_M_Gram_Id(const T_Compressed_M_Gram_Id & other) {
-                        throw Exception("This spoils all the fun! Turn back to the situation of a basic type gram id!!!!");
-                    }
+                    void allocate_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
                      * needed to store the M-gram id of the given level.
                      * @param level the level of the M-grams this object will store id for.
+                     * @param m_p_gram_id the pointer to initialize
                      */
-                    T_Compressed_M_Gram_Id(const TModelLevel level);
+                    void allocate_m_gram_id(const TModelLevel level, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
 
                     /**
-                     * The basic constructor that does not allocate any memory.
-                     * Creates an empty id that is to be filled in with the
-                     *      @see T_Compressed_M_Gram_Id::set_m_gram_id(const T_M_Gram & , const AWordIndex * )
-                     *  method.
+                     * Allows to destroy the M-Gram id if it is not NULL.
+                     * @param m_p_gram_id the M-gram id pointer to destroy
                      */
-                    T_Compressed_M_Gram_Id();
+                    static inline void destroy(T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
+                        if (m_p_gram_id != NULL) {
+                            LOG_INFO3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
+                            delete[] m_p_gram_id;
+                        }
+                    }
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -181,20 +193,10 @@ namespace uva {
                      * equal to  the level this object was created with.
                      * @param gram the M-gram to create the id for
                      * @param p_word_idx the word index
+                     * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    bool set_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx);
-
-                    /**
-                     * This is a basic destructor.
-                     * WARNING: It is made non-virtual to be usable with the @see ADynamicStackArray class
-                     */
-                    ~T_Compressed_M_Gram_Id() {
-                        if (m_p_gram_id != NULL) {
-                            LOG_INFO3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
-                            delete[] m_p_gram_id;
-                        }
-                    }
+                    bool set_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr m_p_gram_id);
 
                     /**
                      * Allows to compare two M-Gram ids depending on the template flag it is a different operator
@@ -204,30 +206,26 @@ namespace uva {
                      * @return true if "one < two" otherwise false
                      */
                     template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
-                    static bool compare(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two);
+                    static bool compare(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two);
+                    
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "smaller" than the second, otherwise false
+                     */
+                    bool is_less_m_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two, const TModelLevel level);
 
-                protected:
-                    //This should store the unique identifier of the M-gram allocated with a new operator
-                    uint8_t * m_p_gram_id;
-                };
-
-                /**
-                 * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                 * @param one the first M-gram to compare
-                 * @param two the second M-gram to compare
-                 * @param level the M-grams' level M
-                 * @return true if the first M-gram is "smaller" than the second, otherwise false
-                 */
-                bool is_less_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level);
-
-                /**
-                 * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                 * @param one the first M-gram to compare
-                 * @param two the second M-gram to compare
-                 * @param level the M-grams' level M
-                 * @return true if the first M-gram is "larger" than the second, otherwise false
-                 */
-                bool is_more_m_grams_id(const T_Compressed_M_Gram_Id & one, const T_Compressed_M_Gram_Id & two, const TModelLevel level);
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "larger" than the second, otherwise false
+                     */
+                    bool is_more_m_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two, const TModelLevel level);
+                }
             }
         }
     }

@@ -189,7 +189,7 @@ namespace uva {
                             //Update the progress bar status
                             Logger::updateProgressBar();
                             //Return the result
-                            return is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
+                            return Compressed_M_Gram_Id::is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
                         });
                         LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket: " << SSTR(bucket_idx) <<  " is done" << END_LOG;
                     }
@@ -219,12 +219,12 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef S_M_GramData<T_Compressed_M_Gram_Id, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
                 typedef STrieBucket<T_M_Gram_Prob_Back_Off_Entry> TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef S_M_GramData<T_Compressed_M_Gram_Id, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
                 typedef STrieBucket<T_M_Gram_Prob_Entry> TProbBucket;
                 TProbBucket * m_N_gram_data;
 
