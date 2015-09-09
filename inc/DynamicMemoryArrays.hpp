@@ -192,14 +192,18 @@ namespace uva {
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = (typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr)NULL>
                 class ADynamicStackArray {
                 public:
+
+                    //Make the element type publicly available
+                    typedef ELEMENT_TYPE TElemType;
+
+                    //The handy typedef for a pointer to the element
+                    typedef ELEMENT_TYPE * ELEMENT_TYPE_PTR;
+
                     //Stores the maximum value allowed by SIZE_T
                     static const size_t MAX_SIZE_TYPE_VALUE;
 
                     //Stores the size of the array where the data is packed
-                    static constexpr size_t PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE) + 2 * sizeof (SIZE_T));
-
-                    //Make the element type publicly available
-                    typedef ELEMENT_TYPE TElemType;
+                    static constexpr size_t PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE_PTR) + 2 * sizeof (SIZE_T));
 
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
@@ -394,8 +398,6 @@ namespace uva {
                     //A memory efficient storage for the parameters in a form of a byte array
                     //The first m_capacity, is then m_ptr, then m_size
                     uint8_t m_params[PARAMETERS_SIZE_BYTES];
-
-                    typedef ELEMENT_TYPE * ELEMENT_TYPE_PTR;
 
                     inline void store_m_capacity(const SIZE_T m_capacity) {
                         store_bytes<0, SIZE_T > (m_params, m_capacity);
