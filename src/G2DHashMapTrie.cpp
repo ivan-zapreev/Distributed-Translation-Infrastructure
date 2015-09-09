@@ -50,6 +50,11 @@ namespace uva {
                         << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << "' memory allocation strategy." << END_LOG;
+                
+                LOG_INFO3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_Prob_Back_Off_Entry) << END_LOG;
+                LOG_INFO3 << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
+                LOG_INFO3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
+                LOG_INFO3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
 
             template<TModelLevel N>
@@ -66,16 +71,12 @@ namespace uva {
                 TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
-
-                LOG_DEBUG3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
-
+                
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     num_buckets[idx + 1] = counts[idx + 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
-
-                LOG_DEBUG3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 num_buckets[N - 1] = counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR;
