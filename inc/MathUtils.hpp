@@ -290,22 +290,46 @@ namespace uva {
                  * Allows to place the given data into the byte array
                  * @param BEGIN_BYTE_IDX the array index from which start placing the data
                  * @param DATA_TYPE the data type of the data to be placed
-                 * @param array the array to place data into
-                 * @param data the data to be placed
+                 * @param p_target the array to place data into
+                 * @param source the data to be placed
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void store_bytes(const uint8_t * array, const DATA_TYPE data) {
+                void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
+                    //We do not care about endian type here as we just will store the data
+                    //and once it is extracted the order of bytes will be restored 
+                    const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
+
+                    //Compute the position to start copying from
+                    const uint8_t from_pos_bit = 0;
+                    //Compute the position to start copying to
+                    const uint8_t to_pos_bit = BYTES_TO_BITS(BEGIN_BYTE_IDX);
+
+                    //Copy the given number of bits from and to defined targets and positions 
+                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, BYTES_TO_BITS(sizeof (DATA_TYPE)));
                 }
 
                 /**
                  * Allows to extract data from the given position in the byte array
                  * @param BEGIN_BYTE_IDX the array index from which start reading the data
                  * @param DATA_TYPE the data type of the data to be extracted
-                 * @param array the array to extract data from
-                 * @param data the data to store the extracted
+                 * @param p_source the array to extract data from
+                 * @param target the data to store the extracted
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void extract_bytes(const uint8_t * array, DATA_TYPE & data) {
+                void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
+                    //We do not care about endian type here as we just will store the data
+                    //and once it is extracted the order of bytes will be restored 
+
+                    //Convert the id_type storing variable into an array of bytes
+                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+
+                    //The position to start copying from
+                    const uint8_t from_pos_bit = BYTES_TO_BITS(BEGIN_BYTE_IDX);
+                    //The position to start copying to
+                    const uint8_t to_pos_bit = 0;
+
+                    //Copy the given number of bits from and to defined targets and positions 
+                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, BYTES_TO_BITS(sizeof (DATA_TYPE)));
                 }
             }
         }
