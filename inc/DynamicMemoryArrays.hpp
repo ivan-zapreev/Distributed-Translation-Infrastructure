@@ -196,7 +196,7 @@ namespace uva {
                     static const size_t MAX_SIZE_TYPE_VALUE;
 
                     //Stores the size of the array where the data is packed
-                    static const size_t PARAMETERS_SIZE_BYTES;
+                    static constexpr size_t PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE) + 2 * sizeof (SIZE_T));
 
                     //Make the element type publicly available
                     typedef ELEMENT_TYPE TElemType;
@@ -563,11 +563,6 @@ namespace uva {
                 template<typename ELEMENT_TYPE, typename SIZE_T,
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
                 const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (SIZE_T) - 1];
-
-                //Get the number of bytes needed to store data
-                template<typename ELEMENT_TYPE, typename SIZE_T,
-                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-                const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE) + 2 * sizeof (SIZE_T));
             }
         }
     }
