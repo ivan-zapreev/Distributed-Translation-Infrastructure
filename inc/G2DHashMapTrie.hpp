@@ -64,13 +64,21 @@ namespace uva {
                     M_GRAM_ID_TYPE m_gram_id;
                     PAYLOAD_TYPE payload;
 
+                    //Stores the memory increase strategy object
+                    const static MemIncreaseStrategy m_mem_strat;
+
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                 };
 
                 template<typename ELEMENT_TYPE>
                 static inline void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
                     Comp_M_Gram_Id::destroy(elem.m_gram_id);
-                }
+                };
+
+                template<typename M_GRAM_ID_TYPE, typename PAYLOAD_TYPE>
+                const MemIncreaseStrategy S_M_GramData<M_GRAM_ID_TYPE, PAYLOAD_TYPE>::m_mem_strat =
+                get_mem_incr_strat(__G2DHashMapTrie::MEM_INC_TYPE,
+                        __G2DHashMapTrie::MIN_MEM_INC_NUM, __G2DHashMapTrie::MEM_INC_FACTOR);
             }
 
             /**
@@ -196,7 +204,7 @@ namespace uva {
                             LOG_DEBUG3 << "Comparing " << SSTR((void*) first.m_gram_id) << " with " << SSTR((void*) second.m_gram_id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
-                            //Return the result
+                                    //Return the result
                             return Comp_M_Gram_Id::is_less_m_grams_id(first.m_gram_id, second.m_gram_id, level);
                         });
                         LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
@@ -205,44 +213,22 @@ namespace uva {
 
             private:
 
-                /**
-                 * This structure represents a trie level entry bucket
-                 * it stores the bucket capacity, size and the pointer to its elements.
-                 */
-                template<typename ELEMENT_TYPE, typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-                class STrieBucket : public ADynamicStackArray<ELEMENT_TYPE,  uint8_t, DESTRUCTOR> {
-                public:
-                    typedef ELEMENT_TYPE TElemType;
-
-                    /**
-                     * Allows to get the memory allocation strategy, from the child
-                     * @return the memory strategy
-                     */
-                    virtual const MemIncreaseStrategy * get_mem_strat() {
-                        return G2DHashMapTrie::m_p_mem_strat;
-                    };
-                };
-
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef STrieBucket<T_M_Gram_Prob_Back_Off_Entry, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBackOffBucket;
+                typedef __G2DHashMapTrie::S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
-                typedef STrieBucket<T_M_Gram_Prob_Entry, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBucket;
+                typedef __G2DHashMapTrie::S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id> TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
                 TShortId num_buckets[N];
-
-                //Stores the memory increase strategy object
-                const static MemIncreaseStrategy * m_p_mem_strat;
             };
-
         }
     }
 }

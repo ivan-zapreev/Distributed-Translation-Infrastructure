@@ -51,46 +51,44 @@ namespace uva {
             namespace __W2COrderedArrayTrie {
 
                 /**
-                 * This structure stores two things the context id
-                 * and the corresponding probability/back-off data.
-                 * It is used to store the M-gram data for levels 1 < M < N.
-                 * @param ctxId the context id
-                 * @param data the back-off and probability data
+                 * This template structure is used for storing trie element data
+                 * Each element contains a context id of the m-gram and its payload -
+                 * the probability/back-off data, the latter is the template parameter
                  */
-                typedef struct {
+                template<typename PAYLOAD_TYPE>
+                struct S_M_GramData {
                     TShortId ctxId;
-                    TProbBackOffEntry data;
-                } TCtxIdProbBackOffEntry;
+                    PAYLOAD_TYPE payload;
 
+                    //Stores the memory increase strategy object
+                    const static MemIncreaseStrategy m_mem_strat;
+                };
+
+                template<typename PAYLOAD_TYPE>
+                const MemIncreaseStrategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
+                get_mem_incr_strat(__W2COrderedArrayTrie::MEM_INC_TYPE,
+                        __W2COrderedArrayTrie::MIN_MEM_INC_NUM, __W2COrderedArrayTrie::MEM_INC_FACTOR);
+
+                typedef S_M_GramData<TProbBackOffEntry> T_M_GramData;
+                typedef S_M_GramData<TLogProbBackOff> T_N_GramData;
+                
                 /**
                  * This is the less operator implementation
                  * @param one the first object to compare
                  * @param two the second object to compare
                  * @return true if ctxId of one is smaller than ctxId of two, otherwise false
                  */
-                inline bool operator<(const TCtxIdProbBackOffEntry& one, const TCtxIdProbBackOffEntry& two) {
+                inline bool operator<(const T_M_GramData& one, const T_M_GramData& two) {
                     return one.ctxId < two.ctxId;
                 }
 
                 /**
-                 * Stores the information about the context id and corresponding probability
-                 * This data structure is to be used for the N-Gram data, as there are no back-offs
-                 * It is used to store the N-gram data for the last Trie level N.
-                 * @param ctxId the context id
-                 * @param prob the probability data
-                 */
-                typedef struct {
-                    TShortId ctxId;
-                    TLogProbBackOff prob;
-                } TCtxIdProbEntry;
-
-                /**
                  * This is the less operator implementation
                  * @param one the first object to compare
                  * @param two the second object to compare
                  * @return true if ctxId of one is smaller than ctxId of two, otherwise false
                  */
-                inline bool operator<(const TCtxIdProbEntry& one, const TCtxIdProbEntry& two) {
+                inline bool operator<(const T_N_GramData& one, const T_N_GramData& two) {
                     return one.ctxId < two.ctxId;
                 }
             }
@@ -135,25 +133,15 @@ namespace uva {
                  * @param cio the context index offset for computing the next contex index.
                  */
                 template<typename ARRAY_ELEM_TYPE>
-                class WordDataEntry : public ADynamicStackArray<ARRAY_ELEM_TYPE,  uint16_t> {
+                class WordDataEntry : public ADynamicStackArray<ARRAY_ELEM_TYPE, uint16_t> {
                 public:
                     TShortId cio;
-                    typedef ARRAY_ELEM_TYPE TElemType;
-
-                    /**
-                     * Allows to get the memory allocation strategy, from the child
-                     * @return the memory strategy
-                     */
-                    virtual const MemIncreaseStrategy * get_mem_strat() {
-                        return W2COrderedArrayTrie::m_p_mem_strat;
-                    };
                 };
 
                 //The entries for the M-grams to store information about the end words
-
-                typedef WordDataEntry<TCtxIdProbBackOffEntry> T_M_GramWordEntry;
+                typedef WordDataEntry<T_M_GramData> T_M_GramWordEntry;
                 //The entries for the N-grams to store information about the end words
-                typedef WordDataEntry<TCtxIdProbEntry> T_N_GramWordEntry;
+                typedef WordDataEntry<T_N_GramData> T_N_GramWordEntry;
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -199,7 +187,7 @@ namespace uva {
 
                     //Return the reference to the newly allocated element
 
-                    return ref.data;
+                    return ref.payload;
                 };
 
                 /**
@@ -217,7 +205,7 @@ namespace uva {
                     const typename T_M_GramWordEntry::TElemType * pEntry;
                     if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
                         //Return the pointer to the probability and back-off structure
-                        *ppData = &pEntry->data;
+                        *ppData = &pEntry->payload;
                         return true;
                     } else {
                         //The data could not be found
@@ -242,7 +230,7 @@ namespace uva {
                     ref.ctxId = ctxId;
 
                     //Return the reference to the probability
-                    return ref.prob;
+                    return ref.payload;
                 };
 
                 /**
@@ -258,7 +246,7 @@ namespace uva {
                     const typename T_N_GramWordEntry::TElemType * pEntry;
                     if (get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
                         //Return the reference to the probability
-                        prob = pEntry->prob;
+                        prob = pEntry->payload;
                         return true;
                     } else {
                         //The data could not be found
@@ -340,9 +328,6 @@ namespace uva {
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
                 T_N_GramWordEntry * m_N_gram_word_2_data;
-
-                //Stores the memory increase strategy object
-                const static MemIncreaseStrategy * m_p_mem_strat;
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.
@@ -529,74 +514,6 @@ namespace uva {
                             wordsArray[wordId].pre_allocate(capacity);
                         }
                     }
-                }
-
-                /**
-                 * Allows to reallocate the word entry data increasing or decreasing its capacity.
-                 * @param WORD_ENTRY_TYPE the entry type
-                 * @param isIncrease if true then the memory will be attempted to increase, otherwise decrease
-                 * @param wordEntry the entry to work with
-                 */
-                template<typename WORD_ENTRY_TYPE, bool isIncrease = true >
-                void reallocateWordData(WORD_ENTRY_TYPE & wordEntry) {
-                    size_t new_capacity;
-
-                    LOG_DEBUG2 << "Memory reallocation request: "
-                            << ((isIncrease) ? "increase" : "decrease") << END_LOG;
-
-                    //Compute the new number of elements
-                    if (isIncrease) {
-                        //Compute the new capacity
-                        new_capacity = m_p_mem_strat->computeNewCapacity(wordEntry.capacity);
-                        LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
-                    } else {
-                        //Decrease the capacity to the current size, remove the unneeded
-                        new_capacity = wordEntry.size;
-                    }
-
-                    LOG_DEBUG2 << "The estimated new capacity is " << SSTR(new_capacity)
-                            << ", the old capacity was " << SSTR(wordEntry.capacity)
-                            << ", used size: " << SSTR(wordEntry.size) << END_LOG;
-
-                    //Reallocate memory, potentially we get a new pointer!
-                    wordEntry.ptr = (typename WORD_ENTRY_TYPE::TElemType*) realloc(wordEntry.ptr, new_capacity * sizeof (typename WORD_ENTRY_TYPE::TElemType));
-
-                    //Clean the newly allocated memory
-                    if (isIncrease) {
-                        const size_t new_num_elem = (new_capacity - wordEntry.capacity);
-                        memset(wordEntry.ptr + wordEntry.capacity, 0,
-                                new_num_elem * sizeof (typename WORD_ENTRY_TYPE::TElemType));
-                    }
-
-                    //Set the new capacity in
-                    wordEntry.capacity = new_capacity;
-
-                    //Do the null pointer check if sanity
-                    if (DO_SANITY_CHECKS && isIncrease && (new_capacity > 0) && (wordEntry.ptr == NULL)) {
-
-                        stringstream msg;
-                        msg << "Ran out of memory when trying to allocate "
-                                << new_capacity << " data elements for a wordId";
-                        throw Exception(msg.str());
-                    }
-                }
-
-                /**
-                 * Allows to allocate word related data per word for the given M/N gram level
-                 * @param WORD_ENTRY_TYPE the word entry type
-                 * @param wordEntry the reference to the word entry array to initialize
-                 * @param numMGrams the number of M-grams on this level
-                 * @param numWords the number of words in the Trie
-                 */
-                template<typename WORD_ENTRY_TYPE>
-                void deAllocateWordsData(WORD_ENTRY_TYPE* & wordEntry) {
-                    //Allocate data per word, use the calloc in order to be able to realloc it!
-                    for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
-                        if (wordEntry[wordId].ptr != NULL) {
-                            free(wordEntry[wordId].ptr);
-                        }
-                    }
-                    delete[] wordEntry;
                 }
             };
         }

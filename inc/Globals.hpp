@@ -102,7 +102,7 @@ namespace uva {
                  * Stores the possible memory increase types
                  */
                 enum MemIncTypesEnum {
-                    CONSTANT = 0, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
+                    UNDEFINED = 0, CONSTANT = UNDEFINED+1, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
                     LOG_10 = LOG_2 + 1, size = LOG_10 + 1
                 };
             }

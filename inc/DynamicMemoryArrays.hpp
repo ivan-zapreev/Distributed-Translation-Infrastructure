@@ -88,6 +88,11 @@ namespace uva {
                             throw Exception("Inappropriate minimum memory increment!");
                         }
                     }
+                    
+                    MemIncreaseStrategy()
+                    : m_stype(MemIncTypesEnum::UNDEFINED), m_get_capacity_inc_func(NULL),
+                    m_min_mem_inc(0), m_mem_inc_factor(0) {
+                    }
 
                     MemIncreaseStrategy(const MemIncreaseStrategy & other)
                     : m_stype(other.m_stype), m_get_capacity_inc_func(other.m_get_capacity_inc_func),
@@ -127,7 +132,7 @@ namespace uva {
                  * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
                  * @return the pointer to a newly allocated strategy object
                  */
-                inline MemIncreaseStrategy * getMemIncreaseStrategy(const MemIncTypesEnum stype,
+                inline MemIncreaseStrategy get_mem_incr_strat(const MemIncTypesEnum stype,
                         const size_t min_mem_inc, const float mem_inc_factor) {
                     TCapacityIncFunct inc_func;
 
@@ -162,7 +167,7 @@ namespace uva {
                     }
 
                     //return the result object
-                    return new MemIncreaseStrategy(stype, inc_func, min_mem_inc, mem_inc_factor);
+                    return MemIncreaseStrategy(stype, inc_func, min_mem_inc, mem_inc_factor);
                 };
 
                 /**
@@ -190,6 +195,9 @@ namespace uva {
                     //Stores the maximum value allowed by SIZE_T
                     static const size_t MAX_SIZE_TYPE_VALUE;
 
+                    //Make the element type publicly available
+                    typedef ELEMENT_TYPE TElemType;
+                    
                     /**
                      * The basic constructor, that allows to pre-allocate some memory
                      * @param capacity the initial capacity to allocate
@@ -308,12 +316,12 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    virtual ~ADynamicStackArray() {
+                    ~ADynamicStackArray() {
                         if (m_ptr != NULL) {
                             if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
                                 //Call the destructors on the allocated objects
                                 for (SIZE_T idx = 0; idx < m_size; ++idx) {
-                                    LOG_DEBUG3 << "Deallocating an element [" << SSTR(idx)
+                                    LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
                                             << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
                                     DESTRUCTOR(m_ptr[idx]);
                                 }
@@ -322,12 +330,6 @@ namespace uva {
                             free(m_ptr);
                         }
                     }
-
-                    /**
-                     * Allows to get the memory allocation strategy, from the child
-                     * @return the memory strategy
-                     */
-                    virtual const MemIncreaseStrategy * get_mem_strat() = 0;
 
                 private:
                     //The pointer to the stored array elements
@@ -397,7 +399,7 @@ namespace uva {
                         //Compute the new number of elements
                         if (IS_INC) {
                             //Compute the new capacity
-                            size_t advised_capacity = get_mem_strat()->computeNewCapacity(m_capacity);
+                            size_t advised_capacity = ELEMENT_TYPE::m_mem_strat.computeNewCapacity(m_capacity);
                             //Check if the given capacity passes within the maximum allowed values for capacity etc
                             if (advised_capacity <= MAX_SIZE_TYPE_VALUE) {
                                 //If it passes then set it in

@@ -37,9 +37,6 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            const MemIncreaseStrategy * W2COrderedArrayTrie<N>::m_p_mem_strat = NULL;
-
-            template<TModelLevel N>
             W2COrderedArrayTrie<N>::W2COrderedArrayTrie(AWordIndex * const p_word_index)
             : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
@@ -50,16 +47,8 @@ namespace uva {
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
 
-                if (m_p_mem_strat == NULL) {
-                    //Get the memory increase strategy
-                    m_p_mem_strat = getMemIncreaseStrategy(__W2COrderedArrayTrie::MEM_INC_TYPE,
-                            __W2COrderedArrayTrie::MIN_MEM_INC_NUM, __W2COrderedArrayTrie::MEM_INC_FACTOR);
-                } else {
-                    throw Exception("Re-initializing W2COrderedArrayTrie<N>::m_p_mem_strat");
-                }
-
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
-                LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()
+                LOG_INFO3 << "Using the " << T_M_GramData::m_mem_strat.getStrategyStr()
                         << "' memory allocation strategy." << END_LOG;
             }
 
@@ -97,11 +86,6 @@ namespace uva {
                         delete[] m_M_gram_word_2_data[i];
                     }
                     delete[] m_N_gram_word_2_data;
-                }
-                //This is a static field, therefore we not only delete the value but re-set it to null
-                if (m_p_mem_strat != NULL) {
-                    delete m_p_mem_strat;
-                    m_p_mem_strat = NULL;
                 }
             }
 

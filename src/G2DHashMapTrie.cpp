@@ -38,9 +38,6 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            const MemIncreaseStrategy * G2DHashMapTrie<N>::m_p_mem_strat = NULL;
-
-            template<TModelLevel N>
             G2DHashMapTrie<N>::G2DHashMapTrie(AWordIndex * const _pWordIndex)
             : ATrie<N>(_pWordIndex), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
@@ -49,16 +46,8 @@ namespace uva {
                 //Clear the M-Gram bucket arrays
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
-                if (m_p_mem_strat == NULL) {
-                    //Get the memory increase strategy
-                    m_p_mem_strat = getMemIncreaseStrategy(__G2DHashMapTrie::MEM_INC_TYPE,
-                            __G2DHashMapTrie::MIN_MEM_INC_NUM, __G2DHashMapTrie::MEM_INC_FACTOR);
-                } else {
-                    throw Exception("Re-initializing W2COrderedArrayTrie<N>::m_p_mem_strat");
-                }
-
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
-                LOG_INFO3 << "Using the " << m_p_mem_strat->getStrategyStr()
+                LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << "' memory allocation strategy." << END_LOG;
             };
 
@@ -104,11 +93,6 @@ namespace uva {
                     }
                     //De-allocate N-Grams
                     delete[] m_N_gram_data;
-                }
-                //This is a static field, therefore we not only delete the value but re-set it to null
-                if (m_p_mem_strat != NULL) {
-                    delete m_p_mem_strat;
-                    m_p_mem_strat = NULL;
                 }
             };
 
