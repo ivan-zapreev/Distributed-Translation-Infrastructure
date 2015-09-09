@@ -79,12 +79,12 @@ namespace uva {
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = counts[idx + 1];
+                    num_buckets[idx + 1] = counts[idx + 1] / 2;
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[N - 1] = counts[N - 1];
+                num_buckets[N - 1] = counts[N - 1] / 2;
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
