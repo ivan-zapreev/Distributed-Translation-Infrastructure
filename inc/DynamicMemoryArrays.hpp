@@ -311,7 +311,7 @@ namespace uva {
                             if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR ) {
                                 //Call the destructors on the allocated objects
                                 for (size_t idx = 0; idx < m_size; ++idx) {
-                                    LOG_INFO3 << "Deallocating an element [" << SSTR(idx)
+                                    LOG_DEBUG3 << "Deallocating an element [" << SSTR(idx)
                                             << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
                                     DESTRUCTOR(m_ptr[idx]);
                                 }
@@ -357,7 +357,7 @@ namespace uva {
                             //memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
                             for (size_t idx = m_capacity; idx < new_capacity; ++idx) {
                                 new(static_cast<void *> (&m_ptr[idx])) ELEMENT_TYPE();
-                                LOG_INFO3 << "Creating a new element [" << SSTR(idx)
+                                LOG_DEBUG3 << "Creating a new element [" << SSTR(idx)
                                         << "]: " << SSTR((void *) &m_ptr[idx]) << END_LOG;
                             }
                         }

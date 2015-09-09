@@ -141,47 +141,39 @@ namespace uva {
                     //The number of bites needed to store a 2-gram id type
                     //Possible id types: 32^2 = 1,024
                     //The number of bits needed to store the type is log_2(1,024) = 10
-                    const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
+                    static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
                     //The number of bites needed to store a 3-gram id type
                     //Possible id types: 32^3 = 32,768
                     //The number of bits needed to store the type is log_2(32,768) = 15
-                    const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
+                    static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
                     //The number of bites needed to store a 4-gram id type
                     //Possible id types: 32^4 = 1,048,576
                     //The number of bits needed to store the type is log_2(1,048,576) = 20
-                    const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
+                    static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
                     //The number of bites needed to store a 5-gram id type
                     //Possible id types: 32^5 = 33,554,432
                     //The number of bits needed to store the type is log_2(33,554,432) = 25
-                    const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
+                    static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
 
-                    /**
-                     * The basic constructor to create an M-Gram id
-                     * @param gram the M-gram to create the id for
-                     * @param p_word_idx the word index
-                     * @param m_p_gram_id the pointer to initialize
-                     * @throw Exception if an id could not be created.
-                     */
-                    void allocate_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
+                    //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
+                    static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
+                        M_GRAM_2_ID_TYPE_LEN_BITS,
+                        M_GRAM_3_ID_TYPE_LEN_BITS,
+                        M_GRAM_4_ID_TYPE_LEN_BITS,
+                        M_GRAM_5_ID_TYPE_LEN_BITS
+                    };
 
-                    /**
-                     * The basic constructor that allocates maximum memory
-                     * needed to store the M-gram id of the given level.
-                     * @param level the level of the M-grams this object will store id for.
-                     * @param m_p_gram_id the pointer to initialize
-                     */
-                    void allocate_m_gram_id(const TModelLevel level, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
-
-                    /**
-                     * Allows to destroy the M-Gram id if it is not NULL.
-                     * @param m_p_gram_id the M-gram id pointer to destroy
-                     */
-                    static inline void destroy(T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
-                        if (m_p_gram_id != NULL) {
-                            LOG_INFO3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
-                            delete[] m_p_gram_id;
-                        }
-                    }
+                    //Stores the maximum number of bits up to and including M-grams
+                    //of level 6.  We use sizeof (TShortId) as each wordId is of type
+                    //TShortId, and the maximum number of bits is thus defined by the
+                    //number of wordIds in the M-gram and their max size in bytes.
+                    static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
+                        2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
+                        3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
+                        4 * sizeof (TShortId), // 4 TShortId values for 4 word ids
+                        5 * sizeof (TShortId), // 5 TShortId values for 5 word ids
+                        6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
+                    };
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -196,7 +188,56 @@ namespace uva {
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    bool set_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr m_p_gram_id);
+                    bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
+
+                    /**
+                     * The basic constructor to create an M-Gram id
+                     * @param gram the M-gram to create the id for
+                     * @param p_word_idx the word index
+                     * @param m_p_gram_id the pointer to initialize
+                     * @throw Exception if an id could not be created.
+                     */
+                    static inline void allocate_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
+                        if (!create_m_gram_id(gram, p_word_idx, m_p_gram_id)) {
+                            stringstream msg;
+                            msg << "Could not create an " << SSTR(gram.level)
+                                    << "-gram id for: " << tokensToString(gram);
+                            throw Exception(msg.str());
+                        }
+                    }
+
+                    /**
+                     * The basic constructor that allocates maximum memory
+                     * needed to store the M-gram id of the given level.
+                     * @param level the level of the M-grams this object will store id for.
+                     * @param m_p_gram_id the pointer to initialize
+                     */
+                    static inline void allocate_m_gram_id(const TModelLevel level, T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
+                        //Do the sanity check for against overflows
+                        if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
+                            stringstream msg;
+                            msg << "T_Compressed_M_Gram_Id: Unsupported m-gram level: "
+                                    << SSTR(level) << ", must be within ["
+                                    << SSTR(M_GRAM_LEVEL_2) << ", "
+                                    << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
+                            throw Exception(msg.str());
+                        }
+
+                        //Allocate maximum memory that could be needed to store the given M-gram level id
+                        m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                    }
+                   
+                    
+                    /**
+                     * Allows to destroy the M-Gram id if it is not NULL.
+                     * @param m_p_gram_id the M-gram id pointer to destroy
+                     */
+                    static inline void destroy(T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
+                        if (m_p_gram_id != NULL) {
+                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
+                            delete[] m_p_gram_id;
+                        }
+                    }
 
                     /**
                      * Allows to compare two M-Gram ids depending on the template flag it is a different operator
