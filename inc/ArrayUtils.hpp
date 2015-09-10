@@ -73,7 +73,7 @@ namespace uva {
                                 << SSTR(u_idx) << "!";                                              \
                         throw Exception(msg.str());                                                 \
                     } else {                                                                        \
-                        IDX_TYPE mid_pos;                                                           \
+                        TSLongId mid_pos;                                                           \
                         while (l_idx <= u_idx) {                                                    \
                             mid_pos = (l_idx + u_idx) / 2;                                          \
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
@@ -166,7 +166,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
                     BSEARCH_ONE_FIELD(id);
                 }
 

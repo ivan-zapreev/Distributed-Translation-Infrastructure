@@ -19,6 +19,8 @@ echo "w2ch"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ch info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.w2ch.out
 echo "c2dh"
 ../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dh info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.c2dh.out
+echo "g2dm"
+../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} g2dm info3 | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" > release.g2dm.out
 
 echo "\n----> c2wa vs. c2dm"
 diff release.c2wa.out release.c2dm.out > diff.c2wa.c2dm.out
@@ -35,3 +37,7 @@ cat diff.c2wa.w2ch.out
 echo "\n----> c2wa vs. c2dh"
 diff release.c2wa.out release.c2dh.out > diff.c2wa.c2dh.out
 cat diff.c2wa.c2dh.out
+
+echo "\n----> c2wa vs. g2dm"
+diff release.c2wa.out release.g2dm.out > diff.c2wa.g2dm.out
+cat diff.c2wa.g2dm.out
