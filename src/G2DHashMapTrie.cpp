@@ -194,7 +194,7 @@ namespace uva {
 
             template<TModelLevel N>
             template<typename LEVEL_TYPE>
-            bool G2DHashMapTrie<N>::get_prob_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
+            bool G2DHashMapTrie<N>::get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
                     const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr) {
                 //Compute the begin index in the tokens and word ids arrays
                 const TModelLevel elem_begin_idx = (N - level);
@@ -237,7 +237,7 @@ namespace uva {
             template<TModelLevel N>
             void G2DHashMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
                 LOG_DEBUG1 << "Computing probability for an " << level << "-gram " << END_LOG;
-                
+
                 //1. Check which level M-gram we need to get probability for
                 if (level > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1
@@ -252,7 +252,7 @@ namespace uva {
                     if (level == N) {
                         //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_prob_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
                             prob = *payload_ptr;
                         } else {
@@ -262,7 +262,7 @@ namespace uva {
                     } else {
                         //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_prob_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
                             prob = payload_ptr->prob;
                         } else {
@@ -278,10 +278,36 @@ namespace uva {
 
             template<TModelLevel N>
             bool G2DHashMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
-
                 LOG_DEBUG << "Computing back-off for an " << level << "-gram " << END_LOG;
 
-                return false;
+                //1. Check which level M-gram we need to get probability for
+                if (level > M_GRAM_LEVEL_1) {
+                    //1.1. This is the case of the M-gram with M > 1 and clearly M < N
+
+                    //1.1.2. Compute the hash value for the back off M-gram
+                    TShortId gram_hash = ATrie<N>::m_query_ptr->sub_hash((N - 1) - level, (N - 2));
+
+                    //1.1.3. Search for the bucket
+                    const TShortId bucket_idx = get_bucket_id(gram_hash, level);
+
+                    //1.1.4 This is an M-gram case (1 < M < N))
+                    const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
+                    if (get_payload_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], payload_ptr)) {
+                        //1.1.4.1 The probability is nicely found
+                        back_off = payload_ptr->back_off;
+                        return true;
+                    } else {
+                        //The query context id could be determined, but 
+                        //the data was not found in the trie.
+                        LOG_DEBUG << "Unable to find back-off data for "
+                                << level << "-Gram query!" << END_LOG;
+                        return false;
+                    }
+                } else {
+                    //1.2. This is the case of a 1-Gram, just get its probability.
+                    back_off = m_1_gram_data[ATrie<N>::get_back_off_end_word_id()].back_off;
+                    return true;
+                }
             }
 
 

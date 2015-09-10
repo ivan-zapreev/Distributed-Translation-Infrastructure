@@ -277,7 +277,7 @@ namespace uva {
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename LEVEL_TYPE>
-                bool get_prob_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
+                bool get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
                         const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr);
 
             };

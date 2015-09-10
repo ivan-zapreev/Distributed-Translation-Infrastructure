@@ -77,18 +77,18 @@ namespace uva {
                     TModelLevel level;
 
                     /**
-                     * This function allows to compute the hash of the M-Gram suffix
-                     * starting from and including the word on the given index. It
+                     * This function allows to compute the hash of the sub M-Gram
+                     * starting from and including the word on the given index,
+                     * and until and including the word of the given index. It
                      * assumes, which should hold, that the memory pointed by the
                      * tokens is continuous.
                      * @param begin_idx  the index of the first word in tokens array
                      * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline TShortId suffix_hash(const TModelLevel begin_idx) const {
+                    inline TShortId sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
                         //Compute the length of the gram tokens in memory, including spaces between
                         const char * beginFirstPtr = tokens[begin_idx].getBeginCStr();
-                        const TModelLevel end_idx = level - 1;
                         const TextPieceReader & last = tokens[end_idx];
                         const char * beginLastPtr = last.getBeginCStr();
                         const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
@@ -114,6 +114,19 @@ namespace uva {
                         return computePaulHsiehHash(beginFirstPtr, totalLen);
                     }
 
+                    /**
+                     * This function allows to compute the hash of the M-Gram suffix
+                     * starting from and including the word on the given index. It
+                     * assumes, which should hold, that the memory pointed by the
+                     * tokens is continuous.
+                     * @param begin_idx  the index of the first word in tokens array
+                     * @return the hash value of the given token
+                     */
+                    inline TShortId suffix_hash(const TModelLevel begin_idx) const {
+                        const TModelLevel end_idx = level - 1;
+                        return sub_hash(begin_idx, end_idx);
+                    }
+                    
                     /**
                      * This function allows to compute the hash of the given M-Gram
                      * It assumes, which should hold, that the memory pointed by the tokens is continuous
