@@ -192,7 +192,7 @@ namespace uva {
 
                     //First compare the last element of the array with the key
                     int8_t result = compare(key, array[u_idx].id);
-                    LOG_INFO1 << (void*) key << " (" << result << ") @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
+                    LOG_DEBUG3 << (void*) key << " (" << result << ") @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
 
                     if (result > 0) {
                         //The key is larger than the last id so it is not in the array
@@ -206,12 +206,12 @@ namespace uva {
                             //The key is potentially inside array and it is not the last element!
                             for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
                                 int8_t result = compare(key, array[found_pos].id);
-                                LOG_INFO1 << (void*) key << " (" << result << ") @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
+                                LOG_DEBUG3 << (void*) key << " (" << result << ") @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
                                 if (result == 0) {
                                     //We found the key!
                                     return true;
                                 } else {
-                                    if (result > 0) {
+                                    if (result < 0) {
                                         //We bypassed the place where the value could have been
                                         return false;
                                     }

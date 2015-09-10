@@ -328,16 +328,16 @@ namespace uva {
                         TShortId type_two = 0;
                         copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(m_p_gram_id_two, type_two);
 
-                        LOG_INFO2 << "M_GRAM_LEVEL: " << (uint32_t) M_GRAM_LEVEL << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
+                        LOG_DEBUG2 << "M_GRAM_LEVEL: " << (uint32_t) M_GRAM_LEVEL << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
 
                         if (type_one < type_two) {
                             //The first id type is smaller
-                            LOG_INFO2 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
+                            LOG_DEBUG2 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
                             return IS_LESS;
                         } else {
                             if (type_one > type_two) {
                                 //The second id type is smaller
-                                LOG_INFO2 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
+                                LOG_DEBUG2 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
                                 return IS_LARGER;
                             } else {
                                 //The id types are the same! Compare the ids themselves
@@ -346,7 +346,7 @@ namespace uva {
                                 uint8_t id_len_bytes = 0;
                                 get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL], M_GRAM_LEVEL > (m_p_gram_id_one, id_len_bytes);
 
-                                LOG_INFO2 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
+                                LOG_DEBUG2 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
                                         << ", idx: " << SSTR((uint32_t) NUM_FULL_BYTES(ID_TYPE_LEN_BITS))
                                         << ", id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
