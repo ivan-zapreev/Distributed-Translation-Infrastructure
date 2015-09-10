@@ -188,7 +188,7 @@ namespace uva {
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx,
                         const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
-                    LOG_INFO1 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
+                    LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
 
                     //First compare the last element of the array with the key
                     int8_t result = compare(key, array[u_idx].id);

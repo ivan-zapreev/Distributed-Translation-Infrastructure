@@ -205,7 +205,7 @@ namespace uva {
                     const TShortId gram_hash = gram.hash();
                     LOG_INFO3 << "The " << gram.level << "-gram: " << tokensToString(gram)
                             << " hash is " << gram_hash << END_LOG;
-                    
+
                     bucket_idx = get_bucket_id(gram_hash, gram.level);
 
                     LOG_INFO3 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
@@ -233,21 +233,44 @@ namespace uva {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                        LOG_DEBUG3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+
+                        if ((level == 2) && (bucket_idx == 173)) {
+                            LOG_INFO3 << "BEFORE SHRINKING" << END_LOG;
+                            for (uint32_t idx = 0; idx < ref.size(); ++idx) {
+                                LOG_INFO2 << "m_M_gram_data[" << level << "][" << bucket_idx << "][" << idx << "]: " << (void*) ref[idx].id << END_LOG;
+                            }
+                        }
+                        
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
-                        LOG_DEBUG3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_INFO3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
-                        LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+
+                        if ((level == 2) && (bucket_idx == 173)) {
+                            LOG_INFO3 << "BEFORE SORTING" << END_LOG;
+                             for (uint32_t idx = 0; idx < ref.size(); ++idx) {
+                                LOG_INFO2 << "m_M_gram_data[" << level << "][" << bucket_idx << "][" << idx << "]: " << (void*) ref[idx].id << END_LOG;
+                            }
+                       }
+                        
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
-                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
+                            LOG_INFO3 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
                             return Comp_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
                         });
-                        LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_INFO3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+
+                        if ((level == 2) && (bucket_idx == 173)) {
+                            LOG_INFO3 << "BEFORE MOVING ON" << END_LOG;
+                            for (uint32_t idx = 0; idx < ref.size(); ++idx) {
+                                LOG_INFO2 << "m_M_gram_data[" << level << "][" << bucket_idx << "][" << idx << "]: " << (void*) ref[idx].id << END_LOG;
+                            }
+                        }
                     }
                 }
 

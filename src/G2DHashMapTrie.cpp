@@ -321,6 +321,11 @@ namespace uva {
                         LOG_INFO1 << "The " << level << "-gram is found, back_off: " << back_off << END_LOG;
                         return true;
                     } else {
+                        TProbBackOffBucket & bucket = m_M_gram_data[mgram_indx][bucket_idx];
+                        for(uint32_t idx = 0; idx < bucket.size(); ++idx) {
+                            LOG_INFO2 << "m_M_gram_data[" << mgram_indx << "][" << bucket_idx << "][" << idx << "]: " << (void*) bucket[idx].id << END_LOG;
+                        }
+                        
                         //The query context id could be determined, but 
                         //the data was not found in the trie.
                         LOG_INFO1 << "Unable to find back-off data for "
