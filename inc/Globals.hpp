@@ -72,7 +72,7 @@ namespace uva {
             const bool DO_SANITY_CHECKS = false;
 
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
-            typedef uint16_t TModelLevel;
+            typedef uint8_t TModelLevel;
 
             //The type used for storing log probabilities and back-off values
             typedef float TLogProbBackOff;

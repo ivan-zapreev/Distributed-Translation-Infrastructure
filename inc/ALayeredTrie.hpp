@@ -259,7 +259,7 @@ namespace uva {
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    ctxId = ATrie<N>::m_gram_word_ids[idx];
+                    ctxId = ATrie<N>::m_tmp_word_ids[idx];
                     LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
@@ -274,9 +274,9 @@ namespace uva {
                         //Compute the subsequent context ids
                         for (; idx < eIdx;) {
                             LOG_DEBUG1 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: "
-                                    << SSTR(ATrie<N>::m_gram_word_ids[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
-                            if (m_get_ctx_id_func(ATrie<N>::m_gram_word_ids[idx], ctxId, (idx - bIdx) + 1)) {
-                                LOG_DEBUG1 << "getContextId(" << SSTR(ATrie<N>::m_gram_word_ids[idx])
+                                    << SSTR(ATrie<N>::m_tmp_word_ids[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
+                            if (m_get_ctx_id_func(ATrie<N>::m_tmp_word_ids[idx], ctxId, (idx - bIdx) + 1)) {
+                                LOG_DEBUG1 << "getContextId(" << SSTR(ATrie<N>::m_tmp_word_ids[idx])
                                         << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
                                 idx++;
                             } else {

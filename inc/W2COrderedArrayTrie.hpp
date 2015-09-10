@@ -57,7 +57,7 @@ namespace uva {
                  */
                 template<typename PAYLOAD_TYPE>
                 struct S_M_GramData {
-                    TShortId ctxId;
+                    TShortId id;
                     PAYLOAD_TYPE payload;
 
                     //Stores the memory increase strategy object
@@ -79,7 +79,7 @@ namespace uva {
                  * @return true if ctxId of one is smaller than ctxId of two, otherwise false
                  */
                 inline bool operator<(const T_M_GramData& one, const T_M_GramData& two) {
-                    return one.ctxId < two.ctxId;
+                    return one.id < two.id;
                 }
 
                 /**
@@ -89,7 +89,7 @@ namespace uva {
                  * @return true if ctxId of one is smaller than ctxId of two, otherwise false
                  */
                 inline bool operator<(const T_N_GramData& one, const T_N_GramData& two) {
-                    return one.ctxId < two.ctxId;
+                    return one.id < two.id;
                 }
             }
 
@@ -183,7 +183,7 @@ namespace uva {
                     typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET], wordId);
 
                     //Store the context and word ids
-                    ref.ctxId = ctxId;
+                    ref.id = ctxId;
 
                     //Return the reference to the newly allocated element
 
@@ -227,7 +227,7 @@ namespace uva {
                     typename T_N_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, wordId);
 
                     //Store the context and word ids
-                    ref.ctxId = ctxId;
+                    ref.id = ctxId;
 
                     //Return the reference to the probability
                     return ref.payload;
@@ -287,7 +287,7 @@ namespace uva {
                         //Assign the context index offset
                         ref.cio = cio;
                         //Compute the next context index offset, for the next word
-                        cio += ref.get_size();
+                        cio += ref.size();
 
                         //Reduce capacity if there is unused memory
                         ref.shrink();
@@ -341,7 +341,7 @@ namespace uva {
                     LOG_DEBUG2 << "Making entry for M-gram with wordId:\t" << SSTR(wordId) << END_LOG;
 
                     //Return the next new element new/free!
-                    return wordsArray[wordId].get_new();
+                    return wordsArray[wordId].allocate();
                 };
 
                 /**
@@ -355,19 +355,19 @@ namespace uva {
                  * @throw nothing
                  */
                 template<typename WORD_ENTRY_TYPE>
-                bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctxId, TShortId & localIdx) {
+                bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctxId, typename WORD_ENTRY_TYPE::TIndexType & localIdx) {
                     LOG_DEBUG2 << "Searching word data entry for ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Check if there is data to search in
                     if (ref.has_data()) {
                         //The data is available search for the word index in the array
-                        if (bsearch_ctxId<typename WORD_ENTRY_TYPE::TElemType > (ref.get_data(), 0, ref.get_size() - 1, ctxId, localIdx)) {
+                        if (my_bsearch_id<typename WORD_ENTRY_TYPE::TElemType, typename WORD_ENTRY_TYPE::TIndexType > (ref.data(), 0, ref.size() - 1, ctxId, localIdx)) {
                             LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
                             return true;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctxId: "
-                                    << SSTR(ctxId) << ", ctxId range: [" << SSTR(ref[0].ctxId)
-                                    << ", " << SSTR(ref[ref.get_size() - 1].ctxId) << "]" << END_LOG;
+                                    << SSTR(ctxId) << ", ctxId range: [" << SSTR(ref[0].id)
+                                    << ", " << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
                             return false;
                         }
                     } else {
@@ -407,7 +407,7 @@ namespace uva {
                     }
 
                     //Get the local entry index
-                    TShortId localIdx;
+                    typename WORD_ENTRY_TYPE::TIndexType localIdx;
                     if (get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctxId, localIdx)) {
                         //Return the pointer to the data located by the local index
                         *ppData = &ref[localIdx];
@@ -449,9 +449,9 @@ namespace uva {
                     const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
 
                     if (DO_SANITY_CHECKS && ref.has_data()) {
-                        LOG_DEBUG3 << "ref.size: " << SSTR(ref.get_size()) << ", ref.cio: "
-                                << SSTR(ref.cio) << ", ctxId range: [" << SSTR(ref[0].ctxId) << ", "
-                                << SSTR(ref[ref.get_size() - 1].ctxId) << "]" << END_LOG;
+                        LOG_DEBUG3 << "ref.size: " << SSTR(ref.size()) << ", ref.cio: "
+                                << SSTR(ref.cio) << ", ctxId range: [" << SSTR(ref[0].id) << ", "
+                                << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
                     }
 
                     //Check that if this is the 2-Gram case and the previous context
@@ -465,11 +465,11 @@ namespace uva {
                     }
 
                     //Get the local entry index and then use it to compute the next context id
-                    TShortId localIdx;
+                    typename T_M_GramWordEntry::TIndexType localIdx;
                     //If the local entry index could be found then compute the next ctxId
                     if (get_M_N_GramLocalEntryIdx(ref, ctxId, localIdx)) {
                         LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
-                                << ", size = " << SSTR(ref.get_size()) << ", localIdx = "
+                                << ", size = " << SSTR(ref.size()) << ", localIdx = "
                                 << SSTR(localIdx) << ", resulting ctxId = "
                                 << SSTR(ref.cio + localIdx) << END_LOG;
 

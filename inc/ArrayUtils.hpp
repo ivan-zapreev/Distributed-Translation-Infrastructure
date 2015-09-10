@@ -28,7 +28,7 @@
 
 #include <string>       // std::stringstream
 #include <cstdlib>      // std::qsort std::bsearch
-#include <algorithm>    // std::sort
+#include <algorithm>    // std::sort std::abs
 #include <functional>   // std::function
 
 #include "Logger.hpp"
@@ -58,7 +58,7 @@ namespace uva {
                                 << SSTR(u_idx) << "!";                                              \
                         throw Exception(msg.str());                                                 \
                     } else {                                                                        \
-                        TSLongId mid_pos;                                                           \
+                        IDX_TYPE mid_pos;                                                           \
                         while (l_idx <= u_idx) {                                                    \
                             mid_pos = (l_idx + u_idx) / 2;                                          \
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
@@ -122,7 +122,7 @@ namespace uva {
                     }
 
                 /**
-                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * This is a binary search algorithm for some ordered array for two keys
                  * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
@@ -138,8 +138,10 @@ namespace uva {
                 }
 
                 /**
-                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
-                 * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
+                 * This is a binary search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -148,14 +150,16 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE>
-                inline bool bsearch_wordId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
-                    BSEARCH_ONE_FIELD(wordId);
+                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
+                    BSEARCH_ONE_FIELD(id);
                 }
 
                 /**
-                 * This is a search algorithm for some ordered array, here we use bsearch from <cstdlib>
+                 * This is a linear search algorithm for some ordered array
                  * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -164,9 +168,25 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE>
-                inline bool bsearch_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key, TShortId & found_pos) {
-                    BSEARCH_ONE_FIELD(ctxId);
+                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
+                inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
+                    if ((key >= array[l_idx].id) && (key <= array[u_idx].id)) {
+                        //The key is inside array values, so we want to search.
+
+                        for (found_pos = l_idx; found_pos <= u_idx; ++found_pos) {
+                            if (key == array[found_pos].id) {
+                                //The value is found
+                                return true;
+                            } else {
+                                if (key > array[found_pos].id) {
+                                    //We bypassed the place where the value could have been
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    //The key is outside the array values, no reason to search further
+                    return false;
                 }
 
                 /**
@@ -180,7 +200,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename INDEX_TYPE, typename KEY_TYPE >
-                bool bsearch(const ARR_ELEM_TYPE * array, INDEX_TYPE l_idx, INDEX_TYPE u_idx, const KEY_TYPE key, INDEX_TYPE & mid_pos) {
+                bool my_bsearch(const ARR_ELEM_TYPE * array, INDEX_TYPE l_idx, INDEX_TYPE u_idx, const KEY_TYPE key, INDEX_TYPE & mid_pos) {
                     if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
                         stringstream msg;
                         msg << "Impossible binary search parameters, l_idx = "
@@ -231,7 +251,7 @@ namespace uva {
                  */
                 template<typename ELEM_TYPE>
                 struct T_IS_COMPARE_FUNC {
-                    typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &)> func_type;
+                    typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
                 };
 
                 /**

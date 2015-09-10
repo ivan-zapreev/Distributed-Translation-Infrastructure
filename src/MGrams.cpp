@@ -311,9 +311,12 @@ namespace uva {
                         //Call the appropriate function, use array instead of switch, should be faster.
                         create_x_gram_funcs[num_word_ids](&word_ids[begin_idx], m_p_gram_id);
                     }
+#define IS_LESS -1
+#define IS_EQUAL 0
+#define IS_LARGER +1
 
-                    template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
-                    bool compare(const T_Comp_M_Gram_Id_Ptr & m_p_gram_id_one, const T_Comp_M_Gram_Id_Ptr & m_p_gram_id_two) {
+                    template<TModelLevel M_GRAM_LEVEL>
+                    int8_t compare(const T_Comp_M_Gram_Id_Ptr & m_p_gram_id_one, const T_Comp_M_Gram_Id_Ptr & m_p_gram_id_two) {
                         //Get the id len in bits
                         constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2];
 
@@ -325,13 +328,13 @@ namespace uva {
 
                         if (type_one < type_two) {
                             //The first id type is smaller
-                            LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << (IS_LESS ? "<" : ">") << SSTR((void*) m_p_gram_id_two) << END_LOG;
+                            LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << "<" << SSTR((void*) m_p_gram_id_two) << END_LOG;
                             return IS_LESS;
                         } else {
                             if (type_one > type_two) {
                                 //The second id type is smaller
-                                LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << (!IS_LESS ? "<" : ">") << SSTR((void*) m_p_gram_id_two) << END_LOG;
-                                return !IS_LESS;
+                                LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << ">" << SSTR((void*) m_p_gram_id_two) << END_LOG;
+                                return IS_LARGER;
                             } else {
                                 //The id types are the same! Compare the ids themselves
 
@@ -343,26 +346,16 @@ namespace uva {
                                         << ", idx: " << SSTR((uint32_t) NUM_FULL_BYTES(ID_TYPE_LEN_BITS))
                                         << ", id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
-                                //Start comparing the ids byte by byte but not from the fist
-                                //bytes as this is where the id type information is stored,
-                                //start with the first byte that contains key information
-                                for (uint8_t idx = NUM_FULL_BYTES(ID_TYPE_LEN_BITS); idx < id_len_bytes; ++idx) {
-                                    if (m_p_gram_id_one[idx] < m_p_gram_id_two[idx]) {
-                                        LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << (IS_LESS ? "<" : ">") << SSTR((void*) m_p_gram_id_two) << END_LOG;
-                                        return IS_LESS;
-                                    } else {
-                                        if (m_p_gram_id_one[idx] > m_p_gram_id_two[idx]) {
-                                            LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << (!IS_LESS ? "<" : ">") << SSTR((void*) m_p_gram_id_two) << END_LOG;
-                                            return !IS_LESS;
-                                        } else {
-                                            //Nothing to return yet, so far the values are equal, keep iterating
-                                        }
-                                    }
-                                }
+                                //Start comparing the ids but not from the fist bytes as
+                                //this is where the id type information is stored, start
+                                //with the first byte that contains key information
+                                const uint8_t num_bytes_to_skip = NUM_FULL_BYTES(ID_TYPE_LEN_BITS);
 
-                                //We've finished iterating and since we are still here, the ids are equal
-                                LOG_DEBUG3 << SSTR((void*) m_p_gram_id_one) << " = " << SSTR((void*) m_p_gram_id_two) << END_LOG;
-                                return !IS_LESS;
+                                //Compare with the fast system function
+                                return memcmp(
+                                        &m_p_gram_id_one[num_bytes_to_skip],
+                                        &m_p_gram_id_two[num_bytes_to_skip],
+                                        id_len_bytes - num_bytes_to_skip);
                             }
                         }
                     };
@@ -375,19 +368,19 @@ namespace uva {
                     typedef bool(* is_compare_grams_id_func)(const T_Comp_M_Gram_Id_Ptr &, const T_Comp_M_Gram_Id_Ptr &);
 
                     static inline bool is_less_2_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<true, M_GRAM_LEVEL_2>(one, two);
+                        return (compare<M_GRAM_LEVEL_2>(one, two) < 0);
                     }
 
                     static inline bool is_less_3_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<true, M_GRAM_LEVEL_3>(one, two);
+                        return (compare<M_GRAM_LEVEL_3>(one, two) < 0);
                     }
 
                     static inline bool is_less_4_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<true, M_GRAM_LEVEL_4>(one, two);
+                        return (compare<M_GRAM_LEVEL_4>(one, two) < 0);
                     }
 
                     static inline bool is_less_5_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<true, M_GRAM_LEVEL_5>(one, two);
+                        return (compare<M_GRAM_LEVEL_5>(one, two) < 0);
                     }
 
                     //This is an array of functions for comparing x-grams of level x
@@ -398,19 +391,19 @@ namespace uva {
                     }
 
                     static inline bool is_more_2_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<false, M_GRAM_LEVEL_2>(one, two);
+                        return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
                     }
 
                     static inline bool is_more_3_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<false, M_GRAM_LEVEL_3>(one, two);
+                        return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
                     }
 
                     static inline bool is_more_4_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<false, M_GRAM_LEVEL_4>(one, two);
+                        return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
                     }
 
                     static inline bool is_more_5_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two) {
-                        return compare<false, M_GRAM_LEVEL_5>(one, two);
+                        return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
                     }
 
                     //This is an array of functions for comparing x-grams of level x

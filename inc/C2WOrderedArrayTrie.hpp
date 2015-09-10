@@ -134,11 +134,11 @@ namespace uva {
                  * This structure stores two things the word id
                  * and the corresponding probability/back-off data.
                  * It is used to store the M-gram data for levels 1 < M < N.
-                 * @param wordId the word id
+                 * @param id the word id
                  * @param data the back-off and probability data
                  */
                 typedef struct {
-                    TShortId wordId;
+                    TShortId id;
                     TProbBackOffEntry data;
                 } TWordIdProbBackOffEntryPair;
 
@@ -213,7 +213,7 @@ namespace uva {
                     }
 
                     //Store the word id
-                    m_M_gram_data[mgram_idx][ref.endIdx].wordId = wordId;
+                    m_M_gram_data[mgram_idx][ref.endIdx].id = wordId;
 
                     //Return the reference to the newly allocated element
                     return m_M_gram_data[mgram_idx][ref.endIdx].data;
@@ -388,7 +388,7 @@ namespace uva {
                     if (ref.beginIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (bsearch_wordId<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (my_bsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
@@ -397,8 +397,8 @@ namespace uva {
                             LOG_DEBUG1 << "Unable to find M-gram ctxId for level: "
                                     << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                     << ", wordId: " << SSTR(wordId) << ", is not in the available range: ["
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].wordId) << " ... "
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].wordId) << "]" << END_LOG;
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].id) << " ... "
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].id) << "]" << END_LOG;
                             return false;
                         }
                     } else {

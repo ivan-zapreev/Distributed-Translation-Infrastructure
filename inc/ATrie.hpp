@@ -98,7 +98,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit ATrie(AWordIndex * _pWordIndex)
-                : m_p_word_index(_pWordIndex) {
+                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL) {
                 }
 
                 /**
@@ -107,8 +107,8 @@ namespace uva {
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
                 virtual void pre_allocate(const size_t counts[N]) {
-                    if (m_p_word_index != NULL) {
-                        m_p_word_index->reserve(counts[0]);
+                    if (m_word_index_ptr != NULL) {
+                        m_word_index_ptr->reserve(counts[0]);
                     }
                 };
 
@@ -172,13 +172,13 @@ namespace uva {
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
-                 * @param ngram the given M-Gram we are going to query!
+                 * @param m_gram the given M-Gram we are going to query!
                  * @param result the output parameter containing the the result
                  *               probability and possibly some additional meta
                  *               data for the decoder.
                  */
-                void query(const T_M_Gram & ngram, TQueryResult & result) {
-                    const TModelLevel level = ngram.level;
+                void query(const T_M_Gram & m_gram, TQueryResult & result) {
+                    const TModelLevel level = m_gram.level;
 
                     //Check the number of elements in the N-Gram
                     if (DO_SANITY_CHECKS && ((level < M_GRAM_LEVEL_1) || (level > N))) {
@@ -186,8 +186,11 @@ namespace uva {
                         msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
                         throw Exception(msg.str());
                     } else {
-                        //First transform the given M-gram into word hashes.
-                        ATrie<N>::store_m_gram_word_ids(ngram);
+                        //Store the pointer to the M-gram
+                        m_query_ptr = &m_gram;
+
+                        //Transform the given M-gram into word hashes.
+                        ATrie<N>::store_m_gram_word_ids(m_gram);
 
                         //Go on with a recursive procedure of computing the N-Gram probabilities
                         get_probability(level, result.prob);
@@ -201,63 +204,61 @@ namespace uva {
                  * @return the pointer to the stored word index or NULL if none
                  */
                 inline AWordIndex * get_word_index() {
-                    return m_p_word_index;
+                    return m_word_index_ptr;
                 }
 
                 /**
                  * The basic class destructor
                  */
                 virtual ~ATrie() {
-                    if (m_p_word_index != NULL) {
-                        delete m_p_word_index;
+                    if (m_word_index_ptr != NULL) {
+                        delete m_word_index_ptr;
                     }
                 };
 
             protected:
                 //Stores the reference to the word index to be used
-                AWordIndex * m_p_word_index;
+                AWordIndex * m_word_index_ptr;
 
                 //The temporary data structure to store the N-gram word ids
-                TShortId m_gram_word_ids[N];
+                TShortId m_tmp_word_ids[N];
+                //Stores the pointer to the queries m-gram
+                const T_M_Gram * m_query_ptr;
 
                 /**
-                 * Gets the word hash for the end word of the back-off N-Gram
-                 * @return the word hash for the end word of the back-off N-Gram
+                 * Gets the word hash for the end word of the back-off M-Gram
+                 * @return the word hash for the end word of the back-off M-Gram
                  */
                 inline const TShortId & get_back_off_end_word_id() {
-                    return m_gram_word_ids[N - 2];
+                    return m_tmp_word_ids[N - 2];
                 }
 
                 /**
-                 * Gets the word hash for the last word in the N-gram
-                 * @return the word hash for the last word in the N-gram
+                 * Gets the word hash for the last word in the M-gram
+                 * @return the word hash for the last word in the M-gram
                  */
                 inline const TShortId & get_end_word_id() {
-                    return m_gram_word_ids[N - 1];
+                    return m_tmp_word_ids[N - 1];
                 }
 
                 /**
                  * Converts the given tokens to ids and stores it in
-                 * m_gram_word_ids. The ids are aligned to the backof the
-                 * array so that the last m_gram_word_ids[N-1] always 
-                 * stores the id of the last word.
-                 * @param ngram the n-gram tokens to convert to hashes
+                 * m_gram_word_ids. The ids are aligned to the beginning
+                 * of the m_gram_word_ids[N-1] array.
+                 * @param m_gram the m-gram tokens to convert to hashes
                  */
-                inline void store_m_gram_word_ids(const T_M_Gram & ngram) {
-                    if (DO_SANITY_CHECKS && (m_p_word_index == NULL)) {
+                inline void store_m_gram_word_ids(const T_M_Gram & m_gram) {
+                    if (DO_SANITY_CHECKS && (m_word_index_ptr == NULL)) {
                         throw Exception("The m_p_word_index is not set!");
                     }
-
-                    //Computethe begin index in m_gram_word_ids to start putting ids from
-                    const TModelLevel begin_idx = N - ngram.level;
-
+                    
                     //The start index depends on the value M of the given M-Gram
-                    TModelLevel idx = N - ngram.level;
-                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
-                    for (TModelLevel i = 0; i < ngram.level; i++) {
+                    TModelLevel idx = N - m_gram.level;
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(m_gram.level) << "-gram:" << END_LOG;
+                    for (TModelLevel i = 0; i < m_gram.level; i++) {
                         //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                        m_p_word_index->get_word_id(ngram.tokens[i].str(), m_gram_word_ids[begin_idx + idx]);
-                        LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(m_gram_word_ids[begin_idx + idx]) << END_LOG;
+                        m_word_index_ptr->get_word_id(m_gram.tokens[i].str(), m_tmp_word_ids[idx]);
+                        LOG_DEBUG1 << "wordId('" << m_gram.tokens[i].str() << "') = " << SSTR(m_tmp_word_ids[idx]) << END_LOG;
                         idx++;
                     }
                 }
