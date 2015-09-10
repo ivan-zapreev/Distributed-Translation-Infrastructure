@@ -36,6 +36,15 @@ using uva::smt::monitore::StatisticsMonitor;
 namespace uva {
     namespace smt {
         namespace logging {
+
+            std::ostream& operator<<(std::ostream& stream, const uint8_t & value) {
+                return stream << ((uint32_t) value);
+            }
+
+            std::ostream& operator<<(std::ostream& stream, const int8_t & value) {
+                return stream << ((int32_t) value);
+            }
+            
             DebugLevelsEnum Logger::currLEvel = DebugLevelsEnum::RESULT;
 
             const char * Logger::_debugLevelStr[DebugLevelsEnum::size] = {USAGE_PARAM_VALUE,

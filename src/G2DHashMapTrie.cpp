@@ -236,41 +236,51 @@ namespace uva {
 
             template<TModelLevel N>
             void G2DHashMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+                LOG_DEBUG1 << "Computing probability for an " << level << "-gram " << END_LOG;
+                
+                //1. Check which level M-gram we need to get probability for
                 if (level > M_GRAM_LEVEL_1) {
-                    //This is the case of the M-gram with M > 1
+                    //1.1. This is the case of the M-gram with M > 1
 
-                    //1. Compute the m-gram hash
+                    //1.1.2. Compute the m-gram hash
                     TShortId gram_hash = ATrie<N>::m_query_ptr->suffix_hash(N - level);
 
-                    //2. Search for the bucket
+                    //1.1.3. Search for the bucket
                     const TShortId bucket_idx = get_bucket_id(gram_hash, level);
 
-                    //3. Search for the probability on the given M-gram level
+                    //1.1.4. Search for the probability on the given M-gram level
                     if (level == N) {
+                        //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_prob_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
+                            //1.1.4.1.1 The probability is nicely found
                             prob = *payload_ptr;
                         } else {
-                            //Could not compute the probability for the given level, so backing off (recursive)!
+                            //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
                             ATrie<N>::get_back_off_prob(level - 1, prob);
                         }
                     } else {
+                        //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_prob_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], payload_ptr)) {
+                            //1.1.4.2.1 The probability is nicely found
                             prob = payload_ptr->prob;
                         } else {
-                            //Could not compute the probability for the given level, so backing off (recursive)!
+                            //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
                             ATrie<N>::get_back_off_prob(level - 1, prob);
                         }
                     }
                 } else {
-                    //This is the case of a 1-Gram, just get its probability.
+                    //1.2. This is the case of a 1-Gram, just get its probability.
                     prob = m_1_gram_data[ATrie<N>::get_end_word_id()].prob;
                 }
             }
 
             template<TModelLevel N>
             bool G2DHashMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
+
+                LOG_DEBUG << "Computing back-off for an " << level << "-gram " << END_LOG;
+
                 return false;
             }
 
