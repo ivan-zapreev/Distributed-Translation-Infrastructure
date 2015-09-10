@@ -87,11 +87,14 @@ namespace uva {
                      * @return the hash value of the given token
                      */
                     inline TShortId sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                        LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
+
                         //Compute the length of the gram tokens in memory, including spaces between
                         const char * beginFirstPtr = tokens[begin_idx].getBeginCStr();
                         const TextPieceReader & last = tokens[end_idx];
                         const char * beginLastPtr = last.getBeginCStr();
                         const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
+                        LOG_DEBUG3 << "Hashing tokens length: " << totalLen << END_LOG;
 
                         //If the sanity check is on then test that the memory is continuous
                         //Compute the same length but with a longer iterative algorithms
@@ -126,7 +129,7 @@ namespace uva {
                         const TModelLevel end_idx = level - 1;
                         return sub_hash(begin_idx, end_idx);
                     }
-                    
+
                     /**
                      * This function allows to compute the hash of the given M-Gram
                      * It assumes, which should hold, that the memory pointed by the tokens is continuous
@@ -172,7 +175,7 @@ namespace uva {
 
                 //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                 static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
-                    0,0,
+                    0, 0,
                     M_GRAM_2_ID_TYPE_LEN_BITS,
                     M_GRAM_3_ID_TYPE_LEN_BITS,
                     M_GRAM_4_ID_TYPE_LEN_BITS,
@@ -191,21 +194,15 @@ namespace uva {
                     6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
                 };
 
-                class Comp_M_Gram_Id;
-                std::ostream& operator<<(std::ostream& stream, const Comp_M_Gram_Id& id);
+                //Define the basic type as an alias for the compressed M-Gram id
+                typedef uint8_t * T_Id_Storage_Ptr;
 
                 /**
                  * The compressed implementation of the M-gram id class
                  * Made in form of a namespace for the sake of minimizing the
                  * memory consumption
                  */
-                struct Comp_M_Gram_Id {
-                public:
-
-                    //Define the basic type as an alias for the compressed M-Gram id
-                    typedef uint8_t * T_Id_Storage_Ptr;
-
-                    T_Id_Storage_Ptr value;
+                namespace Comp_M_Gram_Id {
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -221,9 +218,9 @@ namespace uva {
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    static void create_m_gram_id(const TShortId * word_ids,
+                    void create_m_gram_id(const TShortId * word_ids,
                             const uint8_t begin_idx, const uint8_t num_word_ids,
-                            Comp_M_Gram_Id & m_p_gram_id);
+                            T_Id_Storage_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -231,7 +228,7 @@ namespace uva {
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(const TModelLevel level, Comp_M_Gram_Id & m_p_gram_id) {
+                    static inline void allocate_m_gram_id(const TModelLevel level, T_Id_Storage_Ptr & m_p_gram_id) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                             stringstream msg;
@@ -243,46 +240,30 @@ namespace uva {
                         }
 
                         //Allocate maximum memory that could be needed to store the given M-gram level id
-                        m_p_gram_id.value = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                        m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
                     }
 
                     /**
                      * Allows to destroy the M-Gram id if it is not NULL.
                      * @param m_p_gram_id the M-gram id pointer to destroy
                      */
-                    static inline void destroy(Comp_M_Gram_Id & m_p_gram_id) {
-                        if (m_p_gram_id.value != NULL) {
-                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR(m_p_gram_id) << END_LOG;
-                            delete[] m_p_gram_id.value;
+                    static inline void destroy(T_Id_Storage_Ptr & m_p_gram_id) {
+                        if (m_p_gram_id != NULL) {
+                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " <<  (void*) m_p_gram_id << END_LOG;
+                            delete[] m_p_gram_id;
                         }
                     }
 
                     /**
                      * Allows to compare two M-Gram ids of a fixed M-gram level
-                     * @param one the first M-gram id
-                     * @param two the second M-gram id
+                     * @param m_p_gram_id_one the first M-gram id
+                     * @param m_p_gram_id_two the second M-gram id
                      * @return Negative value if one is smaller than two
                      *         Zero if one is equal to two
                      *         Positive value if one is larger than two
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    static int8_t compare(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two);
-
-                    static inline bool is_equal_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
-                    }
-
-                    static inline bool is_equal_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
-                    }
-
-                    static inline bool is_equal_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
-                    }
-
-                    static inline bool is_equal_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
-                    }
+                    int8_t compare(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -291,23 +272,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    static bool is_equal_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
-
-                    static inline bool is_less_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_2>(one, two) == 0);
-                    }
-
-                    static inline bool is_less_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_3>(one, two) == 0);
-                    }
-
-                    static inline bool is_less_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_4>(one, two) == 0);
-                    }
-
-                    static inline bool is_less_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_5>(one, two) == 0);
-                    }
+                    bool is_equal_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -316,23 +281,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    static bool is_less_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
-
-                    static inline bool is_more_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
-                    }
-
-                    static inline bool is_more_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
-                    }
-
-                    static inline bool is_more_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
-                    }
-
-                    static inline bool is_more_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                        return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
-                    }
+                    bool is_less_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -341,23 +290,8 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "larger" than the second, otherwise false
                      */
-                    static bool is_more_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
+                    bool is_more_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
                 };
-
-                template<TModelLevel M>
-                bool operator==(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return Comp_M_Gram_Id::is_equal_m_grams_id(one, two, M);
-                }
-
-                template<TModelLevel M>
-                bool operator<(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return Comp_M_Gram_Id::is_less_m_grams_id(one, two, M);
-                }
-
-                template<TModelLevel M>
-                bool operator>(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return Comp_M_Gram_Id::is_more_m_grams_id(one, two, M);
-                }
             }
         }
     }

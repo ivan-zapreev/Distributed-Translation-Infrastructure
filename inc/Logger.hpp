@@ -99,9 +99,9 @@ namespace uva {
 #define DEBUG3_PARAM_VALUE "DEBUG3"
 #define DEBUG4_PARAM_VALUE "DEBUG4"
 
-            std::ostream& operator<<(std::ostream& stream, const uint8_t & value);
+            std::ostream& operator<<(std::ostream& stream, const unsigned char & value);
 
-            std::ostream& operator<<(std::ostream& stream, const int8_t & value);
+            std::ostream& operator<<(std::ostream& stream, const signed char & value);
 
             /**
              * This is a trivial logging facility that exchibits a singleton

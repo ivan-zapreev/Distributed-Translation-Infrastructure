@@ -170,7 +170,7 @@ namespace uva {
                 const TShortId & wordId = ATrie<N>::get_back_off_end_word_id();
                 const TModelLevel boCtxLen = level - 1;
 
-                LOG_DEBUG << "Computing back-off for an " << level
+                LOG_INFO1 << "Computing back-off for an " << level
                         << "-gram the context length is " << boCtxLen << END_LOG;
 
                 if (boCtxLen > 0) {
@@ -178,7 +178,7 @@ namespace uva {
                     TLongId ctxId = AWordIndex::UNDEFINED_WORD_ID;
                     //Compute the context hash
                     if (get_query_context_Id<true>(boCtxLen, ctxId)) {
-                        LOG_DEBUG << "Got query context id: " << ctxId << END_LOG;
+                        LOG_INFO1 << "Got query context id: " << ctxId << END_LOG;
 
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntry * pEntry;
@@ -186,7 +186,7 @@ namespace uva {
                             //Obtained the stored back-off weight
                             back_off = pEntry->back_off;
 
-                            LOG_DEBUG << "The " << level << "-Gram log_"
+                            LOG_INFO1 << "The " << level << "-Gram log_"
                                     << LOG_PROB_WEIGHT_BASE << "( back-off ) for (wordId, ctxId)=("
                                     << wordId << ", " << ctxId << "), is: " << back_off << END_LOG;
 
@@ -194,7 +194,7 @@ namespace uva {
                         } else {
                             //The query context id could be determined, but 
                             //the data was not found in the trie.
-                            LOG_DEBUG << "Unable to find data for " << (level)
+                            LOG_INFO1 << "Unable to find data for " << (level)
                                     << "-Gram query with end wordId: "
                                     << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << "!" << END_LOG;
@@ -203,7 +203,7 @@ namespace uva {
                     } else {
                         //The query context id could not be determined,
                         //so the M-gram is not present!
-                        LOG_DEBUG << "Unable to find ctxId for " << (level)
+                        LOG_INFO1 << "Unable to find ctxId for " << (level)
                                 << "-Gram query with end wordId: "
                                 << SSTR(wordId) << "!" << END_LOG;
                         return false;
@@ -217,19 +217,19 @@ namespace uva {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
                         back_off = pbData->back_off;
 
-                        LOG_DEBUG << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                        LOG_INFO1 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( back-off ) for word: " << wordId
                                 << ", is: " << back_off << END_LOG;
                         return true;
                     } else {
                         //The one gram data is not present!
-                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
+                        LOG_INFO1 << "Unable to find the 1-Gram entry for a word: "
                                 << wordId << ", nowhere to back-off!" << END_LOG;
                         return false;
                     }
                 }
 
-                LOG_DEBUG << "The chosen log back-off weight for context: " << level << " is: " << back_off << END_LOG;
+                LOG_INFO1 << "The chosen log back-off weight for context: " << level << " is: " << back_off << END_LOG;
 
                 //Return the computed back-off weight it can be UNDEFINED_LOG_PROB_WEIGHT, which is zero - no penalty
 
@@ -243,7 +243,7 @@ namespace uva {
                 //Get the last word in the N-gram
                 const TShortId & wordId = ATrie<N>::get_end_word_id();
 
-                LOG_DEBUG1 << "Computing probability for an " << level
+                LOG_INFO1 << "Computing probability for an " << level
                         << "-gram the context length is " << ctxLen << END_LOG;
 
                 //Consider different variants based no the length of the context
@@ -254,19 +254,19 @@ namespace uva {
                     //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (get_query_context_Id<false>(ctxLen, ctxId)) {
 
-                        LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
+                        LOG_INFO1 << "Got query context id: " << ctxId << END_LOG;
 
                         if (level == N) {
                             //If we are looking for a N-Gram probability
                             if (get_N_GramProb(wordId, ctxId, prob)) {
-                                LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                LOG_INFO1 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (wordId,ctxId) = (" << wordId << ", "
                                         << ctxId << "), is: " << prob << END_LOG;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
 
-                                LOG_DEBUG << "Unable to find the " << SSTR(level)
+                                LOG_INFO1 << "Unable to find the " << SSTR(level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
@@ -280,7 +280,7 @@ namespace uva {
                             const TProbBackOffEntry * pEntry;
                             if (get_M_GramDataRef(level, wordId, ctxId, &pEntry)) {
 
-                                LOG_DEBUG2 << "The " << level
+                                LOG_INFO1 << "The " << level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
                                         << wordId << ", " << ctxId
@@ -292,7 +292,7 @@ namespace uva {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
 
-                                LOG_DEBUG << "Unable to find the " << SSTR(level)
+                                LOG_INFO1 << "Unable to find the " << SSTR(level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
@@ -304,7 +304,7 @@ namespace uva {
                         //Could not compute the probability for
                         //the given level, so backing off (recursive)!
 
-                        LOG_DEBUG << "Unable to find the " << SSTR(level)
+                        LOG_INFO1 << "Unable to find the " << SSTR(level)
                                 << "-Gram  prob for a (wordId,ctxId) = ("
                                 << wordId << ", " << ctxId
                                 << "), need to back off!" << END_LOG;
@@ -316,14 +316,14 @@ namespace uva {
                     const TProbBackOffEntry * pEntry;
                     if (get_1_GramDataRef(wordId, & pEntry)) {
 
-                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                        LOG_INFO1 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << wordId
                                 << ", is: " << pEntry->prob << END_LOG;
 
                         //Return the stored probability
                         prob = pEntry->prob;
                     } else {
-                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
+                        LOG_INFO1 << "Unable to find the 1-Gram entry for a word: "
                                 << wordId << " returning:" << ZERO_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 

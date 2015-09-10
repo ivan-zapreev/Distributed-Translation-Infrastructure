@@ -99,10 +99,6 @@ namespace uva {
                         msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
                         throw Exception(msg.str());
                     }
-
-                    LOG_INFO3 << "Collision detections are: "
-                            << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                            << " !" << END_LOG;
                 };
 
                 /**

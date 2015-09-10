@@ -73,8 +73,8 @@ namespace uva {
                     typedef PAYLOAD_TYPE TPayloadType;
                 };
 
-                typedef S_M_GramData<Comp_M_Gram_Id, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef S_M_GramData<Comp_M_Gram_Id, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef S_M_GramData<T_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef S_M_GramData<T_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
@@ -203,12 +203,12 @@ namespace uva {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const TShortId gram_hash = gram.hash();
-                    //Compute the index in the array of bucket sizes
-                    const TModelLevel buckes_size_idx = gram.level - 1;
-                    //Compute the bucket Id from the M-Gram hash
-                    bucket_idx = gram_hash % num_buckets[buckes_size_idx];
+                    LOG_INFO3 << "The " << gram.level << "-gram: " << tokensToString(gram)
+                            << " hash is " << gram_hash << END_LOG;
+                    
+                    bucket_idx = get_bucket_id(gram_hash, gram.level);
 
-                    LOG_DEBUG3 << "Getting bucket for " << tokensToString(gram) << " idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_INFO3 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level - 1]))) {
@@ -241,7 +241,7 @@ namespace uva {
                         LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
-                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id.value) << " with " << SSTR((void*) second.id.value) << END_LOG;
+                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
@@ -253,7 +253,7 @@ namespace uva {
 
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
-                Comp_M_Gram_Id m_tmp_gram_id;
+                T_Id_Storage_Ptr m_tmp_gram_id;
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
@@ -271,12 +271,14 @@ namespace uva {
 
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level
+                 * @param LEVEL_TYPE the level bucket type
+                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
                  * @param level the level of the M-gram we compute probability for
                  * @param ref the bucket to search in
                  * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
-                template<typename LEVEL_TYPE>
+                template<typename LEVEL_TYPE, bool back_off = false >
                 bool get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
                         const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr);
 

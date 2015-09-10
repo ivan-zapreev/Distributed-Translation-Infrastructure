@@ -99,6 +99,9 @@ namespace uva {
                  */
                 explicit ATrie(AWordIndex * _pWordIndex)
                 : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL) {
+                    LOG_INFO3 << "Collision detections are: "
+                            << (DO_SANITY_CHECKS ? "ON" : "OFF")
+                            << " !" << END_LOG;
                 }
 
                 /**
@@ -251,7 +254,7 @@ namespace uva {
                     if (DO_SANITY_CHECKS && (m_word_index_ptr == NULL)) {
                         throw Exception("The m_p_word_index is not set!");
                     }
-                    
+
                     //The start index depends on the value M of the given M-Gram
                     TModelLevel idx = N - m_gram.level;
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(m_gram.level) << "-gram:" << END_LOG;
