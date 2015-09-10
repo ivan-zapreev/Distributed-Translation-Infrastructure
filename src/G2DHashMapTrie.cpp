@@ -22,7 +22,6 @@
  * Created on September 8, 2015, 11:22 AM
  */
 
-
 #include "G2DHashMapTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
@@ -40,12 +39,15 @@ namespace uva {
 
             template<TModelLevel N>
             G2DHashMapTrie<N>::G2DHashMapTrie(AWordIndex * const _pWordIndex)
-            : ATrie<N>(_pWordIndex), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            : ATrie<N>(_pWordIndex), m_tmp_gram_id(NULL), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
+
+                //Allocate the M-gram id memory for queries
+                Comp_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
@@ -100,6 +102,10 @@ namespace uva {
                     //De-allocate N-Grams
                     delete[] m_N_gram_data;
                 }
+                //Destroy the query id if any
+                if (m_tmp_gram_id != NULL) {
+                    Comp_M_Gram_Id::destroy(m_tmp_gram_id);
+                }
             };
 
             template<TModelLevel N>
@@ -123,11 +129,14 @@ namespace uva {
                 const TModelLevel level_idx = (mGram.level - ATrie<N>::MGRAM_IDX_OFFSET);
 
                 //Create a new M-Gram data entry
-                T_M_Gram_Prob_Back_Off_Entry & data = m_M_gram_data[level_idx][bucket_idx].get_new();
+                T_M_Gram_Prob_Back_Off_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();
 
-                //Create the M-gram id
-                Comp_M_Gram_Id::allocate_m_gram_id(mGram, this->get_word_index(), data.m_gram_id);
-                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.m_gram_id) << " for " << tokensToString(mGram) << END_LOG;
+                //Get the N-gram word ids
+                ATrie<N>::store_m_gram_word_ids(mGram);
+
+                //Create the M-gram id from the word ids
+                Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
+                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.id) << " for " << tokensToString(mGram) << END_LOG;
 
                 //Set the probability and back-off data
                 data.payload.prob = mGram.prob;
@@ -142,11 +151,14 @@ namespace uva {
                 get_bucket_id(nGram, bucket_idx);
 
                 //Create a new M-Gram data entry
-                T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].get_new();
+                T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
 
-                //Create the M-gram id
-                Comp_M_Gram_Id::allocate_m_gram_id(nGram, this->get_word_index(), data.m_gram_id);
-                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.m_gram_id) << " for " << tokensToString(nGram) << END_LOG;
+                //Get the N-gram word ids
+                ATrie<N>::store_m_gram_word_ids(nGram);
+
+                //Create the N-gram id from the word ids
+                Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
+                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.id) << " for " << tokensToString(nGram) << END_LOG;
 
                 //Set the probability data
                 data.payload = nGram.prob;
@@ -176,20 +188,55 @@ namespace uva {
             };
 
             template<TModelLevel N>
+            template<typename LEVEL_TYPE>
+            void G2DHashMapTrie<N>::get_prob_from_gram_level(const TModelLevel level,
+                    const LEVEL_TYPE & ref, TLogProbBackOff & prob) {
+                //Compute the context length of the given M-Gram
+                const TModelLevel ctx_len = level - 1;
+                //Compute the begin index in the tokens and word ids arrays
+                const TModelLevel elem_begin_idx = (N - level);
+
+                //1. Check that the bucket with the given index is not empty
+                if (ref.has_data()) {
+                    //2. Compute the query id
+                    Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
+
+                    //3. Search for the query id in the bucket
+                    //The data is available search for the word index in the array
+
+                    //4.1 If the id is found then we get the probability
+
+                    //4.2 If the id is not found then we need to back-off
+                } else {
+                    //Could not compute the probability for the given level, so backing off (recursive)!
+                    const TextPieceReader * tokens = &ATrie<N>::m_query_ptr->tokens[elem_begin_idx];
+                    LOG_DEBUG << "Unable to find the " << SSTR(level)
+                            << "-Gram  prob for: " << tokensToString(tokens, level)
+                            << ", need to back off!" << END_LOG;
+                    ATrie<N>::get_back_off_prob(ctx_len, prob);
+                }
+            }
+
+            template<TModelLevel N>
             void G2DHashMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
-                //1. Compute the m-gram hash
+                if (level > M_GRAM_LEVEL_1) {
+                    //This is the case of the M-gram with M > 1
 
-                //2. Search for the bucket
+                    //1. Compute the m-gram hash
+                    TShortId gram_hash = ATrie<N>::m_query_ptr->suffix_hash(N - level);
 
-                //3. Check that it is not empty
+                    //2. Search for the bucket
+                    const TShortId bucket_idx = get_bucket_id(gram_hash, level);
 
-                //4. Try to compute the query id
-
-                //5. Search for the query id in the bucket
-                
-                //5.1 If the id is found then we get the probability
-                
-                //5.2 If the id is not found then we need to back-off
+                    //3. Search for the probability on the given M-gram level
+                    if (level == N) {
+                        get_prob_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], prob);
+                    } else {
+                        get_prob_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], prob);
+                    }
+                } else {
+                    //This is the case of a 1-Gram
+                }
             }
 
             template<TModelLevel N>
