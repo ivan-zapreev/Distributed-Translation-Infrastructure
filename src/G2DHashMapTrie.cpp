@@ -39,7 +39,7 @@ namespace uva {
 
             template<TModelLevel N>
             G2DHashMapTrie<N>::G2DHashMapTrie(AWordIndex * const _pWordIndex)
-            : ATrie<N>(_pWordIndex), m_tmp_gram_id(NULL), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            : ATrie<N>(_pWordIndex), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
@@ -103,9 +103,7 @@ namespace uva {
                     delete[] m_N_gram_data;
                 }
                 //Destroy the query id if any
-                if (m_tmp_gram_id != NULL) {
-                    Comp_M_Gram_Id::destroy(m_tmp_gram_id);
-                }
+                Comp_M_Gram_Id::destroy(m_tmp_gram_id);
             };
 
             template<TModelLevel N>
@@ -136,7 +134,7 @@ namespace uva {
 
                 //Create the M-gram id from the word ids
                 Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
-                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.id) << " for " << tokensToString(mGram) << END_LOG;
+                LOG_DEBUG3 << "Allocated M-gram id " << SSTR(data.id) << " for " << tokensToString(mGram) << END_LOG;
 
                 //Set the probability and back-off data
                 data.payload.prob = mGram.prob;
@@ -158,7 +156,7 @@ namespace uva {
 
                 //Create the N-gram id from the word ids
                 Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
-                LOG_DEBUG3 << "Allocated M-gram id " << SSTR((void*) data.id) << " for " << tokensToString(nGram) << END_LOG;
+                LOG_DEBUG3 << "Allocated M-gram id " << SSTR(data.id) << " for " << tokensToString(nGram) << END_LOG;
 
                 //Set the probability data
                 data.payload = nGram.prob;

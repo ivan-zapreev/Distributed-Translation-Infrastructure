@@ -72,8 +72,8 @@ namespace uva {
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                 };
 
-                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef S_M_GramData<T_Comp_M_Gram_Id_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef S_M_GramData<Comp_M_Gram_Id, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
+                typedef S_M_GramData<Comp_M_Gram_Id, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
@@ -240,7 +240,7 @@ namespace uva {
                         LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
-                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
+                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id.value) << " with " << SSTR((void*) second.id.value) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
@@ -252,7 +252,7 @@ namespace uva {
 
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
-                T_Comp_M_Gram_Id_Ptr m_tmp_gram_id;
+                Comp_M_Gram_Id m_tmp_gram_id;
                
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;

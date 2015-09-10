@@ -170,9 +170,11 @@ namespace uva {
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    if ((key >= array[l_idx].id) && (key <= array[u_idx].id)) {
-                        //The key is inside array values, so we want to search.
-
+                    if (key > array[u_idx].id) {
+                        //The value is definitely not in this array
+                        return false;
+                    } else {
+                        //The key is potentially inside array values, so we want to search.
                         for (found_pos = l_idx; found_pos <= u_idx; ++found_pos) {
                             if (key == array[found_pos].id) {
                                 //The value is found

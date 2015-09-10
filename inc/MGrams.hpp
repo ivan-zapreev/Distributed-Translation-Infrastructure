@@ -133,59 +133,65 @@ namespace uva {
                     return tokensToString<N>(gram.tokens, gram.level);
                 };
 
-                //Define the basic type as an alias for the compressed M-Gram id
-                typedef uint8_t * T_Comp_M_Gram_Id_Ptr;
+                //The memory in bits needed to store different M-gram id types in
+                //the M-gram id byte arrays
+                //ToDo: These are the minimum values, if used then we use fewest memory
+                //but the data is not byte aligned. Therefore some bit copying operations
+                //are not done efficiently. Perhaps it is worth trying to round these
+                //values up to full bytes, this can improve performance @ some memory costs.
 
+                //The number of bites needed to store a 2-gram id type
+                //Possible id types: 32^2 = 1,024
+                //The number of bits needed to store the type is log_2(1,024) = 10
+                static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
+                //The number of bites needed to store a 3-gram id type
+                //Possible id types: 32^3 = 32,768
+                //The number of bits needed to store the type is log_2(32,768) = 15
+                static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
+                //The number of bites needed to store a 4-gram id type
+                //Possible id types: 32^4 = 1,048,576
+                //The number of bits needed to store the type is log_2(1,048,576) = 20
+                static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
+                //The number of bites needed to store a 5-gram id type
+                //Possible id types: 32^5 = 33,554,432
+                //The number of bits needed to store the type is log_2(33,554,432) = 25
+                static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
+
+                //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
+                static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
+                    M_GRAM_2_ID_TYPE_LEN_BITS,
+                    M_GRAM_3_ID_TYPE_LEN_BITS,
+                    M_GRAM_4_ID_TYPE_LEN_BITS,
+                    M_GRAM_5_ID_TYPE_LEN_BITS
+                };
+
+                //Stores the maximum number of bits up to and including M-grams
+                //of level 6.  We use sizeof (TShortId) as each wordId is of type
+                //TShortId, and the maximum number of bits is thus defined by the
+                //number of word_ids in the M-gram and their max size in bytes.
+                static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
+                    2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
+                    3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
+                    4 * sizeof (TShortId), // 4 TShortId values for 4 word ids
+                    5 * sizeof (TShortId), // 5 TShortId values for 5 word ids
+                    6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
+                };
+
+                class Comp_M_Gram_Id;
+                std::ostream& operator<<(std::ostream& stream, const Comp_M_Gram_Id& id);
+                
                 /**
                  * The compressed implementation of the M-gram id class
                  * Made in form of a namespace for the sake of minimizing the
                  * memory consumption
                  */
-                namespace Comp_M_Gram_Id {
+                struct Comp_M_Gram_Id {
+                public:
 
-                    //The memory in bits needed to store different M-gram id types in
-                    //the M-gram id byte arrays
-                    //ToDo: These are the minimum values, if used then we use fewest memory
-                    //but the data is not byte aligned. Therefore some bit copying operations
-                    //are not done efficiently. Perhaps it is worth trying to round these
-                    //values up to full bytes, this can improve performance @ some memory costs.
+                    //Define the basic type as an alias for the compressed M-Gram id
+                    typedef uint8_t * T_Id_Storage_Ptr;
 
-                    //The number of bites needed to store a 2-gram id type
-                    //Possible id types: 32^2 = 1,024
-                    //The number of bits needed to store the type is log_2(1,024) = 10
-                    static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
-                    //The number of bites needed to store a 3-gram id type
-                    //Possible id types: 32^3 = 32,768
-                    //The number of bits needed to store the type is log_2(32,768) = 15
-                    static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
-                    //The number of bites needed to store a 4-gram id type
-                    //Possible id types: 32^4 = 1,048,576
-                    //The number of bits needed to store the type is log_2(1,048,576) = 20
-                    static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
-                    //The number of bites needed to store a 5-gram id type
-                    //Possible id types: 32^5 = 33,554,432
-                    //The number of bits needed to store the type is log_2(33,554,432) = 25
-                    static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
-
-                    //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
-                    static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
-                        M_GRAM_2_ID_TYPE_LEN_BITS,
-                        M_GRAM_3_ID_TYPE_LEN_BITS,
-                        M_GRAM_4_ID_TYPE_LEN_BITS,
-                        M_GRAM_5_ID_TYPE_LEN_BITS
-                    };
-
-                    //Stores the maximum number of bits up to and including M-grams
-                    //of level 6.  We use sizeof (TShortId) as each wordId is of type
-                    //TShortId, and the maximum number of bits is thus defined by the
-                    //number of word_ids in the M-gram and their max size in bytes.
-                    static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
-                        2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
-                        3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
-                        4 * sizeof (TShortId), // 4 TShortId values for 4 word ids
-                        5 * sizeof (TShortId), // 5 TShortId values for 5 word ids
-                        6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
-                    };
+                    T_Id_Storage_Ptr value;
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -201,9 +207,9 @@ namespace uva {
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    void create_m_gram_id(const TShortId * word_ids,
+                    static void create_m_gram_id(const TShortId * word_ids,
                             const uint8_t begin_idx, const uint8_t num_word_ids,
-                            T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
+                            Comp_M_Gram_Id & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -211,7 +217,7 @@ namespace uva {
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(const TModelLevel level, T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
+                    static inline void allocate_m_gram_id(const TModelLevel level, Comp_M_Gram_Id & m_p_gram_id) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                             stringstream msg;
@@ -223,17 +229,17 @@ namespace uva {
                         }
 
                         //Allocate maximum memory that could be needed to store the given M-gram level id
-                        m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
+                        m_p_gram_id.value = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
                     }
 
                     /**
                      * Allows to destroy the M-Gram id if it is not NULL.
                      * @param m_p_gram_id the M-gram id pointer to destroy
                      */
-                    static inline void destroy(T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
-                        if (m_p_gram_id != NULL) {
-                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
-                            delete[] m_p_gram_id;
+                    static inline void destroy(Comp_M_Gram_Id & m_p_gram_id) {
+                        if (m_p_gram_id.value != NULL) {
+                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " << SSTR(m_p_gram_id) << END_LOG;
+                            delete[] m_p_gram_id.value;
                         }
                     }
 
@@ -246,7 +252,7 @@ namespace uva {
                      *         Positive value if one is larger than two
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    static int8_t compare(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two);
+                    static int8_t compare(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -255,7 +261,16 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    bool is_less_m_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two, const TModelLevel level);
+                    static bool is_equal_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
+
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "smaller" than the second, otherwise false
+                     */
+                    static bool is_less_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -264,7 +279,22 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "larger" than the second, otherwise false
                      */
-                    bool is_more_m_grams_id(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two, const TModelLevel level);
+                    static bool is_more_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
+                };
+
+                template<TModelLevel M>
+                bool operator==(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                    return Comp_M_Gram_Id::is_equal_m_grams_id(one, two, M);
+                }
+
+                template<TModelLevel M>
+                bool operator<(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                    return Comp_M_Gram_Id::is_less_m_grams_id(one, two, M);
+                }
+
+                template<TModelLevel M>
+                bool operator>(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                    return Comp_M_Gram_Id::is_more_m_grams_id(one, two, M);
                 }
             }
         }
