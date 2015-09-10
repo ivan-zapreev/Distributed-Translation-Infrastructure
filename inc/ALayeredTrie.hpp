@@ -127,14 +127,6 @@ namespace uva {
                 virtual void add_n_gram(const T_M_Gram &nGram);
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * @see ATrie
-                 */
-                virtual void query(const T_M_Gram & ngram, TQueryResult & result);
-
-                /**
                  * The basic class destructor
                  */
                 virtual ~ALayeredTrie() {
@@ -207,6 +199,19 @@ namespace uva {
                         TLogProbBackOff & prob) = 0;
 
                 /**
+                 * This recursive function implements the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model.
+                 * @see ATrie
+                 */
+                virtual void get_probability(const TModelLevel level, TLogProbBackOff & prob);
+
+                /**
+                 * This function allows to get the back-off weight for the current context.
+                 * @see ATrie
+                 */
+                virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off);
+
+                /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
@@ -217,31 +222,6 @@ namespace uva {
                 m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
-
-                /**
-                 * Gets the word hash for the end word of the back-off N-Gram
-                 * @return the word hash for the end word of the back-off N-Gram
-                 */
-                inline const TShortId & getBackOffNGramEndWordHash() {
-                    return m_GramWordIds[N - 2];
-                }
-
-                /**
-                 * Gets the word hash for the last word in the N-gram
-                 * @return the word hash for the last word in the N-gram
-                 */
-                inline const TShortId & getNGramEndWordHash() {
-                    return m_GramWordIds[N - 1];
-                }
-
-                /**
-                 * Converts the given tokens to hashes and stores it in mGramWordHashes
-                 * @param ngram the n-gram tokens to convert to hashes
-                 */
-                inline void storeNGramHashes(const T_M_Gram & ngram) {
-                    //First transform the given M-gram into word hashes.
-                    ATrie<N>::tokens_to_id(ngram, m_GramWordIds);
-                }
 
                 /**
                  * Compute the context hash for the M-Gram prefix, example:
@@ -268,7 +248,7 @@ namespace uva {
                  * @throws nothing
                  */
                 template<bool isBackOff>
-                inline bool getQueryContextId(const TModelLevel ctxLen, TLongId & ctxId) {
+                inline bool get_query_context_Id(const TModelLevel ctxLen, TLongId & ctxId) {
                     const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
                     const TModelLevel bIdx = mGramEndIdx - ctxLen;
@@ -279,7 +259,7 @@ namespace uva {
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
-                    ctxId = m_GramWordIds[idx];
+                    ctxId = ATrie<N>::m_gram_word_ids[idx];
                     LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
                     idx++;
 
@@ -294,9 +274,9 @@ namespace uva {
                         //Compute the subsequent context ids
                         for (; idx < eIdx;) {
                             LOG_DEBUG1 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: "
-                                    << SSTR(m_GramWordIds[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
-                            if (m_get_ctx_id_func(m_GramWordIds[idx], ctxId, (idx - bIdx) + 1)) {
-                                LOG_DEBUG1 << "getContextId(" << SSTR(m_GramWordIds[idx])
+                                    << SSTR(ATrie<N>::m_gram_word_ids[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
+                            if (m_get_ctx_id_func(ATrie<N>::m_gram_word_ids[idx], ctxId, (idx - bIdx) + 1)) {
+                                LOG_DEBUG1 << "getContextId(" << SSTR(ATrie<N>::m_gram_word_ids[idx])
                                         << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
                                 idx++;
                             } else {
@@ -435,64 +415,6 @@ namespace uva {
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
-
-                //The temporary data structure to store the N-gram query word ids
-                TShortId m_GramWordIds[N];
-
-                /**
-                 * This function should be called in case we can not get the probability for
-                 * the given M-gram and we want to compute it's back-off probability instead
-                 * @param ctxLen the length of the context for the M-gram for which we could
-                 * not get the probability from the trie.
-                 * @param prob [out] the reference to the probability to be found/computed
-                 */
-                inline void getProbabilityBackOff(const TModelLevel ctxLen, TLogProbBackOff & prob) {
-                    //Compute the lover level probability
-                    getProbability(ctxLen, prob);
-
-                    LOG_DEBUG1 << "getProbability(" << ctxLen
-                            << ") = " << prob << END_LOG;
-
-                    //If the probability is not zero then go on with computing the
-                    //back-off. Otherwise it does not make sence to compute back-off.
-                    if (prob > ZERO_LOG_PROB_WEIGHT) {
-                        TLogProbBackOff back_off;
-                        if (!getBackOffWeight(ctxLen, back_off)) {
-                            //Set the back-off weight value to zero as there is no back-off found!
-                            back_off = ZERO_BACK_OFF_WEIGHT;
-                        }
-
-                        LOG_DEBUG1 << "getBackOffWeight(" << ctxLen
-                                << ") = " << back_off << END_LOG;
-
-                        LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
-                                << " + " << prob << " = " << (back_off + prob) << END_LOG;
-
-                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
-                        prob += back_off;
-                    }
-                }
-
-                /**
-                 * This recursive function implements the computation of the
-                 * N-Gram probabilities in the Back-Off Language Model. The
-                 * N-Gram hashes are obtained from the _wordHashes member
-                 * variable of the class. So it must be pre-set with proper
-                 * word hash values first!
-                 * @param level the M-gram level for which the probability is to be computed
-                 * @param prob [out] the reference to the probability to be found/computed
-                 */
-                void getProbability(const TModelLevel level, TLogProbBackOff & prob);
-
-                /**
-                 * This recursive function allows to get the back-off weight for the current context.
-                 * The N-Gram hashes are obtained from the pre-computed data member array _wordHashes
-                 * @param level the M-gram level for which the back-off weight is to be found,
-                 * is equal to the context length of the K-Gram in the caller function
-                 * @param back_off [out] the back-off weight to be computed
-                 * @return the resulting back-off weight probability
-                 */
-                bool getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off);
 
             };
         }

@@ -77,16 +77,19 @@ namespace uva {
                     TextPieceReader context;
                     TextPieceReader tokens[M_GRAM_LEVEL_MAX];
                     TModelLevel level;
-
+                    
                     /**
-                     * This function allows to compute the hash of the given M-Gram
-                     * It assumes, which should hold, that the memory pointed by the tokens is continuous
+                     * This function allows to compute the hash of the M-Gram between
+                     * the given two word indexes. It assumes, which should hold, that
+                     * the memory pointed by the tokens is continuous.
+                     * @param begin_idx  the index of the first word in tokens array
+                     * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline TShortId hash() const {
+                    inline TShortId hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
                         //Compute the length of the gram tokens in memory, including spaces between
-                        const char * beginFirstPtr = tokens[0].getBeginCStr();
-                        const TextPieceReader & last = tokens[level - 1];
+                        const char * beginFirstPtr = tokens[begin_idx].getBeginCStr();
+                        const TextPieceReader & last = tokens[end_idx];
                         const char * beginLastPtr = last.getBeginCStr();
                         const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
 
@@ -94,8 +97,8 @@ namespace uva {
                         //Compute the same length but with a longer iterative algorithms
                         if (DO_SANITY_CHECKS) {
                             //Compute the exact length
-                            size_t exactTotalLen = level - 1; //The number of spaces in between tokens
-                            for (TModelLevel idx = 0; idx < level; idx++) {
+                            size_t exactTotalLen = (end_idx - begin_idx); //The number of spaces in between tokens
+                            for (TModelLevel idx = begin_idx; idx <= end_idx; idx++) {
                                 exactTotalLen += tokens[idx].getLen();
                             }
                             //Check that the exact and fast computed lengths are the same
@@ -109,6 +112,15 @@ namespace uva {
 
                         //Compute the hash using the gram tokens with spaces with them
                         return computePaulHsiehHash(beginFirstPtr, totalLen);
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the given M-Gram
+                     * It assumes, which should hold, that the memory pointed by the tokens is continuous
+                     * @return the hash value of the given token
+                     */
+                    inline TShortId hash() const {
+                        return  hash(0, level - 1);
                     }
                 } T_M_Gram;
 
@@ -226,8 +238,7 @@ namespace uva {
                         //Allocate maximum memory that could be needed to store the given M-gram level id
                         m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
                     }
-                   
-                    
+
                     /**
                      * Allows to destroy the M-Gram id if it is not NULL.
                      * @param m_p_gram_id the M-gram id pointer to destroy
@@ -248,7 +259,7 @@ namespace uva {
                      */
                     template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
                     static bool compare(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two);
-                    
+
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
                      * @param one the first M-gram to compare

@@ -177,7 +177,24 @@ namespace uva {
                  *               probability and possibly some additional meta
                  *               data for the decoder.
                  */
-                virtual void query(const T_M_Gram & ngram, TQueryResult & result) = 0;
+                void query(const T_M_Gram & ngram, TQueryResult & result) {
+                    const TModelLevel level = ngram.level;
+
+                    //Check the number of elements in the N-Gram
+                    if (DO_SANITY_CHECKS && ((level < M_GRAM_LEVEL_1) || (level > N))) {
+                        stringstream msg;
+                        msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
+                        throw Exception(msg.str());
+                    } else {
+                        //First transform the given M-gram into word hashes.
+                        ATrie<N>::store_m_gram_word_ids(ngram);
+
+                        //Go on with a recursive procedure of computing the N-Gram probabilities
+                        get_probability(level, result.prob);
+
+                        LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the stored word index, if any
@@ -197,28 +214,51 @@ namespace uva {
                 };
 
             protected:
+                //Stores the reference to the word index to be used
+                AWordIndex * m_p_word_index;
+
+                //The temporary data structure to store the N-gram word ids
+                TShortId m_gram_word_ids[N];
 
                 /**
-                 * This method converts the M-Gram tokens into hashes and stores
-                 * them in an array. Note that, M is the size of the tokens array.
-                 * It is not checked, for the sake of performance but is assumed
-                 * that M is <= N!
-                 * @param ngram the n-gram structure with the query ngram tokens
-                 * @param wordHashes the out array parameter to store the hashes.
+                 * Gets the word hash for the end word of the back-off N-Gram
+                 * @return the word hash for the end word of the back-off N-Gram
                  */
-                inline void tokens_to_id(const T_M_Gram & ngram, TShortId wordHashes[N]) {
-                    if (m_p_word_index != NULL) {
-                        //The start index depends on the value M of the given M-Gram
-                        TModelLevel idx = N - ngram.level;
-                        LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
-                        for (TModelLevel i = 0; i < ngram.level; i++) {
-                            //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            m_p_word_index->get_word_id(ngram.tokens[i].str(), wordHashes[idx]);
-                            LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(wordHashes[idx]) << END_LOG;
-                            idx++;
-                        }
-                    } else {
+                inline const TShortId & get_back_off_end_word_id() {
+                    return m_gram_word_ids[N - 2];
+                }
+
+                /**
+                 * Gets the word hash for the last word in the N-gram
+                 * @return the word hash for the last word in the N-gram
+                 */
+                inline const TShortId & get_end_word_id() {
+                    return m_gram_word_ids[N - 1];
+                }
+
+                /**
+                 * Converts the given tokens to ids and stores it in
+                 * m_gram_word_ids. The ids are aligned to the backof the
+                 * array so that the last m_gram_word_ids[N-1] always 
+                 * stores the id of the last word.
+                 * @param ngram the n-gram tokens to convert to hashes
+                 */
+                inline void store_m_gram_word_ids(const T_M_Gram & ngram) {
+                    if (DO_SANITY_CHECKS && (m_p_word_index == NULL)) {
                         throw Exception("The m_p_word_index is not set!");
+                    }
+
+                    //Computethe begin index in m_gram_word_ids to start putting ids from
+                    const TModelLevel begin_idx = N - ngram.level;
+
+                    //The start index depends on the value M of the given M-Gram
+                    TModelLevel idx = N - ngram.level;
+                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(ngram.level) << "-gram:" << END_LOG;
+                    for (TModelLevel i = 0; i < ngram.level; i++) {
+                        //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
+                        m_p_word_index->get_word_id(ngram.tokens[i].str(), m_gram_word_ids[begin_idx + idx]);
+                        LOG_DEBUG1 << "wordId('" << ngram.tokens[i].str() << "') = " << SSTR(m_gram_word_ids[begin_idx + idx]) << END_LOG;
+                        idx++;
                     }
                 }
 
@@ -247,9 +287,60 @@ namespace uva {
                 virtual void post_n_grams() {
                 };
 
-            private:
-                //Stores the reference to the word index to be used
-                AWordIndex * m_p_word_index;
+                /**
+                 * This function should be called in case we can not get the probability for
+                 * the given M-gram and we want to compute it's back-off probability instead
+                 * @param ctxLen the length of the context for the M-gram for which we could
+                 * not get the probability from the trie.
+                 * @param prob [out] the reference to the probability to be found/computed
+                 */
+                inline void get_back_off_prob(const TModelLevel ctxLen, TLogProbBackOff & prob) {
+                    //Compute the lover level probability
+                    get_probability(ctxLen, prob);
+
+                    LOG_DEBUG1 << "getProbability(" << ctxLen
+                            << ") = " << prob << END_LOG;
+
+                    //If the probability is not zero then go on with computing the
+                    //back-off. Otherwise it does not make sence to compute back-off.
+                    if (prob > ZERO_LOG_PROB_WEIGHT) {
+                        TLogProbBackOff back_off;
+                        if (!get_back_off_weight(ctxLen, back_off)) {
+                            //Set the back-off weight value to zero as there is no back-off found!
+                            back_off = ZERO_BACK_OFF_WEIGHT;
+                        }
+
+                        LOG_DEBUG1 << "getBackOffWeight(" << ctxLen
+                                << ") = " << back_off << END_LOG;
+
+                        LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
+                                << " + " << prob << " = " << (back_off + prob) << END_LOG;
+
+                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
+                        prob += back_off;
+                    }
+                }
+
+                /**
+                 * This function should implement the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model. The
+                 * N-Gram hashes can be obtained from the _wordHashes member
+                 * variable of the class.
+                 * @param level the M-gram level for which the probability is to be computed
+                 * @param prob [out] the reference to the probability to be found/computed
+                 */
+                virtual void get_probability(const TModelLevel level, TLogProbBackOff & prob) = 0;
+
+                /**
+                 * This function allows to get the back-off weight for the current context.
+                 * The N-Gram hashes can be obtained from the pre-computed data member array
+                 * _wordHashes.
+                 * @param level the M-gram level for which the back-off weight is to be found,
+                 * is equal to the context length of the K-Gram in the caller function
+                 * @param back_off [out] the back-off weight to be computed
+                 * @return the resulting back-off weight probability
+                 */
+                virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) = 0;
 
             };
         }

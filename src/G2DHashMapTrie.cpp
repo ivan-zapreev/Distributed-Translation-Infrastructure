@@ -176,9 +176,27 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::query(const T_M_Gram & ngram, TQueryResult & result) {
-                //ToDo: Implement
-            };
+            void G2DHashMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+                //1. Compute the m-gram hash
+
+                //2. Search for the bucket
+
+                //3. Check that it is not empty
+
+                //4. Try to compute the query id
+
+                //5. Search for the query id in the bucket
+                
+                //5.1 If the id is found then we get the probability
+                
+                //5.2 If the id is not found then we need to back-off
+            }
+
+            template<TModelLevel N>
+            bool G2DHashMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
+                return false;
+            }
+
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template class G2DHashMapTrie<M_GRAM_LEVEL_MAX>;

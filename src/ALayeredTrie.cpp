@@ -165,9 +165,9 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            bool ALayeredTrie<N>::getBackOffWeight(const TModelLevel level, TLogProbBackOff & back_off) {
+            bool ALayeredTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TShortId & wordId = getBackOffNGramEndWordHash();
+                const TShortId & wordId = ATrie<N>::get_back_off_end_word_id();
                 const TModelLevel boCtxLen = level - 1;
 
                 LOG_DEBUG << "Computing back-off for an " << level
@@ -177,7 +177,7 @@ namespace uva {
                     //Attempt to retrieve back-off weights
                     TLongId ctxId = AWordIndex::UNDEFINED_WORD_ID;
                     //Compute the context hash
-                    if (getQueryContextId<true>(boCtxLen, ctxId)) {
+                    if (get_query_context_Id<true>(boCtxLen, ctxId)) {
                         LOG_DEBUG << "Got query context id: " << ctxId << END_LOG;
 
                         //The context length plus one is M value of the M-Gram
@@ -237,11 +237,11 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ALayeredTrie<N>::getProbability(const TModelLevel level, TLogProbBackOff & prob) {
+            void ALayeredTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
                 //Compute the context length of the given M-Gram
                 const TModelLevel ctxLen = level - 1;
                 //Get the last word in the N-gram
-                const TShortId & wordId = getNGramEndWordHash();
+                const TShortId & wordId = ATrie<N>::get_end_word_id();
 
                 LOG_DEBUG1 << "Computing probability for an " << level
                         << "-gram the context length is " << ctxLen << END_LOG;
@@ -252,7 +252,7 @@ namespace uva {
                     TLongId ctxId;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (getQueryContextId<false>(ctxLen, ctxId)) {
+                    if (get_query_context_Id<false>(ctxLen, ctxId)) {
 
                         LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
 
@@ -271,7 +271,7 @@ namespace uva {
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
 
-                                getProbabilityBackOff(ctxLen, prob);
+                                ATrie<N>::get_back_off_prob(ctxLen, prob);
                             }
                         } else {
                             //If we are looking for a M-Gram probability with 1 < M < N
@@ -297,7 +297,7 @@ namespace uva {
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
 
-                                getProbabilityBackOff(ctxLen, prob);
+                                ATrie<N>::get_back_off_prob(ctxLen, prob);
                             }
                         }
                     } else {
@@ -309,7 +309,7 @@ namespace uva {
                                 << wordId << ", " << ctxId
                                 << "), need to back off!" << END_LOG;
 
-                        getProbabilityBackOff(ctxLen, prob);
+                        ATrie<N>::get_back_off_prob(ctxLen, prob);
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
@@ -330,26 +330,6 @@ namespace uva {
                         //Return the default minimal probability for an unknown word
                         prob = ZERO_LOG_PROB_WEIGHT;
                     }
-                }
-            }
-
-            template<TModelLevel N>
-            void ALayeredTrie<N>::query(const T_M_Gram & ngram, TQueryResult & result) {
-                const TModelLevel level = ngram.level;
-
-                //Check the number of elements in the N-Gram
-                if (DO_SANITY_CHECKS && ((level < 1) || (level > N))) {
-                    stringstream msg;
-                    msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
-                    throw Exception(msg.str());
-                } else {
-                    //First transform the given M-gram into word hashes.
-                    ALayeredTrie<N>::storeNGramHashes(ngram);
-
-                    //Go on with a recursive procedure of computing the N-Gram probabilities
-                    getProbability(level, result.prob);
-
-                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                 }
             }
 

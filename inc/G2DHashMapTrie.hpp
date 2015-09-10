@@ -143,22 +143,40 @@ namespace uva {
                 }
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * @see ATrie
-                 */
-                virtual void query(const T_M_Gram & ngram, TQueryResult & result);
-
-                /**
                  * The basic class destructor
                  */
                 virtual ~G2DHashMapTrie();
 
             protected:
 
+                /**
+                 * This method will be called after all the M-grams are read.
+                 * The default implementation of this method is present.
+                 * If overridden must be called from the child method.
+                 * @see ATrie
+                 */
                 virtual void post_m_grams(const TModelLevel level);
+                
+                /**
+                 * This method will be called after all the N-grams are read.
+                 * The default implementation of this method is present.
+                 * If overridden must be called from the child method.
+                 * @see ATrie
+                 */
                 virtual void post_n_grams();
+
+                /**
+                 * This recursive function implements the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model.
+                 * @see ATrie
+                 */
+                virtual void get_probability(const TModelLevel level, TLogProbBackOff & prob);
+
+                /**
+                 * This function allows to get the back-off weight for the current context.
+                 * @see ATrie
+                 */
+                virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off);
 
                 /**
                  * Allows to get the bucket index for the given M-gram
