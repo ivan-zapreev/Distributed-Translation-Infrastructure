@@ -32,7 +32,6 @@
 #include "Exceptions.hpp"
 
 #include "TextPieceReader.hpp"
-#include "AWordIndex.hpp"
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
 
@@ -42,7 +41,6 @@ using namespace uva::utils::math::bits;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
-using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
@@ -77,18 +75,20 @@ namespace uva {
                     TextPieceReader context;
                     TextPieceReader tokens[M_GRAM_LEVEL_MAX];
                     TModelLevel level;
-                    
+
                     /**
-                     * This function allows to compute the hash of the M-Gram between
-                     * the given two word indexes. It assumes, which should hold, that
-                     * the memory pointed by the tokens is continuous.
+                     * This function allows to compute the hash of the M-Gram suffix
+                     * starting from and including the word on the given index. It
+                     * assumes, which should hold, that the memory pointed by the
+                     * tokens is continuous.
                      * @param begin_idx  the index of the first word in tokens array
                      * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline TShortId hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                    inline TShortId suffix_hash(const TModelLevel begin_idx) const {
                         //Compute the length of the gram tokens in memory, including spaces between
                         const char * beginFirstPtr = tokens[begin_idx].getBeginCStr();
+                        const TModelLevel end_idx = level - 1;
                         const TextPieceReader & last = tokens[end_idx];
                         const char * beginLastPtr = last.getBeginCStr();
                         const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
@@ -120,7 +120,7 @@ namespace uva {
                      * @return the hash value of the given token
                      */
                     inline TShortId hash() const {
-                        return  hash(0, level - 1);
+                        return suffix_hash(0);
                     }
                 } T_M_Gram;
 
@@ -178,7 +178,7 @@ namespace uva {
                     //Stores the maximum number of bits up to and including M-grams
                     //of level 6.  We use sizeof (TShortId) as each wordId is of type
                     //TShortId, and the maximum number of bits is thus defined by the
-                    //number of wordIds in the M-gram and their max size in bytes.
+                    //number of word_ids in the M-gram and their max size in bytes.
                     static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
                         2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
                         3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
@@ -195,28 +195,15 @@ namespace uva {
                      * theat this instance was created with the one argument constructor of this class allocated
                      * maximum needed memory for this level. Then the argument M-gram level must be smaller or
                      * equal to  the level this object was created with.
-                     * @param gram the M-gram to create the id for
-                     * @param p_word_idx the word index
+                     * @param word_ids the pointer to the array of word ids
+                     * @param begin_idx the M-gram to create the id for
+                     * @param num_word_ids the number of word ids
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    bool create_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
-
-                    /**
-                     * The basic constructor to create an M-Gram id
-                     * @param gram the M-gram to create the id for
-                     * @param p_word_idx the word index
-                     * @param m_p_gram_id the pointer to initialize
-                     * @throw Exception if an id could not be created.
-                     */
-                    static inline void allocate_m_gram_id(const T_M_Gram & gram, const AWordIndex * p_word_idx, T_Comp_M_Gram_Id_Ptr & m_p_gram_id) {
-                        if (!create_m_gram_id(gram, p_word_idx, m_p_gram_id)) {
-                            stringstream msg;
-                            msg << "Could not create an " << SSTR(gram.level)
-                                    << "-gram id for: " << tokensToString(gram);
-                            throw Exception(msg.str());
-                        }
-                    }
+                    void create_m_gram_id(const TShortId * word_ids,
+                            const uint8_t begin_idx, const uint8_t num_word_ids,
+                            T_Comp_M_Gram_Id_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -251,14 +238,15 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to compare two M-Gram ids depending on the template flag it is a different operator
-                     * @param IS_LESS if true the it is a is_less compare, if false then is_more
+                     * Allows to compare two M-Gram ids of a fixed M-gram level
                      * @param one the first M-gram id
                      * @param two the second M-gram id
-                     * @return true if "one < two" otherwise false
+                     * @return Negative value if one is smaller than two
+                     *         Zero if one is equal to two
+                     *         Positive value if one is larger than two
                      */
-                    template<bool IS_LESS, TModelLevel M_GRAM_LEVEL>
-                    static bool compare(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two);
+                    template<TModelLevel M_GRAM_LEVEL>
+                    static int8_t compare(const T_Comp_M_Gram_Id_Ptr & one, const T_Comp_M_Gram_Id_Ptr & two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
