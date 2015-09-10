@@ -185,12 +185,17 @@ namespace uva {
                 post_M_N_Grams<TProbBucket>(m_N_gram_data, N);
             };
 
+            //This is an array of functions for comparing x-grams of level x
+            const static typename T_IS_EXT_COMPARE_FUNC<Comp_M_Gram_Id>::func_type comparator_funcs[] = {NULL, NULL,
+                Comp_M_Gram_Id::compare<M_GRAM_LEVEL_2>,
+                Comp_M_Gram_Id::compare<M_GRAM_LEVEL_3>,
+                Comp_M_Gram_Id::compare<M_GRAM_LEVEL_4>,
+                Comp_M_Gram_Id::compare<M_GRAM_LEVEL_5>};
+
             template<TModelLevel N>
             template<typename LEVEL_TYPE>
-            void G2DHashMapTrie<N>::get_prob_from_gram_level(const TModelLevel level,
-                    const LEVEL_TYPE & ref, TLogProbBackOff & prob) {
-                //Compute the context length of the given M-Gram
-                const TModelLevel ctx_len = level - 1;
+            bool G2DHashMapTrie<N>::get_prob_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
+                    const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr) {
                 //Compute the begin index in the tokens and word ids arrays
                 const TModelLevel elem_begin_idx = (N - level);
 
@@ -199,20 +204,34 @@ namespace uva {
                     //2. Compute the query id
                     Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
 
+                    if (DO_SANITY_CHECKS && ((level < M_GRAM_LEVEL_2) || (level > M_GRAM_LEVEL_5))) {
+                        stringstream msg;
+                        msg << "Unsupported M-gram level: " << SSTR(level)
+                                << " must be within [ " << SSTR(M_GRAM_LEVEL_2)
+                                << ", " << SSTR(M_GRAM_LEVEL_5) << " ]";
+                        throw Exception(msg.str());
+                    }
+
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
-
-                    //4.1 If the id is found then we get the probability
-
-                    //4.2 If the id is not found then we need to back-off
-                } else {
-                    //Could not compute the probability for the given level, so backing off (recursive)!
-                    const TextPieceReader * tokens = &ATrie<N>::m_query_ptr->tokens[elem_begin_idx];
-                    LOG_DEBUG << "Unable to find the " << SSTR(level)
-                            << "-Gram  prob for: " << tokensToString(tokens, level)
-                            << ", need to back off!" << END_LOG;
-                    ATrie<N>::get_back_off_prob(ctx_len, prob);
+                    typename LEVEL_TYPE::TIndexType found_idx;
+                    if (my_lsearch_id< typename LEVEL_TYPE::TElemType,
+                            typename LEVEL_TYPE::TIndexType,
+                            typename LEVEL_TYPE::TElemType::TMGramIdType >
+                            (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                            comparator_funcs[level], found_idx)) {
+                        //4.1 If the id is found then we get the probability
+                        payload_ptr = &ref[found_idx].payload;
+                        return true;
+                    }
                 }
+
+                //Could not compute the probability for the given level, so backing off (recursive)!
+                const TextPieceReader * tokens = &ATrie<N>::m_query_ptr->tokens[elem_begin_idx];
+                LOG_DEBUG << "Unable to find the " << SSTR(level)
+                        << "-Gram  prob for: " << tokensToString(tokens, level)
+                        << ", need to back off!" << END_LOG;
+                return false;
             }
 
             template<TModelLevel N>
@@ -228,12 +247,25 @@ namespace uva {
 
                     //3. Search for the probability on the given M-gram level
                     if (level == N) {
-                        get_prob_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], prob);
+                        const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
+                        if (get_prob_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
+                            prob = *payload_ptr;
+                        } else {
+                            //Could not compute the probability for the given level, so backing off (recursive)!
+                            ATrie<N>::get_back_off_prob(level - 1, prob);
+                        }
                     } else {
-                        get_prob_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], prob);
+                        const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
+                        if (get_prob_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[level - ATrie<N>::MGRAM_IDX_OFFSET][bucket_idx], payload_ptr)) {
+                            prob = payload_ptr->prob;
+                        } else {
+                            //Could not compute the probability for the given level, so backing off (recursive)!
+                            ATrie<N>::get_back_off_prob(level - 1, prob);
+                        }
                     }
                 } else {
-                    //This is the case of a 1-Gram
+                    //This is the case of a 1-Gram, just get its probability.
+                    prob = m_1_gram_data[ATrie<N>::get_end_word_id()].prob;
                 }
             }
 

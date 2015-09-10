@@ -262,25 +262,25 @@ namespace uva {
 
                 static inline void create_2_gram_id(const TShortId * word_ids,
                         Comp_M_Gram_Id::T_Id_Storage_Ptr & m_p_gram_id) {
-                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_2 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
+                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
                             (word_ids, m_p_gram_id);
                 }
 
                 static inline void create_3_gram_id(const TShortId * word_ids,
                         Comp_M_Gram_Id::T_Id_Storage_Ptr & m_p_gram_id) {
-                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_3 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_3 >
+                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_3], M_GRAM_LEVEL_3 >
                             (word_ids, m_p_gram_id);
                 }
 
                 static inline void create_4_gram_id(const TShortId * word_ids,
                         Comp_M_Gram_Id::T_Id_Storage_Ptr & m_p_gram_id) {
-                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_4 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_4 >
+                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_4], M_GRAM_LEVEL_4 >
                             (word_ids, m_p_gram_id);
                 }
 
                 static inline void create_5_gram_id(const TShortId * word_ids,
                         Comp_M_Gram_Id::T_Id_Storage_Ptr & m_p_gram_id) {
-                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_5 - M_GRAM_LEVEL_2], M_GRAM_LEVEL_5 >
+                    create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_5], M_GRAM_LEVEL_5 >
                             (word_ids, m_p_gram_id);
                 }
 
@@ -320,7 +320,7 @@ namespace uva {
                     const T_Id_Storage_Ptr & m_p_gram_id_two = two.value;
 
                     //Get the id len in bits
-                    constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2];
+                    constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL];
 
                     //Get the M-gram type ids
                     TShortId type_one = 0;
@@ -342,7 +342,7 @@ namespace uva {
 
                             //Get one of the lengths, as they both are the same
                             uint8_t id_len_bytes = 0;
-                            get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL - M_GRAM_LEVEL_2], M_GRAM_LEVEL > (m_p_gram_id_one, id_len_bytes);
+                            get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL], M_GRAM_LEVEL > (m_p_gram_id_one, id_len_bytes);
 
                             LOG_DEBUG3 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
                                     << ", idx: " << SSTR((uint32_t) NUM_FULL_BYTES(ID_TYPE_LEN_BITS))
@@ -371,77 +371,35 @@ namespace uva {
 
                 /******************************************/
 
-                static inline bool is_equal_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare< M_GRAM_LEVEL_2>(one, two) > 0);
-                }
-
-                static inline bool is_equal_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_3>(one, two) > 0);
-                }
-
-                static inline bool is_equal_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_4>(one, two) > 0);
-                }
-
-                static inline bool is_equal_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_5>(one, two) > 0);
-                }
-
                 //This is an array of functions for comparing x-grams of level x
-                const static is_compare_grams_id_func is_equal_x_grams_id_funcs[] = {is_equal_2_grams_id, is_equal_3_grams_id, is_equal_4_grams_id, is_equal_5_grams_id};
+                const static is_compare_grams_id_func is_equal_x_grams_id_funcs[] = {NULL, NULL,
+                Comp_M_Gram_Id::is_equal_2_grams_id, Comp_M_Gram_Id::is_equal_3_grams_id,
+                Comp_M_Gram_Id::is_equal_4_grams_id, Comp_M_Gram_Id::is_equal_5_grams_id};
 
                 bool Comp_M_Gram_Id::is_equal_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level) {
-                    return is_equal_x_grams_id_funcs[level - M_GRAM_LEVEL_2](one, two);
+                    return is_equal_x_grams_id_funcs[level](one, two);
                 }
 
                 /******************************************/
 
-                static inline bool is_less_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_2>(one, two) == 0);
-                }
-
-                static inline bool is_less_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_3>(one, two) == 0);
-                }
-
-                static inline bool is_less_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_4>(one, two) == 0);
-                }
-
-                static inline bool is_less_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_5>(one, two) == 0);
-                }
-
                 //This is an array of functions for comparing x-grams of level x
-                const static is_compare_grams_id_func is_less_x_grams_id_funcs[] = {is_less_2_grams_id, is_less_3_grams_id, is_less_4_grams_id, is_less_5_grams_id};
+                const static is_compare_grams_id_func is_less_x_grams_id_funcs[] = {NULL, NULL,
+                Comp_M_Gram_Id::is_less_2_grams_id, Comp_M_Gram_Id::is_less_3_grams_id,
+                Comp_M_Gram_Id::is_less_4_grams_id, Comp_M_Gram_Id::is_less_5_grams_id};
 
                 bool Comp_M_Gram_Id::is_less_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level) {
-                    return is_less_x_grams_id_funcs[level - M_GRAM_LEVEL_2](one, two);
+                    return is_less_x_grams_id_funcs[level](one, two);
                 }
 
                 /******************************************/
 
-                static inline bool is_more_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare< M_GRAM_LEVEL_2>(one, two) > 0);
-                }
-
-                static inline bool is_more_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_3>(one, two) > 0);
-                }
-
-                static inline bool is_more_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_4>(one, two) > 0);
-                }
-
-                static inline bool is_more_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
-                    return (Comp_M_Gram_Id::compare<M_GRAM_LEVEL_5>(one, two) > 0);
-                }
-
                 //This is an array of functions for comparing x-grams of level x
-                const static is_compare_grams_id_func is_more_x_grams_id_funcs[] = {is_more_2_grams_id, is_more_3_grams_id, is_more_4_grams_id, is_more_5_grams_id};
+                const static is_compare_grams_id_func is_more_x_grams_id_funcs[] = {NULL, NULL,
+                Comp_M_Gram_Id::is_more_2_grams_id, Comp_M_Gram_Id::is_more_3_grams_id,
+                Comp_M_Gram_Id::is_more_4_grams_id, Comp_M_Gram_Id::is_more_5_grams_id};
 
                 bool Comp_M_Gram_Id::is_more_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level) {
-                    return is_more_x_grams_id_funcs[level - M_GRAM_LEVEL_2](one, two);
+                    return is_more_x_grams_id_funcs[level](one, two);
                 }
 
                 std::ostream& operator<<(std::ostream& stream, const Comp_M_Gram_Id& id) {

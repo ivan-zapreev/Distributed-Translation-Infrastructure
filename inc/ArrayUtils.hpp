@@ -44,6 +44,21 @@ namespace uva {
     namespace smt {
         namespace utils {
             namespace array {
+                /**
+                 * Define the function type for the comparison function
+                 */
+                template<typename ELEM_TYPE>
+                struct T_IS_EXT_COMPARE_FUNC {
+                    typedef std::function<int8_t(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
+                };
+
+                /**
+                 * Define the function type for the comparison function
+                 */
+                template<typename ELEM_TYPE>
+                struct T_IS_COMPARE_FUNC {
+                    typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
+                };
 
                 //NOTE: Do the binary search, note that we do not take care of index
                 //underflows as they are signed. Yet, we might want to take into
@@ -164,25 +179,37 @@ namespace uva {
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
+                 * @param compare the comparator function
                  * @param found_pos the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    if (key > array[u_idx].id) {
-                        //The value is definitely not in this array
+                inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx,
+                        const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
+                    //First compare the last element of the array with the key
+                    int8_t result = compare(key, array[u_idx].id);
+
+                    if (result > 0) {
+                        //The key is larger than the last id so it is not in the array
                         return false;
                     } else {
-                        //The key is potentially inside array values, so we want to search.
-                        for (found_pos = l_idx; found_pos <= u_idx; ++found_pos) {
-                            if (key == array[found_pos].id) {
-                                //The value is found
-                                return true;
-                            } else {
-                                if (key > array[found_pos].id) {
-                                    //We bypassed the place where the value could have been
-                                    return false;
+                        if (result == 0) {
+                            //The key is equal to the last id so we found it!
+                            found_pos = u_idx;
+                            return true;
+                        } else {
+                            //The key is potentially inside array and it is not the last element!
+                            for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
+                                int8_t result = compare(key, array[found_pos].id);
+                                if (result == 0) {
+                                    //We found the key!
+                                    return true;
+                                } else {
+                                    if (result > 0) {
+                                        //We bypassed the place where the value could have been
+                                        return false;
+                                    }
                                 }
                             }
                         }
@@ -247,14 +274,6 @@ namespace uva {
                         return false;
                     }
                 }
-
-                /**
-                 * Define the function type for the comparison function
-                 */
-                template<typename ELEM_TYPE>
-                struct T_IS_COMPARE_FUNC {
-                    typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
-                };
 
                 /**
                  * This methos is used to do <algorithm> std::sort on an array

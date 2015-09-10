@@ -159,6 +159,7 @@ namespace uva {
 
                 //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                 static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
+                    0,0,
                     M_GRAM_2_ID_TYPE_LEN_BITS,
                     M_GRAM_3_ID_TYPE_LEN_BITS,
                     M_GRAM_4_ID_TYPE_LEN_BITS,
@@ -179,7 +180,7 @@ namespace uva {
 
                 class Comp_M_Gram_Id;
                 std::ostream& operator<<(std::ostream& stream, const Comp_M_Gram_Id& id);
-                
+
                 /**
                  * The compressed implementation of the M-gram id class
                  * Made in form of a namespace for the sake of minimizing the
@@ -254,6 +255,22 @@ namespace uva {
                     template<TModelLevel M_GRAM_LEVEL>
                     static int8_t compare(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two);
 
+                    static inline bool is_equal_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
+                    }
+
+                    static inline bool is_equal_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
+                    }
+
+                    static inline bool is_equal_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
+                    }
+
+                    static inline bool is_equal_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
+                    }
+
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
                      * @param one the first M-gram to compare
@@ -263,6 +280,22 @@ namespace uva {
                      */
                     static bool is_equal_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
 
+                    static inline bool is_less_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_2>(one, two) == 0);
+                    }
+
+                    static inline bool is_less_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_3>(one, two) == 0);
+                    }
+
+                    static inline bool is_less_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_4>(one, two) == 0);
+                    }
+
+                    static inline bool is_less_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_5>(one, two) == 0);
+                    }
+
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
                      * @param one the first M-gram to compare
@@ -271,6 +304,22 @@ namespace uva {
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
                     static bool is_less_m_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two, const TModelLevel level);
+
+                    static inline bool is_more_2_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
+                    }
+
+                    static inline bool is_more_3_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
+                    }
+
+                    static inline bool is_more_4_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
+                    }
+
+                    static inline bool is_more_5_grams_id(const Comp_M_Gram_Id & one, const Comp_M_Gram_Id & two) {
+                        return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
+                    }
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level

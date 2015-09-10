@@ -70,6 +70,7 @@ namespace uva {
                     const static MemIncreaseStrategy m_mem_strat;
 
                     typedef M_GRAM_ID_TYPE TMGramIdType;
+                    typedef PAYLOAD_TYPE TPayloadType;
                 };
 
                 typedef S_M_GramData<Comp_M_Gram_Id, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
@@ -253,7 +254,7 @@ namespace uva {
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
                 Comp_M_Gram_Id m_tmp_gram_id;
-               
+
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
@@ -272,11 +273,12 @@ namespace uva {
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param level the level of the M-gram we compute probability for
                  * @param ref the bucket to search in
-                 * @param prob [out] the probability to be computed and set
+                 * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
+                 * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename LEVEL_TYPE>
-                void get_prob_from_gram_level(const TModelLevel level,
-                        const LEVEL_TYPE & ref, TLogProbBackOff & prob);
+                bool get_prob_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
+                        const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr);
 
             };
         }
