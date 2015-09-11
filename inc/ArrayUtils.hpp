@@ -241,12 +241,12 @@ namespace uva {
                     LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
 
                     if (key > array[u_idx].id) {
-                        LOG_DEBUG3 << (void*) key << " (+1) @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
+                        LOG_DEBUG3 << key << " (+1) @" << (uint32_t) u_idx << " " << array[u_idx].id << END_LOG;
                         //The key is larger than the last id so it is not in the array
                         return false;
                     } else {
                         if (key == array[u_idx].id) {
-                            LOG_DEBUG3 << (void*) key << " (0) @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
+                            LOG_DEBUG3 << key << " (0) @" << (uint32_t) u_idx << " " << array[u_idx].id << END_LOG;
                             //The key is equal to the last id so we found it!
                             found_pos = u_idx;
                             return true;
@@ -254,12 +254,12 @@ namespace uva {
                             //The key is potentially inside array and it is not the last element!
                             for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
                                 if (key == array[found_pos].id) {
-                                    LOG_DEBUG3 << (void*) key << " (0) @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
+                                    LOG_DEBUG3 << key << " (0) @" << (uint32_t) found_pos << " " << array[found_pos].id << END_LOG;
                                     //We found the key!
                                     return true;
                                 } else {
                                     if (key < array[found_pos].id) {
-                                        LOG_DEBUG3 << (void*) key << " (-1) @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
+                                        LOG_DEBUG3 << key << " (-1) @" << (uint32_t) found_pos << " " << array[found_pos].id << END_LOG;
                                         //We bypassed the place where the value could have been
                                         return false;
                                     }
