@@ -317,7 +317,7 @@ static void performTasks(const TAppParams& params) {
         fillInTrie(modelFile, *pTrie);
         LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
         endTime = StatisticsMonitor::getCPUTime();
-        LOG_INFO1 << "Reading the Language Model is done, it took " << (endTime - startTime) << " CPU seconds." << END_LOG;
+        LOG_USAGE << "Reading the Language Model took " << (endTime - startTime) << " CPU seconds." << END_LOG;
 
         LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
@@ -339,7 +339,7 @@ static void performTasks(const TAppParams& params) {
 
         LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(*pTrie, testFile);
-        LOG_INFO1 << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+        LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
         testFile.close();
 
         //Deallocate the trie
