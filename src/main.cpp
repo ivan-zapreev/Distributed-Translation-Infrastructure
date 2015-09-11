@@ -165,7 +165,7 @@ static const string getFileExistsString(string const & fname, bool isPresent) {
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
     LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
-    LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
+    LOG_DEBUG << "\tmemory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
             << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
             << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
     LOG_DEBUG << "memory after: vmsize=" << SSTR(msEnd.vmsize) << " Kb, vmpeak="

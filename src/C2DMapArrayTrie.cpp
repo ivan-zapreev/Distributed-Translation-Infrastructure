@@ -38,13 +38,13 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            C2DMapArrayTrie<N>::C2DMapArrayTrie(AWordIndex * const _pWordIndex,
+            C2DHybridTrie<N>::C2DHybridTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ALayeredTrie<N>(_pWordIndex,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return C2DMapArrayTrie<N>::getContextId(wordId, ctxId, level); }),
+                return C2DHybridTrie<N>::getContextId(wordId, ctxId, level); }),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor),
             m_1_gram_data(NULL) {
@@ -75,7 +75,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DMapArrayTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            void C2DHybridTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
                 const size_t num_word_ids = ATrie<N>::get_word_index()->get_words_count(counts[0]);
 
@@ -91,7 +91,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DMapArrayTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            void C2DHybridTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 0; idx < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; idx++) {
                     //Get the number of elements to pre-allocate
@@ -111,7 +111,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DMapArrayTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            void C2DHybridTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
@@ -121,7 +121,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DMapArrayTrie<N>::pre_allocate(const size_t counts[N]) {
+            void C2DHybridTrie<N>::pre_allocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
                 ALayeredTrie<N>::pre_allocate(counts);
                 
@@ -145,7 +145,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            C2DMapArrayTrie<N>::~C2DMapArrayTrie() {
+            C2DHybridTrie<N>::~C2DHybridTrie() {
                 //Deallocate One-Grams
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
@@ -162,7 +162,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2DMapArrayTrie<M_GRAM_LEVEL_MAX>;
+            template class C2DHybridTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

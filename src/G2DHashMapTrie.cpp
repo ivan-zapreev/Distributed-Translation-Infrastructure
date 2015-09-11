@@ -31,14 +31,14 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
-using namespace uva::smt::tries::__G2DHashMapTrie;
+using namespace uva::smt::tries::__G2DMapTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
             template<TModelLevel N>
-            G2DHashMapTrie<N>::G2DHashMapTrie(AWordIndex * const _pWordIndex)
+            G2DMapTrie<N>::G2DMapTrie(AWordIndex * const _pWordIndex)
             : ATrie<N>(_pWordIndex), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
@@ -50,7 +50,7 @@ namespace uva {
                 Comp_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
-                        << SSTR(__G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
+                        << SSTR(__G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << " memory allocation strategy." << END_LOG;
 
@@ -61,7 +61,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::pre_allocate(const size_t counts[N]) {
+            void G2DMapTrie<N>::pre_allocate(const size_t counts[N]) {
                 //Call the base-class
                 ATrie<N>::pre_allocate(counts);
 
@@ -77,19 +77,19 @@ namespace uva {
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR,
-                            __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR);
+                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR,
+                            __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR);
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[N - 1] = max(counts[N - 1] / __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR,
-                        __G2DHashMapTrie::NUMBER_OF_BUCKETS_FACTOR);
+                num_buckets[N - 1] = max(counts[N - 1] / __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR,
+                        __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR);
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
             template<TModelLevel N>
-            G2DHashMapTrie<N>::~G2DHashMapTrie() {
+            G2DMapTrie<N>::~G2DMapTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     //De-allocate one grams
@@ -107,7 +107,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::add_1_gram(const T_M_Gram &oGram) {
+            void G2DMapTrie<N>::add_1_gram(const T_M_Gram &oGram) {
                 //Register a new word, and the word id will be the one-gram id
 
                 const TShortId oneGramId = ATrie<N>::get_word_index()->register_word(oGram.tokens[0]);
@@ -117,7 +117,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::add_m_gram(const T_M_Gram &mGram) {
+            void G2DMapTrie<N>::add_m_gram(const T_M_Gram &mGram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
@@ -142,7 +142,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::add_n_gram(const T_M_Gram &nGram) {
+            void G2DMapTrie<N>::add_n_gram(const T_M_Gram &nGram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
@@ -163,7 +163,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::post_m_grams(const TModelLevel level) {
+            void G2DMapTrie<N>::post_m_grams(const TModelLevel level) {
                 //Call the base class method first
 
                 ATrie<N>::post_m_grams(level);
@@ -176,7 +176,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::post_n_grams() {
+            void G2DMapTrie<N>::post_n_grams() {
                 //Call the base class method first
 
                 ATrie<N>::post_n_grams();
@@ -194,7 +194,7 @@ namespace uva {
 
             template<TModelLevel N>
             template<typename LEVEL_TYPE, bool back_off >
-            bool G2DHashMapTrie<N>::get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
+            bool G2DMapTrie<N>::get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
                     const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr) {
                 //Compute the begin index in the tokens and word ids arrays
                 const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - level) : (N - level));
@@ -237,7 +237,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void G2DHashMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+            void G2DMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
                 LOG_DEBUG1 << "Computing probability for a " << level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
@@ -293,7 +293,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            bool G2DHashMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
+            bool G2DMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
                 LOG_DEBUG2 << "Computing back-off for a " << level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
@@ -337,7 +337,7 @@ namespace uva {
 
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class G2DHashMapTrie<M_GRAM_LEVEL_MAX>;
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

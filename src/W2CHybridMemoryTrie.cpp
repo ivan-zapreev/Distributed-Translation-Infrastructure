@@ -35,7 +35,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::W2CHybridMemoryTrie(AWordIndex * const p_word_index)
+            W2CHybridTrie<N, StorageFactory, StorageContainer>::W2CHybridTrie(AWordIndex * const p_word_index)
             : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
 
@@ -60,7 +60,7 @@ namespace uva {
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
+            void W2CHybridTrie<N, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
                 ALayeredTrie<N>::pre_allocate(counts);
                 
@@ -100,7 +100,7 @@ namespace uva {
             }
 
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            W2CHybridMemoryTrie<N, StorageFactory, StorageContainer>::~W2CHybridMemoryTrie() {
+            W2CHybridTrie<N, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the prob/back-off arrays per level
@@ -127,7 +127,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CHybridMemoryTrie<M_GRAM_LEVEL_MAX, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
         }
     }
 }

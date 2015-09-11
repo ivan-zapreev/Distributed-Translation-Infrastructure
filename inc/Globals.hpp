@@ -122,26 +122,26 @@ namespace uva {
                 static const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
 
-            namespace __C2DMapArrayTrie {
+            namespace __C2DHybridTrie {
                 //The unordered map memory factor for the M-Grams in C2DMapArrayTrie
                 static const float UM_M_GRAM_MEMORY_FACTOR = 2.1;
                 //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
                 static const float UM_N_GRAM_MEMORY_FACTOR = 2.0;
                 //Stores the word index type to be used in this trie
-                using namespace dictionary;
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
             }
 
-            namespace __C2DHashMapTrie {
+            namespace __C2DMapTrie {
                 //The unordered map memory factor for the M-Grams in CtxMultiHashMapTrie
                 static const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
                 //The unordered map memory factor for the N-Grams in CtxMultiHashMapTrie
                 static const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
-                //Stores the word index type to be used in this trie
+                //Stores the word index type to be used in this trie, the COUNTING
+                //index does not seem to give any performance improvements
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
             }
 
-            namespace __G2DHashMapTrie {
+            namespace __G2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
                 static const float MEM_INC_FACTOR = 0.3;
 
@@ -159,11 +159,12 @@ namespace uva {
                 //the number of M-grams in this level divided by this factor value 
                 static const size_t NUMBER_OF_BUCKETS_FACTOR = 64;
 
-                //Stores the word index type to be used in this trie, counting index is a must to save memory for gram ids!
+                //Stores the word index type to be used in this trie,
+                //counting index is a must to save memory for gram ids!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
-            namespace __W2COrderedArrayTrie {
+            namespace __W2CArrayTrie {
                 //In case set to true will pre-allocate memory per word for storing contexts
                 //This can speed up the filling in of the trie but at the same time it can
                 //have a drastic effect on RSS - the maximum RSS can grow significantly
@@ -184,22 +185,24 @@ namespace uva {
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
 
-                //Stores the word index type to be used in this trie, counting index gives a bit faster querying.
+                //Stores the word index type to be used in this trie,
+                //counting index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
-            namespace __C2WOrderedArrayTrie {
+            namespace __C2WArrayTrie {
 
                 //Stores the word index type to be used in this trie
                 //With the counting it seems to be much faster like almost2 times on e_10*.lm!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
-            namespace __W2CHybridMemoryTrie {
+            namespace __W2CHybridTrie {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 static const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
 
-                //Stores the word index type to be used in this trie, counting index gives a bit faster querying.
+                //Stores the word index type to be used in this trie,
+                //counting index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
         }

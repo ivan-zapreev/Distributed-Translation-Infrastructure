@@ -77,7 +77,7 @@ namespace uva {
              * 
              */
             template<TModelLevel N>
-            class C2DHashMapTrie : public ALayeredTrie<N> {
+            class C2DMapTrie : public ALayeredTrie<N> {
             public:
 
                 /**
@@ -105,9 +105,9 @@ namespace uva {
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit C2DHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __C2DHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __C2DHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                explicit C2DMapTrie(AWordIndex * const _pWordIndex,
+                        const float _mGramMemFactor = __C2DMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -119,7 +119,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~C2DHashMapTrie();
+                virtual ~C2DMapTrie();
 
             protected:
 
@@ -288,7 +288,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                C2DHashMapTrie(const C2DHashMapTrie & orig)
+                C2DMapTrie(const C2DMapTrie & orig)
                 : ALayeredTrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };

@@ -103,7 +103,7 @@ namespace uva {
                  * @param factor the memory multiplication factor, by default
                  * __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR
                  */
-                W2CH_UM_StorageFactory(const size_t _counts[N], const float factor = __W2CHybridMemoryTrie::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
+                W2CH_UM_StorageFactory(const size_t _counts[N], const float factor = __W2CHybridTrie::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
                 {
                     for (size_t i = 1; i < N; i++) {
                         const GreedyMemoryStorage::size_type size = _counts[i] * factor;

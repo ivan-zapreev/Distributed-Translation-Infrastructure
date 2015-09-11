@@ -38,13 +38,13 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            C2DHashMapTrie<N>::C2DHashMapTrie(AWordIndex * const _pWordIndex,
+            C2DMapTrie<N>::C2DMapTrie(AWordIndex * const _pWordIndex,
                     const float _mGramMemFactor,
                     const float _nGramMemFactor)
             : ALayeredTrie<N>(_pWordIndex,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return C2DHashMapTrie<N>::getContextId(wordId, ctxId, level); }),
+                return C2DMapTrie<N>::getContextId(wordId, ctxId, level); }),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor),
                         m_1_gram_data(NULL) {
@@ -69,7 +69,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DHashMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            void C2DMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
                 const size_t num_word_ids = ATrie<N>::get_word_index()->get_words_count(counts[0]);
                 
@@ -85,7 +85,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DHashMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            void C2DMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
@@ -98,7 +98,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DHashMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            void C2DMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
@@ -108,7 +108,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2DHashMapTrie<N>::pre_allocate(const size_t counts[N]) {
+            void C2DMapTrie<N>::pre_allocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
 
                 ALayeredTrie<N>::pre_allocate(counts);
@@ -124,7 +124,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            C2DHashMapTrie<N>::~C2DHashMapTrie() {
+            C2DMapTrie<N>::~C2DMapTrie() {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics
                     for (int i = 0; i < N; i++) {
@@ -147,7 +147,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2DHashMapTrie<M_GRAM_LEVEL_MAX>;
+            template class C2DMapTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

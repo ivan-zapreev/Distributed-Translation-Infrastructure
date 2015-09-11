@@ -35,7 +35,7 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            C2WOrderedArrayTrie<N>::C2WOrderedArrayTrie(AWordIndex * const p_word_index)
+            C2WArrayTrie<N>::C2WArrayTrie(AWordIndex * const p_word_index)
             : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
@@ -54,7 +54,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void C2WOrderedArrayTrie<N>::pre_allocate(const size_t counts[N]) {
+            void C2WArrayTrie<N>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
                 ALayeredTrie<N>::pre_allocate(counts);
 
@@ -112,7 +112,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            C2WOrderedArrayTrie<N>::~C2WOrderedArrayTrie() {
+            C2WArrayTrie<N>::~C2WArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
@@ -125,7 +125,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2WOrderedArrayTrie<M_GRAM_LEVEL_MAX>;
+            template class C2WArrayTrie<M_GRAM_LEVEL_MAX>;
         }
     }
 }

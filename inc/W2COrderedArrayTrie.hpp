@@ -43,12 +43,12 @@ using namespace std;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::utils::array;
 using namespace uva::smt::tries::alloc;
-using namespace uva::smt::tries::__W2COrderedArrayTrie;
+using namespace uva::smt::tries::__W2CArrayTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace __W2COrderedArrayTrie {
+            namespace __W2CArrayTrie {
 
                 /**
                  * This template structure is used for storing trie element data
@@ -66,8 +66,8 @@ namespace uva {
 
                 template<typename PAYLOAD_TYPE>
                 const MemIncreaseStrategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
-                get_mem_incr_strat(__W2COrderedArrayTrie::MEM_INC_TYPE,
-                        __W2COrderedArrayTrie::MIN_MEM_INC_NUM, __W2COrderedArrayTrie::MEM_INC_FACTOR);
+                get_mem_incr_strat(__W2CArrayTrie::MEM_INC_TYPE,
+                        __W2CArrayTrie::MIN_MEM_INC_NUM, __W2CArrayTrie::MEM_INC_FACTOR);
 
                 typedef S_M_GramData<TProbBackOffEntry> T_M_GramData;
                 typedef S_M_GramData<TLogProbBackOff> T_N_GramData;
@@ -99,14 +99,14 @@ namespace uva {
              * @param N the maximum number of levels in the trie.
              */
             template<TModelLevel N>
-            class W2COrderedArrayTrie : public ALayeredTrie<N> {
+            class W2CArrayTrie : public ALayeredTrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
-                explicit W2COrderedArrayTrie(AWordIndex * const p_word_index);
+                explicit W2CArrayTrie(AWordIndex * const p_word_index);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -118,7 +118,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~W2COrderedArrayTrie();
+                virtual ~W2CArrayTrie();
 
             protected:
 
@@ -502,12 +502,12 @@ namespace uva {
 
                     //Compute the initial capacity
                     size_t capacity = 0;
-                    if (__W2COrderedArrayTrie::PRE_ALLOCATE_MEMORY) {
+                    if (__W2CArrayTrie::PRE_ALLOCATE_MEMORY) {
                         //Compute the average number of data elements per word on the given M-gram level
                         const float avg_num_elems = ((float) numMGrams) / ((float) numWords);
                         //Compute the corrected number of elements to preallocate, minimum __W2COrderedArrayTrie::MIN_MEM_INC_NUM.
-                        capacity = max(static_cast<size_t> (avg_num_elems * __W2COrderedArrayTrie::INIT_MEM_ALLOC_PRCT),
-                                __W2COrderedArrayTrie::MIN_MEM_INC_NUM);
+                        capacity = max(static_cast<size_t> (avg_num_elems * __W2CArrayTrie::INIT_MEM_ALLOC_PRCT),
+                                __W2CArrayTrie::MIN_MEM_INC_NUM);
 
                         //Pre-allocate capacity
                         for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {

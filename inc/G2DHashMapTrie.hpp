@@ -46,13 +46,13 @@ using namespace uva::smt::file;
 using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::mgrams;
-using namespace uva::smt::tries::__G2DHashMapTrie;
+using namespace uva::smt::tries::__G2DMapTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            namespace __G2DHashMapTrie {
+            namespace __G2DMapTrie {
 
                 /**
                  * This template structure is used for storing trie hash map elements
@@ -86,8 +86,8 @@ namespace uva {
 
                 template<typename M_GRAM_ID_TYPE, typename PAYLOAD_TYPE>
                 const MemIncreaseStrategy S_M_GramData<M_GRAM_ID_TYPE, PAYLOAD_TYPE>::m_mem_strat =
-                get_mem_incr_strat(__G2DHashMapTrie::MEM_INC_TYPE,
-                        __G2DHashMapTrie::MIN_MEM_INC_NUM, __G2DHashMapTrie::MEM_INC_FACTOR);
+                get_mem_incr_strat(__G2DMapTrie::MEM_INC_TYPE,
+                        __G2DMapTrie::MIN_MEM_INC_NUM, __G2DMapTrie::MEM_INC_FACTOR);
             }
 
             /**
@@ -95,14 +95,14 @@ namespace uva {
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel N>
-            class G2DHashMapTrie : public ATrie<N> {
+            class G2DMapTrie : public ATrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit G2DHashMapTrie(AWordIndex * const _pWordIndex);
+                explicit G2DMapTrie(AWordIndex * const _pWordIndex);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -148,7 +148,7 @@ namespace uva {
                 /**
                  * The basic class destructor
                  */
-                virtual ~G2DHashMapTrie();
+                virtual ~G2DMapTrie();
 
             protected:
 
@@ -259,11 +259,11 @@ namespace uva {
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry> > TProbBackOffBucket;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry> > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DHashMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
+                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level

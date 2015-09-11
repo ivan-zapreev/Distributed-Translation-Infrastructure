@@ -41,7 +41,7 @@ using namespace uva::smt::utils::array;
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace __C2WOrderedArrayTrie {
+            namespace __C2WArrayTrie {
 
                 /**
                  * Stores the information about the context id, word id and corresponding probability
@@ -96,14 +96,14 @@ namespace uva {
              * @param N the maximum number of levels in the trie.
              */
             template<TModelLevel N>
-            class C2WOrderedArrayTrie : public ALayeredTrie<N> {
+            class C2WArrayTrie : public ALayeredTrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
-                explicit C2WOrderedArrayTrie(AWordIndex * const p_word_index);
+                explicit C2WArrayTrie(AWordIndex * const p_word_index);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -115,7 +115,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~C2WOrderedArrayTrie();
+                virtual ~C2WArrayTrie();
 
             protected:
 
@@ -142,7 +142,7 @@ namespace uva {
                     TProbBackOffEntry data;
                 } TWordIdProbBackOffEntryPair;
 
-                typedef __C2WOrderedArrayTrie::TCtxIdProbData TCtxIdProbEntry;
+                typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
                 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.

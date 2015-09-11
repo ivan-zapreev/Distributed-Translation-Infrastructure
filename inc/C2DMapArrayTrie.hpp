@@ -60,7 +60,7 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel N>
-            class C2DMapArrayTrie : public ALayeredTrie<N> {
+            class C2DHybridTrie : public ALayeredTrie<N> {
             public:
                 //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
                 static const TModelLevel MGRAM_IDX_OFFSET = 2;
@@ -92,9 +92,9 @@ namespace uva {
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit C2DMapArrayTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __C2DMapArrayTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __C2DMapArrayTrie::UM_N_GRAM_MEMORY_FACTOR);
+                explicit C2DHybridTrie(AWordIndex * const _pWordIndex,
+                        const float _mGramMemFactor = __C2DHybridTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -106,7 +106,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~C2DMapArrayTrie();
+                virtual ~C2DHybridTrie();
 
             protected:
 
@@ -250,7 +250,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                C2DMapArrayTrie(const C2DMapArrayTrie & orig)
+                C2DHybridTrie(const C2DHybridTrie & orig)
                 : ALayeredTrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };

@@ -48,14 +48,14 @@ namespace uva {
              * @param StorageContainer the storage container type that is created by the factory
              */
             template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            class W2CHybridMemoryTrie : public ALayeredTrie<N> {
+            class W2CHybridTrie : public ALayeredTrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
-                explicit W2CHybridMemoryTrie(AWordIndex * const p_word_index);
+                explicit W2CHybridTrie(AWordIndex * const p_word_index);
 
                 /**
                  * This method can be used to provide the N-gram count information
@@ -67,7 +67,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~W2CHybridMemoryTrie();
+                virtual ~W2CHybridTrie();
 
             protected:
 
@@ -265,8 +265,8 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N> struct TW2CHybridMemoryTrie {
-                typedef W2CHybridMemoryTrie<N, W2CH_UM_StorageFactory, W2CH_UM_Storage> type;
+            template<TModelLevel N> struct TW2CHybridTrie {
+                typedef W2CHybridTrie<N, W2CH_UM_StorageFactory, W2CH_UM_Storage> type;
             };
         }
     }
