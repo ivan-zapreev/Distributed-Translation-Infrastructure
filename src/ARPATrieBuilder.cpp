@@ -103,9 +103,12 @@ namespace uva {
 
                     //Do the progress bard indicator
                     Logger::startProgressBar(string("Pre-allocating memory"));
+                    
                     //Provide the N-Gram counts data to the Trie
                     m_trie.pre_allocate(counts);
+                    
                     Logger::updateProgressBar();
+                    
                     LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
                     //Stop the progress bar in case of no exception
                     Logger::stopProgressBar();
