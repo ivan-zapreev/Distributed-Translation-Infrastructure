@@ -266,7 +266,7 @@ namespace uva {
             };
 
             template<TModelLevel N> struct TW2CHybridMemoryTrie {
-                typedef W2CHybridMemoryTrie<N, CtxToPBUMapStorageFactory, CtxToPBUnorderedMapStorage> type;
+                typedef W2CHybridMemoryTrie<N, W2CH_UM_StorageFactory, W2CH_UM_Storage> type;
             };
         }
     }

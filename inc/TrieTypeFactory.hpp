@@ -65,6 +65,25 @@ namespace uva {
             public:
 
                 /**
+                 * Allows to instantiate an appropriate word index 
+                 * @param word_index_type the word index type
+                 * @return pointer to a new word index instance
+                 */
+                static inline AWordIndex * getWordIndex(const WordIndexTypesEnum word_index_type) {
+                    const size_t memory_factor = __HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR;
+                    switch (word_index_type) {
+                        case WordIndexTypesEnum::BASIC_WORD_INDEX:
+                            return new BasicWordIndex(memory_factor);
+                        case WordIndexTypesEnum::COUNTING_WORD_INDEX:
+                            return new CountingWordIndex(memory_factor);
+                        default:
+                            stringstream msg;
+                            msg << "Unrecognized word index type: " << word_index_type;
+                            throw Exception(msg.str());
+                    }
+                }
+
+                /**
                  * Instantiate a trie for the given string name
                  * @param trie_type the trie type name
                  * @return the instance of trie
@@ -72,24 +91,23 @@ namespace uva {
                  */
                 template<TModelLevel N>
                 static inline ATrie<N>* getTrie(const string trie_type) {
-                    const size_t memory_factor = __HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR;
                     if (trie_type == TC2DHashMapTrie_STR) {
-                        return new C2DHashMapTrie<N>(new BasicWordIndex(memory_factor));
+                        return new C2DHashMapTrie<N>(getWordIndex(__C2DHashMapTrie::WORD_INDEX_TYPE));
                     } else {
                         if (trie_type == TW2CHybridMemoryTrie_STR) {
-                            return new typename TW2CHybridMemoryTrie<N>::type(new BasicWordIndex(memory_factor));
+                            return new typename TW2CHybridMemoryTrie<N>::type(getWordIndex(__W2CHybridMemoryTrie::WORD_INDEX_TYPE));
                         } else {
                             if (trie_type == TC2WOrderedArrayTrie_STR) {
-                                return new C2WOrderedArrayTrie<N>(new BasicWordIndex(memory_factor));
+                                return new C2WOrderedArrayTrie<N>(getWordIndex(__C2WOrderedArrayTrie::WORD_INDEX_TYPE));
                             } else {
                                 if (trie_type == TW2COrderedArrayTrie_STR) {
-                                    return new W2COrderedArrayTrie<N>(new BasicWordIndex(memory_factor));
+                                    return new W2COrderedArrayTrie<N>(getWordIndex(__W2COrderedArrayTrie::WORD_INDEX_TYPE));
                                 } else {
                                     if (trie_type == C2DMapArrayTrie_STR) {
-                                        return new C2DMapArrayTrie<N>(new BasicWordIndex(memory_factor));
+                                        return new C2DMapArrayTrie<N>(getWordIndex(__C2DMapArrayTrie::WORD_INDEX_TYPE));
                                     } else {
                                         if (trie_type == G2DHashMapTrie_STR) {
-                                            return new G2DHashMapTrie<N>(new CountingWordIndex(memory_factor));
+                                            return new G2DHashMapTrie<N>(getWordIndex(__G2DHashMapTrie::WORD_INDEX_TYPE));
                                         } else {
                                             stringstream msg;
                                             msg << "Unrecognized trie type: " + trie_type;

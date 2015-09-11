@@ -106,8 +106,8 @@ namespace uva {
                  * the greedy allocator for the unordered_map
                  */
                 explicit C2DHashMapTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __CtxMultiHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __CtxMultiHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                        const float _mGramMemFactor = __C2DHashMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float _nGramMemFactor = __C2DHashMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * This method can be used to provide the N-gram count information

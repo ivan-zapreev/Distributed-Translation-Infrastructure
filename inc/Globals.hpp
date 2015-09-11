@@ -98,37 +98,47 @@ namespace uva {
 
             namespace alloc {
 
-                /**
-                 * Stores the possible memory increase types
-                 */
+                //Stores the possible memory increase types
+
                 enum MemIncTypesEnum {
-                    UNDEFINED = 0, CONSTANT = UNDEFINED+1, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
+                    UNDEFINED = 0, CONSTANT = UNDEFINED + 1, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
                     LOG_10 = LOG_2 + 1, size = LOG_10 + 1
                 };
             }
 
+            namespace dictionary {
+
+                //Stores the possible Word index configurations
+
+                enum WordIndexTypesEnum {
+                    UNDEFINED = 0, BASIC_WORD_INDEX = UNDEFINED + 1,
+                    COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1, size = COUNTING_WORD_INDEX + 1
+                };
+            }
+            using namespace dictionary;
+
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
-                const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
+                static const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
             }
 
             namespace __C2DMapArrayTrie {
                 //The unordered map memory factor for the M-Grams in C2DMapArrayTrie
-                const float UM_M_GRAM_MEMORY_FACTOR = 2.1;
+                static const float UM_M_GRAM_MEMORY_FACTOR = 2.1;
                 //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
-                const float UM_N_GRAM_MEMORY_FACTOR = 2.0;
+                static const float UM_N_GRAM_MEMORY_FACTOR = 2.0;
+                //Stores the word index type to be used in this trie
+                using namespace dictionary;
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
             }
 
-            namespace __CtxMultiHashMapTrie {
+            namespace __C2DHashMapTrie {
                 //The unordered map memory factor for the M-Grams in CtxMultiHashMapTrie
-                const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
+                static const float UM_M_GRAM_MEMORY_FACTOR = 2.0;
                 //The unordered map memory factor for the N-Grams in CtxMultiHashMapTrie
-                const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
-            }
-
-            namespace __CtxToPBUMapStorageFactory {
-                //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
-                const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
+                static const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
+                //Stores the word index type to be used in this trie
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
             }
 
             namespace __G2DHashMapTrie {
@@ -143,33 +153,53 @@ namespace uva {
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
-                
+
                 //This is the factor that is used to define the number of buckets in
                 //the G2DHashMapTrie. The number of buckets per trie level is defined as
                 //the number of M-grams in this level divided by this factor value 
                 static const size_t NUMBER_OF_BUCKETS_FACTOR = 64;
+
+                //Stores the word index type to be used in this trie
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
             namespace __W2COrderedArrayTrie {
                 //In case set to true will pre-allocate memory per word for storing contexts
                 //This can speed up the filling in of the trie but at the same time it can
                 //have a drastic effect on RSS - the maximum RSS can grow significantly
-                const bool PRE_ALLOCATE_MEMORY = false;
+                static const bool PRE_ALLOCATE_MEMORY = false;
                 //Stores the percent of the memory that will be allocated per word data 
                 //storage in one Trie level relative to the estimated number of needed data
-                const float INIT_MEM_ALLOC_PRCT = 0.5;
+                static const float INIT_MEM_ALLOC_PRCT = 0.5;
 
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                const float MEM_INC_FACTOR = 0.3;
+                static const float MEM_INC_FACTOR = 0.3;
 
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
-                const size_t MIN_MEM_INC_NUM = 1;
+                static const size_t MIN_MEM_INC_NUM = 1;
 
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+                static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+
+                //Stores the word index type to be used in this trie
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+            }
+
+            namespace __C2WOrderedArrayTrie {
+
+                //Stores the word index type to be used in this trie
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+            }
+
+            namespace __W2CHybridMemoryTrie {
+                //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
+                static const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
+
+                //Stores the word index type to be used in this trie
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
             }
         }
 

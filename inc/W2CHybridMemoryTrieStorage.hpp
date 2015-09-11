@@ -56,16 +56,16 @@ namespace uva {
             /**
              * The unordered hash map-based storage for the HybridMemoryTrie
              */
-            class CtxToPBUnorderedMapStorage {
+            class W2CH_UM_Storage {
             public:
 
                 typedef TStorageUnsignedMap::const_iterator const_iterator;
 
-                CtxToPBUnorderedMapStorage(TStorageMapAllocator & alloc) {
+                W2CH_UM_Storage(TStorageMapAllocator & alloc) {
                     m_p_map = new TStorageUnsignedMap(alloc);
                 };
 
-                virtual ~CtxToPBUnorderedMapStorage() {
+                virtual ~W2CH_UM_Storage() {
                     delete m_p_map;
                 };
                 
@@ -94,7 +94,7 @@ namespace uva {
              * This is a factory class that should be used to produce containers of CtxToPBMapStorage.
              */
             template<TModelLevel N>
-            class CtxToPBUMapStorageFactory {
+            class W2CH_UM_StorageFactory {
             public:
 
                 /**
@@ -103,7 +103,7 @@ namespace uva {
                  * @param factor the memory multiplication factor, by default
                  * __CtxToPBMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR
                  */
-                CtxToPBUMapStorageFactory(const size_t _counts[N], const float factor = __CtxToPBUMapStorageFactory::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
+                W2CH_UM_StorageFactory(const size_t _counts[N], const float factor = __W2CHybridMemoryTrie::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR)
                 {
                     for (size_t i = 1; i < N; i++) {
                         const GreedyMemoryStorage::size_type size = _counts[i] * factor;
@@ -118,7 +118,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                virtual ~CtxToPBUMapStorageFactory() {
+                virtual ~W2CH_UM_StorageFactory() {
                     for (size_t i = 1; i < N; i++) {
                         delete m_p_alloc[i - 1];
                     }
@@ -129,12 +129,12 @@ namespace uva {
                  * @param level the N-gram level must be > 1 and <= N
                  * @return the pointer to the allocated container
                  */
-                CtxToPBUnorderedMapStorage * create(const TModelLevel level) {
+                W2CH_UM_Storage * create(const TModelLevel level) {
                     const TModelLevel idx = level -2;
                     LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level "
                             << level << ", the allocator m_p_alloc[" << idx
                             << "] = " << SSTR(m_p_alloc[idx]) << END_LOG;
-                    return new CtxToPBUnorderedMapStorage(*m_p_alloc[idx]);
+                    return new W2CH_UM_Storage(*m_p_alloc[idx]);
                 }
 
             protected:
