@@ -397,9 +397,13 @@ namespace uva {
                         LOG_INFO << "Expected number of M-grams per level: "
                                 << arrayToString<size_t, N>(counts) << END_LOG;
 
-                        LOG_INFO2 << "Pre-allocating memory..." << END_LOG;
+                        //Do the progress bard indicator
+                        Logger::startProgressBar(string("Pre-allocating memory"));
                         //Provide the N-Gram counts data to the Trie
                         m_trie.pre_allocate(counts);
+                        LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
 
                         //Check if we need another pass for words counting.
                         if (m_trie.get_word_index()->need_word_counts()) {

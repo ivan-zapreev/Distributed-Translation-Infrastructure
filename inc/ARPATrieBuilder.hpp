@@ -101,10 +101,8 @@ namespace uva {
                      * M-Gram sections and count them with the word index.
                      */
                     void get_word_counts() {
-                        stringstream msg;
                         //Do the progress bard indicator
-                        msg << "Counting words in ARPA file";
-                        Logger::startProgressBar(msg.str());
+                        Logger::startProgressBar(string("Counting different words"));
                         
                         //Start recursive counting of words
                         get_word_counts(1);
@@ -113,7 +111,7 @@ namespace uva {
                         //Perform the post counting actions;
                         m_trie.get_word_index()->post_word_count();
 
-                        LOG_DEBUG << "Finished counting words in ARPA file" << END_LOG;
+                        LOG_DEBUG << "Finished counting different words" << END_LOG;
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
                         
