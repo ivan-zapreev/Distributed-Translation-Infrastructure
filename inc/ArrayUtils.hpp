@@ -149,7 +149,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE>
-                inline bool bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
+                inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
                     BSEARCH_TWO_FIELDS(wordId, ctxId);
                 }
 

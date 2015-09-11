@@ -361,6 +361,8 @@ namespace uva {
                     //Check if there is data to search in
                     if (ref.has_data()) {
                         //The data is available search for the word index in the array
+                        //WQRNING: Switching to linear search here significantly worsens
+                        //the performance!
                         if (my_bsearch_id<typename WORD_ENTRY_TYPE::TElemType, typename WORD_ENTRY_TYPE::TIndexType > (ref.data(), 0, ref.size() - 1, ctxId, localIdx)) {
                             LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
                             return true;

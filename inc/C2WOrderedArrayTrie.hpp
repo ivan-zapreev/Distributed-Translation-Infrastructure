@@ -294,7 +294,7 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    if (bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
+                    if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
                             m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
