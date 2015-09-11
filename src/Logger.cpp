@@ -41,10 +41,10 @@ namespace uva {
                 return stream << ((uint32_t) value);
             }
 
-            std::ostream& operator<<(std::ostream& stream, const signed char  & value) {
+            std::ostream& operator<<(std::ostream& stream, const signed char & value) {
                 return stream << ((int32_t) value);
             }
-            
+
             DebugLevelsEnum Logger::currLEvel = DebugLevelsEnum::RESULT;
 
             const char * Logger::_debugLevelStr[DebugLevelsEnum::size] = {USAGE_PARAM_VALUE,
@@ -187,6 +187,7 @@ namespace uva {
 
                         //Output the time string
                         cout << computeTimeString(beginTime, timeStrLen);
+                        cout.flush();
 
                         //Store the current time
                         beginTime = clock();
@@ -221,6 +222,7 @@ namespace uva {
                 if (IS_ENOUGH_LOGGING_LEVEL(currLEvel) && isPBOn) {
                     //Clear the progress
                     cout << computeTimeClearString(timeStrLen) << "\n";
+                    cout.flush();
 
                     //Reset class variables
                     prefix = "";
