@@ -44,6 +44,28 @@ namespace uva {
             namespace __C2WArrayTrie {
 
                 /**
+                 * This structure stores two things the word id
+                 * and the corresponding probability/back-off data.
+                 * It is used to store the M-gram data for levels 1 < M < N.
+                 * @param id the word id
+                 * @param data the back-off and probability data
+                 */
+                typedef struct {
+                    TShortId id;
+                    TProbBackOffEntry data;
+                } TWordIdPBData;
+
+                /**
+                 * This is the less operator implementation
+                 * @param one the first object to compare
+                 * @param two the second object to compare
+                 * @return true one.id < two.id
+                 */
+                inline bool operator<(const TWordIdPBData & one, const TWordIdPBData & two) {
+                    return (one.id < two.id);
+                }
+
+                /**
                  * Stores the information about the context id, word id and corresponding probability
                  * This data structure is to be used for the N-Gram data, as there are no back-offs
                  * It is used to store the N-gram data for the last Trie level N.
@@ -160,18 +182,7 @@ namespace uva {
                     TShortId endIdx;
                 } TSubArrReference;
 
-                /**
-                 * This structure stores two things the word id
-                 * and the corresponding probability/back-off data.
-                 * It is used to store the M-gram data for levels 1 < M < N.
-                 * @param id the word id
-                 * @param data the back-off and probability data
-                 */
-                typedef struct {
-                    TShortId id;
-                    TProbBackOffEntry data;
-                } TWordIdProbBackOffEntryPair;
-
+                typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
                 typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
                 /**
@@ -346,7 +357,30 @@ namespace uva {
                     //Check the base class and we need to do post actions
                     //for the N-grams. The N-grams level data has to be
                     //sorted see post_N_Grams method implementation below.
-                    return (level == N) || ALayeredTrie<N>::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || ALayeredTrie<N>::is_post_grams(level);
+                }
+
+                virtual void post_m_grams(const TModelLevel level) {
+                    //Call the base class method first
+                    ATrie<N>::post_m_grams(level);
+
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
+
+                    LOG_DEBUG2 << "Running post actions on " << level << "-grams, m-gram array index: " << mgram_idx << END_LOG;
+
+                    //Sort the entries per context with respect to the word index
+                    //the order can be arbitrary if a non-basic word index is used!
+                    const size_t num_prev_ctx = (level == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
+                    LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
+                    for (size_t ctxId = 0; ctxId < num_prev_ctx; ++ctxId) {
+                        const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+                        if (info.beginIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
+                            LOG_DEBUG3 << "Sorting for context id: " << ctxId << ", info.beginIdx: "
+                                    << info.beginIdx << ", info.endIdx: " << info.endIdx << END_LOG;
+                            my_sort<TWordIdPBEntry>(&m_M_gram_data[mgram_idx][info.beginIdx], (info.endIdx - info.beginIdx) + 1);
+                        }
+                    }
                 }
 
                 virtual void post_n_grams() {
@@ -374,11 +408,13 @@ namespace uva {
                 TSubArrReference * m_M_gram_ctx_2_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TWordIdProbBackOffEntryPair * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
+                TWordIdPBEntry * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
 
                 //Stores the N-gram data
                 TCtxIdProbEntry * m_N_gram_data;
 
+                //Stores the size of the One-gram
+                TShortId m_one_gram_arr_size;
                 //Stores the maximum number of context id  per M-gram level: 1 < M <= N
                 TShortId m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
@@ -427,14 +463,14 @@ namespace uva {
                         //with the counting word index. We get on 20 Gb model 100.000.000
                         //queries a time difference from 112.895 CPU seconds with binary search
                         //and 78.6692 CPU seconds with linear search!
-                        //if (my_lsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
-                        if (my_bsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
-                            LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
+                        //if (my_lsearch_id<TWordIdProbBackOffEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                            LOG_DEBUG2 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
                             return true;
                         } else {
-                            LOG_DEBUG1 << "Unable to find M-gram ctxId for level: "
+                            LOG_DEBUG2 << "Unable to find M-gram ctxId for level: "
                                     << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                     << ", wordId: " << SSTR(wordId) << ", is not in the available range: ["
                                     << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].id) << " ... "
@@ -442,7 +478,7 @@ namespace uva {
                             return false;
                         }
                     } else {
-                        LOG_DEBUG1 << "Unable to find M-gram context id for level: "
+                        LOG_DEBUG2 << "Unable to find M-gram context id for level: "
                                 << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
                                 << ", nothing present in that context!" << END_LOG;
                         return false;

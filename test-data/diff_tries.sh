@@ -9,7 +9,7 @@ if [ "$#" -ne ${NUM_PARAMS} ]; then
    exit 1
 fi
 
-FILTER=' | grep -v "Gram ctx hash" | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "Counting words in ARPA file" | grep -v " memory allocation strategy."'
+FILTER=' | grep -v "Gram ctx hash" | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "Counting words in ARPA file" | grep -v " memory allocation strategy." | grep -v "Counting all words"'
 echo ${FILTER}
 
 echo "c2wa"
@@ -63,6 +63,6 @@ echo "----> c2dm vs. c2dh"
 diff release.c2dm.out release.c2dh.out > diff.c2dm.c2dh.out
 cat diff.c2dm.c2dh.out | wc -l
 
-echo "----> c2wa vs. g2dm"
+echo "----> c2dm vs. g2dm"
 diff release.c2dm.out release.g2dm.out > diff.c2dm.g2dm.out
 cat diff.c2dm.g2dm.out | wc -l

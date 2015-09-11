@@ -101,7 +101,7 @@ namespace uva {
                      * If not re-implemented throws an exception.
                      * @param token the word to count
                      */
-                    virtual void count_word(const TextPieceReader & token) {throw Exception("Word count is not needed!");};
+                    virtual void count_word(const TextPieceReader & token) {};
                     
                     /**
                      * This method allows to indicate whether word counting is
@@ -116,7 +116,7 @@ namespace uva {
                      * after all the words have been counted.
                      * If not re-implemented throws an exception.
                      */
-                    virtual void post_word_count() {throw Exception("Word count is not needed!");};
+                    virtual void post_word_count() {};
                     
                     /**
                      * This function creates/gets an id for the given word.

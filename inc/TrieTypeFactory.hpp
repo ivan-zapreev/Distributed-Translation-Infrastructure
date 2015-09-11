@@ -73,10 +73,10 @@ namespace uva {
                     const size_t memory_factor = __HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR;
                     switch (word_index_type) {
                         case WordIndexTypesEnum::BASIC_WORD_INDEX:
-                            LOG_INFO << "Using BASIC_WORD_INDEX to instantiate the trie." << END_LOG;
+                            LOG_USAGE << "Using BASIC_WORD_INDEX to instantiate the trie." << END_LOG;
                             return new BasicWordIndex(memory_factor);
                         case WordIndexTypesEnum::COUNTING_WORD_INDEX:
-                            LOG_INFO << "Using COUNTING_WORD_INDEX to instantiate the trie." << END_LOG;
+                            LOG_USAGE << "Using COUNTING_WORD_INDEX to instantiate the trie." << END_LOG;
                             return new CountingWordIndex(memory_factor);
                         default:
                             stringstream msg;
