@@ -173,7 +173,7 @@ namespace uva {
 
                 /**
                  * This is a linear search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
@@ -225,7 +225,7 @@ namespace uva {
 
                 /**
                  * This is a linear search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
@@ -260,6 +260,54 @@ namespace uva {
                                 } else {
                                     if (key < array[found_pos].id) {
                                         LOG_DEBUG3 << key << " (-1) @" << (uint32_t) found_pos << " " << array[found_pos].id << END_LOG;
+                                        //We bypassed the place where the value could have been
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //The key is outside the array values, no reason to search further
+                    return false;
+                }
+
+                /**
+                 * This is a linear search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE, typename IDX_TYPE>
+                inline bool my_lsearch(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const ARR_ELEM_TYPE key, IDX_TYPE & found_pos) {
+                    LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
+
+                    if (key > array[u_idx]) {
+                        LOG_DEBUG3 << "key (+1) value@" << (uint32_t) u_idx << END_LOG;
+                        //The key is larger than the last id so it is not in the array
+                        return false;
+                    } else {
+                        if (key == array[u_idx]) {
+                            LOG_DEBUG3 << "key (0) value@" << (uint32_t) u_idx << END_LOG;
+                            //The key is equal to the last id so we found it!
+                            found_pos = u_idx;
+                            return true;
+                        } else {
+                            //The key is potentially inside array and it is not the last element!
+                            for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
+                                if (key == array[found_pos]) {
+                                    LOG_DEBUG3 << "key (0) value@" << (uint32_t) found_pos << END_LOG;
+                                    //We found the key!
+                                    return true;
+                                } else {
+                                    if (key < array[found_pos]) {
+                                        LOG_DEBUG3 << "key (-1) value@" << (uint32_t) found_pos << END_LOG;
                                         //We bypassed the place where the value could have been
                                         return false;
                                     }

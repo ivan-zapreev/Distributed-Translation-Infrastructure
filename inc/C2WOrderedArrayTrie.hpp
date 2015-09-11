@@ -58,30 +58,48 @@ namespace uva {
                 } TCtxIdProbData;
 
                 /**
-                 * This is the less operator implementation
+                 * This is the compare operator implementation
                  * @param one the first object to compare
                  * @param two the second object to compare
-                 * @return true if (wordId,ctxId) of one is smaller than (wordId,ctxId) of two, otherwise false
+                 * @return -1 if (wordId,ctxId) < (wordId,ctxId)
+                 *          0 if (wordId,ctxId) == (wordId,ctxId)
+                 *         +1 if (wordId,ctxId) > (wordId,ctxId)
                  */
-                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
-                    const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
-                    const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
-                    return (key1 < key2);
-                    /* ToDo: An alternative for testing, which is faster?
+                inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     if (one.wordId < two.wordId) {
-                        return true;
+                        return -1;
                     } else {
-                        if (one.wordId > two.wordId) {
-                            return false;
-                        } else {
+                        if (one.wordId == two.wordId) {
                             if (one.ctxId < two.ctxId) {
-                                return true;
+                                return -1;
                             } else {
-                                return false;
+                                if (one.ctxId == two.ctxId) {
+                                    return 0;
+                                } else {
+                                    return +1;
+                                }
                             }
+                        } else {
+                            return +1;
                         }
                     }
-                     */
+                };
+
+                // ToDo: An alternative for testing, which is faster?
+                //const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
+                //const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
+                //return (key1 < key2);
+
+                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                    return (compare(one, two) < 0);
+                };
+
+                inline bool operator>(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                    return (compare(one, two) > 0);
+                };
+
+                inline bool operator==(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                    return (compare(one, two) == 0);
                 };
             }
 
@@ -143,7 +161,7 @@ namespace uva {
                 } TWordIdProbBackOffEntryPair;
 
                 typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
-                
+
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, return a new one.
@@ -294,8 +312,11 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
+                    TCtxIdProbEntry search_key;
+                    search_key.wordId = wordId;
+                    search_key.ctxId = ctxId;
+                    if (my_lsearch<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
+                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], search_key, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
                         return true;
@@ -321,7 +342,7 @@ namespace uva {
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
                             << ", size: " << m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
 
-                    //Order the N-gram array as it is unordered and we will binary search it later!
+                    //Order the N-gram array as it is unordered and we will binary searchit later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
