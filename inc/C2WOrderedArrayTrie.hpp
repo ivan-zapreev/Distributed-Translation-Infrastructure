@@ -226,7 +226,7 @@ namespace uva {
 
                     //Check if there are yet no elements for this context
                     if (ref.beginIdx == ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
-                        //There was no elements put into this contex, the begin index is then equal to the end index
+                        //There was no elements put into this context, the begin index is then equal to the end index
                         ref.beginIdx = ref.endIdx;
                     }
 
@@ -312,7 +312,7 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    TCtxIdProbEntry search_key;
+                    TCtxIdProbEntry search_key = {};
                     search_key.wordId = wordId;
                     search_key.ctxId = ctxId;
                     if (my_lsearch<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
