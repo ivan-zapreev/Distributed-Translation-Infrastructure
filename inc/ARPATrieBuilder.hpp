@@ -102,7 +102,7 @@ namespace uva {
                      */
                     void get_word_counts() {
                         //Do the progress bard indicator
-                        Logger::startProgressBar(string("Counting different words"));
+                        Logger::startProgressBar(string("Counting all words"));
                         
                         //Start recursive counting of words
                         get_word_counts(1);
@@ -111,7 +111,7 @@ namespace uva {
                         //Perform the post counting actions;
                         m_trie.get_word_index()->post_word_count();
 
-                        LOG_DEBUG << "Finished counting different words" << END_LOG;
+                        LOG_DEBUG << "Finished counting all words" << END_LOG;
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
                         
