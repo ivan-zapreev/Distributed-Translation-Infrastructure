@@ -112,6 +112,7 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[N]) {
                     if (m_word_index_ptr != NULL) {
                         m_word_index_ptr->reserve(counts[0]);
+                        Logger::updateProgressBar();
                     }
                 };
 
