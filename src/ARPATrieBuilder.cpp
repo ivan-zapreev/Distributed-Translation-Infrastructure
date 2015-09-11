@@ -397,6 +397,7 @@ namespace uva {
                         LOG_INFO << "Expected number of M-grams per level: "
                                 << arrayToString<size_t, N>(counts) << END_LOG;
 
+                        LOG_INFO2 << "Pre-allocating memory..." << END_LOG;
                         //Provide the N-Gram counts data to the Trie
                         m_trie.pre_allocate(counts);
 
