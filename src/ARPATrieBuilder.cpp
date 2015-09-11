@@ -97,6 +97,21 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
+                void ARPATrieBuilder<N>::pre_allocate(size_t counts[N]) {
+                    LOG_INFO << "Expected number of M-grams per level: "
+                            << arrayToString<size_t, N>(counts) << END_LOG;
+
+                    //Do the progress bard indicator
+                    Logger::startProgressBar(string("Pre-allocating memory"));
+                    //Provide the N-Gram counts data to the Trie
+                    m_trie.pre_allocate(counts);
+                    Logger::updateProgressBar();
+                    LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
+                    //Stop the progress bar in case of no exception
+                    Logger::stopProgressBar();
+                }
+
+                template<TModelLevel N>
                 void ARPATrieBuilder<N>::read_data(size_t counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
@@ -317,6 +332,8 @@ namespace uva {
                                     for (size_t idx = 0; idx < level; idx++) {
                                         LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index.";
                                         p_word_index->count_word(tokens[idx]);
+                                        //Update the progress bar status
+                                        Logger::updateProgressBar();
                                     }
                                 } else {
                                     //This is not an expected M-gram
@@ -324,9 +341,6 @@ namespace uva {
                                     break;
                                 }
                             }
-
-                            //Update the progress bar status
-                            Logger::updateProgressBar();
                         }
 
                         LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
@@ -342,6 +356,9 @@ namespace uva {
                         LOG_DEBUG1 << "Finished counting words in "
                                 << SSTR(level) << "-grams" << END_LOG;
                     }
+
+                    //Update the progress bar status
+                    Logger::updateProgressBar();
                 }
 
                 /**
@@ -394,17 +411,8 @@ namespace uva {
                         //Read the DATA section of ARPA
                         read_data(counts);
 
-                        LOG_INFO << "Expected number of M-grams per level: "
-                                << arrayToString<size_t, N>(counts) << END_LOG;
-
-                        //Do the progress bard indicator
-                        Logger::startProgressBar(string("Pre-allocating memory"));
-                        //Provide the N-Gram counts data to the Trie
-                        m_trie.pre_allocate(counts);
-                        Logger::updateProgressBar();
-                        LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
-                        //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
+                        //Pre-allocate memory
+                        pre_allocate(counts);
 
                         //Check if we need another pass for words counting.
                         if (m_trie.get_word_index()->need_word_counts()) {

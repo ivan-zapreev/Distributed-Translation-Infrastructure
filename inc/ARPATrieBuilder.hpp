@@ -87,6 +87,12 @@ namespace uva {
                     void read_headers();
 
                     /**
+                     * Allows to pre-allocate memory in the tries and dictionaries
+                     * @param counts the learned M-gram counts
+                     */
+                    void pre_allocate(size_t counts[N]);
+
+                    /**
                      * This method is used to read and process the ARPA data section
                      * @param line the in/out parameter storing the last read line
                      * @param counts the out parameters to store the retrieved
@@ -103,18 +109,18 @@ namespace uva {
                     void get_word_counts() {
                         //Do the progress bard indicator
                         Logger::startProgressBar(string("Counting all words"));
-                        
+
                         //Start recursive counting of words
                         get_word_counts(1);
                         LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
-                        
+
                         //Perform the post counting actions;
                         m_trie.get_word_index()->post_word_count();
 
                         LOG_DEBUG << "Finished counting all words" << END_LOG;
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
-                        
+
                     }
 
                     /**
