@@ -388,7 +388,11 @@ namespace uva {
                     if (ref.beginIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        if (my_bsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        //WARNING: The linear search here is much faster!!! At least
+                        //with the counting word index. We get on 20 Gb model 100.000.000
+                        //queries a time difference from 112.895 CPU seconds with binary search
+                        //and 78.6692 CPU seconds with linear search!
+                        if (my_lsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
