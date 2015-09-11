@@ -294,8 +294,8 @@ static void performTasks(const TAppParams& params) {
     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
-    LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-    reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd, false);
+    //LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
+    //reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd, false);
 
     //Attempt to open the test file
     FileStreamReader testFile(params.testFileName.c_str());
@@ -323,7 +323,7 @@ static void performTasks(const TAppParams& params) {
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
         LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Creating the Language Model Trie", memStatStart, memStatEnd, false);
+        reportMemotyUsage("Creating the Language Model Trie", memStatStart, memStatEnd, true);
 
         LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatStart);
@@ -334,8 +334,8 @@ static void performTasks(const TAppParams& params) {
         LOG_DEBUG << "Getting the memory statistics after closing the Model file ..." << END_LOG;
         StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
-        LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-        reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
+        //LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
+        //reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
         LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
         const double queryCPUTimes = readAndExecuteQueries(*pTrie, testFile);
