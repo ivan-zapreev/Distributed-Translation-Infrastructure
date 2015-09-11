@@ -27,20 +27,20 @@ eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} g2dm info3 ${
 
 echo "\n----> c2wa vs. c2dm"
 diff release.c2wa.out release.c2dm.out > diff.c2wa.c2dm.out
-cat diff.c2wa.c2dm.out
+cat diff.c2wa.c2dm.out | wc -l
 
 echo "\n----> c2wa vs. w2ca"
 diff release.c2wa.out release.w2ca.out > diff.c2wa.w2ca.out
-cat diff.c2wa.w2ca.out
+cat diff.c2wa.w2ca.out | wc -l
 
 echo "\n----> c2wa vs. w2ch"
 diff release.c2wa.out release.w2ch.out > diff.c2wa.w2ch.out
-cat diff.c2wa.w2ch.out
+cat diff.c2wa.w2ch.out | wc -l
 
 echo "\n----> c2wa vs. c2dh"
 diff release.c2wa.out release.c2dh.out > diff.c2wa.c2dh.out
-cat diff.c2wa.c2dh.out
+cat diff.c2wa.c2dh.out | wc -l
 
 echo "\n----> c2wa vs. g2dm"
 diff release.c2wa.out release.g2dm.out > diff.c2wa.g2dm.out
-cat diff.c2wa.g2dm.out
+cat diff.c2wa.g2dm.out | wc -l
