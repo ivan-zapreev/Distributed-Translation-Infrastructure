@@ -185,7 +185,7 @@ namespace uva {
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
 
                 //Stores the word index type to be used in this trie
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
             namespace __C2WOrderedArrayTrie {
