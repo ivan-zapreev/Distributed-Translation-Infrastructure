@@ -112,7 +112,7 @@ namespace uva {
 
                         //Start recursive counting of words
                         get_word_counts(1);
-                        LOG_INFO << "Finished counting words in M-grams!" << END_LOG;
+                        LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
 
                         //Perform the post counting actions;
                         m_trie.get_word_index()->post_word_count();
