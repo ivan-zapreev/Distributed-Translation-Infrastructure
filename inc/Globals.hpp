@@ -159,7 +159,7 @@ namespace uva {
                 //the number of M-grams in this level divided by this factor value 
                 static const size_t NUMBER_OF_BUCKETS_FACTOR = 64;
 
-                //Stores the word index type to be used in this trie
+                //Stores the word index type to be used in this trie, counting index is a must to save memory for gram ids!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
@@ -184,7 +184,7 @@ namespace uva {
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
 
-                //Stores the word index type to be used in this trie
+                //Stores the word index type to be used in this trie, counting index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
@@ -199,8 +199,8 @@ namespace uva {
                 //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
                 static const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
 
-                //Stores the word index type to be used in this trie
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //Stores the word index type to be used in this trie, counting index gives a bit faster querying.
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
         }
 
