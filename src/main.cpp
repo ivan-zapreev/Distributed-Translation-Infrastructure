@@ -164,7 +164,7 @@ static const string getFileExistsString(string const & fname, bool isPresent) {
  * @param isDoInfo true if the memory info may be print
  */
 static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
-    LOG_INFO2 << "Action: \'" << action << "\' memory change:" << END_LOG;
+    LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
     LOG_DEBUG << "memory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
             << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
             << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
@@ -176,14 +176,14 @@ static void reportMemotyUsage(const char* action, TMemotyUsage msStart, TMemotyU
     int vmpeak = ((msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB;
     int vmrss = ((msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB;
     int vmhwm = ((msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB;
-    LOG_INFO2 << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
+    LOG_USAGE << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
             << " Mb, vmrss=" << vmrss << " Mb, vmhwm=" << vmhwm
             << " Mb" << noshowpos << END_LOG;
     if (isDoInfo) {
-        LOG_INFO3 << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
-        LOG_INFO3 << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
-        LOG_INFO3 << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
-        LOG_INFO3 << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
+        LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
+        LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
+        LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
+        LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
     }
 }
 
