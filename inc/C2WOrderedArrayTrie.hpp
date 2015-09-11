@@ -65,7 +65,7 @@ namespace uva {
                  *          0 if (wordId,ctxId) == (wordId,ctxId)
                  *         +1 if (wordId,ctxId) > (wordId,ctxId)
                  */
-                inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                /*inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     if (one.wordId < two.wordId) {
                         return -1;
                     } else {
@@ -83,14 +83,14 @@ namespace uva {
                             return +1;
                         }
                     }
-                };
+                };*/
 
                 // ToDo: An alternative for testing, which is faster?
                 //const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
                 //const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
                 //return (key1 < key2);
 
-                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                /*inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     return (compare(one, two) < 0);
                 };
 
@@ -100,7 +100,19 @@ namespace uva {
 
                 inline bool operator==(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     return (compare(one, two) == 0);
-                };
+                };*/
+
+                /**
+                 * This is the less operator implementation
+                 * @param one the first object to compare
+                 * @param two the second object to compare
+                 * @return true if (wordId,ctxId) of one is smaller than (wordId,ctxId) of two, otherwise false
+                 */
+                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                    const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
+                    const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
+                    return (key1 < key2);
+                }
             }
 
             /**
@@ -312,11 +324,13 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    TCtxIdProbEntry search_key = {};
+                    /*TCtxIdProbEntry search_key = {};
                     search_key.wordId = wordId;
                     search_key.ctxId = ctxId;
                     if (my_lsearch<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], search_key, idx)) {
+                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], search_key, idx)) {*/
+                    if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
+                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
                         //return the reference to the probability
                         prob = m_N_gram_data[idx].prob;
                         return true;
@@ -413,7 +427,8 @@ namespace uva {
                         //with the counting word index. We get on 20 Gb model 100.000.000
                         //queries a time difference from 112.895 CPU seconds with binary search
                         //and 78.6692 CPU seconds with linear search!
-                        if (my_lsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        //if (my_lsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (my_bsearch_id<TWordIdProbBackOffEntryPair>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG1 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
