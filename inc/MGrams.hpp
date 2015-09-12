@@ -112,7 +112,7 @@ namespace uva {
                                 throw Exception(msg.str());
                             }
                         }
-
+                        
                         //Compute the hash using the gram tokens with spaces with them
                         return computePaulHsiehHash(beginFirstPtr, totalLen);
                     }
@@ -263,7 +263,7 @@ namespace uva {
                      *         Positive value if one is larger than two
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    int8_t compare(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
+                    int compare(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level

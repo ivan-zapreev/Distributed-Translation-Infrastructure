@@ -331,6 +331,22 @@ namespace uva {
                     //Copy the given number of bits from and to defined targets and positions 
                     copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, BYTES_TO_BITS(sizeof (DATA_TYPE)));
                 }
+
+                /**
+                 * Allows to convert an array of bytes into its string representation in bits.
+                 * @param bytes the array of bytes, not bull
+                 * @param size the number of elements in the array
+                 * @return the string representation in bits
+                 */
+                inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
+                    stringstream data;
+                    data << "(";
+                    for (size_t idx = 0; idx < size; ++idx) {
+                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size-1)) ? "," :"");
+                    }
+                    data << ")";
+                    return data.str();
+                }
             }
         }
     }

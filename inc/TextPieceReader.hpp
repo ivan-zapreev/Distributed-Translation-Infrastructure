@@ -408,15 +408,16 @@ namespace uva {
             /**
              * This function allows to convert the BasicTextFileReader elements tokens into a array string representation. 
              * @param tokens the tokens to print
+             * @param from_idx the from index
+             * @param to_idx the to index
              * @return the resulting string
              */
             template<TModelLevel N = M_GRAM_LEVEL_MAX>
-            inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
+            inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel begin_idx, const TModelLevel end_idx) {
                 stringstream data;
                 data << "[ ";
-                const TModelLevel num_tokens = min<TModelLevel>(level, N);
-                LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
-                for (int i = 0; i < num_tokens; i++) {
+                LOG_DEBUG4 << "Appending tokens from idx: " << SSTR(begin_idx) << " to idx: " << SSTR(end_idx) << END_LOG;
+                for (int i = begin_idx; i <= end_idx; i++) {
                     LOG_DEBUG4 << "Appending token [" << SSTR(i) << "] = '"
                             << tokens[i].str() << "' to the string!" << END_LOG;
                     data << tokens[i].str() << " ";
@@ -424,6 +425,18 @@ namespace uva {
                 LOG_DEBUG4 << "Done appending tokens!" << END_LOG;
                 data << "]";
                 return data.str();
+            };
+
+            /**
+             * This function allows to convert the BasicTextFileReader elements tokens into a array string representation. 
+             * @param tokens the tokens to print
+             * @return the resulting string
+             */
+            template<TModelLevel N = M_GRAM_LEVEL_MAX>
+            inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
+                const TModelLevel num_tokens = min<TModelLevel>(level, N);
+                LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
+                return tokensToString(tokens, 0, num_tokens - 1);
             };
         }
     }

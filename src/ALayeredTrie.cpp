@@ -243,7 +243,7 @@ namespace uva {
                 //Get the last word in the N-gram
                 const TShortId & wordId = ATrie<N>::get_end_word_id();
 
-                LOG_DEBUG1 << "Computing probability for an " << level
+                LOG_DEBUG << "Computing probability for an " << level
                         << "-gram the context length is " << ctxLen << END_LOG;
 
                 //Consider different variants based no the length of the context
@@ -254,7 +254,7 @@ namespace uva {
                     //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (get_query_context_Id<false>(ctxLen, ctxId)) {
 
-                        LOG_DEBUG3 << "Got query context id: " << ctxId << END_LOG;
+                        LOG_DEBUG << "Got query context id: " << ctxId << END_LOG;
 
                         if (level == N) {
                             //If we are looking for a N-Gram probability
@@ -280,7 +280,7 @@ namespace uva {
                             const TProbBackOffEntry * pEntry;
                             if (get_M_GramDataRef(level, wordId, ctxId, &pEntry)) {
 
-                                LOG_DEBUG2 << "The " << level
+                                LOG_DEBUG << "The " << level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
                                         << wordId << ", " << ctxId
@@ -316,7 +316,7 @@ namespace uva {
                     const TProbBackOffEntry * pEntry;
                     if (get_1_GramDataRef(wordId, & pEntry)) {
 
-                        LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
+                        LOG_DEBUG << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << wordId
                                 << ", is: " << pEntry->prob << END_LOG;
 

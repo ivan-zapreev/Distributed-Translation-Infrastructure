@@ -77,7 +77,7 @@ namespace uva {
                      * @param id_type [out] the resulting id type the initial value is expected to be 0
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    void get_gram_id_type(uint8_t len_bits[M_GRAM_LEVEL], uint32_t & id_type) {
+                    inline void gram_id_bit_len_2_type(uint8_t len_bits[M_GRAM_LEVEL], uint32_t & id_type) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_6)) {
                             stringstream msg;
@@ -88,15 +88,39 @@ namespace uva {
                             throw Exception(msg.str());
                         }
 
-                        LOG_DEBUG2 << "Computing the " << SSTR(M_GRAM_LEVEL) << "-gram id type" << END_LOG;
+                        LOG_DEBUG3 << "Computing the " << SSTR(M_GRAM_LEVEL) << "-gram id type" << END_LOG;
 
                         //Compute the M-gram id type. Here we use the pre-computed multipliers
                         for (size_t idx = 0; idx < M_GRAM_LEVEL; ++idx) {
-                            LOG_DEBUG3 << "len_bits[" << SSTR(idx) << "] = " << SSTR((uint32_t) len_bits[idx]) << END_LOG;
+                            LOG_DEBUG3 << ((uint32_t) len_bits[idx] - 1) << " * " << gram_id_type_mult[idx] << " =  "
+                                    << ((uint32_t) len_bits[idx] - 1) * gram_id_type_mult[idx] << END_LOG;
                             id_type += ((uint32_t) len_bits[idx] - 1) * gram_id_type_mult[idx];
                         }
                         LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                     };
+
+                    /**
+                     * Allows to compute the bit length for the id of the given type
+                     * @param M_GRAM_LEVEL the M-Gram level M
+                     * @param id_type the type id
+                     * @param id_len_bits [out] the total bit length to store the id of this type
+                     */
+                    template<TModelLevel M_GRAM_LEVEL>
+                    inline void gram_id_type_2_bit_len(uint32_t id_type, uint8_t & id_len_bits) {
+                        //2. Compute the M-gram id length from the M-gram id type.
+                        //   Here we use the pre-computed multipliers we add the
+                        //   final bits at the end of the function.
+                        uint8_t coeff = 0;
+                        for (int idx = (M_GRAM_LEVEL - 1); idx >= 0; --idx) {
+                            coeff = (uint8_t) (id_type / gram_id_type_mult[idx]);
+                            LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(gram_id_type_mult[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
+                            id_type = (uint8_t) (id_type % gram_id_type_mult[idx]);
+                            id_len_bits += coeff;
+                        }
+                        //Note that in the loop above we have "coeff = len_bits[idx] - 1"
+                        //Therefore, here we add the number of tokens to account for this -1's
+                        id_len_bits += (uint8_t) M_GRAM_LEVEL;
+                    }
 
                     /**
                      * Allows to extract the M-gram id length from the given M-gram level M and id
@@ -109,15 +133,6 @@ namespace uva {
                      */
                     template<uint8_t ID_TYPE_LEN_BITS, TModelLevel M_GRAM_LEVEL >
                     void get_gram_id_len(const uint8_t * m_gram_id, uint8_t & len_bytes) {
-                        //Declare and initialize the id length, the initial values is
-                        //what we need to store the type. Note that, the maximum number
-                        //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
-                        //bits. For a 6-gram we get 30+32+32+32+32+32+32 = 222 bits,
-                        //for a 7-gram we get 35+32+32+32+32+32+32+32 = 259 bits!
-                        //This is when we get an overflow here if we use uint8_t to
-                        //store the length in bits will overflow. Therefore the sanity check.
-                        uint8_t id_len_bits = ID_TYPE_LEN_BITS;
-
                         //If needed, do the sanity checks
                         if (DO_SANITY_CHECKS) {
                             if (m_gram_id == NULL) {
@@ -140,21 +155,21 @@ namespace uva {
                         //2. Compute the M-gram id length from the M-gram id type.
                         //   Here we use the pre-computed multipliers we add the
                         //   final bits at the end of the function.
-                        uint8_t coeff = 0;
-                        for (int idx = (M_GRAM_LEVEL - 1); idx >= 0; --idx) {
-                            //"coeff = len_bits[idx] - 1"
-                            coeff = (uint8_t) (id_type / gram_id_type_mult[idx]);
-                            LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(gram_id_type_mult[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
-                            id_type -= coeff * gram_id_type_mult[idx];
-                            id_len_bits += coeff;
-                        }
 
-                        LOG_DEBUG3 << "id_len_bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
-                        LOG_DEBUG3 << "id_len_bits: " << SSTR((uint32_t) M_GRAM_LEVEL) << END_LOG;
+                        //Declare and initialize the id length, the initial values is
+                        //what we need to store the type. Note that, the maximum number
+                        //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
+                        //bits. For a 6-gram we get 30+32+32+32+32+32+32 = 222 bits,
+                        //for a 7-gram we get 35+32+32+32+32+32+32+32 = 259 bits!
+                        //This is when we get an overflow here if we use uint8_t to
+                        //store the length in bits will overflow. Therefore the sanity check.
+                        uint8_t id_len_bits = ID_TYPE_LEN_BITS;
+                        gram_id_type_2_bit_len<M_GRAM_LEVEL>(id_type, id_len_bits);
 
-                        //Note that in the loop above we have "coeff = len_bits[idx] - 1"
-                        //Therefore, here we add the number of tokens to account for this -1's
-                        len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits + (uint8_t) M_GRAM_LEVEL);
+                        LOG_DEBUG3 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
+                                << ", Total id_len_bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
+
+                        len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
                     };
 
                     /**
@@ -210,7 +225,7 @@ namespace uva {
                         //store the length in bits will overflow. Therefore the sanity check.
                         uint8_t id_len_bits = ID_TYPE_LEN_BITS;
 
-                        LOG_DEBUG2 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
+                        LOG_DEBUG3 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
                                 << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BITS) << END_LOG;
 
                         //Obtain the word ids and their lengths in bits and
@@ -244,8 +259,8 @@ namespace uva {
 
                         //Determine the type id value from the bit lengths of the words
                         uint32_t id_type_value = 0;
-                        get_gram_id_type<M_GRAM_LEVEL>(len_bits, id_type_value);
-                        LOG_DEBUG2 << "M_GRAM_LEVEL: " << (uint32_t) M_GRAM_LEVEL << ", id_type_value: " << id_type_value << END_LOG;
+                        gram_id_bit_len_2_type<M_GRAM_LEVEL>(len_bits, id_type_value);
+                        LOG_DEBUG3 << "ID_TYPE_LEN_BITS: " << (uint32_t) ID_TYPE_LEN_BITS << ", id_type_value: " << id_type_value << END_LOG;
 
                         //Append the id type to the M-gram id
                         uint8_t to_bit_pos = 0;
@@ -258,8 +273,9 @@ namespace uva {
                             to_bit_pos += len_bits[idx];
                         }
 
-                        LOG_DEBUG2 << "Finished making the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
-                                << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BITS) << END_LOG;
+                        LOG_DEBUG3 << "Finished making the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
+                                << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
+                                << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
                     };
 
                     static inline void create_2_gram_id(const TShortId * word_ids,
@@ -317,7 +333,7 @@ namespace uva {
 #define IS_LARGER +1
 
                     template<TModelLevel M_GRAM_LEVEL>
-                    int8_t compare(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two) {
+                    int compare(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two) {
 
                         //Get the id len in bits
                         constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL];
@@ -328,38 +344,39 @@ namespace uva {
                         TShortId type_two = 0;
                         copy_begin_bits_to_end < ID_TYPE_LEN_BITS >(m_p_gram_id_two, type_two);
 
-                        LOG_DEBUG2 << "M_GRAM_LEVEL: " << (uint32_t) M_GRAM_LEVEL << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
+                        LOG_DEBUG3 << "M_GRAM_LEVEL: " << (uint32_t) M_GRAM_LEVEL << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
 
                         if (type_one < type_two) {
                             //The first id type is smaller
-                            LOG_DEBUG2 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
+                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
                             return IS_LESS;
                         } else {
                             if (type_one > type_two) {
                                 //The second id type is smaller
-                                LOG_DEBUG2 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
                                 return IS_LARGER;
                             } else {
                                 //The id types are the same! Compare the ids themselves
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " =(type)= " << (void*) m_p_gram_id_two << END_LOG;
 
                                 //Get one of the lengths, as they both are the same
                                 uint8_t id_len_bytes = 0;
-                                get_gram_id_len < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL], M_GRAM_LEVEL > (m_p_gram_id_one, id_len_bytes);
-
-                                LOG_DEBUG2 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
-                                        << ", idx: " << SSTR((uint32_t) NUM_FULL_BYTES(ID_TYPE_LEN_BITS))
-                                        << ", id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
+                                get_gram_id_len < ID_TYPE_LEN_BITS, M_GRAM_LEVEL > (m_p_gram_id_one, id_len_bytes);
 
                                 //Start comparing the ids but not from the fist bytes as
                                 //this is where the id type information is stored, start
                                 //with the first byte that contains key information
                                 const uint8_t num_bytes_to_skip = NUM_FULL_BYTES(ID_TYPE_LEN_BITS);
 
+                                LOG_DEBUG3 << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
+                                        << ", start comparing id key from idx: " << SSTR((uint32_t) num_bytes_to_skip)
+                                        << ", Total id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
+
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " = " << bytes_to_bit_string(m_p_gram_id_one, id_len_bytes) << END_LOG;
+                                LOG_DEBUG3 << (void*) m_p_gram_id_two << " = " << bytes_to_bit_string(m_p_gram_id_two, id_len_bytes) << END_LOG;
+
                                 //Compare with the fast system function
-                                return memcmp(
-                                        &m_p_gram_id_one[num_bytes_to_skip],
-                                        &m_p_gram_id_two[num_bytes_to_skip],
-                                        id_len_bytes - num_bytes_to_skip);
+                                return memcmp(m_p_gram_id_one + num_bytes_to_skip, m_p_gram_id_two + num_bytes_to_skip, (id_len_bytes - num_bytes_to_skip));
                             }
                         }
                     };

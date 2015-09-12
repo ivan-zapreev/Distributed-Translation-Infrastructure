@@ -50,7 +50,7 @@ namespace uva {
                  */
                 template<typename ELEM_TYPE>
                 struct T_IS_EXT_COMPARE_FUNC {
-                    typedef std::function<int8_t(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
+                    typedef std::function<int(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
                 };
 
                 /**
@@ -188,11 +188,11 @@ namespace uva {
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx,
                         const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
-                    LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
+                    LOG_DEBUG4 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
 
                     //First compare the last element of the array with the key
-                    int8_t result = compare(key, array[u_idx].id);
-                    LOG_DEBUG3 << (void*) key << " (" << result << ") @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
+                    int result = compare(key, array[u_idx].id);
+                    LOG_DEBUG4 << (void*) key << " (" << result << ") @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
 
                     if (result > 0) {
                         //The key is larger than the last id so it is not in the array
@@ -205,8 +205,8 @@ namespace uva {
                         } else {
                             //The key is potentially inside array and it is not the last element!
                             for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
-                                int8_t result = compare(key, array[found_pos].id);
-                                LOG_DEBUG3 << (void*) key << " (" << result << ") @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
+                                int result = compare(key, array[found_pos].id);
+                                LOG_DEBUG4 << (void*) key << " (" << result << ") @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
                                 if (result == 0) {
                                     //We found the key!
                                     return true;
