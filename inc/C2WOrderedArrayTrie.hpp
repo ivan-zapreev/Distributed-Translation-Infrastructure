@@ -335,11 +335,6 @@ namespace uva {
 
                     //Search for the index using binary search
                     TShortId idx = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
-                    /*TCtxIdProbEntry search_key = {};
-                    search_key.wordId = wordId;
-                    search_key.ctxId = ctxId;
-                    if (my_lsearch<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], search_key, idx)) {*/
                     if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, ALayeredTrie<N>::FIRST_VALID_CTX_ID,
                             m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
                         //return the reference to the probability
@@ -459,11 +454,7 @@ namespace uva {
                     if (ref.beginIdx != ALayeredTrie<N>::UNDEFINED_ARR_IDX) {
                         TShortId nextCtxId = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
-                        //WARNING: The linear search here is much faster!!! At least
-                        //with the counting word index. We get on 20 Gb model 100.000.000
-                        //queries a time difference from 112.895 CPU seconds with binary search
-                        //and 78.6692 CPU seconds with linear search!
-                        //if (my_lsearch_id<TWordIdProbBackOffEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        //WARNING: The linear search here is much slower!!!
                         if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG2 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
