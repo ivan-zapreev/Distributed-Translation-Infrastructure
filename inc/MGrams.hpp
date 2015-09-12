@@ -159,19 +159,23 @@ namespace uva {
                 //The number of bites needed to store a 2-gram id type
                 //Possible id types: 32^2 = 1,024
                 //The number of bits needed to store the type is log_2(1,024) = 10
-                static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
+                //Using 16 bits for the speed efficiency, the total memory is not affected
+                static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 16;
                 //The number of bites needed to store a 3-gram id type
                 //Possible id types: 32^3 = 32,768
                 //The number of bits needed to store the type is log_2(32,768) = 15
-                static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
+                //Using 16 bits for the speed efficiency, the total memory is not affected
+                static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 16;
                 //The number of bites needed to store a 4-gram id type
                 //Possible id types: 32^4 = 1,048,576
                 //The number of bits needed to store the type is log_2(1,048,576) = 20
-                static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
+                //Using 24 bits for the speed efficiency, the total memory is not affected
+                static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 24;
                 //The number of bites needed to store a 5-gram id type
                 //Possible id types: 32^5 = 33,554,432
                 //The number of bits needed to store the type is log_2(33,554,432) = 25
-                static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
+                //Using 32 bits for the speed efficiency, the total memory is not affected
+                static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 32;
 
                 //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                 static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
