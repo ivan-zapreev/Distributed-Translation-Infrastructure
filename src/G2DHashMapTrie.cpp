@@ -297,6 +297,11 @@ namespace uva {
             template<TModelLevel N>
             bool G2DMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
                 LOG_DEBUG2 << "Computing back-off for a " << level << "-gram " << END_LOG;
+                
+                //Perform a sanity check if needed
+                if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1)) {
+                    throw Exception("Trying to obtain a back-off weight for level zero!");
+                }
 
                 //1. Check which level M-gram we need to get probability for
                 if (level > M_GRAM_LEVEL_1) {

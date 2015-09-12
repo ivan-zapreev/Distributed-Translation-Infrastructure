@@ -468,6 +468,11 @@ namespace uva {
                     bool is_more_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level) {
                         return is_more_x_grams_id_funcs[level](one, two);
                     }
+                    
+                    template int compare<M_GRAM_LEVEL_2>(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_3>(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_4>(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_5>(const T_Id_Storage_Ptr m_p_gram_id_one, const T_Id_Storage_Ptr m_p_gram_id_two);
                 }
             }
         }

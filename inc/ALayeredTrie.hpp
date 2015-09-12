@@ -235,7 +235,7 @@ namespace uva {
                  * Hash will be computed for the 3-gram prefix w3 w4.
                  * 
                  * @param ctxLen the length of the context to compute
-                 * @param isBackOff is the boolean flag that determines whether
+                 * @param is_back_off is the boolean flag that determines whether
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
@@ -243,15 +243,15 @@ namespace uva {
                  * @return the true if the context could be computed, otherwise false
                  * @throws nothing
                  */
-                template<bool isBackOff>
+                template<bool is_back_off>
                 inline bool get_query_context_Id(const TModelLevel ctxLen, TLongId & ctxId) {
-                    const TModelLevel mGramEndIdx = (isBackOff ? (N - 2) : (N - 1));
+                    const TModelLevel mGramEndIdx = (is_back_off ? (N - 2) : (N - 1));
                     const TModelLevel eIdx = mGramEndIdx;
                     const TModelLevel bIdx = mGramEndIdx - ctxLen;
                     TModelLevel idx = bIdx;
 
                     LOG_DEBUG1 << "Computing ctxId for context length: " << SSTR(ctxLen)
-                            << " for a  " << (isBackOff ? "back-off" : "probability")
+                            << " for a  " << (is_back_off ? "back-off" : "probability")
                             << " computation" << END_LOG;
 
                     //Compute the first words' hash
@@ -282,7 +282,7 @@ namespace uva {
                         }
 
                         LOG_DEBUG1 << "Resulting context hash for context length " << SSTR(ctxLen)
-                                << " of a  " << (isBackOff ? "back-off" : "probability")
+                                << " of a  " << (is_back_off ? "back-off" : "probability")
                                 << " computation is: " << SSTR(ctxId) << END_LOG;
 
                         return true;

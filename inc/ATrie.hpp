@@ -293,35 +293,53 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to check if the given sub-m-gram contains an unknown word
+                 * @param level of the considered M-gram
+                 * @return true if the unknown word is present, otherwise false
+                 */
+                template<bool is_back_off>
+                inline bool has_no_unknown(const TModelLevel ctx_len) {
+                    return true;
+                }
+                
+                /**
                  * This function should be called in case we can not get the probability for
                  * the given M-gram and we want to compute it's back-off probability instead
-                 * @param ctxLen the length of the context for the M-gram for which we could
+                 * @param ctx_len the length of the context for the M-gram for which we could
                  * not get the probability from the trie.
                  * @param prob [out] the reference to the probability to be found/computed
                  */
-                inline void get_back_off_prob(const TModelLevel ctxLen, TLogProbBackOff & prob) {
+                inline void get_back_off_prob(const TModelLevel ctx_len, TLogProbBackOff & prob) {
                     //Compute the lover level probability
-                    get_probability(ctxLen, prob);
+                    get_probability(ctx_len, prob);
 
-                    LOG_DEBUG1 << "getProbability(" << ctxLen
+                    LOG_DEBUG1 << "getProbability(" << ctx_len
                             << ") = " << prob << END_LOG;
 
                     //If the probability is not zero then go on with computing the
-                    //back-off. Otherwise it does not make sence to compute back-off.
+                    //back-off. Otherwise it does not make sense to compute back-off
+                    //as we will only get lower probability and we are already at 0!
                     if (prob > ZERO_LOG_PROB_WEIGHT) {
-                        TLogProbBackOff back_off;
-                        if (!get_back_off_weight(ctxLen, back_off)) {
-                            //Set the back-off weight value to zero as there is no back-off found!
-                            back_off = ZERO_BACK_OFF_WEIGHT;
+                        //If there will be no back-off found then we already have it set to zero
+                        TLogProbBackOff back_off = ZERO_BACK_OFF_WEIGHT;
+
+                        //Try getting the back-off weight.
+                        //1. If the context length is one go on: we can get smth
+                        //even if the 1-Gram consists of just an unknown word.
+                        //2. If the context length is more then one and there is
+                        //an unknown word in the gram then it makes no sense to do
+                        //searching as there are no M-grams with <unk> in them
+
+                        if ((ctx_len == M_GRAM_LEVEL_1) ||
+                            ((ctx_len > M_GRAM_LEVEL_1) && has_no_unknown<true>(ctx_len))) {
+                            (void) get_back_off_weight(ctx_len, back_off);
                         }
 
-                        LOG_DEBUG1 << "getBackOffWeight(" << ctxLen
-                                << ") = " << back_off << END_LOG;
-
-                        LOG_DEBUG2 << "The " << ctxLen << " probability = " << back_off
+                        LOG_DEBUG1 << "The " << ctx_len << " probability = " << back_off
                                 << " + " << prob << " = " << (back_off + prob) << END_LOG;
 
-                        //Do the back-off weight plus the lower level probability, we do a plus as we work with LOG probabilities
+                        //Do the back-off weight plus the lower level probability,
+                        //we do a plus as we work with LOG probabilities
                         prob += back_off;
                     }
                 }
