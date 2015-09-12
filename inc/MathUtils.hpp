@@ -144,7 +144,7 @@ namespace uva {
                  * @param to_pos_bit  the bit index (left to right) to start placing bits to
                  * @param num_bits the number of bits to copy
                  */
-                static inline void copy_single_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                static inline void copy_single_bits_old(const uint8_t * p_source, uint32_t from_pos_bit,
                         uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
                     //Copy bits one by one
                     const uint8_t end_pos_bit = (from_pos_bit + num_bits);
@@ -166,6 +166,67 @@ namespace uva {
                         //Increment the positions
                         from_pos_bit++;
                         to_pos_bit++;
+                    }
+                };
+
+                /*
+                 * This array contains the bitmap prefixes for cleaning preceeding bits
+                 * 0xFF = 11111111
+                 * 0x7F = 01111111
+                 * 0x3F = 00111111
+                 * 0x1F = 00011111
+                 * 0x0F = 00001111
+                 * 0x07 = 00000111
+                 * 0x03 = 00000011
+                 * 0x01 = 00000001
+                 */
+                static uint8_t clean_prefix_bits_array[] = {
+                    0xFF, 0x7F, 0x3F, 0x1F,
+                    0x0F, 0x07, 0x03, 0x01
+                };
+
+                /**
+                 * Allows to copy single bits one by one from one byte array to another
+                 * @param p_source the byte array to copy from
+                 * @param p_target the byte array to copy to (must be of sufficient capacity)
+                 * @param from_pos_bit the bit index (left to right) to start copying bits from
+                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
+                 * @param num_bits the number of bits to copy
+                 */
+                static inline void copy_single_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
+                    //Copy bits one by one
+                    const uint8_t end_pos_bit = (from_pos_bit + num_bits);
+
+                    LOG_DEBUG4 << "from_pos_bit = " << (uint32_t) from_pos_bit
+                            << ", end_pos_bit = " << (uint32_t) end_pos_bit << END_LOG;
+
+                    while (from_pos_bit < end_pos_bit) {
+                        const uint8_t from_byte = BYTE_IDX(from_pos_bit);
+                        const uint8_t from_bit = REMAINING_BIT_IDX(from_pos_bit);
+                        const uint8_t to_byte = BYTE_IDX(to_pos_bit);
+                        const uint8_t to_bit = REMAINING_BIT_IDX(to_pos_bit);
+
+                        //Track the number of copied bits
+                        uint8_t num_copied_bits = 0;
+                        if (from_bit > to_bit) {
+                            //Need to shift to the left
+                            num_copied_bits = (NUM_BITS_IN_UINT_8 - from_bit);
+                            p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) << (from_bit - to_bit));
+                        } else {
+                            if (from_bit == to_bit) {
+                                //No need to shift
+                                num_copied_bits = (NUM_BITS_IN_UINT_8 - from_bit);
+                                p_target[to_byte] |= (p_source[from_byte] & clean_prefix_bits_array[from_bit]);
+                            } else {
+                                //Need to shift to the right
+                                num_copied_bits = ( NUM_BITS_IN_UINT_8 - to_bit);
+                                p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) >> (to_bit - from_bit));
+                            }
+                        }
+                        //Increment the positions
+                        from_pos_bit += num_copied_bits;
+                        to_pos_bit += num_copied_bits;
                     }
                 };
 
@@ -342,7 +403,7 @@ namespace uva {
                     stringstream data;
                     data << "(";
                     for (size_t idx = 0; idx < size; ++idx) {
-                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size-1)) ? "," :"");
+                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size - 1)) ? "," : "");
                     }
                     data << ")";
                     return data.str();
