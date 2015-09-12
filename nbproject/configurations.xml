@@ -132,7 +132,7 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x -lrt -m64</commandLine>
+          <commandLine>-march=native -std=c++0x -lrt -m64</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -144,7 +144,7 @@
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-lrt -m64</commandLine>
+          <commandLine>-march=native -lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -370,7 +370,7 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -Wall -Werror</commandLine>
+          <commandLine>-march=native -Wall -Werror</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -382,7 +382,7 @@
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-m64 -Wall -Werror</commandLine>
+          <commandLine>-march=native -m64 -Wall -Werror</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -605,12 +605,12 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O3 -std=c++0x -lrt -m64</commandLine>
+          <commandLine>-march=native -std=c++0x -lrt -m64</commandLine>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-lrt -m64</commandLine>
+          <commandLine>-march=native -lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
