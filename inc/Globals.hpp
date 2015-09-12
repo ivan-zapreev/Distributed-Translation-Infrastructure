@@ -193,9 +193,9 @@ namespace uva {
 
             namespace __C2WArrayTrie {
 
-                //Stores the word index type to be used in this trie
-                //ToDo: COUNTING_WORD_INDEX faster than  BASIC_WORD_INDEX ???
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //Stores the word index type to be used in this trie, the COUNTING
+                //index gives a bit faster querying.
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
             }
 
             namespace __W2CHybridTrie {
