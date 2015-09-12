@@ -87,7 +87,7 @@ namespace uva {
                  *          0 if (wordId,ctxId) == (wordId,ctxId)
                  *         +1 if (wordId,ctxId) > (wordId,ctxId)
                  */
-                /*inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     if (one.wordId < two.wordId) {
                         return -1;
                     } else {
@@ -105,14 +105,14 @@ namespace uva {
                             return +1;
                         }
                     }
-                };*/
+                };
 
-                // ToDo: An alternative for testing, which is faster?
+                //An alternative check: Is a tiny biut slower
                 //const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
                 //const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
                 //return (key1 < key2);
 
-                /*inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
+                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     return (compare(one, two) < 0);
                 };
 
@@ -122,19 +122,7 @@ namespace uva {
 
                 inline bool operator==(const TCtxIdProbData & one, const TCtxIdProbData & two) {
                     return (compare(one, two) == 0);
-                };*/
-
-                /**
-                 * This is the less operator implementation
-                 * @param one the first object to compare
-                 * @param two the second object to compare
-                 * @return true if (wordId,ctxId) of one is smaller than (wordId,ctxId) of two, otherwise false
-                 */
-                inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
-                    const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
-                    const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
-                    return (key1 < key2);
-                }
+                };
             }
 
             /**
