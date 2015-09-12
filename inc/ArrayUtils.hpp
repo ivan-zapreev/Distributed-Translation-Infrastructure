@@ -138,6 +138,54 @@ namespace uva {
                     }
 
                 /**
+                 * This is a binary search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param compare the comparator function
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx,
+                        const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
+                    LOG_DEBUG3 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
+                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
+                        stringstream msg;
+                        msg << "Impossible binary search parameters, l_idx = "
+                                << SSTR(l_idx) << ", u_idx = "
+                                << SSTR(u_idx) << "!";
+                        throw Exception(msg.str());
+                    } else {
+                        TSLongId mid_pos;
+                        while (l_idx <= u_idx) {
+                            mid_pos = (l_idx + u_idx) / 2;
+                            LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
+                                    << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
+                            int result = compare(key, array[mid_pos].id);
+                            if (result < 0) {
+                                u_idx = mid_pos - 1;
+                            } else {
+                                if (result == 0) {
+                                    LOG_DEBUG4 << "The found mid_pos = "
+                                            << SSTR(mid_pos) << END_LOG;
+                                    found_pos = (IDX_TYPE) mid_pos;
+                                    return true;
+                                } else {
+                                    l_idx = mid_pos + 1;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+                }
+
+                /**
                  * This is a binary search algorithm for some ordered array for two keys
                  * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
                  * @param array the pointer to the first array element

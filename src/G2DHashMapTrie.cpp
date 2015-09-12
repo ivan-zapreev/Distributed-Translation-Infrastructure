@@ -218,7 +218,7 @@ namespace uva {
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
                     typename LEVEL_TYPE::TIndexType found_idx;
-                    if (my_lsearch_id< typename LEVEL_TYPE::TElemType,
+                    if (my_bsearch_id< typename LEVEL_TYPE::TElemType,
                             typename LEVEL_TYPE::TIndexType,
                             typename LEVEL_TYPE::TElemType::TMGramIdType >
                             (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
