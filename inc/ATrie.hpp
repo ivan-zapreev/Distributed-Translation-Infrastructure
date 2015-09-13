@@ -31,6 +31,7 @@
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "Logger.hpp"
+#include "MathUtils.hpp"
 
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
@@ -41,6 +42,7 @@ using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::mgrams;
+using namespace uva::utils::math::bits;
 
 namespace uva {
     namespace smt {
@@ -98,7 +100,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit ATrie(AWordIndex * _pWordIndex)
-                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL) {
+                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL), m_unk_word_flags(0) {
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
@@ -194,7 +196,10 @@ namespace uva {
                         m_query_ptr = &m_gram;
 
                         //Transform the given M-gram into word hashes.
-                        ATrie<N>::store_m_gram_word_ids(m_gram);
+                        store_m_gram_word_ids(m_gram);
+
+                        //Store unknown word flags
+                        store_unk_word_flags();
 
                         //Go on with a recursive procedure of computing the N-Gram probabilities
                         get_probability(level, result.prob);
@@ -310,6 +315,12 @@ namespace uva {
                     if ((level == M_GRAM_LEVEL_1) ||
                             ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level))) {
                         get_prob_value(level, prob);
+                    } else {
+                        LOG_DEBUG << "Could try to get probs but it will not be "
+                                << "successful due to the present unk words! "
+                                << "Thus backing off right away!" << END_LOG;
+                        //We already know we need to back-off
+                        get_back_off_prob(level - 1, prob);
                     }
                 }
 
@@ -343,6 +354,10 @@ namespace uva {
                         if ((next_level == M_GRAM_LEVEL_1) ||
                                 ((next_level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(next_level))) {
                             (void) get_back_off_weight(next_level, back_off);
+                        } else {
+                            LOG_DEBUG << "Could try to back off but it will not be "
+                                    << "successful due to the present unk words! Thus "
+                                    << "using the zero back-off weight right away!" << END_LOG;
                         }
 
                         LOG_DEBUG1 << "The " << next_level << " probability = " << back_off
@@ -386,6 +401,37 @@ namespace uva {
                 // 00000000, 00000010, 00000110, 00001110,
                 // 00011110, 00111110, 01111110, 11111110
                 static const uint8_t BACK_OFF_UNK_MASKS[];
+                //Unknown word bits
+                uint8_t m_unk_word_flags;
+
+                /**
+                 * Has to be called after the method that stores the query word ids.
+                 * This one looks at the query word ids and creates binary flag map
+                 * of the unknown word ids present in the current M-gram
+                 */
+                inline void store_unk_word_flags() {
+                    const TModelLevel max_supp_level = (sizeof (PROB_UNK_MASKS) - 1);
+
+                    if (DO_SANITY_CHECKS && (N > max_supp_level)) {
+                        stringstream msg;
+                        msg << "store_unk_word_flags: Unsupported m-gram level: "
+                                << SSTR(N) << ", must be <= " << SSTR(max_supp_level)
+                                << "], insufficient m_unk_word_flags capacity!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Re-initialize the flags with zero
+                    m_unk_word_flags = 0;
+                    //Fill in the values from the currently considered M-gram word ids
+                    for (size_t idx = (N - m_query_ptr->level); idx < N; ++idx) {
+                        if (m_tmp_word_ids[idx] == AWordIndex::UNKNOWN_WORD_ID) {
+                            m_unk_word_flags |= (1u << ((N - 1) - idx));
+                        }
+                    }
+
+                    LOG_DEBUG << "The query unknown word flags are: "
+                            << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
+                }
 
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
@@ -394,9 +440,24 @@ namespace uva {
                  */
                 template<bool is_back_off>
                 inline bool has_no_unk_words(const TModelLevel level) {
-                    return true;
-                }
+                    uint8_t level_flags;
 
+                    if (is_back_off) {
+                        level_flags = (m_unk_word_flags & BACK_OFF_UNK_MASKS[level]);
+
+                        LOG_DEBUG << "The back-off level: " << level << " unknown word flags are: "
+                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
+
+                        return (level_flags == 0);
+                    } else {
+                        level_flags = (m_unk_word_flags & PROB_UNK_MASKS[level]);
+
+                        LOG_DEBUG << "The probability level: " << level << " unknown word flags are: "
+                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
+
+                        return (level_flags == 0);
+                    }
+                }
             };
 
             template<TModelLevel N>
