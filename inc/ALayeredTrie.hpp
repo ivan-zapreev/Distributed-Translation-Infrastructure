@@ -199,7 +199,7 @@ namespace uva {
                  * N-Gram probabilities in the Back-Off Language Model.
                  * @see ATrie
                  */
-                virtual void get_probability(const TModelLevel level, TLogProbBackOff & prob);
+                virtual void get_prob_value(const TModelLevel level, TLogProbBackOff & prob);
 
                 /**
                  * This function allows to get the back-off weight for the current context.

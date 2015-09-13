@@ -237,7 +237,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void G2DMapTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+            void G2DMapTrie<N>::get_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
                 LOG_DEBUG << "Computing probability for a " << level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for

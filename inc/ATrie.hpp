@@ -301,19 +301,40 @@ namespace uva {
                 inline bool has_no_unknown(const TModelLevel ctx_len) {
                     return true;
                 }
-                
+
+                /**
+                 * This function should implement the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model. The
+                 * N-Gram hashes can be obtained from the _wordHashes member
+                 * variable of the class.
+                 * @param level the M-gram level for which the probability is to be computed
+                 * @param prob [out] the reference to the probability to be found/computed
+                 */
+                inline void get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+                    //Try getting the probability value.
+                    //1. If the level is one go on: we can get smth
+                    //even if the 1-Gram consists of just an unknown word.
+                    //2. If the context length is more then one and there is
+                    //an unknown word in the gram then it makes no sense to do
+                    //searching as there are no M-grams with <unk> in them
+                    if ((level == M_GRAM_LEVEL_1) ||
+                            ((level > M_GRAM_LEVEL_1) && has_no_unknown<false>(level))) {
+                        get_prob_value(level, prob);
+                    }
+                }
+
                 /**
                  * This function should be called in case we can not get the probability for
                  * the given M-gram and we want to compute it's back-off probability instead
-                 * @param ctx_len the length of the context for the M-gram for which we could
+                 * @param next_level the length of the context for the M-gram for which we could
                  * not get the probability from the trie.
                  * @param prob [out] the reference to the probability to be found/computed
                  */
-                inline void get_back_off_prob(const TModelLevel ctx_len, TLogProbBackOff & prob) {
+                inline void get_back_off_prob(const TModelLevel next_level, TLogProbBackOff & prob) {
                     //Compute the lover level probability
-                    get_probability(ctx_len, prob);
+                    get_probability(next_level, prob);
 
-                    LOG_DEBUG1 << "getProbability(" << ctx_len
+                    LOG_DEBUG1 << "getProbability(" << next_level
                             << ") = " << prob << END_LOG;
 
                     //If the probability is not zero then go on with computing the
@@ -329,13 +350,12 @@ namespace uva {
                         //2. If the context length is more then one and there is
                         //an unknown word in the gram then it makes no sense to do
                         //searching as there are no M-grams with <unk> in them
-
-                        if ((ctx_len == M_GRAM_LEVEL_1) ||
-                            ((ctx_len > M_GRAM_LEVEL_1) && has_no_unknown<true>(ctx_len))) {
-                            (void) get_back_off_weight(ctx_len, back_off);
+                        if ((next_level == M_GRAM_LEVEL_1) ||
+                                ((next_level > M_GRAM_LEVEL_1) && has_no_unknown<true>(next_level))) {
+                            (void) get_back_off_weight(next_level, back_off);
                         }
 
-                        LOG_DEBUG1 << "The " << ctx_len << " probability = " << back_off
+                        LOG_DEBUG1 << "The " << next_level << " probability = " << back_off
                                 << " + " << prob << " = " << (back_off + prob) << END_LOG;
 
                         //Do the back-off weight plus the lower level probability,
@@ -352,7 +372,7 @@ namespace uva {
                  * @param level the M-gram level for which the probability is to be computed
                  * @param prob [out] the reference to the probability to be found/computed
                  */
-                virtual void get_probability(const TModelLevel level, TLogProbBackOff & prob) = 0;
+                virtual void get_prob_value(const TModelLevel level, TLogProbBackOff & prob) = 0;
 
                 /**
                  * This function allows to get the back-off weight for the current context.

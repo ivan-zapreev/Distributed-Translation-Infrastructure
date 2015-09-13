@@ -237,7 +237,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            void ALayeredTrie<N>::get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+            void ALayeredTrie<N>::get_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
                 //Compute the context length of the given M-Gram
                 const TModelLevel ctxLen = level - 1;
                 //Get the last word in the N-gram
