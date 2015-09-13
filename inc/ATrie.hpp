@@ -293,16 +293,6 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param level of the considered M-gram
-                 * @return true if the unknown word is present, otherwise false
-                 */
-                template<bool is_back_off>
-                inline bool has_no_unknown(const TModelLevel ctx_len) {
-                    return true;
-                }
-
-                /**
                  * This function should implement the computation of the
                  * N-Gram probabilities in the Back-Off Language Model. The
                  * N-Gram hashes can be obtained from the _wordHashes member
@@ -318,7 +308,7 @@ namespace uva {
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
                     if ((level == M_GRAM_LEVEL_1) ||
-                            ((level > M_GRAM_LEVEL_1) && has_no_unknown<false>(level))) {
+                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level))) {
                         get_prob_value(level, prob);
                     }
                 }
@@ -351,7 +341,7 @@ namespace uva {
                         //an unknown word in the gram then it makes no sense to do
                         //searching as there are no M-grams with <unk> in them
                         if ((next_level == M_GRAM_LEVEL_1) ||
-                                ((next_level > M_GRAM_LEVEL_1) && has_no_unknown<true>(next_level))) {
+                                ((next_level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(next_level))) {
                             (void) get_back_off_weight(next_level, back_off);
                         }
 
@@ -385,6 +375,38 @@ namespace uva {
                  */
                 virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) = 0;
 
+            private:
+                //Stores the unknown word masks for the probability computations,
+                //up to and including 8-grams:
+                // 00000000, 00000001, 00000011, 00000111, 00001111,
+                // 00011111, 00111111, 01111111, 11111111
+                static const uint8_t PROB_UNK_MASKS[];
+                //Stores the unknown word masks for the back-off weight computations,
+                //up to and including 8-grams:
+                // 00000000, 00000010, 00000110, 00001110,
+                // 00011110, 00111110, 01111110, 11111110
+                static const uint8_t BACK_OFF_UNK_MASKS[];
+
+                /**
+                 * Allows to check if the given sub-m-gram contains an unknown word
+                 * @param level of the considered M-gram
+                 * @return true if the unknown word is present, otherwise false
+                 */
+                template<bool is_back_off>
+                inline bool has_no_unk_words(const TModelLevel level) {
+                    return true;
+                }
+
+            };
+
+            template<TModelLevel N>
+            const uint8_t ATrie<N>::PROB_UNK_MASKS[] = {
+                0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF
+            };
+
+            template<TModelLevel N>
+            const uint8_t ATrie<N>::BACK_OFF_UNK_MASKS[] = {
+                0x00, 0x02, 0x06, 0x0E, 0x1E, 0x3E, 0x7E, 0xFE
             };
         }
     }
