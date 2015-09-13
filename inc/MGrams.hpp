@@ -114,7 +114,7 @@ namespace uva {
                         }
                         
                         //Compute the hash using the gram tokens with spaces with them
-                        return computePaulHsiehHash(beginFirstPtr, totalLen);
+                        return XXH32(beginFirstPtr, totalLen, XXHASH_SEED);
                     }
 
                     /**

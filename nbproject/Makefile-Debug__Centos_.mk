@@ -48,11 +48,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
 	${OBJECTDIR}/src/W2COrderedArrayTrie.o \
-	${OBJECTDIR}/src/main.o
+	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/xxhash.o
 
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-march=native -Wall -Werror
 
 # CC Compiler Flags
 CCFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall
@@ -144,6 +145,11 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+
+${OBJECTDIR}/src/xxhash.o: src/xxhash.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/xxhash.o src/xxhash.c
 
 # Subprojects
 .build-subprojects:

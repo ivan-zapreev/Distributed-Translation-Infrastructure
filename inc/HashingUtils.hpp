@@ -34,12 +34,18 @@
 #include "Logger.hpp"
 #include "Globals.hpp"
 
+#define XXH_NAMESPACE
+#include "xxhash.h"   // XXH32 XXH64
+
 using namespace std;
 
 namespace uva {
     namespace smt {
         namespace hashing {
-            
+
+            //The seed for xxhash
+            static const unsigned XXHASH_SEED = 0u;
+
             /**
              * The following is the Paul Hsieh implementation of a string hashing function
              * This one seems to be very efficient in computation time and has good distribution:
@@ -168,11 +174,11 @@ namespace uva {
 
                 return hash;
             }
-            
+
             inline uint32_t computeRSHash(const string & str) {
                 return computeRSHash(str.c_str(), str.length());
             }
-            
+
             /**
              * The string hashing function.
              * computePaulHsiehHash - This one showed the worst speed on a test run
@@ -184,8 +190,9 @@ namespace uva {
              */
             class StringHash {
             public:
+
                 inline uint32_t operator()(const string &param) const {
-                    return computeRSHash(param);
+                    return XXH32(param.c_str(), param.length(), XXHASH_SEED);
                 }
             };
 
