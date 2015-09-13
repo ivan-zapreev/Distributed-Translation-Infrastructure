@@ -159,7 +159,7 @@ namespace uva {
                 //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
                 //level is defined as the number of M-grams in this level divided by
                 //this factor value 
-                static const size_t WORDS_PER_BUCKET_FACTOR = 64;
+                static const float WORDS_PER_BUCKET_FACTOR = 1.0;
 
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids!
