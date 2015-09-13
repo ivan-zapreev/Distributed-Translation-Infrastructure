@@ -266,7 +266,7 @@ namespace uva {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
 
-                                LOG_USAGE << "Unable to find the " << SSTR(level)
+                                LOG_DEBUG << "Unable to find the " << SSTR(level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
@@ -280,7 +280,7 @@ namespace uva {
                             const TProbBackOffEntry * pEntry;
                             if (get_M_GramDataRef(level, wordId, ctxId, &pEntry)) {
 
-                                LOG_USAGE << "The " << level
+                                LOG_DEBUG << "The " << level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
                                         << wordId << ", " << ctxId
@@ -304,7 +304,7 @@ namespace uva {
                         //Could not compute the probability for
                         //the given level, so backing off (recursive)!
 
-                        LOG_USAGE << "Unable to find the " << SSTR(level)
+                        LOG_DEBUG << "Unable to find the " << SSTR(level)
                                 << "-Gram  prob for a (wordId,ctxId) = ("
                                 << wordId << ", " << ctxId
                                 << "), need to back off!" << END_LOG;
@@ -323,7 +323,7 @@ namespace uva {
                         //Return the stored probability
                         prob = pEntry->prob;
                     } else {
-                        LOG_USAGE << "Unable to find the 1-Gram entry for a word: "
+                        LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "
                                 << wordId << " returning:" << ZERO_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
