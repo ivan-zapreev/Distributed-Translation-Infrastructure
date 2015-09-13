@@ -185,6 +185,55 @@ namespace uva {
                 post_M_N_Grams<TProbBucket>(m_N_gram_data, N);
             };
 
+            /**
+             * This is a binary search algorithm for some ordered array
+             * @param M the M-gram level M
+             * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
+             * @param IDX_TYPE the index type 
+             * @param KEY_TYPE the key type template parameter
+             * @param array the pointer to the first array element
+             * @param l_idx the initial left border index for searching
+             * @param u_idx the initial right border index for searching
+             * @param key the key we are searching for
+             * @param compare the comparator function
+             * @param found_pos the out parameter that stores the found element index, if any
+             * @return true if the element was found, otherwise false
+             * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+             */
+            template<TModelLevel M, typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
+            inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx,
+                    const KEY_TYPE key, IDX_TYPE & found_pos) {
+                LOG_DEBUG3 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
+                if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
+                    stringstream msg;
+                    msg << "Impossible binary search parameters, l_idx = "
+                            << SSTR(l_idx) << ", u_idx = "
+                            << SSTR(u_idx) << "!";
+                    throw Exception(msg.str());
+                } else {
+                    TSLongId mid_pos;
+                    while (l_idx <= u_idx) {
+                        mid_pos = (l_idx + u_idx) / 2;
+                        LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
+                                << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
+                        int result = Comp_M_Gram_Id::compare<M>(key, array[mid_pos].id);
+                        if (result < 0) {
+                            u_idx = mid_pos - 1;
+                        } else {
+                            if (result == 0) {
+                                LOG_DEBUG4 << "The found mid_pos = "
+                                        << SSTR(mid_pos) << END_LOG;
+                                found_pos = (IDX_TYPE) mid_pos;
+                                return true;
+                            } else {
+                                l_idx = mid_pos + 1;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+
             //This is an array of functions for comparing x-grams of level x
             const static typename T_IS_EXT_COMPARE_FUNC<T_Id_Storage_Ptr>::func_type comparator_funcs[] = {NULL, NULL,
                 Comp_M_Gram_Id::compare<M_GRAM_LEVEL_2>,
@@ -218,12 +267,59 @@ namespace uva {
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
                     typename LEVEL_TYPE::TIndexType found_idx;
-                    if (my_bsearch_id< typename LEVEL_TYPE::TElemType,
+
+                    /*if (my_bsearch_id< typename LEVEL_TYPE::TElemType,
                             typename LEVEL_TYPE::TIndexType,
                             typename LEVEL_TYPE::TElemType::TMGramIdType >
                             (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
                             comparator_funcs[level], found_idx)) {
                         //4.1 If the id is found then we get the probability
+                        payload_ptr = &ref[found_idx].payload;
+                        return true;
+                    }*/
+
+                    bool is_found = false;
+                    switch (level) {
+                        case M_GRAM_LEVEL_2:
+                            is_found = my_bsearch_id< M_GRAM_LEVEL_2,
+                                    typename LEVEL_TYPE::TElemType,
+                                    typename LEVEL_TYPE::TIndexType,
+                                    typename LEVEL_TYPE::TElemType::TMGramIdType >
+                                    (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                                    found_idx);
+                            break;
+                        case M_GRAM_LEVEL_3:
+                            is_found = my_bsearch_id< M_GRAM_LEVEL_3,
+                                    typename LEVEL_TYPE::TElemType,
+                                    typename LEVEL_TYPE::TIndexType,
+                                    typename LEVEL_TYPE::TElemType::TMGramIdType >
+                                    (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                                    found_idx);
+                            break;
+                        case M_GRAM_LEVEL_4:
+                            is_found = my_bsearch_id< M_GRAM_LEVEL_4,
+                                    typename LEVEL_TYPE::TElemType,
+                                    typename LEVEL_TYPE::TIndexType,
+                                    typename LEVEL_TYPE::TElemType::TMGramIdType >
+                                    (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                                    found_idx);
+                            break;
+                        case M_GRAM_LEVEL_5:
+                            is_found = my_bsearch_id< M_GRAM_LEVEL_5,
+                                    typename LEVEL_TYPE::TElemType,
+                                    typename LEVEL_TYPE::TIndexType,
+                                    typename LEVEL_TYPE::TElemType::TMGramIdType >
+                                    (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                                    found_idx);
+                            break;
+                        default:
+                            stringstream msg;
+                            msg << "Unsupported M-gram level: " << SSTR(level)
+                                    << " must be within [ " << SSTR(M_GRAM_LEVEL_2)
+                                    << ", " << SSTR(M_GRAM_LEVEL_5) << " ]";
+                            throw Exception(msg.str());
+                    }
+                    if (is_found) {
                         payload_ptr = &ref[found_idx].payload;
                         return true;
                     }
@@ -297,7 +393,7 @@ namespace uva {
             template<TModelLevel N>
             bool G2DMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
                 LOG_DEBUG2 << "Computing back-off for a " << level << "-gram " << END_LOG;
-                
+
                 //Perform a sanity check if needed
                 if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1)) {
                     throw Exception("Trying to obtain a back-off weight for level zero!");
