@@ -155,10 +155,11 @@ namespace uva {
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
 
-                //This is the factor that is used to define the number of buckets in
-                //the G2DHashMapTrie. The number of buckets per trie level is defined as
-                //the number of M-grams in this level divided by this factor value 
-                static const size_t NUMBER_OF_BUCKETS_FACTOR = 64;
+                //This is the factor that is used to define an average number of words
+                //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
+                //level is defined as the number of M-grams in this level divided by
+                //this factor value 
+                static const size_t WORDS_PER_BUCKET_FACTOR = 64;
 
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids!

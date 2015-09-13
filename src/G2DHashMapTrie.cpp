@@ -50,7 +50,7 @@ namespace uva {
                 Comp_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
-                        << SSTR(__G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR) << END_LOG;
+                        << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
                         << " memory allocation strategy." << END_LOG;
 
@@ -77,14 +77,14 @@ namespace uva {
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR,
-                            __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR);
+                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
+                            __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[N - 1] = max(counts[N - 1] / __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR,
-                        __G2DMapTrie::NUMBER_OF_BUCKETS_FACTOR);
+                num_buckets[N - 1] = max(counts[N - 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
+                        __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
