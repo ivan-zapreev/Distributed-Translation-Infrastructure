@@ -114,11 +114,7 @@ namespace uva {
                         }
                         
                         //Compute the hash using the gram tokens with spaces with them
-#ifdef ENVIRONMENT64
-                        return XXH64(beginFirstPtr, totalLen, XXHASH_SEED);
-#else
-                        return XXH32(beginFirstPtr, totalLen, XXHASH_SEED);
-#endif
+                        return computeRSHash(beginFirstPtr, totalLen);
                     }
 
                     /**

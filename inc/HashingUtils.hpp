@@ -55,6 +55,10 @@ namespace uva {
              * 
              * Note that the XXHASH should be the best with respect to everything, see:
              * https://github.com/Cyan4973/xxHash
+             * 
+             * Yet it is not even on a 64 bit machine with XXH64 it is beated by RSHash!
+             * At least the hash based trie performs faster (200 vs 250 CPU seconds)
+             * on a 20 Gb model with 100.000.000 queries. So for us XXHASH is not the best.
              */
             
             /**
