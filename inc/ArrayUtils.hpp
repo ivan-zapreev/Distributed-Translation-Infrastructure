@@ -51,6 +51,7 @@ namespace uva {
                 template<typename ELEM_TYPE>
                 struct T_IS_EXT_COMPARE_FUNC {
                     typedef std::function<int(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
+                    typedef int(* func_ptr_type)(const ELEM_TYPE &, const ELEM_TYPE &);
                 };
 
                 /**
@@ -142,18 +143,19 @@ namespace uva {
                  * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
+                 * @param COMPARE the compare function template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
                  * @param key the key we are searching for
-                 * @param compare the comparator function
                  * @param found_pos the out parameter that stores the found element index, if any
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
+                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE,
+                        typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr_type COMPARE_FUNC>
                 inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx,
-                        const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
+                        const KEY_TYPE key, IDX_TYPE & found_pos) {
                     LOG_DEBUG3 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
                     if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
                         stringstream msg;
@@ -167,7 +169,7 @@ namespace uva {
                             mid_pos = (l_idx + u_idx) / 2;
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
                                     << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
-                            int result = compare(key, array[mid_pos].id);
+                            int result = COMPARE_FUNC(key, array[mid_pos].id);
                             if (result < 0) {
                                 u_idx = mid_pos - 1;
                             } else {
@@ -217,106 +219,6 @@ namespace uva {
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
                     BSEARCH_ONE_FIELD(id);
-                }
-
-                /**
-                 * This is a linear search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param compare the comparator function
-                 * @param found_pos the out parameter that stores the found element index, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, IDX_TYPE l_idx, IDX_TYPE u_idx,
-                        const KEY_TYPE key, typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_type compare, IDX_TYPE & found_pos) {
-                    LOG_DEBUG4 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
-
-                    //First compare the last element of the array with the key
-                    int result = compare(key, array[u_idx].id);
-                    LOG_DEBUG4 << (void*) key << " (" << result << ") @" << (uint32_t) u_idx << " " << (void*) array[u_idx].id << END_LOG;
-
-                    if (result > 0) {
-                        //The key is larger than the last id so it is not in the array
-                        return false;
-                    } else {
-                        if (result == 0) {
-                            //The key is equal to the last id so we found it!
-                            found_pos = u_idx;
-                            return true;
-                        } else {
-                            //The key is potentially inside array and it is not the last element!
-                            for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
-                                int result = compare(key, array[found_pos].id);
-                                LOG_DEBUG4 << (void*) key << " (" << result << ") @" << (uint32_t) found_pos << " " << (void*) array[found_pos].id << END_LOG;
-                                if (result == 0) {
-                                    //We found the key!
-                                    return true;
-                                } else {
-                                    if (result < 0) {
-                                        //We bypassed the place where the value could have been
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //The key is outside the array values, no reason to search further
-                    return false;
-                }
-
-                /**
-                 * This is a linear search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have id field as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                inline bool my_lsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
-
-                    if (key > array[u_idx].id) {
-                        LOG_DEBUG3 << key << " (+1) @" << (uint32_t) u_idx << " " << array[u_idx].id << END_LOG;
-                        //The key is larger than the last id so it is not in the array
-                        return false;
-                    } else {
-                        if (key == array[u_idx].id) {
-                            LOG_DEBUG3 << key << " (0) @" << (uint32_t) u_idx << " " << array[u_idx].id << END_LOG;
-                            //The key is equal to the last id so we found it!
-                            found_pos = u_idx;
-                            return true;
-                        } else {
-                            //The key is potentially inside array and it is not the last element!
-                            for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
-                                if (key == array[found_pos].id) {
-                                    LOG_DEBUG3 << key << " (0) @" << (uint32_t) found_pos << " " << array[found_pos].id << END_LOG;
-                                    //We found the key!
-                                    return true;
-                                } else {
-                                    if (key < array[found_pos].id) {
-                                        LOG_DEBUG3 << key << " (-1) @" << (uint32_t) found_pos << " " << array[found_pos].id << END_LOG;
-                                        //We bypassed the place where the value could have been
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //The key is outside the array values, no reason to search further
-                    return false;
                 }
 
                 /**

@@ -205,7 +205,7 @@ namespace uva {
                     const TShortId gram_hash = gram.hash();
                     LOG_DEBUG3 << "The " << gram.level << "-gram: " << tokensToString(gram)
                             << " hash is " << gram_hash << END_LOG;
-                    
+
                     bucket_idx = get_bucket_id(gram_hash, gram.level);
 
                     LOG_DEBUG3 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
@@ -270,17 +270,33 @@ namespace uva {
                 TShortId num_buckets[N];
 
                 /**
+                 * Allows to perform search in the bucket for the given M-gram id
+                 * @param ref the reference to the bucket
+                 * @param found_idx the found index
+                 * @return true if the M-gram id was found and otherwise false
+                 */
+                template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
+                inline bool search_gram(const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) {
+                    return my_bsearch_id< typename BUCKET_TYPE::TElemType,
+                            typename BUCKET_TYPE::TIndexType,
+                            typename BUCKET_TYPE::TElemType::TMGramIdType,
+                            Comp_M_Gram_Id::compare<M_GRAM_LEVEL> >
+                            (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
+                            found_idx);
+                }
+
+                /**
                  * Gets the probability for the given level M-gram, searches on specific level
-                 * @param LEVEL_TYPE the level bucket type
+                 * @param BUCKET_TYPE the level bucket type
                  * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
                  * @param level the level of the M-gram we compute probability for
                  * @param ref the bucket to search in
                  * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
-                template<typename LEVEL_TYPE, bool back_off = false >
-                bool get_payload_from_gram_level(const TModelLevel level, const LEVEL_TYPE & ref,
-                        const typename LEVEL_TYPE::TElemType::TPayloadType * & payload_ptr);
+                template<typename BUCKET_TYPE, bool back_off = false >
+                bool get_payload_from_gram_level(const TModelLevel level, const BUCKET_TYPE & ref,
+                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr);
 
             };
         }
