@@ -86,7 +86,7 @@ namespace uva {
                      * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline TShortId sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                    inline uint64_t sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
                         LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
 
                         //Compute the length of the gram tokens in memory, including spaces between
@@ -114,7 +114,11 @@ namespace uva {
                         }
                         
                         //Compute the hash using the gram tokens with spaces with them
+#ifdef ENVIRONMENT64
+                        return XXH64(beginFirstPtr, totalLen, XXHASH_SEED);
+#else
                         return XXH32(beginFirstPtr, totalLen, XXHASH_SEED);
+#endif
                     }
 
                     /**
@@ -125,7 +129,7 @@ namespace uva {
                      * @param begin_idx  the index of the first word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline TShortId suffix_hash(const TModelLevel begin_idx) const {
+                    inline uint64_t suffix_hash(const TModelLevel begin_idx) const {
                         const TModelLevel end_idx = level - 1;
                         return sub_hash(begin_idx, end_idx);
                     }
@@ -135,7 +139,7 @@ namespace uva {
                      * It assumes, which should hold, that the memory pointed by the tokens is continuous
                      * @return the hash value of the given token
                      */
-                    inline TShortId hash() const {
+                    inline uint64_t hash() const {
                         return suffix_hash(0);
                     }
                 } T_M_Gram;

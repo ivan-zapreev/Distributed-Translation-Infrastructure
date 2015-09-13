@@ -34,6 +34,24 @@ using namespace std;
 namespace uva {
     namespace smt {
 
+        // Check windows
+#if _WIN32 || _WIN64
+#if _WIN64
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
+        // Check GCC
+#if __GNUC__
+#if __x86_64__ || __ppc64__
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
         //This is the pattern used for file path separation
         const string PATH_SEPARATION_SYMBOLS = "/\\";
         //This is a delimiter used in the test files

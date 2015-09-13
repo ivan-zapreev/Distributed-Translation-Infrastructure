@@ -186,7 +186,7 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param bucket_idx the resulting bucket index
                  */
-                inline TShortId get_bucket_id(const TShortId gram_hash, const TModelLevel level) {
+                inline uint32_t get_bucket_id(const uint64_t gram_hash, const TModelLevel level) {
                     //Compute the index in the array of bucket sizes
                     const TModelLevel buckes_size_idx = level - 1;
 
@@ -202,7 +202,7 @@ namespace uva {
                 inline void get_bucket_id(const T_M_Gram &gram, TShortId & bucket_idx) {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const TShortId gram_hash = gram.hash();
+                    const uint64_t gram_hash = gram.hash();
                     LOG_DEBUG3 << "The " << gram.level << "-gram: " << tokensToString(gram)
                             << " hash is " << gram_hash << END_LOG;
 

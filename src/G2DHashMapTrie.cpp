@@ -249,12 +249,12 @@ namespace uva {
                     //1.1.2. Compute the m-gram hash
                     const uint8_t token_begin_idx = (ATrie<N>::m_query_ptr->level - level);
                     const uint8_t token_end_idx = (ATrie<N>::m_query_ptr->level - 1);
-                    TShortId gram_hash = ATrie<N>::m_query_ptr->suffix_hash(token_begin_idx);
+                    uint64_t gram_hash = ATrie<N>::m_query_ptr->suffix_hash(token_begin_idx);
                     LOG_DEBUG << "The " << level << "-gram: " << tokensToString(ATrie<N>::m_query_ptr->tokens,
                             token_begin_idx, token_end_idx) << " hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const TShortId bucket_idx = get_bucket_id(gram_hash, level);
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, level);
                     LOG_DEBUG << "The " << level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
@@ -312,13 +312,13 @@ namespace uva {
                     //1.1.2. Compute the hash value for the back off M-gram
                     const uint8_t token_begin_idx = (ATrie<N>::m_query_ptr->level - 1) - level;
                     const uint8_t token_end_idx = (ATrie<N>::m_query_ptr->level - 2);
-                    TShortId gram_hash = ATrie<N>::m_query_ptr->sub_hash(
+                    uint64_t gram_hash = ATrie<N>::m_query_ptr->sub_hash(
                             token_begin_idx, token_end_idx);
                     LOG_DEBUG << "The: " << tokensToString(ATrie<N>::m_query_ptr->tokens, token_begin_idx, token_end_idx)
                             << " " << level << "-gram back-off hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const TShortId bucket_idx = get_bucket_id(gram_hash, level);
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, level);
                     LOG_DEBUG << "The " << level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4 This is an M-gram case (1 < M < N))

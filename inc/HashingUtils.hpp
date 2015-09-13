@@ -47,6 +47,17 @@ namespace uva {
             static const unsigned XXHASH_SEED = 0u;
 
             /**
+             * The string hashing functions: 
+             * computePaulHsiehHash - This one showed the worst speed on a test run
+             * computeDjb2Hash - This one showed medium speed on a test run
+             * computePrimesHash - This one showed medium speed on a test run
+             * computeRSHash - This one showed the best speed on a test run
+             * 
+             * Note that the XXHASH should be the best with respect to everything, see:
+             * https://github.com/Cyan4973/xxHash
+             */
+            
+            /**
              * The following is the Paul Hsieh implementation of a string hashing function
              * This one seems to be very efficient in computation time and has good distribution:
              * http://www.azillionmonkeys.com/qed/hash.html
@@ -178,23 +189,6 @@ namespace uva {
             inline uint32_t computeRSHash(const string & str) {
                 return computeRSHash(str.c_str(), str.length());
             }
-
-            /**
-             * The string hashing function.
-             * computePaulHsiehHash - This one showed the worst speed on a test run
-             * computeDjb2Hash - This one showed medium speed on a test run
-             * computePrimesHash - This one showed medium speed on a test run
-             * computeRSHash - This one showed the best speed on a test run
-             * @param param the string to hash
-             * @return the resulting hash
-             */
-            class StringHash {
-            public:
-
-                inline uint32_t operator()(const string &param) const {
-                    return XXH32(param.c_str(), param.length(), XXHASH_SEED);
-                }
-            };
 
             /**
              * This function will combine two word references to get one hash map
