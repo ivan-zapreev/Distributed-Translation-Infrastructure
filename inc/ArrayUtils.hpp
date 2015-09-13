@@ -115,23 +115,23 @@ namespace uva {
                             mid_pos = (l_idx + u_idx) / 2;                                          \
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
                                     << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;   \
-                            if (key1 == array[mid_pos].FIELD_ONE) {                                     \
-                                if (key2 < array[mid_pos].FIELD_TWO) {                                  \
-                                    u_idx = mid_pos - 1;                                                \
-                                } else {                                                                \
-                                    if (key2 > array[mid_pos].FIELD_TWO) {                              \
-                                        l_idx = mid_pos + 1;                                            \
-                                    } else {                                                            \
-                                        LOG_DEBUG4 << "The found mid_pos = "                            \
-                                                << SSTR(mid_pos) << END_LOG;                            \
-                                        found_pos = mid_pos;                                            \
-                                        return true;                                                    \
-                                    }                                                                   \
-                                }                                                                       \
+                            if (key1 < array[mid_pos].FIELD_ONE) {                                  \
+                                u_idx = mid_pos - 1;                                                \
                             } else {                                                                \
-                                if (key1 < array[mid_pos].FIELD_ONE) {                              \
-                                    u_idx = mid_pos - 1;                                            \
-                                } else {                                                            \
+                                if (key1 == array[mid_pos].FIELD_ONE) {                                     \
+                                    if (key2 < array[mid_pos].FIELD_TWO) {                                  \
+                                        u_idx = mid_pos - 1;                                                \
+                                    } else {                                                                \
+                                        if (key2 == array[mid_pos].FIELD_TWO) {                             \
+                                            LOG_DEBUG4 << "The found mid_pos = "                            \
+                                                    << SSTR(mid_pos) << END_LOG;                            \
+                                            found_pos = mid_pos;                                            \
+                                            return true;                                                    \
+                                        } else {                                                            \
+                                            l_idx = mid_pos + 1;                                            \
+                                        }                                                                   \
+                                    }                                                                       \
+                                } else {                                                                    \
                                     l_idx = mid_pos + 1;                                            \
                                 }                                                                   \
                             }                                                                       \
@@ -252,15 +252,15 @@ namespace uva {
                         } else {
                             //The key is potentially inside array and it is not the last element!
                             for (found_pos = l_idx; found_pos < u_idx; ++found_pos) {
-                                if (key == array[found_pos]) {
-                                    LOG_DEBUG3 << "key (0) value@" << (uint32_t) found_pos << END_LOG;
-                                    //We found the key!
-                                    return true;
+                                if (key < array[found_pos]) {
+                                    LOG_DEBUG3 << "key (-1) value@" << (uint32_t) found_pos << END_LOG;
+                                    //We bypassed the place where the value could have been
+                                    return false;
                                 } else {
-                                    if (key < array[found_pos]) {
-                                        LOG_DEBUG3 << "key (-1) value@" << (uint32_t) found_pos << END_LOG;
-                                        //We bypassed the place where the value could have been
-                                        return false;
+                                    if (key == array[found_pos]) {
+                                        LOG_DEBUG3 << "key (0) value@" << (uint32_t) found_pos << END_LOG;
+                                        //We found the key!
+                                        return true;
                                     }
                                 }
                             }
@@ -337,7 +337,7 @@ namespace uva {
                  * @param is_less_func the is-less function
                  */
                 template<typename ELEM_TYPE>
-                inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size, 
+                inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size,
                         typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_type is_less_func) {
                     //Do not do sorting if the array size is less than two
                     if (array_size > 1) {
