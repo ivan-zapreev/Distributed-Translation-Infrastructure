@@ -199,7 +199,7 @@ namespace uva {
                 };
 
                 //Define the basic type as an alias for the compressed M-Gram id
-                typedef uint8_t * T_Id_Storage_Ptr;
+                typedef uint8_t * T_Gram_Id_Storage_Ptr;
 
                 /**
                  * The compressed implementation of the M-gram id class
@@ -224,7 +224,7 @@ namespace uva {
                      */
                     void create_m_gram_id(const TShortId * word_ids,
                             const uint8_t begin_idx, const uint8_t num_word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id);
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -232,7 +232,7 @@ namespace uva {
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(const TModelLevel level, T_Id_Storage_Ptr & m_p_gram_id) {
+                    static inline void allocate_m_gram_id(const TModelLevel level, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                             stringstream msg;
@@ -251,7 +251,7 @@ namespace uva {
                      * Allows to destroy the M-Gram id if it is not NULL.
                      * @param m_p_gram_id the M-gram id pointer to destroy
                      */
-                    static inline void destroy(T_Id_Storage_Ptr & m_p_gram_id) {
+                    static inline void destroy(T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         if (m_p_gram_id != NULL) {
                             LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " <<  (void*) m_p_gram_id << END_LOG;
                             delete[] m_p_gram_id;
@@ -267,7 +267,7 @@ namespace uva {
                      *         Positive value if one is larger than two
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    int compare(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
+                    int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -276,7 +276,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    bool is_equal_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
+                    bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -285,7 +285,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    bool is_less_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
+                    bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -294,7 +294,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "larger" than the second, otherwise false
                      */
-                    bool is_more_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level);
+                    bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
                 };
             }
         }

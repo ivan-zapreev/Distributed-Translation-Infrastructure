@@ -106,7 +106,7 @@ namespace uva {
              * @param str the string to hash
              * @return the hash value
              */
-            inline TShortId computePaulHsiehHash(const string & str) {
+            inline uint32_t computePaulHsiehHash(const string & str) {
                 return computePaulHsiehHash(str.c_str(), str.length());
             }
 
@@ -118,8 +118,8 @@ namespace uva {
              * @param str the string to hash
              * @return the resulting hash
              */
-            inline TShortId computeDjb2Hash(const string & str) {
-                TShortId hashVal = 5381;
+            inline uint32_t computeDjb2Hash(const string & str) {
+                uint32_t hashVal = 5381;
                 int c;
                 const char * c_str = str.c_str();
 
@@ -146,8 +146,8 @@ namespace uva {
 #define B 76963 /* another prime */
 #define C 86969 /* yet another prime */
 
-            inline TShortId computePrimesHash(const string & str) {
-                TShortId h = 31 /* also prime */;
+            inline uint32_t computePrimesHash(const string & str) {
+                uint32_t h = 31 /* also prime */;
                 const char * c_str = str.c_str();
                 while (*c_str) {
                     h = (h * A) ^ (c_str[0] * B);
@@ -156,31 +156,36 @@ namespace uva {
                 return h; // or return h % C;
             }
 
-            inline TShortId computeRSHash(const string & str) {
-                TShortId b = 378551;
-                TShortId a = 63689;
-                TShortId hash = 0;
+            inline uint32_t computeRSHash(const char * data, uint32_t len) {
+                uint32_t b = 378551;
+                uint32_t a = 63689;
+                uint32_t hash = 0;
 
-                for (std::size_t i = 0; i < str.length(); i++) {
-                    hash = hash * a + str[i];
+                for (std::size_t i = 0; i < len; i++) {
+                    hash = hash * a + data[i];
                     a = a * b;
                 }
 
                 return hash;
             }
             
+            inline uint32_t computeRSHash(const string & str) {
+                return computeRSHash(str.c_str(), str.length());
+            }
+            
             /**
-             * The string hashing function
+             * The string hashing function.
+             * computePaulHsiehHash - This one showed the worst speed on a test run
+             * computeDjb2Hash - This one showed medium speed on a test run
+             * computePrimesHash - This one showed medium speed on a test run
+             * computeRSHash - This one showed the best speed on a test run
              * @param param the string to hash
              * @return the resulting hash
              */
             class StringHash {
             public:
-                inline TShortId operator()(const string &param) const {
-                    //return computePaulHsiehHash(param);   //This one showed the worst speed on a test run
-                    //return computeDjb2Hash(param); 
-                    //return computePrimesHash(param);
-                    return computeRSHash(param);            //This one showed the best speed on a test run
+                inline uint32_t operator()(const string &param) const {
+                    return computeRSHash(param);
                 }
             };
 

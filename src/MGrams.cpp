@@ -215,7 +215,7 @@ namespace uva {
                      */
                     template<uint8_t ID_TYPE_LEN_BITS, TModelLevel M_GRAM_LEVEL>
                     static inline void create_gram_id(const TShortId * word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         //Declare and initialize the id length, the initial values is
                         //what we need to store the type. Note that, the maximum number
                         //of needed bits for an id for a 5-gram is 25+32+32+32+32+32 = 185
@@ -279,25 +279,25 @@ namespace uva {
                     };
 
                     static inline void create_2_gram_id(const TShortId * word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     static inline void create_3_gram_id(const TShortId * word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_3], M_GRAM_LEVEL_3 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     static inline void create_4_gram_id(const TShortId * word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_4], M_GRAM_LEVEL_4 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     static inline void create_5_gram_id(const TShortId * word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         create_gram_id < M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL_5], M_GRAM_LEVEL_5 >
                                 (word_ids, m_p_gram_id);
                     }
@@ -305,7 +305,7 @@ namespace uva {
                     /**
                      * Define the function pointer to a create x-gram id function for some X-gram level x
                      */
-                    typedef void(*create_x_gram_id)(const TShortId * word_ids, T_Id_Storage_Ptr & m_p_gram_id);
+                    typedef void(*create_x_gram_id)(const TShortId * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
                     //This is an array of functions for creating m-grams per specific m-gram level m
                     const static create_x_gram_id create_x_gram_funcs[] = {NULL, NULL,
@@ -313,7 +313,7 @@ namespace uva {
 
                     void create_m_gram_id(const TShortId * word_ids,
                             const uint8_t begin_idx, const uint8_t num_word_ids,
-                            T_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
 
                         if (DO_SANITY_CHECKS &&
                                 ((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_5))) {
@@ -333,7 +333,7 @@ namespace uva {
 #define IS_LARGER +1
 
                     template<TModelLevel M_GRAM_LEVEL>
-                    int compare(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two) {
+                    int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two) {
 
                         //Get the id len in bits
                         constexpr uint8_t ID_TYPE_LEN_BITS = M_GRAM_ID_TYPE_LEN_BITS[M_GRAM_LEVEL];
@@ -386,23 +386,23 @@ namespace uva {
                     /**
                      * Define the function pointer to compare two X-grams of the given level X
                      */
-                    typedef bool(* is_compare_grams_id_func)(const T_Id_Storage_Ptr &, const T_Id_Storage_Ptr &);
+                    typedef bool(* is_compare_grams_id_func)(const T_Gram_Id_Storage_Ptr &, const T_Gram_Id_Storage_Ptr &);
 
                     /******************************************/
 
-                    static inline bool is_equal_2_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_equal_2_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare< M_GRAM_LEVEL_2>(one, two) == 0);
                     }
 
-                    static inline bool is_equal_3_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_equal_3_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_3>(one, two) == 0);
                     }
 
-                    static inline bool is_equal_4_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_equal_4_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_4>(one, two) == 0);
                     }
 
-                    static inline bool is_equal_5_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_equal_5_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_5>(one, two) == 0);
                     }
 
@@ -411,25 +411,25 @@ namespace uva {
                         is_equal_2_grams_id, is_equal_3_grams_id,
                         is_equal_4_grams_id, is_equal_5_grams_id};
 
-                    bool is_equal_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level) {
+                    bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                         return is_equal_x_grams_id_funcs[level](one, two);
                     }
 
                     /******************************************/
 
-                    static inline bool is_less_2_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_less_2_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_2>(one, two) < 0);
                     }
 
-                    static inline bool is_less_3_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_less_3_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_3>(one, two) < 0);
                     }
 
-                    static inline bool is_less_4_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_less_4_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_4>(one, two) < 0);
                     }
 
-                    static inline bool is_less_5_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_less_5_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_5>(one, two) < 0);
                     }
 
@@ -438,25 +438,25 @@ namespace uva {
                         is_less_2_grams_id, is_less_3_grams_id,
                         is_less_4_grams_id, is_less_5_grams_id};
 
-                    bool is_less_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level) {
+                    bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                         return is_less_x_grams_id_funcs[level](one, two);
                     }
 
                     /******************************************/
 
-                    static inline bool is_more_2_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_more_2_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare< M_GRAM_LEVEL_2>(one, two) > 0);
                     }
 
-                    static inline bool is_more_3_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_more_3_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_3>(one, two) > 0);
                     }
 
-                    static inline bool is_more_4_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_more_4_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_4>(one, two) > 0);
                     }
 
-                    static inline bool is_more_5_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two) {
+                    static inline bool is_more_5_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two) {
                         return (compare<M_GRAM_LEVEL_5>(one, two) > 0);
                     }
 
@@ -465,14 +465,14 @@ namespace uva {
                         is_more_2_grams_id, is_more_3_grams_id,
                         is_more_4_grams_id, is_more_5_grams_id};
 
-                    bool is_more_m_grams_id(const T_Id_Storage_Ptr & one, const T_Id_Storage_Ptr & two, const TModelLevel level) {
+                    bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                         return is_more_x_grams_id_funcs[level](one, two);
                     }
 
-                    template int compare<M_GRAM_LEVEL_2>(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
-                    template int compare<M_GRAM_LEVEL_3>(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
-                    template int compare<M_GRAM_LEVEL_4>(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
-                    template int compare<M_GRAM_LEVEL_5>(const T_Id_Storage_Ptr & m_p_gram_id_one, const T_Id_Storage_Ptr & m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_2>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_3>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_4>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                    template int compare<M_GRAM_LEVEL_5>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
                 }
             }
         }

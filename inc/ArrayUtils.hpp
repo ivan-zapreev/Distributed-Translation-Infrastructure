@@ -51,7 +51,7 @@ namespace uva {
                 template<typename ELEM_TYPE>
                 struct T_IS_EXT_COMPARE_FUNC {
                     typedef std::function<int(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
-                    typedef int(* func_ptr_type)(const ELEM_TYPE &, const ELEM_TYPE &);
+                    typedef int(* func_ptr)(const ELEM_TYPE &, const ELEM_TYPE &);
                 };
 
                 /**
@@ -60,6 +60,7 @@ namespace uva {
                 template<typename ELEM_TYPE>
                 struct T_IS_COMPARE_FUNC {
                     typedef std::function<bool(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
+                    typedef bool(* func_ptr)(const ELEM_TYPE &, const ELEM_TYPE &);
                 };
 
                 //NOTE: Do the binary search, note that we do not take care of index
@@ -153,7 +154,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE,
-                        typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr_type COMPARE_FUNC>
+                typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr COMPARE_FUNC>
                 inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx,
                         const KEY_TYPE key, IDX_TYPE & found_pos) {
                     LOG_DEBUG3 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
@@ -336,7 +337,7 @@ namespace uva {
                  * @param is_less_func the is-less function
                  */
                 template<typename ELEM_TYPE>
-                void my_sort(ELEM_TYPE * array_begin, const TShortId array_size,
+                inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size, 
                         typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_type is_less_func) {
                     //Do not do sorting if the array size is less than two
                     if (array_size > 1) {
@@ -350,53 +351,48 @@ namespace uva {
                  * of structures convertable to some simple comparable type.
                  * This method does the progress bar update, if needed
                  * @param ELEM_TYPE the array element type
+                 * @param IS_LESS_FUNC the is-less function
+                 * @param array_begin the pointer to the array's first element
+                 * @param array_size the size of the array
+                 */
+                template<typename ELEM_TYPE, typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_ptr IS_LESS_FUNC>
+                inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+                    //Do not do sorting if the array size is less than two
+                    if (array_size > 1) {
+                        //Order the N-gram array as it is unordered and we will binary search it later!
+                        std::sort(array_begin, array_begin + array_size, IS_LESS_FUNC);
+                    }
+                }
+
+                /**
+                 * The basic "is less" function for the sort algorithms that allows to update the progress bar.
+                 * @param first the first element to compare
+                 * @param second the second element to compare
+                 * @return true if the first element is less then the second
+                 */
+                template<typename ELEM_TYPE, bool IS_PROGRESS = true >
+                inline bool is_less(const ELEM_TYPE & first, const ELEM_TYPE & second) {
+                    if (IS_PROGRESS) {
+                        //Update the progress bar status
+                        Logger::updateProgressBar();
+                    }
+                    //Return the result
+                    return (first < second);
+                }
+
+                /**
+                 * This methos is used to do <algorithm> std::sort on an array
+                 * of structures convertable to some simple comparable type.
+                 * This method does the progress bar update, if needed
+                 * @param ELEM_TYPE the array element type
                  * @param IS_PROGRESS if true the progress bar will be updated,
                  * otherwise not, default is true
                  * @param array_begin the pointer to the array's first element
                  * @param array_size the size of the array
                  */
                 template<typename ELEM_TYPE, bool IS_PROGRESS = true >
-                void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
-                    my_sort<ELEM_TYPE>(array_begin, array_size,
-                            [] (const ELEM_TYPE & first, const ELEM_TYPE & second) -> bool {
-                                if (IS_PROGRESS) {
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                }
-                                //Return the result
-                                return (first < second);
-                            });
-                }
-
-                /**
-                 * This methos is used to do <cstdlib> std::qsort on an array of
-                 * structures convertable to some simple comparable type.
-                 * This method does the progress bar update, if needed. Note that,
-                 * this algorithm assumes that there are no duplicate elements
-                 * in the array. I.e. when two elements are compared (as the given
-                 * base type) one is always smaller than another! Thus, if used
-                 * on arrays with duplicates, can be slower than usual due to
-                 * extra element moving.
-                 * @param ELEM_TYPE the array element type
-                 * @param BASE_TYPE the base type the array element type has to
-                 * be custable to, the base type must have implemented "operator <"
-                 * @param IS_PROGRESS if true the progress bar will be updated,
-                 * otherwise not, default is true
-                 * @param array the pointer to the array's first element
-                 * @param size the number of array elements
-                 */
-                template<typename ELEM_TYPE, typename BASE_TYPE, bool IS_PROGRESS = true >
-                void qsort(ELEM_TYPE * array, const size_t size) {
-                    //Order the N-gram array as it is not most likely unordered!
-                    std::qsort(array, size, sizeof (ELEM_TYPE),
-                            [] (const void* first, const void* second) -> int {
-                                if (IS_PROGRESS) {
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                }
-                                //NOTE: Since the array contains unique pairs there is no situation when they are equal! So we never return 0!
-                                return (((BASE_TYPE) (*(ELEM_TYPE*) first)) < ((BASE_TYPE) (*(ELEM_TYPE*) second))) ? -1 : +1;
-                            });
+                inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+                    my_sort<ELEM_TYPE, is_less<ELEM_TYPE, IS_PROGRESS> >(array_begin, array_size);
                 }
             }
         }

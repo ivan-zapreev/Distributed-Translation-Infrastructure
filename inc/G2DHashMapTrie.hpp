@@ -73,15 +73,15 @@ namespace uva {
                     typedef PAYLOAD_TYPE TPayloadType;
                 };
 
-                typedef S_M_GramData<T_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_Prob_Back_Off_Entry;
-                typedef S_M_GramData<T_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
+                typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
                     Comp_M_Gram_Id::destroy(elem.id);
                 };
 
-                template void destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry>(T_M_Gram_Prob_Back_Off_Entry &elem);
+                template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry>(T_M_Gram_Prob_Entry &elem);
 
                 template<typename M_GRAM_ID_TYPE, typename PAYLOAD_TYPE>
@@ -253,13 +253,13 @@ namespace uva {
 
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
-                T_Id_Storage_Ptr m_tmp_gram_id;
+                T_Gram_Id_Storage_Ptr m_tmp_gram_id;
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef ADynamicStackArray<T_M_Gram_Prob_Back_Off_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Back_Off_Entry> > TProbBackOffBucket;
+                typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level

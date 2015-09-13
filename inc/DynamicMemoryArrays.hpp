@@ -177,10 +177,8 @@ namespace uva {
                 struct ELEMENT_DEALLOC_FUNC {
                     typedef std::function<void(ELEM_TYPE &) > func_type;
                     typedef void(* func_ptr)(ELEM_TYPE &);
-                    const static func_ptr NULL_FUNC_PTR;
+                    static constexpr func_ptr NULL_FUNC_PTR = (typename ELEMENT_DEALLOC_FUNC<ELEM_TYPE>::func_ptr)NULL;
                 };
-                template<typename ELEM_TYPE>
-                const typename ELEMENT_DEALLOC_FUNC<ELEM_TYPE>::func_ptr ELEMENT_DEALLOC_FUNC<ELEM_TYPE>::NULL_FUNC_PTR = (typename ELEMENT_DEALLOC_FUNC<ELEM_TYPE>::func_ptr)NULL;
 
                 /**
                  * This class represents a dynamic memory array and stores the main methods needed for its operation
@@ -189,7 +187,7 @@ namespace uva {
                  * @param DESTRUCTOR the destructor function to be used on the elements when the container is deleted, default is NULL
                  */
                 template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE,
-                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = (typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr)NULL>
+                typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR>
                 class ADynamicStackArray {
                 public:
 

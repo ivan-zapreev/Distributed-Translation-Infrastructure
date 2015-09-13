@@ -51,10 +51,10 @@ namespace uva {
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
-                LOG_INFO3 << "Using the " << T_M_Gram_Prob_Back_Off_Entry::m_mem_strat.getStrategyStr()
+                LOG_INFO3 << "Using the " << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
                         << " memory allocation strategy." << END_LOG;
 
-                LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_Prob_Back_Off_Entry) << END_LOG;
+                LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
                 LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
                 LOG_DEBUG3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
                 LOG_DEBUG3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
@@ -127,7 +127,7 @@ namespace uva {
                 const TModelLevel level_idx = (mGram.level - ATrie<N>::MGRAM_IDX_OFFSET);
 
                 //Create a new M-Gram data entry
-                T_M_Gram_Prob_Back_Off_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();
+                T_M_Gram_PB_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();
 
                 //Get the N-gram word ids
                 ATrie<N>::store_m_gram_word_ids(mGram);
