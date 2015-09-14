@@ -1,5 +1,5 @@
 /* 
- * File:   CompMGramId.hpp
+ * File:   BitMGramId.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on September 14, 2015, 10:36 AM
  */
 
-#ifndef COMPMGRAMID_HPP
-#define	COMPMGRAMID_HPP
+#ifndef BITGRAMID_HPP
+#define	BITGRAMID_HPP
 
 #include <string>       // std::string
 
@@ -50,15 +50,16 @@ namespace uva {
             namespace mgrams {
 
                 /**
-                 * The compressed implementation of the M-gram id class
-                 * Made in form of a namespace for the sake of minimizing the
-                 * memory consumption
+                 * The bit-compressed implementation of the M-gram id class
+                 * 
+                 * WARNING: Storing bytes instead of bits does not really have any visible
+                 * impact on memory consumption but has a big impact on performance!
                  */
-                namespace Comp_M_Gram_Id {
+                struct Bit_M_Gram_Id {
 
                     //The memory in bits needed to store different M-gram id types in
                     //the M-gram id byte arrays
-                    //ToDo: These are the minimum values, if used then we use fewest memory
+                    //These are the minimum values, if used then we use fewest memory
                     //but the data is not byte aligned. Therefore some bit copying operations
                     //are not done efficiently. Perhaps it is worth trying to round these
                     //values up to full bytes, this can improve performance @ some memory costs.
@@ -66,23 +67,23 @@ namespace uva {
                     //The number of bites needed to store a 2-gram id type
                     //Possible id types: 32^2 = 1,024
                     //The number of bits needed to store the type is log_2(1,024) = 10
-                    //Using 16 bits for the speed efficiency, the total memory is not affected
                     static const uint8_t M_GRAM_2_ID_TYPE_LEN_BITS = 10;
                     //The number of bites needed to store a 3-gram id type
                     //Possible id types: 32^3 = 32,768
                     //The number of bits needed to store the type is log_2(32,768) = 15
-                    //Using 16 bits for the speed efficiency, the total memory is not affected
                     static const uint8_t M_GRAM_3_ID_TYPE_LEN_BITS = 15;
                     //The number of bites needed to store a 4-gram id type
                     //Possible id types: 32^4 = 1,048,576
                     //The number of bits needed to store the type is log_2(1,048,576) = 20
-                    //Using 24 bits for the speed efficiency, the total memory is not affected
                     static const uint8_t M_GRAM_4_ID_TYPE_LEN_BITS = 20;
                     //The number of bites needed to store a 5-gram id type
                     //Possible id types: 32^5 = 33,554,432
                     //The number of bits needed to store the type is log_2(33,554,432) = 25
-                    //Using 32 bits for the speed efficiency, the total memory is not affected
                     static const uint8_t M_GRAM_5_ID_TYPE_LEN_BITS = 25;
+                    //The number of bites needed to store a 6-gram id type
+                    //Possible id types: 32^6 = 1,073,741,824
+                    //The number of bits needed to store the type is log_2(1,073,741,824) = 30
+                    static const uint8_t M_GRAM_6_ID_TYPE_LEN_BITS = 30;
 
                     //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                     static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BITS[] = {
@@ -90,7 +91,8 @@ namespace uva {
                         M_GRAM_2_ID_TYPE_LEN_BITS,
                         M_GRAM_3_ID_TYPE_LEN_BITS,
                         M_GRAM_4_ID_TYPE_LEN_BITS,
-                        M_GRAM_5_ID_TYPE_LEN_BITS
+                        M_GRAM_5_ID_TYPE_LEN_BITS,
+                        M_GRAM_6_ID_TYPE_LEN_BITS
                     };
 
                     //Stores the maximum number of bits up to and including M-grams
@@ -98,11 +100,12 @@ namespace uva {
                     //TShortId, and the maximum number of bits is thus defined by the
                     //number of word_ids in the M-gram and their max size in bytes.
                     static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
-                        2 * sizeof (TShortId), // 2 TShortId values for 2 word ids 
-                        3 * sizeof (TShortId), // 3 TShortId values for 3 word ids
-                        4 * sizeof (TShortId), // 4 TShortId values for 4 word ids
-                        5 * sizeof (TShortId), // 5 TShortId values for 5 word ids
-                        6 * sizeof (TShortId), // 6 TShortId values for 6 word ids
+                        0,0,
+                        2 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_2_ID_TYPE_LEN_BITS), // 2 TShortId values for 2 word ids, plus the memory needed to store type
+                        3 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_3_ID_TYPE_LEN_BITS), // 3 TShortId values for 3 word ids, plus the memory needed to store type
+                        4 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_4_ID_TYPE_LEN_BITS), // 4 TShortId values for 4 word ids, plus the memory needed to store type
+                        5 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_5_ID_TYPE_LEN_BITS), // 5 TShortId values for 5 word ids, plus the memory needed to store type
+                        6 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_6_ID_TYPE_LEN_BITS)  // 6 TShortId values for 6 word ids, plus the memory needed to store type
                     };
 
                     /**
@@ -119,7 +122,7 @@ namespace uva {
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    void create_m_gram_id(const TShortId * word_ids,
+                    static void create_m_gram_id(const TShortId * word_ids,
                             const uint8_t begin_idx, const uint8_t num_word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
@@ -141,18 +144,7 @@ namespace uva {
                         }
 
                         //Allocate maximum memory that could be needed to store the given M-gram level id
-                        m_p_gram_id = new uint8_t[M_GRAM_MAX_ID_LEN_BYTES[level - M_GRAM_LEVEL_2]];
-                    }
-
-                    /**
-                     * Allows to destroy the M-Gram id if it is not NULL.
-                     * @param m_p_gram_id the M-gram id pointer to destroy
-                     */
-                    static inline void destroy(T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        if (m_p_gram_id != NULL) {
-                            LOG_DEBUG3 << "Deallocating a Compressed_M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
-                            delete[] m_p_gram_id;
-                        }
+                        allocate_m_gram_id(M_GRAM_MAX_ID_LEN_BYTES[level], m_p_gram_id);
                     }
 
                     /**
@@ -164,7 +156,7 @@ namespace uva {
                      *         Positive value if one is larger than two
                      */
                     template<TModelLevel M_GRAM_LEVEL>
-                    int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                    static int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -173,7 +165,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+                    static bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -182,7 +174,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "smaller" than the second, otherwise false
                      */
-                    bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+                    static bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
 
                     /**
                      * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -191,7 +183,7 @@ namespace uva {
                      * @param level the M-grams' level M
                      * @return true if the first M-gram is "larger" than the second, otherwise false
                      */
-                    bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+                    static bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
                 };
             }
         }

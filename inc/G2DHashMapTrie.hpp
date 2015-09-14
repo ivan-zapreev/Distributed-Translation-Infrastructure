@@ -33,7 +33,8 @@
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
-#include "CompMGramId.hpp"
+#include "BitMGramId.hpp"
+#include "ByteMGramId.hpp"
 
 #include "TextPieceReader.hpp"
 
@@ -79,7 +80,7 @@ namespace uva {
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
-                    Comp_M_Gram_Id::destroy(elem.id);
+                    M_Gram_Id::destroy(elem.id);
                 };
 
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);
@@ -246,7 +247,7 @@ namespace uva {
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
-                            return Comp_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
+                            return Bit_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
                         });
                         LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
@@ -281,7 +282,7 @@ namespace uva {
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            Comp_M_Gram_Id::compare<M_GRAM_LEVEL> >
+                            Bit_M_Gram_Id::compare<M_GRAM_LEVEL> >
                             (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
                             found_idx);
                 }

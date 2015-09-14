@@ -39,10 +39,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/AWordIndex.o \
+	${OBJECTDIR}/src/BitMGramId.o \
+	${OBJECTDIR}/src/ByteMGramId.o \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
-	${OBJECTDIR}/src/CompMGramId.o \
 	${OBJECTDIR}/src/G2DHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
@@ -96,6 +97,16 @@ ${OBJECTDIR}/src/AWordIndex.o: src/AWordIndex.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
 
+${OBJECTDIR}/src/BitMGramId.o: src/BitMGramId.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BitMGramId.o src/BitMGramId.cpp
+
+${OBJECTDIR}/src/ByteMGramId.o: src/ByteMGramId.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
+
 ${OBJECTDIR}/src/C2DHashMapTrie.o: src/C2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -110,11 +121,6 @@ ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: src/C2WOrderedArrayTrie.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
-
-${OBJECTDIR}/src/CompMGramId.o: src/CompMGramId.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CompMGramId.o src/CompMGramId.cpp
 
 ${OBJECTDIR}/src/G2DHashMapTrie.o: src/G2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

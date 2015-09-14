@@ -274,9 +274,50 @@ namespace uva {
                  * Allows to copy the given number of bits (starting from the end)
                  * into the given bit position of the target byte array
                  * @param source the source 32 bit unsigned integer to copy end bits from
-                 * @param num_bits_to_copy the number of bits to copy
+                 * @param num_bytes the number of bytes to copy
                  * @param p_target the byte array to copy bits into, must have sufficient capacity
-                 * @param bit_pos the position into which the pits are to be copied
+                 * @param to_pos_byte the position into which the bytes are to be copied
+                 */
+                static inline void copy_end_bytes_to_pos(uint32_t source, const uint8_t num_bytes,
+                        uint8_t * p_target, const uint32_t to_pos_byte) {
+
+                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes) << " end bytes from "
+                            << bitset<NUM_BITS_IN_UINT_32>(source)
+                            << " to position: " << SSTR(to_pos_byte) << END_LOG;
+
+                    //First transform the source uint into an array of bytes, taking
+                    //care of endianness:
+                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+                    //https://en.wikipedia.org/wiki/Endianness
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+                    source = __builtin_bswap32(source);
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                    //This should work fine, no inversions or transformations are needed
+#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#endif
+                    const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
+
+                    LOG_DEBUG4 << "Converted source: "
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[0])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[1])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[2])
+                            << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
+
+                    //Compute the position to start copying from
+                    const uint8_t from_pos_byte = (sizeof(uint32_t) - num_bytes);
+
+                    //Copy the bytes
+                    memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
+                };
+
+                /**
+                 * Allows to copy the given number of bits (starting from the end)
+                 * into the given bit position of the target byte array
+                 * @param source the source 32 bit unsigned integer to copy end bits from
+                 * @param num_bits the number of bits to copy
+                 * @param p_target the byte array to copy bits into, must have sufficient capacity
+                 * @param to_pos_bit the position into which the bits are to be copied
                  */
                 static inline void copy_end_bits_to_pos(uint32_t source, const uint8_t num_bits,
                         uint8_t * p_target, const uint32_t to_pos_bit) {
@@ -310,6 +351,42 @@ namespace uva {
                     //Copy the given number of bits from and to defined targets and positions 
                     copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
                 };
+
+                /**
+                 * This function allows to copy the given number of bytes from the
+                 * beginning of the given byte array into the end of the given
+                 * target variable.
+                 * @param num_bytes the number of bytes to copy
+                 * @param p_source the byte array with data to copy from
+                 * @param target the variable to put the bits at the end of
+                 */
+                template<uint8_t num_bytes>
+                static inline void copy_begin_bytes_to_end(const uint8_t * p_source, uint32_t & target) {
+                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes)
+                            << " bits to " << bitset<NUM_BITS_IN_UINT_32>(target) << END_LOG;
+
+                    //Convert the id_type storing variable into an array of bytes
+                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+
+                    //The position to start copying from
+                    const uint8_t from_pos_byte = 0;
+                    //The position to start copying to
+                    const uint8_t to_pos_byte = (sizeof(uint32_t) - num_bytes);
+                    
+                    //Copy the bytes
+                    memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
+
+                    //Now re-order the target uint, taking care of endianness:
+                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+                    //https://en.wikipedia.org/wiki/Endianness
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+                    target = __builtin_bswap32(target);
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                    //This should work fine, no inversions or transformations are needed
+#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#endif
+                }
 
                 /**
                  * This function allows to copy the given number of bits from the

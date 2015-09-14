@@ -23,8 +23,8 @@
  * Created on September 7, 2015, 9:42 PM
  */
 
-#ifndef MGRAM_HPP
-#define	MGRAM_HPP
+#ifndef MGRAMS_HPP
+#define	MGRAMS_HPP
 
 #include <string>       // std::string
 
@@ -158,6 +158,29 @@ namespace uva {
 
                     //Define the basic type as an alias for the compressed M-Gram id
                     typedef uint8_t * T_Gram_Id_Storage_Ptr;
+
+                    /**
+                     * The basic constructor that allocates maximum memory
+                     * needed to store the M-gram id of the given level.
+                     * @param level the level of the M-grams this object will store id for.
+                     * @param m_p_gram_id the pointer to initialize
+                     */
+                    static inline void allocate_m_gram_id(uint8_t size, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                        //Allocate maximum memory that could be needed to store the given M-gram level id
+                        m_p_gram_id = new uint8_t[size];
+                        LOG_DEBUG3 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
+                    }
+
+                    /**
+                     * Allows to destroy the M-Gram id if it is not NULL.
+                     * @param m_p_gram_id the M-gram id pointer to destroy
+                     */
+                    static inline void destroy(T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                        if (m_p_gram_id != NULL) {
+                            LOG_DEBUG3 << "Deallocating a M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
+                            delete[] m_p_gram_id;
+                        }
+                    }
 
                 }
             }

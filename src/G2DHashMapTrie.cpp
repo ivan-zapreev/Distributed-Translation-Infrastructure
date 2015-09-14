@@ -47,7 +47,7 @@ namespace uva {
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 //Allocate the M-gram id memory for queries
-                Comp_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
+                Bit_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
@@ -103,7 +103,7 @@ namespace uva {
                     delete[] m_N_gram_data;
                 }
                 //Destroy the query id if any
-                Comp_M_Gram_Id::destroy(m_tmp_gram_id);
+                M_Gram_Id::destroy(m_tmp_gram_id);
             };
 
             template<TModelLevel N>
@@ -133,7 +133,7 @@ namespace uva {
                 ATrie<N>::store_m_gram_word_ids(mGram);
 
                 //Create the M-gram id from the word ids
-                Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
+                Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
                 LOG_DEBUG2 << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(mGram) << END_LOG;
 
                 //Set the probability and back-off data
@@ -155,7 +155,7 @@ namespace uva {
                 ATrie<N>::store_m_gram_word_ids(nGram);
 
                 //Create the N-gram id from the word ids
-                Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
+                Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
                 LOG_DEBUG3 << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(nGram) << END_LOG;
 
                 //Set the probability data
@@ -198,7 +198,7 @@ namespace uva {
                 if (ref.has_data()) {
                     LOG_DEBUG2 << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    Comp_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
+                    Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
