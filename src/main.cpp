@@ -80,7 +80,11 @@ static void printInfo() {
     LOG_USAGE << "|          (GPL stands for GNU General Public License)             |" << END_LOG;
     LOG_USAGE << "|          The product comes with ABSOLUTELY NO WARRANTY.          |" << END_LOG;
     LOG_USAGE << "|   This is a free software, you are welcome to redistribute it.   |" << END_LOG;
-    LOG_USAGE << "|                     Running in " << sizeof (uint64_t) * 8 << " bit mode!                      |" << END_LOG;
+#ifdef ENVIRONMENT64
+    LOG_USAGE << "|                     Running in 64 bit mode!                      |" << END_LOG;
+#else
+    LOG_USAGE << "|                     Running in 32 bit mode!                      |" << END_LOG;
+#endif
     LOG_USAGE << "|                 Build on: " << __DATE__ << " " << __TIME__ << "                   |" << END_LOG;
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
 }
