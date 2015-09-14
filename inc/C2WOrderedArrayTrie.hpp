@@ -53,7 +53,7 @@ namespace uva {
                 typedef struct {
                     TShortId id;
                     TProbBackOffEntry data;
-                } __attribute__((packed)) TWordIdPBData;
+                } TWordIdPBData;
 
                 /**
                  * This is the less operator implementation
@@ -77,7 +77,7 @@ namespace uva {
                     TShortId wordId;
                     TShortId ctxId;
                     TLogProbBackOff prob;
-                } __attribute__((packed)) TCtxIdProbData;
+                } TCtxIdProbData;
 
                 /**
                  * This is the compare operator implementation
