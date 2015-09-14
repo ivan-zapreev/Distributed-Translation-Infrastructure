@@ -47,7 +47,7 @@ namespace uva {
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 //Allocate the M-gram id memory for queries
-                Byte_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
+                Byte_M_Gram_Id::allocate_byte_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;

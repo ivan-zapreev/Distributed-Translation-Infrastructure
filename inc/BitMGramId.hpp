@@ -135,11 +135,11 @@ namespace uva {
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(const TModelLevel level, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                    static inline void allocate_bit_m_gram_id(const TModelLevel level, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
                             stringstream msg;
-                            msg << "T_Compressed_M_Gram_Id: Unsupported m-gram level: "
+                            msg << "Bit_M_Gram_Id: Unsupported m-gram level: "
                                     << SSTR(level) << ", must be within ["
                                     << SSTR(M_GRAM_LEVEL_2) << ", "
                                     << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
@@ -147,7 +147,7 @@ namespace uva {
                         }
 
                         //Allocate maximum memory that could be needed to store the given M-gram level id
-                        allocate_m_gram_id(__Bit_M_Gram_Id::M_GRAM_MAX_ID_LEN_BYTES[level], m_p_gram_id);
+                        allocate_m_gram_id(m_p_gram_id, __Bit_M_Gram_Id::M_GRAM_MAX_ID_LEN_BYTES[level]);
                     }
 
                     /**

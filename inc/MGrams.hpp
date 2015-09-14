@@ -165,7 +165,7 @@ namespace uva {
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(uint8_t size, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                    static inline void allocate_m_gram_id(T_Gram_Id_Storage_Ptr & m_p_gram_id, uint8_t size) {
                         //Allocate maximum memory that could be needed to store the given M-gram level id
                         m_p_gram_id = new uint8_t[size];
                         LOG_DEBUG3 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
