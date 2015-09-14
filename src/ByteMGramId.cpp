@@ -266,25 +266,25 @@ namespace uva {
 
                     inline void create_2_gram_id(const TShortId * word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
+                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     inline void create_3_gram_id(const TShortId * word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_3], M_GRAM_LEVEL_3 >
+                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_3], M_GRAM_LEVEL_3 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     inline void create_4_gram_id(const TShortId * word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_4], M_GRAM_LEVEL_4 >
+                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_4], M_GRAM_LEVEL_4 >
                                 (word_ids, m_p_gram_id);
                     }
 
                     inline void create_5_gram_id(const TShortId * word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_5], M_GRAM_LEVEL_5 >
+                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_5], M_GRAM_LEVEL_5 >
                                 (word_ids, m_p_gram_id);
                     }
 
@@ -409,7 +409,7 @@ namespace uva {
                     }
 
                     //Get the id len in bits
-                    constexpr uint8_t ID_TYPE_LEN_BYTES = M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL];
+                    constexpr uint8_t ID_TYPE_LEN_BYTES = __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL];
 
                     //Get the M-gram type ids
                     TShortId type_one = 0;
