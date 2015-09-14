@@ -205,12 +205,12 @@ namespace uva {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint32_t gram_hash = gram.hash();
-                    LOG_DEBUG3 << "The " << gram.level << "-gram: " << tokensToString(gram)
+                    LOG_DEBUG1 << "The " << gram.level << "-gram: " << tokensToString(gram)
                             << " hash is " << gram_hash << END_LOG;
 
                     bucket_idx = get_bucket_id(gram_hash, gram.level);
 
-                    LOG_DEBUG3 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_DEBUG1 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level - 1]))) {
@@ -235,21 +235,21 @@ namespace uva {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                        LOG_DEBUG3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
-                        LOG_DEBUG3 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
-                        LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
-                            LOG_DEBUG3 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
+                            LOG_DEBUG1 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
-                            return Bit_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
+                            return Byte_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
                         });
-                        LOG_DEBUG3 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
                 }
 
@@ -282,7 +282,7 @@ namespace uva {
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            Bit_M_Gram_Id::compare<M_GRAM_LEVEL> >
+                            Byte_M_Gram_Id::compare<M_GRAM_LEVEL> >
                             (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
                             found_idx);
                 }

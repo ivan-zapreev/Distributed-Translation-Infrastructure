@@ -47,17 +47,17 @@ namespace uva {
                 memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 //Allocate the M-gram id memory for queries
-                Bit_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
+                Byte_M_Gram_Id::allocate_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
                         << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
                 LOG_INFO3 << "Using the " << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
                         << " memory allocation strategy." << END_LOG;
 
-                LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
-                LOG_DEBUG3 << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
-                LOG_DEBUG3 << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
-                LOG_DEBUG3 << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
 
             template<TModelLevel N>
@@ -133,8 +133,8 @@ namespace uva {
                 ATrie<N>::store_m_gram_word_ids(mGram);
 
                 //Create the M-gram id from the word ids
-                Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
-                LOG_DEBUG2 << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(mGram) << END_LOG;
+                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(mGram) << END_LOG;
 
                 //Set the probability and back-off data
                 data.payload.prob = mGram.prob;
@@ -155,8 +155,8 @@ namespace uva {
                 ATrie<N>::store_m_gram_word_ids(nGram);
 
                 //Create the N-gram id from the word ids
-                Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
-                LOG_DEBUG3 << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(nGram) << END_LOG;
+                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(nGram) << END_LOG;
 
                 //Set the probability data
                 data.payload = nGram.prob;
@@ -191,14 +191,14 @@ namespace uva {
                     const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) {
                 //Compute the begin index in the tokens and word ids arrays
                 const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - level) : (N - level));
-                LOG_DEBUG2 << "Retrieving payload for " << level << "-gram word id indexes: ["
+                LOG_DEBUG << "Retrieving payload for " << level << "-gram word id indexes: ["
                         << elem_begin_idx << "," << (back_off ? (N - 2) : (N - 1)) << "]" << END_LOG;
 
                 //1. Check that the bucket with the given index is not empty
                 if (ref.has_data()) {
-                    LOG_DEBUG2 << "The bucket contains " << ref.size() << " elements!" << END_LOG;
+                    LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    Bit_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
+                    Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
@@ -297,7 +297,7 @@ namespace uva {
 
             template<TModelLevel N>
             bool G2DMapTrie<N>::get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) {
-                LOG_DEBUG2 << "Computing back-off for a " << level << "-gram " << END_LOG;
+                LOG_DEBUG << "Computing back-off for a " << level << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed
                 if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1)) {

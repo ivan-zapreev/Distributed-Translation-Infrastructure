@@ -305,7 +305,7 @@ namespace uva {
                             << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
 
                     //Compute the position to start copying from
-                    const uint8_t from_pos_byte = (sizeof(uint32_t) - num_bytes);
+                    const uint8_t from_pos_byte = ((uint8_t)sizeof(uint32_t) - num_bytes);
 
                     //Copy the bytes
                     memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
@@ -371,7 +371,7 @@ namespace uva {
                     //The position to start copying from
                     const uint8_t from_pos_byte = 0;
                     //The position to start copying to
-                    const uint8_t to_pos_byte = (sizeof(uint32_t) - num_bytes);
+                    const uint8_t to_pos_byte = ((uint8_t)sizeof(uint32_t) - num_bytes);
                     
                     //Copy the bytes
                     memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);

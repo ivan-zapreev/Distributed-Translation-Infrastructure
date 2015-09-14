@@ -49,27 +49,22 @@ namespace uva {
         namespace tries {
             namespace mgrams {
 
+                namespace __Byte_M_Gram_Id{
+                    inline void create_2_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    inline void create_3_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    inline void create_4_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    inline void create_5_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                }
+                
                 /**
                  * The byte-compressed implementation of the M-gram id class
                  */
-                struct Byte_M_Gram_Id {
-
-                    //The number of bites needed to store a 2,3,4,5-gram id types is equal to 1
-                    //The maximum possible number of id types, if we only store bytes is: 4^5 = 256
-                    //The number of bytes needed to store the type is therefore log_2(256)/8 = 1
-                    static const uint8_t M_GRAM_2_TO_5_ID_TYPE_LEN_BYTES = 1;
-
-                    //Stores the maximum number of bits up to and including M-grams
-                    //of level 5.  We use sizeof (TShortId) as each wordId is of type
-                    //TShortId, and the maximum number of bits is thus defined by the
-                    //number of word_ids in the M-gram and their max size in bytes.
-                    static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
-                        0, 0,
-                        2 * sizeof (TShortId) + M_GRAM_2_TO_5_ID_TYPE_LEN_BYTES, // 2 TShortId values for 2 word ids, plus the memory needed to store type
-                        3 * sizeof (TShortId) + M_GRAM_2_TO_5_ID_TYPE_LEN_BYTES, // 3 TShortId values for 3 word ids, plus the memory needed to store type
-                        4 * sizeof (TShortId) + M_GRAM_2_TO_5_ID_TYPE_LEN_BYTES, // 4 TShortId values for 4 word ids, plus the memory needed to store type
-                        5 * sizeof (TShortId) + M_GRAM_2_TO_5_ID_TYPE_LEN_BYTES // 5 TShortId values for 5 word ids, plus the memory needed to store type
-                    };
+                class Byte_M_Gram_Id {
+                public:
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -147,6 +142,65 @@ namespace uva {
                      * @return true if the first M-gram is "larger" than the second, otherwise false
                      */
                     static bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+                    
+                private:
+
+                    //The memory in bytes needed to store different M-gram id types in
+                    //the M-gram id byte arrays
+
+                    //The number of bites needed to store a 2-gram id type
+                    //Possible id types: 4^2 = 16
+                    //The number of bits needed to store the type is ceil(log_2(16)/8) = 1
+                    static const uint8_t M_GRAM_2_ID_TYPE_LEN_BYTES = 1;
+                    //The number of bites needed to store a 3-gram id type
+                    //Possible id types: 4^3 = 64
+                    //The number of bits needed to store the type is ceil(log_2(64)/8) = 1
+                    static const uint8_t M_GRAM_3_ID_TYPE_LEN_BYTES = 1;
+                    //The number of bites needed to store a 4-gram id type
+                    //Possible id types: 4^4 = 256
+                    //The number of bits needed to store the type is ceil(log_2(256)/8) = 1
+                    static const uint8_t M_GRAM_4_ID_TYPE_LEN_BYTES = 1;
+                    //The number of bites needed to store a 5-gram id type
+                    //Possible id types: 4^5 = 1024
+                    //The number of bits needed to store the type is ceil(log_2(1024)/8) = 2
+                    static const uint8_t M_GRAM_5_ID_TYPE_LEN_BYTES = 2;
+                    //The number of bites needed to store a 6-gram id type
+                    //Possible id types: 4^6 = 4098
+                    //The number of bits needed to store the type is ceil(log_2(4098)/8) = 2
+                    static const uint8_t M_GRAM_6_ID_TYPE_LEN_BYTES = 2;
+
+                    //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
+                    static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BYTES[] = {
+                        0, 0,
+                        M_GRAM_2_ID_TYPE_LEN_BYTES,
+                        M_GRAM_3_ID_TYPE_LEN_BYTES,
+                        M_GRAM_4_ID_TYPE_LEN_BYTES,
+                        M_GRAM_5_ID_TYPE_LEN_BYTES,
+                        M_GRAM_6_ID_TYPE_LEN_BYTES
+                    };
+
+                    //Stores the maximum number of bits up to and including M-grams
+                    //of level 5.  We use sizeof (TShortId) as each wordId is of type
+                    //TShortId, and the maximum number of bits is thus defined by the
+                    //number of word_ids in the M-gram and their max size in bytes.
+                    static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
+                        0, 0,
+                        2 * sizeof (TShortId) + M_GRAM_2_ID_TYPE_LEN_BYTES, // 2 TShortId values for 2 word ids, plus the memory needed to store type
+                        3 * sizeof (TShortId) + M_GRAM_3_ID_TYPE_LEN_BYTES, // 3 TShortId values for 3 word ids, plus the memory needed to store type
+                        4 * sizeof (TShortId) + M_GRAM_4_ID_TYPE_LEN_BYTES, // 4 TShortId values for 4 word ids, plus the memory needed to store type
+                        5 * sizeof (TShortId) + M_GRAM_5_ID_TYPE_LEN_BYTES, // 5 TShortId values for 5 word ids, plus the memory needed to store type
+                        6 * sizeof (TShortId) + M_GRAM_6_ID_TYPE_LEN_BYTES  // 6 TShortId values for 5 word ids, plus the memory needed to store type
+                    };
+
+                    friend inline void __Byte_M_Gram_Id::create_2_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    friend inline void __Byte_M_Gram_Id::create_3_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    friend inline void __Byte_M_Gram_Id::create_4_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    friend inline void __Byte_M_Gram_Id::create_5_gram_id(const TShortId * word_ids,
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                   
                 };
             }
         }
