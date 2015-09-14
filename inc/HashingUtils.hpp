@@ -47,13 +47,13 @@ namespace uva {
             static const unsigned XXHASH_SEED = 0u;
 
             inline uint32_t computeXXHash32(const char * data, uint32_t len) {
-                return XXH32(data,len,XXHASH_SEED);
+                return XXH32(data, len, XXHASH_SEED);
             }
 
             inline uint64_t computeXXHash64(const char * data, uint32_t len) {
-                return XXH64(data,len,XXHASH_SEED);
+                return XXH64(data, len, XXHASH_SEED);
             }
-            
+
             /**
              * The string hashing functions: 
              * computePaulHsiehHash - This one showed the worst speed on a test run
@@ -202,6 +202,14 @@ namespace uva {
 
             inline uint32_t computeRSHash(const string & str) {
                 return computeRSHash(str.c_str(), str.length());
+            }
+
+            inline uint64_t computeHash(const char * data, uint32_t len) {
+#ifdef ENVIRONMENT64
+                return computeXXHash64(data, len);
+#else
+                return computeXXHash32(data, len);
+#endif
             }
 
             /**
