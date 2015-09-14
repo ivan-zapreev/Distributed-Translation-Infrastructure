@@ -57,7 +57,20 @@ namespace uva {
                      * @return the number of bits needed to store this word id
                      */
                     static inline uint8_t get_number_of_bits(const uint32_t wordId) {
-                        return log2_32(wordId) + 1;
+                        //return log2_32(wordId) + 1;
+                        if (wordId <= 255u) {
+                            return NUM_BITS_IN_UINT_8;
+                        } else {
+                            if (wordId <= 65535u) {
+                                return 2 * NUM_BITS_IN_UINT_8;
+                            } else {
+                                if (wordId <= 16777215u) {
+                                    return 3 * NUM_BITS_IN_UINT_8;
+                                } else {
+                                    return 4 * NUM_BITS_IN_UINT_8;
+                                }
+                            }
+                        }
                     };
 
                     /**
