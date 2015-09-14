@@ -147,17 +147,20 @@ namespace uva {
              * @param str the string to hash
              * @return the resulting hash
              */
-            inline uint32_t computeDjb2Hash(const string & str) {
+            inline uint32_t computeDjb2Hash(const char * data, uint32_t len) {
                 uint32_t hashVal = 5381;
-                int c;
-                const char * c_str = str.c_str();
 
-                while ((c = *c_str++)) {
-                    hashVal = ((hashVal << 5) + hashVal) + c; /* hash * 33 + c */
+                for (std::size_t i = 0; i < len; i++) {
+                    hashVal = ((hashVal << 5) + hashVal) + data[i]; /* hash * 33 + c */
                 }
 
                 return hashVal;
             }
+
+            inline uint32_t computeDjb2Hash(const string & str) {
+                return computeDjb2Hash(str.c_str(), str.length());
+            }
+
 
             /**
              * This is a hash function found online 
@@ -205,11 +208,7 @@ namespace uva {
             }
 
             inline uint64_t computeHash(const char * data, uint32_t len) {
-#ifdef ENVIRONMENT64
-                return computeXXHash64(data, len);
-#else
-                return computeXXHash32(data, len);
-#endif
+                return computeDjb2Hash(data, len);
             }
 
             /**
