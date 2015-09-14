@@ -220,7 +220,7 @@ namespace uva {
                                 p_target[to_byte] |= (p_source[from_byte] & clean_prefix_bits_array[from_bit]);
                             } else {
                                 //Need to shift to the right
-                                num_copied_bits = ( NUM_BITS_IN_UINT_8 - to_bit);
+                                num_copied_bits = (NUM_BITS_IN_UINT_8 - to_bit);
                                 p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) >> (to_bit - from_bit));
                             }
                         }
@@ -305,7 +305,7 @@ namespace uva {
                             << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
 
                     //Compute the position to start copying from
-                    const uint8_t from_pos_byte = ((uint8_t)sizeof(uint32_t) - num_bytes);
+                    const uint8_t from_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
 
                     //Copy the bytes
                     memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
@@ -371,8 +371,8 @@ namespace uva {
                     //The position to start copying from
                     const uint8_t from_pos_byte = 0;
                     //The position to start copying to
-                    const uint8_t to_pos_byte = ((uint8_t)sizeof(uint32_t) - num_bytes);
-                    
+                    const uint8_t to_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
+
                     //Copy the bytes
                     memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
 
@@ -437,13 +437,8 @@ namespace uva {
                     //and once it is extracted the order of bytes will be restored 
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
 
-                    //Compute the position to start copying from
-                    const uint8_t from_pos_bit = 0;
-                    //Compute the position to start copying to
-                    const uint8_t to_pos_bit = BYTES_TO_BITS(BEGIN_BYTE_IDX);
-
-                    //Copy the given number of bits from and to defined targets and positions 
-                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, BYTES_TO_BITS(sizeof (DATA_TYPE)));
+                    //Copy the bytes
+                    memcpy(p_target + BEGIN_BYTE_IDX, p_source, sizeof (DATA_TYPE));
                 }
 
                 /**
@@ -461,13 +456,8 @@ namespace uva {
                     //Convert the id_type storing variable into an array of bytes
                     uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
 
-                    //The position to start copying from
-                    const uint8_t from_pos_bit = BYTES_TO_BITS(BEGIN_BYTE_IDX);
-                    //The position to start copying to
-                    const uint8_t to_pos_bit = 0;
-
-                    //Copy the given number of bits from and to defined targets and positions 
-                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, BYTES_TO_BITS(sizeof (DATA_TYPE)));
+                    //Copy the bytes
+                    memcpy(p_target, p_source + BEGIN_BYTE_IDX, sizeof (DATA_TYPE));
                 }
 
                 /**
