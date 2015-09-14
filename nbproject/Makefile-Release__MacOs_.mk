@@ -42,9 +42,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
+	${OBJECTDIR}/src/CompMGramId.o \
 	${OBJECTDIR}/src/G2DHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
-	${OBJECTDIR}/src/MGrams.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
 	${OBJECTDIR}/src/W2COrderedArrayTrie.o \
@@ -111,6 +111,11 @@ ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
 
+${OBJECTDIR}/src/CompMGramId.o: nbproject/Makefile-${CND_CONF}.mk src/CompMGramId.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CompMGramId.o src/CompMGramId.cpp
+
 ${OBJECTDIR}/src/G2DHashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/G2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -120,11 +125,6 @@ ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
-
-${OBJECTDIR}/src/MGrams.o: nbproject/Makefile-${CND_CONF}.mk src/MGrams.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MGrams.o src/MGrams.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: nbproject/Makefile-${CND_CONF}.mk src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

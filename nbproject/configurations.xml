@@ -16,6 +16,7 @@
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/CompMGramId.hpp</itemPath>
       <itemPath>inc/CountingWordIndex.hpp</itemPath>
       <itemPath>inc/DynamicMemoryArrays.hpp</itemPath>
       <itemPath>inc/Exceptions.hpp</itemPath>
@@ -52,9 +53,9 @@
       <itemPath>src/C2DHashMapTrie.cpp</itemPath>
       <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
       <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
+      <itemPath>src/CompMGramId.cpp</itemPath>
       <itemPath>src/G2DHashMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
-      <itemPath>src/MGrams.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/W2CHybridMemoryTrie.cpp</itemPath>
       <itemPath>src/W2COrderedArrayTrie.cpp</itemPath>
@@ -179,6 +180,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -233,11 +236,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -303,6 +306,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -357,11 +362,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -435,6 +440,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -489,11 +496,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -559,6 +566,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -613,11 +622,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -683,6 +692,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -737,11 +748,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -807,6 +818,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CompMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -861,11 +874,11 @@
       </item>
       <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/CompMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/MGrams.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>

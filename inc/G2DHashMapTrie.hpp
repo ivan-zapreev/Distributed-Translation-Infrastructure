@@ -33,6 +33,7 @@
 #include "ATrie.hpp"
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
+#include "CompMGramId.hpp"
 
 #include "TextPieceReader.hpp"
 
