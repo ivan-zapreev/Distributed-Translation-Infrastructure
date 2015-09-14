@@ -46,6 +46,14 @@ namespace uva {
             //The seed for xxhash
             static const unsigned XXHASH_SEED = 0u;
 
+            inline uint32_t computeXXHash32(const char * data, uint32_t len) {
+                return XXH32(data,len,XXHASH_SEED);
+            }
+
+            inline uint64_t computeXXHash64(const char * data, uint32_t len) {
+                return XXH64(data,len,XXHASH_SEED);
+            }
+            
             /**
              * The string hashing functions: 
              * computePaulHsiehHash - This one showed the worst speed on a test run
