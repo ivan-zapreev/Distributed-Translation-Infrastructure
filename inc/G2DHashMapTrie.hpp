@@ -73,15 +73,14 @@ namespace uva {
 
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                     typedef PAYLOAD_TYPE TPayloadType;
-                }  __attribute__((packed));
+                };
 
                 typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
-                    typename ELEMENT_TYPE::TMGramIdType & ref_id(elem.id);
-                    M_Gram_Id::destroy(ref_id);
+                    M_Gram_Id::destroy(elem.id);
                 };
 
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);
