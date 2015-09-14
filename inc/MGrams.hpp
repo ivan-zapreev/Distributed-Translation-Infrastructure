@@ -114,7 +114,7 @@ namespace uva {
                         }
 
                         //Compute the hash using the gram tokens with spaces with them
-                        return computeRSHash(beginFirstPtr, totalLen);
+                        return computePrimesHash(beginFirstPtr, totalLen);
                     }
 
                     /**

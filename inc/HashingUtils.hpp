@@ -60,7 +60,7 @@ namespace uva {
              * At least the hash based trie performs faster (200 vs 250 CPU seconds)
              * on a 20 Gb model with 100.000.000 queries. So for us XXHASH is not the best.
              */
-            
+
             /**
              * The following is the Paul Hsieh implementation of a string hashing function
              * This one seems to be very efficient in computation time and has good distribution:
@@ -167,14 +167,16 @@ namespace uva {
 #define B 76963 /* another prime */
 #define C 86969 /* yet another prime */
 
-            inline uint32_t computePrimesHash(const string & str) {
+            inline uint32_t computePrimesHash(const char * data, uint32_t len) {
                 uint32_t h = 31 /* also prime */;
-                const char * c_str = str.c_str();
-                while (*c_str) {
-                    h = (h * A) ^ (c_str[0] * B);
-                    c_str++;
+                for (std::size_t i = 0; i < len; i++) {
+                    h = (h * A) ^ (data[i] * B);
                 }
                 return h; // or return h % C;
+            }
+
+            inline uint32_t computePrimesHash(const string & str) {
+                return computePrimesHash(str.c_str(), str.length());
             }
 
             inline uint32_t computeRSHash(const char * data, uint32_t len) {
