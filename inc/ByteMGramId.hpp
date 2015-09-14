@@ -102,8 +102,7 @@ namespace uva {
                 /**
                  * The byte-compressed implementation of the M-gram id class
                  */
-                class Byte_M_Gram_Id {
-                public:
+                struct Byte_M_Gram_Id {
 
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.

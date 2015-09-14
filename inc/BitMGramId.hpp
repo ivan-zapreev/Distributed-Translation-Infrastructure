@@ -50,103 +50,6 @@ namespace uva {
             namespace mgrams {
 
                 namespace __Bit_M_Gram_Id{
-                    inline void create_2_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    inline void create_3_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    inline void create_4_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    inline void create_5_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                }                
-                
-                /**
-                 * The bit-compressed implementation of the M-gram id class
-                 * 
-                 * WARNING: Storing bytes instead of bits does not really have any visible
-                 * impact on memory consumption but has a big impact on performance!
-                 */
-                class Bit_M_Gram_Id {
-                public:
-
-                    /**
-                     * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
-                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
-                     * as needed to store the given id.
-                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed
-                     * theat this instance was created with the one argument constructor of this class allocated
-                     * maximum needed memory for this level. Then the argument M-gram level must be smaller or
-                     * equal to  the level this object was created with.
-                     * @param word_ids the pointer to the array of word ids
-                     * @param begin_idx the M-gram to create the id for
-                     * @param num_word_ids the number of word ids
-                     * @param m_p_gram_id the pointer to the data storage to be initialized
-                     * @return true if the M-gram id could be created, otherwise false
-                     */
-                    static void create_m_gram_id(const TShortId * word_ids,
-                            const uint8_t begin_idx, const uint8_t num_word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-
-                    /**
-                     * The basic constructor that allocates maximum memory
-                     * needed to store the M-gram id of the given level.
-                     * @param level the level of the M-grams this object will store id for.
-                     * @param m_p_gram_id the pointer to initialize
-                     */
-                    static inline void allocate_m_gram_id(const TModelLevel level, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        //Do the sanity check for against overflows
-                        if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
-                            stringstream msg;
-                            msg << "T_Compressed_M_Gram_Id: Unsupported m-gram level: "
-                                    << SSTR(level) << ", must be within ["
-                                    << SSTR(M_GRAM_LEVEL_2) << ", "
-                                    << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
-                            throw Exception(msg.str());
-                        }
-
-                        //Allocate maximum memory that could be needed to store the given M-gram level id
-                        allocate_m_gram_id(M_GRAM_MAX_ID_LEN_BYTES[level], m_p_gram_id);
-                    }
-
-                    /**
-                     * Allows to compare two M-Gram ids of a fixed M-gram level
-                     * @param m_p_gram_id_one the first M-gram id
-                     * @param m_p_gram_id_two the second M-gram id
-                     * @return Negative value if one is smaller than two
-                     *         Zero if one is equal to two
-                     *         Positive value if one is larger than two
-                     */
-                    template<TModelLevel M_GRAM_LEVEL>
-                    static int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
-
-                    /**
-                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                     * @param one the first M-gram to compare
-                     * @param two the second M-gram to compare
-                     * @param level the M-grams' level M
-                     * @return true if the first M-gram is "smaller" than the second, otherwise false
-                     */
-                    static bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
-
-                    /**
-                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                     * @param one the first M-gram to compare
-                     * @param two the second M-gram to compare
-                     * @param level the M-grams' level M
-                     * @return true if the first M-gram is "smaller" than the second, otherwise false
-                     */
-                    static bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
-
-                    /**
-                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                     * @param one the first M-gram to compare
-                     * @param two the second M-gram to compare
-                     * @param level the M-grams' level M
-                     * @return true if the first M-gram is "larger" than the second, otherwise false
-                     */
-                    static bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
-
-                private:
 
                     //The memory in bits needed to store different M-gram id types in
                     //the M-gram id byte arrays
@@ -198,16 +101,92 @@ namespace uva {
                         5 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_5_ID_TYPE_LEN_BITS), // 5 TShortId values for 5 word ids, plus the memory needed to store type
                         6 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_6_ID_TYPE_LEN_BITS) // 6 TShortId values for 6 word ids, plus the memory needed to store type
                     };
+                }                
+                
+                /**
+                 * The bit-compressed implementation of the M-gram id class
+                 * 
+                 * WARNING: Storing bytes instead of bits does not really have any visible
+                 * impact on memory consumption but has a big impact on performance!
+                 */
+                struct Bit_M_Gram_Id {
 
-                    friend inline void __Bit_M_Gram_Id::create_2_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    friend inline void __Bit_M_Gram_Id::create_3_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    friend inline void __Bit_M_Gram_Id::create_4_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
-                    friend inline void __Bit_M_Gram_Id::create_5_gram_id(const TShortId * word_ids,
+                    /**
+                     * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
+                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
+                     * as needed to store the given id.
+                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed
+                     * theat this instance was created with the one argument constructor of this class allocated
+                     * maximum needed memory for this level. Then the argument M-gram level must be smaller or
+                     * equal to  the level this object was created with.
+                     * @param word_ids the pointer to the array of word ids
+                     * @param begin_idx the M-gram to create the id for
+                     * @param num_word_ids the number of word ids
+                     * @param m_p_gram_id the pointer to the data storage to be initialized
+                     * @return true if the M-gram id could be created, otherwise false
+                     */
+                    static void create_m_gram_id(const TShortId * word_ids,
+                            const uint8_t begin_idx, const uint8_t num_word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
+                    /**
+                     * The basic constructor that allocates maximum memory
+                     * needed to store the M-gram id of the given level.
+                     * @param level the level of the M-grams this object will store id for.
+                     * @param m_p_gram_id the pointer to initialize
+                     */
+                    static inline void allocate_m_gram_id(const TModelLevel level, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                        //Do the sanity check for against overflows
+                        if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
+                            stringstream msg;
+                            msg << "T_Compressed_M_Gram_Id: Unsupported m-gram level: "
+                                    << SSTR(level) << ", must be within ["
+                                    << SSTR(M_GRAM_LEVEL_2) << ", "
+                                    << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
+                            throw Exception(msg.str());
+                        }
+
+                        //Allocate maximum memory that could be needed to store the given M-gram level id
+                        allocate_m_gram_id(__Bit_M_Gram_Id::M_GRAM_MAX_ID_LEN_BYTES[level], m_p_gram_id);
+                    }
+
+                    /**
+                     * Allows to compare two M-Gram ids of a fixed M-gram level
+                     * @param m_p_gram_id_one the first M-gram id
+                     * @param m_p_gram_id_two the second M-gram id
+                     * @return Negative value if one is smaller than two
+                     *         Zero if one is equal to two
+                     *         Positive value if one is larger than two
+                     */
+                    template<TModelLevel M_GRAM_LEVEL>
+                    static int compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "smaller" than the second, otherwise false
+                     */
+                    static bool is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "smaller" than the second, otherwise false
+                     */
+                    static bool is_less_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
+
+                    /**
+                     * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                     * @param one the first M-gram to compare
+                     * @param two the second M-gram to compare
+                     * @param level the M-grams' level M
+                     * @return true if the first M-gram is "larger" than the second, otherwise false
+                     */
+                    static bool is_more_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level);
                 };
             }
         }
