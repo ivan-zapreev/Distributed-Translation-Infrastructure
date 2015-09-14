@@ -162,6 +162,11 @@ namespace uva {
                 /**
                  * This structure is needed to store begin and end index to reference pieces of an array
                  * It is used to reference sub-array ranges for the M-gram data for levels 1 < M < N.
+                 * 
+                 * WARNING: It is not possible to get rid of this structure as the contexts are not ordered.
+                 * It is only true that the contexts will be filled one after another, but the context id 
+                 * will not be increased all the time.
+                 * 
                  * @param beginIdx the begin index
                  * @param endIdx the end index
                  */
