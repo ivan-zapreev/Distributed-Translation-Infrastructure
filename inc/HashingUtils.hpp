@@ -207,6 +207,12 @@ namespace uva {
                 return computeRSHash(str.c_str(), str.length());
             }
 
+            /**
+             * The function used to compute hash in the application, uses one of the specific hashing functions above.
+             * @param data the data to hash
+             * @param len the length of the data to hash
+             * @return the resulting hash.
+             */
             inline uint64_t computeHash(const char * data, uint32_t len) {
                 return computeDjb2Hash(data, len);
             }

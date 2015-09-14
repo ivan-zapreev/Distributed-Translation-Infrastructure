@@ -73,7 +73,7 @@ namespace uva {
 
                     typedef M_GRAM_ID_TYPE TMGramIdType;
                     typedef PAYLOAD_TYPE TPayloadType;
-                };
+                }  __attribute__((packed));
 
                 typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
