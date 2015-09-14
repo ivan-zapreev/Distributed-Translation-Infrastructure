@@ -80,7 +80,8 @@ namespace uva {
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
-                    M_Gram_Id::destroy(elem.id);
+                    typename ELEMENT_TYPE::TMGramIdType & ref_id(elem.id);
+                    M_Gram_Id::destroy(ref_id);
                 };
 
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);

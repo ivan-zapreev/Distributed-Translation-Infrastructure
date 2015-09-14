@@ -155,7 +155,8 @@ namespace uva {
                 ATrie<N>::store_m_gram_word_ids(nGram);
 
                 //Create the N-gram id from the word ids
-                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
+                T_M_Gram_Prob_Entry::TMGramIdType & ref_id(data.id);
+                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, ref_id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(nGram) << END_LOG;
 
                 //Set the probability data
