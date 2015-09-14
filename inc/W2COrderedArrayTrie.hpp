@@ -62,7 +62,7 @@ namespace uva {
 
                     //Stores the memory increase strategy object
                     const static MemIncreaseStrategy m_mem_strat;
-                } __attribute__((packed));
+                };
 
                 template<typename PAYLOAD_TYPE>
                 const MemIncreaseStrategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
