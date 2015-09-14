@@ -53,7 +53,7 @@ namespace uva {
                 typedef struct {
                     TShortId id;
                     TProbBackOffEntry data;
-                } TWordIdPBData;
+                } __attribute__((packed)) TWordIdPBData;
 
                 /**
                  * This is the less operator implementation
@@ -77,7 +77,7 @@ namespace uva {
                     TShortId wordId;
                     TShortId ctxId;
                     TLogProbBackOff prob;
-                } TCtxIdProbData;
+                } __attribute__((packed)) TCtxIdProbData;
 
                 /**
                  * This is the compare operator implementation
@@ -245,7 +245,8 @@ namespace uva {
                     m_M_gram_data[mgram_idx][ref.endIdx].id = wordId;
 
                     //Return the reference to the newly allocated element
-                    return m_M_gram_data[mgram_idx][ref.endIdx].data;
+                    TProbBackOffEntry & ref_data(m_M_gram_data[mgram_idx][ref.endIdx].data);
+                    return ref_data;
                 };
 
                 /**
@@ -304,7 +305,8 @@ namespace uva {
                             << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
 
                     //return the reference to the probability
-                    return m_N_gram_data[n_gram_idx].prob;
+                    TLogProbBackOff & ref_prob(m_N_gram_data[n_gram_idx].prob);
+                    return ref_prob;
                 };
 
                 /**
