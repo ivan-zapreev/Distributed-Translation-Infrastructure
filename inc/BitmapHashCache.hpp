@@ -141,7 +141,7 @@ namespace uva {
 
                         uint64_t hash = gram_ptr->sub_hash(begin_idx, end_idx);
 
-                        LOG_DEBUG2 << "The [" << (uint32_t) end_idx << ", " << (uint32_t) begin_idx
+                        LOG_DEBUG2 << "The [" << (uint32_t) begin_idx << ", " << (uint32_t) end_idx
                                 << "] sub M-gram of: " << tokensToString(*gram_ptr) << " hash: "
                                 << hash << END_LOG;
 

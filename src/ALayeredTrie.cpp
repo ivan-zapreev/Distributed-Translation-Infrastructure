@@ -45,7 +45,7 @@ namespace uva {
                 TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
                     REPORT_COLLISION_WARNING(N, gram, wordHash, AWordIndex::UNDEFINED_WORD_ID,
@@ -103,7 +103,7 @@ namespace uva {
                 TProbBackOffEntry& pbData = make_M_GramDataRef(level, wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
@@ -158,7 +158,7 @@ namespace uva {
                 TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pData != ZERO_PROBABILITY_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (pData != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
                     REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,

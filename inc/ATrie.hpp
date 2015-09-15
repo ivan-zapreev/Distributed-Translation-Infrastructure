@@ -232,7 +232,27 @@ namespace uva {
                         store_unk_word_flags();
 
                         //Go on with a recursive procedure of computing the N-Gram probabilities
-                        get_probability(level, result.prob);
+                        //get_probability(level, result.prob);
+
+                        //Compute the probability in the loop fashion, should be faster that recursion.
+                        //Also do not iterate if we already got a zero log probability, from that moment
+                        //on the value can get only smaller, so we can stop with away.
+                        result.prob = ZERO_PROB_WEIGHT;
+                        TModelLevel curr_level = level;
+                        while ((curr_level != 0) && (result.prob > ZERO_LOG_PROB_WEIGHT)) {
+                            //Try to compute the next probability with decreased level
+                            if (cache_check_add_prob_value(curr_level, result.prob)) {
+                                //If the probability has been finally computed stop
+                                break;
+                            } else {
+                                //Decrease the level
+                                curr_level--;
+                                //Get the back_off 
+                                cache_check_add_back_off_weight(curr_level, result.prob);
+                            }
+                        }
+                        //Make the probability to be non smaller than zero
+                        result.prob = max(result.prob, ZERO_LOG_PROB_WEIGHT);
 
                         LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                     }
@@ -263,7 +283,7 @@ namespace uva {
                 TShortId m_tmp_word_ids[N];
                 //Stores the pointer to the queries m-gram
                 const T_M_Gram * m_query_ptr;
-                
+
                 //Stores a flag of whether we should use the birmap hash cache
                 const bool m_is_birmap_hash_cache;
 
@@ -330,15 +350,9 @@ namespace uva {
                 virtual void post_n_grams() {
                 };
 
-                /**
-                 * This function should implement the computation of the
-                 * N-Gram probabilities in the Back-Off Language Model. The
-                 * N-Gram hashes can be obtained from the _wordHashes member
-                 * variable of the class.
-                 * @param level the M-gram level for which the probability is to be computed
-                 * @param prob [out] the reference to the probability to be found/computed
-                 */
-                inline void get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+                bool cache_check_add_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
+                    LOG_DEBUG << "cache_check_add_prob_value(" << level << ") = " << prob << END_LOG;
+                    
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
                     //even if the 1-Gram consists of just an unknown word.
@@ -348,28 +362,85 @@ namespace uva {
                     if ((level == M_GRAM_LEVEL_1) ||
                             ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level)
                             && is_bitmap_hash_cache<false>(level))) {
-                        get_prob_value(level, prob);
+                        //Let's look further, may be we will find something!
+                        LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
+                        return add_prob_value(level, prob);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
                                 << "successful due to the present unk words! "
                                 << "Thus backing off right away!" << END_LOG;
                         //We already know we need to back-off
-                        get_back_off_prob(level - 1, prob);
+                        return false;
+                    }
+                }
+
+                void cache_check_add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
+                    LOG_DEBUG << "cache_check_add_back_off_weight(" << level << ") = " << prob << END_LOG;
+                    
+                    //Try getting the back-off weight.
+                    //1. If the context length is one go on: we can get smth
+                    //even if the 1-Gram consists of just an unknown word.
+                    //2. If the context length is more then one and there is
+                    //an unknown word in the gram then it makes no sense to do
+                    //searching as there are no M-grams with <unk> in them
+                    if ((level == M_GRAM_LEVEL_1) ||
+                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(level)
+                            && is_bitmap_hash_cache<true>(level))) {
+                        //Let's look further, we definitely get some back-off weight or zero!
+                        LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
+                        add_back_off_weight(level, prob);
+                    } else {
+                        LOG_DEBUG << "Could try to back off but it will not be "
+                                << "successful due to the present unk words! Thus "
+                                << "the back-off weight is zero!" << END_LOG;
+                    }
+                }
+
+                /**
+                 * This function should implement the computation of the
+                 * N-Gram probabilities in the Back-Off Language Model. The
+                 * N-Gram hashes can be obtained from the _wordHashes member
+                 * variable of the class.
+                 * @param level the M-gram level for which the probability is to be computed
+                 * @param prob [out] the reference to the probability to be found/computed
+                 */
+                inline void get_probability(const TModelLevel level, TLogProbBackOff & prob) {
+                    //If the probability is not zero then go on with computing the
+                    //back-off. Otherwise it does not make sense to compute further
+                    //as we will only get lower probability and we are already at 0!
+                    if (prob > ZERO_LOG_PROB_WEIGHT) {
+                        //Try getting the probability value.
+                        //1. If the level is one go on: we can get smth
+                        //even if the 1-Gram consists of just an unknown word.
+                        //2. If the context length is more then one and there is
+                        //an unknown word in the gram then it makes no sense to do
+                        //searching as there are no M-grams with <unk> in them
+                        if ((level == M_GRAM_LEVEL_1) ||
+                                ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level)
+                                && is_bitmap_hash_cache<false>(level))) {
+                            get_prob_value(level, prob);
+                        } else {
+                            LOG_DEBUG << "Could try to get probs but it will not be "
+                                    << "successful due to the present unk words! "
+                                    << "Thus backing off right away!" << END_LOG;
+                            //We already know we need to back-off
+                            get_back_off_prob(level - 1, prob);
+                        }
                     }
                 }
 
                 /**
                  * This function should be called in case we can not get the probability for
                  * the given M-gram and we want to compute it's back-off probability instead
-                 * @param next_level the length of the context for the M-gram for which we could
+                 * @param level the length of the context for the M-gram for which we could
                  * not get the probability from the trie.
                  * @param prob [out] the reference to the probability to be found/computed
                  */
-                inline void get_back_off_prob(const TModelLevel next_level, TLogProbBackOff & prob) {
+                inline void get_back_off_prob(const TModelLevel level, TLogProbBackOff & prob) {
                     //Compute the lover level probability
-                    get_probability(next_level, prob);
+                    get_probability(level, prob);
 
-                    LOG_DEBUG1 << "getProbability(" << next_level
+                    LOG_DEBUG1 << "getProbability(" << level
                             << ") = " << prob << END_LOG;
 
                     //If the probability is not zero then go on with computing the
@@ -385,17 +456,17 @@ namespace uva {
                         //2. If the context length is more then one and there is
                         //an unknown word in the gram then it makes no sense to do
                         //searching as there are no M-grams with <unk> in them
-                        if ((next_level == M_GRAM_LEVEL_1) ||
-                                ((next_level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(next_level)
-                                && is_bitmap_hash_cache<true>(next_level))) {
-                            (void) get_back_off_weight(next_level, back_off);
+                        if ((level == M_GRAM_LEVEL_1) ||
+                                ((level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(level)
+                                && is_bitmap_hash_cache<true>(level))) {
+                            (void) get_back_off_weight(level, back_off);
                         } else {
                             LOG_DEBUG << "Could try to back off but it will not be "
                                     << "successful due to the present unk words! Thus "
                                     << "using the zero back-off weight right away!" << END_LOG;
                         }
 
-                        LOG_DEBUG1 << "The " << next_level << " probability = " << back_off
+                        LOG_DEBUG1 << "The " << level << " probability = " << back_off
                                 << " + " << prob << " = " << (back_off + prob) << END_LOG;
 
                         //Do the back-off weight plus the lower level probability,
@@ -425,7 +496,32 @@ namespace uva {
                  */
                 virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off) = 0;
 
+                /**
+                 * This function allows to retrieve the probability stored for the given M-gram level.
+                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * @param level the level of the M-gram we need to compute probability for.
+                 * @param prob the probability variable that is to be increased with the found probability weight
+                 * @return true if the probability for the given M-gram level could be found, otherwise false.
+                 */
+                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
+                    throw Exception("Implement: bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob)");
+                };
+
+                /**
+                 * This function allows to retrieve the back-off stored for the given M-gram level.
+                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * In that case the back-off weight is just zero.
+                 * @param level the level of the M-gram we need to compute probability for.
+                 * @param prob the probability variable that is to be increased with the found back-off weight
+                 */
+                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
+                    throw Exception("Implement: bool add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob)");
+                };
+
             private:
+
                 //Stores the unknown word masks for the probability computations,
                 //up to and including 8-grams:
                 // 00000000, 00000001, 00000011, 00000111, 00001111,
@@ -436,7 +532,7 @@ namespace uva {
                 // 00000000, 00000010, 00000110, 00001110,
                 // 00011110, 00111110, 01111110, 11111110
                 static const uint8_t BACK_OFF_UNK_MASKS[];
-                
+
                 //Unknown word bits
                 uint8_t m_unk_word_flags;
 
