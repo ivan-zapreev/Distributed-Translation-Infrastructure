@@ -89,7 +89,7 @@ namespace uva {
                             m_num_elems = num_elems;
                             size_t num_bytes = NUM_BYTES_4_BITS(m_num_elems);
                             
-                            LOG_USAGE << "Pre-allocating: " << m_num_elems
+                            LOG_DEBUG2 << "Pre-allocating: " << m_num_elems
                                     << " elements, that is " << num_bytes
                                     << " bytes." << END_LOG;
                             
