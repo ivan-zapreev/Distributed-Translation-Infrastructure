@@ -95,11 +95,11 @@ namespace uva {
                     //number of word_ids in the M-gram and their max size in bytes.
                     static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
                         0, 0,
-                        2 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_2_ID_TYPE_LEN_BITS), // 2 TShortId values for 2 word ids, plus the memory needed to store type
-                        3 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_3_ID_TYPE_LEN_BITS), // 3 TShortId values for 3 word ids, plus the memory needed to store type
-                        4 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_4_ID_TYPE_LEN_BITS), // 4 TShortId values for 4 word ids, plus the memory needed to store type
-                        5 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_5_ID_TYPE_LEN_BITS), // 5 TShortId values for 5 word ids, plus the memory needed to store type
-                        6 * sizeof (TShortId) + NUM_BITS_TO_STORE_BYTES(M_GRAM_6_ID_TYPE_LEN_BITS) // 6 TShortId values for 6 word ids, plus the memory needed to store type
+                        2 * sizeof (TShortId) + NUM_BYTES_4_BITS(M_GRAM_2_ID_TYPE_LEN_BITS), // 2 TShortId values for 2 word ids, plus the memory needed to store type
+                        3 * sizeof (TShortId) + NUM_BYTES_4_BITS(M_GRAM_3_ID_TYPE_LEN_BITS), // 3 TShortId values for 3 word ids, plus the memory needed to store type
+                        4 * sizeof (TShortId) + NUM_BYTES_4_BITS(M_GRAM_4_ID_TYPE_LEN_BITS), // 4 TShortId values for 4 word ids, plus the memory needed to store type
+                        5 * sizeof (TShortId) + NUM_BYTES_4_BITS(M_GRAM_5_ID_TYPE_LEN_BITS), // 5 TShortId values for 5 word ids, plus the memory needed to store type
+                        6 * sizeof (TShortId) + NUM_BYTES_4_BITS(M_GRAM_6_ID_TYPE_LEN_BITS) // 6 TShortId values for 6 word ids, plus the memory needed to store type
                     };
                 }                
                 

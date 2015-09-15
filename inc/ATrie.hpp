@@ -36,10 +36,12 @@
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
+#include "BitmapHashCache.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::caching;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::mgrams;
 using namespace uva::utils::math::bits;
@@ -98,9 +100,18 @@ namespace uva {
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
+                 * @param is_birmap_hash_cache - allows to enable the bitmap hash cache for the M-grams.
+                 * the latter records the hashes of all the M-gram present in the tries and then before
+                 * querying checks if the hash of the queries M-gram is present if not then we do an
+                 * immediate back-off, otherwise we search for the M-gram. This is an experimental feature
+                 * therefore it the parameter's default is false. Also this feature is to be used with
+                 * the multi-level context index tries which require a lot of searching when looking
+                 * for an M-gram.
                  */
-                explicit ATrie(AWordIndex * _pWordIndex)
-                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL), m_unk_word_flags(0) {
+                explicit ATrie(AWordIndex * _pWordIndex, bool is_birmap_hash_cache = false)
+                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL),
+                m_is_birmap_hash_cache(is_birmap_hash_cache),
+                m_unk_word_flags(0) {
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
@@ -116,28 +127,47 @@ namespace uva {
                         m_word_index_ptr->reserve(counts[0]);
                         Logger::updateProgressBar();
                     }
+
+                    //Pre-allocate the bitmap-hash caches if needed
+                    if (m_is_birmap_hash_cache) {
+                        for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
+                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
+                        }
+                    }
                 };
+
+                /**
+                 * Is to be used from the sub-classes from the add_X_gram methods.
+                 * This method allows to register the given M-gram in internal high
+                 * level caches if present.
+                 * @param gram the M-gram to cache
+                 */
+                inline void register_m_gram_cache(const T_M_Gram &gram) {
+                    if (m_is_birmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[gram.level - MGRAM_IDX_OFFSET].add_m_gram(gram);
+                    }
+                }
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @param oGram the 1-Gram data
+                 * @param gram the 1-Gram data
                  */
-                virtual void add_1_gram(const T_M_Gram &oGram) = 0;
+                virtual void add_1_gram(const T_M_Gram &gram) = 0;
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * @param mGram the M-Gram data
+                 * @param gram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void add_m_gram(const T_M_Gram &mGram) = 0;
+                virtual void add_m_gram(const T_M_Gram & gram) = 0;
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
-                 * @param nGram the N-Gram data
+                 * @param gram the N-Gram data
                  */
-                virtual void add_n_gram(const T_M_Gram &nGram) = 0;
+                virtual void add_n_gram(const T_M_Gram & gram) = 0;
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -233,6 +263,9 @@ namespace uva {
                 TShortId m_tmp_word_ids[N];
                 //Stores the pointer to the queries m-gram
                 const T_M_Gram * m_query_ptr;
+                
+                //Stores a flag of whether we should use the birmap hash cache
+                const bool m_is_birmap_hash_cache;
 
                 /**
                  * Gets the word hash for the end word of the back-off M-Gram
@@ -313,7 +346,8 @@ namespace uva {
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
                     if ((level == M_GRAM_LEVEL_1) ||
-                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level))) {
+                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level)
+                            && is_bitmap_hash_cache<false>(level))) {
                         get_prob_value(level, prob);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
@@ -352,7 +386,8 @@ namespace uva {
                         //an unknown word in the gram then it makes no sense to do
                         //searching as there are no M-grams with <unk> in them
                         if ((next_level == M_GRAM_LEVEL_1) ||
-                                ((next_level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(next_level))) {
+                                ((next_level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(next_level)
+                                && is_bitmap_hash_cache<true>(next_level))) {
                             (void) get_back_off_weight(next_level, back_off);
                         } else {
                             LOG_DEBUG << "Could try to back off but it will not be "
@@ -401,8 +436,12 @@ namespace uva {
                 // 00000000, 00000010, 00000110, 00001110,
                 // 00011110, 00111110, 01111110, 11111110
                 static const uint8_t BACK_OFF_UNK_MASKS[];
+                
                 //Unknown word bits
                 uint8_t m_unk_word_flags;
+
+                //Stores the bitmap hash caches per M-gram level
+                BitmapHashCache m_bitmap_hash_cach[NUM_M_N_GRAM_LEVELS];
 
                 /**
                  * Has to be called after the method that stores the query word ids.
@@ -431,6 +470,21 @@ namespace uva {
 
                     LOG_DEBUG << "The query unknown word flags are: "
                             << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
+                }
+
+                /**
+                 * Allows to check if the given sub-m-gram contains an unknown word
+                 * @param level of the considered M-gram
+                 * @return true if the unknown word is present, otherwise false
+                 */
+                template<bool is_back_off>
+                inline bool is_bitmap_hash_cache(const TModelLevel level) {
+                    if (m_is_birmap_hash_cache) {
+                        BitmapHashCache & ref = m_bitmap_hash_cach[level - MGRAM_IDX_OFFSET];
+                        return ref.is_m_gram<is_back_off>(this->m_query_ptr, level);
+                    } else {
+                        return true;
+                    }
                 }
 
                 /**

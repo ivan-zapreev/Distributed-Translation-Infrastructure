@@ -100,7 +100,7 @@ namespace uva {
                 //Computes the number of remaining bits if converted to bytes in n bits
 #define NUM_BITS_REMAINDER(number_of_bits) ((number_of_bits) % NUM_BITS_IN_UINT_8)
                 //Computes the whole number of bytes needed to store the given amount of bits
-#define NUM_BITS_TO_STORE_BYTES(number_of_bits) (((number_of_bits) + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8)
+#define NUM_BYTES_4_BITS(number_of_bits) (((number_of_bits) + (NUM_BITS_IN_UINT_8 - 1)) / NUM_BITS_IN_UINT_8)
                 //Allows to convert the number of bytes into the number of bits
 #define BYTES_TO_BITS(number_of_bytes) ((number_of_bytes) * NUM_BITS_IN_UINT_8)
 
@@ -109,7 +109,7 @@ namespace uva {
                  * The array is ordered as if the bits would have a reversed order, this is
                  * needed as we treat them as an array, so we inverse the bit index
                  */
-                static uint8_t copy_bits_array[] = {
+                static constexpr uint8_t ON_BIT_ARRAY[] = {
                     0x00000080, 0x00000040, 0x00000020, 0x00000010,
                     0x00000008, 0x00000004, 0x00000002, 0x00000001
                 };
@@ -125,12 +125,12 @@ namespace uva {
                     LOG_DEBUG4 << "Source bits: " << bitset<NUM_BITS_IN_UINT_8>(source) << END_LOG;
                     LOG_DEBUG4 << "Target bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
 
-                    if (source & copy_bits_array[sbit_idx]) {
+                    if (source & ON_BIT_ARRAY[sbit_idx]) {
                         LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is ON" << END_LOG;
-                        target |= copy_bits_array[tbit_idx];
+                        target |= ON_BIT_ARRAY[tbit_idx];
                     } else {
                         LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is OFF" << END_LOG;
-                        target &= ~copy_bits_array[tbit_idx];
+                        target &= ~ON_BIT_ARRAY[tbit_idx];
                     }
 
                     LOG_DEBUG4 << "Result bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;

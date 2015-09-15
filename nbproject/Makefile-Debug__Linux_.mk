@@ -39,20 +39,22 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/AWordIndex.o \
+	${OBJECTDIR}/src/BitMGramId.o \
+	${OBJECTDIR}/src/ByteMGramId.o \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
 	${OBJECTDIR}/src/G2DHashMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
-	${OBJECTDIR}/src/MGrams.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
 	${OBJECTDIR}/src/W2COrderedArrayTrie.o \
-	${OBJECTDIR}/src/main.o
+	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/xxhash.o
 
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-march=native -Wall -Werror
 
 # CC Compiler Flags
 CCFLAGS=-O0 -g -std=c++0x -lrt -m64 -pg -Wall -Werror
@@ -95,6 +97,16 @@ ${OBJECTDIR}/src/AWordIndex.o: src/AWordIndex.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
 
+${OBJECTDIR}/src/BitMGramId.o: src/BitMGramId.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BitMGramId.o src/BitMGramId.cpp
+
+${OBJECTDIR}/src/ByteMGramId.o: src/ByteMGramId.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
+
 ${OBJECTDIR}/src/C2DHashMapTrie.o: src/C2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -120,11 +132,6 @@ ${OBJECTDIR}/src/Logger.o: src/Logger.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
-${OBJECTDIR}/src/MGrams.o: src/MGrams.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/MGrams.o src/MGrams.cpp
-
 ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -144,6 +151,11 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+
+${OBJECTDIR}/src/xxhash.o: src/xxhash.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/xxhash.o src/xxhash.c
 
 # Subprojects
 .build-subprojects:

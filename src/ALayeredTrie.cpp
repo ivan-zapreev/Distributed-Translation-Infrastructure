@@ -33,9 +33,9 @@ namespace uva {
         namespace tries {
 
             template<TModelLevel N>
-            void ALayeredTrie<N>::add_1_gram(const T_M_Gram &oGram) {
+            void ALayeredTrie<N>::add_1_gram(const T_M_Gram &gram) {
                 //First get the token/word from the 1-Gram
-                const TextPieceReader & token = oGram.tokens[0];
+                const TextPieceReader & token = gram.tokens[0];
 
                 LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
@@ -48,47 +48,52 @@ namespace uva {
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(N, oGram, wordHash, AWordIndex::UNDEFINED_WORD_ID,
+                    REPORT_COLLISION_WARNING(N, gram, wordHash, AWordIndex::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
-                            oGram.prob, oGram.back_off);
+                            gram.prob, gram.back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
-                pbData.prob = oGram.prob;
-                pbData.back_off = oGram.back_off;
+                pbData.prob = gram.prob;
+                pbData.back_off = gram.back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(oGram) << " wordHash = "
+                        << tokensToString<N>(gram) << " wordHash = "
                         << wordHash << END_LOG;
             };
 
             template<TModelLevel N>
-            void ALayeredTrie<N>::add_m_gram(const T_M_Gram &mGram) {
-                const TModelLevel level = mGram.level;
+            void ALayeredTrie<N>::add_m_gram(const T_M_Gram &gram) {
+                if (ATrie<N>::m_is_birmap_hash_cache) {
+                    //Call the super class first, is needed for caching
+                    ATrie<N>::register_m_gram_cache(gram);
+                }
+
+                const TModelLevel level = gram.level;
                 LOG_DEBUG << "Adding a " << SSTR(level) << "-Gram "
-                        << tokensToString<N>(mGram) << " to the Trie" << END_LOG;
+                        << tokensToString<N>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId;
-                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(mGram, ctxId);
+                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(mGram);
+                    msg << "Could not get ctxId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
                 }
 
                 // 2. Compute the hash of w4
-                const TextPieceReader & endWord = mGram.tokens[level - 1];
+                const TextPieceReader & endWord = gram.tokens[level - 1];
                 TShortId wordId;
                 isFound = ATrie<N>::get_word_index()->get_word_id(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(mGram);
+                    msg << "Could not get end wordId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
                 }
 
@@ -100,48 +105,53 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(N, mGram, wordId, ctxId,
+                    REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
-                            mGram.prob, mGram.back_off);
+                            gram.prob, gram.back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
-                pbData.prob = mGram.prob;
-                pbData.back_off = mGram.back_off;
+                pbData.prob = gram.prob;
+                pbData.back_off = gram.back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(mGram) << " contextHash = "
+                        << tokensToString<N>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
             template<TModelLevel N>
-            void ALayeredTrie<N>::add_n_gram(const T_M_Gram &nGram) {
-                LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(nGram) << " to the Trie" << END_LOG;
+            void ALayeredTrie<N>::add_n_gram(const T_M_Gram &gram) {
+                if (ATrie<N>::m_is_birmap_hash_cache) {
+                    //Call the super class first, is needed for caching
+                    ATrie<N>::register_m_gram_cache(gram);
+                }
+
+                LOG_DEBUG << "Adding a " << N << "-Gram " << tokensToString<N>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId;
-                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(nGram, ctxId);
+                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(nGram);
+                    msg << "Could not get ctxId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
                 }
 
                 // 2. Compute the hash of w4
-                const TextPieceReader & endWord = nGram.tokens[N - 1];
+                const TextPieceReader & endWord = gram.tokens[N - 1];
                 TShortId wordId;
                 isFound = ATrie<N>::get_word_index()->get_word_id(endWord.str(), wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(nGram);
+                    msg << "Could not get end wordId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
                 }
-                
+
                 LOG_DEBUG2 << "wordId = computeId('" << endWord << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
@@ -151,16 +161,16 @@ namespace uva {
                 if (DO_SANITY_CHECKS && (pData != ZERO_PROBABILITY_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(N, nGram, wordId, ctxId,
+                    REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,
                             pData, UNDEF_LOG_PROB_WEIGHT,
-                            nGram.prob, UNDEF_LOG_PROB_WEIGHT);
+                            gram.prob, UNDEF_LOG_PROB_WEIGHT);
                 }
 
                 //Set/Update the probability
-                pData = nGram.prob;
+                pData = gram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokensToString<N>(nGram) << " contextHash = "
+                        << tokensToString<N>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 

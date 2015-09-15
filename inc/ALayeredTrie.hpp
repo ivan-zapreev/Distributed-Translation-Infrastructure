@@ -75,17 +75,24 @@ namespace uva {
              * The purpose of having this as a template class is performance optimization.
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
-            template<TModelLevel N>
+            template<TModelLevel N >
             class ALayeredTrie : public ATrie<N> {
             public:
 
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
+                 * @param IS_BITMAP_HASH_CACHE - allows to enable the bitmap hash cache for the M-grams.
+                 * the latter records the hashes of all the M-gram present in the tries and then before
+                 * querying checks if the hash of the queries M-gram is present if not then we do an
+                 * immediate back-off, otherwise we search for the M-gram. This is an experimental feature
+                 * therefore it the parameter's default is false. Also this feature is to be used with
+                 * the multi-level context index tries which require a lot of searching when looking
+                 * for an M-gram.
                  */
                 explicit ALayeredTrie(AWordIndex * const _pWordIndex,
-                        TGetCtxIdFunct get_ctx_id_func)
-                : ATrie<N>(_pWordIndex),
+                        TGetCtxIdFunct get_ctx_id_func, bool m_is_birmap_hash_cache = true)
+                : ATrie<N>(_pWordIndex, m_is_birmap_hash_cache),
                 m_get_ctx_id_func(get_ctx_id_func),
                 m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
                 m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
@@ -104,23 +111,23 @@ namespace uva {
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @param oGram the 1-Gram data
+                 * @param gram the 1-Gram data
                  */
-                virtual void add_1_gram(const T_M_Gram &oGram);
+                virtual void add_1_gram(const T_M_Gram &gram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * @param mGram the M-Gram data
+                 * @param gram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                virtual void add_m_gram(const T_M_Gram &mGram);
+                virtual void add_m_gram(const T_M_Gram &gram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
-                 * @param nGram the N-Gram data
+                 * @param gram the N-Gram data
                  */
-                virtual void add_n_gram(const T_M_Gram &nGram);
+                virtual void add_n_gram(const T_M_Gram &gram);
 
                 /**
                  * The basic class destructor

@@ -169,7 +169,7 @@ namespace uva {
                         LOG_USAGE << "ID_TYPE_LEN_BITS: " << SSTR((uint32_t) ID_TYPE_LEN_BITS)
                                 << ", Total id_len_bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
 
-                        len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
+                        len_bytes = NUM_BYTES_4_BITS(id_len_bits);
                     };
 
                     /**
@@ -244,7 +244,7 @@ namespace uva {
                         LOG_USAGE << "Total len. in bits: " << SSTR((uint32_t) id_len_bits) << END_LOG;
 
                         //Determine the size of id in bytes, divide with rounding up
-                        const uint8_t id_len_bytes = NUM_BITS_TO_STORE_BYTES(id_len_bits);
+                        const uint8_t id_len_bytes = NUM_BYTES_4_BITS(id_len_bits);
 
                         LOG_USAGE << "Total len. in bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
