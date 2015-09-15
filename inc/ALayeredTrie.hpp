@@ -94,13 +94,14 @@ namespace uva {
                         TGetCtxIdFunct get_ctx_id_func, bool m_is_birmap_hash_cache = true)
                 : ATrie<N>(_pWordIndex, m_is_birmap_hash_cache),
                 m_get_ctx_id_func(get_ctx_id_func),
-                m_chached_ctx(m_context_c_str, MAX_N_GRAM_STRING_LENGTH),
                 m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
+                    //WARNING: Set the data explicitly!
+                    m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
 
-                    //This one is needed for having a proper non-null word index pointer.
+                            //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
                         msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
