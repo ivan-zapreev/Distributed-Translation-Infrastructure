@@ -14,6 +14,7 @@
       <itemPath>inc/ArrayUtils.hpp</itemPath>
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/BitMGramId.hpp</itemPath>
+      <itemPath>inc/BitmapHashCache.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>

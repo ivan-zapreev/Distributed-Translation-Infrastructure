@@ -43,6 +43,81 @@ namespace uva {
     namespace smt {
         namespace hashing {
 
+            /*****************************************************************************************************/
+            /***********From https://code.google.com/p/hashfunctions/source/browse/trunk/FNVHash32.h?r=28*********/
+            /*****************************************************************************************************/
+
+            inline uint32_t hash32(uint32_t key) {
+                uint8_t* bytes = (uint8_t*) (&key);
+                uint32_t hash = 2166136261U;
+                hash = (16777619U * hash) ^ bytes[0];
+                hash = (16777619U * hash) ^ bytes[1];
+                hash = (16777619U * hash) ^ bytes[2];
+                hash = (16777619U * hash) ^ bytes[3];
+                return hash;
+            }
+
+            inline uint64_t hash64(uint64_t key) {
+                uint8_t* bytes = (uint8_t*) (&key);
+                uint32_t hash = 2166136261U;
+                hash = (16777619U * hash) ^ bytes[0];
+                hash = (16777619U * hash) ^ bytes[1];
+                hash = (16777619U * hash) ^ bytes[2];
+                hash = (16777619U * hash) ^ bytes[3];
+                hash = (16777619U * hash) ^ bytes[4];
+                hash = (16777619U * hash) ^ bytes[5];
+                hash = (16777619U * hash) ^ bytes[6];
+                hash = (16777619U * hash) ^ bytes[7];
+                return hash;
+            }
+
+            inline uint32_t hashStr(const char* data, int len) {
+                uint32_t hash = 2166136261U;
+                for (int32_t i = 0; i != len; i++) {
+                    hash = (16777619U * hash) ^ (uint8_t) (data[i]);
+                }
+                return hash;
+            }
+
+            /*****************************************************************************************************/
+            /***********From: http://www.boost.org/doc/libs/1_38_0/libs/unordered/examples/fnv1.hpp***************/
+            /*****************************************************************************************************/
+
+#ifdef ENVIRONMENT64
+            // For 32 bit machines:
+            const std::size_t fnv_prime = 16777619u;
+            const std::size_t fnv_offset_basis = 2166136261u;
+#else
+            // For 64 bit machines:
+            const std::size_t fnv_prime = 1099511628211u;
+            const std::size_t fnv_offset_basis = 14695981039346656037u;
+#endif
+
+            template <std::size_t FnvPrime, std::size_t OffsetBasis>
+            inline uint32_t basic_fnv_1(const char * data, uint32_t len) {
+                uint32_t hash = OffsetBasis;
+                for (size_t idx = 0; idx != len; ++idx) {
+                    hash *= FnvPrime;
+                    hash ^= data[idx];
+                }
+                return hash;
+            };
+
+            template <std::size_t FnvPrime, std::size_t OffsetBasis>
+            inline uint32_t basic_fnv_1a(const char * data, uint32_t len) {
+                uint32_t hash = OffsetBasis;
+                for (size_t idx = 0; idx != len; ++idx) {
+                    hash ^= data[idx];
+                    hash *= FnvPrime;
+                }
+                return hash;
+            };
+
+            template uint32_t basic_fnv_1<fnv_prime, fnv_offset_basis>(const char * data, uint32_t len);
+            template uint32_t basic_fnv_1a<fnv_prime, fnv_offset_basis>(const char * data, uint32_t len);
+
+            /*****************************************************************************************************/
+
             //The seed for xxhash
             static const unsigned XXHASH_SEED = 0u;
 
@@ -53,6 +128,8 @@ namespace uva {
             inline uint64_t computeXXHash64(const char * data, uint32_t len) {
                 return XXH64(data, len, XXHASH_SEED);
             }
+
+            /*****************************************************************************************************/
 
             /**
              * The string hashing functions: 
@@ -95,7 +172,7 @@ namespace uva {
                 len >>= 2;
 
                 /* Main loop */
-                for (; len > 0; len--) {
+                for (; len != 0; len--) {
                     hash += get16bits(data);
                     tmp = (get16bits(data + 2) << 11) ^ hash;
                     hash = (hash << 16) ^ tmp;
@@ -139,6 +216,8 @@ namespace uva {
                 return computePaulHsiehHash(str.c_str(), str.length());
             }
 
+            /*****************************************************************************************************/
+
             /**
              * This is one of the best known hashing function algorithms (djb2) for the C 
              * strings as reported and described in http://www.cse.yorku.ca/~oz/hash.html
@@ -150,7 +229,7 @@ namespace uva {
             inline uint32_t computeDjb2Hash(const char * data, uint32_t len) {
                 uint32_t hashVal = 5381;
 
-                for (std::size_t i = 0; i < len; i++) {
+                for (std::size_t i = 0; i != len; i++) {
                     hashVal = ((hashVal << 5) + hashVal) + data[i]; /* hash * 33 + c */
                 }
 
@@ -161,6 +240,7 @@ namespace uva {
                 return computeDjb2Hash(str.c_str(), str.length());
             }
 
+            /*****************************************************************************************************/
 
             /**
              * This is a hash function found online 
@@ -180,7 +260,7 @@ namespace uva {
 
             inline uint32_t computePrimesHash(const char * data, uint32_t len) {
                 uint32_t h = 31 /* also prime */;
-                for (std::size_t i = 0; i < len; i++) {
+                for (std::size_t i = 0; i != len; i++) {
                     h = (h * A) ^ (data[i] * B);
                 }
                 return h; // or return h % C;
@@ -190,12 +270,14 @@ namespace uva {
                 return computePrimesHash(str.c_str(), str.length());
             }
 
+            /*****************************************************************************************************/
+
             inline uint32_t computeRSHash(const char * data, uint32_t len) {
                 uint32_t b = 378551;
                 uint32_t a = 63689;
                 uint32_t hash = 0;
 
-                for (std::size_t i = 0; i < len; i++) {
+                for (std::size_t i = 0; i != len; i++) {
                     hash = hash * a + data[i];
                     a = a * b;
                 }
@@ -207,6 +289,8 @@ namespace uva {
                 return computeRSHash(str.c_str(), str.length());
             }
 
+            /*****************************************************************************************************/
+
             /**
              * The function used to compute hash in the application, uses one of the specific hashing functions above.
              * @param data the data to hash
@@ -216,6 +300,8 @@ namespace uva {
             inline uint64_t computeHash(const char * data, uint32_t len) {
                 return computeDjb2Hash(data, len);
             }
+
+            /*****************************************************************************************************/
 
             /**
              * This function will combine two word references to get one hash map
