@@ -115,6 +115,7 @@ namespace uva {
                     m_beginPtr = static_cast<const char *> (beginPtr);
                     m_len = len;
                     m_is_gen_str = true;
+                    LOG_USAGE << "Re-setting the string: " << m_str << END_LOG;
                     m_str.clear();
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
