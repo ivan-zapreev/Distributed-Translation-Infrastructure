@@ -54,6 +54,14 @@ CND_ARTIFACT_PATH_Debug__Centos_=dist/Debug__Centos_/back-off-language-model-smt
 CND_PACKAGE_DIR_Debug__Centos_=dist/Debug__Centos_/GNU-MacOSX/package
 CND_PACKAGE_NAME_Debug__Centos_=back-off-language-model-smt.tar
 CND_PACKAGE_PATH_Debug__Centos_=dist/Debug__Centos_/GNU-MacOSX/package/back-off-language-model-smt.tar
+# Profile__Centos_ configuration
+CND_PLATFORM_Profile__Centos_=GNU-MacOSX
+CND_ARTIFACT_DIR_Profile__Centos_=dist/Profile__Centos_
+CND_ARTIFACT_NAME_Profile__Centos_=back-off-language-model-smt
+CND_ARTIFACT_PATH_Profile__Centos_=dist/Profile__Centos_/back-off-language-model-smt
+CND_PACKAGE_DIR_Profile__Centos_=dist/Profile__Centos_/GNU-MacOSX/package
+CND_PACKAGE_NAME_Profile__Centos_=back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Profile__Centos_=dist/Profile__Centos_/GNU-MacOSX/package/back-off-language-model-smt.tar
 #
 # include compiler specific variables
 #

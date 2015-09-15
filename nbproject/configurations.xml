@@ -179,8 +179,6 @@
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -310,8 +308,6 @@
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -451,8 +447,6 @@
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -582,8 +576,6 @@
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -715,8 +707,6 @@
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -847,7 +837,135 @@
       </item>
       <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitmapHashCache.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Exceptions.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Globals.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryAllocator.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/xxhash.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/xxhash.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Profile__Centos_" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>inc</pElem>
+          </incDir>
+          <commandLine>-march=native -Wall -Werror</commandLine>
+        </cTool>
+        <ccTool>
+          <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
+          <incDir>
+            <pElem>inc</pElem>
+          </incDir>
+          <commandLine>-std=c++0x -lrt -m64 -pg -O2</commandLine>
+          <warningLevel>3</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
+          <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
+          <commandLine>-std=c++0x -lrt -m64 -pg -O2</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPAGramBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPAGramBuilderFactory.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ARPATrieBuilder.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ATrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
