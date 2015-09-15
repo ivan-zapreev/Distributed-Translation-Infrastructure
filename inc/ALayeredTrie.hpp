@@ -395,7 +395,7 @@ namespace uva {
                  * @param result
                  */
                 inline void setCacheContextId(const T_M_Gram &mGram, TLongId & stx_id) {
-                    LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
+                    LOG_USAGE << "Caching context = [ " << mGram.context << " ], id = " << stx_id
                             << ", for m-gram: " << tokensToString<N>(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);

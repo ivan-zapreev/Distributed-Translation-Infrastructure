@@ -90,6 +90,7 @@ namespace uva {
                  */
                 explicit TextPieceReader(void * beginPtr, const size_t len)
                 : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
+                    LOG_USAGE << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     set(beginPtr, len);
                 }
 
@@ -115,7 +116,6 @@ namespace uva {
                     m_beginPtr = static_cast<const char *> (beginPtr);
                     m_len = len;
                     m_is_gen_str = true;
-                    LOG_USAGE << "Re-setting the string: " << m_str << END_LOG;
                     m_str.clear();
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
