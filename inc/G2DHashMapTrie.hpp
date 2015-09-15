@@ -185,11 +185,11 @@ namespace uva {
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
-                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob);
+                virtual bool get_prob_weight(const TModelLevel level, TLogProbBackOff & prob);
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.

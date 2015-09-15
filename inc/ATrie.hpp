@@ -235,24 +235,28 @@ namespace uva {
                         //get_probability(level, result.prob);
 
                         //Compute the probability in the loop fashion, should be faster that recursion.
-                        //Also do not iterate if we already got a zero log probability, from that moment
-                        //on the value can get only smaller, so we can stop with away.
-                        result.prob = ZERO_PROB_WEIGHT;
                         TModelLevel curr_level = level;
-                        while ((curr_level != 0) && (result.prob > ZERO_LOG_PROB_WEIGHT)) {
+                        while (!DO_SANITY_CHECKS || (curr_level != 0)) {
                             //Try to compute the next probability with decreased level
-                            if (cache_check_add_prob_value(curr_level, result.prob)) {
+                            if (cache_check_get_prob_weight(curr_level, result.prob)) {
                                 //If the probability has been finally computed stop
                                 break;
-                            } else {
-                                //Decrease the level
-                                curr_level--;
+                            }
+                            //Decrease the level
+                            curr_level--;
+                        }
+
+                        //If the probability is log-zero or snaller then there is no
+                        //need for a back-off as then we will only get smaller values.
+                        if (result.prob > ZERO_LOG_PROB_WEIGHT) {
+                            //If the curr_level is smaller than the original level then
+                            //it means that we needed to back-off, add back-off weights
+                            for (; curr_level < level; ++curr_level) {
                                 //Get the back_off 
                                 cache_check_add_back_off_weight(curr_level, result.prob);
                             }
                         }
-                        //Make the probability to be non smaller than zero
-                        result.prob = max(result.prob, ZERO_LOG_PROB_WEIGHT);
+
 
                         LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
                     }
@@ -350,9 +354,16 @@ namespace uva {
                 virtual void post_n_grams() {
                 };
 
-                bool cache_check_add_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
+                /**
+                 * Allows to get the probability value also by checking the cache.
+                 * If the probability is not found then the prob value is to stay intact!
+                 * @param level the M-gram level to get the probability for 
+                 * @param prob the probability to be filled in
+                 * @return true if the probability has been found, otherwise false
+                 */
+                bool cache_check_get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
                     LOG_DEBUG << "cache_check_add_prob_value(" << level << ") = " << prob << END_LOG;
-                    
+
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
                     //even if the 1-Gram consists of just an unknown word.
@@ -364,7 +375,7 @@ namespace uva {
                             && is_bitmap_hash_cache<false>(level))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        return add_prob_value(level, prob);
+                        return get_prob_weight(level, prob);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
                                 << "successful due to the present unk words! "
@@ -374,9 +385,16 @@ namespace uva {
                     }
                 }
 
+                /**
+                 * Allows to get the back-off weight value also by checking the cache.
+                 * If the back-off is not found then the probability value is to stay intact.
+                 * Then the back-off weight is considered to be zero!
+                 * @param level the M-gram level to get the back-off weight for 
+                 * @param prob the probability to be added by the found back-off weight
+                 */
                 void cache_check_add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
                     LOG_DEBUG << "cache_check_add_back_off_weight(" << level << ") = " << prob << END_LOG;
-                    
+
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
                     //even if the 1-Gram consists of just an unknown word.
@@ -498,13 +516,13 @@ namespace uva {
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @param level the level of the M-gram we need to compute probability for.
                  * @param prob the probability variable that is to be increased with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob) = 0;
+                virtual bool get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.

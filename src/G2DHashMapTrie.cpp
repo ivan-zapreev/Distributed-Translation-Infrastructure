@@ -345,7 +345,7 @@ namespace uva {
             }
 
             template<TModelLevel N>
-            bool G2DMapTrie<N>::add_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
+            bool G2DMapTrie<N>::get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
                 LOG_DEBUG << "Computing probability for a " << level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
@@ -372,7 +372,7 @@ namespace uva {
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_payload_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
-                            prob += *payload_ptr;
+                            prob = *payload_ptr;
                             LOG_DEBUG << "The N-gram is found, prob: " << prob << END_LOG;
                             return true;
                         } else {
@@ -388,7 +388,7 @@ namespace uva {
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_payload_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
-                            prob += payload_ptr->prob;
+                            prob = payload_ptr->prob;
                             LOG_DEBUG << "The " << level << "-gram is found, prob: " << prob << END_LOG;
                             return true;
                         } else {
@@ -399,7 +399,7 @@ namespace uva {
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    prob += m_1_gram_data[ATrie<N>::get_end_word_id()].prob;
+                    prob = m_1_gram_data[ATrie<N>::get_end_word_id()].prob;
                     LOG_DEBUG << "Getting the " << level << "-gram prob: " << prob << END_LOG;
                     return true;
                 }
