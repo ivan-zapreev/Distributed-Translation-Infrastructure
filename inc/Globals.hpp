@@ -134,6 +134,17 @@ namespace uva {
                 };
             }
             using namespace dictionary;
+            
+            namespace __BitmapHashCache {
+                //The default number of buckets allocated for hash is equal to the
+                //number of M-grams in the Trie level. This is absolutely not enough
+                //As then the cache will be fully used and there will be only performance
+                //losses. To make the cache work we need much more buckets so that the
+                //queried M-grams have a very low chance to fall into the buckets with
+                //the Trie grams. So the bigger this number the better, yet the
+                //memory constraints. ALthough they are not crucial as we use bitmaps.
+                static const float BUCKET_MULTIPLIER_FACTOR = 100;
+            }
 
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie

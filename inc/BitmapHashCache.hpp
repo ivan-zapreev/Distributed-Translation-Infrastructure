@@ -86,7 +86,7 @@ namespace uva {
                         }
 
                         if (num_elems != 0) {
-                            m_num_elems = num_elems;
+                            m_num_elems = num_elems * __BitmapHashCache::BUCKET_MULTIPLIER_FACTOR;
                             size_t num_bytes = NUM_BYTES_4_BITS(m_num_elems);
                             
                             LOG_DEBUG2 << "Pre-allocating: " << m_num_elems
