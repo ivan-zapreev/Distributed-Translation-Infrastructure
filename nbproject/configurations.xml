@@ -806,13 +806,13 @@
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall</commandLine>
+          <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-g -O0 -lrt -m64 -pg -Wall</commandLine>
+          <commandLine>-g -O0 -lrt -m64</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1015,37 +1015,37 @@
       </item>
       <item path="inc/xxhash.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ALayeredTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/xxhash.c" ex="false" tool="0" flavor2="0">
+      <item path="src/xxhash.c" ex="false" tool="0" flavor2="9">
       </item>
     </conf>
   </confs>
