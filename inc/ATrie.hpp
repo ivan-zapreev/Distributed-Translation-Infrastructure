@@ -251,7 +251,7 @@ namespace uva {
                         if (result.prob > ZERO_LOG_PROB_WEIGHT) {
                             //If the curr_level is smaller than the original level then
                             //it means that we needed to back-off, add back-off weights
-                            for (; curr_level < level; ++curr_level) {
+                            for (; curr_level != level; ++curr_level) {
                                 //Get the back_off 
                                 cache_check_add_back_off_weight(curr_level, result.prob);
                             }
