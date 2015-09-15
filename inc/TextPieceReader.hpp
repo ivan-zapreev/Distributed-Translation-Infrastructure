@@ -80,7 +80,7 @@ namespace uva {
                  * The basic constructor initializes empty text
                  */
                 TextPieceReader()
-                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(), m_cursorPtr(NULL), m_restLen(0) {
+                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
                 }
 
                 /**
@@ -88,7 +88,8 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                explicit TextPieceReader(void * beginPtr, const size_t len) : TextPieceReader() {
+                explicit TextPieceReader(void * beginPtr, const size_t len)
+                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
                     set(beginPtr, len);
                 }
 
