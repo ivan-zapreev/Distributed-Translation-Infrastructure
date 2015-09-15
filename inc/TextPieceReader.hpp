@@ -97,12 +97,12 @@ namespace uva {
                  * @param other the const reference to the object to copy from
                  */
                 TextPieceReader(const TextPieceReader & other) {
-                    this->m_beginPtr = other.m_beginPtr;
-                    this->m_len = other.m_len;
-                    this->m_is_gen_str = other.m_is_gen_str;
-                    this->m_str = other.m_str;
-                    this->m_cursorPtr = other.m_cursorPtr;
-                    this->m_restLen = other.m_restLen;
+                    m_beginPtr = other.m_beginPtr;
+                    m_len = other.m_len;
+                    m_is_gen_str = other.m_is_gen_str;
+                    m_str = other.m_str;
+                    m_cursorPtr = other.m_cursorPtr;
+                    m_restLen = other.m_restLen;
                 }
 
                 /**
@@ -114,7 +114,7 @@ namespace uva {
                     m_beginPtr = static_cast<const char *> (beginPtr);
                     m_len = len;
                     m_is_gen_str = true;
-                    this->m_str = "";
+                    m_str.clear();
                     m_cursorPtr = m_beginPtr;
                     m_restLen = m_len;
 
