@@ -480,7 +480,7 @@ namespace uva {
                 template<bool is_back_off>
                 inline bool is_bitmap_hash_cache(const TModelLevel level) {
                     if (m_is_birmap_hash_cache) {
-                        BitmapHashCache & ref = m_bitmap_hash_cach[level - MGRAM_IDX_OFFSET];
+                        const BitmapHashCache & ref = m_bitmap_hash_cach[level - MGRAM_IDX_OFFSET];
                         return ref.is_m_gram<is_back_off>(this->m_query_ptr, level);
                     } else {
                         return true;

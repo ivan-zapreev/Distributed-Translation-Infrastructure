@@ -87,8 +87,14 @@ namespace uva {
 
                         if (num_elems != 0) {
                             m_num_elems = num_elems;
-                            LOG_DEBUG2 << "Pre-allocating: " << m_num_elems << " elements." << END_LOG;
-                            m_data_ptr = new uint8_t[NUM_BYTES_4_BITS(m_num_elems)];
+                            size_t num_bytes = NUM_BYTES_4_BITS(m_num_elems);
+                            
+                            LOG_USAGE << "Pre-allocating: " << m_num_elems
+                                    << " elements, that is " << num_bytes
+                                    << " bytes." << END_LOG;
+                            
+                            m_data_ptr = new uint8_t[num_bytes];
+                            fill_n(m_data_ptr, num_bytes, 0u);
                         } else {
                             throw Exception("Trying to pre-allocate 0 elements for a BitmaphashCache!");
                         }
@@ -102,8 +108,8 @@ namespace uva {
                         LOG_DEBUG2 << "Adding M-gram: " << tokensToString(gram) << END_LOG;
 
                         //Get the bit position
-                        uint32_t byte_idx;
-                        uint32_t bit_offset_idx;
+                        uint32_t byte_idx = 0;
+                        uint32_t bit_offset_idx = 0;
                         get_bit_pos(gram, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Adding: " << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx])
@@ -124,7 +130,7 @@ namespace uva {
                     inline bool is_m_gram(const T_M_Gram * gram_ptr, TModelLevel level) const {
 
                         //Depending on the M-gram compute a proper hash
-                        TModelLevel begin_idx, end_idx;
+                        TModelLevel begin_idx = 0, end_idx = 0;
                         if (is_back_off) {
                             end_idx = (gram_ptr->level - 2);
                             begin_idx = (gram_ptr->level - 1) - level;
@@ -140,8 +146,8 @@ namespace uva {
                                 << hash << END_LOG;
 
                         //Get the M-gram hash positions
-                        uint32_t byte_idx;
-                        uint32_t bit_offset_idx;
+                        uint32_t byte_idx = 0;
+                        uint32_t bit_offset_idx = 0;
                         get_bit_pos(hash, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
@@ -160,8 +166,8 @@ namespace uva {
                         LOG_DEBUG2 << "Checking M-gram: " << tokensToString(gram) << END_LOG;
 
                         //Get the bit position
-                        uint32_t byte_idx;
-                        uint32_t bit_offset_idx;
+                        uint32_t byte_idx = 0;
+                        uint32_t bit_offset_idx = 0;
                         get_bit_pos(gram, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
