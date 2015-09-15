@@ -289,7 +289,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DMapTrie(const C2DMapTrie & orig)
-                : ALayeredTrie<N>(NULL, NULL), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
+                : ALayeredTrie<N>(NULL, NULL, false), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

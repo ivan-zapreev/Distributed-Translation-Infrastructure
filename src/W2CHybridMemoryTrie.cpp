@@ -39,7 +39,7 @@ namespace uva {
             : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
 
-                return this->getContextId(wordId, ctxId, level); }),
+                return this->getContextId(wordId, ctxId, level); }, __W2CHybridTrie::DO_BITMAP_HASH_CACHE),
             m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description

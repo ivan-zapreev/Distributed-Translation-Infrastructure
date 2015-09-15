@@ -44,7 +44,7 @@ namespace uva {
             : ALayeredTrie<N>(_pWordIndex,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return C2DMapTrie<N>::getContextId(wordId, ctxId, level); }),
+                return C2DMapTrie<N>::getContextId(wordId, ctxId, level); }, __C2DMapTrie::DO_BITMAP_HASH_CACHE),
             mGramMemFactor(_mGramMemFactor),
             nGramMemFactor(_nGramMemFactor),
                         m_1_gram_data(NULL) {

@@ -39,8 +39,7 @@ namespace uva {
 
             template<TModelLevel N>
             G2DMapTrie<N>::G2DMapTrie(AWordIndex * const _pWordIndex)
-            //No need for bitmap hash cache as this is also a hashmap so there is no gain!
-            : ATrie<N>(_pWordIndex, false), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            : ATrie<N>(_pWordIndex, __G2DMapTrie::DO_BITMAP_HASH_CACHE), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 

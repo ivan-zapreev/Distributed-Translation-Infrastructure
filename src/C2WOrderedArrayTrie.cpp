@@ -39,7 +39,7 @@ namespace uva {
             : ALayeredTrie<N>(p_word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return this->getContextId(wordId, ctxId, level); }),
+                return this->getContextId(wordId, ctxId, level); }, __C2WArrayTrie::DO_BITMAP_HASH_CACHE),
             m_1_gram_data(NULL), m_N_gram_data(NULL), m_one_gram_arr_size(0) {
 
                 //Memset the M grams reference and data arrays

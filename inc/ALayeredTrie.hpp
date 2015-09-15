@@ -82,7 +82,7 @@ namespace uva {
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
-                 * @param IS_BITMAP_HASH_CACHE - allows to enable the bitmap hash cache for the M-grams.
+                 * @param is_birmap_hash_cache - allows to enable the bitmap hash cache for the M-grams.
                  * the latter records the hashes of all the M-gram present in the tries and then before
                  * querying checks if the hash of the queries M-gram is present if not then we do an
                  * immediate back-off, otherwise we search for the M-gram. This is an experimental feature
@@ -91,8 +91,8 @@ namespace uva {
                  * for an M-gram.
                  */
                 explicit ALayeredTrie(AWordIndex * const _pWordIndex,
-                        TGetCtxIdFunct get_ctx_id_func, bool m_is_birmap_hash_cache = true)
-                : ATrie<N>(_pWordIndex, m_is_birmap_hash_cache),
+                        TGetCtxIdFunct get_ctx_id_func, bool is_birmap_hash_cache)
+                : ATrie<N>(_pWordIndex, is_birmap_hash_cache),
                 m_get_ctx_id_func(get_ctx_id_func),
                 m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
                     //Clear the memory for the buffer and initialize it

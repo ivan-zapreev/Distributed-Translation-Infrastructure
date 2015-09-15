@@ -148,6 +148,8 @@ namespace uva {
                 //Stores the word index type to be used in this trie, the COUNTING
                 //index does not seem to give any performance improvements
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __C2DMapTrie {
@@ -158,30 +160,31 @@ namespace uva {
                 //Stores the word index type to be used in this trie, the COUNTING
                 //index does not seem to give any performance improvements
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __G2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
                 static const float MEM_INC_FACTOR = 0.3;
-
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static const size_t MIN_MEM_INC_NUM = 1;
-
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
-
                 //This is the factor that is used to define an average number of words
                 //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
                 //level is defined as the number of M-grams in this level divided by
                 //this factor value 
                 static const float WORDS_PER_BUCKET_FACTOR = 1.0;
-
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                //NOTE: No need for bitmap hash cache as this is also a hashmap so there is no gain!
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __W2CArrayTrie {
@@ -192,29 +195,28 @@ namespace uva {
                 //Stores the percent of the memory that will be allocated per word data 
                 //storage in one Trie level relative to the estimated number of needed data
                 static const float INIT_MEM_ALLOC_PRCT = 0.5;
-
                 //Stores the memory increment factor, the number we will multiply by the computed increment
                 static const float MEM_INC_FACTOR = 0.3;
-
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static const size_t MIN_MEM_INC_NUM = 1;
-
                 //This constant stores true or false. If the value is true then the log2
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
-
                 //Stores the word index type to be used in this trie, the  COUNTING
                 //index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __C2WArrayTrie {
-
                 //Stores the word index type to be used in this trie, the COUNTING
                 //index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __W2CHybridTrie {
@@ -224,6 +226,8 @@ namespace uva {
                 //Stores the word index type to be used in this trie, the COUNTING
                 //index gives a bit faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                static const bool DO_BITMAP_HASH_CACHE = false;
             }
         }
 
