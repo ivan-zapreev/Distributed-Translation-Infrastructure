@@ -99,7 +99,7 @@ namespace uva {
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
                     
-                    LOG_USAGE << "Creating the TextPieceReader with a data ptr" << END_LOG;
+                    LOG_DEBUG3 << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
 
                             //This one is needed for having a proper non-null word index pointer.
@@ -397,7 +397,7 @@ namespace uva {
                  * @param result
                  */
                 inline void setCacheContextId(const T_M_Gram &mGram, TLongId & stx_id) {
-                    LOG_USAGE << "Caching context = [ " << mGram.context << " ], id = " << stx_id
+                    LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
                             << ", for m-gram: " << tokensToString<N>(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
