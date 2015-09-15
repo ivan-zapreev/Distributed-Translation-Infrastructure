@@ -90,7 +90,6 @@ namespace uva {
                  */
                 explicit TextPieceReader(void * beginPtr, const size_t len)
                 : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
-                    LOG_USAGE << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     set(beginPtr, len);
                 }
 

@@ -98,7 +98,8 @@ namespace uva {
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
-                    //WARNING: Set the data explicitly!
+                    
+                    LOG_USAGE << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
 
                             //This one is needed for having a proper non-null word index pointer.
