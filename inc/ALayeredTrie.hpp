@@ -204,19 +204,6 @@ namespace uva {
                         TLogProbBackOff & prob) = 0;
 
                 /**
-                 * This recursive function implements the computation of the
-                 * N-Gram probabilities in the Back-Off Language Model.
-                 * @see ATrie
-                 */
-                virtual void get_prob_value(const TModelLevel level, TLogProbBackOff & prob);
-
-                /**
-                 * This function allows to get the back-off weight for the current context.
-                 * @see ATrie
-                 */
-                virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off);
-
-                /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
                  * If the value is found then it must be added to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
