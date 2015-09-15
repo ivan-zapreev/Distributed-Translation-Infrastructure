@@ -504,9 +504,7 @@ namespace uva {
                  * @param prob the probability variable that is to be increased with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob) {
-                    throw Exception("Implement: bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob)");
-                };
+                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob) = 0;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -516,9 +514,7 @@ namespace uva {
                  * @param level the level of the M-gram we need to compute probability for.
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
-                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                    throw Exception("Implement: bool add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob)");
-                };
+                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
 
             private:
 

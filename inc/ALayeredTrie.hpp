@@ -217,6 +217,23 @@ namespace uva {
                 virtual bool get_back_off_weight(const TModelLevel level, TLogProbBackOff & back_off);
 
                 /**
+                 * This function allows to retrieve the probability stored for the given M-gram level.
+                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * @see ATrie
+                 */
+                virtual bool add_prob_value(const TModelLevel level, TLogProbBackOff & prob);
+
+                /**
+                 * This function allows to retrieve the back-off stored for the given M-gram level.
+                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * In that case the back-off weight is just zero.
+                  * @see ATrie
+                 */
+                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob);
+
+                /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
