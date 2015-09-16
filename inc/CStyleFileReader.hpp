@@ -70,7 +70,7 @@ namespace uva {
                     m_file_ptr = fopen(fileName, "r");
 
                     LOG_DEBUG << "Opened the file '"
-                            << fileName << "' is_open: " << (bool) m_file_ptr
+                            << fileName << "' is_open: " << is_open()
                             << ", attempting to allocate " << m_buff_size
                             << " bytes for a buffer" << END_LOG;
 
@@ -102,12 +102,23 @@ namespace uva {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
-                    ssize_t result = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
+                    ssize_t length = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
 
-                    LOG_DEBUG2 << "Read " << result << " symbols!" << END_LOG;
-
-                    //If the end of file is reached or an error occured -1 is returned 
-                    return (result != -1);
+                    if (length != -1) {
+                        //Remove the new line symbol, we do not need it!
+                        if((length != 0) && (m_buff_ptr[length - 1] == '\n')) {
+                            length = length - 1;
+                        }
+                        
+                        LOG_DEBUG2 << "Read " << length << " symbols: '" << m_buff_ptr << "' !" << END_LOG;
+                        //Store the data into the text piece reader
+                        out.set(m_buff_ptr, length);
+                        return true;
+                    } else {
+                        LOG_DEBUG2 << "The end of file is reached or an error has occurred!" << END_LOG;
+                        //If the end of file is reached or an error occurred -1 is returned 
+                        return false;
+                    }
                 }
 
                 virtual bool getSpace(TextPieceReader& out) {
