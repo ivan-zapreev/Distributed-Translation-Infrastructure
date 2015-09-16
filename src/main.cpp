@@ -261,7 +261,7 @@ static void readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
 
         //There can be an empty or "unreadable" line in the text file, just skip it ...
         if (ngram.level > 0) {
-            //Second qury the Trie for the results
+            //Query the Trie for the results
             trie.query(ngram, result);
 
             //Print the results:
