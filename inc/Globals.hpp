@@ -80,14 +80,14 @@ namespace uva {
 
             //Defines the log level from which the detailed timing info is available
             static const DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
-        }
-
-        //The following type definitions are important for storing the Tries information
-        namespace tries {
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
             const bool DO_SANITY_CHECKS = false;
+        }
+
+        //The following type definitions are important for storing the Tries information
+        namespace tries {
 
             //This typedef if used in the tries in order to specify the type of the N-gram level NcontextHash
             typedef uint8_t TModelLevel;

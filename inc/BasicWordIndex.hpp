@@ -26,14 +26,18 @@
 #ifndef BASICWORDINDEX_HPP
 #define	BASICWORDINDEX_HPP
 
-#include <string>   // std::string
+#include <string>         // std::string
+#include <unordered_map>  // std::unordered_map
 
 #include "AWordIndex.hpp"
+
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
+
 #include "TextPieceReader.hpp"
 #include "GreedyMemoryAllocator.hpp"
+
 #include "HashingUtils.hpp"
 
 using namespace std;

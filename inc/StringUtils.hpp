@@ -36,7 +36,7 @@
 #include "Logger.hpp"
 #include "Globals.hpp"
 
-using uva::smt::logging::Logger;
+using namespace uva::smt::logging;
 using uva::smt::tries::TModelLevel;
 
 namespace uva {

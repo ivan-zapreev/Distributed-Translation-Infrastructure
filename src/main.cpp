@@ -29,19 +29,22 @@
 #include <fstream>      // std::ifstream
 #include <math.h>    //std::pow
 
+#include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
 #include "Logger.hpp"
-#include "ATrie.hpp"
-#include "C2DHashMapTrie.hpp"
-#include "ARPATrieBuilder.hpp"
-#include "Globals.hpp"
-#include "ARPAGramBuilder.hpp"
 #include "StringUtils.hpp"
+
 #include "AFileReader.hpp"
 #include "MemoryMappedFileReader.hpp"
 #include "FileStreamReader.hpp"
+#include "CStyleFileReader.hpp"
+
+#include "ATrie.hpp"
 #include "TrieTypeFactory.hpp"
+
+#include "ARPATrieBuilder.hpp"
+#include "ARPAGramBuilder.hpp"
 
 using namespace std;
 using namespace uva::smt;
@@ -238,7 +241,7 @@ static string getNGramProbStr(const T_M_Gram & ngram) {
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
 template<TModelLevel N>
-static double readAndExecuteQueries(ATrie<N> & trie, FileStreamReader &testFile) {
+static double readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
     //Declare time variables for CPU times in seconds
     double totalTime = 0.0, startTime = 0.0, endTime = 0.0;
     //Will store the read line (word1 word2 word3 word4 word5)
@@ -293,7 +296,8 @@ static void performTasks(const TAppParams& params) {
     //ToDo: Add the possibility to choose between the file readers from the command line!
     //Attempt to open the model file
     //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
-    FileStreamReader modelFile(params.modelFileName.c_str());
+    //FileStreamReader modelFile(params.modelFileName.c_str());
+    CStyleFileReader modelFile(params.modelFileName.c_str());
 
     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatEnd);
@@ -301,9 +305,11 @@ static void performTasks(const TAppParams& params) {
     //LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
     //reportMemotyUsage("Opening the Language Model file", memStatStart, memStatEnd, false);
 
+    //ToDo: Add the possibility to choose between the file readers from the command line!
     //Attempt to open the test file
-    FileStreamReader testFile(params.testFileName.c_str());
-
+    //FileStreamReader testFile(params.testFileName.c_str());
+    CStyleFileReader testFile(params.testFileName.c_str());
+    
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;

@@ -14,7 +14,6 @@
       <itemPath>inc/ArrayUtils.hpp</itemPath>
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/BitMGramId.hpp</itemPath>
-      <itemPath>inc/BitmapHashCache.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
@@ -109,8 +108,112 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>src</Elem>
@@ -186,6 +289,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -316,6 +421,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -455,6 +562,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -584,6 +693,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -715,6 +826,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -845,6 +958,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -974,6 +1089,8 @@
       <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>

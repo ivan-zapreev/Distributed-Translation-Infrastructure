@@ -1,5 +1,5 @@
 /* 
- * File:   FileStreamReader.hpp
+ * File:   FileCStreamReader.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,14 +20,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on August 18, 2015, 8:42 PM
+ * Created on September 16, 2015, 9:13 PM
  */
 
-#ifndef FILESTREAMREADER_HPP
-#define	FILESTREAMREADER_HPP
+#ifndef CSTYLEFILEREADER_HPP
+#define	CSTYLEFILEREADER_HPP
 
 #include <cstring>  // std::strlen
-#include <fstream>  // std::ifstream
+#include <cstdio>   // std::fopen std::fseek
+#include <stdio.h>  // std::getline
+#include <cstdlib>  // std::malloc
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -43,16 +45,18 @@ namespace uva {
         namespace file {
 
             /**
-             * The file reader based on the simple ifstream, should not use as
-             * much memory as MemoryMappedFileReader and is seemingly as fast
-             * as the latter one on our applications.
+             * The file reader based on the simple C stream, should not use as
+             * much memory as MemoryMappedFileReader and potentially is faster
+             * than the C++ stream based reader.
              */
-            class FileStreamReader : public AFileReader {
+            class CStyleFileReader : public AFileReader {
             private:
                 //Stores the input file stream
-                ifstream m_file_stream;
+                FILE * m_file_ptr;
                 //Stores the content of the last read file line
-                char * m_curr_line;
+                char * m_buff_ptr;
+                //Stores the buffer sizeß
+                size_t m_buff_size;
 
             public:
 
@@ -60,56 +64,50 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                FileStreamReader(const char * fileName)
-                : AFileReader(), m_file_stream(fileName, ifstream::in), m_curr_line(NULL) {
+                CStyleFileReader(const char * fileName)
+                : AFileReader(), m_file_ptr(NULL), m_buff_ptr(NULL), m_buff_size(MAX_N_GRAM_STRING_LENGTH) {
+                    //Open file for reading
+                    m_file_ptr = fopen(fileName, "r");
+
                     LOG_DEBUG << "Opened the file '"
-                            << fileName << "' is_open: " << (bool) m_file_stream
-                            << ", attempting to allocate " << MAX_N_GRAM_STRING_LENGTH
+                            << fileName << "' is_open: " << (bool) m_file_ptr
+                            << ", attempting to allocate " << m_buff_size
                             << " bytes for a buffer" << END_LOG;
-                    m_curr_line = new char[MAX_N_GRAM_STRING_LENGTH];
-                    LOG_DEBUG << "Allocated " << MAX_N_GRAM_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
+
+                    //Allocate memory for the buffer
+                    m_buff_ptr = (char*) malloc(m_buff_size);
+
+                    LOG_DEBUG << "Allocated " << m_buff_size << " bytes for the line buffer" << END_LOG;
 
                     LOG_INFO3 << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
-                virtual ~FileStreamReader() {
-                    if (m_curr_line != NULL) {
-                        delete[] m_curr_line;
-                        m_curr_line = NULL;
+                virtual ~CStyleFileReader() {
+                    //Close the file if it is still open
+                    close();
+                    //Clear memory
+                    if (m_buff_ptr != NULL) {
+                        free(m_buff_ptr);
+                        m_buff_ptr = NULL;
                     }
                 }
 
                 virtual void reset() {
-                    m_file_stream.clear();
-                    m_file_stream.seekg(0, std::ios::beg);
+                    if (m_file_ptr != NULL) {
+                        fseek(m_file_ptr, 0, SEEK_SET);
+                    }
                 };
 
                 virtual bool getLine(TextPieceReader& out) {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
-                    if (m_file_stream.getline(m_curr_line, MAX_N_GRAM_STRING_LENGTH)) {
+                    ssize_t result = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
 
-                        //Check that it was properly read
-                        if (m_file_stream.bad()) {
-                            LOG_ERROR << "Error while reading the new line in the file!" << END_LOG;
-                            //If there was failure during reading the return a failed flag
-                            return false;
-                        } else {
-                            LOG_DEBUG2 << "Read line '" << m_curr_line << "', length: "
-                                    << SSTR(strlen(m_curr_line)) << END_LOG;
+                    LOG_DEBUG2 << "Read " << result << " symbols!" << END_LOG;
 
-                            //The line was properly read, set the values into the output variable
-                            out.set(m_curr_line, strlen(m_curr_line));
-
-                            //The line was successfully read, return true
-                            return true;
-                        }
-                    } else {
-                        LOG_DEBUG2 << "Got end of file!" << END_LOG;
-                        //This is the end of file or something...
-                        return false;
-                    }
+                    //If the end of file is reached or an error occured -1 is returned 
+                    return (result != -1);
                 }
 
                 virtual bool getSpace(TextPieceReader& out) {
@@ -125,7 +123,7 @@ namespace uva {
                  * @return true if the file is successfully opened otherwise false.
                  */
                 virtual bool is_open() const {
-                    return m_file_stream.is_open();
+                    return (m_file_ptr != NULL);
                 }
 
                 /**
@@ -133,19 +131,22 @@ namespace uva {
                  * @return true if it is
                  */
                 virtual operator bool() const {
-                    return (bool) m_file_stream;
+                    return is_open();
                 }
 
                 /**
                  * This method should be used to close the file
                  */
                 virtual void close() {
-                    m_file_stream.close();
+                    if (m_file_ptr != NULL) {
+                        fclose(m_file_ptr);
+                        m_file_ptr = NULL;
+                    }
                 };
             };
         }
     }
 }
 
-#endif	/* FILESTREAMREADER_HPP */
+#endif	/* CSTYLEFILEREADER_HPP */
 
