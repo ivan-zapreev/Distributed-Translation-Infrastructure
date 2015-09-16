@@ -234,6 +234,7 @@ namespace uva {
                         } else {
                             if (key == array[mid_pos].id) {
                                 found_pos = mid_pos;
+                                LOG_DEBUG3 << "Found key: " << (uint32_t) key << " @ position: " << found_pos << END_LOG;
                                 return true;
                             } else {
                                 l_idx = mid_pos + 1;
@@ -242,8 +243,10 @@ namespace uva {
                     }
                     if (array[l_idx].id == key) {
                         found_pos = l_idx;
+                        LOG_DEBUG3 << "Found key: " << (uint32_t) key << " @ position: " << found_pos << END_LOG;
                         return true;
                     } else {
+                        LOG_DEBUG3 << "The key: " << (uint32_t) key << " was not found!" << END_LOG;
                         return false;
                     }
                 }
