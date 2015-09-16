@@ -76,10 +76,11 @@ namespace uva {
 
                     //Allocate memory for the buffer
                     m_buff_ptr = (char*) malloc(m_buff_size);
+                    memset(m_buff_ptr, 0, m_buff_size);
 
                     LOG_DEBUG << "Allocated " << m_buff_size << " bytes for the line buffer" << END_LOG;
                 }
-                
+
                 /**
                  * Allows to log the information about the instantiated file reader type
                  */
@@ -111,10 +112,10 @@ namespace uva {
 
                     if (length != -1) {
                         //Remove the new line symbol, we do not need it!
-                        if((length != 0) && (m_buff_ptr[length - 1] == '\n')) {
+                        if ((length != 0) && (m_buff_ptr[length - 1] == '\n')) {
                             length = length - 1;
                         }
-                        
+
                         LOG_DEBUG2 << "Read " << length << " symbols: '" << m_buff_ptr << "' !" << END_LOG;
                         //Store the data into the text piece reader
                         out.set(m_buff_ptr, length);

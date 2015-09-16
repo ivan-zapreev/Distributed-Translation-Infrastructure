@@ -224,17 +224,19 @@ namespace uva {
 
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 bool my_isearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    LOG_DEBUG3 << "Start searching for key: " << (uint32_t) key << " between l_idx: " << l_idx << ", u_idx: " << u_idx << END_LOG;
+                    LOG_DEBUG3 << "Start searching for key: " << (uint32_t) key << " between l_idx: "
+                            << l_idx << ", u_idx: " << u_idx << END_LOG;
 
                     TSLongId mid_pos = 0;
-                    while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
+                    while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx < u_idx)) {
                         mid_pos = l_idx + (u_idx - l_idx) * (((TSLongId) key - array[l_idx].id) / (array[u_idx].id - array[l_idx].id));
                         if (key < array[mid_pos].id) {
                             u_idx = mid_pos - 1;
                         } else {
                             if (key == array[mid_pos].id) {
                                 found_pos = mid_pos;
-                                LOG_DEBUG3 << "Found key: " << (uint32_t) key << " @ position: " << found_pos << END_LOG;
+                                LOG_DEBUG3 << "Found key: " << (uint32_t) key
+                                        << " @ position: " << found_pos << END_LOG;
                                 return true;
                             } else {
                                 l_idx = mid_pos + 1;
@@ -243,10 +245,12 @@ namespace uva {
                     }
                     if (array[l_idx].id == key) {
                         found_pos = l_idx;
-                        LOG_DEBUG3 << "Found key: " << (uint32_t) key << " @ position: " << found_pos << END_LOG;
+                        LOG_DEBUG3 << "Found key: " << (uint32_t) key
+                                << " @ position: " << found_pos << END_LOG;
                         return true;
                     } else {
-                        LOG_DEBUG3 << "The key: " << (uint32_t) key << " was not found!" << END_LOG;
+                        LOG_DEBUG3 << "The key: " << (uint32_t) key
+                                << " was not found!" << END_LOG;
                         return false;
                     }
                 }
