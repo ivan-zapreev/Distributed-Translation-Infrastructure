@@ -271,6 +271,11 @@ namespace uva {
                     }
                 };
 
+                /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() = 0;
+
             protected:
                 //Stores the reference to the word index to be used
                 AWordIndex * m_word_index_ptr;
@@ -425,7 +430,7 @@ namespace uva {
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
                 virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
-
+                
             private:
 
                 //Stores the unknown word masks for the probability computations,

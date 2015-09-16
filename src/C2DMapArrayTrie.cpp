@@ -70,8 +70,6 @@ namespace uva {
                 //Initialize the N-gram level data
                 pNGramAlloc = NULL;
                 pNGramMap = NULL;
-                
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N>

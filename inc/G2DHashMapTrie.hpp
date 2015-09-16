@@ -107,6 +107,16 @@ namespace uva {
                 explicit G2DMapTrie(AWordIndex * const _pWordIndex);
 
                 /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model with the #buckets divider: "
+                            << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << " and the "
+                            << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
+                            << " memory allocation strategy." << END_LOG;
+                }
+
+                /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @see ATrie

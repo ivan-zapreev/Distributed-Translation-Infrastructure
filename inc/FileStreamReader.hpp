@@ -68,8 +68,13 @@ namespace uva {
                             << " bytes for a buffer" << END_LOG;
                     m_curr_line = new char[MAX_N_GRAM_STRING_LENGTH];
                     LOG_DEBUG << "Allocated " << MAX_N_GRAM_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
-
-                    LOG_INFO3 << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
+                }
+                
+                /**
+                 * Allows to log the information about the instantiated file reader type
+                 */
+                virtual void log_reader_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
                 virtual ~FileStreamReader() {

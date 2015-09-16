@@ -110,6 +110,13 @@ namespace uva {
                         const float _nGramMemFactor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
+                }
+
+                /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie

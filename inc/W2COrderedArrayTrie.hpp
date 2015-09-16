@@ -71,7 +71,7 @@ namespace uva {
 
                 typedef S_M_GramData<TProbBackOffEntry> T_M_GramData;
                 typedef S_M_GramData<TLogProbBackOff> T_N_GramData;
-                
+
                 /**
                  * This is the less operator implementation
                  * @param one the first object to compare
@@ -107,6 +107,15 @@ namespace uva {
                  * @param p_word_index the word index (dictionary) container
                  */
                 explicit W2CArrayTrie(AWordIndex * const p_word_index);
+
+                /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model with the "
+                            << T_M_GramData::m_mem_strat.getStrategyStr()
+                            << "' memory allocation strategy." << END_LOG;
+                }
 
                 /**
                  * This method can be used to provide the N-gram count information

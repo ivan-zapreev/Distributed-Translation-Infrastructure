@@ -64,8 +64,6 @@ namespace uva {
                             << "', but for '" << __FILE__ << "' it must be >= " << M_GRAM_LEVEL_2 << "!";
                     throw Exception(msg.str());
                 }
-
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
             }
 
             template<TModelLevel N>

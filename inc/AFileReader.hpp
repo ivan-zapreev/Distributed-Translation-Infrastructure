@@ -61,6 +61,11 @@ namespace uva {
                 virtual operator bool() const = 0;
                 
                 /**
+                 * Allows to log the information about the instantiated file reader type
+                 */
+                virtual void log_reader_type_usage_info() = 0;
+
+                /**
                  * This method allows to reset the reading process and start reading
                  * the file from th first line again. The default implementation
                  * throws an exception.

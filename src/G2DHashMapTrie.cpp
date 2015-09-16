@@ -49,11 +49,6 @@ namespace uva {
                 //Allocate the M-gram id memory for queries
                 Byte_M_Gram_Id::allocate_byte_m_gram_id(N, m_tmp_gram_id);
 
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model with the #buckets divider: "
-                        << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
-                LOG_INFO3 << "Using the " << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
-                        << " memory allocation strategy." << END_LOG;
-
                 LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
                 LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
                 LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;

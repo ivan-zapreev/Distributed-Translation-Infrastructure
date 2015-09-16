@@ -46,10 +46,6 @@ namespace uva {
 
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
-
-                LOG_INFO3 << "Using the <" << __FILE__ << "> model." << END_LOG;
-                LOG_INFO3 << "Using the " << T_M_GramData::m_mem_strat.getStrategyStr()
-                        << "' memory allocation strategy." << END_LOG;
             }
 
             template<TModelLevel N>

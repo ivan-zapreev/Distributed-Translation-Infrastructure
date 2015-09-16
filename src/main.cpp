@@ -298,6 +298,8 @@ static void performTasks(const TAppParams& params) {
     //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
     //FileStreamReader modelFile(params.modelFileName.c_str());
     CStyleFileReader modelFile(params.modelFileName.c_str());
+    //Log the reader info
+    modelFile.log_reader_type_usage_info();
 
     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
     StatisticsMonitor::getMemoryStatistics(memStatEnd);
@@ -309,7 +311,7 @@ static void performTasks(const TAppParams& params) {
     //Attempt to open the test file
     //FileStreamReader testFile(params.testFileName.c_str());
     CStyleFileReader testFile(params.testFileName.c_str());
-    
+
     //If the files could be opened then proceed with training and then testing
     if ((modelFile.is_open()) && (testFile.is_open())) {
         LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
@@ -321,6 +323,8 @@ static void performTasks(const TAppParams& params) {
 
         //Create a trie and pass it to the algorithm method
         ATrie<M_GRAM_LEVEL_MAX> * pTrie = TrieTypeFactory::getTrie<M_GRAM_LEVEL_MAX>(params.trieTypeName);
+        //Log the trie info
+        pTrie->log_trie_type_usage_info();
 
         LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
         startTime = StatisticsMonitor::getCPUTime();

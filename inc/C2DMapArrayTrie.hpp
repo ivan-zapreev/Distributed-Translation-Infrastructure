@@ -97,6 +97,13 @@ namespace uva {
                         const float _nGramMemFactor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
+                }
+
+                /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
@@ -144,11 +151,11 @@ namespace uva {
 
                     //Obtain the context key and then create a new mapping
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    
+
                     //Get the next context id
                     const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
                     TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
-                    
+
                     //Store the context mapping inside the map
                     pMGramMap[idx]->operator[](key) = nextCtxId;
 
@@ -212,7 +219,7 @@ namespace uva {
                 const float mGramMemFactor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float nGramMemFactor;
-                
+
                 //Stores the context id counters per M-gram level: 1 < M < N
                 TShortId m_M_gram_next_ctx_id[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N

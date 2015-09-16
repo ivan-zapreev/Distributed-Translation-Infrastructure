@@ -58,6 +58,13 @@ namespace uva {
                 explicit W2CHybridTrie(AWordIndex * const p_word_index);
 
                 /**
+                 * Allows to log the information about the instantiated trie type
+                 */
+                virtual void log_trie_type_usage_info() {
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
+                }
+
+                /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
@@ -102,7 +109,7 @@ namespace uva {
                  */
                 virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
                     const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
-                    
+
                     //Get the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[idx][wordId];
 
