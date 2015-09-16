@@ -137,9 +137,6 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~BasicWordIndex() {
-                        LOG_USAGE << "Word index bucket_count: " << _pWordIndexMap->bucket_count() << END_LOG;
-                        LOG_USAGE << "Word index load_factor: " << _pWordIndexMap->load_factor() << END_LOG;
-                        LOG_USAGE << "Word index size: " << _pWordIndexMap->size() << END_LOG;
                         deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                     };
                 protected:
