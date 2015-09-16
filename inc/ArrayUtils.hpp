@@ -222,35 +222,57 @@ namespace uva {
                     BSEARCH_ONE_FIELD(id);
                 }
 
+                /**
+                 * This is an interpolated search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 bool my_isearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
                     LOG_DEBUG3 << "Start searching for key: " << (uint32_t) key << " between l_idx: "
                             << l_idx << ", u_idx: " << u_idx << END_LOG;
-                    TSLongId mid_pos = 0;
-                    while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
-                        mid_pos = l_idx + (u_idx - l_idx) * (((TSLongId) key - array[l_idx].id) / (array[u_idx].id - array[l_idx].id));
-                        if (key < array[mid_pos].id) {
-                            u_idx = mid_pos - 1;
-                        } else {
-                            if (key == array[mid_pos].id) {
-                                found_pos = mid_pos;
-                                LOG_DEBUG3 << "Found key: " << (uint32_t) key
-                                        << " @ position: " << found_pos << END_LOG;
-                                return true;
+                    if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
+                        stringstream msg;
+                        msg << "Impossible binary search parameters, l_idx = "
+                                << SSTR(l_idx) << ", u_idx = "
+                                << SSTR(u_idx) << "!";
+                        throw Exception(msg.str());
+                    } else {
+                        TSLongId mid_pos = 0;
+                        while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
+                            mid_pos = l_idx + (u_idx - l_idx) * ((key - array[l_idx].id) / (array[u_idx].id - array[l_idx].id));
+                            LOG_DEBUG3 << "l_idx:" << l_idx << ", mid_pos:" << mid_pos << ", u_idx:" << u_idx << END_LOG;
+                            if (key < array[mid_pos].id) {
+                                u_idx = mid_pos - 1;
                             } else {
-                                l_idx = mid_pos + 1;
+                                if (key == array[mid_pos].id) {
+                                    found_pos = mid_pos;
+                                    LOG_DEBUG3 << "Found key: " << (uint32_t) key
+                                            << " @ position: " << found_pos << END_LOG;
+                                    return true;
+                                } else {
+                                    l_idx = mid_pos + 1;
+                                }
                             }
                         }
-                    }
-                    if (array[l_idx].id == key) {
-                        found_pos = l_idx;
-                        LOG_DEBUG3 << "Found key: " << (uint32_t) key
-                                << " @ position: " << found_pos << END_LOG;
-                        return true;
-                    } else {
-                        LOG_DEBUG3 << "The key: " << (uint32_t) key
-                                << " was not found!" << END_LOG;
-                        return false;
+                        if (array[l_idx].id == key) {
+                            found_pos = l_idx;
+                            LOG_DEBUG3 << "Found key: " << (uint32_t) key
+                                    << " @ position: " << found_pos << END_LOG;
+                            return true;
+                        } else {
+                            LOG_DEBUG3 << "The key: " << (uint32_t) key
+                                    << " was not found!" << END_LOG;
+                            return false;
+                        }
                     }
                 }
 
