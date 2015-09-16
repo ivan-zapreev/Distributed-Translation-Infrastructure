@@ -224,6 +224,7 @@ namespace uva {
 
                 /**
                  * This is an interpolated search algorithm for some ordered array
+                 * WARNING: IS ACTUALLY VERT SLOW at least in the current implementation and for the current application!
                  * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
@@ -248,7 +249,7 @@ namespace uva {
                     } else {
                         TSLongId mid_pos = 0;
                         while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
-                            mid_pos = l_idx + (u_idx - l_idx) * ((key - array[l_idx].id) / (array[u_idx].id - array[l_idx].id));
+                            mid_pos = l_idx + ((u_idx - l_idx) * (key - array[l_idx].id)) / (array[u_idx].id - array[l_idx].id);
                             LOG_DEBUG3 << "l_idx:" << l_idx << ", mid_pos:" << mid_pos << ", u_idx:" << u_idx << END_LOG;
                             if (key < array[mid_pos].id) {
                                 u_idx = mid_pos - 1;
