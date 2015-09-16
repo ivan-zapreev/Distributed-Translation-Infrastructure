@@ -455,7 +455,7 @@ namespace uva {
                         TShortId nextCtxId = ALayeredTrie<N>::UNDEFINED_ARR_IDX;
                         //The data is available search for the word index in the array
                         //WARNING: The linear search here is much slower!!!
-                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
+                        if (my_isearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
                             LOG_DEBUG2 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
                                     << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
                             ctxId = nextCtxId;
