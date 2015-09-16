@@ -241,9 +241,9 @@ static string getNGramProbStr(const T_M_Gram & ngram) {
  * @return the CPU seconds used to run the queries, without time needed to read the test file
  */
 template<TModelLevel N>
-static double readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
+static void readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
     //Declare time variables for CPU times in seconds
-    double totalTime = 0.0, startTime = 0.0, endTime = 0.0;
+    double startTime = 0.0, endTime = 0.0;
     //Will store the read line (word1 word2 word3 word4 word5)
     TextPieceReader line;
     //Will store the N-gram [word1 word2 word3 word4 word5] corresponding to the line
@@ -251,6 +251,7 @@ static double readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
     //Will store the queue result for one N-Gram
     TQueryResult result = {0,};
 
+    startTime = StatisticsMonitor::getCPUTime();
     //Read the test file line by line
     while (testFile.getLine(line)) {
         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
@@ -261,21 +262,16 @@ static double readAndExecuteQueries(ATrie<N> & trie, AFileReader &testFile) {
         //There can be an empty or "unreadable" line in the text file, just skip it ...
         if (ngram.level > 0) {
             //Second qury the Trie for the results
-            startTime = StatisticsMonitor::getCPUTime();
             trie.query(ngram, result);
-            endTime = StatisticsMonitor::getCPUTime();
 
             //Print the results:
             LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << getNGramProbStr(ngram) << " ) ) = " << SSTR(result.prob) << END_LOG;
             LOG_INFO << "Prob( " << getNGramProbStr(ngram) << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, result.prob)) << END_LOG;
-            LOG_INFO2 << "CPU Time needed: " << SSTR(endTime - startTime) << " sec." << END_LOG;
-
-            //update total time
-            totalTime += (endTime - startTime);
         }
     }
+    endTime = StatisticsMonitor::getCPUTime();
 
-    return totalTime;
+    LOG_USAGE << "Total query execution time is " << (endTime - startTime) << " CPU seconds." << END_LOG;
 }
 
 /**
@@ -352,8 +348,7 @@ static void performTasks(const TAppParams& params) {
         //reportMemotyUsage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
         LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-        const double queryCPUTimes = readAndExecuteQueries(*pTrie, testFile);
-        LOG_USAGE << "Total query execution time is " << queryCPUTimes << " CPU seconds." << END_LOG;
+        readAndExecuteQueries(*pTrie, testFile);
         testFile.close();
 
         //Deallocate the trie
