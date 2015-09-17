@@ -145,7 +145,7 @@ namespace uva {
                 namespace __OptimizingWordIndex {
                     //This is the number of buckets factor for the optimizing word index
                     //The number of buckets will be the number of words * this value
-                    static const float BUCKETS_FACTOR = 1.2;
+                    static const float BUCKETS_FACTOR = 10.0;
                 }
             }
             using namespace dictionary;
