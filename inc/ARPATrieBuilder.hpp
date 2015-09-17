@@ -101,27 +101,31 @@ namespace uva {
                     void read_data(size_t counts[N]);
 
                     /**
-                     * If the word counts are needed then we are starting
-                     * on reading the M-gram section of the ARPA file.
-                     * All we need to do is then read all the words in
-                     * M-Gram sections and count them with the word index.
+                     * Allows to read the given Trie level M-grams from the file
+                     * @param level the currently read M-gram level M
                      */
-                    void get_word_counts() {
-                        //Do the progress bard indicator
-                        Logger::startProgressBar(string("Counting all words"));
+                    inline void read_m_gram_level(const TModelLevel level);
+                    
+                    /**
+                     * Checks if this is the last M-gram level we had to read,
+                     * if no read more otherwise we are done.
+                     * @param level the currently read M-gram level M
+                     */
+                    inline void check_and_go_m_grams(const TModelLevel level);
 
-                        //Start recursive counting of words
-                        get_word_counts(1);
-                        LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
+                    /**
+                     * Allows to perform the post-gram actions if needed
+                     * @param level the currently read M-gram level M
+                     */
+                    inline void do_post_m_gram_actions(const TModelLevel level);
 
-                        //Perform the post counting actions;
-                        m_trie.get_word_index()->post_word_count();
-
-                        LOG_DEBUG << "Finished counting all words" << END_LOG;
-                        //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
-
-                    }
+                    /**
+                     * If the word counts are needed then this method will 
+                     * read all the M-gram sections of the ARPA file to get them.
+                     * Afterwards the file will be rewind to the beginning
+                     * of the 1-Gram sections.
+                     */
+                    inline void get_word_counts();
 
                     /**
                      * If the word counts are needed then we are starting

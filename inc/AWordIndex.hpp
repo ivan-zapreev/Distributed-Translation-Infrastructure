@@ -82,7 +82,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    virtual size_t get_words_count(const size_t num_words) = 0;
+                    virtual size_t get_number_of_words(const size_t num_words) = 0;
                     
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.

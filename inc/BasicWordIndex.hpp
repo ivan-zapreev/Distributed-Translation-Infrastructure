@@ -70,7 +70,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    virtual size_t get_words_count(const size_t num_words) {
+                    virtual size_t get_number_of_words(const size_t num_words) {
                         return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                     };
 
@@ -81,7 +81,7 @@ namespace uva {
                     virtual void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
                         //Add an extra elements for the <unknown/> word
-                        const size_t numWords = get_words_count(num_words);
+                        const size_t numWords = get_number_of_words(num_words);
 
                         //Reserve the memory for the map
                         reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc,

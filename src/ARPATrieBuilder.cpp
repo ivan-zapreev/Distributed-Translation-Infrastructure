@@ -103,12 +103,12 @@ namespace uva {
 
                     //Do the progress bard indicator
                     Logger::startProgressBar(string("Pre-allocating memory"));
-                    
+
                     //Provide the N-Gram counts data to the Trie
                     m_trie.pre_allocate(counts);
-                    
+
                     Logger::updateProgressBar();
-                    
+
                     LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
                     //Stop the progress bar in case of no exception
                     Logger::stopProgressBar();
@@ -174,11 +174,137 @@ namespace uva {
                         }
                     } else {
                         stringstream msg;
-                        msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '" << END_OF_ARPA_FILE << "' when starting on the data section!";
+                        msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '"
+                                << END_OF_ARPA_FILE << "' when starting on the data section!";
                         throw Exception(msg.str());
                     }
 
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
+                }
+
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::read_m_gram_level(const TModelLevel level) {
+                    //Declare the pointer to the N-Grma builder
+                    ARPAGramBuilder *pNGBuilder = NULL;
+                    ARPAGramBuilderFactory::get_builder<N>(level, m_trie, &pNGBuilder);
+
+                    try {
+                        //The counter of the N-grams
+                        uint numNgrams = 0;
+                        //Read the current level N-grams and add them to the trie
+                        while (true) {
+                            //Try to read the next line
+                            if (m_file.getLine(m_line)) {
+                                LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << m_line.str() << "'" << END_LOG;
+
+                                //Empty lines will just be skipped
+                                if (m_line.hasMore()) {
+                                    //Pass the given N-gram string to the N-Gram Builder. If the
+                                    //N-gram is not matched then stop the loop and move on
+                                    if (pNGBuilder->parse_line(m_line)) {
+                                        //If there was no match then it is something else
+                                        //than the given level N-gram so we move on
+                                        LOG_DEBUG << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
+
+                                        //Now stop reading this level N-grams and move on
+                                        break;
+                                    }
+                                    numNgrams++;
+                                }
+
+                                //Update the progress bar status
+                                Logger::updateProgressBar();
+                            } else {
+                                //If the next line does not exist then it an error as we expect the end of data section any way
+                                stringstream msg;
+                                msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
+                                throw Exception(msg.str());
+                            }
+                        }
+                    } catch (...) {
+                        //Free the allocated N-gram builder in case of an exception 
+                        delete pNGBuilder;
+                        //Re-throw the exception
+                        throw;
+                    }
+                    //Free the allocated N-gram builder in case of no exception 
+                    delete pNGBuilder;
+                    pNGBuilder = NULL;
+
+                    LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
+                    //Stop the progress bar in case of no exception
+                    Logger::stopProgressBar();
+                }
+
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::check_and_go_m_grams(const TModelLevel level) {
+                    //If we expect more N-grams then make a recursive call to read the higher order N-gram
+                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
+                            << ", the current line is '" << m_line << "'" << END_LOG;
+
+                    //Test if we need to move on or we are done or an error is detected
+                    if (level < N) {
+                        //There are still N-Gram levels to read
+                        if (m_line != END_OF_ARPA_FILE) {
+                            //We did not encounter the \end\ tag yet so do recursion to the next level
+                            read_grams(level + 1);
+                        } else {
+                            //We did encounter the \end\ tag, this is not really expected, but it is not fatal
+                            LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
+                                    << "nothing more to read. The maximum allowed N-gram level is " << N << END_LOG;
+                        }
+                    } else {
+                        //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
+                        if (m_line != END_OF_ARPA_FILE) {
+                            stringstream msg;
+                            msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '" << END_OF_ARPA_FILE
+                                    << "' when reading " << level << "-grams section!";
+                            throw Exception(msg.str());
+                        }
+                    }
+                }
+
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::do_post_m_gram_actions(const TModelLevel level) {
+                    //Check if the post gram actions are needed! If yes - perform.
+                    if (m_trie.is_post_grams(level)) {
+                        //Do the progress bard indicator
+                        stringstream msg;
+                        msg << "Cultivating " << level << "-Grams";
+                        Logger::startProgressBar(msg.str());
+
+                        //Do the post level actions
+                        m_trie.post_grams(level);
+
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
+                        LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
+                    } else {
+                        LOG_INFO3 << "Cultivating " << level << "-Grams:\t Not needed!" << END_LOG;
+                    }
+                }
+
+                template<TModelLevel N>
+                void ARPATrieBuilder<N>::get_word_counts() {
+                    //Check if we need another pass for words counting.
+                    if (m_trie.get_word_index()->need_word_counts()) {
+                        //Do the progress bard indicator
+                        Logger::startProgressBar(string("Counting all words"));
+
+                        //Start recursive counting of words
+                        get_word_counts(1);
+                        LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
+
+                        //Perform the post counting actions;
+                        m_trie.get_word_index()->post_word_count();
+
+                        LOG_DEBUG << "Finished counting all words" << END_LOG;
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
+
+                        //Rewind to the beginning of the 1-grams section
+                        return_to_grams();
+                    }
                 }
 
                 template<TModelLevel N>
@@ -196,98 +322,14 @@ namespace uva {
 
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
-                        //Declare the pointer to the N-Grma builder
-                        ARPAGramBuilder *pNGBuilder = NULL;
-                        ARPAGramBuilderFactory::get_builder<N>(level, m_trie, &pNGBuilder);
+                        //Read the M-grams of the given level
+                        read_m_gram_level(level);
 
-                        try {
-                            //The counter of the N-grams
-                            uint numNgrams = 0;
-                            //Read the current level N-grams and add them to the trie
-                            while (true) {
-                                //Try to read the next line
-                                if (m_file.getLine(m_line)) {
-                                    LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << m_line.str() << "'" << END_LOG;
+                        //Perform the post-M-gram actions if needed
+                        do_post_m_gram_actions(level);
 
-                                    //Empty lines will just be skipped
-                                    if (m_line.hasMore()) {
-                                        //Pass the given N-gram string to the N-Gram Builder. If the
-                                        //N-gram is not matched then stop the loop and move on
-                                        if (pNGBuilder->parse_line(m_line)) {
-                                            //If there was no match then it is something else
-                                            //than the given level N-gram so we move on
-                                            LOG_DEBUG << "Actual number of " << level << "-grams is: " << numNgrams << END_LOG;
-
-                                            //Now stop reading this level N-grams and move on
-                                            break;
-                                        }
-                                        numNgrams++;
-                                    }
-
-                                    //Update the progress bar status
-                                    Logger::updateProgressBar();
-                                } else {
-                                    //If the next line does not exist then it an error as we expect the end of data section any way
-                                    stringstream msg;
-                                    msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
-                                    throw Exception(msg.str());
-                                }
-                            }
-                        } catch (...) {
-                            //Free the allocated N-gram builder in case of an exception 
-                            delete pNGBuilder;
-                            //Re-throw the exception
-                            throw;
-                        }
-                        //Free the allocated N-gram builder in case of no exception 
-                        delete pNGBuilder;
-                        pNGBuilder = NULL;
-
-                        LOG_DEBUG << "Finished reading ARPA " << level << "-Grams." << END_LOG;
-                        //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
-
-                        //Check if the post gram actions are needed! If yes - perform.
-                        if (m_trie.is_post_grams(level)) {
-                            //Do the progress bard indicator
-                            stringstream msg;
-                            msg << "Cultivating " << level << "-Grams";
-                            Logger::startProgressBar(msg.str());
-
-                            //Do the post level actions
-                            m_trie.post_grams(level);
-
-                            //Stop the progress bar in case of no exception
-                            Logger::stopProgressBar();
-                            LOG_DEBUG << "Finished post actions of " << level << "-Grams." << END_LOG;
-                        } else {
-                            LOG_INFO3 << "Cultivating " << level << "-Grams:\t Not needed!" << END_LOG;
-                        }
-
-                        //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                        LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
-                                << ", the current line is '" << m_line << "'" << END_LOG;
-
-                        //Test if we need to move on or we are done or an error is detected
-                        if (level < N) {
-                            //There are still N-Gram levels to read
-                            if (m_line != END_OF_ARPA_FILE) {
-                                //We did not encounter the \end\ tag yet so do recursion to the next level
-                                read_grams(level + 1);
-                            } else {
-                                //We did encounter the \end\ tag, this is not really expected, but it is not fatal
-                                LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                        << "nothing more to read. The maximum allowed N-gram level is " << N << END_LOG;
-                            }
-                        } else {
-                            //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
-                            if (m_line != END_OF_ARPA_FILE) {
-                                stringstream msg;
-                                msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '" << END_OF_ARPA_FILE
-                                        << "' when reading " << level << "-grams section!";
-                                throw Exception(msg.str());
-                            }
-                        }
+                        //Check if we need to keep reading and recurse or we are done
+                        check_and_go_m_grams(level);
                     } else {
                         //The obtained string is something else than the next n-grams section header
                         //So the only thing it is allowed to be is the end of file, let's check on
@@ -417,11 +459,8 @@ namespace uva {
                         //Pre-allocate memory
                         pre_allocate(counts);
 
-                        //Check if we need another pass for words counting.
-                        if (m_trie.get_word_index()->need_word_counts()) {
-                            get_word_counts();
-                            return_to_grams();
-                        }
+                        //Get the word counts, if needed
+                        get_word_counts();
 
                         //Read the N-grams, starting from 1-Grams
                         read_grams(1);

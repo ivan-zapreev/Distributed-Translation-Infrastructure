@@ -69,7 +69,7 @@ namespace uva {
                 //The size of this array is made two elements larger than the number
                 //of 1-Grams is since we want to account for the word indexes that start
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                m_one_gram_arr_size = ATrie<N>::get_word_index()->get_words_count(counts[0]);
+                m_one_gram_arr_size = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[m_one_gram_arr_size];
                 memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (TProbBackOffEntry));
 

@@ -61,7 +61,7 @@ namespace uva {
                 ATrie<N>::pre_allocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                num_buckets[0] = ATrie<N>::get_word_index()->get_words_count(counts[0]);
+                num_buckets[0] = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
                 memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
