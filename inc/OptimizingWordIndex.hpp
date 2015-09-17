@@ -140,30 +140,18 @@ namespace uva {
                      * @see AWordIndex
                      */
                     virtual bool get_word_id(const TextPieceReader & token, TShortId &wordId) const {
-                        LOG_DEBUG2 << "Searching for: '" << token.str() << "'" << END_LOG;
-
-                        const uint32_t bucket_idx = get_bucket_idx(token);
-                        const uint32_t begin_idx = m_word_hash_buckets[bucket_idx];
-                        const uint32_t end_idx = m_word_hash_buckets[bucket_idx + 1];
-
-                        if (begin_idx != end_idx) {
-                            if (IS_EQUAL(token, m_word_entries[begin_idx])) {
-                                //Found in the first entry!
-                                wordId = m_word_entries[begin_idx].m_word_id;
+                        //Compute the bucket id
+                        const uint_fast32_t bucket_idx = get_bucket_idx(token);
+                        
+                        //Search within the bucket
+                        for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
+                                idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
+                            if (IS_EQUAL(token, m_word_entries[idx])) {
+                                wordId = m_word_entries[idx].m_word_id;
                                 return true;
-                            } else {
-                                //Could not find in the first entry so do some linear search
-                                for (uint_fast32_t idx = begin_idx + 1; idx != end_idx; ++idx) {
-                                    if (IS_EQUAL(token, m_word_entries[idx])) {
-                                        wordId = m_word_entries[idx].m_word_id;
-                                        return true;
-                                    }
-                                }
                             }
                         }
-
                         wordId = UNKNOWN_WORD_ID;
-
                         return false;
                     };
 
