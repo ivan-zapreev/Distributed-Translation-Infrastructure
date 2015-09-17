@@ -133,6 +133,8 @@ namespace uva {
                         }
                     };
 
+#define IS_EQUAL(token, entry) (((token).getLen() == (entry).m_len) && (strncmp((token).getBeginCStr(), (entry).m_word, (entry).m_len) == 0))
+
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * @see AWordIndex
@@ -144,24 +146,23 @@ namespace uva {
                         const uint32_t begin_idx = m_word_hash_buckets[bucket_idx];
                         const uint32_t end_idx = m_word_hash_buckets[bucket_idx + 1];
 
-                        LOG_DEBUG2 << "bucket_idx: " << bucket_idx << ", begin_idx: "
-                                << begin_idx << ", end_idx: " << end_idx << END_LOG;
-
-                        for (uint32_t idx = begin_idx; idx < end_idx; ++idx) {
-                            if ((token.getLen() == m_word_entries[idx].m_len) &&
-                                    (strncmp(token.getBeginCStr(), m_word_entries[idx].m_word,
-                                    m_word_entries[idx].m_len) == 0)) {
-                                wordId = m_word_entries[idx].m_word_id;
-
-                                LOG_DEBUG2 << "Found word '" << token.str() << "' id: "
-                                        << wordId << ", at entry index: " << idx << END_LOG;
-
+                        if (begin_idx != end_idx) {
+                            if (IS_EQUAL(token, m_word_entries[begin_idx])) {
+                                //Found in the first entry!
+                                wordId = m_word_entries[begin_idx].m_word_id;
                                 return true;
+                            } else {
+                                //Could not find in the first entry so do some linear search
+                                for (uint_fast32_t idx = begin_idx + 1; idx != end_idx; ++idx) {
+                                    if (IS_EQUAL(token, m_word_entries[idx])) {
+                                        wordId = m_word_entries[idx].m_word_id;
+                                        return true;
+                                    }
+                                }
                             }
                         }
 
                         wordId = UNKNOWN_WORD_ID;
-                        LOG_DEBUG2 << "The word id is not found returning: " << wordId << END_LOG;
 
                         return false;
                     };
@@ -292,7 +293,7 @@ namespace uva {
                     inline void allocate_data_storage() {
                         //First determine the number of buckets to be used
                         m_num_buckets = (__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words);
-                        
+
                         //Make it even to facilitate the divisions (?)
                         m_num_buckets += (is_odd_A(m_num_buckets) ? 1 : 0);
 
