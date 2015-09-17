@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-MacOSX
-CND_DLIB_EXT=dylib
+CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Profile__Centos_
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -57,8 +57,8 @@ OBJECTFILES= \
 CFLAGS=-march=native -Wall -Werror
 
 # CC Compiler Flags
-CCFLAGS=-std=c++0x -lrt -m64 -pg -O2
-CXXFLAGS=-std=c++0x -lrt -m64 -pg -O2
+CCFLAGS=-std=c++0x -lrt -m64 -pg -O3
+CXXFLAGS=-std=c++0x -lrt -m64 -pg -O3
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -75,7 +75,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
-	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -std=c++0x -lrt -m64 -pg -O2
+	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -std=c++0x -lrt -m64 -pg -O3
 
 ${OBJECTDIR}/src/ALayeredTrie.o: src/ALayeredTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
