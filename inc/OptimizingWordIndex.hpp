@@ -33,6 +33,8 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "MathUtils.hpp"
+
 #include "AWordIndex.hpp"
 #include "BasicWordIndex.hpp"
 
@@ -40,6 +42,7 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
+using namespace uva::utils::math;
 using namespace uva::smt::file;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::tries;
@@ -289,6 +292,9 @@ namespace uva {
                     inline void allocate_data_storage() {
                         //First determine the number of buckets to be used
                         m_num_buckets = (__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words);
+                        
+                        //Make it even to facilitate the divisions (?)
+                        m_num_buckets += (is_odd_A(m_num_buckets) ? 1 : 0);
 
                         //Now allocate the number of elements in the hash mappings
                         //Make it +1 in order to store the end position of the last bucket
@@ -348,10 +354,10 @@ namespace uva {
 
                         //Go through the buckets array and initialize the begin indexes
                         for (size_t idx = 0; idx < m_num_bucket_maps; ++idx) {
-                            if(DO_SANITY_CHECKS && m_word_hash_buckets[idx] > 2) {
+                            if (DO_SANITY_CHECKS && m_word_hash_buckets[idx] > 2) {
                                 LOG_WARNING << "A bucket with " << m_word_hash_buckets[idx] << " words is detected!" << END_LOG;
                             }
-                            
+
                             next_idx = curr_idx + m_word_hash_buckets[idx];
                             m_word_hash_buckets[idx] = curr_idx;
                             curr_idx = next_idx;

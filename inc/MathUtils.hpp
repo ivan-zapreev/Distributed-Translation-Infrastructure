@@ -41,6 +41,14 @@ using namespace uva::smt::exceptions;
 namespace uva {
     namespace utils {
         namespace math {
+            
+            /**
+             * Allows to check if the given integer is an odd value
+             * @param x the value to be tested
+             * @return true if the value is odd otherwise false
+             */
+            static inline bool is_odd_A(int x) { return x & 1; };
+            
             namespace log2 {
                 //These are the fast log2 computing functions originated from:
                 //http://stackoverflow.com/questions/11376288/fast-computing-of-log2-for-64-bit-integers
