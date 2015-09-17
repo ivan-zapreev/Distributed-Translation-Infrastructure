@@ -63,7 +63,7 @@ namespace uva {
 
             inline uint_fast64_t hash64(uint64_t key) {
                 uint8_t* bytes = (uint8_t*) (&key);
-                uint_fast32_t hash = 2166136261U;
+                uint_fast64_t hash = 2166136261U;
                 hash = (16777619U * hash) ^ bytes[0];
                 hash = (16777619U * hash) ^ bytes[1];
                 hash = (16777619U * hash) ^ bytes[2];
@@ -77,7 +77,7 @@ namespace uva {
 
             inline uint_fast32_t hashStr(const char* data, int len) {
                 uint_fast32_t hash = 2166136261U;
-                for (int32_t i = 0; i != len; i++) {
+                for (int32_t i = 0; i != len; ++i) {
                     hash = (16777619U * hash) ^ (uint8_t) (data[i]);
                 }
                 return hash;
@@ -254,7 +254,7 @@ namespace uva {
             inline uint_fast32_t computeDjb2Hash(const char * data, uint32_t len) {
                 uint_fast32_t hashVal = 5381;
 
-                for (std::size_t i = 0; i != len; i++) {
+                for (std::size_t i = 0; i != len; ++i) {
 
                     hashVal = ((hashVal << 5) + hashVal) + data[i]; /* hash * 33 + c */
                 }
@@ -287,7 +287,7 @@ namespace uva {
 
             inline uint_fast32_t computePrimesHash(const char * data, uint32_t len) {
                 uint_fast32_t h = 31 /* also prime */;
-                for (std::size_t i = 0; i != len; i++) {
+                for (std::size_t i = 0; i != len; ++i) {
 
                     h = (h * A) ^ (data[i] * B);
                 }
@@ -306,8 +306,7 @@ namespace uva {
                 uint_fast32_t a = 63689;
                 uint_fast32_t hash = 0;
 
-                for (std::size_t i = 0; i != len; i++) {
-
+                for (std::size_t i = 0; i != len; ++i) {
                     hash = hash * a + data[i];
                     a = a * b;
                 }
@@ -316,8 +315,21 @@ namespace uva {
             }
 
             inline uint_fast32_t computeRSHash(const string & str) {
-
                 return computeRSHash(str.c_str(), str.length());
+            }
+
+            /*****************************************************************************************************/
+
+            inline uint_fast32_t stupidHash(const char * data, uint32_t len) {
+                uint_fast32_t hash = hash32(len);
+                for (std::size_t i = 0; i != len; ++i) {
+                    hash = (16777619U * hash) ^ data[i];
+                }
+                return hash;
+            }
+
+            inline uint_fast32_t stupidHash(const string & str) {
+                return stupidHash(str.c_str(), str.length());
             }
 
             /*****************************************************************************************************/
@@ -329,7 +341,7 @@ namespace uva {
              * @return the resulting hash.
              */
             inline uint_fast64_t computeHash(const char * data, uint32_t len) {
-                return basic_fnv_1(data, len);
+                return stupidHash(data, len);
             }
 
             /**
