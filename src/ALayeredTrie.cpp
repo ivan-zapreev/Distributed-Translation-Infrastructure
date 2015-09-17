@@ -89,7 +89,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[level - 1];
                 TShortId wordId;
-                isFound = ATrie<N>::get_word_index()->get_word_id(endWord.str(), wordId);
+                isFound = ATrie<N>::get_word_index()->get_word_id(endWord, wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -144,7 +144,7 @@ namespace uva {
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[N - 1];
                 TShortId wordId;
-                isFound = ATrie<N>::get_word_index()->get_word_id(endWord.str(), wordId);
+                isFound = ATrie<N>::get_word_index()->get_word_id(endWord, wordId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;

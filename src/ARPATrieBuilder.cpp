@@ -296,7 +296,7 @@ namespace uva {
                         LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
 
                         //Perform the post counting actions;
-                        m_trie.get_word_index()->post_word_count();
+                        m_trie.get_word_index()->do_post_word_count();
 
                         LOG_DEBUG << "Finished counting all words" << END_LOG;
                         //Stop the progress bar in case of no exception

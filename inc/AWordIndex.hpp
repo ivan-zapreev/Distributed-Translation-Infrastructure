@@ -91,7 +91,7 @@ namespace uva {
                      * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
                      * @return true if the word id is found, otherwise false
                      */
-                    virtual bool get_word_id(const string & token, TShortId &wordId) const = 0;
+                    virtual bool get_word_id(const TextPieceReader & token, TShortId &wordId) const = 0;
                     
                     /**
                      * This function creates/gets an id for the given word.
@@ -121,7 +121,7 @@ namespace uva {
                      * Should be called if the word count is needed
                      * after all the words have been counted.
                      */
-                    virtual void post_word_count() = 0;
+                    virtual void do_post_word_count() = 0;
 
                     /**
                      * Indicates if the post-actions are needed. The post actions

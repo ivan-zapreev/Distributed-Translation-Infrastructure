@@ -99,8 +99,8 @@ namespace uva {
                      * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
                      * @return true if the word id is found, otherwise false
                      */
-                    virtual bool get_word_id(const string & token, TShortId &wordId) const {
-                        TWordIndexMapConstIter result = _pWordIndexMap->find(token);
+                    virtual bool get_word_id(const TextPieceReader & token, TShortId &wordId) const {
+                        TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', id: "
@@ -155,7 +155,7 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    virtual void post_word_count() {
+                    virtual void do_post_word_count() {
                         throw Exception("BasicWordIndex::count_word: Not implemented as not needed!");
                     };
 
@@ -184,6 +184,43 @@ namespace uva {
                     virtual ~BasicWordIndex() {
                         deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                     };
+                    
+                    /**
+                     * The type of key,value pairs to be stored in the word index
+                     */
+                    typedef pair< const string, TShortId> TWordIndexEntry;
+
+                    /**
+                     * The typedef for the word index allocator
+                     */
+                    typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
+
+                    /**
+                     * The word index map type
+                     */
+                    typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                    
+                    /**
+                     * Defines the constant iterator type
+                     */
+                    typedef TWordIndexMap::const_iterator TWordIndexMapConstIter;
+
+                    /**
+                     * Allows to get the begin constant iterator
+                     * @return the begin constant iterator
+                     */
+                    TWordIndexMapConstIter begin(){
+                        return _pWordIndexMap->begin();
+                    }
+                    
+                    /**
+                     * Allows to get the end constant iterator
+                     * @return the end constant iterator
+                     */
+                    TWordIndexMapConstIter end(){
+                        return _pWordIndexMap->end();
+                    }
+                    
                 protected:
 
                     /**
@@ -195,17 +232,6 @@ namespace uva {
                     _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(0.0) {
                         throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                     }
-
-                    //The type of key,value pairs to be stored in the word index
-                    typedef pair< const string, TShortId> TWordIndexEntry;
-
-                    //The typedef for the word index allocator
-                    typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
-
-                    //The word index map type
-                    typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
-                    typedef TWordIndexMap::const_iterator TWordIndexMapConstIter;
-
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
                     TWordIndexAllocator * _pWordIndexAlloc;
 

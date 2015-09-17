@@ -98,11 +98,11 @@ namespace uva {
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
-                    
+
                     LOG_DEBUG3 << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
 
-                            //This one is needed for having a proper non-null word index pointer.
+                    //This one is needed for having a proper non-null word index pointer.
                     if (_pWordIndex == NULL) {
                         stringstream msg;
                         msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
@@ -216,7 +216,7 @@ namespace uva {
                  * If the value is found then it must be added to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * In that case the back-off weight is just zero.
-                  * @see ATrie
+                 * @see ATrie
                  */
                 virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob);
 
@@ -316,21 +316,19 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
-                        const string & token = gram.tokens[0].str();
                         TShortId wordId;
 
                         //There is no id cached for this M-gram context - find it
-                        if (ATrie<N>::get_word_index()->get_word_id(token, wordId)) {
+                        if (ATrie<N>::get_word_index()->get_word_id(gram.tokens[0], wordId)) {
                             //The first word id is the first context id
                             ctxId = wordId;
-                            LOGGER(logLevel) << "ctxId = getId('" << token
+                            LOGGER(logLevel) << "ctxId = getId('" << gram.tokens[0].str()
                                     << "') = " << SSTR(ctxId) << END_LOG;
 
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
-                                const string & token = gram.tokens[i].str();
-                                if (ATrie<N>::get_word_index()->get_word_id(token, wordId)) {
-                                    LOGGER(logLevel) << "wordId = getId('" << token
+                                if (ATrie<N>::get_word_index()->get_word_id(gram.tokens[i], wordId)) {
+                                    LOGGER(logLevel) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {
                                         LOGGER(logLevel) << "ctxId = computeCtxId( "
@@ -346,7 +344,7 @@ namespace uva {
                                 } else {
                                     //The next word Id was not found, it is
                                     //unknown, so we can stop searching
-                                    LOGGER(logLevel) << "The wordId for '" << token
+                                    LOGGER(logLevel) << "The wordId for '" << gram.tokens[i].str()
                                             << "' could not be found!" << END_LOG;
                                     return false;
                                 }
@@ -362,7 +360,7 @@ namespace uva {
                         } else {
                             //The context id could not be computed as
                             //the first N-gram's word is already unknown
-                            LOGGER(logLevel) << "The wordId for '" << token
+                            LOGGER(logLevel) << "The wordId for '" << gram.tokens[0].str()
                                     << "' could not be found!" << END_LOG;
                             return false;
                         }

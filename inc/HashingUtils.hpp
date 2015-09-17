@@ -301,6 +301,15 @@ namespace uva {
                 return computeDjb2Hash(data, len);
             }
 
+            /**
+             * The function used to compute hash in the application, uses one of the specific hashing functions above.
+             * @param token the token to compute hash for
+             * @return the resulting hash.
+             */
+            inline uint64_t computeHash(const string & token) {
+                return computeDjb2Hash(token.c_str(), token.length());
+            }
+
             /*****************************************************************************************************/
 
             /**

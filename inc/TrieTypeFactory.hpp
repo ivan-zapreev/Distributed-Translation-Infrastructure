@@ -70,7 +70,7 @@ namespace uva {
                  * @return pointer to a new word index instance
                  */
                 static inline AWordIndex * getWordIndex(const WordIndexTypesEnum word_index_type) {
-                    const size_t memory_factor = __HashMapWordIndex::UM_WORD_INDEX_MEMORY_FACTOR;
+                    const size_t memory_factor = __HashMapWordIndex::MEMORY_FACTOR;
                     switch (word_index_type) {
                         case WordIndexTypesEnum::BASIC_WORD_INDEX:
                             LOG_USAGE << "Using BASIC_WORD_INDEX to instantiate the trie." << END_LOG;

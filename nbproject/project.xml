@@ -18,6 +18,22 @@
                 <sourceRootElem>inc</sourceRootElem>
                 <sourceRootElem>src</sourceRootElem>
                 <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
@@ -42,6 +58,10 @@
                 </confElem>
                 <confElem>
                     <name>Debug__Centos_</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Profile__Centos_</name>
                     <type>1</type>
                 </confElem>
             </confList>

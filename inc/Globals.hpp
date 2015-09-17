@@ -134,7 +134,7 @@ namespace uva {
                 };
             }
             using namespace dictionary;
-            
+
             namespace __BitmapHashCache {
                 //The default number of buckets allocated for hash is equal to the
                 //number of M-grams in the Trie level. This is absolutely not enough
@@ -143,12 +143,21 @@ namespace uva {
                 //queried M-grams have a very low chance to fall into the buckets with
                 //the Trie grams. So the bigger this number the better, yet the
                 //memory constraints. ALthough they are not crucial as we use bitmaps.
-                static const float BUCKET_MULTIPLIER_FACTOR = 100;
+                //NOTE: The experiments with C2WA showed a 5% performance improvement
+                //In the range of values 15-50. Yet, looking at memory consumption the 
+                //optimum value was chosen to be 20 as with 15 it starts deteriorating 
+                static const float BUCKET_MULTIPLIER_FACTOR = 20;
             }
 
             namespace __HashMapWordIndex {
                 //The unordered map memory factor for the Word index in AHashMapTrie
-                static const float UM_WORD_INDEX_MEMORY_FACTOR = 2.6;
+                static const float MEMORY_FACTOR = 2.6;
+            }
+            
+            namespace __OptimizingWordIndex {
+                //This is the number of buckets factor for the optimizing word index
+                //The number of buckets will be the number of words * this value
+                static const float BUCKETS_FACTOR = 1.2;
             }
 
             namespace __C2DHybridTrie {

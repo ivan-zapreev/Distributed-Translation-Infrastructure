@@ -124,7 +124,7 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    virtual void post_word_count() {
+                    virtual void do_post_word_count() {
                         //All the words have been filled in, it is time to give them ids.
                         LOG_DEBUG1 << "Starting the post word counting actions!" << END_LOG;
 

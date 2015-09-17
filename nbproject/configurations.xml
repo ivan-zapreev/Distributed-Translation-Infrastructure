@@ -290,8 +290,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -317,6 +315,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -422,8 +422,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -449,6 +447,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -562,8 +562,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -589,6 +587,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -694,8 +694,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -721,6 +719,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -826,8 +826,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -853,6 +851,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -958,8 +958,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -985,6 +983,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1090,8 +1090,6 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/DynamicMemoryArrays.hpp" ex="false" tool="3" flavor2="0">
@@ -1117,6 +1115,8 @@
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/OptimizingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/StatisticsMonitor.hpp" ex="false" tool="3" flavor2="0">
       </item>
