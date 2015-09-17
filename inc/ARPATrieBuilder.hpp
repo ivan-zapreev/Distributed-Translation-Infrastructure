@@ -104,28 +104,33 @@ namespace uva {
                      * Allows to read the given Trie level M-grams from the file
                      * @param level the currently read M-gram level M
                      */
-                    inline void read_m_gram_level(const TModelLevel level);
+                    void read_m_gram_level(const TModelLevel level);
                     
                     /**
                      * Checks if this is the last M-gram level we had to read,
                      * if no read more otherwise we are done.
                      * @param level the currently read M-gram level M
                      */
-                    inline void check_and_go_m_grams(const TModelLevel level);
+                    void check_and_go_m_grams(const TModelLevel level);
 
                     /**
                      * Allows to perform the post-gram actions if needed
                      * @param level the currently read M-gram level M
                      */
-                    inline void do_post_m_gram_actions(const TModelLevel level);
+                    void do_post_m_gram_actions(const TModelLevel level);
 
+                    /**
+                     * Allows to perform the word index post-actions if needed
+                     */
+                    void do_word_index_post_1_gram_actions();
+                    
                     /**
                      * If the word counts are needed then this method will 
                      * read all the M-gram sections of the ARPA file to get them.
                      * Afterwards the file will be rewind to the beginning
                      * of the 1-Gram sections.
                      */
-                    inline void get_word_counts();
+                    void get_word_counts();
 
                     /**
                      * If the word counts are needed then we are starting

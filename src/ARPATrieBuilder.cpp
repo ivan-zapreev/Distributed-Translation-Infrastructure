@@ -308,6 +308,25 @@ namespace uva {
                 }
 
                 template<TModelLevel N>
+                void ARPATrieBuilder<N>::do_word_index_post_1_gram_actions() {
+                    //Perform the post actions if needed
+                    if( m_trie.get_word_index()->is_post_actions_needed() ) {
+                        //Do the progress bard indicator
+                        Logger::startProgressBar(string("Word Index post actions"));
+
+                        LOG_DEBUG << "Starting to perform the Word Index post actions" << END_LOG;
+
+                        //Perform the post actions
+                        m_trie.get_word_index()->do_post_actions();
+
+                        LOG_DEBUG << "Finished performing the Word Index post actions" << END_LOG;
+                        
+                        //Stop the progress bar in case of no exception
+                        Logger::stopProgressBar();
+                    }
+                }
+                
+                template<TModelLevel N>
                 void ARPATrieBuilder<N>::read_grams(const TModelLevel level) {
                     stringstream msg;
                     //Do the progress bard indicator
@@ -324,6 +343,12 @@ namespace uva {
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                         //Read the M-grams of the given level
                         read_m_gram_level(level);
+                        
+                        //If the first M-gram level has been read then do
+                        //the word index post-actions if needed.
+                        if( level == M_GRAM_LEVEL_1 ) {
+                            do_word_index_post_1_gram_actions();
+                        }
 
                         //Perform the post-M-gram actions if needed
                         do_post_m_gram_actions(level);

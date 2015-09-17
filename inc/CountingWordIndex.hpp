@@ -174,6 +174,27 @@ namespace uva {
 
                         LOG_DEBUG1 << "Finished the post word counting actions!" << END_LOG;
                     };
+
+                    /**
+                     * Indicates if the post-actions are needed. The post actions
+                     * should be called after all the words have been filled into
+                     * the index.
+                     * @see AWordIndex
+                     */
+                    virtual bool is_post_actions_needed() {
+                        return BasicWordIndex::is_post_actions_needed();
+                    };
+
+                    /**
+                     * Is to be called if the post actions are needed right after
+                     * that all the individual words have beed added into the index.
+                     * @see AWordIndex
+                     */
+                    virtual void do_post_actions() {
+                        BasicWordIndex::do_post_actions();
+                        //There is nothing to be done
+                    };
+
                 };
             }
         }

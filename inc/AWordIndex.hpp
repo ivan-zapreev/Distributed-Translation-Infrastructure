@@ -124,6 +124,20 @@ namespace uva {
                     virtual void post_word_count() = 0;
 
                     /**
+                     * Indicates if the post-actions are needed. The post actions
+                     * should be called after all the words have been filled into
+                     * the index.
+                     * @return true if the post-actions are needed, otherwise false
+                     */
+                    virtual bool is_post_actions_needed() = 0;
+                    
+                    /**
+                     * Is to be called if the post actions are needed right after
+                     * that all the individual words have beed added into the index.
+                     */
+                    virtual void do_post_actions() = 0;
+                    
+                    /**
                      * The basic destructor
                      */
                     virtual ~AWordIndex() {
