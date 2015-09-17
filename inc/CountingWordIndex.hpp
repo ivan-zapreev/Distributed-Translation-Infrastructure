@@ -84,15 +84,25 @@ namespace uva {
                      * storage allocation in the unordered_map used for the word index
                      */
                     CountingWordIndex(const float wordIndexMemFactor) : BasicWordIndex(wordIndexMemFactor) {
+                        if (BasicWordIndex::need_word_counts()) {
+                            throw Exception("The BasicWordIndex must needs word counts! Update CountingWordIndex!");
+                        }
+                    }
+
+                    /**
+                     * This function creates/gets a hash for the given word.
+                     * @see AWordIndex
+                     */
+                    virtual TShortId register_word(const TextPieceReader & token) {
+                        //Note that, by now all the words must have been counted
+                        //and have their unique words ids, so here we do it simple!
+                        //Return the id that has already been issued!
+                        return _pWordIndexMap->at(token.str());
                     }
 
                     /**
                      * This method is to be used when the word counting is needed.
-                     * The main application here is to first count the number of
-                     * word usages and then distribute the word ids in such a way
-                     * that the most used words get the lowest ids.
-                     * If not re-implemented throws an exception.
-                     * @param token the word to count
+                     * @see AWordIndex
                      */
                     virtual void count_word(const TextPieceReader & token) {
                         //Misuse the internal word index map for storing the word counts in it.
@@ -103,19 +113,18 @@ namespace uva {
                     /**
                      * This method allows to indicate whether word counting is
                      * needed by the given implementation of the word index.
-                     * @return true 
+                     * @see AWordIndex
                      */
                     virtual bool need_word_counts() {
-                        return true || BasicWordIndex::need_word_counts();
+                        return true;
                     };
 
                     /**
                      * Should be called if the word count is needed
                      * after all the words have been counted.
+                     * @see AWordIndex
                      */
                     virtual void post_word_count() {
-                        BasicWordIndex::post_word_count();
-                        
                         //All the words have been filled in, it is time to give them ids.
                         LOG_DEBUG1 << "Starting the post word counting actions!" << END_LOG;
 

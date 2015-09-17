@@ -134,6 +134,32 @@ namespace uva {
                     }
 
                     /**
+                     * This method allows to indicate whether word counting is
+                     * needed by the given implementation of the word index.
+                     * @see AWordIndex
+                     */
+                    virtual bool need_word_counts() {
+                        return false;
+                    };
+
+                    /**
+                     * This method is to be used when the word counting is needed.
+                     * @see AWordIndex
+                     */
+                    virtual void count_word(const TextPieceReader & token) {
+                        throw Exception("BasicWordIndex::count_word: Not implemented as not needed!");
+                    };
+
+                    /**
+                     * Should be called if the word count is needed
+                     * after all the words have been counted.
+                     * @see AWordIndex
+                     */
+                    virtual void post_word_count() {
+                        throw Exception("BasicWordIndex::count_word: Not implemented as not needed!");
+                    };
+
+                    /**
                      * The basic destructor
                      */
                     virtual ~BasicWordIndex() {

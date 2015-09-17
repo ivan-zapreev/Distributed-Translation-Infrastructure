@@ -92,31 +92,6 @@ namespace uva {
                      * @return true if the word id is found, otherwise false
                      */
                     virtual bool get_word_id(const string & token, TShortId &wordId) const = 0;
-
-                    /**
-                     * This method is to be used when the word counting is needed.
-                     * The main application here is to first count the number of
-                     * word usages and then distribute the word ids in such a way
-                     * that the most used words get the lowest ids.
-                     * If not re-implemented throws an exception.
-                     * @param token the word to count
-                     */
-                    virtual void count_word(const TextPieceReader & token) {};
-                    
-                    /**
-                     * This method allows to indicate whether word counting is
-                     * needed by the given implementation of the word index.
-                     * The default implementation always returns false.
-                     * @return true if the word counting is needed, otherwise false.
-                     */
-                    virtual bool need_word_counts(){return false;};
-                    
-                    /**
-                     * Should be called if the word count is needed
-                     * after all the words have been counted.
-                     * If not re-implemented throws an exception.
-                     */
-                    virtual void post_word_count() {};
                     
                     /**
                      * This function creates/gets an id for the given word.
@@ -125,6 +100,28 @@ namespace uva {
                      * @return the resulting hash
                      */
                     virtual TShortId register_word(const TextPieceReader & token) = 0;
+                    
+                    /**
+                     * This method allows to indicate whether word counting is
+                     * needed by the given implementation of the word index.
+                     * @return true if the word counting is needed, otherwise false.
+                     */
+                    virtual bool need_word_counts() = 0;
+
+                    /**
+                     * This method is to be used when the word counting is needed.
+                     * The main application here is to first count the number of
+                     * word usages and then distribute the word ids in such a way
+                     * that the most used words get the lowest ids.
+                     * @param token the word to count
+                     */
+                    virtual void count_word(const TextPieceReader & token) = 0;
+                    
+                    /**
+                     * Should be called if the word count is needed
+                     * after all the words have been counted.
+                     */
+                    virtual void post_word_count() = 0;
 
                     /**
                      * The basic destructor
