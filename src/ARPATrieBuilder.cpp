@@ -287,7 +287,7 @@ namespace uva {
                 template<TModelLevel N>
                 void ARPATrieBuilder<N>::get_word_counts() {
                     //Check if we need another pass for words counting.
-                    if (m_trie.get_word_index()->need_word_counts()) {
+                    if (m_trie.get_word_index()->is_word_counts_needed()) {
                         //Do the progress bard indicator
                         Logger::startProgressBar(string("Counting all words"));
 

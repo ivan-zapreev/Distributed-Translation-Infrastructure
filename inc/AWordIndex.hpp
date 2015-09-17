@@ -106,7 +106,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @return true if the word counting is needed, otherwise false.
                      */
-                    virtual bool need_word_counts() = 0;
+                    virtual bool is_word_counts_needed() const = 0;
 
                     /**
                      * This method is to be used when the word counting is needed.
@@ -129,7 +129,7 @@ namespace uva {
                      * the index.
                      * @return true if the post-actions are needed, otherwise false
                      */
-                    virtual bool is_post_actions_needed() = 0;
+                    virtual bool is_post_actions_needed() const = 0;
                     
                     /**
                      * Is to be called if the post actions are needed right after

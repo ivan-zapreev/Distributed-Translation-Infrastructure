@@ -138,7 +138,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    virtual bool need_word_counts() {
+                    virtual bool is_word_counts_needed() const {
                         return false;
                     };
 
@@ -165,7 +165,7 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    virtual bool is_post_actions_needed() {
+                    virtual bool is_post_actions_needed() const {
                         return false;
                     };
 

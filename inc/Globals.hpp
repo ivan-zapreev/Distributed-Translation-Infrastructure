@@ -129,9 +129,24 @@ namespace uva {
                 //Stores the possible Word index configurations
 
                 enum WordIndexTypesEnum {
-                    UNDEFINED = 0, BASIC_WORD_INDEX = UNDEFINED + 1,
-                    COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1, size = COUNTING_WORD_INDEX + 1
+                    UNDEFINED = 0,
+                    BASIC_WORD_INDEX = UNDEFINED + 1,
+                    COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1,
+                    OPTIMIZING_BASIC_WORD_INDEX = COUNTING_WORD_INDEX + 1,
+                    OPTIMIZING_COUNTING_WORD_INDEX = OPTIMIZING_BASIC_WORD_INDEX + 1,
+                    size = OPTIMIZING_COUNTING_WORD_INDEX + 1
                 };
+
+                namespace __HashMapWordIndex {
+                    //The unordered map memory factor for the Word index in AHashMapTrie
+                    static const float MEMORY_FACTOR = 2.6;
+                }
+
+                namespace __OptimizingWordIndex {
+                    //This is the number of buckets factor for the optimizing word index
+                    //The number of buckets will be the number of words * this value
+                    static const float BUCKETS_FACTOR = 1.2;
+                }
             }
             using namespace dictionary;
 
@@ -147,17 +162,6 @@ namespace uva {
                 //In the range of values 15-50. Yet, looking at memory consumption the 
                 //optimum value was chosen to be 20 as with 15 it starts deteriorating 
                 static const float BUCKET_MULTIPLIER_FACTOR = 20;
-            }
-
-            namespace __HashMapWordIndex {
-                //The unordered map memory factor for the Word index in AHashMapTrie
-                static const float MEMORY_FACTOR = 2.6;
-            }
-            
-            namespace __OptimizingWordIndex {
-                //This is the number of buckets factor for the optimizing word index
-                //The number of buckets will be the number of words * this value
-                static const float BUCKETS_FACTOR = 1.2;
             }
 
             namespace __C2DHybridTrie {

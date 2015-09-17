@@ -84,7 +84,7 @@ namespace uva {
                      * storage allocation in the unordered_map used for the word index
                      */
                     CountingWordIndex(const float wordIndexMemFactor) : BasicWordIndex(wordIndexMemFactor) {
-                        if (BasicWordIndex::need_word_counts()) {
+                        if (BasicWordIndex::is_word_counts_needed()) {
                             throw Exception("The BasicWordIndex must needs word counts! Update CountingWordIndex!");
                         }
                     }
@@ -115,7 +115,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    virtual bool need_word_counts() {
+                    virtual bool is_word_counts_needed() const {
                         return true;
                     };
 
@@ -181,7 +181,7 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    virtual bool is_post_actions_needed() {
+                    virtual bool is_post_actions_needed() const {
                         return BasicWordIndex::is_post_actions_needed();
                     };
 

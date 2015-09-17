@@ -31,6 +31,7 @@
 #include "ATrie.hpp"
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
 
 #include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
@@ -78,6 +79,12 @@ namespace uva {
                         case WordIndexTypesEnum::COUNTING_WORD_INDEX:
                             LOG_USAGE << "Using COUNTING_WORD_INDEX to instantiate the trie." << END_LOG;
                             return new CountingWordIndex(memory_factor);
+                        case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX: 
+                            LOG_USAGE << "Using OPTIMIZING_BASIC_WORD_INDEX to instantiate the trie." << END_LOG;
+                            return new OptimizingWordIndex(new BasicWordIndex(memory_factor));
+                        case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX: 
+                            LOG_USAGE << "Using OPTIMIZING_COUNTING_WORD_INDEX to instantiate the trie." << END_LOG;
+                            return new OptimizingWordIndex(new CountingWordIndex(memory_factor));
                         default:
                             stringstream msg;
                             msg << "Unrecognized word index type: " << word_index_type;
