@@ -37,7 +37,10 @@
 #define XXH_NAMESPACE
 #include "xxhash.h"   // XXH32 XXH64
 
+#include "TextPieceReader.hpp"
+
 using namespace std;
+using namespace uva::smt::file;
 
 namespace uva {
     namespace smt {
@@ -326,8 +329,16 @@ namespace uva {
              * @return the resulting hash.
              */
             inline uint_fast64_t computeHash(const char * data, uint32_t len) {
-
                 return basic_fnv_1(data, len);
+            }
+
+            /**
+             * The function used to compute hash in the application, uses one of the specific hashing functions above.
+             * @param token the string to hash
+             * @return the resulting hash.
+             */
+            inline uint_fast64_t computeHash(const TextPieceReader & token) {
+                return computeHash(token.getBeginCStr(), token.getLen());
             }
 
             /**
@@ -349,13 +360,23 @@ namespace uva {
              * @return the resulting hash < limit
              */
             inline uint_fast32_t computeBoundedHash(const char * data, uint32_t len, const uint32_t limit) {
-                uint_fast64_t hash = computeHash(data, len);
-                return (hash - (hash / limit) * limit);
+                const uint_fast32_t hash = computeHash(data, len);
+                return ( hash - (hash / limit) * limit);
             }
 
             /**
              * Allows to compute the hash limited by the given value
-             * @param data the string to hash
+             * @param token the string to hash
+             * @param limit the upper limit of the resulting hash (non-reachable)
+             * @return the resulting hash < limit
+             */
+            inline uint_fast32_t computeBoundedHash(const TextPieceReader & token, const uint32_t limit) {
+                return computeBoundedHash(token.getBeginCStr(), token.getLen(), limit);
+            }
+
+            /**
+             * Allows to compute the hash limited by the given value
+             * @param token the string to hash
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */

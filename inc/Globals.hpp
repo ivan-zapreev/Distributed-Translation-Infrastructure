@@ -185,7 +185,8 @@ namespace uva {
                 //index does not seem to give any performance improvements
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static const bool DO_BITMAP_HASH_CACHE = false;
+                //The experiments show that with 20*bitmap cache this is about 5% faster
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
 
             namespace __G2DMapTrie {
@@ -229,18 +230,20 @@ namespace uva {
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
                 //Stores the word index type to be used in this trie, the  COUNTING
-                //index gives a bit faster querying.
+                //index gives about 5% faster faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static const bool DO_BITMAP_HASH_CACHE = false;
+                //The experiments show that with 20*bitmap cache this is about 5% faster
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
 
             namespace __C2WArrayTrie {
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index gives a bit faster querying.
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                //index gives about 5% faster faster querying.
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static const bool DO_BITMAP_HASH_CACHE = false;
+                //The experiments show that with 20*bitmap cache this is about 5% faster
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
 
             namespace __W2CHybridTrie {
@@ -248,7 +251,7 @@ namespace uva {
                 static const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
 
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index gives a bit faster querying.
+                //index gives about 5% faster faster querying.
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 static const bool DO_BITMAP_HASH_CACHE = false;

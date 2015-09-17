@@ -302,7 +302,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const TextPieceReader & token) const {
-                        return computeBoundedHash(token.getBeginCStr(), token.getLen(), m_num_buckets);
+                        return computeBoundedHash(token, m_num_buckets);
                     }
 
                     /**
