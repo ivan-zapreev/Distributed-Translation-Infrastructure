@@ -140,15 +140,19 @@ namespace uva {
                         const uint32_t bucket_idx = get_bucket_idx(token);
                         const uint32_t begin_idx = m_word_hash_buckets[bucket_idx];
                         const uint32_t end_idx = m_word_hash_buckets[bucket_idx + 1];
+                        
                         LOG_DEBUG2  << "bucket_idx: " << bucket_idx << ", begin_idx: "
                                 << begin_idx << ", end_idx: " << end_idx << END_LOG;
+                        
                         for (uint32_t idx = begin_idx; idx < end_idx; ++idx) {
                             if ((token.getLen() == m_word_entries[idx].m_len) &&
                                     (strncmp(token.getBeginCStr(), m_word_entries[idx].m_word,
                                     m_word_entries[idx].m_len) == 0)) {
                                 wordId = m_word_entries[idx].m_word_id;
+                                
                                 LOG_DEBUG2  << "Found word '" << token.str() << "' id: "
                                         << wordId << ", at entry index: " << idx << END_LOG;
+                                
                                 return true;
                             }
                         }
@@ -324,6 +328,7 @@ namespace uva {
                         BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
                         const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
                         uint32_t idx = 0;
+                        
                         //Go through all the words and count the number of elements per bucket
                         while (curr != end) {
                             const BasicWordIndex::TWordIndexEntry & entry = *curr;
@@ -338,9 +343,10 @@ namespace uva {
                      * Convert the number of elements per bucket into word index
                      */
                     void build_word_hash_buckets() {
-                        //Go through the buckets array and initialize the begin indexes
                         uint32_t curr_idx = 0;
                         uint32_t next_idx = 0;
+                        
+                        //Go through the buckets array and initialize the begin indexes
                         for (size_t idx = 0; idx < m_num_bucket_maps; ++idx) {
                             next_idx = curr_idx + m_word_hash_buckets[idx];
                             m_word_hash_buckets[idx] = curr_idx;
@@ -358,6 +364,7 @@ namespace uva {
                         const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
                         uint32_t bucket_idx = 0;
                         uint32_t entry_idx = 0;
+                        
                         //Go through all the words and fill in the buckets
                         while (curr != end) {
                             const BasicWordIndex::TWordIndexEntry & word_data = *curr;
@@ -377,6 +384,7 @@ namespace uva {
                             //Search for the first empty entry
                             while (m_word_entries[entry_idx].m_word != NULL) {
                                 entry_idx++;
+                                
                                 LOG_DEBUG2  << "Skipping on to entry_idx: " << entry_idx << END_LOG;
                             }
 
