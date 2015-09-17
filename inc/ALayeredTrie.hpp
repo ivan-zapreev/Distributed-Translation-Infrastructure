@@ -32,6 +32,7 @@
 #include "ATrie.hpp"
 #include "Globals.hpp"
 #include "Exceptions.hpp"
+
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
 
@@ -316,10 +317,10 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
-                        TShortId wordId;
+                        TShortId wordId = ATrie<N>::get_word_index()->get_word_id(gram.tokens[0]);
 
                         //There is no id cached for this M-gram context - find it
-                        if (ATrie<N>::get_word_index()->get_word_id(gram.tokens[0], wordId)) {
+                        if (wordId != AWordIndex::UNKNOWN_WORD_ID) {
                             //The first word id is the first context id
                             ctxId = wordId;
                             LOGGER(logLevel) << "ctxId = getId('" << gram.tokens[0].str()
@@ -327,7 +328,8 @@ namespace uva {
 
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
-                                if (ATrie<N>::get_word_index()->get_word_id(gram.tokens[i], wordId)) {
+                                wordId = ATrie<N>::get_word_index()->get_word_id(gram.tokens[i]);
+                                if (wordId != AWordIndex::UNKNOWN_WORD_ID) {
                                     LOGGER(logLevel) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {

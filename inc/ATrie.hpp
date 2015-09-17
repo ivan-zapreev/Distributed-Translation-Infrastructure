@@ -320,7 +320,7 @@ namespace uva {
                     LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(m_gram.level) << "-gram:" << END_LOG;
                     for (TModelLevel i = 0; i < m_gram.level; i++) {
                         //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                        m_word_index_ptr->get_word_id(m_gram.tokens[i], m_tmp_word_ids[idx]);
+                        m_tmp_word_ids[idx] = m_word_index_ptr->get_word_id(m_gram.tokens[i]);
                         LOG_DEBUG1 << "wordId('" << m_gram.tokens[i].str() << "') = " << SSTR(m_tmp_word_ids[idx]) << END_LOG;
                         idx++;
                     }

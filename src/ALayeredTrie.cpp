@@ -28,6 +28,10 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "AWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
+
 namespace uva {
     namespace smt {
         namespace tries {
@@ -88,10 +92,9 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[level - 1];
-                TShortId wordId;
-                isFound = ATrie<N>::get_word_index()->get_word_id(endWord, wordId);
+                TShortId wordId = ATrie<N>::get_word_index()->get_word_id(endWord);
 
-                if (DO_SANITY_CHECKS && !isFound) {
+                if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
@@ -143,10 +146,9 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[N - 1];
-                TShortId wordId;
-                isFound = ATrie<N>::get_word_index()->get_word_id(endWord, wordId);
+                TShortId wordId = ATrie<N>::get_word_index()->get_word_id(endWord);
 
-                if (DO_SANITY_CHECKS && !isFound) {
+                if (DO_SANITY_CHECKS && ( wordId == AWordIndex::UNKNOWN_WORD_ID ) ) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());

@@ -68,7 +68,7 @@ namespace uva {
 
                     /**
                      * Allows to get the total words count including the unknown and undefined words
-                     * @param num_words the number of words in the language model
+                     * @see AWordIndex
                      */
                     virtual size_t get_number_of_words(const size_t num_words) {
                         return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
@@ -76,7 +76,7 @@ namespace uva {
 
                     /**
                      * This method should be used to pre-allocate the word index
-                     * @param num_words the number of words
+                     * @see AWordIndex
                      */
                     virtual void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
@@ -95,29 +95,23 @@ namespace uva {
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
-                     * @param token the word to hash
-                     * @param wordId the resulting wordId or UNKNOWN_WORD_ID if the word is not found
-                     * @return true if the word id is found, otherwise false
+                     * @see AWordIndex
                      */
-                    virtual bool get_word_id(const TextPieceReader & token, TShortId &wordId) const {
+                    virtual TShortId get_word_id(const TextPieceReader & token) const {
                         TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', id: "
                                     << SSTR(UNKNOWN_WORD_ID) << END_LOG;
-                            wordId = UNKNOWN_WORD_ID;
-                            return false;
+                            return UNKNOWN_WORD_ID;
                         } else {
-                            wordId = result->second;
-                            return true;
+                            return result->second;
                         }
                     }
 
                     /**
                      * This function creates/gets a hash for the given word.
-                     * Note: The hash id will be unique!
-                     * @param token the word to hash
-                     * @return the resulting hash
+                     * @see AWordIndex
                      */
                     virtual TShortId register_word(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
