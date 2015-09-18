@@ -365,7 +365,7 @@ namespace uva {
                     LOG_DEBUG2 << "Running post actions on " << level << "-grams, m-gram array index: " << mgram_idx << END_LOG;
 
                     //Sort the entries per context with respect to the word index
-                    //the order can be arbitrary if a non-basic word index is used!
+                    //the order could be arbitrary if a non-basic word index is used!
                     const size_t num_prev_ctx = (level == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
                     LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
                     for (size_t ctxId = 0; ctxId < num_prev_ctx; ++ctxId) {
@@ -385,7 +385,7 @@ namespace uva {
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
                             << ", size: " << m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
 
-                    //Order the N-gram array as it is unordered and we will binary searchit later!
+                    //Order the N-gram array as it is unordered and we will binary search it later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
