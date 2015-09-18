@@ -201,7 +201,7 @@ namespace uva {
                                 LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (wordId,ctxId) = (" << wordId << ", "
                                         << ctxId << "), is: " << prob << END_LOG;
-                                prob += n_gram_prob;
+                                prob = n_gram_prob;
                                 return true;
                             } else {
                                 //Could not compute the probability for
@@ -223,7 +223,7 @@ namespace uva {
                                         << wordId << ", " << ctxId
                                         << "), is: " << pEntry->prob << END_LOG;
                                 //Return the stored probability
-                                prob += pEntry->prob;
+                                prob = pEntry->prob;
                                 return true;
                             } else {
                                 //Could not compute the probability for
@@ -254,7 +254,7 @@ namespace uva {
                                 << ", is: " << pEntry->prob << END_LOG;
 
                         //Return the stored probability
-                        prob += pEntry->prob;
+                        prob = pEntry->prob;
                         return true;
                     } else {
                         LOG_DEBUG2 << "Unable to find the 1-Gram entry for a word: "
@@ -262,7 +262,7 @@ namespace uva {
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
-                        prob += ZERO_LOG_PROB_WEIGHT;
+                        prob = ZERO_LOG_PROB_WEIGHT;
                         return true;
                     }
                 }

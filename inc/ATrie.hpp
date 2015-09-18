@@ -232,19 +232,23 @@ namespace uva {
                         store_unk_word_flags();
 
                         //Compute the probability in the loop fashion, should be faster that recursion.
-                        //NOTE: Splitting this into two loops where one computes probability and the
-                        //other one computes back-off weights if the probability is larger than log-zero
-                        //probability did not show any significant performance improvements
                         TModelLevel curr_level = level;
-                        result.prob = ZERO_PROB_WEIGHT;
                         while (!DO_SANITY_CHECKS || (curr_level != 0)) {
                             //Try to compute the next probability with decreased level
                             if (cache_check_add_prob_weight(curr_level, result.prob)) {
                                 //If the probability has been finally computed stop
                                 break;
-                            } else {
-                                //Decrease the level
-                                curr_level--;
+                            }
+                            //Decrease the level
+                            curr_level--;
+                        }
+
+                        //If the probability is log-zero or snaller then there is no
+                        //need for a back-off as then we will only get smaller values.
+                        if (result.prob > ZERO_LOG_PROB_WEIGHT) {
+                            //If the curr_level is smaller than the original level then
+                            //it means that we needed to back-off, add back-off weights
+                            for (; curr_level != level; ++curr_level) {
                                 //Get the back_off 
                                 cache_check_add_back_off_weight(curr_level, result.prob);
                             }
