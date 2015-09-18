@@ -1,0 +1,169 @@
+As it turns out the output that the tools make, in either case OWL, brings a significant overhead.
+For a fair comparison one should turn out the outputs from all the tools to make them run sielent.
+It can give 50% performance improvement! The alternative is to make the tools output approximately
+the smae amoung of data, or try to redirect their output to dev/null and not to grep (?)
+
+1. By Ken-lm output of probabilities per query is done in kenlm/lm/ngram_query.hh
+   In the two methods:
+
+struct BasicPrint {
+  void Word(StringPiece, WordIndex, const FullScoreReturn &) const {}
+  void Line(uint64_t oov, float total) const {
+    std::cout << "Total: " << total << " OOV: " << oov << '\n';
+  }
+  void Summary(double, double, uint64_t, uint64_t) {}
+
+};
+
+struct FullPrint : public BasicPrint {
+  void Word(StringPiece surface, WordIndex vocab, const FullScoreReturn &ret) const {
+    std::cout << surface << '=' << vocab << ' ' << static_cast<unsigned int>(ret.ngram_length)  << ' ' << ret.prob << '\t';
+  }
+
+There however are being generated! 
+
+The original version of KenLM:
+
+[izapree1@smt1 izap]$ query_kenlm.sh e_10_641093.lm q_5_gram_10.000.000.txt | grep -E "^(Name:query)|(Time:)|(Memory:)"
+Name:query	VmPeak:518480 kB	VmRSS:1744 kB	RSSMax:499268 kB	user:71.0722	sys:0.822874	CPU:71.8951	real:71.9252
+Time: system 99%, cpu kernel 0.82s, cpu user 71.07s, real 71.93s 
+Memory: Max RSS 487 Mb
+[izapree1@smt1 izap]$ 
+
+After commenting out the printing, rebuilding and running:
+
+[izapree1@smt1 izap]$ query_kenlm.sh e_10_641093.lm q_5_gram_10.000.000.txt
+Query 'q_5_gram_10.000.000.txt' for model 'e_10_641093.lm'
+Running: {time /home/izapree1/Projects/kenlm/bin/query -n e_10_641093.lm < q_5_gram_10.000.000.txt} 2>&1
+Loading the LM will be faster if you build a binary file.
+Reading e_10_641093.lm
+----5---10---15---20---25---30---35---40---45---50---55---60---65---70---75---80---85---90---95--100
+The ARPA file is missing <unk>.  Substituting log10 probability -100.
+****************************************************************************************************
+Perplexity including OOVs:	2.29902e+07
+Perplexity excluding OOVs:	565.62
+OOVs:	2354822
+Tokens:	50000000
+Name:query	VmPeak:518476 kB	VmRSS:1736 kB	RSSMax:499260 kB	user:19.0941	sys:0.219966	CPU:19.3141	real:19.3233
+Time: system 99%, cpu kernel 0.22s, cpu user 19.09s, real 19.33s 
+Memory: Max RSS 487 Mb
+[izapree1@smt1 izap]$ 
+
+2. OWL, once compiled as usual, maximum debug level "info3" and run with "result" debug level
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage
+Query 'q_5_gram_10.000.000.txt' for model 'e_10_641093.lm' with trie type 'w2ca' and debug level 'usage'
+Running: {time /home/izapree1/Projects/Back-Off-Language-Model-SMT/dist/Release__Centos_/back-off-language-model-smt e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage} 2>&1
+....
+USAGE:	The requested debug level is: 'USAGE', the maximum build level is 'INFO3' the set level is 'USAGE'
+....
+Time: system 99%, cpu kernel 3.72s, cpu user 48.83s, real 52.61s 
+Memory: Max RSS 264 Mb
+
+Once build with the maximum debug level "usage" and run with "usage":
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage
+Query 'q_5_gram_10.000.000.txt' for model 'e_10_641093.lm' with trie type 'w2ca' and debug level 'usage'
+Running: {time /home/izapree1/Projects/Back-Off-Language-Model-SMT/dist/Release__Centos_/back-off-language-model-smt e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage} 2>&1
+....
+USAGE:	The requested debug level is: 'USAGE', the maximum build level is 'USAGE' the set level is 'USAGE'
+....
+Time: system 99%, cpu kernel 3.89s, cpu user 48.62s, real 52.62s 
+Memory: Max RSS 264 Mb
+
+No difference but significantly faster if compared to the versions with grep
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca result | grep -E "(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 15.57s, cpu user 83.03s, real 98.71s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ 
+
+or even the one with info1
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca info1 | grep -E "^(INFO1)|(Time:)|(Memory:)"
+INFO1:	Reading the Language Model is done, it took 26.0238 CPU seconds.
+INFO1:	Total query execution time is 24.4936 CPU seconds.
+Time: system 99%, cpu kernel 26.34s, cpu user 108.55s, real 135.00s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ 
+
+3. The performance on SMT1 machine is better than on the SMT5 machine!
+   Even though the latter are newer and have 250 Gb memory and not 50 as SMT1
+   
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.75s, cpu user 47.89s, real 51.69s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ query_kenlm.sh e_10_641093.lm q_5_gram_10.000.000.txt | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 0.23s, cpu user 19.11s, real 19.36s 
+Memory: Max RSS 487 Mb
+
+Compared to
+
+[izapree1@smt5 ivan]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 9.29s, cpu user 76.82s, real 86.21s
+Memory: Max RSS 264 Mb
+[izapree1@smt5 ivan]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 9.04s, cpu user 77.59s, real 86.74s
+Memory: Max RSS 264 Mb
+[izapree1@smt5 ivan]$ query_kenlm.sh e_10_641093.lm q_5_gram_10.000.000.txt | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 0.39s, cpu user 29.96s, real 30.37s
+Memory: Max RSS 487 Mb
+
+For Owl it is 41% slower and for kenlm it is 37% slower.
+It feels like it have to do with disk I.O. and the
+increase is dual, so perhaps it is worth searching out
+but first try to solve other Owl overheads, such as in
+binary search and such
+
+4. Trying out the custom binary search implementation in Owl (w2ca)
+
+The original version:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.73s, cpu user 48.41s, real 52.21s 
+Memory: Max RSS 264 Mb
+
+The version with the custom binary search:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.76s, cpu user 42.66s, real 46.48s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ 
+
+It did become CPU 6 seconds faster, but this is not too much the timins with one query is:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_1.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 0.37s, cpu user 23.91s, real 24.31s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ 
+
+Trying to check the index range upfront does not pay off, we get slower
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt w2ca usage | grep -E "^(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.67s, cpu user 43.61s, real 47.34s 
+Memory: Max RSS 264 Mb
+[izapree1@smt1 izap]$ 
+
+5. Trying out the custom binary search implementation in Owl (c2wa)
+
+The original version:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt c2wa usage | grep -E "^(ERROR)|(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.75s, cpu user 42.99s, real 46.77s 
+Memory: Max RSS 330 Mb
+[izapree1@smt1 izap]$ 
+
+The version with the custom binary search:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_10.000.000.txt c2wa usage | grep -E "^(ERROR)|(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 3.75s, cpu user 39.14s, real 42.92s 
+Memory: Max RSS 330 Mb
+[izapree1@smt1 izap]$ 
+
+This is indeed again a 3+ seconds performance improvement. The test with just one query runs in:
+
+[izapree1@smt1 izap]$ query_owl.sh e_10_641093.lm q_5_gram_1.txt c2wa usage | grep -E "^(ERROR)|(Time:)|(Memory:)"
+Time: system 99%, cpu kernel 0.26s, cpu user 23.44s, real 23.72s 
+Memory: Max RSS 330 Mb
+[izapree1@smt1 izap]$ 
+
