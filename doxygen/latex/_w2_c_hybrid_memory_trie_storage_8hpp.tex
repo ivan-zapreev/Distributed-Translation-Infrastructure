@@ -1,0 +1,37 @@
+\hypertarget{_w2_c_hybrid_memory_trie_storage_8hpp}{}\section{inc/\+W2\+C\+Hybrid\+Memory\+Trie\+Storage.hpp File Reference}
+\label{_w2_c_hybrid_memory_trie_storage_8hpp}\index{inc/\+W2\+C\+Hybrid\+Memory\+Trie\+Storage.\+hpp@{inc/\+W2\+C\+Hybrid\+Memory\+Trie\+Storage.\+hpp}}
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Greedy\+Memory\+Allocator.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage}{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory}{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef pair$<$ const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_affc598132a51209f50d781cf01733996}{uva\+::smt\+::tries\+::\+T\+Storage\+Map\+Entry}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ \hyperlink{namespaceuva_1_1smt_1_1tries_affc598132a51209f50d781cf01733996}{T\+Storage\+Map\+Entry} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a80642b3331407e41b0aca518e3a1ac31}{uva\+::smt\+::tries\+::\+T\+Storage\+Map\+Allocator}
+\item 
+typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, std\+::hash$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$, std\+::equal\+\_\+to$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$, \hyperlink{namespaceuva_1_1smt_1_1tries_a80642b3331407e41b0aca518e3a1ac31}{T\+Storage\+Map\+Allocator} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a51747124086c47f6b3eb7b66599dbc81}{uva\+::smt\+::tries\+::\+T\+Storage\+Unsigned\+Map}
+\item 
+typedef map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_adcb2d50a97c40fe1a3509d9f798c1d3b}{uva\+::smt\+::tries\+::\+T\+Storage\+Map}
+\end{DoxyCompactItemize}

@@ -1,15 +1,20 @@
 \hypertarget{_a_trie_8hpp}{}\section{inc/\+A\+Trie.hpp File Reference}
 \label{_a_trie_8hpp}\index{inc/\+A\+Trie.\+hpp@{inc/\+A\+Trie.\+hpp}}
-{\ttfamily \#include $<$vector$>$}\\*
 {\ttfamily \#include $<$string$>$}\\*
 {\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}Exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Math\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Text\+Piece\+Reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}M\+Grams.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Bitmap\+Hash\+Cache.\+hpp\char`\"{}}\\*
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram}{uva\+::smt\+::tries\+::\+S\+Back\+Off\+N\+Gram}
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{uva\+::smt\+::tries\+::\+T\+Prob\+Back\+Off\+Entry}
 \item 
-struct \hyperlink{structuva_1_1smt_1_1tries_1_1_s_prob_result}{uva\+::smt\+::tries\+::\+S\+Prob\+Result}
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1_t_query_result}{uva\+::smt\+::tries\+::\+T\+Query\+Result}
 \item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}
 \end{DoxyCompactItemize}
@@ -21,36 +26,4 @@ class \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{uva\+::smt\+::tries\+::\+A
  \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
 \item 
  \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
-\end{DoxyCompactItemize}
-\subsection*{Typedefs}
-\begin{DoxyCompactItemize}
-\item 
-typedef float \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{uva\+::smt\+::tries\+::\+T\+Log\+Prob\+Back\+Off}
-\item 
-typedef \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ M\+A\+X\+\_\+\+N\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a55e7eb3ceb4e902809786973cf89aa9c}{uva\+::smt\+::tries\+::\+T\+Five\+Trie}
-\end{DoxyCompactItemize}
-\subsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} \hyperlink{namespaceuva_1_1smt_1_1tries_a5da2a0c71a6224ade6ea097e6b90bd3a}{uva\+::smt\+::tries\+::\+B\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+V\+A\+L\+U\+E} = 2
-\item 
-const string \hyperlink{namespaceuva_1_1smt_1_1tries_aadd51d0ad0007db1d97769719dda1ff0}{uva\+::smt\+::tries\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R} = \char`\"{}$<$unk$>$\char`\"{}
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \hyperlink{namespaceuva_1_1smt_1_1tries_ac729c4f31fd2bab9e8af8f6370344b87}{uva\+::smt\+::tries\+::\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T\+\_\+\+B\+A\+S\+E} = 10.\+0
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \hyperlink{namespaceuva_1_1smt_1_1tries_a60f325085f4d50c378efc2809a6fecc0}{uva\+::smt\+::tries\+::\+Z\+E\+R\+O\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} = 0.\+0f
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \hyperlink{namespaceuva_1_1smt_1_1tries_ae028201dd0a4a32686e5396de9919b07}{uva\+::smt\+::tries\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} = 99.\+0f
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \hyperlink{namespaceuva_1_1smt_1_1tries_a62d201889d19f6e5bad70de0b101ce75}{uva\+::smt\+::tries\+::\+M\+I\+N\+I\+M\+A\+L\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} = -\/10.\+0f
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \hyperlink{namespaceuva_1_1smt_1_1tries_a9592d33e326894227ec9d9c0a443aac6}{uva\+::smt\+::tries\+::\+Z\+E\+R\+R\+O\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} = -\/99.\+0f
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1tries_a9b5fbcd66b62775091f4c2e9c28b1db9}{uva\+::smt\+::tries\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}$>$ (0)
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1tries_ab8e95ae5121d967a11fc70ad49b824cf}{uva\+::smt\+::tries\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}$>$ (U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H + 1)
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1tries_ad6efe97228b9a8b89f2f0d2a7a2c7ddb}{uva\+::smt\+::tries\+::\+M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}$>$ (U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+H\+A\+S\+H + 1)
-\item 
-const \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1tries_a1b0ab780d7a692242e66beb30e92dfab}{uva\+::smt\+::tries\+::\+M\+I\+N\+I\+M\+U\+M\+\_\+\+C\+O\+N\+T\+E\+X\+T\+\_\+\+L\+E\+V\+E\+L} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level}$>$ (2)
 \end{DoxyCompactItemize}

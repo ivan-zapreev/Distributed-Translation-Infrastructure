@@ -1,0 +1,70 @@
+\hypertarget{namespaceuva_1_1utils_1_1math_1_1bits}{}\section{uva\+:\+:utils\+:\+:math\+:\+:bits Namespace Reference}
+\label{namespaceuva_1_1utils_1_1math_1_1bits}\index{uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$uint8\+\_\+t B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X, typename D\+A\+T\+A\+\_\+\+T\+Y\+P\+E $>$ }\\void \hyperlink{namespaceuva_1_1utils_1_1math_1_1bits_af1d8caab025bbfaa1f0009bb2f16c7e0}{store\+\_\+bytes} (uint8\+\_\+t $\ast$p\+\_\+target, const D\+A\+T\+A\+\_\+\+T\+Y\+P\+E source)
+\item 
+{\footnotesize template$<$uint8\+\_\+t B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X, typename D\+A\+T\+A\+\_\+\+T\+Y\+P\+E $>$ }\\void \hyperlink{namespaceuva_1_1utils_1_1math_1_1bits_a223361a944f97650bd506bf51add3b50}{extract\+\_\+bytes} (const uint8\+\_\+t $\ast$p\+\_\+source, D\+A\+T\+A\+\_\+\+T\+Y\+P\+E \&target)
+\item 
+string \hyperlink{namespaceuva_1_1utils_1_1math_1_1bits_ad78f96a52057355f5d701cb164d4fe57}{bytes\+\_\+to\+\_\+bit\+\_\+string} (const uint8\+\_\+t $\ast$bytes, const size\+\_\+t size)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1math_1_1bits_ad78f96a52057355f5d701cb164d4fe57}{}\index{uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}!bytes\+\_\+to\+\_\+bit\+\_\+string@{bytes\+\_\+to\+\_\+bit\+\_\+string}}
+\index{bytes\+\_\+to\+\_\+bit\+\_\+string@{bytes\+\_\+to\+\_\+bit\+\_\+string}!uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}}
+\subsubsection[{bytes\+\_\+to\+\_\+bit\+\_\+string(const uint8\+\_\+t $\ast$bytes, const size\+\_\+t size)}]{\setlength{\rightskip}{0pt plus 5cm}string uva\+::utils\+::math\+::bits\+::bytes\+\_\+to\+\_\+bit\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const uint8\+\_\+t $\ast$}]{bytes, }
+\item[{const size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1utils_1_1math_1_1bits_ad78f96a52057355f5d701cb164d4fe57}
+Allows to convert an array of bytes into its string representation in bits. 
+\begin{DoxyParams}{Parameters}
+{\em bytes} & the array of bytes, not bull \\
+\hline
+{\em size} & the number of elements in the array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the string representation in bits 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1utils_1_1math_1_1bits_a223361a944f97650bd506bf51add3b50}{}\index{uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}!extract\+\_\+bytes@{extract\+\_\+bytes}}
+\index{extract\+\_\+bytes@{extract\+\_\+bytes}!uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}}
+\subsubsection[{extract\+\_\+bytes(const uint8\+\_\+t $\ast$p\+\_\+source, D\+A\+T\+A\+\_\+\+T\+Y\+P\+E \&target)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X, typename D\+A\+T\+A\+\_\+\+T\+Y\+P\+E $>$ void uva\+::utils\+::math\+::bits\+::extract\+\_\+bytes (
+\begin{DoxyParamCaption}
+\item[{const uint8\+\_\+t $\ast$}]{p\+\_\+source, }
+\item[{D\+A\+T\+A\+\_\+\+T\+Y\+P\+E \&}]{target}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1utils_1_1math_1_1bits_a223361a944f97650bd506bf51add3b50}
+Allows to extract data from the given position in the byte array 
+\begin{DoxyParams}{Parameters}
+{\em B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X} & the array index from which start reading the data \\
+\hline
+{\em D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} & the data type of the data to be extracted \\
+\hline
+{\em p\+\_\+source} & the array to extract data from \\
+\hline
+{\em target} & the data to store the extracted \\
+\hline
+\end{DoxyParams}
+\hypertarget{namespaceuva_1_1utils_1_1math_1_1bits_af1d8caab025bbfaa1f0009bb2f16c7e0}{}\index{uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}!store\+\_\+bytes@{store\+\_\+bytes}}
+\index{store\+\_\+bytes@{store\+\_\+bytes}!uva\+::utils\+::math\+::bits@{uva\+::utils\+::math\+::bits}}
+\subsubsection[{store\+\_\+bytes(uint8\+\_\+t $\ast$p\+\_\+target, const D\+A\+T\+A\+\_\+\+T\+Y\+P\+E source)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X, typename D\+A\+T\+A\+\_\+\+T\+Y\+P\+E $>$ void uva\+::utils\+::math\+::bits\+::store\+\_\+bytes (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{p\+\_\+target, }
+\item[{const D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}]{source}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1utils_1_1math_1_1bits_af1d8caab025bbfaa1f0009bb2f16c7e0}
+Allows to place the given data into the byte array 
+\begin{DoxyParams}{Parameters}
+{\em B\+E\+G\+I\+N\+\_\+\+B\+Y\+T\+E\+\_\+\+I\+D\+X} & the array index from which start placing the data \\
+\hline
+{\em D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} & the data type of the data to be placed \\
+\hline
+{\em p\+\_\+target} & the array to place data into \\
+\hline
+{\em source} & the data to be placed \\
+\hline
+\end{DoxyParams}

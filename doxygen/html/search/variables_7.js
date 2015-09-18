@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['testfilename',['testFileName',['../struct_t_app_params.html#aa507fd765fbe8670bd55bb79f978a1ba',1,'TAppParams']]],
-  ['token_5fdelimiter_5fchar',['TOKEN_DELIMITER_CHAR',['../namespaceuva_1_1smt.html#a83e439b9599a06adad4132cbfa40e4e3',1,'uva::smt']]],
-  ['tokens',['tokens',['../structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html#ab862f62269c845d2587dfcb7b9491271',1,'uva::smt::tries::SBackOffNGram']]],
-  ['trainfilename',['trainFileName',['../struct_t_app_params.html#a063fb4df929a287131eecbaa44b02d90',1,'TAppParams']]]
+  ['level',['level',['../structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#a24d61970baa93c4d85009638b647232d',1,'uva::smt::tries::mgrams::T_M_Gram']]],
+  ['ll',['ll',['../struct_x_x_h32__state__t.html#aa403a337d57bf3ae25092199ff57b8ee',1,'XXH32_state_t::ll()'],['../struct_x_x_h64__state__t.html#a9733d20d40ce914eabba76b954920ff9',1,'XXH64_state_t::ll()']]],
+  ['log_5fprob_5fweight_5fbase',['LOG_PROB_WEIGHT_BASE',['../namespaceuva_1_1smt_1_1tries.html#ac729c4f31fd2bab9e8af8f6370344b87',1,'uva::smt::tries']]]
 ];

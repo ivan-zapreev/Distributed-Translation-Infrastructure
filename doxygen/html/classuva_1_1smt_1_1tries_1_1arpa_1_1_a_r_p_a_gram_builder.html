@@ -90,8 +90,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">uva::smt::tries::arpa::ARPAGramBuilder Class Reference</div>  </div>
@@ -102,57 +104,63 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aabc607c9ba43ff636456b23cb8236e60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aabc607c9ba43ff636456b23cb8236e60">ARPAGramBuilder</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a16805e23db5ab5a826e46ae4a59a0a71">TAddGramFunct</a> addGarmFunc, const char delim)</td></tr>
-<tr class="separator:aabc607c9ba43ff636456b23cb8236e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af505ce38243a3e39fbc6b4d9ee83368f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#af505ce38243a3e39fbc6b4d9ee83368f">processString</a> (const string &amp;data)</td></tr>
-<tr class="separator:af505ce38243a3e39fbc6b4d9ee83368f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8abc3ee7455801a65da79b7a725e023"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aa8abc3ee7455801a65da79b7a725e023">ARPAGramBuilder</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a9af1fc82824b7244f557bc5a265ce3f0">TAddGramFunct</a> addGarmFunc)</td></tr>
+<tr class="separator:aa8abc3ee7455801a65da79b7a725e023"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa44860fddc156c928e9c59a787a96c1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aa44860fddc156c928e9c59a787a96c1c">parse_line</a> (<a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;data)</td></tr>
+<tr class="separator:aa44860fddc156c928e9c59a787a96c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab65614501c700f5654ddd3397050e671"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ab65614501c700f5654ddd3397050e671">~ARPAGramBuilder</a> ()</td></tr>
 <tr class="separator:ab65614501c700f5654ddd3397050e671"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a24f3823ba4df729bbbbbce13cd54d235"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a24f3823ba4df729bbbbbce13cd54d235">gram_line_to_tokens</a> (<a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;text, <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> *tokens, const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level)</td></tr>
+<tr class="separator:a24f3823ba4df729bbbbbce13cd54d235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42dc31844f19e4be3f2a3a628820965"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ad42dc31844f19e4be3f2a3a628820965">gram_to_tokens</a> (<a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;text, <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;ngram)</td></tr>
+<tr class="separator:ad42dc31844f19e4be3f2a3a628820965"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae6dcb98dd4b215e5d3c2d097ae5bfea9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ae6dcb98dd4b215e5d3c2d097ae5bfea9">parse_to_gram</a> (<a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;line)</td></tr>
+<tr class="separator:ae6dcb98dd4b215e5d3c2d097ae5bfea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9de06a743ac014b818df81d2bec0267"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ad9de06a743ac014b818df81d2bec0267">ARPAGramBuilder</a> (const <a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html">ARPAGramBuilder</a> &amp;orig)</td></tr>
 <tr class="separator:ad9de06a743ac014b818df81d2bec0267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:aff22fce8a9b8b5f00e5d9fcad4dd218c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a16805e23db5ab5a826e46ae4a59a0a71">TAddGramFunct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aff22fce8a9b8b5f00e5d9fcad4dd218c">_addGarmFunc</a></td></tr>
-<tr class="separator:aff22fce8a9b8b5f00e5d9fcad4dd218c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ec180396f89d3a252fdd750217c2b7"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a21ec180396f89d3a252fdd750217c2b7">_delim</a></td></tr>
-<tr class="separator:a21ec180396f89d3a252fdd750217c2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a333c47efee11f1812378325732d0e43c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a333c47efee11f1812378325732d0e43c">_level</a></td></tr>
-<tr class="separator:a333c47efee11f1812378325732d0e43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcf89e815cdffc79ada87f33d8ebfb74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#adcf89e815cdffc79ada87f33d8ebfb74">_ngram</a></td></tr>
-<tr class="separator:adcf89e815cdffc79ada87f33d8ebfb74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ab807fa7fd956beabb58d8f275050d0"><td class="memItemLeft" align="right" valign="top">const uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a6ab807fa7fd956beabb58d8f275050d0">MIN_NUM_TOKENS_NGRAM_STR</a></td></tr>
-<tr class="separator:a6ab807fa7fd956beabb58d8f275050d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd40395f976805a4835bc0b03e26cee2"><td class="memItemLeft" align="right" valign="top">const uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#afd40395f976805a4835bc0b03e26cee2">MAX_NUM_TOKENS_NGRAM_STR</a></td></tr>
-<tr class="separator:afd40395f976805a4835bc0b03e26cee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9745823f0bd6e3a5dacbd1aa503fdca3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a9af1fc82824b7244f557bc5a265ce3f0">TAddGramFunct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a9745823f0bd6e3a5dacbd1aa503fdca3">m_add_garm_func</a></td></tr>
+<tr class="separator:a9745823f0bd6e3a5dacbd1aa503fdca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7767fb74793f36e85fb8831f7981d0d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aa7767fb74793f36e85fb8831f7981d0d">m_level</a></td></tr>
+<tr class="separator:aa7767fb74793f36e85fb8831f7981d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6a6c55f9ee2e9c59ada10ea791c3dac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ae6a6c55f9ee2e9c59ada10ea791c3dac">m_token</a></td></tr>
+<tr class="separator:ae6a6c55f9ee2e9c59ada10ea791c3dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb7028b11fbfc03e795e14745e3ecf52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#aeb7028b11fbfc03e795e14745e3ecf52">m_ngram</a></td></tr>
+<tr class="separator:aeb7028b11fbfc03e795e14745e3ecf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:acd62c4e16c9937a119d2beacd3b2247d"><td class="memItemLeft" align="right" valign="top">static const unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#acd62c4e16c9937a119d2beacd3b2247d">MIN_NUM_TOKENS_NGRAM_STR</a> = 2</td></tr>
+<tr class="separator:acd62c4e16c9937a119d2beacd3b2247d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45bad72450a6948351de0cfaa1339f3c"><td class="memItemLeft" align="right" valign="top">static const unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#a45bad72450a6948351de0cfaa1339f3c">MAX_NUM_TOKENS_NGRAM_STR</a> = 3</td></tr>
+<tr class="separator:a45bad72450a6948351de0cfaa1339f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aabc607c9ba43ff636456b23cb8236e60"></a>
+<a class="anchor" id="aa8abc3ee7455801a65da79b7a725e023"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uva::smt::tries::arpa::ARPAGramBuilder::ARPAGramBuilder </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a16805e23db5ab5a826e46ae4a59a0a71">TAddGramFunct</a>&#160;</td>
-          <td class="paramname"><em>addGarmFunc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>delim</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a9af1fc82824b7244f557bc5a265ce3f0">TAddGramFunct</a>&#160;</td>
+          <td class="paramname"><em>addGarmFunc</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -165,7 +173,6 @@ Protected Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">level</td><td>the level of the N-grams to be processed </td></tr>
     <tr><td class="paramname">addGarmFunc</td><td>the strategy for adding the N-grams </td></tr>
-    <tr><td class="paramname">delim</td><td>the delimiter for the N-gram string </td></tr>
   </table>
   </dd>
 </dl>
@@ -226,14 +233,104 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af505ce38243a3e39fbc6b4d9ee83368f"></a>
+<a class="anchor" id="a24f3823ba4df729bbbbbce13cd54d235"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool uva::smt::tries::arpa::ARPAGramBuilder::gram_line_to_tokens </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> *&#160;</td>
+          <td class="paramname"><em>tokens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Tokenise a given piece of text into a set of text peices. The text piece should be a M-gram line from ARPA file with tab separated probability and back-off and space separated words. The back-off is optional </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the piece of text to tokenise </td></tr>
+    <tr><td class="paramname">gram</td><td>the gram container to put data into </td></tr>
+    <tr><td class="paramname">level</td><td>the expected M-gram level </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the M-gram was successfully parsed </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ad42dc31844f19e4be3f2a3a628820965"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void uva::smt::tries::arpa::ARPAGramBuilder::gram_to_tokens </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>ngram</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Tokenise a given piece of text into a set of text peices. The text piece should be a M-gram piece - a space separated string of words. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the piece of text to tokenise </td></tr>
+    <tr><td class="paramname">gram</td><td>the gram container to put data into </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa44860fddc156c928e9c59a787a96c1c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool uva::smt::tries::arpa::ARPAGramBuilder::processString </td>
+          <td class="memname">bool uva::smt::tries::arpa::ARPAGramBuilder::parse_line </td>
           <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
           <td></td>
         </tr>
@@ -249,8 +346,38 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae6dcb98dd4b215e5d3c2d097ae5bfea9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool uva::smt::tries::arpa::ARPAGramBuilder::parse_to_gram </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Parse the given text into a N-Gram entry from the ARPA file </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">line</td><td>the piece of text to parse into the M-gram </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="aff22fce8a9b8b5f00e5d9fcad4dd218c"></a>
+<a class="anchor" id="a9745823f0bd6e3a5dacbd1aa503fdca3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -258,7 +385,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a16805e23db5ab5a826e46ae4a59a0a71">TAddGramFunct</a> uva::smt::tries::arpa::ARPAGramBuilder::_addGarmFunc</td>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1arpa.html#a9af1fc82824b7244f557bc5a265ce3f0">TAddGramFunct</a> uva::smt::tries::arpa::ARPAGramBuilder::m_add_garm_func</td>
         </tr>
       </table>
   </td>
@@ -270,7 +397,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a21ec180396f89d3a252fdd750217c2b7"></a>
+<a class="anchor" id="aa7767fb74793f36e85fb8831f7981d0d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -278,7 +405,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const char uva::smt::tries::arpa::ARPAGramBuilder::_delim</td>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> uva::smt::tries::arpa::ARPAGramBuilder::m_level</td>
         </tr>
       </table>
   </td>
@@ -290,7 +417,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a333c47efee11f1812378325732d0e43c"></a>
+<a class="anchor" id="aeb7028b11fbfc03e795e14745e3ecf52"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -298,7 +425,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a> uva::smt::tries::arpa::ARPAGramBuilder::_level</td>
+          <td class="memname"><a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> uva::smt::tries::arpa::ARPAGramBuilder::m_ngram</td>
         </tr>
       </table>
   </td>
@@ -310,7 +437,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="adcf89e815cdffc79ada87f33d8ebfb74"></a>
+<a class="anchor" id="ae6a6c55f9ee2e9c59ada10ea791c3dac"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -318,7 +445,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> uva::smt::tries::arpa::ARPAGramBuilder::_ngram</td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> uva::smt::tries::arpa::ARPAGramBuilder::m_token</td>
         </tr>
       </table>
   </td>
@@ -330,7 +457,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afd40395f976805a4835bc0b03e26cee2"></a>
+<a class="anchor" id="a45bad72450a6948351de0cfaa1339f3c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -338,19 +465,19 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint uva::smt::tries::arpa::ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR</td>
+          <td class="memname">const unsigned short int uva::smt::tries::arpa::ARPAGramBuilder::MAX_NUM_TOKENS_NGRAM_STR = 3</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="a6ab807fa7fd956beabb58d8f275050d0"></a>
+<a class="anchor" id="acd62c4e16c9937a119d2beacd3b2247d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -358,12 +485,12 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint uva::smt::tries::arpa::ARPAGramBuilder::MIN_NUM_TOKENS_NGRAM_STR</td>
+          <td class="memname">const unsigned short int uva::smt::tries::arpa::ARPAGramBuilder::MIN_NUM_TOKENS_NGRAM_STR = 2</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['debuglevel',['DebugLevel',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1',1,'uva::smt::logging::Logger']]]
+  ['debuglevelsenum',['DebugLevelsEnum',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427',1,'uva::smt::logging']]]
 ];

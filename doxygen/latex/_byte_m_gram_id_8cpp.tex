@@ -1,0 +1,69 @@
+\hypertarget{_byte_m_gram_id_8cpp}{}\section{src/\+Byte\+M\+Gram\+Id.cpp File Reference}
+\label{_byte_m_gram_id_8cpp}\index{src/\+Byte\+M\+Gram\+Id.\+cpp@{src/\+Byte\+M\+Gram\+Id.\+cpp}}
+{\ttfamily \#include \char`\"{}Byte\+M\+Gram\+Id.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Text\+Piece\+Reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Hashing\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Math\+Utils.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams}{uva\+::smt\+::tries\+::mgrams}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_byte_m_gram_id_8cpp_ac17a1b71047edab3d072e7c9315c1607}{I\+S\+\_\+\+L\+E\+S\+S}~-\/1
+\item 
+\#define \hyperlink{_byte_m_gram_id_8cpp_ae646a3fa00cfe3a1cd041228352ac705}{I\+S\+\_\+\+E\+Q\+U\+A\+L}~0
+\item 
+\#define \hyperlink{_byte_m_gram_id_8cpp_ac343dfdbd7decc855479c78c5fd661f0}{I\+S\+\_\+\+L\+A\+R\+G\+E\+R}~+1
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_a1c1aae2c6557d3d99cd055f0d41ba4a6}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::create\+\_\+x\+\_\+gram\+\_\+id}) (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $\ast$word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&m\+\_\+p\+\_\+gram\+\_\+id)
+\item 
+typedef bool($\ast$ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_a9a549c7e7bb18c13c4a8f8af3f39e426}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::is\+\_\+compare\+\_\+grams\+\_\+id\+\_\+func}) (const \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&, const \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$T\+Model\+Level M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_acbec0de892800bb9062a6996a2e9b33d}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::gram\+\_\+id\+\_\+byte\+\_\+len\+\_\+2\+\_\+type} (uint8\+\_\+t len\+\_\+bytes\mbox{[}M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\mbox{]}, uint32\+\_\+t \&id\+\_\+type)
+\item 
+{\footnotesize template$<$T\+Model\+Level M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_a5817d3105a8f3aa35e1e9a5a9c100226}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::gram\+\_\+id\+\_\+type\+\_\+2\+\_\+byte\+\_\+len} (uint32\+\_\+t id\+\_\+type, uint8\+\_\+t \&id\+\_\+len\+\_\+bytes)
+\item 
+{\footnotesize template$<$uint8\+\_\+t I\+D\+\_\+\+T\+Y\+P\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S, T\+Model\+Level M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_afe44767612a24237ac41826b1826f8e1}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::get\+\_\+gram\+\_\+id\+\_\+len} (const uint8\+\_\+t $\ast$m\+\_\+gram\+\_\+id, uint8\+\_\+t \&len\+\_\+bytes)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_aab50535b7592a07dd611a02246a12399}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::create\+\_\+2\+\_\+gram\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $\ast$word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&m\+\_\+p\+\_\+gram\+\_\+id)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_a078f7f3e59f9fe3256278373e3635b56}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::create\+\_\+3\+\_\+gram\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $\ast$word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&m\+\_\+p\+\_\+gram\+\_\+id)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_aeff6d7ea13ed543303d3a907696b36a3}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::create\+\_\+4\+\_\+gram\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $\ast$word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&m\+\_\+p\+\_\+gram\+\_\+id)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_____byte___m___gram___id_a8bd54296799fa57273d43f0b3f97097e}{uva\+::smt\+::tries\+::mgrams\+::\+\_\+\+\_\+\+Byte\+\_\+\+M\+\_\+\+Gram\+\_\+\+Id\+::create\+\_\+5\+\_\+gram\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $\ast$word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1tries_1_1mgrams_1_1_m___gram___id_a478e6468dbd5dab37599c566d77c845c}{T\+\_\+\+Gram\+\_\+\+Id\+\_\+\+Storage\+\_\+\+Ptr} \&m\+\_\+p\+\_\+gram\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_byte_m_gram_id_8cpp_ae646a3fa00cfe3a1cd041228352ac705}{}\index{Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}!I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}}
+\index{I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}!Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}}
+\subsubsection[{I\+S\+\_\+\+E\+Q\+U\+A\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+E\+Q\+U\+A\+L~0}\label{_byte_m_gram_id_8cpp_ae646a3fa00cfe3a1cd041228352ac705}
+\hypertarget{_byte_m_gram_id_8cpp_ac343dfdbd7decc855479c78c5fd661f0}{}\index{Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}!I\+S\+\_\+\+L\+A\+R\+G\+E\+R@{I\+S\+\_\+\+L\+A\+R\+G\+E\+R}}
+\index{I\+S\+\_\+\+L\+A\+R\+G\+E\+R@{I\+S\+\_\+\+L\+A\+R\+G\+E\+R}!Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}}
+\subsubsection[{I\+S\+\_\+\+L\+A\+R\+G\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+L\+A\+R\+G\+E\+R~+1}\label{_byte_m_gram_id_8cpp_ac343dfdbd7decc855479c78c5fd661f0}
+\hypertarget{_byte_m_gram_id_8cpp_ac17a1b71047edab3d072e7c9315c1607}{}\index{Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}!I\+S\+\_\+\+L\+E\+S\+S@{I\+S\+\_\+\+L\+E\+S\+S}}
+\index{I\+S\+\_\+\+L\+E\+S\+S@{I\+S\+\_\+\+L\+E\+S\+S}!Byte\+M\+Gram\+Id.\+cpp@{Byte\+M\+Gram\+Id.\+cpp}}
+\subsubsection[{I\+S\+\_\+\+L\+E\+S\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+L\+E\+S\+S~-\/1}\label{_byte_m_gram_id_8cpp_ac17a1b71047edab3d072e7c9315c1607}

@@ -100,8 +100,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad86b22f218b48991588838d0db6d784b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#ad86b22f218b48991588838d0db6d784b">ARPATrieBuilder</a> (<a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;trie, ifstream &amp;_fstr, const char delim)</td></tr>
-<tr class="separator:ad86b22f218b48991588838d0db6d784b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5381a4b1773965aee6f6cd24513166d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a5381a4b1773965aee6f6cd24513166d0">ARPATrieBuilder</a> (<a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;trie, <a class="el" href="classuva_1_1smt_1_1file_1_1_a_file_reader.html">AFileReader</a> &amp;file)</td></tr>
+<tr class="separator:a5381a4b1773965aee6f6cd24513166d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e01c726cb800efa9b5f157017eb35f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8e01c726cb800efa9b5f157017eb35f4">build</a> ()</td></tr>
 <tr class="separator:a8e01c726cb800efa9b5f157017eb35f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f0c6fc6e4f96d52b5380712b681bfef"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8f0c6fc6e4f96d52b5380712b681bfef">~ARPATrieBuilder</a> ()</td></tr>
@@ -113,7 +113,7 @@ class uva::smt::tries::arpa::ARPATrieBuilder&lt; N &gt;</h3>
 
 <p>This is the Trie builder class that reads an input file stream and creates n-grams and then records them into the provided Trie. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad86b22f218b48991588838d0db6d784b"></a>
+<a class="anchor" id="a5381a4b1773965aee6f6cd24513166d0"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -128,14 +128,8 @@ template&lt;TModelLevel N&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ifstream &amp;&#160;</td>
-          <td class="paramname"><em>_fstr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>delim</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1file_1_1_a_file_reader.html">AFileReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -148,7 +142,6 @@ template&lt;TModelLevel N&gt; </div>
   <table class="params">
     <tr><td class="paramname">trie</td><td>the trie to fill in with data from the text corpus </td></tr>
     <tr><td class="paramname">_fstr</td><td>the file stream to read from </td></tr>
-    <tr><td class="paramname">delim</td><td>the delimiter for the line elements </td></tr>
   </table>
   </dd>
 </dl>

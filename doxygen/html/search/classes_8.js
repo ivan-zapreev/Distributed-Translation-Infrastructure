@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['tappparams',['TAppParams',['../struct_t_app_params.html',1,'']]],
-  ['tmemotyusage',['TMemotyUsage',['../structuva_1_1smt_1_1monitore_1_1_t_memoty_usage.html',1,'uva::smt::monitore']]]
+  ['optimizingwordindex',['OptimizingWordIndex',['../classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html',1,'uva::smt::tries::dictionary']]]
 ];

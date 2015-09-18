@@ -89,7 +89,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classuva_1_1smt_1_1logging_1_1_logger-members.html">List of all members</a>  </div>
@@ -100,24 +99,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><code>#include &lt;<a class="el" href="_logger_8hpp_source.html">Logger.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:ad8a08f17c873112b1717d5fadbfe32d1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> { <br />
-&#160;&#160;<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1ada6ecc276d8dd53e59ea137c7e4e5a8a">USAGE</a> = 0, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205">ERROR</a> = USAGE + 1, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb">WARNING</a> = ERROR + 1, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e">RESULT</a> = WARNING + 1, 
-<br />
-&#160;&#160;<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1">INFO</a> = RESULT + 1, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70">DEBUG</a> = INFO + 1, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8">DEBUG1</a> = DEBUG + 1, 
-<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265">DEBUG2</a> = DEBUG1 + 1, 
-<br />
-&#160;&#160;<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa">DEBUG3</a> = DEBUG2 + 1
-<br />
- }<tr class="separator:ad8a08f17c873112b1717d5fadbfe32d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3513d7db6ba5a43f59b56e3396712dbb"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a3513d7db6ba5a43f59b56e3396712dbb">~Logger</a> ()</td></tr>
@@ -129,14 +110,16 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a21c762988e07657298e025a4df2813e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af07617f0088beaf25775c94202144548"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#af07617f0088beaf25775c94202144548">setReportingLevel</a> (const string level)</td></tr>
 <tr class="separator:af07617f0088beaf25775c94202144548"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a645d1622809b356ec5863d31666fd6fd"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a645d1622809b356ec5863d31666fd6fd">Get</a> (<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> level)</td></tr>
-<tr class="separator:a645d1622809b356ec5863d31666fd6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e52f2be59d5ba40107135b313ea1acb"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a9e52f2be59d5ba40107135b313ea1acb">Get</a> (<a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> level, const char *file, const char *func, const char *line)</td></tr>
-<tr class="separator:a9e52f2be59d5ba40107135b313ea1acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48dbb0863fed63eab9ca2fc50d86bb2a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a48dbb0863fed63eab9ca2fc50d86bb2a">ReportingLevel</a> ()</td></tr>
-<tr class="separator:a48dbb0863fed63eab9ca2fc50d86bb2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93e0d1e9874895360ba8a5019819a253"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a93e0d1e9874895360ba8a5019819a253">startProgressBar</a> ()</td></tr>
-<tr class="separator:a93e0d1e9874895360ba8a5019819a253"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb1dd0d092bd61e4c4691061113f19b"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a5bb1dd0d092bd61e4c4691061113f19b">get</a> (<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a> level)</td></tr>
+<tr class="separator:a5bb1dd0d092bd61e4c4691061113f19b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a394ef70963a1da4fe09e4e4c26976b6c"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a394ef70963a1da4fe09e4e4c26976b6c">get</a> (<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a> level, const char *file, const char *func, const char *line)</td></tr>
+<tr class="separator:a394ef70963a1da4fe09e4e4c26976b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157296abab3607dd37ddb8c681eeedd2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#a157296abab3607dd37ddb8c681eeedd2">isRelevantLevel</a> (const <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a> &amp;level)</td></tr>
+<tr class="separator:a157296abab3607dd37ddb8c681eeedd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaca1a5457d4515b960d18e840346e020"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#aaca1a5457d4515b960d18e840346e020">getReportingLevel</a> ()</td></tr>
+<tr class="separator:aaca1a5457d4515b960d18e840346e020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae96e3ce37d5fb146c7d661bf9da7576c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ae96e3ce37d5fb146c7d661bf9da7576c">startProgressBar</a> (const string &amp;msg)</td></tr>
+<tr class="separator:ae96e3ce37d5fb146c7d661bf9da7576c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac99950b42d9cbe17becae3a68f4b0015"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ac99950b42d9cbe17becae3a68f4b0015">updateProgressBar</a> ()</td></tr>
 <tr class="separator:ac99950b42d9cbe17becae3a68f4b0015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae71f997a95aed7402dbad289f7a0ec9f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ae71f997a95aed7402dbad289f7a0ec9f">stopProgressBar</a> ()</td></tr>
@@ -146,40 +129,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout. </p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">uva::smt::logging::Logger::DebugLevel</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1ada6ecc276d8dd53e59ea137c7e4e5a8a"></a>USAGE&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205"></a>ERROR&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb"></a>WARNING&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1aa7e4b44ca4abe5094a06c407d702c77e"></a>RESULT&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1"></a>INFO&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1a80c1a0a7d13c7c241805fe8a73720f70"></a>DEBUG&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1adb3f4a3acd55b0e10b40ce56054a15a8"></a>DEBUG1&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1abd1059e3622450c09fa8c5e7187ea265"></a>DEBUG2&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="ad8a08f17c873112b1717d5fadbfe32d1a747d7f9e8625007771fde07c68088efa"></a>DEBUG3&#160;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3513d7db6ba5a43f59b56e3396712dbb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +154,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a645d1622809b356ec5863d31666fd6fd"></a>
+<a class="anchor" id="a5bb1dd0d092bd61e4c4691061113f19b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -212,9 +162,9 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::ostream&amp; uva::smt::logging::Logger::Get </td>
+          <td class="memname">static std::ostream&amp; uva::smt::logging::Logger::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a>&#160;</td>
           <td class="paramname"><em>level</em></td><td>)</td>
           <td></td>
         </tr>
@@ -235,7 +185,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9e52f2be59d5ba40107135b313ea1acb"></a>
+<a class="anchor" id="a394ef70963a1da4fe09e4e4c26976b6c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -243,9 +193,9 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::ostream&amp; uva::smt::logging::Logger::Get </td>
+          <td class="memname">static std::ostream&amp; uva::smt::logging::Logger::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a>&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
         <tr>
@@ -285,6 +235,30 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the output stream object </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aaca1a5457d4515b960d18e840346e020"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a>&amp; uva::smt::logging::Logger::getReportingLevel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the reference to the internal log level variable </p><dl class="section return"><dt>Returns</dt><dd>the reference to the internal log level variable </dd></dl>
 
 </div>
 </div>
@@ -336,7 +310,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a48dbb0863fed63eab9ca2fc50d86bb2a"></a>
+<a class="anchor" id="a157296abab3607dd37ddb8c681eeedd2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -344,9 +318,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1">DebugLevel</a>&amp; uva::smt::logging::Logger::ReportingLevel </td>
+          <td class="memname">static bool uva::smt::logging::Logger::isRelevantLevel </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">DebugLevelsEnum</a> &amp;&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -356,7 +331,9 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns the reference to the internal log level variable </p><dl class="section return"><dt>Returns</dt><dd>the reference to the internal log level variable </dd></dl>
+<p>Checks if the current reporting level is higher or equal to the given </p><dl class="section return"><dt>Returns</dt><dd>the reporting level to check </dd>
+<dd>
+true if the given reporting level is smaller or equal to the current, otherwise false </dd></dl>
 
 </div>
 </div>
@@ -390,7 +367,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a93e0d1e9874895360ba8a5019819a253"></a>
+<a class="anchor" id="ae96e3ce37d5fb146c7d661bf9da7576c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -400,7 +377,8 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::logging::Logger::startProgressBar </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -410,7 +388,12 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The function that start progress bar Works if the current debug level is &lt;= INFO </p>
+<p>The function that start progress bar Works if the current debug level is &lt;= INFO </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">msg</td><td>the message to display </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

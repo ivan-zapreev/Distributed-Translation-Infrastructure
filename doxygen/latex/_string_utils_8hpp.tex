@@ -4,6 +4,8 @@
 {\ttfamily \#include $<$vector$>$}\\*
 {\ttfamily \#include $<$sstream$>$}\\*
 {\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include $<$limits$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
 {\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
 \subsection*{Namespaces}
@@ -17,15 +19,32 @@
 \item 
  \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text}{uva\+::smt\+::utils\+::text}
 \end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_string_utils_8hpp_a77f89089972f027bab0d7f971c2b1969}{valid\+\_\+digit}(c)~((c) $>$= \textquotesingle{}0\textquotesingle{} \&\& (c) $<$= \textquotesingle{}9\textquotesingle{})
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a503e3fe0a1b6e85afccb16ea257069ec}{uva\+::smt\+::utils\+::text\+::trim} (std\+::string \&str, const std\+::string \&whitespace=W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S)
 \item 
 void \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a59495b5dced26bf68dcc3eec15d16fcd}{uva\+::smt\+::utils\+::text\+::reduce} (std\+::string \&str, const std\+::string \&fill=\char`\"{} \char`\"{}, const std\+::string \&whitespace=W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a04b838a2ffa29661c25528c966c799f6}{uva\+::smt\+::utils\+::text\+::fast\+\_\+sto\+T} (T \&r, const char $\ast$p)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 const string \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a1251cf45616a5bc009c8dfb643b794e1}{uva\+::smt\+::utils\+::text\+::\+W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S} = \char`\"{}\textbackslash{}t\textbackslash{}f\textbackslash{}v\textbackslash{}n\textbackslash{}r \char`\"{}
 \end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_string_utils_8hpp_a77f89089972f027bab0d7f971c2b1969}{}\index{String\+Utils.\+hpp@{String\+Utils.\+hpp}!valid\+\_\+digit@{valid\+\_\+digit}}
+\index{valid\+\_\+digit@{valid\+\_\+digit}!String\+Utils.\+hpp@{String\+Utils.\+hpp}}
+\subsubsection[{valid\+\_\+digit}]{\setlength{\rightskip}{0pt plus 5cm}\#define valid\+\_\+digit(
+\begin{DoxyParamCaption}
+\item[{}]{c}
+\end{DoxyParamCaption}
+)~((c) $>$= \textquotesingle{}0\textquotesingle{} \&\& (c) $<$= \textquotesingle{}9\textquotesingle{})}\label{_string_utils_8hpp_a77f89089972f027bab0d7f971c2b1969}

@@ -1,7 +1,13 @@
 var searchData=
 [
-  ['warning',['WARNING',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a6ce36924e65e9fc2ead56b4aa0de74fb',1,'uva::smt::logging::Logger']]],
-  ['warning_5fparam_5fvalue',['WARNING_PARAM_VALUE',['../_logger_8hpp.html#a8490160ad5cabd466d371e0dcdd5a15e',1,'Logger.hpp']]],
-  ['what',['what',['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a0ea6aae278f6b04d4d99a0b73befe5ee',1,'uva::smt::exceptions::Exception']]],
-  ['whitespaces',['WHITESPACES',['../namespaceuva_1_1smt_1_1utils_1_1text.html#a1251cf45616a5bc009c8dfb643b794e1',1,'uva::smt::utils::text']]]
+  ['v1',['v1',['../struct_x_x_h__istate32__t.html#abe7ccbc29303d4f4126d7c1c6003e67a',1,'XXH_istate32_t::v1()'],['../struct_x_x_h__istate64__t.html#a5bdd6967a8d80194d4e55b2f61431b8f',1,'XXH_istate64_t::v1()']]],
+  ['v2',['v2',['../struct_x_x_h__istate32__t.html#a2e56f8d3931253d5706f6354c228e7c4',1,'XXH_istate32_t::v2()'],['../struct_x_x_h__istate64__t.html#a8e14247869d90a1eea79cd99c0b06029',1,'XXH_istate64_t::v2()']]],
+  ['v3',['v3',['../struct_x_x_h__istate32__t.html#ae19dc091e2c1c51e516024137603cd4a',1,'XXH_istate32_t::v3()'],['../struct_x_x_h__istate64__t.html#a714d26f89359d5b897e3e8ffa97b946d',1,'XXH_istate64_t::v3()']]],
+  ['v4',['v4',['../struct_x_x_h__istate32__t.html#a8ca5625843153eb81437e9cee7364c1c',1,'XXH_istate32_t::v4()'],['../struct_x_x_h__istate64__t.html#aeb3e5e9f7d5ce61021dca87fae23df27',1,'XXH_istate64_t::v4()']]],
+  ['valid_5fdigit',['valid_digit',['../_string_utils_8hpp.html#a77f89089972f027bab0d7f971c2b1969',1,'StringUtils.hpp']]],
+  ['value_5ftype',['value_type',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#a11ff94e5a9e23e3db57976661f6d06f8',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
+  ['vmhwm',['vmhwm',['../structuva_1_1smt_1_1monitore_1_1_s_memoty_usage.html#a3f6608a284e9feadc00c0d38309e9a8a',1,'uva::smt::monitore::SMemotyUsage']]],
+  ['vmpeak',['vmpeak',['../structuva_1_1smt_1_1monitore_1_1_s_memoty_usage.html#ae22d05a79f8266bc69c7306afe125422',1,'uva::smt::monitore::SMemotyUsage']]],
+  ['vmrss',['vmrss',['../structuva_1_1smt_1_1monitore_1_1_s_memoty_usage.html#af2b92553ae06f9b632942a23c20b9fee',1,'uva::smt::monitore::SMemotyUsage']]],
+  ['vmsize',['vmsize',['../structuva_1_1smt_1_1monitore_1_1_s_memoty_usage.html#a4f9b4e9f1c158f9d2889689769579412',1,'uva::smt::monitore::SMemotyUsage']]]
 ];

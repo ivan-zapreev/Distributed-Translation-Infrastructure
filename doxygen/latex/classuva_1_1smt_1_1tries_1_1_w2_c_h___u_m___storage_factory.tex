@@ -1,0 +1,79 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory}\index{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$}}
+
+
+{\ttfamily \#include $<$W2\+C\+Hybrid\+Memory\+Trie\+Storage.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a26c5ff34de8c0303cf672a5190fea8e4}{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory} (const size\+\_\+t \+\_\+counts\mbox{[}N\mbox{]}, const float factor=\+\_\+\+\_\+\+W2\+C\+Hybrid\+Trie\+::\+U\+M\+\_\+\+C\+T\+X\+\_\+\+T\+O\+\_\+\+P\+B\+\_\+\+M\+A\+P\+\_\+\+S\+T\+O\+R\+E\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_ae917d7ffecfd46ceff8e0af32ae624d0}{$\sim$\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory} ()
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage}{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage} $\ast$ \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a4aded7ed343feb6f8f955448e19f6d1f}{create} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1tries_a80642b3331407e41b0aca518e3a1ac31}{T\+Storage\+Map\+Allocator} $\ast$ \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_aff21d6e056fe54bcd597336aff02ef0b}{m\+\_\+p\+\_\+alloc} \mbox{[}N-\/1\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Model\+Level N$>$class uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$}
+
+This is a factory class that should be used to produce containers of Ctx\+To\+P\+B\+Map\+Storage. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a26c5ff34de8c0303cf672a5190fea8e4}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\index{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\subsubsection[{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory(const size\+\_\+t \+\_\+counts[N], const float factor=\+\_\+\+\_\+\+W2\+C\+Hybrid\+Trie\+::\+U\+M\+\_\+\+C\+T\+X\+\_\+\+T\+O\+\_\+\+P\+B\+\_\+\+M\+A\+P\+\_\+\+S\+T\+O\+R\+E\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}$<$ N $>$\+::{\bf W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory} (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{\+\_\+counts\mbox{[}\+N\mbox{]}, }
+\item[{const float}]{factor = {\ttfamily \+\_\+\+\_\+W2CHybridTrie\+:\+:UM\+\_\+CTX\+\_\+TO\+\_\+PB\+\_\+MAP\+\_\+STORE\+\_\+MEMORY\+\_\+FACTOR}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a26c5ff34de8c0303cf672a5190fea8e4}
+This is a basic constructor for the factory 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+counts} & the number of elements to insert per trie level \\
+\hline
+{\em factor} & the memory multiplication factor, by default \+\_\+\+\_\+\+Ctx\+To\+P\+B\+Map\+Storage\+Factory\+::\+U\+M\+\_\+\+C\+T\+X\+\_\+\+T\+O\+\_\+\+P\+B\+\_\+\+M\+A\+P\+\_\+\+S\+T\+O\+R\+E\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_ae917d7ffecfd46ceff8e0af32ae624d0}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!````~W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{$\sim$\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\index{````~W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{$\sim$\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\subsubsection[{$\sim$\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual {\bf uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}$<$ N $>$\+::$\sim${\bf W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_ae917d7ffecfd46ceff8e0af32ae624d0}
+The basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a4aded7ed343feb6f8f955448e19f6d1f}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!create@{create}}
+\index{create@{create}!uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\subsubsection[{create(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage}$\ast$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}$<$ N $>$\+::create (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_a4aded7ed343feb6f8f955448e19f6d1f}
+Allocates a new storage container for the given M-\/gram level 
+\begin{DoxyParams}{Parameters}
+{\em level} & the N-\/gram level must be $>$ 1 and $<$= N \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to the allocated container 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_aff21d6e056fe54bcd597336aff02ef0b}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}!m\+\_\+p\+\_\+alloc@{m\+\_\+p\+\_\+alloc}}
+\index{m\+\_\+p\+\_\+alloc@{m\+\_\+p\+\_\+alloc}!uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory@{uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}}
+\subsubsection[{m\+\_\+p\+\_\+alloc}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf T\+Storage\+Map\+Allocator}$\ast$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}$<$ N $>$\+::m\+\_\+p\+\_\+alloc\mbox{[}N-\/1\mbox{]}\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory_aff21d6e056fe54bcd597336aff02ef0b}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_w2_c_hybrid_memory_trie_storage_8hpp}{W2\+C\+Hybrid\+Memory\+Trie\+Storage.\+hpp}\end{DoxyCompactItemize}

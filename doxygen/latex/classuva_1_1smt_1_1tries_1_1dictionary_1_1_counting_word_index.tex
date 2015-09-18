@@ -1,0 +1,140 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:Counting\+Word\+Index Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+
+
+{\ttfamily \#include $<$Counting\+Word\+Index.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:Counting\+Word\+Index\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9ea376675b8173dea3f020be64debb32}{Counting\+Word\+Index} (const float word\+Index\+Mem\+Factor)
+\item 
+virtual \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a71c5719f7b5432866315ea0db9e1f770}{register\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a2ea1e4f9b83be0d112374f3aed62afd8}{count\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9d164d285f9b7498d9db3086426e7876}{is\+\_\+word\+\_\+counts\+\_\+needed} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4723e7a931ff4732ce3c001848656c2a}{do\+\_\+post\+\_\+word\+\_\+count} ()
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a760ba6fe9be1c7e3959f3f7ff3daefd5}{is\+\_\+post\+\_\+actions\+\_\+needed} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4c4ec12cb6c772d41fd5f39ce299a940}{do\+\_\+post\+\_\+actions} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+This is a hash-\/map based implementation of the word index which extends the basic word index by word counting. This allows to count the word usages and then to issue lower word indexes to the more frequently used words. This allows for, for example, shorter M-\/gram ids. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9ea376675b8173dea3f020be64debb32}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!Counting\+Word\+Index@{Counting\+Word\+Index}}
+\index{Counting\+Word\+Index@{Counting\+Word\+Index}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{Counting\+Word\+Index(const float word\+Index\+Mem\+Factor)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::\+Counting\+Word\+Index (
+\begin{DoxyParamCaption}
+\item[{const float}]{word\+Index\+Mem\+Factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9ea376675b8173dea3f020be64debb32}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em word\+Index\+Mem\+Factor} & the assigned memory factor for storage allocation in the unordered\+\_\+map used for the word index \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a2ea1e4f9b83be0d112374f3aed62afd8}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!count\+\_\+word@{count\+\_\+word}}
+\index{count\+\_\+word@{count\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{count\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::count\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a2ea1e4f9b83be0d112374f3aed62afd8}
+This method is to be used when the word counting is needed. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a932348f67a73ca34773ad0472faeda8c}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4c4ec12cb6c772d41fd5f39ce299a940}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}}
+\index{do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+actions()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::do\+\_\+post\+\_\+actions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4c4ec12cb6c772d41fd5f39ce299a940}
+Is to be called if the post actions are needed right after that all the individual words have beed added into the index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a8f76161797b91979e1c94d3a8be6ae82}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4723e7a931ff4732ce3c001848656c2a}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}}
+\index{do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+word\+\_\+count()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::do\+\_\+post\+\_\+word\+\_\+count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4723e7a931ff4732ce3c001848656c2a}
+Should be called if the word count is needed after all the words have been counted. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_aa90d2673f5386030b8b1013c0a106efc}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a760ba6fe9be1c7e3959f3f7ff3daefd5}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}}
+\index{is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{is\+\_\+post\+\_\+actions\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::is\+\_\+post\+\_\+actions\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a760ba6fe9be1c7e3959f3f7ff3daefd5}
+Indicates if the post-\/actions are needed. The post actions should be called after all the words have been filled into the index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a50fbede350d439367b66d736c24a3dac}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9d164d285f9b7498d9db3086426e7876}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}}
+\index{is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{is\+\_\+word\+\_\+counts\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::is\+\_\+word\+\_\+counts\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9d164d285f9b7498d9db3086426e7876}
+This method allows to indicate whether word counting is needed by the given implementation of the word index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a4b94094d513c9281cde965f91b71d970}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a71c5719f7b5432866315ea0db9e1f770}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}!register\+\_\+word@{register\+\_\+word}}
+\index{register\+\_\+word@{register\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}}
+\subsubsection[{register\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index\+::register\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a71c5719f7b5432866315ea0db9e1f770}
+This function creates/gets a hash for the given word. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_abbc772ebe00dc62b65c6f412d70aa0ac}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_counting_word_index_8hpp}{Counting\+Word\+Index.\+hpp}\end{DoxyCompactItemize}

@@ -1,14 +1,19 @@
 var searchData=
 [
-  ['_7eahashmaptrie',['~AHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#a5118f2f3566fd37b41998ef405ca6df1',1,'uva::smt::tries::AHashMapTrie']]],
-  ['_7earpagrambuilder',['~ARPAGramBuilder',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html#ab65614501c700f5654ddd3397050e671',1,'uva::smt::tries::arpa::ARPAGramBuilder']]],
-  ['_7earpagrambuilderfactory',['~ARPAGramBuilderFactory',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory.html#a66e551c1d15723bad56b8aa5b91ee87f',1,'uva::smt::tries::arpa::ARPAGramBuilderFactory']]],
-  ['_7earpatriebuilder',['~ARPATrieBuilder',['../classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8f0c6fc6e4f96d52b5380712b681bfef',1,'uva::smt::tries::arpa::ARPATrieBuilder']]],
-  ['_7econtextmultihashmaptrie',['~ContextMultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ad3a1ce51fea9d2c2d6aaf4f2f0dded85',1,'uva::smt::tries::ContextMultiHashMapTrie']]],
-  ['_7eexception',['~Exception',['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a1ddbe2ffb25aca9ef031f6584af60e23',1,'uva::smt::exceptions::Exception']]],
-  ['_7egreedymemoryallocator',['~GreedyMemoryAllocator',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html#ad14d50375a544eb20ef5d232ab56ba85',1,'uva::smt::tries::alloc::GreedyMemoryAllocator']]],
-  ['_7egreedymemorystorage',['~GreedyMemoryStorage',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html#a1989fe7f8ce7a1d5a6eb5099a7f758a3',1,'uva::smt::tries::alloc::GreedyMemoryStorage']]],
-  ['_7elogger',['~Logger',['../classuva_1_1smt_1_1logging_1_1_logger.html#a3513d7db6ba5a43f59b56e3396712dbb',1,'uva::smt::logging::Logger']]],
-  ['_7emultihashmaptrie',['~MultiHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#aa4b3b06c1768e6a5725e5ff5eda5a6e4',1,'uva::smt::tries::MultiHashMapTrie']]],
-  ['_7esinglehashmaptrie',['~SingleHashMapTrie',['../classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#aac6973244c2fc6cdfac3d2200c4b9dcf',1,'uva::smt::tries::SingleHashMapTrie']]]
+  ['set',['set',['../classuva_1_1smt_1_1file_1_1_text_piece_reader.html#ad31a44734767675d0d328ba6018fc9fa',1,'uva::smt::file::TextPieceReader']]],
+  ['setcachecontextid',['setCacheContextId',['../classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#a58bb4c04c2b764a98a154922a9b896f0',1,'uva::smt::tries::ALayeredTrie']]],
+  ['setreportinglevel',['setReportingLevel',['../classuva_1_1smt_1_1logging_1_1_logger.html#af07617f0088beaf25775c94202144548',1,'uva::smt::logging::Logger']]],
+  ['shrink',['shrink',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html#ae38ab2817eaaef153f72702372b7292f',1,'uva::smt::tries::alloc::ADynamicStackArray']]],
+  ['size',['size',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html#a546dee94b0049cd565a73c4ccc3eba3b',1,'uva::smt::tries::alloc::ADynamicStackArray']]],
+  ['smemotyusage',['SMemotyUsage',['../structuva_1_1smt_1_1monitore_1_1_s_memoty_usage.html#adf1c1843aedf97019b862dee0270b4cd',1,'uva::smt::monitore::SMemotyUsage']]],
+  ['sort',['sort',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html#a660df44c4d77f763e677bd90a13fbd7f',1,'uva::smt::tries::alloc::ADynamicStackArray::sort()'],['../classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html#a0d7e840a9dd97394e2e2cb1ad9c375ff',1,'uva::smt::tries::alloc::ADynamicStackArray::sort(typename T_IS_COMPARE_FUNC&lt; ELEMENT_TYPE &gt;::func_type is_less_func)']]],
+  ['startprogressbar',['startProgressBar',['../classuva_1_1smt_1_1logging_1_1_logger.html#ae96e3ce37d5fb146c7d661bf9da7576c',1,'uva::smt::logging::Logger']]],
+  ['stopprogressbar',['stopProgressBar',['../classuva_1_1smt_1_1logging_1_1_logger.html#ae71f997a95aed7402dbad289f7a0ec9f',1,'uva::smt::logging::Logger']]],
+  ['store_5fbytes',['store_bytes',['../namespaceuva_1_1utils_1_1math_1_1bits.html#af1d8caab025bbfaa1f0009bb2f16c7e0',1,'uva::utils::math::bits']]],
+  ['store_5fm_5fgram_5fword_5fids',['store_m_gram_word_ids',['../classuva_1_1smt_1_1tries_1_1_a_trie.html#a2e9f9d3c04252a42349ea5b3bc526c61',1,'uva::smt::tries::ATrie']]],
+  ['str',['str',['../classuva_1_1smt_1_1file_1_1_text_piece_reader.html#a190e5aa94efc0c51ead8cf558cad6c0a',1,'uva::smt::file::TextPieceReader']]],
+  ['stupidhash',['stupidHash',['../namespaceuva_1_1smt_1_1hashing.html#ac90e791feb022e306f9a587f38634929',1,'uva::smt::hashing::stupidHash(const char *data, uint32_t len)'],['../namespaceuva_1_1smt_1_1hashing.html#a90bf2bab20f065c7693da46a1d776cc3',1,'uva::smt::hashing::stupidHash(const string &amp;str)']]],
+  ['sub_5fhash',['sub_hash',['../structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#a87d9852f45d1302d444d3b675ac208ee',1,'uva::smt::tries::mgrams::T_M_Gram']]],
+  ['suffix_5fhash',['suffix_hash',['../structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#ad881b8fd36556fe70d67eeea21a0c878',1,'uva::smt::tries::mgrams::T_M_Gram']]],
+  ['szudzik',['szudzik',['../namespaceuva_1_1smt_1_1hashing.html#aa902304943fda935979f1b3bd0bea64d',1,'uva::smt::hashing']]]
 ];

@@ -88,7 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">uva::smt::hashing Namespace Reference</div>  </div>
 </div><!--header-->
@@ -96,47 +97,127 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:acdc1f2765e669283f8e9c1ed42705314"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a></td></tr>
-<tr class="separator:acdc1f2765e669283f8e9c1ed42705314"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cc10b288b11b76c718a898b022fbdd1"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a></td></tr>
-<tr class="separator:a6cc10b288b11b76c718a898b022fbdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf22e1982ad09d3a63494c006267469"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a></td></tr>
+<tr class="separator:adcf22e1982ad09d3a63494c006267469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5992ac0dea0fb3226fb403ede09fad55"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a></td></tr>
+<tr class="separator:a5992ac0dea0fb3226fb403ede09fad55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21827cb807d3f4d2fff506f1e5db5a3c"><td class="memItemLeft" align="right" valign="top">typedef int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a21827cb807d3f4d2fff506f1e5db5a3c">TSLongId</a></td></tr>
+<tr class="separator:a21827cb807d3f4d2fff506f1e5db5a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8ac196e26b372b4716effe395c3cbb1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a8ac196e26b372b4716effe395c3cbb1c">computeDjb2Hash</a> (const string &amp;str)</td></tr>
-<tr class="separator:a8ac196e26b372b4716effe395c3cbb1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390d782fb4e4723b565577a85d5bc8bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a390d782fb4e4723b565577a85d5bc8bd">computePrimesHash</a> (const string &amp;str)</td></tr>
-<tr class="separator:a390d782fb4e4723b565577a85d5bc8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ccb220ca55a85d4238d2f8ca287a76f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a0ccb220ca55a85d4238d2f8ca287a76f">computeRSHash</a> (const string &amp;str)</td></tr>
-<tr class="separator:a0ccb220ca55a85d4238d2f8ca287a76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2b30c50e6db131c94fb813153100c9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ad2b30c50e6db131c94fb813153100c9c">cantor</a> (<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> y)</td></tr>
-<tr class="separator:ad2b30c50e6db131c94fb813153100c9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6b9f5792fc3efa9e1f04466569b5404"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aa6b9f5792fc3efa9e1f04466569b5404">uncantor</a> (const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> z, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;y)</td></tr>
-<tr class="separator:aa6b9f5792fc3efa9e1f04466569b5404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe883e418ca19024fe820ef2fb4ade8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#afe883e418ca19024fe820ef2fb4ade8a">szudzik</a> (<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> y)</td></tr>
-<tr class="separator:afe883e418ca19024fe820ef2fb4ade8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c6735ddab6518f2a947ef0373722fd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6c6735ddab6518f2a947ef0373722fd4">unszudzik</a> (const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> z, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;y)</td></tr>
-<tr class="separator:a6c6735ddab6518f2a947ef0373722fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1122f9cea7a46ff058d6e1d1a956ad5c"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a1122f9cea7a46ff058d6e1d1a956ad5c">hash32</a> (uint32_t key)</td></tr>
+<tr class="separator:a1122f9cea7a46ff058d6e1d1a956ad5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ab5c0482dae95dd76bf3380d064fa2"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab2ab5c0482dae95dd76bf3380d064fa2">hash64</a> (uint64_t key)</td></tr>
+<tr class="separator:ab2ab5c0482dae95dd76bf3380d064fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa43fdcfec1c39ef1651c37a01ea6d239"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aa43fdcfec1c39ef1651c37a01ea6d239">hashStr</a> (const char *data, int len)</td></tr>
+<tr class="separator:aa43fdcfec1c39ef1651c37a01ea6d239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05470691cb4fdaa03ae388a92cae3c8e"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a05470691cb4fdaa03ae388a92cae3c8e">hashStr</a> (const string &amp;token)</td></tr>
+<tr class="separator:a05470691cb4fdaa03ae388a92cae3c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab58ee6072dad2326f67f8a90e62238b6"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab58ee6072dad2326f67f8a90e62238b6">basic_fnv_1</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:ab58ee6072dad2326f67f8a90e62238b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a801a5a0fcbdd5ce27d8cdb0b61a48325"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a801a5a0fcbdd5ce27d8cdb0b61a48325">basic_fnv_1</a> (const string &amp;token)</td></tr>
+<tr class="separator:a801a5a0fcbdd5ce27d8cdb0b61a48325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfac598555f7bc1c5f977534d8c0489b"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adfac598555f7bc1c5f977534d8c0489b">basic_fnv_1a</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:adfac598555f7bc1c5f977534d8c0489b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7815ccec4356d786ef65bb512dca9dd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab7815ccec4356d786ef65bb512dca9dd">basic_fnv_1a</a> (const string &amp;token)</td></tr>
+<tr class="separator:ab7815ccec4356d786ef65bb512dca9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5657e6a0476111854d640e62043c91c"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab5657e6a0476111854d640e62043c91c">computeXXHash32</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:ab5657e6a0476111854d640e62043c91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a074c1b5bc4c4b1d69c28bb100bae6729"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a074c1b5bc4c4b1d69c28bb100bae6729">computeXXHash32</a> (const string &amp;token)</td></tr>
+<tr class="separator:a074c1b5bc4c4b1d69c28bb100bae6729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a481534e67432cc3f5a8a35970b351458"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a481534e67432cc3f5a8a35970b351458">computeXXHash64</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:a481534e67432cc3f5a8a35970b351458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc422e2a0504d94933794bb1639398fe"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adc422e2a0504d94933794bb1639398fe">computeXXHash64</a> (const string &amp;token)</td></tr>
+<tr class="separator:adc422e2a0504d94933794bb1639398fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c3fa130e885dfb598755d0a0374bb55"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6c3fa130e885dfb598755d0a0374bb55">computePaulHsiehHash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:a6c3fa130e885dfb598755d0a0374bb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dddda6049bbe46b8de0196c32b8ed88"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5dddda6049bbe46b8de0196c32b8ed88">computePaulHsiehHash</a> (const string &amp;str)</td></tr>
+<tr class="separator:a5dddda6049bbe46b8de0196c32b8ed88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6acd19fa0ec401ebcf83bddb084868a2"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6acd19fa0ec401ebcf83bddb084868a2">computeDjb2Hash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:a6acd19fa0ec401ebcf83bddb084868a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a831b522e0defd7f2fb98e4659c238233"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a831b522e0defd7f2fb98e4659c238233">computeDjb2Hash</a> (const string &amp;str)</td></tr>
+<tr class="separator:a831b522e0defd7f2fb98e4659c238233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7ec4be33256ab5f88807cf253aa64f0"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aa7ec4be33256ab5f88807cf253aa64f0">computePrimesHash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:aa7ec4be33256ab5f88807cf253aa64f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba060665a729921116e2d55ec06b571e"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aba060665a729921116e2d55ec06b571e">computePrimesHash</a> (const string &amp;str)</td></tr>
+<tr class="separator:aba060665a729921116e2d55ec06b571e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a769ad382d3dbb50f27cdb8e834c0f8ba"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a769ad382d3dbb50f27cdb8e834c0f8ba">computeRSHash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:a769ad382d3dbb50f27cdb8e834c0f8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd5b042010c6cb97387719407ca7552"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6fd5b042010c6cb97387719407ca7552">computeRSHash</a> (const string &amp;str)</td></tr>
+<tr class="separator:a6fd5b042010c6cb97387719407ca7552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90e791feb022e306f9a587f38634929"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ac90e791feb022e306f9a587f38634929">stupidHash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:ac90e791feb022e306f9a587f38634929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90bf2bab20f065c7693da46a1d776cc3"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a90bf2bab20f065c7693da46a1d776cc3">stupidHash</a> (const string &amp;str)</td></tr>
+<tr class="separator:a90bf2bab20f065c7693da46a1d776cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f5c6b8537cc241d515c16782d7e7732"><td class="memTemplParams" colspan="2">template&lt;uint32_t seed&gt; </td></tr>
+<tr class="memitem:a7f5c6b8537cc241d515c16782d7e7732"><td class="memTemplItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a7f5c6b8537cc241d515c16782d7e7732">crapWowHash</a> (const char *key, uint32_t len)</td></tr>
+<tr class="separator:a7f5c6b8537cc241d515c16782d7e7732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab30ac60ac5c660503b4b736df2896f2"><td class="memTemplParams" colspan="2">template&lt;uint64_t seed&gt; </td></tr>
+<tr class="memitem:aab30ac60ac5c660503b4b736df2896f2"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aab30ac60ac5c660503b4b736df2896f2">MurmurHash64A</a> (const void *key, std::size_t len)</td></tr>
+<tr class="separator:aab30ac60ac5c660503b4b736df2896f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3da1f706ea51c541ff3c1c1634dadb38"><td class="memTemplParams" colspan="2">template&lt;uint64_t seed&gt; </td></tr>
+<tr class="memitem:a3da1f706ea51c541ff3c1c1634dadb38"><td class="memTemplItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a3da1f706ea51c541ff3c1c1634dadb38">MurmurHash64B</a> (const void *key, std::size_t len)</td></tr>
+<tr class="separator:a3da1f706ea51c541ff3c1c1634dadb38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa372dbea8bcfd35b1278598df650a56f"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aa372dbea8bcfd35b1278598df650a56f">computeHash</a> (const char *data, uint32_t len)</td></tr>
+<tr class="separator:aa372dbea8bcfd35b1278598df650a56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dec5678734cb96a27ecf4df41c6f3ce"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a3dec5678734cb96a27ecf4df41c6f3ce">computeHash</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)</td></tr>
+<tr class="separator:a3dec5678734cb96a27ecf4df41c6f3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d52e69625f3cde0c9d05c17994c4943"><td class="memItemLeft" align="right" valign="top">uint_fast64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5d52e69625f3cde0c9d05c17994c4943">computeHash</a> (const string &amp;token)</td></tr>
+<tr class="separator:a5d52e69625f3cde0c9d05c17994c4943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0185c620c3b3707f559c423f366a7f19"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a0185c620c3b3707f559c423f366a7f19">computeBoundedHash</a> (const char *data, uint32_t len, const uint32_t limit)</td></tr>
+<tr class="separator:a0185c620c3b3707f559c423f366a7f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387f024518c6907d3a1fca92443bf53d"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a387f024518c6907d3a1fca92443bf53d">computeBoundedHash</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token, const uint32_t limit)</td></tr>
+<tr class="separator:a387f024518c6907d3a1fca92443bf53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a767a9f7163a83984fbc240edaf75b61a"><td class="memItemLeft" align="right" valign="top">uint_fast32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a767a9f7163a83984fbc240edaf75b61a">computeBoundedHash</a> (const string &amp;token, const uint32_t limit)</td></tr>
+<tr class="separator:a767a9f7163a83984fbc240edaf75b61a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab870d4db140cd2f763a334f82db0d904"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab870d4db140cd2f763a334f82db0d904">cantor</a> (<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> y)</td></tr>
+<tr class="separator:ab870d4db140cd2f763a334f82db0d904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c885761adf4c13f267b1d0c1f205daa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5c885761adf4c13f267b1d0c1f205daa">uncantor</a> (const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> z, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> &amp;y)</td></tr>
+<tr class="separator:a5c885761adf4c13f267b1d0c1f205daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa902304943fda935979f1b3bd0bea64d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#aa902304943fda935979f1b3bd0bea64d">szudzik</a> (<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> y)</td></tr>
+<tr class="separator:aa902304943fda935979f1b3bd0bea64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81d1f9d50a921d629e445eff89988b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#ab81d1f9d50a921d629e445eff89988b3">unszudzik</a> (const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> z, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;x, <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> &amp;y)</td></tr>
+<tr class="separator:ab81d1f9d50a921d629e445eff89988b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1d75c23c055906113f9c29f0ef93c3be"><td class="memItemLeft" align="right" valign="top">const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a1d75c23c055906113f9c29f0ef93c3be">fnv_prime</a> = 1099511628211u</td></tr>
+<tr class="separator:a1d75c23c055906113f9c29f0ef93c3be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114900b041415523076700317d62613a"><td class="memItemLeft" align="right" valign="top">const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a114900b041415523076700317d62613a">fnv_offset_basis</a> = 14695981039346656037u</td></tr>
+<tr class="separator:a114900b041415523076700317d62613a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a6cc10b288b11b76c718a898b022fbdd1"></a>
+<a class="anchor" id="a5992ac0dea0fb3226fb403ede09fad55"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint64_t <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">uva::smt::hashing::TReferenceHashSize</a></td>
+          <td class="memname">typedef uint64_t <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">uva::smt::hashing::TLongId</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="acdc1f2765e669283f8e9c1ed42705314"></a>
+<a class="anchor" id="adcf22e1982ad09d3a63494c006267469"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint32_t <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">uva::smt::hashing::TWordHashSize</a></td>
+          <td class="memname">typedef uint32_t <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">uva::smt::hashing::TShortId</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a21827cb807d3f4d2fff506f1e5db5a3c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int64_t <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a21827cb807d3f4d2fff506f1e5db5a3c">uva::smt::hashing::TSLongId</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -144,7 +225,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ad2b30c50e6db131c94fb813153100c9c"></a>
+<a class="anchor" id="ab58ee6072dad2326f67f8a90e62238b6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -152,15 +233,131 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> uva::smt::hashing::cantor </td>
+          <td class="memname">uint_fast32_t uva::smt::hashing::basic_fnv_1 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a801a5a0fcbdd5ce27d8cdb0b61a48325"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t uva::smt::hashing::basic_fnv_1 </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adfac598555f7bc1c5f977534d8c0489b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::basic_fnv_1a </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab7815ccec4356d786ef65bb512dca9dd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t uva::smt::hashing::basic_fnv_1a </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab870d4db140cd2f763a334f82db0d904"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> uva::smt::hashing::cantor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -186,7 +383,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8ac196e26b372b4716effe395c3cbb1c"></a>
+<a class="anchor" id="a0185c620c3b3707f559c423f366a7f19"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -194,11 +391,154 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> uva::smt::hashing::computeDjb2Hash </td>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeBoundedHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>limit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to compute the hash limited by the given value </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>the data to hash </td></tr>
+    <tr><td class="paramname">len</td><td>the length of the data to hash </td></tr>
+    <tr><td class="paramname">limit</td><td>the upper limit of the resulting hash (non-reachable) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash &lt; limit </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a387f024518c6907d3a1fca92443bf53d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeBoundedHash </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>limit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to compute the hash limited by the given value </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>the string to hash </td></tr>
+    <tr><td class="paramname">limit</td><td>the upper limit of the resulting hash (non-reachable) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash &lt; limit </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a767a9f7163a83984fbc240edaf75b61a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeBoundedHash </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>limit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to compute the hash limited by the given value </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>the string to hash </td></tr>
+    <tr><td class="paramname">limit</td><td>the upper limit of the resulting hash (non-reachable) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash &lt; limit </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6acd19fa0ec401ebcf83bddb084868a2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeDjb2Hash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -217,7 +557,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a390d782fb4e4723b565577a85d5bc8bd"></a>
+<a class="anchor" id="a831b522e0defd7f2fb98e4659c238233"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -225,7 +565,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> uva::smt::hashing::computePrimesHash </td>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeDjb2Hash </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
@@ -241,7 +581,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0ccb220ca55a85d4238d2f8ca287a76f"></a>
+<a class="anchor" id="aa372dbea8bcfd35b1278598df650a56f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -249,7 +589,210 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> uva::smt::hashing::computeRSHash </td>
+          <td class="memname">uint_fast64_t uva::smt::hashing::computeHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The function used to compute hash in the application, uses one of the specific hashing functions above. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>the data to hash </td></tr>
+    <tr><td class="paramname">len</td><td>the length of the data to hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3dec5678734cb96a27ecf4df41c6f3ce"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast64_t uva::smt::hashing::computeHash </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The function used to compute hash in the application, uses one of the specific hashing functions above. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>the string to hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5d52e69625f3cde0c9d05c17994c4943"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast64_t uva::smt::hashing::computeHash </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The function used to compute hash in the application, uses one of the specific hashing functions above. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>the token to compute hash for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the resulting hash. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6c3fa130e885dfb598755d0a0374bb55"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computePaulHsiehHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5dddda6049bbe46b8de0196c32b8ed88"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computePaulHsiehHash </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The simple function wrapper for the Paul Hsieh Hashing function </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>the string to hash </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the hash value </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa7ec4be33256ab5f88807cf253aa64f0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computePrimesHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aba060665a729921116e2d55ec06b571e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computePrimesHash </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
@@ -265,7 +808,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afe883e418ca19024fe820ef2fb4ade8a"></a>
+<a class="anchor" id="a769ad382d3dbb50f27cdb8e834c0f8ba"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -273,15 +816,454 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> uva::smt::hashing::szudzik </td>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeRSHash </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6fd5b042010c6cb97387719407ca7552"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeRSHash </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab5657e6a0476111854d640e62043c91c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeXXHash32 </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a074c1b5bc4c4b1d69c28bb100bae6729"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::computeXXHash32 </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a481534e67432cc3f5a8a35970b351458"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast64_t uva::smt::hashing::computeXXHash64 </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adc422e2a0504d94933794bb1639398fe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast64_t uva::smt::hashing::computeXXHash64 </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7f5c6b8537cc241d515c16782d7e7732"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;uint32_t seed&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t uva::smt::hashing::crapWowHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The Crap WOW hashing function is taken from: <a href="http://floodyberry.com/noncryptohashzoo/CrapWow.html">http://floodyberry.com/noncryptohashzoo/CrapWow.html</a> Is expected to be very fast and possess decent properties </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the pointer to the char array </td></tr>
+    <tr><td class="paramname">len</td><td>the length of the chaw array </td></tr>
+    <tr><td class="paramname">seed</td><td>the seed to use </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the hash value </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1122f9cea7a46ff058d6e1d1a956ad5c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::hash32 </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab2ab5c0482dae95dd76bf3380d064fa2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast64_t uva::smt::hashing::hash64 </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa43fdcfec1c39ef1651c37a01ea6d239"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::hashStr </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a05470691cb4fdaa03ae388a92cae3c8e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::hashStr </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aab30ac60ac5c660503b4b736df2896f2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;uint64_t seed&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t uva::smt::hashing::MurmurHash64A </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3da1f706ea51c541ff3c1c1634dadb38"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;uint64_t seed&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t uva::smt::hashing::MurmurHash64B </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac90e791feb022e306f9a587f38634929"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::stupidHash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a90bf2bab20f065c7693da46a1d776cc3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint_fast32_t uva::smt::hashing::stupidHash </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa902304943fda935979f1b3bd0bea64d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> uva::smt::hashing::szudzik </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -307,7 +1289,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa6b9f5792fc3efa9e1f04466569b5404"></a>
+<a class="anchor" id="a5c885761adf4c13f267b1d0c1f205daa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -317,19 +1299,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::hashing::uncantor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>z</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -355,7 +1337,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6c6735ddab6518f2a947ef0373722fd4"></a>
+<a class="anchor" id="ab81d1f9d50a921d629e445eff89988b3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -365,19 +1347,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::hashing::unszudzik </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a>&#160;</td>
           <td class="paramname"><em>z</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a6cc10b288b11b76c718a898b022fbdd1">TReferenceHashSize</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#a5992ac0dea0fb3226fb403ede09fad55">TLongId</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -400,6 +1382,31 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a114900b041415523076700317d62613a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::size_t uva::smt::hashing::fnv_offset_basis = 14695981039346656037u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1d75c23c055906113f9c29f0ef93c3be"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::size_t uva::smt::hashing::fnv_prime = 1099511628211u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

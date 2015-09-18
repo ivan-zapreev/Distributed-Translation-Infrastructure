@@ -1,0 +1,82 @@
+\hypertarget{namespaceuva_1_1smt_1_1file}{}\section{uva\+:\+:smt\+:\+:file Namespace Reference}
+\label{namespaceuva_1_1smt_1_1file}\index{uva\+::smt\+::file@{uva\+::smt\+::file}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader}{A\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader}{C\+Style\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1smt_1_1file_1_1_file_stream_reader}{File\+Stream\+Reader}
+\item 
+class \hyperlink{classuva_1_1smt_1_1file_1_1_memory_mapped_file_reader}{Memory\+Mapped\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{namespaceuva_1_1smt_1_1file_a44400e052e7651e30837da4b926ccc66}{operator$<$$<$} (ostream \&output, const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&val)
+\item 
+{\footnotesize template$<$T\+Model\+Level N = M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X$>$ }\\string \hyperlink{namespaceuva_1_1smt_1_1file_ac8c535b83a41fdb117f17aa97e6c4c75}{tokens\+To\+String} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} tokens\mbox{[}N\mbox{]}, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} begin\+\_\+idx, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} end\+\_\+idx)
+\item 
+{\footnotesize template$<$T\+Model\+Level N = M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X$>$ }\\string \hyperlink{namespaceuva_1_1smt_1_1file_abe2efb311901054be55640aa2631b2bd}{tokens\+To\+String} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} tokens\mbox{[}N\mbox{]}, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1file_a44400e052e7651e30837da4b926ccc66}{}\index{uva\+::smt\+::file@{uva\+::smt\+::file}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!uva\+::smt\+::file@{uva\+::smt\+::file}}
+\subsubsection[{operator$<$$<$(ostream \&output, const Text\+Piece\+Reader \&val)}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& uva\+::smt\+::file\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{output, }
+\item[{const {\bf Text\+Piece\+Reader} \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1file_a44400e052e7651e30837da4b926ccc66}
+Overloading the output operator for the ostream 
+\begin{DoxyParams}{Parameters}
+{\em output} & the stream to print to \\
+\hline
+{\em val} & the value to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1file_ac8c535b83a41fdb117f17aa97e6c4c75}{}\index{uva\+::smt\+::file@{uva\+::smt\+::file}!tokens\+To\+String@{tokens\+To\+String}}
+\index{tokens\+To\+String@{tokens\+To\+String}!uva\+::smt\+::file@{uva\+::smt\+::file}}
+\subsubsection[{tokens\+To\+String(const Text\+Piece\+Reader tokens[N], const T\+Model\+Level begin\+\_\+idx, const T\+Model\+Level end\+\_\+idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N = M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X$>$ string uva\+::smt\+::file\+::tokens\+To\+String (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader}}]{tokens\mbox{[}\+N\mbox{]}, }
+\item[{const {\bf T\+Model\+Level}}]{begin\+\_\+idx, }
+\item[{const {\bf T\+Model\+Level}}]{end\+\_\+idx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1file_ac8c535b83a41fdb117f17aa97e6c4c75}
+This function allows to convert the Basic\+Text\+File\+Reader elements tokens into a array string representation. 
+\begin{DoxyParams}{Parameters}
+{\em tokens} & the tokens to print \\
+\hline
+{\em from\+\_\+idx} & the from index \\
+\hline
+{\em to\+\_\+idx} & the to index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting string 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1file_abe2efb311901054be55640aa2631b2bd}{}\index{uva\+::smt\+::file@{uva\+::smt\+::file}!tokens\+To\+String@{tokens\+To\+String}}
+\index{tokens\+To\+String@{tokens\+To\+String}!uva\+::smt\+::file@{uva\+::smt\+::file}}
+\subsubsection[{tokens\+To\+String(const Text\+Piece\+Reader tokens[N], const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N = M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X$>$ string uva\+::smt\+::file\+::tokens\+To\+String (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader}}]{tokens\mbox{[}\+N\mbox{]}, }
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1file_abe2efb311901054be55640aa2631b2bd}
+This function allows to convert the Basic\+Text\+File\+Reader elements tokens into a array string representation. 
+\begin{DoxyParams}{Parameters}
+{\em tokens} & the tokens to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting string 
+\end{DoxyReturn}

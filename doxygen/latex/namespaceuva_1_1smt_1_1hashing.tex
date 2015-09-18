@@ -3,47 +3,145 @@
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size}
+typedef uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}
 \item 
-typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size}
+typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id}
+\item 
+typedef int64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a21827cb807d3f4d2fff506f1e5db5a3c}{T\+S\+Long\+Id}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}{compute\+Djb2\+Hash} (const string \&str)
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a1122f9cea7a46ff058d6e1d1a956ad5c}{hash32} (uint32\+\_\+t key)
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}{compute\+Primes\+Hash} (const string \&str)
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_ab2ab5c0482dae95dd76bf3380d064fa2}{hash64} (uint64\+\_\+t key)
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}{compute\+R\+S\+Hash} (const string \&str)
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_aa43fdcfec1c39ef1651c37a01ea6d239}{hash\+Str} (const char $\ast$data, int len)
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}{cantor} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} y)
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a05470691cb4fdaa03ae388a92cae3c8e}{hash\+Str} (const string \&token)
 \item 
-void \hyperlink{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}{uncantor} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \&y)
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_ab58ee6072dad2326f67f8a90e62238b6}{basic\+\_\+fnv\+\_\+1} (const char $\ast$data, uint32\+\_\+t len)
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \hyperlink{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}{szudzik} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} y)
+uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a801a5a0fcbdd5ce27d8cdb0b61a48325}{basic\+\_\+fnv\+\_\+1} (const string \&token)
 \item 
-void \hyperlink{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}{unszudzik} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{T\+Word\+Hash\+Size} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{T\+Reference\+Hash\+Size} \&y)
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_adfac598555f7bc1c5f977534d8c0489b}{basic\+\_\+fnv\+\_\+1a} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_ab7815ccec4356d786ef65bb512dca9dd}{basic\+\_\+fnv\+\_\+1a} (const string \&token)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_ab5657e6a0476111854d640e62043c91c}{compute\+X\+X\+Hash32} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a074c1b5bc4c4b1d69c28bb100bae6729}{compute\+X\+X\+Hash32} (const string \&token)
+\item 
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a481534e67432cc3f5a8a35970b351458}{compute\+X\+X\+Hash64} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_adc422e2a0504d94933794bb1639398fe}{compute\+X\+X\+Hash64} (const string \&token)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a6c3fa130e885dfb598755d0a0374bb55}{compute\+Paul\+Hsieh\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a5dddda6049bbe46b8de0196c32b8ed88}{compute\+Paul\+Hsieh\+Hash} (const string \&str)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a6acd19fa0ec401ebcf83bddb084868a2}{compute\+Djb2\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a831b522e0defd7f2fb98e4659c238233}{compute\+Djb2\+Hash} (const string \&str)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_aa7ec4be33256ab5f88807cf253aa64f0}{compute\+Primes\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_aba060665a729921116e2d55ec06b571e}{compute\+Primes\+Hash} (const string \&str)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a769ad382d3dbb50f27cdb8e834c0f8ba}{compute\+R\+S\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a6fd5b042010c6cb97387719407ca7552}{compute\+R\+S\+Hash} (const string \&str)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_ac90e791feb022e306f9a587f38634929}{stupid\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a90bf2bab20f065c7693da46a1d776cc3}{stupid\+Hash} (const string \&str)
+\item 
+{\footnotesize template$<$uint32\+\_\+t seed$>$ }\\uint32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a7f5c6b8537cc241d515c16782d7e7732}{crap\+Wow\+Hash} (const char $\ast$key, uint32\+\_\+t len)
+\item 
+{\footnotesize template$<$uint64\+\_\+t seed$>$ }\\uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_aab30ac60ac5c660503b4b736df2896f2}{Murmur\+Hash64\+A} (const void $\ast$key, std\+::size\+\_\+t len)
+\item 
+{\footnotesize template$<$uint64\+\_\+t seed$>$ }\\uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a3da1f706ea51c541ff3c1c1634dadb38}{Murmur\+Hash64\+B} (const void $\ast$key, std\+::size\+\_\+t len)
+\item 
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_aa372dbea8bcfd35b1278598df650a56f}{compute\+Hash} (const char $\ast$data, uint32\+\_\+t len)
+\item 
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a3dec5678734cb96a27ecf4df41c6f3ce}{compute\+Hash} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+uint\+\_\+fast64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a5d52e69625f3cde0c9d05c17994c4943}{compute\+Hash} (const string \&token)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a0185c620c3b3707f559c423f366a7f19}{compute\+Bounded\+Hash} (const char $\ast$data, uint32\+\_\+t len, const uint32\+\_\+t limit)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a387f024518c6907d3a1fca92443bf53d}{compute\+Bounded\+Hash} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token, const uint32\+\_\+t limit)
+\item 
+uint\+\_\+fast32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a767a9f7163a83984fbc240edaf75b61a}{compute\+Bounded\+Hash} (const string \&token, const uint32\+\_\+t limit)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \hyperlink{namespaceuva_1_1smt_1_1hashing_ab870d4db140cd2f763a334f82db0d904}{cantor} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_a5c885761adf4c13f267b1d0c1f205daa}{uncantor} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&y)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \hyperlink{namespaceuva_1_1smt_1_1hashing_aa902304943fda935979f1b3bd0bea64d}{szudzik} (\hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} y)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1hashing_ab81d1f9d50a921d629e445eff89988b3}{unszudzik} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} z, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \&x, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&y)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::size\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a1d75c23c055906113f9c29f0ef93c3be}{fnv\+\_\+prime} = 1099511628211u
+\item 
+const std\+::size\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1hashing_a114900b041415523076700317d62613a}{fnv\+\_\+offset\+\_\+basis} = 14695981039346656037u
 \end{DoxyCompactItemize}
 
 
 \subsection{Typedef Documentation}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Reference\+Hash\+Size@{T\+Reference\+Hash\+Size}}
-\index{T\+Reference\+Hash\+Size@{T\+Reference\+Hash\+Size}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{T\+Reference\+Hash\+Size}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Reference\+Hash\+Size}}\label{namespaceuva_1_1smt_1_1hashing_a6cc10b288b11b76c718a898b022fbdd1}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Word\+Hash\+Size@{T\+Word\+Hash\+Size}}
-\index{T\+Word\+Hash\+Size@{T\+Word\+Hash\+Size}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{T\+Word\+Hash\+Size}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint32\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Word\+Hash\+Size}}\label{namespaceuva_1_1smt_1_1hashing_acdc1f2765e669283f8e9c1ed42705314}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Long\+Id@{T\+Long\+Id}}
+\index{T\+Long\+Id@{T\+Long\+Id}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{T\+Long\+Id}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Long\+Id}}\label{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+Short\+Id@{T\+Short\+Id}}
+\index{T\+Short\+Id@{T\+Short\+Id}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{T\+Short\+Id}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint32\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+Short\+Id}}\label{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a21827cb807d3f4d2fff506f1e5db5a3c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!T\+S\+Long\+Id@{T\+S\+Long\+Id}}
+\index{T\+S\+Long\+Id@{T\+S\+Long\+Id}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{T\+S\+Long\+Id}]{\setlength{\rightskip}{0pt plus 5cm}typedef int64\+\_\+t {\bf uva\+::smt\+::hashing\+::\+T\+S\+Long\+Id}}\label{namespaceuva_1_1smt_1_1hashing_a21827cb807d3f4d2fff506f1e5db5a3c}
 
 
 \subsection{Function Documentation}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!cantor@{cantor}}
-\index{cantor@{cantor}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{cantor(\+T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Reference\+Hash\+Size} uva\+::smt\+::hashing\+::cantor (
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab58ee6072dad2326f67f8a90e62238b6}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!basic\+\_\+fnv\+\_\+1@{basic\+\_\+fnv\+\_\+1}}
+\index{basic\+\_\+fnv\+\_\+1@{basic\+\_\+fnv\+\_\+1}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{basic\+\_\+fnv\+\_\+1(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::basic\+\_\+fnv\+\_\+1 (
 \begin{DoxyParamCaption}
-\item[{{\bf T\+Reference\+Hash\+Size}}]{x, }
-\item[{{\bf T\+Reference\+Hash\+Size}}]{y}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ad2b30c50e6db131c94fb813153100c9c}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab58ee6072dad2326f67f8a90e62238b6}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a801a5a0fcbdd5ce27d8cdb0b61a48325}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!basic\+\_\+fnv\+\_\+1@{basic\+\_\+fnv\+\_\+1}}
+\index{basic\+\_\+fnv\+\_\+1@{basic\+\_\+fnv\+\_\+1}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{basic\+\_\+fnv\+\_\+1(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t uva\+::smt\+::hashing\+::basic\+\_\+fnv\+\_\+1 (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a801a5a0fcbdd5ce27d8cdb0b61a48325}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_adfac598555f7bc1c5f977534d8c0489b}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!basic\+\_\+fnv\+\_\+1a@{basic\+\_\+fnv\+\_\+1a}}
+\index{basic\+\_\+fnv\+\_\+1a@{basic\+\_\+fnv\+\_\+1a}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{basic\+\_\+fnv\+\_\+1a(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::basic\+\_\+fnv\+\_\+1a (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_adfac598555f7bc1c5f977534d8c0489b}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab7815ccec4356d786ef65bb512dca9dd}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!basic\+\_\+fnv\+\_\+1a@{basic\+\_\+fnv\+\_\+1a}}
+\index{basic\+\_\+fnv\+\_\+1a@{basic\+\_\+fnv\+\_\+1a}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{basic\+\_\+fnv\+\_\+1a(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t uva\+::smt\+::hashing\+::basic\+\_\+fnv\+\_\+1a (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab7815ccec4356d786ef65bb512dca9dd}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab870d4db140cd2f763a334f82db0d904}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!cantor@{cantor}}
+\index{cantor@{cantor}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{cantor(\+T\+Long\+Id x, T\+Long\+Id y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Long\+Id} uva\+::smt\+::hashing\+::cantor (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Long\+Id}}]{x, }
+\item[{{\bf T\+Long\+Id}}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab870d4db140cd2f763a334f82db0d904}
 This function will combine two word references to get one hash map N-\/gram level reference. This is a cantor function used for pairing. \href{http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function}{\tt http\+://en.\+wikipedia.\+org/wiki/\+Pairing\+\_\+function\#\+Cantor\+\_\+pairing\+\_\+function} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Overflows! 
 \begin{DoxyParams}{Parameters}
 {\em x} & the key word reference \\
@@ -54,13 +152,71 @@ This function will combine two word references to get one hash map N-\/gram leve
 \begin{DoxyReturn}{Returns}
 the context reference for the next N-\/gram level 
 \end{DoxyReturn}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Djb2\+Hash@{compute\+Djb2\+Hash}}
-\index{compute\+Djb2\+Hash@{compute\+Djb2\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{compute\+Djb2\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+Djb2\+Hash (
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a0185c620c3b3707f559c423f366a7f19}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Bounded\+Hash@{compute\+Bounded\+Hash}}
+\index{compute\+Bounded\+Hash@{compute\+Bounded\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Bounded\+Hash(const char $\ast$data, uint32\+\_\+t len, const uint32\+\_\+t limit)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Bounded\+Hash (
 \begin{DoxyParamCaption}
-\item[{const string \&}]{str}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len, }
+\item[{const uint32\+\_\+t}]{limit}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a8ac196e26b372b4716effe395c3cbb1c}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a0185c620c3b3707f559c423f366a7f19}
+Allows to compute the hash limited by the given value 
+\begin{DoxyParams}{Parameters}
+{\em data} & the data to hash \\
+\hline
+{\em len} & the length of the data to hash \\
+\hline
+{\em limit} & the upper limit of the resulting hash (non-\/reachable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash $<$ limit 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a387f024518c6907d3a1fca92443bf53d}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Bounded\+Hash@{compute\+Bounded\+Hash}}
+\index{compute\+Bounded\+Hash@{compute\+Bounded\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Bounded\+Hash(const Text\+Piece\+Reader \&token, const uint32\+\_\+t limit)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Bounded\+Hash (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token, }
+\item[{const uint32\+\_\+t}]{limit}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a387f024518c6907d3a1fca92443bf53d}
+Allows to compute the hash limited by the given value 
+\begin{DoxyParams}{Parameters}
+{\em token} & the string to hash \\
+\hline
+{\em limit} & the upper limit of the resulting hash (non-\/reachable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash $<$ limit 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a767a9f7163a83984fbc240edaf75b61a}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Bounded\+Hash@{compute\+Bounded\+Hash}}
+\index{compute\+Bounded\+Hash@{compute\+Bounded\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Bounded\+Hash(const string \&token, const uint32\+\_\+t limit)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Bounded\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token, }
+\item[{const uint32\+\_\+t}]{limit}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a767a9f7163a83984fbc240edaf75b61a}
+Allows to compute the hash limited by the given value 
+\begin{DoxyParams}{Parameters}
+{\em token} & the string to hash \\
+\hline
+{\em limit} & the upper limit of the resulting hash (non-\/reachable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash $<$ limit 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a6acd19fa0ec401ebcf83bddb084868a2}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Djb2\+Hash@{compute\+Djb2\+Hash}}
+\index{compute\+Djb2\+Hash@{compute\+Djb2\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Djb2\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Djb2\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a6acd19fa0ec401ebcf83bddb084868a2}
 This is one of the best known hashing function algorithms (djb2) for the C strings as reported and described in \href{http://www.cse.yorku.ca/~oz/hash.html}{\tt http\+://www.\+cse.\+yorku.\+ca/$\sim$oz/hash.\+html} Note\+: It turned to be not as good as the Primes\+Hash as resulted in collisions on the test data. Note\+: The time complexity of this algorithm is also linear in the length of the input word. 
 \begin{DoxyParams}{Parameters}
 {\em str} & the string to hash \\
@@ -69,28 +225,232 @@ This is one of the best known hashing function algorithms (djb2) for the C strin
 \begin{DoxyReturn}{Returns}
 the resulting hash 
 \end{DoxyReturn}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Primes\+Hash@{compute\+Primes\+Hash}}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a831b522e0defd7f2fb98e4659c238233}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Djb2\+Hash@{compute\+Djb2\+Hash}}
+\index{compute\+Djb2\+Hash@{compute\+Djb2\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Djb2\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Djb2\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a831b522e0defd7f2fb98e4659c238233}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aa372dbea8bcfd35b1278598df650a56f}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Hash@{compute\+Hash}}
+\index{compute\+Hash@{compute\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::compute\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa372dbea8bcfd35b1278598df650a56f}
+The function used to compute hash in the application, uses one of the specific hashing functions above. 
+\begin{DoxyParams}{Parameters}
+{\em data} & the data to hash \\
+\hline
+{\em len} & the length of the data to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash. 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a3dec5678734cb96a27ecf4df41c6f3ce}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Hash@{compute\+Hash}}
+\index{compute\+Hash@{compute\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Hash(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::compute\+Hash (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a3dec5678734cb96a27ecf4df41c6f3ce}
+The function used to compute hash in the application, uses one of the specific hashing functions above. 
+\begin{DoxyParams}{Parameters}
+{\em token} & the string to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash. 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a5d52e69625f3cde0c9d05c17994c4943}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Hash@{compute\+Hash}}
+\index{compute\+Hash@{compute\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Hash(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::compute\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a5d52e69625f3cde0c9d05c17994c4943}
+The function used to compute hash in the application, uses one of the specific hashing functions above. 
+\begin{DoxyParams}{Parameters}
+{\em token} & the token to compute hash for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash. 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a6c3fa130e885dfb598755d0a0374bb55}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Paul\+Hsieh\+Hash@{compute\+Paul\+Hsieh\+Hash}}
+\index{compute\+Paul\+Hsieh\+Hash@{compute\+Paul\+Hsieh\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Paul\+Hsieh\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Paul\+Hsieh\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a6c3fa130e885dfb598755d0a0374bb55}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a5dddda6049bbe46b8de0196c32b8ed88}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Paul\+Hsieh\+Hash@{compute\+Paul\+Hsieh\+Hash}}
+\index{compute\+Paul\+Hsieh\+Hash@{compute\+Paul\+Hsieh\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Paul\+Hsieh\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Paul\+Hsieh\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a5dddda6049bbe46b8de0196c32b8ed88}
+The simple function wrapper for the Paul Hsieh Hashing function 
+\begin{DoxyParams}{Parameters}
+{\em str} & the string to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the hash value 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aa7ec4be33256ab5f88807cf253aa64f0}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Primes\+Hash@{compute\+Primes\+Hash}}
 \index{compute\+Primes\+Hash@{compute\+Primes\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{compute\+Primes\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+Primes\+Hash (
+\subsubsection[{compute\+Primes\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Primes\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa7ec4be33256ab5f88807cf253aa64f0}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aba060665a729921116e2d55ec06b571e}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+Primes\+Hash@{compute\+Primes\+Hash}}
+\index{compute\+Primes\+Hash@{compute\+Primes\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+Primes\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+Primes\+Hash (
 \begin{DoxyParamCaption}
 \item[{const string \&}]{str}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a390d782fb4e4723b565577a85d5bc8bd}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+R\+S\+Hash@{compute\+R\+S\+Hash}}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aba060665a729921116e2d55ec06b571e}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a769ad382d3dbb50f27cdb8e834c0f8ba}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+R\+S\+Hash@{compute\+R\+S\+Hash}}
 \index{compute\+R\+S\+Hash@{compute\+R\+S\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{compute\+R\+S\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Word\+Hash\+Size} uva\+::smt\+::hashing\+::compute\+R\+S\+Hash (
+\subsubsection[{compute\+R\+S\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+R\+S\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a769ad382d3dbb50f27cdb8e834c0f8ba}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a6fd5b042010c6cb97387719407ca7552}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+R\+S\+Hash@{compute\+R\+S\+Hash}}
+\index{compute\+R\+S\+Hash@{compute\+R\+S\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+R\+S\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+R\+S\+Hash (
 \begin{DoxyParamCaption}
 \item[{const string \&}]{str}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a0ccb220ca55a85d4238d2f8ca287a76f}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!szudzik@{szudzik}}
-\index{szudzik@{szudzik}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{szudzik(\+T\+Reference\+Hash\+Size x, T\+Reference\+Hash\+Size y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Reference\+Hash\+Size} uva\+::smt\+::hashing\+::szudzik (
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a6fd5b042010c6cb97387719407ca7552}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab5657e6a0476111854d640e62043c91c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+X\+X\+Hash32@{compute\+X\+X\+Hash32}}
+\index{compute\+X\+X\+Hash32@{compute\+X\+X\+Hash32}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+X\+X\+Hash32(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+X\+X\+Hash32 (
 \begin{DoxyParamCaption}
-\item[{{\bf T\+Reference\+Hash\+Size}}]{x, }
-\item[{{\bf T\+Reference\+Hash\+Size}}]{y}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_afe883e418ca19024fe820ef2fb4ade8a}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab5657e6a0476111854d640e62043c91c}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a074c1b5bc4c4b1d69c28bb100bae6729}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+X\+X\+Hash32@{compute\+X\+X\+Hash32}}
+\index{compute\+X\+X\+Hash32@{compute\+X\+X\+Hash32}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+X\+X\+Hash32(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::compute\+X\+X\+Hash32 (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a074c1b5bc4c4b1d69c28bb100bae6729}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a481534e67432cc3f5a8a35970b351458}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+X\+X\+Hash64@{compute\+X\+X\+Hash64}}
+\index{compute\+X\+X\+Hash64@{compute\+X\+X\+Hash64}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+X\+X\+Hash64(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::compute\+X\+X\+Hash64 (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a481534e67432cc3f5a8a35970b351458}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_adc422e2a0504d94933794bb1639398fe}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!compute\+X\+X\+Hash64@{compute\+X\+X\+Hash64}}
+\index{compute\+X\+X\+Hash64@{compute\+X\+X\+Hash64}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{compute\+X\+X\+Hash64(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::compute\+X\+X\+Hash64 (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_adc422e2a0504d94933794bb1639398fe}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a7f5c6b8537cc241d515c16782d7e7732}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!crap\+Wow\+Hash@{crap\+Wow\+Hash}}
+\index{crap\+Wow\+Hash@{crap\+Wow\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{crap\+Wow\+Hash(const char $\ast$key, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint32\+\_\+t seed$>$ uint32\+\_\+t uva\+::smt\+::hashing\+::crap\+Wow\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{key, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a7f5c6b8537cc241d515c16782d7e7732}
+The Crap W\+O\+W hashing function is taken from\+: \href{http://floodyberry.com/noncryptohashzoo/CrapWow.html}{\tt http\+://floodyberry.\+com/noncryptohashzoo/\+Crap\+Wow.\+html} Is expected to be very fast and possess decent properties 
+\begin{DoxyParams}{Parameters}
+{\em key} & the pointer to the char array \\
+\hline
+{\em len} & the length of the chaw array \\
+\hline
+{\em seed} & the seed to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the hash value 
+\end{DoxyReturn}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a1122f9cea7a46ff058d6e1d1a956ad5c}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!hash32@{hash32}}
+\index{hash32@{hash32}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{hash32(uint32\+\_\+t key)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::hash32 (
+\begin{DoxyParamCaption}
+\item[{uint32\+\_\+t}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a1122f9cea7a46ff058d6e1d1a956ad5c}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab2ab5c0482dae95dd76bf3380d064fa2}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!hash64@{hash64}}
+\index{hash64@{hash64}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{hash64(uint64\+\_\+t key)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast64\+\_\+t uva\+::smt\+::hashing\+::hash64 (
+\begin{DoxyParamCaption}
+\item[{uint64\+\_\+t}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab2ab5c0482dae95dd76bf3380d064fa2}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aa43fdcfec1c39ef1651c37a01ea6d239}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!hash\+Str@{hash\+Str}}
+\index{hash\+Str@{hash\+Str}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{hash\+Str(const char $\ast$data, int len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::hash\+Str (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{int}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa43fdcfec1c39ef1651c37a01ea6d239}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a05470691cb4fdaa03ae388a92cae3c8e}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!hash\+Str@{hash\+Str}}
+\index{hash\+Str@{hash\+Str}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{hash\+Str(const string \&token)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::hash\+Str (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a05470691cb4fdaa03ae388a92cae3c8e}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aab30ac60ac5c660503b4b736df2896f2}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!Murmur\+Hash64\+A@{Murmur\+Hash64\+A}}
+\index{Murmur\+Hash64\+A@{Murmur\+Hash64\+A}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{Murmur\+Hash64\+A(const void $\ast$key, std\+::size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint64\+\_\+t seed$>$ uint64\+\_\+t uva\+::smt\+::hashing\+::\+Murmur\+Hash64\+A (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{key, }
+\item[{std\+::size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1hashing_aab30ac60ac5c660503b4b736df2896f2}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a3da1f706ea51c541ff3c1c1634dadb38}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!Murmur\+Hash64\+B@{Murmur\+Hash64\+B}}
+\index{Murmur\+Hash64\+B@{Murmur\+Hash64\+B}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{Murmur\+Hash64\+B(const void $\ast$key, std\+::size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint64\+\_\+t seed$>$ uint64\+\_\+t uva\+::smt\+::hashing\+::\+Murmur\+Hash64\+B (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{key, }
+\item[{std\+::size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1hashing_a3da1f706ea51c541ff3c1c1634dadb38}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ac90e791feb022e306f9a587f38634929}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!stupid\+Hash@{stupid\+Hash}}
+\index{stupid\+Hash@{stupid\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{stupid\+Hash(const char $\ast$data, uint32\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::stupid\+Hash (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{data, }
+\item[{uint32\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ac90e791feb022e306f9a587f38634929}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a90bf2bab20f065c7693da46a1d776cc3}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!stupid\+Hash@{stupid\+Hash}}
+\index{stupid\+Hash@{stupid\+Hash}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{stupid\+Hash(const string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}uint\+\_\+fast32\+\_\+t uva\+::smt\+::hashing\+::stupid\+Hash (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a90bf2bab20f065c7693da46a1d776cc3}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_aa902304943fda935979f1b3bd0bea64d}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!szudzik@{szudzik}}
+\index{szudzik@{szudzik}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{szudzik(\+T\+Long\+Id x, T\+Long\+Id y)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Long\+Id} uva\+::smt\+::hashing\+::szudzik (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Long\+Id}}]{x, }
+\item[{{\bf T\+Long\+Id}}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa902304943fda935979f1b3bd0bea64d}
 This function will combine two word references to get one hash map N-\/gram level reference. This is a Szudzik\textquotesingle{}s function used for pairing. \href{http://szudzik.com/ElegantPairing.pdf}{\tt http\+://szudzik.\+com/\+Elegant\+Pairing.\+pdf} This function is more efficient that than of Cantor as it uses indexes densely the result of szudzik(\+N,\+M) is $<$= 2$\ast$max(M,N), so the risk of owerflows is much smaller! 
 \begin{DoxyParams}{Parameters}
 {\em x} & the key word reference \\
@@ -101,15 +461,15 @@ This function will combine two word references to get one hash map N-\/gram leve
 \begin{DoxyReturn}{Returns}
 the context reference for the next N-\/gram level 
 \end{DoxyReturn}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!uncantor@{uncantor}}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a5c885761adf4c13f267b1d0c1f205daa}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!uncantor@{uncantor}}
 \index{uncantor@{uncantor}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{uncantor(const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::uncantor (
+\subsubsection[{uncantor(const T\+Long\+Id z, T\+Short\+Id \&x, T\+Long\+Id \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::uncantor (
 \begin{DoxyParamCaption}
-\item[{const {\bf T\+Reference\+Hash\+Size}}]{z, }
-\item[{{\bf T\+Word\+Hash\+Size} \&}]{x, }
-\item[{{\bf T\+Reference\+Hash\+Size} \&}]{y}
+\item[{const {\bf T\+Long\+Id}}]{z, }
+\item[{{\bf T\+Short\+Id} \&}]{x, }
+\item[{{\bf T\+Long\+Id} \&}]{y}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_aa6b9f5792fc3efa9e1f04466569b5404}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a5c885761adf4c13f267b1d0c1f205daa}
 This function will invert the cuntor encoded context and split it into two things The previous word and the previous context. This is an inverse cantor function used for unpairing. \href{http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function}{\tt http\+://en.\+wikipedia.\+org/wiki/\+Pairing\+\_\+function\#\+Cantor\+\_\+pairing\+\_\+function} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Overflows! 
 \begin{DoxyParams}{Parameters}
 {\em z} & the current context id \\
@@ -119,15 +479,15 @@ This function will invert the cuntor encoded context and split it into two thing
 {\em y} & the context of the previous word \\
 \hline
 \end{DoxyParams}
-\hypertarget{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!unszudzik@{unszudzik}}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_ab81d1f9d50a921d629e445eff89988b3}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!unszudzik@{unszudzik}}
 \index{unszudzik@{unszudzik}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
-\subsubsection[{unszudzik(const T\+Reference\+Hash\+Size z, T\+Word\+Hash\+Size \&x, T\+Reference\+Hash\+Size \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::unszudzik (
+\subsubsection[{unszudzik(const T\+Long\+Id z, T\+Short\+Id \&x, T\+Long\+Id \&y)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::hashing\+::unszudzik (
 \begin{DoxyParamCaption}
-\item[{const {\bf T\+Reference\+Hash\+Size}}]{z, }
-\item[{{\bf T\+Word\+Hash\+Size} \&}]{x, }
-\item[{{\bf T\+Reference\+Hash\+Size} \&}]{y}
+\item[{const {\bf T\+Long\+Id}}]{z, }
+\item[{{\bf T\+Short\+Id} \&}]{x, }
+\item[{{\bf T\+Long\+Id} \&}]{y}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_a6c6735ddab6518f2a947ef0373722fd4}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1hashing_ab81d1f9d50a921d629e445eff89988b3}
 This function will invert the Szudzik\textquotesingle{}s encoded context and split it into two things The previous word and the previous context. This is an inverse Szudzik\textquotesingle{}s function used for unpairing. \href{http://szudzik.com/ElegantPairing.pdf}{\tt http\+://szudzik.\+com/\+Elegant\+Pairing.\+pdf} W\+A\+R\+N\+I\+N\+G\+: does not work good with big numbers! Owerflows! 
 \begin{DoxyParams}{Parameters}
 {\em z} & the current context id \\
@@ -137,3 +497,12 @@ This function will invert the Szudzik\textquotesingle{}s encoded context and spl
 {\em y} & the context of the previous word \\
 \hline
 \end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a114900b041415523076700317d62613a}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!fnv\+\_\+offset\+\_\+basis@{fnv\+\_\+offset\+\_\+basis}}
+\index{fnv\+\_\+offset\+\_\+basis@{fnv\+\_\+offset\+\_\+basis}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{fnv\+\_\+offset\+\_\+basis}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::size\+\_\+t uva\+::smt\+::hashing\+::fnv\+\_\+offset\+\_\+basis = 14695981039346656037u}\label{namespaceuva_1_1smt_1_1hashing_a114900b041415523076700317d62613a}
+\hypertarget{namespaceuva_1_1smt_1_1hashing_a1d75c23c055906113f9c29f0ef93c3be}{}\index{uva\+::smt\+::hashing@{uva\+::smt\+::hashing}!fnv\+\_\+prime@{fnv\+\_\+prime}}
+\index{fnv\+\_\+prime@{fnv\+\_\+prime}!uva\+::smt\+::hashing@{uva\+::smt\+::hashing}}
+\subsubsection[{fnv\+\_\+prime}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::size\+\_\+t uva\+::smt\+::hashing\+::fnv\+\_\+prime = 1099511628211u}\label{namespaceuva_1_1smt_1_1hashing_a1d75c23c055906113f9c29f0ef93c3be}

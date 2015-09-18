@@ -88,7 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Logger.cpp File Reference</div>  </div>
 </div><!--header-->
@@ -106,11 +107,35 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceuva_1_1smt_1_1logging"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1logging.html">uva::smt::logging</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a0aef8b9433fb2c5b025fd3bd5c713dae"><td class="memItemLeft" align="right" valign="top">const uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#a0aef8b9433fb2c5b025fd3bd5c713dae">uva::smt::logging::NUM_DEBUG_FLAGS</a> = 9</td></tr>
-<tr class="separator:a0aef8b9433fb2c5b025fd3bd5c713dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ad6a560901b05cd67158b119e10a31180"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_logger_8cpp.html#ad6a560901b05cd67158b119e10a31180">IS_ENOUGH_LOGGING_LEVEL</a>(level)&#160;&#160;&#160;(( PROGRESS_ACTIVE_LEVEL &lt;= LOGER_MAX_LEVEL ) &amp;&amp; ( PROGRESS_ACTIVE_LEVEL &lt;= level ))</td></tr>
+<tr class="separator:ad6a560901b05cd67158b119e10a31180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a52925bfdd67d50636e8b6c39e42e5182"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#a52925bfdd67d50636e8b6c39e42e5182">uva::smt::logging::operator&lt;&lt;</a> (std::ostream &amp;stream, const unsigned char &amp;value)</td></tr>
+<tr class="separator:a52925bfdd67d50636e8b6c39e42e5182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf869bb93be387339ccaff6faaf7ecf"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#a7cf869bb93be387339ccaff6faaf7ecf">uva::smt::logging::operator&lt;&lt;</a> (std::ostream &amp;stream, const signed char &amp;value)</td></tr>
+<tr class="separator:a7cf869bb93be387339ccaff6faaf7ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="ad6a560901b05cd67158b119e10a31180"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IS_ENOUGH_LOGGING_LEVEL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">level</td><td>)</td>
+          <td>&#160;&#160;&#160;(( PROGRESS_ACTIVE_LEVEL &lt;= LOGER_MAX_LEVEL ) &amp;&amp; ( PROGRESS_ACTIVE_LEVEL &lt;= level ))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

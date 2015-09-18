@@ -6,6 +6,8 @@
 void \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a503e3fe0a1b6e85afccb16ea257069ec}{trim} (std\+::string \&str, const std\+::string \&whitespace=\hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a1251cf45616a5bc009c8dfb643b794e1}{W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S})
 \item 
 void \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a59495b5dced26bf68dcc3eec15d16fcd}{reduce} (std\+::string \&str, const std\+::string \&fill=\char`\"{} \char`\"{}, const std\+::string \&whitespace=\hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a1251cf45616a5bc009c8dfb643b794e1}{W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S})
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a04b838a2ffa29661c25528c966c799f6}{fast\+\_\+sto\+T} (T \&r, const char $\ast$p)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -15,6 +17,30 @@ const string \hyperlink{namespaceuva_1_1smt_1_1utils_1_1text_a1251cf45616a5bc009
 
 
 \subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1utils_1_1text_a04b838a2ffa29661c25528c966c799f6}{}\index{uva\+::smt\+::utils\+::text@{uva\+::smt\+::utils\+::text}!fast\+\_\+sto\+T@{fast\+\_\+sto\+T}}
+\index{fast\+\_\+sto\+T@{fast\+\_\+sto\+T}!uva\+::smt\+::utils\+::text@{uva\+::smt\+::utils\+::text}}
+\subsubsection[{fast\+\_\+sto\+T(\+T \&r, const char $\ast$p)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ bool uva\+::smt\+::utils\+::text\+::fast\+\_\+sto\+T (
+\begin{DoxyParamCaption}
+\item[{T \&}]{r, }
+\item[{const char $\ast$}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1utils_1_1text_a04b838a2ffa29661c25528c966c799f6}
+This function tries to read from a piece of memory and interpret it as a float or double or other decimal type given as template parameter. This function is more efficient than atof and it does not check for the lengh of the input, e.\+g. does no rely on the \textbackslash{}0 terminating symbol in general. It reads until it gets something that it can not interpret as a part of a decimal. Then it stops!
+
+W\+A\+R\+N\+I\+N\+G\+: This function does at least one symbol look ahead and does not check on the \textbackslash{}0 of the c string or its length. This is perfectly good when reading A\+R\+P\+A file floats, if the file format is correct. We can not generally rely on \textbackslash{}0 as the input string is not guaranteed to have it! Yet we could try to take into account the string length, but this might cost performance!
+
+To\+Do\+: Try to impose the string length limit and test the performance on reading large A\+R\+P\+A files!
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & the type to read into \\
+\hline
+{\em p} & the pointer to read from, \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the function thinks it successfully parsed the input, otherwise false. 
+\end{DoxyReturn}
 \hypertarget{namespaceuva_1_1smt_1_1utils_1_1text_a59495b5dced26bf68dcc3eec15d16fcd}{}\index{uva\+::smt\+::utils\+::text@{uva\+::smt\+::utils\+::text}!reduce@{reduce}}
 \index{reduce@{reduce}!uva\+::smt\+::utils\+::text@{uva\+::smt\+::utils\+::text}}
 \subsubsection[{reduce(std\+::string \&str, const std\+::string \&fill="" "", const std\+::string \&whitespace=\+W\+H\+I\+T\+E\+S\+P\+A\+C\+E\+S)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::utils\+::text\+::reduce (

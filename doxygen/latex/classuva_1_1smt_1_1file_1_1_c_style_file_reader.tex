@@ -1,0 +1,186 @@
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader}{}\section{uva\+:\+:smt\+:\+:file\+:\+:C\+Style\+File\+Reader Class Reference}
+\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+
+
+{\ttfamily \#include $<$C\+Style\+File\+Reader.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:file\+:\+:C\+Style\+File\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classuva_1_1smt_1_1file_1_1_c_style_file_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adb6db586672f56a28a3246a5c045f1d8}{C\+Style\+File\+Reader} (const char $\ast$file\+Name)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a7844cf167a20c831704aa11bee03f259}{log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info} ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a0ea17d8e21b7c0e5c7dca4f04396d393}{$\sim$\+C\+Style\+File\+Reader} ()
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_ab0719f5d5016f264151f365cb7239204}{reset} ()
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a08c79dc1e45c78ebe32f22d60f853107}{get\+Line} (\hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adc3174fe9ac1db814ac53f0a55e6e4cf}{get\+Space} (\hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a62dceeef9dcda302693a456f33a036c0}{get\+Tab} (\hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a6a109b1f72675c842d8dd0be14dbf1bf}{is\+\_\+open} () const 
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_aaf16f8bd5b18aaa44a6b838d96a5e47e}{operator bool} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a874cd40683ed83b7c86eecf7fa9d8dfd}{close} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The file reader based on the simple C stream, should not use as much memory as \hyperlink{classuva_1_1smt_1_1file_1_1_memory_mapped_file_reader}{Memory\+Mapped\+File\+Reader} and potentially is faster than the C++ stream based reader. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adb6db586672f56a28a3246a5c045f1d8}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!C\+Style\+File\+Reader@{C\+Style\+File\+Reader}}
+\index{C\+Style\+File\+Reader@{C\+Style\+File\+Reader}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{C\+Style\+File\+Reader(const char $\ast$file\+Name)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::\+C\+Style\+File\+Reader (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{file\+Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adb6db586672f56a28a3246a5c045f1d8}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & the file name \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a0ea17d8e21b7c0e5c7dca4f04396d393}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!````~C\+Style\+File\+Reader@{$\sim$\+C\+Style\+File\+Reader}}
+\index{````~C\+Style\+File\+Reader@{$\sim$\+C\+Style\+File\+Reader}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{$\sim$\+C\+Style\+File\+Reader()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::$\sim$\+C\+Style\+File\+Reader (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a0ea17d8e21b7c0e5c7dca4f04396d393}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a874cd40683ed83b7c86eecf7fa9d8dfd}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!close@{close}}
+\index{close@{close}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{close()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a874cd40683ed83b7c86eecf7fa9d8dfd}
+This method should be used to close the file 
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader_ad0831f43ae10b055ea3342e23ab0e611}{uva\+::smt\+::file\+::\+A\+File\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a08c79dc1e45c78ebe32f22d60f853107}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!get\+Line@{get\+Line}}
+\index{get\+Line@{get\+Line}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{get\+Line(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::get\+Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a08c79dc1e45c78ebe32f22d60f853107}
+This function, from the current position, searches for the end of line or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a line was read, otherwise false (end of file) 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader_a7acc5dd0f43ae171e0b2a72186522ad5}{uva\+::smt\+::file\+::\+Text\+Piece\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adc3174fe9ac1db814ac53f0a55e6e4cf}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!get\+Space@{get\+Space}}
+\index{get\+Space@{get\+Space}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{get\+Space(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::get\+Space (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_adc3174fe9ac1db814ac53f0a55e6e4cf}
+This function, from the current position, searches for the space char or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a line was read, otherwise false (end of file) 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader_a019fdf0f8466a3bef555fffa00757258}{uva\+::smt\+::file\+::\+Text\+Piece\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a62dceeef9dcda302693a456f33a036c0}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!get\+Tab@{get\+Tab}}
+\index{get\+Tab@{get\+Tab}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{get\+Tab(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::get\+Tab (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a62dceeef9dcda302693a456f33a036c0}
+This function, from the current position, searches for the tab char or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a line was read, otherwise false (end of file) 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader_af91a7441ce668c5f787c176372772b6e}{uva\+::smt\+::file\+::\+Text\+Piece\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a6a109b1f72675c842d8dd0be14dbf1bf}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!is\+\_\+open@{is\+\_\+open}}
+\index{is\+\_\+open@{is\+\_\+open}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{is\+\_\+open() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::is\+\_\+open (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a6a109b1f72675c842d8dd0be14dbf1bf}
+This method is used to check if the file was successfully opened. \begin{DoxyReturn}{Returns}
+true if the file is successfully opened otherwise false. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader_a13e1dea763c1ca16997668d48c885b9f}{uva\+::smt\+::file\+::\+A\+File\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a7844cf167a20c831704aa11bee03f259}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info}}
+\index{log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::log\+\_\+reader\+\_\+type\+\_\+usage\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_a7844cf167a20c831704aa11bee03f259}
+Allows to log the information about the instantiated file reader type 
+
+Implements \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader_a4bebfdd38dbada5b5d770b072eaed816}{uva\+::smt\+::file\+::\+A\+File\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_aaf16f8bd5b18aaa44a6b838d96a5e47e}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!operator bool@{operator bool}}
+\index{operator bool@{operator bool}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{operator bool() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::operator bool (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_aaf16f8bd5b18aaa44a6b838d96a5e47e}
+Checks if the file is present. \begin{DoxyReturn}{Returns}
+true if it is 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader_a689d18c81e821000322f5e3c3acff838}{uva\+::smt\+::file\+::\+A\+File\+Reader}.
+
+\hypertarget{classuva_1_1smt_1_1file_1_1_c_style_file_reader_ab0719f5d5016f264151f365cb7239204}{}\index{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}!reset@{reset}}
+\index{reset@{reset}!uva\+::smt\+::file\+::\+C\+Style\+File\+Reader@{uva\+::smt\+::file\+::\+C\+Style\+File\+Reader}}
+\subsubsection[{reset()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::file\+::\+C\+Style\+File\+Reader\+::reset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1file_1_1_c_style_file_reader_ab0719f5d5016f264151f365cb7239204}
+This method allows to reset the reading process and start reading the file from th first line again. The default implementation throws an exception. 
+
+Reimplemented from \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader_ac712ac908a31b7fef5c0f093926e4dc1}{uva\+::smt\+::file\+::\+A\+File\+Reader}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_c_style_file_reader_8hpp}{C\+Style\+File\+Reader.\+hpp}\end{DoxyCompactItemize}

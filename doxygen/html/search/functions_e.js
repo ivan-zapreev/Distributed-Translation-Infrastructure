@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['uncantor',['uncantor',['../namespaceuva_1_1smt_1_1hashing.html#aa6b9f5792fc3efa9e1f04466569b5404',1,'uva::smt::hashing']]],
-  ['unszudzik',['unszudzik',['../namespaceuva_1_1smt_1_1hashing.html#a6c6735ddab6518f2a947ef0373722fd4',1,'uva::smt::hashing']]],
-  ['updateprogressbar',['updateProgressBar',['../classuva_1_1smt_1_1logging_1_1_logger.html#ac99950b42d9cbe17becae3a68f4b0015',1,'uva::smt::logging::Logger']]]
+  ['query',['query',['../classuva_1_1smt_1_1tries_1_1_a_trie.html#a931c433a086f8f03dd6260e0d27dfd79',1,'uva::smt::tries::ATrie']]]
 ];

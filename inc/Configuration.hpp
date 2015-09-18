@@ -183,7 +183,7 @@ namespace uva {
             namespace __C2WArrayTrie {
                 //Stores the word index type to be used in this trie, the COUNTING
                 //index gives about 5% faster faster querying.
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //The experiments show that with 20*bitmap cache this is about 5% faster
                 static const bool DO_BITMAP_HASH_CACHE = true;

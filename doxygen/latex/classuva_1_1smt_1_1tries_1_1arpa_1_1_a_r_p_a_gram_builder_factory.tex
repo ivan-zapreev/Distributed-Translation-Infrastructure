@@ -12,7 +12,7 @@ virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_fac
 \subsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$T\+Model\+Level N$>$ }\\static void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}{get\+Builder} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a26064146e98856c7c4185efab0e61a36}{T\+Model\+Level} level, \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, const char delim, \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}{A\+R\+P\+A\+Gram\+Builder} $\ast$$\ast$pp\+Builder)
+{\footnotesize template$<$T\+Model\+Level N$>$ }\\static void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a9af030073d833c56ebf656c14f35e10b}{get\+\_\+builder} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder}{A\+R\+P\+A\+Gram\+Builder} $\ast$$\ast$pp\+Builder)
 \end{DoxyCompactItemize}
 
 
@@ -30,16 +30,15 @@ This is the A\+R\+P\+A N-\/gram Builder Factory class that is supposed to be use
 
 
 \subsection{Member Function Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}!get\+Builder@{get\+Builder}}
-\index{get\+Builder@{get\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
-\subsubsection[{get\+Builder(const T\+Model\+Level level, A\+Trie$<$ N $>$ \&trie, const char delim, A\+R\+P\+A\+Gram\+Builder $\ast$$\ast$pp\+Builder)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ static void uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory\+::get\+Builder (
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a9af030073d833c56ebf656c14f35e10b}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}!get\+\_\+builder@{get\+\_\+builder}}
+\index{get\+\_\+builder@{get\+\_\+builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory}}
+\subsubsection[{get\+\_\+builder(const T\+Model\+Level level, A\+Trie$<$ N $>$ \&trie, A\+R\+P\+A\+Gram\+Builder $\ast$$\ast$pp\+Builder)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ static void uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Gram\+Builder\+Factory\+::get\+\_\+builder (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Model\+Level}}]{level, }
 \item[{{\bf A\+Trie}$<$ N $>$ \&}]{trie, }
-\item[{const char}]{delim, }
 \item[{{\bf A\+R\+P\+A\+Gram\+Builder} $\ast$$\ast$}]{pp\+Builder}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_ae1660962aa1469cfaff841df0b404d13}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory_a9af030073d833c56ebf656c14f35e10b}
 This is a template method for getting the proper A\+R\+P\+A N-\/gram Builder for the given N-\/gram level. The two template parameters of this method N and do\+Cache have to do with the Trie template parameters. N is the maximum N-\/gram level and do\+Cache indicates whether the given Trie does caching of query results.
 
 Note\+: the returned pointer to the dynamically allocated builder is to be freed by the caller!
@@ -49,8 +48,6 @@ Note\+: the returned pointer to the dynamically allocated builder is to be freed
 {\em level} & the level of the N-\/gram \\
 \hline
 {\em trie} & the trie to be filled in with the N-\/grams \\
-\hline
-{\em delim} & the delimiter for the A\+R\+P\+A N-\/\+Gram string \\
 \hline
 {\em p\+Builder} & the pointer to a dynamically allocated N-\/\+Gram builder \\
 \hline

@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['info',['INFO',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1aa341c04184abe60847b19087e94a8cc1',1,'uva::smt::logging::Logger']]],
-  ['info_5fparam_5fvalue',['INFO_PARAM_VALUE',['../_logger_8hpp.html#a71979fc65a21e2bf27f0df1f7c9d4721',1,'Logger.hpp']]],
-  ['isprogressbaron',['isProgressBarOn',['../classuva_1_1smt_1_1logging_1_1_logger.html#adc05eba04bec4f3c46414aa6e0dd8610',1,'uva::smt::logging::Logger']]]
+  ['has_5fdata',['has_data',['../classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html#a73d36d639512c2f249871cc20e724f9f',1,'uva::smt::tries::alloc::ADynamicStackArray']]],
+  ['hash',['hash',['../structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#a59fec2addc530f943801a49a44e64fa9',1,'uva::smt::tries::mgrams::T_M_Gram']]],
+  ['hash32',['hash32',['../namespaceuva_1_1smt_1_1hashing.html#a1122f9cea7a46ff058d6e1d1a956ad5c',1,'uva::smt::hashing']]],
+  ['hash64',['hash64',['../namespaceuva_1_1smt_1_1hashing.html#ab2ab5c0482dae95dd76bf3380d064fa2',1,'uva::smt::hashing']]],
+  ['hashingutils_2ehpp',['HashingUtils.hpp',['../_hashing_utils_8hpp.html',1,'']]],
+  ['hashstr',['hashStr',['../namespaceuva_1_1smt_1_1hashing.html#aa43fdcfec1c39ef1651c37a01ea6d239',1,'uva::smt::hashing::hashStr(const char *data, int len)'],['../namespaceuva_1_1smt_1_1hashing.html#a05470691cb4fdaa03ae388a92cae3c8e',1,'uva::smt::hashing::hashStr(const string &amp;token)']]],
+  ['hasmore',['hasMore',['../classuva_1_1smt_1_1file_1_1_text_piece_reader.html#a29018a380d0ca964589afee875c74fec',1,'uva::smt::file::TextPieceReader']]]
 ];

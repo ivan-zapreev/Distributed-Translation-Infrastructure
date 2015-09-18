@@ -88,25 +88,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">ATrie.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;vector&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
+<div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="_globals_8hpp_source.html">Globals.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_exceptions_8hpp_source.html">Exceptions.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_logger_8hpp_source.html">Logger.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_math_utils_8hpp_source.html">MathUtils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_text_piece_reader_8hpp_source.html">TextPieceReader.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_a_word_index_8hpp_source.html">AWordIndex.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_m_grams_8hpp_source.html">MGrams.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_bitmap_hash_cache_8hpp_source.html">BitmapHashCache.hpp</a>&quot;</code><br />
 </div>
 <p><a href="_a_trie_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">uva::smt::tries::SBackOffNGram</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry.html">uva::smt::tries::TProbBackOffEntry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_prob_result.html">uva::smt::tries::SProbResult</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_t_query_result.html">uva::smt::tries::TQueryResult</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie&lt; N &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,38 +122,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceuva_1_1smt_1_1tries"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html">uva::smt::tries</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:acd0660255dd9ef5d644f01de49102750"><td class="memItemLeft" align="right" valign="top">typedef float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">uva::smt::tries::TLogProbBackOff</a></td></tr>
-<tr class="separator:acd0660255dd9ef5d644f01de49102750"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55e7eb3ceb4e902809786973cf89aa9c"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; MAX_NGRAM_LEVEL &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a55e7eb3ceb4e902809786973cf89aa9c">uva::smt::tries::TFiveTrie</a></td></tr>
-<tr class="separator:a55e7eb3ceb4e902809786973cf89aa9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a5da2a0c71a6224ade6ea097e6b90bd3a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a5da2a0c71a6224ade6ea097e6b90bd3a">uva::smt::tries::BGRAM_LEVEL_VALUE</a> = 2</td></tr>
-<tr class="separator:a5da2a0c71a6224ade6ea097e6b90bd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadd51d0ad0007db1d97769719dda1ff0"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#aadd51d0ad0007db1d97769719dda1ff0">uva::smt::tries::UNKNOWN_WORD_STR</a> = &quot;&lt;unk&gt;&quot;</td></tr>
-<tr class="separator:aadd51d0ad0007db1d97769719dda1ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac729c4f31fd2bab9e8af8f6370344b87"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ac729c4f31fd2bab9e8af8f6370344b87">uva::smt::tries::LOG_PROB_WEIGHT_BASE</a> = 10.0</td></tr>
-<tr class="separator:ac729c4f31fd2bab9e8af8f6370344b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60f325085f4d50c378efc2809a6fecc0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a60f325085f4d50c378efc2809a6fecc0">uva::smt::tries::ZERO_LOG_PROB_WEIGHT</a> = 0.0f</td></tr>
-<tr class="separator:a60f325085f4d50c378efc2809a6fecc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae028201dd0a4a32686e5396de9919b07"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ae028201dd0a4a32686e5396de9919b07">uva::smt::tries::UNDEFINED_LOG_PROB_WEIGHT</a> = 99.0f</td></tr>
-<tr class="separator:ae028201dd0a4a32686e5396de9919b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d201889d19f6e5bad70de0b101ce75"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a62d201889d19f6e5bad70de0b101ce75">uva::smt::tries::MINIMAL_LOG_PROB_WEIGHT</a> = -10.0f</td></tr>
-<tr class="separator:a62d201889d19f6e5bad70de0b101ce75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9592d33e326894227ec9d9c0a443aac6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a9592d33e326894227ec9d9c0a443aac6">uva::smt::tries::ZERRO_LOG_PROB_WEIGHT</a> = -99.0f</td></tr>
-<tr class="separator:a9592d33e326894227ec9d9c0a443aac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b5fbcd66b62775091f4c2e9c28b1db9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a9b5fbcd66b62775091f4c2e9c28b1db9">uva::smt::tries::UNDEFINED_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (0)</td></tr>
-<tr class="separator:a9b5fbcd66b62775091f4c2e9c28b1db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8e95ae5121d967a11fc70ad49b824cf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ab8e95ae5121d967a11fc70ad49b824cf">uva::smt::tries::UNKNOWN_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (UNDEFINED_WORD_HASH + 1)</td></tr>
-<tr class="separator:ab8e95ae5121d967a11fc70ad49b824cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6efe97228b9a8b89f2f0d2a7a2c7ddb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#ad6efe97228b9a8b89f2f0d2a7a2c7ddb">uva::smt::tries::MIN_KNOWN_WORD_HASH</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&gt; (UNKNOWN_WORD_HASH + 1)</td></tr>
-<tr class="separator:ad6efe97228b9a8b89f2f0d2a7a2c7ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b0ab780d7a692242e66beb30e92dfab"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#acdc1f2765e669283f8e9c1ed42705314">TWordHashSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a1b0ab780d7a692242e66beb30e92dfab">uva::smt::tries::MINIMUM_CONTEXT_LEVEL</a> = static_cast&lt;<a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&gt; (2)</td></tr>
-<tr class="separator:a1b0ab780d7a692242e66beb30e92dfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

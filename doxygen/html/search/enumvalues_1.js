@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['error',['ERROR',['../classuva_1_1smt_1_1logging_1_1_logger.html#ad8a08f17c873112b1717d5fadbfe32d1a55397e9f36c9c1d49a2b5c5f06a68205',1,'uva::smt::logging::Logger']]]
+  ['constant',['CONSTANT',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533',1,'uva::smt::tries::alloc']]],
+  ['counting_5fword_5findex',['COUNTING_WORD_INDEX',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afaea9522a585dd461e969eaecd2d0b86d5',1,'uva::smt::tries::dictionary']]]
 ];

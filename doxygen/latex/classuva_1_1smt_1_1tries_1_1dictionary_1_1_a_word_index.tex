@@ -1,0 +1,230 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:A\+Word\+Index Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+
+
+{\ttfamily \#include $<$A\+Word\+Index.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:A\+Word\+Index\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.989324cm]{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a689b450039f29db04b29824b962afd9d}{reserve} (const size\+\_\+t num\+\_\+words)=0
+\item 
+virtual size\+\_\+t \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a89294cc177e2c701ba43a87c88ade4d4}{get\+\_\+number\+\_\+of\+\_\+words} (const size\+\_\+t num\+\_\+words)=0
+\item 
+virtual \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a23386149ef251966ced00130fa703d68}{get\+\_\+word\+\_\+id} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token) const  =0
+\item 
+virtual \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_aa1ccab0128595c2296cf65099de5d28f}{register\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)=0
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abf2e3da506e15aba952dbdbefdf301bd}{is\+\_\+word\+\_\+counts\+\_\+needed} () const  =0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_af802919ae94e6e6aeeec82a8e880b50c}{count\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)=0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a353853aa594ca7c23f18e4804fa09dab}{do\+\_\+post\+\_\+word\+\_\+count} ()=0
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ad06633d5705710089e467e84e5fd1aa0}{is\+\_\+post\+\_\+actions\+\_\+needed} () const  =0
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a45c07a088bac4655a3084ef301f312c6}{do\+\_\+post\+\_\+actions} ()=0
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_add51fdbee0f95e39c6ffee341ad8d586}{$\sim$\+A\+Word\+Index} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const string \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a2059cfaea3b8d1253cafb9b3ccb1cc28}{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R} = \char`\"{}$<$unk$>$\char`\"{}
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ac88fb565f5b572fdac67d546c124cfa8}{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}$>$ (0)
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a975e0ce3eb5986019ef5b67cff84806e}{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}$>$ (\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ac88fb565f5b572fdac67d546c124cfa8}{A\+Word\+Index\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} + 1)
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a5417a50c625a15ac1268139d18403b91}{M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} = static\+\_\+cast$<$\hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}$>$ (\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a975e0ce3eb5986019ef5b67cff84806e}{A\+Word\+Index\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} + 1)
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abe32fedd03b6f72d38ecc88d47034b65}{E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds} = 2
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This abstract class is used to represent the word dictionary. It contains no specific implementation but is more of an interface. It is used to allow for more word dictionary/index implementations.
+
+Any implementation of this class must issue the unknown word $<$unk$>$ index 1 (U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D).
+
+The first real word index will be therefore 2 (M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D).
+
+The issued word ids must be continuous and non-\/repeating, unique! 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_add51fdbee0f95e39c6ffee341ad8d586}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!````~A\+Word\+Index@{$\sim$\+A\+Word\+Index}}
+\index{````~A\+Word\+Index@{$\sim$\+A\+Word\+Index}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{$\sim$\+A\+Word\+Index()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::$\sim$\+A\+Word\+Index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_add51fdbee0f95e39c6ffee341ad8d586}
+The basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_af802919ae94e6e6aeeec82a8e880b50c}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!count\+\_\+word@{count\+\_\+word}}
+\index{count\+\_\+word@{count\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{count\+\_\+word(const Text\+Piece\+Reader \&token)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::count\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_af802919ae94e6e6aeeec82a8e880b50c}
+This method is to be used when the word counting is needed. The main application here is to first count the number of word usages and then distribute the word ids in such a way that the most used words get the lowest ids. 
+\begin{DoxyParams}{Parameters}
+{\em token} & the word to count \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7a640c40e5e3591f7c547fc096f5fbf0}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a932348f67a73ca34773ad0472faeda8c}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a2ea1e4f9b83be0d112374f3aed62afd8}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a45c07a088bac4655a3084ef301f312c6}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}}
+\index{do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+actions()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::do\+\_\+post\+\_\+actions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a45c07a088bac4655a3084ef301f312c6}
+Is to be called if the post actions are needed right after that all the individual words have beed added into the index. 
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_afbc88af75c91c7c366467bdc07dbc978}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4c4ec12cb6c772d41fd5f39ce299a940}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a8f76161797b91979e1c94d3a8be6ae82}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a353853aa594ca7c23f18e4804fa09dab}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}}
+\index{do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+word\+\_\+count()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::do\+\_\+post\+\_\+word\+\_\+count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a353853aa594ca7c23f18e4804fa09dab}
+Should be called if the word count is needed after all the words have been counted. 
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a006bedc2159e545d6436a3bdb7a6a5c5}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_aa90d2673f5386030b8b1013c0a106efc}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a4723e7a931ff4732ce3c001848656c2a}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a89294cc177e2c701ba43a87c88ade4d4}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}}
+\index{get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{get\+\_\+number\+\_\+of\+\_\+words(const size\+\_\+t num\+\_\+words)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\+\_\+t uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::get\+\_\+number\+\_\+of\+\_\+words (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a89294cc177e2c701ba43a87c88ade4d4}
+Allows to get the total words count including the unknown and undefined words 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+words} & the number of words in the language model \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a0f2e75f30cbe04d9e74538c54a515c59}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a63a18dd7eea972474405553879813516}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a23386149ef251966ced00130fa703d68}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}}
+\index{get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{get\+\_\+word\+\_\+id(const Text\+Piece\+Reader \&token) const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::get\+\_\+word\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a23386149ef251966ced00130fa703d68}
+This function gets an id for the given word word based no the stored 1-\/\+Grams. If the word is not known then an unknown word I\+D is returned\+: U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D 
+\begin{DoxyParams}{Parameters}
+{\em token} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting word\+Id or U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D if the word is not found 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a157981a189cca43eed35aaf640c1aa67}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a2d11b65cbc479d49c9477c9546e6f1d7}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ad06633d5705710089e467e84e5fd1aa0}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}}
+\index{is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{is\+\_\+post\+\_\+actions\+\_\+needed() const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::is\+\_\+post\+\_\+actions\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ad06633d5705710089e467e84e5fd1aa0}
+Indicates if the post-\/actions are needed. The post actions should be called after all the words have been filled into the index. \begin{DoxyReturn}{Returns}
+true if the post-\/actions are needed, otherwise false 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a96f673f041e96ab38843c63a984f6ce5}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a760ba6fe9be1c7e3959f3f7ff3daefd5}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a50fbede350d439367b66d736c24a3dac}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abf2e3da506e15aba952dbdbefdf301bd}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}}
+\index{is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{is\+\_\+word\+\_\+counts\+\_\+needed() const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::is\+\_\+word\+\_\+counts\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abf2e3da506e15aba952dbdbefdf301bd}
+This method allows to indicate whether word counting is needed by the given implementation of the word index. \begin{DoxyReturn}{Returns}
+true if the word counting is needed, otherwise false. 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_af749f27894b0b3f288311a5149c4e9f6}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a4b94094d513c9281cde965f91b71d970}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a9d164d285f9b7498d9db3086426e7876}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_aa1ccab0128595c2296cf65099de5d28f}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!register\+\_\+word@{register\+\_\+word}}
+\index{register\+\_\+word@{register\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{register\+\_\+word(const Text\+Piece\+Reader \&token)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::register\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_aa1ccab0128595c2296cf65099de5d28f}
+This function creates/gets an id for the given word. Note\+: The ids must be unique and continuous! 
+\begin{DoxyParams}{Parameters}
+{\em token} & the word to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting hash 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_ad23968ee31767ce6ae8a8ed85772532e}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_abbc772ebe00dc62b65c6f412d70aa0ac}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index_a71c5719f7b5432866315ea0db9e1f770}{uva\+::smt\+::tries\+::dictionary\+::\+Counting\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a689b450039f29db04b29824b962afd9d}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!reserve@{reserve}}
+\index{reserve@{reserve}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{reserve(const size\+\_\+t num\+\_\+words)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::reserve (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a689b450039f29db04b29824b962afd9d}
+This method should be used to pre-\/allocate the word index 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+words} & the number of words \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7381da7d8e7bedf2fdf1d88076a43cb2}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}, and \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index_a6255befbaf98669009f5fbff5b2b1321}{uva\+::smt\+::tries\+::dictionary\+::\+Basic\+Word\+Index}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abe32fedd03b6f72d38ecc88d47034b65}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds@{E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds}}
+\index{E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds@{E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::\+E\+X\+T\+R\+A\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+W\+O\+R\+D\+\_\+\+I\+Ds = 2\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abe32fedd03b6f72d38ecc88d47034b65}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a5417a50c625a15ac1268139d18403b91}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}}
+\index{M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::\+M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D = static\+\_\+cast$<${\bf T\+Short\+Id}$>$ ({\bf A\+Word\+Index\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} + 1)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a5417a50c625a15ac1268139d18403b91}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ac88fb565f5b572fdac67d546c124cfa8}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}}
+\index{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D = static\+\_\+cast$<${\bf T\+Short\+Id}$>$ (0)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ac88fb565f5b572fdac67d546c124cfa8}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a975e0ce3eb5986019ef5b67cff84806e}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}}
+\index{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D@{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D = static\+\_\+cast$<${\bf T\+Short\+Id}$>$ ({\bf A\+Word\+Index\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D} + 1)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a975e0ce3eb5986019ef5b67cff84806e}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a2059cfaea3b8d1253cafb9b3ccb1cc28}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}!U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R@{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R}}
+\index{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R@{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R}!uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}}
+\subsubsection[{U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}const string uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index\+::\+U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+S\+T\+R = \char`\"{}$<$unk$>$\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a2059cfaea3b8d1253cafb9b3ccb1cc28}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_a_word_index_8hpp}{A\+Word\+Index.\+hpp}\item 
+src/\hyperlink{_a_word_index_8cpp}{A\+Word\+Index.\+cpp}\end{DoxyCompactItemize}

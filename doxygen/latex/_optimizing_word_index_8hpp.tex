@@ -1,0 +1,86 @@
+\hypertarget{_optimizing_word_index_8hpp}{}\section{inc/\+Optimizing\+Word\+Index.hpp File Reference}
+\label{_optimizing_word_index_8hpp}\index{inc/\+Optimizing\+Word\+Index.\+hpp@{inc/\+Optimizing\+Word\+Index.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Math\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Basic\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Array\+Utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Text\+Piece\+Reader.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index_1_1_word_index_bucket_entry}{uva\+::smt\+::tries\+::dictionary\+::\+\_\+\+\_\+\+Optimizing\+Word\+Index\+::\+Word\+Index\+Bucket\+Entry}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index}{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1dictionary}{uva\+::smt\+::tries\+::dictionary}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index}{uva\+::smt\+::tries\+::dictionary\+::\+\_\+\+\_\+\+Optimizing\+Word\+Index}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_optimizing_word_index_8hpp_a016c65b68aa2f276738c9875206831c2}{I\+S\+\_\+\+E\+Q\+U\+A\+L}(token,  entry)~(((token).get\+Len() == (entry).\hyperlink{_optimizing_word_index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}) \&\& (strncmp((token).get\+Begin\+C\+Str(), (entry).\hyperlink{_optimizing_word_index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{m\+\_\+word}, (entry).\hyperlink{_optimizing_word_index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}) == 0))
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index_1_1_word_index_bucket_entry}{uva\+::smt\+::tries\+::dictionary\+::\+\_\+\+\_\+\+Optimizing\+Word\+Index\+::\+Word\+Index\+Bucket\+Entry} \hyperlink{namespaceuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index_ae06d59393cc9a96d9b30bc89879a400f}{uva\+::smt\+::tries\+::dictionary\+::\+\_\+\+\_\+\+Optimizing\+Word\+Index\+::\+\_\+\+\_\+attribute\+\_\+\+\_\+} ((packed))
+\item 
+\hyperlink{_optimizing_word_index_8hpp_a2089f035ab489afa9a8da3124e7343db}{Word\+Index\+Bucket\+Entry} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{_optimizing_word_index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{m\+\_\+word}
+\item 
+uint8\+\_\+t \hyperlink{_optimizing_word_index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{_optimizing_word_index_8hpp_add9aee881e9d23774abb184ae59cfa4a}{m\+\_\+word\+\_\+id}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_optimizing_word_index_8hpp_a016c65b68aa2f276738c9875206831c2}{}\index{Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}!I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}}
+\index{I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}!Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}}
+\subsubsection[{I\+S\+\_\+\+E\+Q\+U\+A\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+E\+Q\+U\+A\+L(
+\begin{DoxyParamCaption}
+\item[{}]{token, }
+\item[{}]{entry}
+\end{DoxyParamCaption}
+)~(((token).get\+Len() == (entry).{\bf m\+\_\+len}) \&\& (strncmp((token).get\+Begin\+C\+Str(), (entry).{\bf m\+\_\+word}, (entry).{\bf m\+\_\+len}) == 0))}\label{_optimizing_word_index_8hpp_a016c65b68aa2f276738c9875206831c2}
+
+
+\subsection{Function Documentation}
+\hypertarget{_optimizing_word_index_8hpp_a2089f035ab489afa9a8da3124e7343db}{}\index{Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}!Word\+Index\+Bucket\+Entry@{Word\+Index\+Bucket\+Entry}}
+\index{Word\+Index\+Bucket\+Entry@{Word\+Index\+Bucket\+Entry}!Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}}
+\subsubsection[{Word\+Index\+Bucket\+Entry()}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+attribute\+\_\+\+\_\+\+::\+Word\+Index\+Bucket\+Entry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{_optimizing_word_index_8hpp_a2089f035ab489afa9a8da3124e7343db}
+
+
+\subsection{Variable Documentation}
+\hypertarget{_optimizing_word_index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{}\index{Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}!m\+\_\+len@{m\+\_\+len}}
+\index{m\+\_\+len@{m\+\_\+len}!Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}}
+\subsubsection[{m\+\_\+len}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t m\+\_\+len}\label{_optimizing_word_index_8hpp_a9dbc5db18ad217b30badb72da0dff810}
+\hypertarget{_optimizing_word_index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{}\index{Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}!m\+\_\+word@{m\+\_\+word}}
+\index{m\+\_\+word@{m\+\_\+word}!Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}}
+\subsubsection[{m\+\_\+word}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ m\+\_\+word}\label{_optimizing_word_index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}
+\hypertarget{_optimizing_word_index_8hpp_add9aee881e9d23774abb184ae59cfa4a}{}\index{Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}!m\+\_\+word\+\_\+id@{m\+\_\+word\+\_\+id}}
+\index{m\+\_\+word\+\_\+id@{m\+\_\+word\+\_\+id}!Optimizing\+Word\+Index.\+hpp@{Optimizing\+Word\+Index.\+hpp}}
+\subsubsection[{m\+\_\+word\+\_\+id}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+Short\+Id} m\+\_\+word\+\_\+id}\label{_optimizing_word_index_8hpp_add9aee881e9d23774abb184ae59cfa4a}

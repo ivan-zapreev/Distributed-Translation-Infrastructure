@@ -106,9 +106,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1660962aa1469cfaff841df0b404d13"><td class="memTemplParams" colspan="2">template&lt;TModelLevel N&gt; </td></tr>
-<tr class="memitem:ae1660962aa1469cfaff841df0b404d13"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory.html#ae1660962aa1469cfaff841df0b404d13">getBuilder</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a> level, <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;trie, const char delim, <a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html">ARPAGramBuilder</a> **ppBuilder)</td></tr>
-<tr class="separator:ae1660962aa1469cfaff841df0b404d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af030073d833c56ebf656c14f35e10b"><td class="memTemplParams" colspan="2">template&lt;TModelLevel N&gt; </td></tr>
+<tr class="memitem:a9af030073d833c56ebf656c14f35e10b"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder_factory.html#a9af030073d833c56ebf656c14f35e10b">get_builder</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;trie, <a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_gram_builder.html">ARPAGramBuilder</a> **ppBuilder)</td></tr>
+<tr class="separator:a9af030073d833c56ebf656c14f35e10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is the ARPA N-gram Builder Factory class that is supposed to be used to instantiate the proper ARPA N-Gram Builder class. Note that there can be a small difference in the data provided for the N-grams of different levels. For example the N-gram of the maximum level does not have back-off weights, so knowing that can allow for a more optimal reading the data and filling in the Trie. Also the first level N-grams (N==1) are just words and have to be added as vocabulary words into the Trie and not as regular N-grams. </p>
@@ -137,7 +137,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae1660962aa1469cfaff841df0b404d13"></a>
+<a class="anchor" id="a9af030073d833c56ebf656c14f35e10b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -147,9 +147,9 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void uva::smt::tries::arpa::ARPAGramBuilderFactory::getBuilder </td>
+          <td class="memname">static void uva::smt::tries::arpa::ARPAGramBuilderFactory::get_builder </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
           <td class="paramname"><em>level</em>, </td>
         </tr>
         <tr>
@@ -157,12 +157,6 @@ template&lt;TModelLevel N&gt; </div>
           <td></td>
           <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;&#160;</td>
           <td class="paramname"><em>trie</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>delim</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,7 +182,6 @@ template&lt;TModelLevel N&gt; </div>
   <table class="params">
     <tr><td class="paramname">level</td><td>the level of the N-gram </td></tr>
     <tr><td class="paramname">trie</td><td>the trie to be filled in with the N-grams </td></tr>
-    <tr><td class="paramname">delim</td><td>the delimiter for the ARPA N-Gram string </td></tr>
     <tr><td class="paramname">pBuilder</td><td>the pointer to a dynamically allocated N-Gram builder </td></tr>
   </table>
   </dd>

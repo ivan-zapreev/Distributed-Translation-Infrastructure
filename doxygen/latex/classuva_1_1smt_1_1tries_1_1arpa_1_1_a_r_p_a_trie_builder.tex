@@ -7,7 +7,7 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_ad86b22f218b48991588838d0db6d784b}{A\+R\+P\+A\+Trie\+Builder} (\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, ifstream \&\+\_\+fstr, const char delim)
+\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}{A\+R\+P\+A\+Trie\+Builder} (\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader}{A\+File\+Reader} \&file)
 \item 
 void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8e01c726cb800efa9b5f157017eb35f4}{build} ()
 \item 
@@ -21,22 +21,19 @@ virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8f
 This is the Trie builder class that reads an input file stream and creates n-\/grams and then records them into the provided Trie. 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_ad86b22f218b48991588838d0db6d784b}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}}
 \index{A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}}
-\subsubsection[{A\+R\+P\+A\+Trie\+Builder(\+A\+Trie$<$ N $>$ \&trie, ifstream \&\+\_\+fstr, const char delim)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ N $>$\+::{\bf A\+R\+P\+A\+Trie\+Builder} (
+\subsubsection[{A\+R\+P\+A\+Trie\+Builder(\+A\+Trie$<$ N $>$ \&trie, A\+File\+Reader \&file)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ N $>$\+::{\bf A\+R\+P\+A\+Trie\+Builder} (
 \begin{DoxyParamCaption}
 \item[{{\bf A\+Trie}$<$ N $>$ \&}]{trie, }
-\item[{ifstream \&}]{\+\_\+fstr, }
-\item[{const char}]{delim}
+\item[{{\bf A\+File\+Reader} \&}]{file}
 \end{DoxyParamCaption}
-)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_ad86b22f218b48991588838d0db6d784b}
+)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}
 The basic constructor that accepts a trie to be build up and the file stream to read from 
 \begin{DoxyParams}{Parameters}
 {\em trie} & the trie to fill in with data from the text corpus \\
 \hline
 {\em \+\_\+fstr} & the file stream to read from \\
-\hline
-{\em delim} & the delimiter for the line elements \\
 \hline
 \end{DoxyParams}
 \hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8f0c6fc6e4f96d52b5380712b681bfef}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!````~A\+R\+P\+A\+Trie\+Builder@{$\sim$\+A\+R\+P\+A\+Trie\+Builder}}

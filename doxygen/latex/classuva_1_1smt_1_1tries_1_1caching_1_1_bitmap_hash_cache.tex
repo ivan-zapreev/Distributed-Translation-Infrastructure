@@ -1,0 +1,111 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:caching\+:\+:Bitmap\+Hash\+Cache Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+
+
+{\ttfamily \#include $<$Bitmap\+Hash\+Cache.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a4d8b5eafc27e5270795505c9018e5228}{Bitmap\+Hash\+Cache} ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad69c96b30c7a4448a51df194c43b8683}{$\sim$\+Bitmap\+Hash\+Cache} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad96d49d81dd292e1e6d50bb04e69f9e6}{pre\+\_\+allocate} (const size\+\_\+t num\+\_\+elems)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad43df9158968907e1dcadd206df4d7b9}{add\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram)
+\item 
+{\footnotesize template$<$bool is\+\_\+back\+\_\+off$>$ }\\bool \hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a478b77041d1731d87fed291f18059668}{is\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} $\ast$gram\+\_\+ptr, \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level) const 
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ac81e446a163384c848f3409029e17342}{is\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram) const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is to be used for caching the present of M-\/grams in the trie. The way it is done is using a bitset. A bitset indicates which hashes are present and therefore which M-\/grams have a chance to be found in the Trie. This class can give potential speed improvement for the Tries which are context/layer based and use search algorithms to go through levels. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a4d8b5eafc27e5270795505c9018e5228}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!Bitmap\+Hash\+Cache@{Bitmap\+Hash\+Cache}}
+\index{Bitmap\+Hash\+Cache@{Bitmap\+Hash\+Cache}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{Bitmap\+Hash\+Cache()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::\+Bitmap\+Hash\+Cache (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a4d8b5eafc27e5270795505c9018e5228}
+The basic constructor, does not do much -\/ only default initialization \hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad69c96b30c7a4448a51df194c43b8683}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!````~Bitmap\+Hash\+Cache@{$\sim$\+Bitmap\+Hash\+Cache}}
+\index{````~Bitmap\+Hash\+Cache@{$\sim$\+Bitmap\+Hash\+Cache}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{$\sim$\+Bitmap\+Hash\+Cache()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::$\sim$\+Bitmap\+Hash\+Cache (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad69c96b30c7a4448a51df194c43b8683}
+The basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad43df9158968907e1dcadd206df4d7b9}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
+\index{add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{add\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::add\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad43df9158968907e1dcadd206df4d7b9}
+Allows to add the M-\/gram to the cache 
+\begin{DoxyParams}{Parameters}
+{\em gram} & the M-\/gram to cache \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a478b77041d1731d87fed291f18059668}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!is\+\_\+m\+\_\+gram@{is\+\_\+m\+\_\+gram}}
+\index{is\+\_\+m\+\_\+gram@{is\+\_\+m\+\_\+gram}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{is\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram $\ast$gram\+\_\+ptr, T\+Model\+Level level) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$bool is\+\_\+back\+\_\+off$>$ bool uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::is\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} $\ast$}]{gram\+\_\+ptr, }
+\item[{{\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_a478b77041d1731d87fed291f18059668}
+Allows to check if a sub-\/\+M-\/gram of the given M-\/gram is present in the cache. 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+back\+\_\+off} & is true if this is a back-\/off M-\/gram we need to learn about \\
+\hline
+{\em gram\+\_\+ptr} & the pointer to the M-\/gram the sub-\/\+M-\/gram will be taken from, not N\+U\+L\+L! \\
+\hline
+{\em level} & the level of the sub-\/\+M-\/gram \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if the M-\/gram is not present, otherwise true (the latter means potentially present) 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ac81e446a163384c848f3409029e17342}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!is\+\_\+m\+\_\+gram@{is\+\_\+m\+\_\+gram}}
+\index{is\+\_\+m\+\_\+gram@{is\+\_\+m\+\_\+gram}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{is\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&gram) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::is\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ac81e446a163384c848f3409029e17342}
+Allows to check if the given M-\/gram is not present in the cache. 
+\begin{DoxyParams}{Parameters}
+{\em gram} & the M-\/gram to be checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if the M-\/gram is not present, otherwise true (the latter means potentially present) 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad96d49d81dd292e1e6d50bb04e69f9e6}{}\index{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache@{uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t num\+\_\+elems)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::tries\+::caching\+::\+Bitmap\+Hash\+Cache\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+elems}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1caching_1_1_bitmap_hash_cache_ad96d49d81dd292e1e6d50bb04e69f9e6}
+Allowo to pre-\/allocate memory for the bitset 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+elems} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_bitmap_hash_cache_8hpp}{Bitmap\+Hash\+Cache.\+hpp}\end{DoxyCompactItemize}

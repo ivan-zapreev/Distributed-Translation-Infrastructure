@@ -1,0 +1,199 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:Optimizing\+Word\+Index Class Reference}
+\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+
+
+{\ttfamily \#include $<$Optimizing\+Word\+Index.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:dictionary\+:\+:Optimizing\+Word\+Index\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a9c7f3e6299e77be4ce163c288bbd2c20}{Optimizing\+Word\+Index} (\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index}{Basic\+Word\+Index} $\ast$disp\+\_\+word\+\_\+index\+\_\+ptr)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7381da7d8e7bedf2fdf1d88076a43cb2}{reserve} (const size\+\_\+t num\+\_\+words)
+\item 
+virtual size\+\_\+t \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a0f2e75f30cbe04d9e74538c54a515c59}{get\+\_\+number\+\_\+of\+\_\+words} (const size\+\_\+t num\+\_\+words)
+\item 
+virtual \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a157981a189cca43eed35aaf640c1aa67}{get\+\_\+word\+\_\+id} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token) const 
+\item 
+virtual \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_ad23968ee31767ce6ae8a8ed85772532e}{register\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_af749f27894b0b3f288311a5149c4e9f6}{is\+\_\+word\+\_\+counts\+\_\+needed} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7a640c40e5e3591f7c547fc096f5fbf0}{count\+\_\+word} (const \hyperlink{classuva_1_1smt_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a006bedc2159e545d6436a3bdb7a6a5c5}{do\+\_\+post\+\_\+word\+\_\+count} ()
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a96f673f041e96ab38843c63a984f6ce5}{is\+\_\+post\+\_\+actions\+\_\+needed} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_afbc88af75c91c7c366467bdc07dbc978}{do\+\_\+post\+\_\+actions} ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a018a78505a045e56c641f213975ba8e0}{$\sim$\+Optimizing\+Word\+Index} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+This class is to be used as an optimizer wrapped around the original index. The main idea is that a word index is provided to this class and is used for initial data gathering. After that is done, during the post actions the data from the original word index is taken and converted into optimized format. This data is then stored within this class. The original word index is then destroyed to save space. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a9c7f3e6299e77be4ce163c288bbd2c20}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!Optimizing\+Word\+Index@{Optimizing\+Word\+Index}}
+\index{Optimizing\+Word\+Index@{Optimizing\+Word\+Index}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{Optimizing\+Word\+Index(\+Basic\+Word\+Index $\ast$disp\+\_\+word\+\_\+index\+\_\+ptr)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::\+Optimizing\+Word\+Index (
+\begin{DoxyParamCaption}
+\item[{{\bf Basic\+Word\+Index} $\ast$}]{disp\+\_\+word\+\_\+index\+\_\+ptr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a9c7f3e6299e77be4ce163c288bbd2c20}
+This is the main constructor to be used. It accepts ther disposable word index. Which will be destroyed by this class at any needed moment, so no one else must have a reference or a pointer to the argument object 
+\begin{DoxyParams}{Parameters}
+{\em disp\+\_\+word\+\_\+index\+\_\+ptr} & the disposable word index \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a018a78505a045e56c641f213975ba8e0}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!````~Optimizing\+Word\+Index@{$\sim$\+Optimizing\+Word\+Index}}
+\index{````~Optimizing\+Word\+Index@{$\sim$\+Optimizing\+Word\+Index}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{$\sim$\+Optimizing\+Word\+Index()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::$\sim$\+Optimizing\+Word\+Index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a018a78505a045e56c641f213975ba8e0}
+The basic destructor 
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7a640c40e5e3591f7c547fc096f5fbf0}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!count\+\_\+word@{count\+\_\+word}}
+\index{count\+\_\+word@{count\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{count\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::count\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7a640c40e5e3591f7c547fc096f5fbf0}
+This method is to be used when the word counting is needed. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_af802919ae94e6e6aeeec82a8e880b50c}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_afbc88af75c91c7c366467bdc07dbc978}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}}
+\index{do\+\_\+post\+\_\+actions@{do\+\_\+post\+\_\+actions}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+actions()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::do\+\_\+post\+\_\+actions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_afbc88af75c91c7c366467bdc07dbc978}
+Is to be called if the post actions are needed right after that all the individual words have beed added into the index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a45c07a088bac4655a3084ef301f312c6}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a006bedc2159e545d6436a3bdb7a6a5c5}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}}
+\index{do\+\_\+post\+\_\+word\+\_\+count@{do\+\_\+post\+\_\+word\+\_\+count}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{do\+\_\+post\+\_\+word\+\_\+count()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::do\+\_\+post\+\_\+word\+\_\+count (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a006bedc2159e545d6436a3bdb7a6a5c5}
+Should be called if the word count is needed after all the words have been counted. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a353853aa594ca7c23f18e4804fa09dab}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a0f2e75f30cbe04d9e74538c54a515c59}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}}
+\index{get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{get\+\_\+number\+\_\+of\+\_\+words(const size\+\_\+t num\+\_\+words)}]{\setlength{\rightskip}{0pt plus 5cm}virtual size\+\_\+t uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::get\+\_\+number\+\_\+of\+\_\+words (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a0f2e75f30cbe04d9e74538c54a515c59}
+Allows to get the total words count including the unknown and undefined words \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a89294cc177e2c701ba43a87c88ade4d4}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a157981a189cca43eed35aaf640c1aa67}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}}
+\index{get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{get\+\_\+word\+\_\+id(const Text\+Piece\+Reader \&token) const }]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::get\+\_\+word\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a157981a189cca43eed35aaf640c1aa67}
+This function gets an id for the given word word based no the stored 1-\/\+Grams. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a23386149ef251966ced00130fa703d68}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a96f673f041e96ab38843c63a984f6ce5}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}}
+\index{is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{is\+\_\+post\+\_\+actions\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::is\+\_\+post\+\_\+actions\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a96f673f041e96ab38843c63a984f6ce5}
+Indicates if the post-\/actions are needed. The post actions should be called after all the words have been filled into the index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_ad06633d5705710089e467e84e5fd1aa0}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_af749f27894b0b3f288311a5149c4e9f6}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}}
+\index{is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{is\+\_\+word\+\_\+counts\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}virtual bool uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::is\+\_\+word\+\_\+counts\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_af749f27894b0b3f288311a5149c4e9f6}
+This method allows to indicate whether word counting is needed by the given implementation of the word index. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_abf2e3da506e15aba952dbdbefdf301bd}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_ad23968ee31767ce6ae8a8ed85772532e}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!register\+\_\+word@{register\+\_\+word}}
+\index{register\+\_\+word@{register\+\_\+word}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{register\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf T\+Short\+Id} uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::register\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_ad23968ee31767ce6ae8a8ed85772532e}
+This function creates/gets an id for the given word. \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_aa1ccab0128595c2296cf65099de5d28f}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7381da7d8e7bedf2fdf1d88076a43cb2}{}\index{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}!reserve@{reserve}}
+\index{reserve@{reserve}!uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index@{uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index}}
+\subsubsection[{reserve(const size\+\_\+t num\+\_\+words)}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::tries\+::dictionary\+::\+Optimizing\+Word\+Index\+::reserve (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index_a7381da7d8e7bedf2fdf1d88076a43cb2}
+This method should be used to pre-\/allocate the word index 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+words} & the number of words \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index_a689b450039f29db04b29824b962afd9d}{uva\+::smt\+::tries\+::dictionary\+::\+A\+Word\+Index}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_optimizing_word_index_8hpp}{Optimizing\+Word\+Index.\+hpp}\end{DoxyCompactItemize}

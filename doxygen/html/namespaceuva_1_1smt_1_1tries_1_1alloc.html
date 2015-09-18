@@ -88,7 +88,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">uva::smt::tries::alloc Namespace Reference</div>  </div>
 </div><!--header-->
@@ -96,16 +99,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array.html">ADynamicStackArray</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1alloc_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c.html">ELEMENT_DEALLOC_FUNC</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html">GreedyMemoryAllocator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage.html">GreedyMemoryStorage</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_mem_increase_strategy.html">MemIncreaseStrategy</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a3e6a48b58d6f09d775e523709e041d3c"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; float(const float) &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#a3e6a48b58d6f09d775e523709e041d3c">TCapacityIncFunct</a></td></tr>
+<tr class="separator:a3e6a48b58d6f09d775e523709e041d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:aa19a45a19458f601785f08cb24e17f16"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16">MemIncTypesEnum</a> { <br />
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a34a05d3f0922c685b628fcdbcb17cfa4">UNDEFINED</a> = 0, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533">CONSTANT</a> = UNDEFINED + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1">LINEAR</a> = CONSTANT + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1">LOG_2</a> = LINEAR + 1, 
+<br />
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c">LOG_10</a> = LOG_2 + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16aba68c34d16fb50c85e8fac69559d31c1">size</a> = LOG_10 + 1
+<br />
+ }<tr class="separator:aa19a45a19458f601785f08cb24e17f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a06a0b287f69168d8f3eaa4eafd7a8513"><td class="memTemplParams" colspan="2">template&lt;typename TContaner , typename TAllocator &gt; </td></tr>
-<tr class="memitem:a06a0b287f69168d8f3eaa4eafd7a8513"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#a06a0b287f69168d8f3eaa4eafd7a8513">allocate_container</a> (TContaner **ppContainer, TAllocator **ppAllocator, const size_t numEntries, const string ctName, const float factor)</td></tr>
-<tr class="separator:a06a0b287f69168d8f3eaa4eafd7a8513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5cce127acd56e3fa1b42c63f93f8548"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_mem_increase_strategy.html">MemIncreaseStrategy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa5cce127acd56e3fa1b42c63f93f8548">get_mem_incr_strat</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16">MemIncTypesEnum</a> stype, const size_t min_mem_inc, const float mem_inc_factor)</td></tr>
+<tr class="separator:aa5cce127acd56e3fa1b42c63f93f8548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee3068d83602810dbafc8862a8a113f"><td class="memTemplParams" colspan="2">template&lt;typename TContaner , typename TAllocator &gt; </td></tr>
+<tr class="memitem:aeee3068d83602810dbafc8862a8a113f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aeee3068d83602810dbafc8862a8a113f">allocate_container</a> (TContaner **ppContainer, TAllocator **ppAllocator, const size_t numEntries, const string ctName, const float factor=UNORDERED_MAP_MEMORY_FACTOR)</td></tr>
+<tr class="separator:aeee3068d83602810dbafc8862a8a113f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c181932d57f2889db12f245097d3b96"><td class="memTemplParams" colspan="2">template&lt;typename TContaner , typename TAllocator &gt; </td></tr>
 <tr class="memitem:a2c181932d57f2889db12f245097d3b96"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#a2c181932d57f2889db12f245097d3b96">reserve_mem_unordered_map</a> (TContaner **ppContainer, TAllocator **ppAllocator, const size_t numEntries, const string ctName, const float factor=UNORDERED_MAP_MEMORY_FACTOR)</td></tr>
 <tr class="separator:a2c181932d57f2889db12f245097d3b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,9 +154,61 @@ Functions</h2></td></tr>
 <tr class="memitem:ad691046a976d11527099d8792bb93e21"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad691046a976d11527099d8792bb93e21"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#ad691046a976d11527099d8792bb93e21">operator!=</a> (const <a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html">GreedyMemoryAllocator</a>&lt; T &gt; &amp;, const <a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator.html">GreedyMemoryAllocator</a>&lt; T &gt; &amp;)</td></tr>
 <tr class="separator:ad691046a976d11527099d8792bb93e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a2ee2b31ccd454a61720cd6c0d7ca260c"><td class="memItemLeft" align="right" valign="top">const char *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#a2ee2b31ccd454a61720cd6c0d7ca260c">_memIncTypesEnumStr</a> [MemIncTypesEnum::size] = {&quot;CONSTANT&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1">LINEAR</a>&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1">LOG_2</a>&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c">LOG_10</a>&quot;}</td></tr>
+<tr class="separator:a2ee2b31ccd454a61720cd6c0d7ca260c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="a3e6a48b58d6f09d775e523709e041d3c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;float (const float) &gt; <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#a3e6a48b58d6f09d775e523709e041d3c">uva::smt::tries::alloc::TCapacityIncFunct</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a function type for the function that should compute the capacity increase </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">the</td><td>first argument is the current capacity as float </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the capacity increase </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="aa19a45a19458f601785f08cb24e17f16"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16">uva::smt::tries::alloc::MemIncTypesEnum</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16a34a05d3f0922c685b628fcdbcb17cfa4"></a>UNDEFINED&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533"></a>CONSTANT&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1"></a>LINEAR&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1"></a>LOG_2&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c"></a>LOG_10&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="aa19a45a19458f601785f08cb24e17f16aba68c34d16fb50c85e8fac69559d31c1"></a>size&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a06a0b287f69168d8f3eaa4eafd7a8513"></a>
+<a class="anchor" id="aeee3068d83602810dbafc8862a8a113f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -160,7 +242,7 @@ template&lt;typename TContaner , typename TAllocator &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>factor</em>&#160;</td>
+          <td class="paramname"><em>factor</em> = <code>UNORDERED_MAP_MEMORY_FACTOR</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -173,6 +255,9 @@ template&lt;typename TContaner , typename TAllocator &gt; </div>
   <table class="params">
     <tr><td class="paramname">ppContainer</td><td>the pointer to the container pointer </td></tr>
     <tr><td class="paramname">ppAllocator</td><td>the pointer to the allocator pointer </td></tr>
+    <tr><td class="paramname">numEntries</td><td>the number of entries to pre-allocate for </td></tr>
+    <tr><td class="paramname">ctName</td><td>the container name for logging purposes </td></tr>
+    <tr><td class="paramname">factor</td><td>the memory multiplication factor, default is UNORDERED_MAP_MEMORY_FACTOR. This is how many times memory we will allocate (than needed to store numEntries elems) </td></tr>
   </table>
   </dd>
 </dl>
@@ -212,6 +297,55 @@ template&lt;typename TContaner , typename TAllocator &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="aa5cce127acd56e3fa1b42c63f93f8548"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1alloc_1_1_mem_increase_strategy.html">MemIncreaseStrategy</a> uva::smt::tries::alloc::get_mem_incr_strat </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16">MemIncTypesEnum</a>&#160;</td>
+          <td class="paramname"><em>stype</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>min_mem_inc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>mem_inc_factor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is a factory function allowing to ge the strategy object for the given parameters </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stype</td><td>the strategy type </td></tr>
+    <tr><td class="paramname">min_mem_inc</td><td>the minimum memory increment in number of elements </td></tr>
+    <tr><td class="paramname">mem_inc_factor</td><td>the memory increment factor, the number we will multiply by the computed increment </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the pointer to a newly allocated strategy object </dd></dl>
 
 </div>
 </div>
@@ -374,9 +508,26 @@ template&lt;typename TContaner , typename TAllocator &gt; </div>
   <table class="params">
     <tr><td class="paramname">ppContainer</td><td>the pointer to the container pointer </td></tr>
     <tr><td class="paramname">ppAllocator</td><td>the pointer to the allocator pointer </td></tr>
+    <tr><td class="paramname">numEntries</td><td>the number of entries to pre-allocate for </td></tr>
+    <tr><td class="paramname">ctName</td><td>the container name for logging purposes </td></tr>
+    <tr><td class="paramname">factor</td><td>the memory multiplication factor, default is UNORDERED_MAP_MEMORY_FACTOR. This is how many times memory we will allocate (than needed to store numEntries elems) </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a2ee2b31ccd454a61720cd6c0d7ca260c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* const uva::smt::tries::alloc::_memIncTypesEnumStr[MemIncTypesEnum::size] = {&quot;CONSTANT&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1">LINEAR</a>&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1">LOG_2</a>&quot;, &quot;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c">LOG_10</a>&quot;}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Stores the string names of the memory increase strategies, should correspond with the enum MemIncTypesEnum indexes! </p>
 
 </div>
 </div>

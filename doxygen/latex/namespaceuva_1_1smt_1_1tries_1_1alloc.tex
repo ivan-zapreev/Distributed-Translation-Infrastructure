@@ -3,14 +3,40 @@
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_a_dynamic_stack_array}{A\+Dynamic\+Stack\+Array}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1alloc_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c}{E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C}
+\item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}
 \item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage}{Greedy\+Memory\+Storage}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_mem_increase_strategy}{Mem\+Increase\+Strategy}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::function$<$ float(const float) $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_a3e6a48b58d6f09d775e523709e041d3c}{T\+Capacity\+Inc\+Funct}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16}{Mem\+Inc\+Types\+Enum} \{ \\*
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a34a05d3f0922c685b628fcdbcb17cfa4}{U\+N\+D\+E\+F\+I\+N\+E\+D} = 0, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533}{C\+O\+N\+S\+T\+A\+N\+T} = U\+N\+D\+E\+F\+I\+N\+E\+D + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1}{L\+I\+N\+E\+A\+R} = C\+O\+N\+S\+T\+A\+N\+T + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1}{L\+O\+G\+\_\+2} = L\+I\+N\+E\+A\+R + 1, 
+\\*
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c}{L\+O\+G\+\_\+10} = L\+O\+G\+\_\+2 + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16aba68c34d16fb50c85e8fac69559d31c1}{size} = L\+O\+G\+\_\+10 + 1
+ \}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename T\+Contaner , typename T\+Allocator $>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_a06a0b287f69168d8f3eaa4eafd7a8513}{allocate\+\_\+container} (T\+Contaner $\ast$$\ast$pp\+Container, T\+Allocator $\ast$$\ast$pp\+Allocator, const size\+\_\+t num\+Entries, const string ct\+Name, const float factor)
+\hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_mem_increase_strategy}{Mem\+Increase\+Strategy} \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa5cce127acd56e3fa1b42c63f93f8548}{get\+\_\+mem\+\_\+incr\+\_\+strat} (const \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16}{Mem\+Inc\+Types\+Enum} stype, const size\+\_\+t min\+\_\+mem\+\_\+inc, const float mem\+\_\+inc\+\_\+factor)
+\item 
+{\footnotesize template$<$typename T\+Contaner , typename T\+Allocator $>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aeee3068d83602810dbafc8862a8a113f}{allocate\+\_\+container} (T\+Contaner $\ast$$\ast$pp\+Container, T\+Allocator $\ast$$\ast$pp\+Allocator, const size\+\_\+t num\+Entries, const string ct\+Name, const float factor=U\+N\+O\+R\+D\+E\+R\+E\+D\+\_\+\+M\+A\+P\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R)
 \item 
 {\footnotesize template$<$typename T\+Contaner , typename T\+Allocator $>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_a2c181932d57f2889db12f245097d3b96}{reserve\+\_\+mem\+\_\+unordered\+\_\+map} (T\+Contaner $\ast$$\ast$pp\+Container, T\+Allocator $\ast$$\ast$pp\+Allocator, const size\+\_\+t num\+Entries, const string ct\+Name, const float factor=U\+N\+O\+R\+D\+E\+R\+E\+D\+\_\+\+M\+A\+P\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R)
 \item 
@@ -24,25 +50,73 @@ class \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_storage}{Gr
 \item 
 {\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_ad691046a976d11527099d8792bb93e21}{operator!=} (const \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ T $>$ \&, const \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ T $>$ \&)
 \end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$const \hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_a2ee2b31ccd454a61720cd6c0d7ca260c}{\+\_\+mem\+Inc\+Types\+Enum\+Str} \mbox{[}Mem\+Inc\+Types\+Enum\+::size\mbox{]} = \{\char`\"{}C\+O\+N\+S\+T\+A\+N\+T\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1}{L\+I\+N\+E\+A\+R}\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1}{L\+O\+G\+\_\+2}\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c}{L\+O\+G\+\_\+10}\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_a3e6a48b58d6f09d775e523709e041d3c}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!T\+Capacity\+Inc\+Funct@{T\+Capacity\+Inc\+Funct}}
+\index{T\+Capacity\+Inc\+Funct@{T\+Capacity\+Inc\+Funct}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
+\subsubsection[{T\+Capacity\+Inc\+Funct}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::function$<$float (const float) $>$ {\bf uva\+::smt\+::tries\+::alloc\+::\+T\+Capacity\+Inc\+Funct}}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_a3e6a48b58d6f09d775e523709e041d3c}
+This is a function type for the function that should compute the capacity increase 
+\begin{DoxyParams}{Parameters}
+{\em the} & first argument is the current capacity as float \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the capacity increase 
+\end{DoxyReturn}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!Mem\+Inc\+Types\+Enum@{Mem\+Inc\+Types\+Enum}}
+\index{Mem\+Inc\+Types\+Enum@{Mem\+Inc\+Types\+Enum}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
+\subsubsection[{Mem\+Inc\+Types\+Enum}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf uva\+::smt\+::tries\+::alloc\+::\+Mem\+Inc\+Types\+Enum}}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{U\+N\+D\+E\+F\+I\+N\+E\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!U\+N\+D\+E\+F\+I\+N\+E\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a34a05d3f0922c685b628fcdbcb17cfa4}{}U\+N\+D\+E\+F\+I\+N\+E\+D\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a34a05d3f0922c685b628fcdbcb17cfa4}
+}]\index{C\+O\+N\+S\+T\+A\+N\+T@{C\+O\+N\+S\+T\+A\+N\+T}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!C\+O\+N\+S\+T\+A\+N\+T@{C\+O\+N\+S\+T\+A\+N\+T}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533}{}C\+O\+N\+S\+T\+A\+N\+T\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a8bcd2e74b0845e6d14e79b329f9b1533}
+}]\index{L\+I\+N\+E\+A\+R@{L\+I\+N\+E\+A\+R}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!L\+I\+N\+E\+A\+R@{L\+I\+N\+E\+A\+R}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1}{}L\+I\+N\+E\+A\+R\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1}
+}]\index{L\+O\+G\+\_\+2@{L\+O\+G\+\_\+2}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!L\+O\+G\+\_\+2@{L\+O\+G\+\_\+2}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1}{}L\+O\+G\+\_\+2\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1}
+}]\index{L\+O\+G\+\_\+10@{L\+O\+G\+\_\+10}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!L\+O\+G\+\_\+10@{L\+O\+G\+\_\+10}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c}{}L\+O\+G\+\_\+10\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c}
+}]\index{size@{size}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!size@{size}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16aba68c34d16fb50c85e8fac69559d31c1}{}size\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa19a45a19458f601785f08cb24e17f16aba68c34d16fb50c85e8fac69559d31c1}
+}]\end{description}
+\end{Desc}
 
 
 \subsection{Function Documentation}
-\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_a06a0b287f69168d8f3eaa4eafd7a8513}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!allocate\+\_\+container@{allocate\+\_\+container}}
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aeee3068d83602810dbafc8862a8a113f}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!allocate\+\_\+container@{allocate\+\_\+container}}
 \index{allocate\+\_\+container@{allocate\+\_\+container}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
-\subsubsection[{allocate\+\_\+container(\+T\+Contaner $\ast$$\ast$pp\+Container, T\+Allocator $\ast$$\ast$pp\+Allocator, const size\+\_\+t num\+Entries, const string ct\+Name, const float factor)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Contaner , typename T\+Allocator $>$ void uva\+::smt\+::tries\+::alloc\+::allocate\+\_\+container (
+\subsubsection[{allocate\+\_\+container(\+T\+Contaner $\ast$$\ast$pp\+Container, T\+Allocator $\ast$$\ast$pp\+Allocator, const size\+\_\+t num\+Entries, const string ct\+Name, const float factor=\+U\+N\+O\+R\+D\+E\+R\+E\+D\+\_\+\+M\+A\+P\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Contaner , typename T\+Allocator $>$ void uva\+::smt\+::tries\+::alloc\+::allocate\+\_\+container (
 \begin{DoxyParamCaption}
 \item[{T\+Contaner $\ast$$\ast$}]{pp\+Container, }
 \item[{T\+Allocator $\ast$$\ast$}]{pp\+Allocator, }
 \item[{const size\+\_\+t}]{num\+Entries, }
 \item[{const string}]{ct\+Name, }
-\item[{const float}]{factor}
+\item[{const float}]{factor = {\ttfamily UNORDERED\+\_\+MAP\+\_\+MEMORY\+\_\+FACTOR}}
 \end{DoxyParamCaption}
-)}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_a06a0b287f69168d8f3eaa4eafd7a8513}
+)}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aeee3068d83602810dbafc8862a8a113f}
 This is helper function that allows to allocate the container, allocator and the actual data storage Note that, this functions is meant to be used with the unordered\+\_\+map allocator 
 \begin{DoxyParams}{Parameters}
 {\em pp\+Container} & the pointer to the container pointer \\
 \hline
 {\em pp\+Allocator} & the pointer to the allocator pointer \\
+\hline
+{\em num\+Entries} & the number of entries to pre-\/allocate for \\
+\hline
+{\em ct\+Name} & the container name for logging purposes \\
+\hline
+{\em factor} & the memory multiplication factor, default is U\+N\+O\+R\+D\+E\+R\+E\+D\+\_\+\+M\+A\+P\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R. This is how many times memory we will allocate (than needed to store num\+Entries elems) \\
 \hline
 \end{DoxyParams}
 \hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_a8f63d24e724796c5c4daa555ee1f3bc7}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!deallocate\+\_\+container@{deallocate\+\_\+container}}
@@ -62,6 +136,27 @@ This is helper function that allows to deallocate the container allocator and ac
 {\em pp\+Storage} & the pointer to the storage pointer \\
 \hline
 \end{DoxyParams}
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_aa5cce127acd56e3fa1b42c63f93f8548}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!get\+\_\+mem\+\_\+incr\+\_\+strat@{get\+\_\+mem\+\_\+incr\+\_\+strat}}
+\index{get\+\_\+mem\+\_\+incr\+\_\+strat@{get\+\_\+mem\+\_\+incr\+\_\+strat}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
+\subsubsection[{get\+\_\+mem\+\_\+incr\+\_\+strat(const Mem\+Inc\+Types\+Enum stype, const size\+\_\+t min\+\_\+mem\+\_\+inc, const float mem\+\_\+inc\+\_\+factor)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mem\+Increase\+Strategy} uva\+::smt\+::tries\+::alloc\+::get\+\_\+mem\+\_\+incr\+\_\+strat (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mem\+Inc\+Types\+Enum}}]{stype, }
+\item[{const size\+\_\+t}]{min\+\_\+mem\+\_\+inc, }
+\item[{const float}]{mem\+\_\+inc\+\_\+factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_aa5cce127acd56e3fa1b42c63f93f8548}
+This is a factory function allowing to ge the strategy object for the given parameters 
+\begin{DoxyParams}{Parameters}
+{\em stype} & the strategy type \\
+\hline
+{\em min\+\_\+mem\+\_\+inc} & the minimum memory increment in number of elements \\
+\hline
+{\em mem\+\_\+inc\+\_\+factor} & the memory increment factor, the number we will multiply by the computed increment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to a newly allocated strategy object 
+\end{DoxyReturn}
 \hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_a49f57a5b2c27ce6e2b8da7f15d1d44ad}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!operator"!=@{operator"!=}}
 \index{operator"!=@{operator"!=}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
 \subsubsection[{operator"!=(const Greedy\+Memory\+Allocator$<$ T $>$ \&, const Greedy\+Memory\+Allocator$<$ U $>$ \&)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T , typename U $>$ bool uva\+::smt\+::tries\+::alloc\+::operator!= (
@@ -111,4 +206,17 @@ This is helper function that allows to allocate the container, allocator and the
 \hline
 {\em pp\+Allocator} & the pointer to the allocator pointer \\
 \hline
+{\em num\+Entries} & the number of entries to pre-\/allocate for \\
+\hline
+{\em ct\+Name} & the container name for logging purposes \\
+\hline
+{\em factor} & the memory multiplication factor, default is U\+N\+O\+R\+D\+E\+R\+E\+D\+\_\+\+M\+A\+P\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+F\+A\+C\+T\+O\+R. This is how many times memory we will allocate (than needed to store num\+Entries elems) \\
+\hline
 \end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1tries_1_1alloc_a2ee2b31ccd454a61720cd6c0d7ca260c}{}\index{uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}!\+\_\+mem\+Inc\+Types\+Enum\+Str@{\+\_\+mem\+Inc\+Types\+Enum\+Str}}
+\index{\+\_\+mem\+Inc\+Types\+Enum\+Str@{\+\_\+mem\+Inc\+Types\+Enum\+Str}!uva\+::smt\+::tries\+::alloc@{uva\+::smt\+::tries\+::alloc}}
+\subsubsection[{\+\_\+mem\+Inc\+Types\+Enum\+Str}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ const uva\+::smt\+::tries\+::alloc\+::\+\_\+mem\+Inc\+Types\+Enum\+Str\mbox{[}Mem\+Inc\+Types\+Enum\+::size\mbox{]} = \{\char`\"{}C\+O\+N\+S\+T\+A\+N\+T\char`\"{}, \char`\"{}{\bf L\+I\+N\+E\+A\+R}\char`\"{}, \char`\"{}{\bf L\+O\+G\+\_\+2}\char`\"{}, \char`\"{}{\bf L\+O\+G\+\_\+10}\char`\"{}\}}\label{namespaceuva_1_1smt_1_1tries_1_1alloc_a2ee2b31ccd454a61720cd6c0d7ca260c}
+Stores the string names of the memory increase strategies, should correspond with the enum Mem\+Inc\+Types\+Enum indexes! 

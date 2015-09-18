@@ -1,5 +1,30 @@
 var searchData=
 [
-  ['zero_5flog_5fprob_5fweight',['ZERO_LOG_PROB_WEIGHT',['../namespaceuva_1_1smt_1_1tries.html#a60f325085f4d50c378efc2809a6fecc0',1,'uva::smt::tries']]],
-  ['zerro_5flog_5fprob_5fweight',['ZERRO_LOG_PROB_WEIGHT',['../namespaceuva_1_1smt_1_1tries.html#a9592d33e326894227ec9d9c0a443aac6',1,'uva::smt::tries']]]
+  ['w2carraytrie',['W2CArrayTrie',['../classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html',1,'uva::smt::tries']]],
+  ['w2carraytrie',['W2CArrayTrie',['../classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#afeafd093ea21a2fcd22c12dc90364ee3',1,'uva::smt::tries::W2CArrayTrie']]],
+  ['w2ch_5fum_5fstorage',['W2CH_UM_Storage',['../classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage.html',1,'uva::smt::tries']]],
+  ['w2ch_5fum_5fstorage',['W2CH_UM_Storage',['../classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage.html#a7a4a8fdd2ff7de9024e7e4f8e80e4e06',1,'uva::smt::tries::W2CH_UM_Storage']]],
+  ['w2ch_5fum_5fstoragefactory',['W2CH_UM_StorageFactory',['../classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory.html#a26c5ff34de8c0303cf672a5190fea8e4',1,'uva::smt::tries::W2CH_UM_StorageFactory']]],
+  ['w2ch_5fum_5fstoragefactory',['W2CH_UM_StorageFactory',['../classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory.html',1,'uva::smt::tries']]],
+  ['w2chybridmemorytrie_2ecpp',['W2CHybridMemoryTrie.cpp',['../_w2_c_hybrid_memory_trie_8cpp.html',1,'']]],
+  ['w2chybridmemorytrie_2ehpp',['W2CHybridMemoryTrie.hpp',['../_w2_c_hybrid_memory_trie_8hpp.html',1,'']]],
+  ['w2chybridmemorytrie_2eo_2ed',['W2CHybridMemoryTrie.o.d',['../_release_____mac_os___2_g_n_u-_mac_o_s_x_2src_2_w2_c_hybrid_memory_trie_8o_8d.html',1,'']]],
+  ['w2chybridmemorytrie_2eo_2ed',['W2CHybridMemoryTrie.o.d',['../_debug_____mac_os___2_g_n_u-_mac_o_s_x_2src_2_w2_c_hybrid_memory_trie_8o_8d.html',1,'']]],
+  ['w2chybridmemorytriestorage_2ehpp',['W2CHybridMemoryTrieStorage.hpp',['../_w2_c_hybrid_memory_trie_storage_8hpp.html',1,'']]],
+  ['w2chybridtrie',['W2CHybridTrie',['../classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie.html',1,'uva::smt::tries']]],
+  ['w2chybridtrie',['W2CHybridTrie',['../classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie.html#aaeb703bad005acd84483bf085ae94992',1,'uva::smt::tries::W2CHybridTrie']]],
+  ['w2corderedarraytrie_2ecpp',['W2COrderedArrayTrie.cpp',['../_w2_c_ordered_array_trie_8cpp.html',1,'']]],
+  ['w2corderedarraytrie_2ehpp',['W2COrderedArrayTrie.hpp',['../_w2_c_ordered_array_trie_8hpp.html',1,'']]],
+  ['w2corderedarraytrie_2eo_2ed',['W2COrderedArrayTrie.o.d',['../_debug_____mac_os___2_g_n_u-_mac_o_s_x_2src_2_w2_c_ordered_array_trie_8o_8d.html',1,'']]],
+  ['w2corderedarraytrie_2eo_2ed',['W2COrderedArrayTrie.o.d',['../_release_____mac_os___2_g_n_u-_mac_o_s_x_2src_2_w2_c_ordered_array_trie_8o_8d.html',1,'']]],
+  ['warning',['WARNING',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a87b82af01a3dab361757373d1ac96254',1,'uva::smt::logging']]],
+  ['warning_5fparam_5fvalue',['WARNING_PARAM_VALUE',['../_logger_8hpp.html#a8490160ad5cabd466d371e0dcdd5a15e',1,'Logger.hpp']]],
+  ['what',['what',['../classuva_1_1smt_1_1exceptions_1_1_exception.html#a0ea6aae278f6b04d4d99a0b73befe5ee',1,'uva::smt::exceptions::Exception']]],
+  ['whitespaces',['WHITESPACES',['../namespaceuva_1_1smt_1_1utils_1_1text.html#a1251cf45616a5bc009c8dfb643b794e1',1,'uva::smt::utils::text']]],
+  ['word',['word',['../structuva_1_1smt_1_1tries_1_1dictionary_1_1_____counting_word_index_1_1_t_word_info.html#a374b184f34abd8935cea6f48fe9560fd',1,'uva::smt::tries::dictionary::__CountingWordIndex::TWordInfo']]],
+  ['worddataentry',['WordDataEntry',['../classuva_1_1smt_1_1tries_1_1_w2_c_array_trie_1_1_word_data_entry.html',1,'uva::smt::tries::W2CArrayTrie']]],
+  ['wordid',['wordId',['../structuva_1_1smt_1_1tries_1_1_____c2_w_array_trie_1_1_t_ctx_id_prob_data.html#ad69e7e7b248030495a5eaa3bbf9d570c',1,'uva::smt::tries::__C2WArrayTrie::TCtxIdProbData']]],
+  ['wordindexbucketentry',['WordIndexBucketEntry',['../structuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index_1_1_word_index_bucket_entry.html',1,'uva::smt::tries::dictionary::__OptimizingWordIndex']]],
+  ['wordindexbucketentry',['WordIndexBucketEntry',['../structuva_1_1smt_1_1tries_1_1dictionary_1_1_____optimizing_word_index_1_1_word_index_bucket_entry.html#ae7a0e872b07d99e0ee03bd6f977e5911',1,'uva::smt::tries::dictionary::__OptimizingWordIndex::WordIndexBucketEntry::WordIndexBucketEntry()'],['../_optimizing_word_index_8hpp.html#a2089f035ab489afa9a8da3124e7343db',1,'WordIndexBucketEntry():&#160;OptimizingWordIndex.hpp']]],
+  ['wordindextypesenum',['WordIndexTypesEnum',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223af',1,'uva::smt::tries::dictionary']]]
 ];

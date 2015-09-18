@@ -90,6 +90,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classuva_1_1smt_1_1tries_1_1_a_trie-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">uva::smt::tries::ATrie&lt; N &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -103,41 +106,106 @@ Inheritance diagram for uva::smt::tries::ATrie&lt; N &gt;:</div>
  <div class="center">
   <img src="classuva_1_1smt_1_1tries_1_1_a_trie.png" usemap="#uva::smt::tries::ATrie&lt; N &gt;_map" alt=""/>
   <map id="uva::smt::tries::ATrie&lt; N &gt;_map" name="uva::smt::tries::ATrie&lt; N &gt;_map">
-<area href="classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html" alt="uva::smt::tries::AHashMapTrie&lt; N &gt;" shape="rect" coords="281,56,552,80"/>
-<area href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html" alt="uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;" shape="rect" coords="0,112,271,136"/>
-<area href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html" alt="uva::smt::tries::MultiHashMapTrie&lt; N &gt;" shape="rect" coords="281,112,552,136"/>
-<area href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html" alt="uva::smt::tries::SingleHashMapTrie&lt; N &gt;" shape="rect" coords="562,112,833,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html" alt="uva::smt::tries::ALayeredTrie&lt; N &gt;" shape="rect" coords="856,56,1274,80"/>
+<area href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html" alt="uva::smt::tries::G2DMapTrie&lt; N &gt;" shape="rect" coords="1284,56,1702,80"/>
+<area href="classuva_1_1smt_1_1tries_1_1_c2_d_hybrid_trie.html" alt="uva::smt::tries::C2DHybridTrie&lt; N &gt;" shape="rect" coords="0,112,418,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1_c2_d_map_trie.html" alt="uva::smt::tries::C2DMapTrie&lt; N &gt;" shape="rect" coords="428,112,846,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html" alt="uva::smt::tries::C2WArrayTrie&lt; N &gt;" shape="rect" coords="856,112,1274,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html" alt="uva::smt::tries::W2CArrayTrie&lt; N &gt;" shape="rect" coords="1284,112,1702,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie.html" alt="uva::smt::tries::W2CHybridTrie&lt; N, StorageFactory, StorageContainer &gt;" shape="rect" coords="1712,112,2130,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a642f48565e195a41a768b2cfa247735a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a642f48565e195a41a768b2cfa247735a">preAllocate</a> (const size_t counts[N])=0</td></tr>
-<tr class="separator:a642f48565e195a41a768b2cfa247735a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af184dbb0b095d24c76f79c7da6479eda"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af184dbb0b095d24c76f79c7da6479eda">add1Gram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;oGram)=0</td></tr>
-<tr class="separator:af184dbb0b095d24c76f79c7da6479eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf62fc322ece5ec01ca00e96e17eb9ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#acf62fc322ece5ec01ca00e96e17eb9ef">addMGram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;mGram)=0</td></tr>
-<tr class="separator:acf62fc322ece5ec01ca00e96e17eb9ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a240c090a5651e74304cf37b131ca9741"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a240c090a5651e74304cf37b131ca9741">addNGram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;nGram)=0</td></tr>
-<tr class="separator:a240c090a5651e74304cf37b131ca9741"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b2fa839686009a777f4ffbd12f1284f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a3b2fa839686009a777f4ffbd12f1284f">getNGramLevel</a> () const </td></tr>
-<tr class="separator:a3b2fa839686009a777f4ffbd12f1284f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86f8301bb7a9e7a232f16bcd000062b2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a86f8301bb7a9e7a232f16bcd000062b2">queryNGram</a> (const vector&lt; string &gt; &amp;ngram, <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_prob_result.html">SProbResult</a> &amp;result)=0</td></tr>
-<tr class="separator:a86f8301bb7a9e7a232f16bcd000062b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adedfb4755e267882e91d9e0db499a1b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#adedfb4755e267882e91d9e0db499a1b7">ATrie</a> (<a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a> *_pWordIndex, bool is_birmap_hash_cache=false)</td></tr>
+<tr class="separator:adedfb4755e267882e91d9e0db499a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c523028bdf0949d762d1bbfd3fdc262"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a4c523028bdf0949d762d1bbfd3fdc262">pre_allocate</a> (const size_t counts[N])</td></tr>
+<tr class="separator:a4c523028bdf0949d762d1bbfd3fdc262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe3c10a349785d0401a93de1f46ecb11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#afe3c10a349785d0401a93de1f46ecb11">register_m_gram_cache</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;gram)</td></tr>
+<tr class="separator:afe3c10a349785d0401a93de1f46ecb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff08588c72cd70dfc3d8129968d57b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a3ff08588c72cd70dfc3d8129968d57b5">add_1_gram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;gram)=0</td></tr>
+<tr class="separator:a3ff08588c72cd70dfc3d8129968d57b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a469f894057a536141d84be00e8bd8f5f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a469f894057a536141d84be00e8bd8f5f">add_m_gram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;gram)=0</td></tr>
+<tr class="separator:a469f894057a536141d84be00e8bd8f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4598e59915c77e7bf92d744d7d35f02"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aa4598e59915c77e7bf92d744d7d35f02">add_n_gram</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;gram)=0</td></tr>
+<tr class="separator:aa4598e59915c77e7bf92d744d7d35f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaa5760dcdd087e3f977eae925862043"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#abaa5760dcdd087e3f977eae925862043">is_post_grams</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level)</td></tr>
+<tr class="separator:abaa5760dcdd087e3f977eae925862043"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4416bd9ebf793e9d0d0a8ec715d0a3ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a4416bd9ebf793e9d0d0a8ec715d0a3ce">post_grams</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level)</td></tr>
+<tr class="separator:a4416bd9ebf793e9d0d0a8ec715d0a3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192510a887555617e703d03c145bbee5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a192510a887555617e703d03c145bbee5">get_max_level</a> () const </td></tr>
+<tr class="separator:a192510a887555617e703d03c145bbee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a931c433a086f8f03dd6260e0d27dfd79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a931c433a086f8f03dd6260e0d27dfd79">query</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;m_gram, <a class="el" href="structuva_1_1smt_1_1tries_1_1_t_query_result.html">TQueryResult</a> &amp;result)</td></tr>
+<tr class="separator:a931c433a086f8f03dd6260e0d27dfd79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d435385f750ffc9c129d1e800491ff8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a6d435385f750ffc9c129d1e800491ff8">get_word_index</a> ()</td></tr>
+<tr class="separator:a6d435385f750ffc9c129d1e800491ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e72747b386ce5a2c9a41064c77e16e6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a5e72747b386ce5a2c9a41064c77e16e6">~ATrie</a> ()</td></tr>
+<tr class="separator:a5e72747b386ce5a2c9a41064c77e16e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4266759644e0ebfda77ab1a851a660af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a4266759644e0ebfda77ab1a851a660af">log_trie_type_usage_info</a> ()=0</td></tr>
+<tr class="separator:a4266759644e0ebfda77ab1a851a660af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:af0f7dbcf0e0685c7acf49fd71710d138"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af0f7dbcf0e0685c7acf49fd71710d138">MGRAM_IDX_OFFSET</a> = 2</td></tr>
+<tr class="separator:af0f7dbcf0e0685c7acf49fd71710d138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24132c9483caf8dba629feaed57f61cd"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a24132c9483caf8dba629feaed57f61cd">NUM_M_GRAM_LEVELS</a> = N - <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af0f7dbcf0e0685c7acf49fd71710d138">MGRAM_IDX_OFFSET</a></td></tr>
+<tr class="separator:a24132c9483caf8dba629feaed57f61cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79334a0fd7b506705033a5bbc2041186"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a79334a0fd7b506705033a5bbc2041186">NUM_M_N_GRAM_LEVELS</a> = N - 1</td></tr>
+<tr class="separator:a79334a0fd7b506705033a5bbc2041186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3fc31d42c7407059bf2b242d424dc7b"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#ab3fc31d42c7407059bf2b242d424dc7b">N_GRAM_IDX_IN_M_N_ARR</a> = N - <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af0f7dbcf0e0685c7acf49fd71710d138">MGRAM_IDX_OFFSET</a></td></tr>
+<tr class="separator:ab3fc31d42c7407059bf2b242d424dc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac34cbc190b3d5a2d32720a189fe8e72"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aac34cbc190b3d5a2d32720a189fe8e72">UNDEFINED_ARR_IDX</a> = 0</td></tr>
+<tr class="separator:aac34cbc190b3d5a2d32720a189fe8e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a364b68d11ca94eb1b38d78035376da39"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a364b68d11ca94eb1b38d78035376da39">FIRST_VALID_CTX_ID</a> = <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aac34cbc190b3d5a2d32720a189fe8e72">UNDEFINED_ARR_IDX</a> + 1</td></tr>
+<tr class="separator:a364b68d11ca94eb1b38d78035376da39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3602c8aac334ee6ad76ceed1451d9da9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a3602c8aac334ee6ad76ceed1451d9da9">get_back_off_end_word_id</a> ()</td></tr>
+<tr class="separator:a3602c8aac334ee6ad76ceed1451d9da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebeb72b44be98d1bbe68e65c89ed9422"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aebeb72b44be98d1bbe68e65c89ed9422">get_end_word_id</a> ()</td></tr>
+<tr class="separator:aebeb72b44be98d1bbe68e65c89ed9422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e9f9d3c04252a42349ea5b3bc526c61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a2e9f9d3c04252a42349ea5b3bc526c61">store_m_gram_word_ids</a> (const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;m_gram)</td></tr>
+<tr class="separator:a2e9f9d3c04252a42349ea5b3bc526c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc438e9f7c19bd18a8664527dcec9fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a5bc438e9f7c19bd18a8664527dcec9fb">post_1_grams</a> ()</td></tr>
+<tr class="separator:a5bc438e9f7c19bd18a8664527dcec9fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2ccab11c90970e5f6d5e84e0caa5256"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#ae2ccab11c90970e5f6d5e84e0caa5256">post_m_grams</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level)</td></tr>
+<tr class="separator:ae2ccab11c90970e5f6d5e84e0caa5256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e5175e70722e777d00cd38460dc465b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a2e5175e70722e777d00cd38460dc465b">post_n_grams</a> ()</td></tr>
+<tr class="separator:a2e5175e70722e777d00cd38460dc465b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56ac40acab11016dd544942c94b4bf8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aa56ac40acab11016dd544942c94b4bf8">cache_check_add_prob_weight</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;prob)</td></tr>
+<tr class="separator:aa56ac40acab11016dd544942c94b4bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c849f75181035f2e247612d410acbd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a2c849f75181035f2e247612d410acbd3">cache_check_add_back_off_weight</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;prob)</td></tr>
+<tr class="separator:a2c849f75181035f2e247612d410acbd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6bb33e835e42c2b4c36b6d71f1d936c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#ac6bb33e835e42c2b4c36b6d71f1d936c">add_prob_weight</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;prob)=0</td></tr>
+<tr class="separator:ac6bb33e835e42c2b4c36b6d71f1d936c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac350b954d22273e09db4890d80720e2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aac350b954d22273e09db4890d80720e2">add_back_off_weight</a> (const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> level, <a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;prob)=0</td></tr>
+<tr class="separator:aac350b954d22273e09db4890d80720e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:abc1f0fe671fcbc898b644715580a6b4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#abc1f0fe671fcbc898b644715580a6b4a">m_word_index_ptr</a></td></tr>
+<tr class="separator:abc1f0fe671fcbc898b644715580a6b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d2de9b0b513f6910f3e7bfeb24bd6a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a8d2de9b0b513f6910f3e7bfeb24bd6a1">m_tmp_word_ids</a> [N]</td></tr>
+<tr class="separator:a8d2de9b0b513f6910f3e7bfeb24bd6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a737d0794ed253550b080c58381176061"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#a737d0794ed253550b080c58381176061">m_query_ptr</a></td></tr>
+<tr class="separator:a737d0794ed253550b080c58381176061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad34967837b387ce38390630fb5c28253"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#ad34967837b387ce38390630fb5c28253">m_is_birmap_hash_cache</a></td></tr>
+<tr class="separator:ad34967837b387ce38390630fb5c28253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;TModelLevel N&gt;<br />
 class uva::smt::tries::ATrie&lt; N &gt;</h3>
 
-<p>This is a common abstract class for all possible Trie implementations The purpose of having this as a template class is performance optimization. It is a template class that has two template parameters: </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This is a common abstract class for a Trie implementation. The purpose of having this as a template class is performance optimization. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">N</td><td>- the maximum level of the considered N-gram, i.e. the N value </td></tr>
-    <tr><td class="paramname">doCache</td><td>- the indicative flag that asks the child class to, if possible, cache the queries. </td></tr>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af184dbb0b095d24c76f79c7da6479eda"></a>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="adedfb4755e267882e91d9e0db499a1b7"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -147,10 +215,80 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add1Gram </td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::<a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;&#160;</td>
-          <td class="paramname"><em>oGram</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a> *&#160;</td>
+          <td class="paramname"><em>_pWordIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_birmap_hash_cache</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The basic constructor </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_wordIndex</td><td>the word index to be used </td></tr>
+    <tr><td class="paramname">is_birmap_hash_cache</td><td>- allows to enable the bitmap hash cache for the M-grams. the latter records the hashes of all the M-gram present in the tries and then before querying checks if the hash of the queries M-gram is present if not then we do an immediate back-off, otherwise we search for the M-gram. This is an experimental feature therefore it the parameter's default is false. Also this feature is to be used with the multi-level context index tries which require a lot of searching when looking for an M-gram. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5e72747b386ce5a2c9a41064c77e16e6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::~<a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The basic class destructor </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a3ff08588c72cd70dfc3d8129968d57b5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add_1_gram </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>gram</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -162,16 +300,16 @@ template&lt;TModelLevel N&gt; </div>
 </div><div class="memdoc">
 <p>This method adds a 1-Gram (word) to the trie. It it snot guaranteed that the parameter will be checked to be a 1-Gram! </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">oGram</td><td>the 1-Gram data </td></tr>
+    <tr><td class="paramname">gram</td><td>the 1-Gram data </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#abc5ad6e7f2a260a4cc374bbc332edc5c">uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#aa49f2f0ed0d86038fe5efb13e6ee70a5">uva::smt::tries::MultiHashMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#a27f420ad02db97ab648ef27ffb12e688">uva::smt::tries::SingleHashMapTrie&lt; N &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a54e165e0783f90a74f3bb9675c012a28">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#a36a55b5d2d85c9b8de4f8915956df4b5">uva::smt::tries::ALayeredTrie&lt; N &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acf62fc322ece5ec01ca00e96e17eb9ef"></a>
+<a class="anchor" id="aac350b954d22273e09db4890d80720e2"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -181,10 +319,55 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::addMGram </td>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add_back_off_weight </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;&#160;</td>
-          <td class="paramname"><em>mGram</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;&#160;</td>
+          <td class="paramname"><em>prob</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function allows to retrieve the back-off stored for the given M-gram level. If the value is found then it must be added to the prob parameter of the function. If the value is not found then the prob parameter of the function must not be changed. In that case the back-off weight is just zero. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the level of the M-gram we need to compute probability for. </td></tr>
+    <tr><td class="paramname">prob</td><td>the probability variable that is to be increased with the found back-off weight </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#a3cd19ce2041e3538ca7628105db1acec">uva::smt::tries::ALayeredTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a48646b91ccd38fcd89969ae5fd39a324">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a469f894057a536141d84be00e8bd8f5f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add_m_gram </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>gram</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -196,7 +379,7 @@ template&lt;TModelLevel N&gt; </div>
 </div><div class="memdoc">
 <p>This method adds a M-Gram (word) to the trie where 1 &lt; M &lt; N </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mGram</td><td>the M-Gram data </td></tr>
+    <tr><td class="paramname">gram</td><td>the M-Gram data </td></tr>
   </table>
   </dd>
 </dl>
@@ -207,11 +390,11 @@ template&lt;TModelLevel N&gt; </div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#adaf0ff4116ea8c9c0ffe7407841bf8e1">uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#aa01609671de94014323015352e03c441">uva::smt::tries::MultiHashMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#a2da8d1cba4cdbab7cc79bcfc4f55117b">uva::smt::tries::SingleHashMapTrie&lt; N &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a4df6000a2413384cb895d70455fb085a">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#aed865ddfcfddb0f924d7424f9c2dba30">uva::smt::tries::ALayeredTrie&lt; N &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a240c090a5651e74304cf37b131ca9741"></a>
+<a class="anchor" id="aa4598e59915c77e7bf92d744d7d35f02"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -221,10 +404,10 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::addNGram </td>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add_n_gram </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1_s_back_off_n_gram.html">SBackOffNGram</a> &amp;&#160;</td>
-          <td class="paramname"><em>nGram</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>gram</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -236,16 +419,16 @@ template&lt;TModelLevel N&gt; </div>
 </div><div class="memdoc">
 <p>This method adds a N-Gram (word) to the trie where It it snot guaranteed that the parameter will be checked to be a N-Gram! </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nGram</td><td>the N-Gram data </td></tr>
+    <tr><td class="paramname">gram</td><td>the N-Gram data </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#a2d8c22fa039d475b8b39f06531b58bc7">uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#a3ecb4eb51f5163eedcf100ed8b8f0104">uva::smt::tries::MultiHashMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#af9541116f44c985e80f9d1173512fc4f">uva::smt::tries::SingleHashMapTrie&lt; N &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a0b9497cafbcd2d5330b76ea2ae5d8e87">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#a4640ef130893289b79b357bd840d1d49">uva::smt::tries::ALayeredTrie&lt; N &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3b2fa839686009a777f4ffbd12f1284f"></a>
+<a class="anchor" id="ac6bb33e835e42c2b4c36b6d71f1d936c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -255,7 +438,192 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a26064146e98856c7c4185efab0e61a36">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::getNGramLevel </td>
+          <td class="memname">virtual bool <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::add_prob_weight </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;&#160;</td>
+          <td class="paramname"><em>prob</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function allows to retrieve the probability stored for the given M-gram level. If the value is found then it must be added to the prob parameter of the function. If the value is not found then the prob parameter of the function must not be changed. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the level of the M-gram we need to compute probability for. </td></tr>
+    <tr><td class="paramname">prob</td><td>the probability variable that is to be increased with the found probability weight </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the probability for the given M-gram level could be found, otherwise false. </dd></dl>
+
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_layered_trie.html#a715fbbe90bbb52d7f86532748ca53d39">uva::smt::tries::ALayeredTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a116303b3bc78d4df59e1ed09d2270708">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c849f75181035f2e247612d410acbd3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::cache_check_add_back_off_weight </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;&#160;</td>
+          <td class="paramname"><em>prob</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to get the back-off weight value also by checking the cache. If the back-off is not found then the probability value is to stay intact. Then the back-off weight is considered to be zero! </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the M-gram level to get the back-off weight for </td></tr>
+    <tr><td class="paramname">prob</td><td>the probability to be added by the found back-off weight </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa56ac40acab11016dd544942c94b4bf8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::cache_check_add_prob_weight </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#acd0660255dd9ef5d644f01de49102750">TLogProbBackOff</a> &amp;&#160;</td>
+          <td class="paramname"><em>prob</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to get the probability value also by checking the cache. If the probability is not found then the prob value is to stay intact! </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the M-gram level to get the probability for </td></tr>
+    <tr><td class="paramname">prob</td><td>the probability to be filled in </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the probability has been found, otherwise false </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3602c8aac334ee6ad76ceed1451d9da9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&amp; <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::get_back_off_end_word_id </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets the word hash for the end word of the back-off M-Gram </p><dl class="section return"><dt>Returns</dt><dd>the word hash for the end word of the back-off M-Gram </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aebeb72b44be98d1bbe68e65c89ed9422"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&amp; <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::get_end_word_id </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets the word hash for the last word in the M-gram </p><dl class="section return"><dt>Returns</dt><dd>the word hash for the last word in the M-gram </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a192510a887555617e703d03c145bbee5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::get_max_level </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -271,7 +639,7 @@ template&lt;TModelLevel N&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a642f48565e195a41a768b2cfa247735a"></a>
+<a class="anchor" id="a6d435385f750ffc9c129d1e800491ff8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -281,7 +649,215 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::preAllocate </td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a>* <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::get_word_index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to retrieve the stored word index, if any </p><dl class="section return"><dt>Returns</dt><dd>the pointer to the stored word index or NULL if none </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abaa5760dcdd087e3f977eae925862043"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::is_post_grams </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method allows to check if post processing should be called after all the X level grams are read. This method is virtual. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the level of the X-grams that were finished to be read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html#adc09a52f78098d1011fc481f36cf19f9">uva::smt::tries::C2WArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#a89ce79512b08afab4ece1158eff68fee">uva::smt::tries::W2CArrayTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#af24619edf2b59c3299a32838512bb6bb">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4266759644e0ebfda77ab1a851a660af"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::log_trie_type_usage_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows to log the information about the instantiated trie type </p>
+
+<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html#a29d456f70c6d4d9f6c6cda728a3c1b60">uva::smt::tries::C2WArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_d_map_trie.html#aaba97e128f3129776ca46e75f5c005e1">uva::smt::tries::C2DMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#a2137d9c6ffd08ca95bea39c7604f9b13">uva::smt::tries::W2CArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a8a5d0c8c65881a5895692b726f2f8321">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_d_hybrid_trie.html#aef676e4ee209417b74ee1a2965b99bb6">uva::smt::tries::C2DHybridTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie.html#acfd9364a101a2ed142096fe91265d407">uva::smt::tries::W2CHybridTrie&lt; N, StorageFactory, StorageContainer &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bc438e9f7c19bd18a8664527dcec9fb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::post_1_grams </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will be called after all the 1-grams are read. The default implementation of this method is present. If overridden must be called from the child method. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4416bd9ebf793e9d0d0a8ec715d0a3ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::post_grams </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method should be called after all the X level grams are read. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the level of the X-grams that were finished to be read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae2ccab11c90970e5f6d5e84e0caa5256"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::post_m_grams </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will be called after all the M-grams are read. The default implementation of this method is present. If overridden must be called from the child method. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>the level of the M-grams that were finished to be read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html#a1a412c43dc00b64041cd4bb8245df1dd">uva::smt::tries::C2WArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#a0e9d011553a7d2a3651f6c9b48cc0c69">uva::smt::tries::W2CArrayTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a593414c1e5fbd7522c6ef31643848532">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2e5175e70722e777d00cd38460dc465b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::post_n_grams </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will be called after all the N-grams are read. The default implementation of this method is present. If overridden must be called from the child method. </p>
+
+<p>Reimplemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html#a0ceb69ca063fb5cadaf1d5903dd5ffbc">uva::smt::tries::C2WArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#aff8942ff3f4b91f4a79710635d2c637c">uva::smt::tries::W2CArrayTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a3cb280a715f72c97aaaf4ce0f05e657a">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4c523028bdf0949d762d1bbfd3fdc262"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::pre_allocate </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>counts</em>[N]</td><td>)</td>
@@ -290,7 +866,7 @@ template&lt;TModelLevel N&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -301,11 +877,11 @@ template&lt;TModelLevel N&gt; </div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_hash_map_trie.html#ad867b72350326f464b563fba6727ba5f">uva::smt::tries::AHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ac744e6f6e63317d1f955ac96d504f724">uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#ac7d916356f0ad36d33c0c4722e6459b9">uva::smt::tries::MultiHashMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#a6a40f4047280dedc7f402d6502547b2c">uva::smt::tries::SingleHashMapTrie&lt; N &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html#a2d50b57e823218056c32846ac1002276">uva::smt::tries::C2WArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_array_trie.html#ad8d923f41090aa99b3dc48e15ecb5182">uva::smt::tries::W2CArrayTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_d_map_trie.html#a3de994ad435e17c75f3bcd1f7c511870">uva::smt::tries::C2DMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_g2_d_map_trie.html#a8a1df16ae7be44509ac2d3da07b7bd71">uva::smt::tries::G2DMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_d_hybrid_trie.html#a2170d7a064d7a565037e8f48e2742986">uva::smt::tries::C2DHybridTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie.html#abc1e576b9bbd934e0b4bd702b1b5b3f1">uva::smt::tries::W2CHybridTrie&lt; N, StorageFactory, StorageContainer &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a86f8301bb7a9e7a232f16bcd000062b2"></a>
+<a class="anchor" id="a931c433a086f8f03dd6260e0d27dfd79"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -315,15 +891,15 @@ template&lt;TModelLevel N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::queryNGram </td>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::query </td>
           <td>(</td>
-          <td class="paramtype">const vector&lt; string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ngram</em>, </td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>m_gram</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structuva_1_1smt_1_1tries_1_1_s_prob_result.html">SProbResult</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structuva_1_1smt_1_1tries_1_1_t_query_result.html">TQueryResult</a> &amp;&#160;</td>
           <td class="paramname"><em>result</em>&#160;</td>
         </tr>
         <tr>
@@ -334,19 +910,302 @@ template&lt;TModelLevel N&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>This method will get the N-gram in a form of a vector, e.g.: [word1 word2 word3 word4 word5] and will compute and return the Language Model Probability for it </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ngram</td><td>the given N-gram vector is expected to have exactly N elements (see the template parameters) </td></tr>
+    <tr><td class="paramname">m_gram</td><td>the given M-Gram we are going to query! </td></tr>
     <tr><td class="paramname">result</td><td>the output parameter containing the the result probability and possibly some additional meta data for the decoder. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1_context_multi_hash_map_trie.html#ad861e3027580ea2b78c95b22c43395ee">uva::smt::tries::ContextMultiHashMapTrie&lt; N &gt;</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1_multi_hash_map_trie.html#a6b31b10b19c93ea3e6d08923ee1c0df7">uva::smt::tries::MultiHashMapTrie&lt; N &gt;</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1_single_hash_map_trie.html#ac0a2b8c57ccfd60a8b06ea2116cf8349">uva::smt::tries::SingleHashMapTrie&lt; N &gt;</a>.</p>
+</div>
+</div>
+<a class="anchor" id="afe3c10a349785d0401a93de1f46ecb11"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::register_m_gram_cache </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>gram</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Is to be used from the sub-classes from the add_X_gram methods. This method allows to register the given M-gram in internal high level caches if present. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gram</td><td>the M-gram to cache </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a2e9f9d3c04252a42349ea5b3bc526c61"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::store_m_gram_word_ids </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a> &amp;&#160;</td>
+          <td class="paramname"><em>m_gram</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts the given tokens to ids and stores it in m_gram_word_ids. The ids are aligned to the beginning of the m_gram_word_ids[N-1] array. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m_gram</td><td>the m-gram tokens to convert to hashes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a364b68d11ca94eb1b38d78035376da39"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::FIRST_VALID_CTX_ID = <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#aac34cbc190b3d5a2d32720a189fe8e72">UNDEFINED_ARR_IDX</a> + 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad34967837b387ce38390630fb5c28253"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::m_is_birmap_hash_cache</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a737d0794ed253550b080c58381176061"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html">T_M_Gram</a>* <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::m_query_ptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8d2de9b0b513f6910f3e7bfeb24bd6a1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::m_tmp_word_ids[N]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abc1f0fe671fcbc898b644715580a6b4a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html">AWordIndex</a>* <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::m_word_index_ptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af0f7dbcf0e0685c7acf49fd71710d138"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::MGRAM_IDX_OFFSET = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab3fc31d42c7407059bf2b242d424dc7b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::N_GRAM_IDX_IN_M_N_ARR = N - <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af0f7dbcf0e0685c7acf49fd71710d138">MGRAM_IDX_OFFSET</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a24132c9483caf8dba629feaed57f61cd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::NUM_M_GRAM_LEVELS = N - <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html#af0f7dbcf0e0685c7acf49fd71710d138">MGRAM_IDX_OFFSET</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a79334a0fd7b506705033a5bbc2041186"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1tries.html#a20577a44b3a42d26524250634379b7cb">TModelLevel</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::NUM_M_N_GRAM_LEVELS = N - 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aac34cbc190b3d5a2d32720a189fe8e72"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">uva::smt::tries::ATrie</a>&lt; N &gt;::UNDEFINED_ARR_IDX = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
