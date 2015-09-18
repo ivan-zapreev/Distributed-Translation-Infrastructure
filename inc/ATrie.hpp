@@ -233,12 +233,10 @@ namespace uva {
 
                         //Compute the probability in the loop fashion, should be faster that recursion.
                         TModelLevel curr_level = level;
-                        while (!DO_SANITY_CHECKS || (curr_level != 0)) {
+                        result.prob = ZERO_PROB_WEIGHT;
+                        while ((result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
                             //Try to compute the next probability with decreased level
-                            if (cache_check_add_prob_weight(curr_level, result.prob)) {
-                                //If the probability has been finally computed stop
-                                break;
-                            }
+                            cache_check_get_prob_weight(curr_level, result.prob);
                             //Decrease the level
                             curr_level--;
                         }
@@ -248,7 +246,7 @@ namespace uva {
                         if (result.prob > ZERO_LOG_PROB_WEIGHT) {
                             //If the curr_level is smaller than the original level then
                             //it means that we needed to back-off, add back-off weights
-                            for (; curr_level != level; ++curr_level) {
+                            for (++curr_level; curr_level != level; ++curr_level) {
                                 //Get the back_off 
                                 cache_check_add_back_off_weight(curr_level, result.prob);
                             }
@@ -362,7 +360,7 @@ namespace uva {
                  * @param prob the probability to be filled in
                  * @return true if the probability has been found, otherwise false
                  */
-                bool cache_check_add_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
+                void cache_check_get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
                     LOG_DEBUG << "cache_check_add_prob_value(" << level << ") = " << prob << END_LOG;
 
                     //Try getting the probability value.
@@ -376,13 +374,11 @@ namespace uva {
                             && is_bitmap_hash_cache<false>(level))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        return add_prob_weight(level, prob);
+                        get_prob_weight(level, prob);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
                                 << "successful due to the present unk words! "
                                 << "Thus backing off right away!" << END_LOG;
-                        //We already know we need to back-off
-                        return false;
                     }
                 }
 
@@ -417,13 +413,13 @@ namespace uva {
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @param level the level of the M-gram we need to compute probability for.
-                 * @param prob the probability variable that is to be increased with the found probability weight
+                 * @param prob the probability variable that is to be set with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                virtual bool add_prob_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
+                virtual void get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.

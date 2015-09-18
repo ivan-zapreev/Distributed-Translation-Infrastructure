@@ -177,7 +177,7 @@ namespace uva {
             };
 
             template<TModelLevel N>
-            bool ALayeredTrie<N>::add_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
+            void ALayeredTrie<N>::get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
                 //Compute the context length of the given M-Gram
                 const TModelLevel ctxLen = level - 1;
                 //Get the last word in the N-gram
@@ -202,7 +202,6 @@ namespace uva {
                                         << "( prob. ) for (wordId,ctxId) = (" << wordId << ", "
                                         << ctxId << "), is: " << prob << END_LOG;
                                 prob = n_gram_prob;
-                                return true;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
@@ -210,7 +209,6 @@ namespace uva {
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
-                                return false;
                             }
                         } else {
                             //If we are looking for a M-Gram probability with 1 < M < N
@@ -224,7 +222,6 @@ namespace uva {
                                         << "), is: " << pEntry->prob << END_LOG;
                                 //Return the stored probability
                                 prob = pEntry->prob;
-                                return true;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
@@ -232,7 +229,6 @@ namespace uva {
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << wordId << ", " << ctxId
                                         << "), need to back off!" << END_LOG;
-                                return false;
                             }
                         }
                     } else {
@@ -242,7 +238,6 @@ namespace uva {
                                 << "-Gram  prob for a (wordId,ctxId) = ("
                                 << wordId << ", " << ctxId
                                 << "), need to back off!" << END_LOG;
-                        return false;
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
@@ -255,7 +250,6 @@ namespace uva {
 
                         //Return the stored probability
                         prob = pEntry->prob;
-                        return true;
                     } else {
                         LOG_DEBUG2 << "Unable to find the 1-Gram entry for a word: "
                                 << wordId << " returning:" << ZERO_LOG_PROB_WEIGHT
@@ -263,7 +257,6 @@ namespace uva {
 
                         //Return the default minimal probability for an unknown word
                         prob = ZERO_LOG_PROB_WEIGHT;
-                        return true;
                     }
                 }
             }
