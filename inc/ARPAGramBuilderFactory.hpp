@@ -71,18 +71,19 @@ namespace uva {
                      * @param trie the trie to be filled in with the N-grams
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
-                    template<TModelLevel N>
-                    static inline void get_builder(const TModelLevel level, ATrie<N> & trie, ARPAGramBuilder **ppBuilder) {
+                    template<typename TrieType>
+                    static inline void get_builder(const TModelLevel level, TrieType & trie, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
-                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
+                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << TrieType::max_level << END_LOG;
                         
                         
                         //Then check that the level values are correct!
-                        if ( DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > N) ) {
+                        if ( DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > TrieType::max_level) ) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
-                                    << "', but it must be within [" << M_GRAM_LEVEL_1 << ", " << N << "]!";
+                                    << "', but it must be within [" << M_GRAM_LEVEL_1
+                                    << ", " <<  TrieType::max_level << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
@@ -96,14 +97,14 @@ namespace uva {
                                             trie.add_1_gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
                             } else {
-                                if (level == N) {
+                                if (level == TrieType::max_level) {
                                     //If the minimum is at maximum it means we are filling in the top N-gram level
-                                    LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
+                                    LOG_DEBUG1 << "Instantiating the " << TrieType::max_level << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const T_M_Gram & gram) {
                                                 trie.add_n_gram(gram); });
-                                    LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
+                                    LOG_DEBUG2 << "DONE Instantiating the " << TrieType::max_level << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
                                     LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;

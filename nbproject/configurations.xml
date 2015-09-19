@@ -18,6 +18,7 @@
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
       <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/CStyleFileReader.hpp</itemPath>
       <itemPath>inc/Configuration.hpp</itemPath>
       <itemPath>inc/CountingWordIndex.hpp</itemPath>
       <itemPath>inc/DynamicMemoryArrays.hpp</itemPath>
@@ -29,6 +30,7 @@
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
+      <itemPath>inc/MGramQuery.hpp</itemPath>
       <itemPath>inc/MGrams.hpp</itemPath>
       <itemPath>inc/MathUtils.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
@@ -36,7 +38,7 @@
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
-      <itemPath>./inc/TrieTypeFactory.hpp</itemPath>
+      <itemPath>inc/TrieExecutor.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
       <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
       <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
@@ -420,8 +422,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -448,6 +448,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -470,6 +472,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -483,6 +487,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -554,8 +560,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -582,6 +586,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -604,6 +610,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -617,6 +625,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -696,8 +706,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -724,6 +732,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -746,6 +756,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -759,6 +771,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -830,8 +844,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -858,6 +870,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -880,6 +894,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -893,6 +909,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -964,8 +982,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -992,6 +1008,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1014,6 +1032,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -1027,6 +1047,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1098,8 +1120,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1126,6 +1146,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1148,6 +1170,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -1161,6 +1185,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1232,8 +1258,6 @@
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="./inc/TrieTypeFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/AFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ALayeredTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1260,6 +1284,8 @@
       </item>
       <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/Configuration.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CountingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1282,6 +1308,8 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
@@ -1295,6 +1323,8 @@
       <item path="inc/StringUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/TrieExecutor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

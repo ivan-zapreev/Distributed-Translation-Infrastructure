@@ -138,6 +138,25 @@ namespace uva {
                     inline uint64_t hash() const {
                         return suffix_hash(0);
                     }
+
+                    /**
+                     * Converts the given tokens to ids and stores it in
+                     * m_gram_word_ids. The ids are aligned to the beginning
+                     * of the m_gram_word_ids[N-1] array.
+                     * @param m_gram the m-gram tokens to convert to hashes
+                     */
+                    template<TModelLevel N, typename WordIndexType>
+                    inline void store_m_gram_word_ids(TShortId word_ids[N], const WordIndexType & word_index) const {
+                        //The start index depends on the value M of the given M-Gram
+                        TModelLevel idx = N - level;
+                        LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
+                        for (TModelLevel i = 0; i < level; i++) {
+                            //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
+                            word_ids[idx] = word_index.get_word_id(tokens[i]);
+                            LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;
+                            idx++;
+                        }
+                    }
                 } T_M_Gram;
 
                 /**

@@ -59,11 +59,9 @@ namespace uva {
              * in the most efficient manner. The lookup should be just O(1) whereas in
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
-            template<TModelLevel N>
-            class C2DHybridTrie : public ALayeredTrie<N> {
+            template<TModelLevel N, typename WordIndexType>
+            class C2DHybridTrie : public ALayeredTrie<N, WordIndexType> {
             public:
-                //Stores the offset for the MGram index, this is the number of M-gram levels stored elsewhere
-                static const TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -92,9 +90,9 @@ namespace uva {
                  * @param _nGramMemFactor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit C2DHybridTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __C2DHybridTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
+                explicit C2DHybridTrie(WordIndexType & word_index,
+                        const float mram_mem_factor = __C2DHybridTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float ngram_mem_factor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -153,7 +151,7 @@ namespace uva {
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                     //Get the next context id
-                    const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
+                    const TModelLevel idx = (level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
                     TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
 
                     //Store the context mapping inside the map
@@ -174,7 +172,7 @@ namespace uva {
                     //Get the next context id
                     if (getContextId(wordId, ctxId, level)) {
                         //There is data found under this context
-                        *ppData = &m_M_gram_data[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET][ctxId];
+                        *ppData = &m_M_gram_data[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET][ctxId];
                         return true;
                     } else {
                         //The context id could not be found
@@ -216,14 +214,14 @@ namespace uva {
             private:
 
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float mGramMemFactor;
+                const float m_mgram_mem_factor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float nGramMemFactor;
+                const float m_ngram_mem_factor;
 
                 //Stores the context id counters per M-gram level: 1 < M < N
-                TShortId m_M_gram_next_ctx_id[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
+                TShortId m_M_gram_next_ctx_id[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_M_gram_num_ctx_ids[ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_gram_num_ctx_ids[ATrie<N, WordIndexType>::NUM_M_N_GRAM_LEVELS];
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
@@ -235,12 +233,12 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
+                TMGramAllocator * pMGramAlloc[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
+                TMGramsMap * pMGramMap[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TProbBackOffEntry * m_M_gram_data[ALayeredTrie<N>::NUM_M_GRAM_LEVELS];
+                TProbBackOffEntry * m_M_gram_data[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -258,7 +256,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DHybridTrie(const C2DHybridTrie & orig)
-                : ALayeredTrie<N>(NULL, NULL, false), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
+                : ALayeredTrie<N, WordIndexType>(orig.m_word_index, NULL, false), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -298,7 +296,7 @@ namespace uva {
                     const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                     //Search for the map for that context id
-                    const TModelLevel idx = level - ALayeredTrie<N>::MGRAM_IDX_OFFSET;
+                    const TModelLevel idx = level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET;
                     TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
                     if (result == pMGramMap[idx]->end()) {
                         //There is no data found under this context

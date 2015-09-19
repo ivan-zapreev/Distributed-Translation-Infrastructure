@@ -44,14 +44,14 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static const DebugLevelsEnum LOGER_MAX_LEVEL = INFO3;
+            static const DebugLevelsEnum LOGER_MAX_LEVEL = DEBUG4;
 
             //Defines the log level from which the detailed timing info is available
             static const DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            const bool DO_SANITY_CHECKS = false;
+            const bool DO_SANITY_CHECKS = true;
         }
 
         //The following type definitions are important for storing the Tries information
@@ -72,12 +72,12 @@ namespace uva {
                 //Stores the possible Word index configurations
 
                 enum WordIndexTypesEnum {
-                    UNDEFINED = 0,
-                    BASIC_WORD_INDEX = UNDEFINED + 1,
+                    UNDEFINED_WORD_INDEX = 0,
+                    BASIC_WORD_INDEX = UNDEFINED_WORD_INDEX + 1,
                     COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1,
                     OPTIMIZING_BASIC_WORD_INDEX = COUNTING_WORD_INDEX + 1,
                     OPTIMIZING_COUNTING_WORD_INDEX = OPTIMIZING_BASIC_WORD_INDEX + 1,
-                    size = OPTIMIZING_COUNTING_WORD_INDEX + 1
+                    size_word_index = OPTIMIZING_COUNTING_WORD_INDEX + 1
                 };
 
                 namespace __HashMapWordIndex {
@@ -106,6 +106,19 @@ namespace uva {
                 //optimum value was chosen to be 20 as with 15 it starts deteriorating 
                 static const float BUCKET_MULTIPLIER_FACTOR = 20;
             }
+
+            //Stores the possible Trie types
+
+            enum TrieTypesEnum {
+                UNDEFINED_TRIE = 0,
+                C2DH_TRIE = UNDEFINED_TRIE + 1,
+                C2DM_TRIE = C2DH_TRIE + 1,
+                G2DM_TRIE = C2DM_TRIE + 1,
+                W2CA_TRIE = G2DM_TRIE + 1,
+                C2WA_TRIE = W2CA_TRIE + 1,
+                W2CH_TRIE = C2WA_TRIE + 1,
+                size_trie = W2CH_TRIE + 1
+            };
 
             namespace __C2DHybridTrie {
                 //The unordered map memory factor for the M-Grams in C2DMapArrayTrie

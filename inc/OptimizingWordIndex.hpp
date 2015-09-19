@@ -75,7 +75,9 @@ namespace uva {
                  * the data from the original word index is taken and converted into optimized
                  * format. This data is then stored within this class. The original word index
                  * is then destroyed to save space.
+                 * @param SubWordIndexType the sub WordIndex type to be used
                  */
+                template<typename SubWordIndexType>
                 class OptimizingWordIndex : public AWordIndex {
                 public:
 
@@ -83,15 +85,12 @@ namespace uva {
                      * This is the main constructor to be used. It accepts ther disposable word index.
                      * Which will be destroyed by this class at any needed moment, so no one else must
                      * have a reference or a pointer to the argument object
-                     * @param disp_word_index_ptr the disposable word index
+                     * @param memory_factor the memory factor for the SubWordIndexType constructor
                      */
-                    OptimizingWordIndex(BasicWordIndex * disp_word_index_ptr)
-                    : m_disp_word_index_ptr(disp_word_index_ptr), m_num_words(0),
-                    m_num_buckets(0), m_num_bucket_maps(0),
+                    OptimizingWordIndex(const size_t memory_factor)
+                    : m_num_words(0), m_num_buckets(0), m_num_bucket_maps(0),
                     m_word_hash_buckets(NULL), m_word_entries(NULL) {
-                        if (disp_word_index_ptr == NULL) {
-                            throw Exception("OptimizingWordIndex::OptimizingWordIndex: a NULL pointer for the disposable word index!");
-                        }
+                        m_disp_word_index_ptr = new SubWordIndexType(memory_factor);
                     }
 
                     /**
@@ -253,7 +252,7 @@ namespace uva {
 
                 private:
                     //Stores the disposable word index pointer up until it is not needed any more
-                    BasicWordIndex * m_disp_word_index_ptr;
+                    SubWordIndexType * m_disp_word_index_ptr;
 
                     //Stores the number of words
                     size_t m_num_words;

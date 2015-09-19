@@ -76,8 +76,8 @@ namespace uva {
              *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
              * 
              */
-            template<TModelLevel N>
-            class C2DMapTrie : public ALayeredTrie<N> {
+            template<TModelLevel N,  typename WordIndexType>
+            class C2DMapTrie : public ALayeredTrie<N, WordIndexType> {
             public:
 
                 /**
@@ -99,15 +99,15 @@ namespace uva {
                  * This breaks encapsulation a bit, exposing the internals, but
                  * there is no other better way, for fine tuning the memory usage.
                  * 
-                 * @param _pWordIndex the word index to be used
-                 * @param _mGramMemFactor The M-Gram memory factor needed for
+                 * @param word_index the word index to be used
+                 * @param mgram_mem_factor The M-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
-                 * @param _nGramMemFactor The N-Gram memory factor needed for
+                 * @param ngram_mem_factor The N-Gram memory factor needed for
                  * the greedy allocator for the unordered_map
                  */
-                explicit C2DMapTrie(AWordIndex * const _pWordIndex,
-                        const float _mGramMemFactor = __C2DMapTrie::UM_M_GRAM_MEMORY_FACTOR,
-                        const float _nGramMemFactor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
+                explicit C2DMapTrie(WordIndexType & word_index,
+                        const float mgram_mem_factor = __C2DMapTrie::UM_M_GRAM_MEMORY_FACTOR,
+                        const float ngram_mem_factor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -180,7 +180,7 @@ namespace uva {
                         hashSizes[level - 1].second = max<TLongId>(ctxId, hashSizes[level - 1].second);
                     }
 
-                    return pMGramMap[level - ALayeredTrie<N>::MGRAM_IDX_OFFSET]->operator[](ctxId);
+                    return pMGramMap[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET]->operator[](ctxId);
                 };
 
                 /**
@@ -194,7 +194,7 @@ namespace uva {
                     //Get the next context id
                     if (getContextId(wordId, ctxId)) {
                         //Search for the map for that context id
-                        const TModelLevel idx = (level - ALayeredTrie<N>::MGRAM_IDX_OFFSET);
+                        const TModelLevel idx = (level - ATrie<N,WordIndexType>::MGRAM_IDX_OFFSET);
                         TMGramsMap::const_iterator result = pMGramMap[idx]->find(ctxId);
                         if (result == pMGramMap[idx]->end()) {
                             //There is no data found under this context
@@ -259,9 +259,9 @@ namespace uva {
 
             private:
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float mGramMemFactor;
+                const float m_mgram_mem_factor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float nGramMemFactor;
+                const float m_ngram_mem_factor;
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
@@ -273,9 +273,9 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TProbBackOffEntry, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[N - ALayeredTrie<N>::MGRAM_IDX_OFFSET];
+                TMGramAllocator * pMGramAlloc[N - ATrie<N,WordIndexType>::MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[N - ALayeredTrie<N>::MGRAM_IDX_OFFSET];
+                TMGramsMap * pMGramMap[N - ATrie<N,WordIndexType>::MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -296,7 +296,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DMapTrie(const C2DMapTrie & orig)
-                : ALayeredTrie<N>(NULL, NULL, false), mGramMemFactor(0.0), nGramMemFactor(0.0), m_1_gram_data(NULL) {
+                : ALayeredTrie<N, WordIndexType>(orig.m_word_index, NULL, false), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

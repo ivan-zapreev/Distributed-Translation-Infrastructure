@@ -36,6 +36,7 @@
 #include "MGrams.hpp"
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
+#include "MGramQuery.hpp"
 
 using namespace std;
 
@@ -120,29 +121,28 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to check if a sub-M-gram of the given M-gram is present in the cache.
+                     * Allows to check if a sub-M-gram of the M-gram of the current level is present in the cache.
                      * @param is_back_off is true if this is a back-off M-gram we need to learn about
-                     * @param gram_ptr the pointer to the M-gram the sub-M-gram will be taken from, not NULL!
-                     * @param level the level of the sub-M-gram
+                     * @param query the M-gram query
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
-                    template<bool is_back_off>
-                    inline bool is_m_gram(const T_M_Gram * gram_ptr, TModelLevel level) const {
+                    template<bool is_back_off, TModelLevel N, typename WordIndexType>
+                    inline bool is_m_gram(const MGramQuery<N, WordIndexType> & query) const {
 
                         //Depending on the M-gram compute a proper hash
                         TModelLevel begin_idx = 0, end_idx = 0;
                         if (is_back_off) {
-                            end_idx = (gram_ptr->level - 2);
-                            begin_idx = (gram_ptr->level - 1) - level;
+                            end_idx = (query.m_gram.level - 2);
+                            begin_idx = (query.m_gram.level - 1) - query.curr_level;
                         } else {
-                            end_idx = (gram_ptr->level - 1);
-                            begin_idx = gram_ptr->level - level;
+                            end_idx = (query.m_gram.level - 1);
+                            begin_idx = query.m_gram.level - query.curr_level;
                         }
 
-                        uint64_t hash = gram_ptr->sub_hash(begin_idx, end_idx);
+                        uint64_t hash = query.m_gram.sub_hash(begin_idx, end_idx);
 
                         LOG_DEBUG2 << "The [" << (uint32_t) begin_idx << ", " << (uint32_t) end_idx
-                                << "] sub M-gram of: " << tokensToString(*gram_ptr) << " hash: "
+                                << "] sub M-gram of: " << tokensToString(query.m_gram) << " hash: "
                                 << hash << END_LOG;
 
                         //Get the M-gram hash positions

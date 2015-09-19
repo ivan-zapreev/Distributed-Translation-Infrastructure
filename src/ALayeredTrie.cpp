@@ -28,7 +28,9 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
-#include "AWordIndex.hpp"
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
 
 using namespace uva::smt::tries::dictionary;
 
@@ -36,15 +38,15 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            void ALayeredTrie<N>::add_1_gram(const T_M_Gram &gram) {
+            template<TModelLevel N, typename WordIndexType>
+            void ALayeredTrie<N, WordIndexType>::add_1_gram(const T_M_Gram &gram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = gram.tokens[0];
 
                 LOG_DEBUG2 << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TShortId wordHash = ATrie<N>::get_word_index()->register_word(token);
+                TShortId wordHash = ATrie<N, WordIndexType>::get_word_index().register_word(token);
                 //Get the word probability and back-off data reference
                 TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
 
@@ -67,11 +69,11 @@ namespace uva {
                         << wordHash << END_LOG;
             };
 
-            template<TModelLevel N>
-            void ALayeredTrie<N>::add_m_gram(const T_M_Gram &gram) {
-                if (ATrie<N>::m_is_birmap_hash_cache) {
+            template<TModelLevel N, typename WordIndexType>
+            void ALayeredTrie<N, WordIndexType>::add_m_gram(const T_M_Gram &gram) {
+                if (ATrie<N, WordIndexType>::m_is_bitmap_hash_cache) {
                     //Call the super class first, is needed for caching
-                    ATrie<N>::register_m_gram_cache(gram);
+                    ATrie<N, WordIndexType>::register_m_gram_cache(gram);
                 }
 
                 const TModelLevel level = gram.level;
@@ -82,7 +84,7 @@ namespace uva {
 
                 // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId;
-                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                bool isFound = get_context_id<DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -92,7 +94,7 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[level - 1];
-                TShortId wordId = ATrie<N>::get_word_index()->get_word_id(endWord);
+                TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(endWord);
 
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
@@ -123,11 +125,11 @@ namespace uva {
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
-            template<TModelLevel N>
-            void ALayeredTrie<N>::add_n_gram(const T_M_Gram &gram) {
-                if (ATrie<N>::m_is_birmap_hash_cache) {
+            template<TModelLevel N, typename WordIndexType>
+            void ALayeredTrie<N, WordIndexType>::add_n_gram(const T_M_Gram &gram) {
+                if (ATrie<N, WordIndexType>::m_is_bitmap_hash_cache) {
                     //Call the super class first, is needed for caching
-                    ATrie<N>::register_m_gram_cache(gram);
+                    ATrie<N, WordIndexType>::register_m_gram_cache(gram);
                 }
 
                 LOG_DEBUG2 << "Adding a " << N << "-Gram " << tokensToString<N>(gram) << " to the Trie" << END_LOG;
@@ -136,7 +138,7 @@ namespace uva {
 
                 // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId;
-                bool isFound = getContextId<DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                bool isFound = get_context_id<DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
@@ -146,9 +148,9 @@ namespace uva {
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[N - 1];
-                TShortId wordId = ATrie<N>::get_word_index()->get_word_id(endWord);
+                TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(endWord);
 
-                if (DO_SANITY_CHECKS && ( wordId == AWordIndex::UNKNOWN_WORD_ID ) ) {
+                if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << tokensToString<N>(gram);
                     throw Exception(msg.str());
@@ -176,150 +178,151 @@ namespace uva {
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
-            template<TModelLevel N>
-            void ALayeredTrie<N>::get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                //Compute the context length of the given M-Gram
-                const TModelLevel ctxLen = level - 1;
+            template<TModelLevel N, typename WordIndexType>
+            void ALayeredTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) {
                 //Get the last word in the N-gram
-                const TShortId & wordId = ATrie<N>::get_end_word_id();
+                const TShortId & word_id = query.get_end_word_id();
 
-                LOG_DEBUG2 << "Computing probability for an " << level
-                        << "-gram the context length is " << ctxLen << END_LOG;
+                LOG_DEBUG2 << "Computing probability for an "
+                        << query.curr_level << "-gram" << END_LOG;
 
                 //Consider different variants based no the length of the context
-                if (ctxLen > 0) {
+                if (query.curr_level > M_GRAM_LEVEL_1) {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
-                    TLongId ctxId;
+                    TLongId ctx_id;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (get_query_context_Id<false>(ctxLen, ctxId)) {
-                        LOG_DEBUG2 << "Got query context id: " << ctxId << END_LOG;
-                        if (level == N) {
+                    if (get_query_context_Id<false>(query, ctx_id)) {
+                        LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
+                        if (query.curr_level == N) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff n_gram_prob = ZERO_PROB_WEIGHT;
-                            if (get_N_GramProb(wordId, ctxId, n_gram_prob)) {
+                            if (get_N_GramProb(word_id, ctx_id, n_gram_prob)) {
                                 LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
-                                        << "( prob. ) for (wordId,ctxId) = (" << wordId << ", "
-                                        << ctxId << "), is: " << prob << END_LOG;
-                                prob = n_gram_prob;
+                                        << "( prob. ) for (wordId,ctxId) = (" << word_id << ", "
+                                        << ctx_id << "), is: " << query.result.prob << END_LOG;
+                                query.result.prob = n_gram_prob;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
-                                LOG_DEBUG2 << "Unable to find the " << SSTR(level)
+                                LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
-                                        << wordId << ", " << ctxId
+                                        << word_id << ", " << ctx_id
                                         << "), need to back off!" << END_LOG;
                             }
                         } else {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
-                            const TProbBackOffEntry * pEntry;
-                            if (get_M_GramDataRef(level, wordId, ctxId, &pEntry)) {
-                                LOG_DEBUG2 << "The " << level
+                            const TProbBackOffEntry * entry_ptr;
+                            if (get_M_GramDataRef(query.curr_level, word_id, ctx_id, &entry_ptr)) {
+                                LOG_DEBUG2 << "The " << query.curr_level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
-                                        << wordId << ", " << ctxId
-                                        << "), is: " << pEntry->prob << END_LOG;
+                                        << word_id << ", " << ctx_id
+                                        << "), is: " << entry_ptr->prob << END_LOG;
                                 //Return the stored probability
-                                prob = pEntry->prob;
+                                query.result.prob = entry_ptr->prob;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
-                                LOG_DEBUG2 << "Unable to find the " << SSTR(level)
+                                LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
-                                        << wordId << ", " << ctxId
+                                        << word_id << ", " << ctx_id
                                         << "), need to back off!" << END_LOG;
                             }
                         }
                     } else {
                         //Could not compute the probability for
                         //the given level, so backing off (recursive)!
-                        LOG_DEBUG2 << "Unable to find the " << SSTR(level)
+                        LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
                                 << "-Gram  prob for a (wordId,ctxId) = ("
-                                << wordId << ", " << ctxId
+                                << word_id << ", " << ctx_id
                                 << "), need to back off!" << END_LOG;
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
-                    const TProbBackOffEntry * pEntry;
-                    if (get_1_GramDataRef(wordId, & pEntry)) {
+                    const TProbBackOffEntry * entry_ptr;
+                    if (get_1_GramDataRef(word_id, & entry_ptr)) {
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                                << "( prob. ) for word: " << wordId
-                                << ", is: " << pEntry->prob << END_LOG;
+                                << "( prob. ) for word: " << word_id
+                                << ", is: " << entry_ptr->prob << END_LOG;
 
                         //Return the stored probability
-                        prob = pEntry->prob;
+                        query.result.prob = entry_ptr->prob;
                     } else {
                         LOG_DEBUG2 << "Unable to find the 1-Gram entry for a word: "
-                                << wordId << " returning:" << ZERO_LOG_PROB_WEIGHT
+                                << word_id << " returning:" << ZERO_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
-                        prob = ZERO_LOG_PROB_WEIGHT;
+                        query.result.prob = ZERO_LOG_PROB_WEIGHT;
                     }
                 }
             }
 
-            template<TModelLevel N>
-            void ALayeredTrie<N>::add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
+            template<TModelLevel N, typename WordIndexType>
+            void ALayeredTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
                 //Get the word hash for the en word of the back-off N-Gram
-                const TShortId & wordId = ATrie<N>::get_back_off_end_word_id();
-                const TModelLevel boCtxLen = level - 1;
+                const TShortId & word_id = query.get_back_off_end_word_id();
 
-                LOG_DEBUG2 << "Computing back-off for an " << level
-                        << "-gram the context length is " << boCtxLen << END_LOG;
+                LOG_DEBUG2 << "Computing back-off for an "
+                        << query.curr_level << "-gram" << END_LOG;
 
-                if (boCtxLen > 0) {
+                if (query.curr_level > M_GRAM_LEVEL_1) {
                     //Attempt to retrieve back-off weights
-                    TLongId ctxId = AWordIndex::UNDEFINED_WORD_ID;
+                    TLongId ctx_id;
+
                     //Compute the context hash
-                    if (get_query_context_Id<true>(boCtxLen, ctxId)) {
-                        LOG_DEBUG2 << "Got query context id: " << ctxId << END_LOG;
+                    if (get_query_context_Id<true>(query, ctx_id)) {
+                        LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
-                        const TProbBackOffEntry * pEntry;
-                        if (get_M_GramDataRef(level, wordId, ctxId, &pEntry)) {
+                        const TProbBackOffEntry * entry_ptr;
+                        if (get_M_GramDataRef(query.curr_level, word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
-                            prob += pEntry->back_off;
-                            LOG_DEBUG2 << "The " << level << "-Gram log_"
+                            query.result.prob += entry_ptr->back_off;
+                            LOG_DEBUG2 << "The " << query.curr_level << "-Gram log_"
                                     << LOG_PROB_WEIGHT_BASE << "( back-off ) for (wordId, ctxId)=("
-                                    << wordId << ", " << ctxId << "), is: " << pEntry->back_off << END_LOG;
+                                    << word_id << ", " << ctx_id << "), is: " << entry_ptr->back_off << END_LOG;
                         } else {
                             //The query context id could be determined, but 
                             //the data was not found in the trie.
-                            LOG_DEBUG2 << "Unable to find data for " << (level)
+                            LOG_DEBUG2 << "Unable to find data for " << (query.curr_level)
                                     << "-Gram query with end wordId: "
-                                    << SSTR(wordId) << ", ctxId: "
-                                    << SSTR(ctxId) << "!" << END_LOG;
+                                    << SSTR(word_id) << ", ctxId: "
+                                    << SSTR(ctx_id) << "!" << END_LOG;
                         }
                     } else {
                         //The query context id could not be determined,
                         //so the M-gram is not present!
-                        LOG_DEBUG2 << "Unable to find ctxId for " << (level)
+                        LOG_DEBUG2 << "Unable to find ctxId for " << (query.curr_level)
                                 << "-Gram query with end wordId: "
-                                << SSTR(wordId) << "!" << END_LOG;
+                                << SSTR(word_id) << "!" << END_LOG;
                     }
                 } else {
                     //We came to a zero context, which means we have an
                     //1-Gram to try to get the back-off weight from
                     //Attempt to retrieve back-off weights
-                    const TProbBackOffEntry * pbData;
-                    if (get_1_GramDataRef(wordId, &pbData)) {
+                    const TProbBackOffEntry * pb_data_ptr;
+                    if (get_1_GramDataRef(word_id, &pb_data_ptr)) {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                        prob += pbData->back_off;
+                        query.result.prob += pb_data_ptr->back_off;
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
-                                << "( back-off ) for word: " << wordId
-                                << ", is: " << pbData->back_off << END_LOG;
+                                << "( back-off ) for word: " << word_id
+                                << ", is: " << pb_data_ptr->back_off << END_LOG;
                     } else {
                         //The one gram data is not present!
                         LOG_DEBUG2 << "Unable to find the 1-Gram entry for a word: "
-                                << wordId << ", nowhere to back-off!" << END_LOG;
+                                << word_id << ", nowhere to back-off!" << END_LOG;
                     }
                 }
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ALayeredTrie<M_GRAM_LEVEL_MAX>;
+            template class ALayeredTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class ALayeredTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class ALayeredTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class ALayeredTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

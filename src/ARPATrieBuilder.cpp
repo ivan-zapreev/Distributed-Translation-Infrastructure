@@ -33,6 +33,14 @@
 #include "ARPAGramBuilder.hpp"
 #include "ARPAGramBuilderFactory.hpp"
 
+#include "C2DHashMapTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
+#include "G2DHashMapTrie.hpp"
+
+using namespace uva::smt::tries;
 using namespace uva::smt::logging;
 using namespace uva::smt::utils::text;
 
@@ -46,22 +54,22 @@ namespace uva {
                 //The N-gram Data Section Amoung delimiter
                 static const char NGRAM_COUNTS_DELIM = '=';
 
-                template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(ATrie<N> & trie, AFileReader & file) :
+                template<typename TrieType>
+                ARPATrieBuilder<TrieType>::ARPATrieBuilder(TrieType & trie, AFileReader & file) :
                 m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<TModelLevel N>
-                ARPATrieBuilder<N>::ARPATrieBuilder(const ARPATrieBuilder<N>& orig) :
+                template<typename TrieType>
+                ARPATrieBuilder<TrieType>::ARPATrieBuilder(const ARPATrieBuilder<TrieType>& orig) :
                 m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<TModelLevel N>
-                ARPATrieBuilder<N>::~ARPATrieBuilder() {
+                template<typename TrieType>
+                ARPATrieBuilder<TrieType>::~ARPATrieBuilder() {
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::read_headers() {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::read_headers() {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
@@ -96,10 +104,10 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::pre_allocate(size_t counts[N]) {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::pre_allocate(size_t counts[TrieType::max_level]) {
                     LOG_INFO << "Expected number of M-grams per level: "
-                            << arrayToString<size_t, N>(counts) << END_LOG;
+                            << arrayToString<size_t, TrieType::max_level>(counts) << END_LOG;
 
                     //Do the progress bard indicator
                     Logger::startProgressBar(string("Pre-allocating memory"));
@@ -114,8 +122,8 @@ namespace uva {
                     Logger::stopProgressBar();
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::read_data(size_t counts[N]) {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::read_data(size_t counts[TrieType::max_level]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
@@ -182,11 +190,11 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::read_m_gram_level(const TModelLevel level) {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::read_m_gram_level(const TModelLevel level) {
                     //Declare the pointer to the N-Grma builder
                     ARPAGramBuilder *pNGBuilder = NULL;
-                    ARPAGramBuilderFactory::get_builder<N>(level, m_trie, &pNGBuilder);
+                    ARPAGramBuilderFactory::get_builder<TrieType>(level, m_trie, &pNGBuilder);
 
                     try {
                         //The counter of the N-grams
@@ -236,14 +244,14 @@ namespace uva {
                     Logger::stopProgressBar();
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::check_and_go_m_grams(const TModelLevel level) {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::check_and_go_m_grams(const TModelLevel level) {
                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
+                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << TrieType::max_level
                             << ", the current line is '" << m_line << "'" << END_LOG;
 
                     //Test if we need to move on or we are done or an error is detected
-                    if (level < N) {
+                    if (level < TrieType::max_level) {
                         //There are still N-Gram levels to read
                         if (m_line != END_OF_ARPA_FILE) {
                             //We did not encounter the \end\ tag yet so do recursion to the next level
@@ -251,7 +259,7 @@ namespace uva {
                         } else {
                             //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                             LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                    << "nothing more to read. The maximum allowed N-gram level is " << N << END_LOG;
+                                    << "nothing more to read. The maximum allowed N-gram level is " << TrieType::max_level << END_LOG;
                         }
                     } else {
                         //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
@@ -264,8 +272,8 @@ namespace uva {
                     }
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::do_post_m_gram_actions(const TModelLevel level) {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::do_post_m_gram_actions(const TModelLevel level) {
                     //Check if the post gram actions are needed! If yes - perform.
                     if (m_trie.is_post_grams(level)) {
                         //Do the progress bard indicator
@@ -284,10 +292,10 @@ namespace uva {
                     }
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::get_word_counts() {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::get_word_counts() {
                     //Check if we need another pass for words counting.
-                    if (m_trie.get_word_index()->is_word_counts_needed()) {
+                    if (m_trie.get_word_index().is_word_counts_needed()) {
                         //Do the progress bard indicator
                         Logger::startProgressBar(string("Counting all words"));
 
@@ -296,7 +304,7 @@ namespace uva {
                         LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
 
                         //Perform the post counting actions;
-                        m_trie.get_word_index()->do_post_word_count();
+                        m_trie.get_word_index().do_post_word_count();
 
                         LOG_DEBUG << "Finished counting all words" << END_LOG;
                         //Stop the progress bar in case of no exception
@@ -307,27 +315,27 @@ namespace uva {
                     }
                 }
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::do_word_index_post_1_gram_actions() {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::do_word_index_post_1_gram_actions() {
                     //Perform the post actions if needed
-                    if( m_trie.get_word_index()->is_post_actions_needed() ) {
+                    if (m_trie.get_word_index().is_post_actions_needed()) {
                         //Do the progress bard indicator
                         Logger::startProgressBar(string("Word Index post actions"));
 
                         LOG_DEBUG << "Starting to perform the Word Index post actions" << END_LOG;
 
                         //Perform the post actions
-                        m_trie.get_word_index()->do_post_actions();
+                        m_trie.get_word_index().do_post_actions();
 
                         LOG_DEBUG << "Finished performing the Word Index post actions" << END_LOG;
-                        
+
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
                     }
                 }
-                
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::read_grams(const TModelLevel level) {
+
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::read_grams(const TModelLevel level) {
                     stringstream msg;
                     //Do the progress bard indicator
                     msg << "Reading ARPA " << level << "-Grams";
@@ -343,10 +351,10 @@ namespace uva {
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                         //Read the M-grams of the given level
                         read_m_gram_level(level);
-                        
+
                         //If the first M-gram level has been read then do
                         //the word index post-actions if needed.
-                        if( level == M_GRAM_LEVEL_1 ) {
+                        if (level == M_GRAM_LEVEL_1) {
                             do_word_index_post_1_gram_actions();
                         }
 
@@ -375,9 +383,9 @@ namespace uva {
                  * All we need to do is then read all the words in
                  * M-Gram sections and count them with the word index.
                  */
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::get_word_counts(const TModelLevel level) {
-                    AWordIndex * p_word_index = m_trie.get_word_index();
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::get_word_counts(const TModelLevel level) {
+                    typename TrieType::word_index_type & word_index = m_trie.get_word_index();
 
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
@@ -388,11 +396,11 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                         //The tokens array to put words into
-                        TextPieceReader tokens[N];
+                        TextPieceReader tokens[TrieType::max_level];
 
                         //Read the current level N-grams and add them to the trie
                         while (m_file.getLine(m_line)) {
-                            LOG_DEBUG1 << "Reading " << SSTR(level) << "-gram, got: [" << m_line.str() << "]";
+                            LOG_DEBUG1 << "Reading " << SSTR(level) << "-gram, got: [" << m_line.str() << "]" << END_LOG;
                             //If this is not an empty line
                             if (m_line.hasMore()) {
                                 //Parse line to words without probabilities and back-offs
@@ -400,8 +408,8 @@ namespace uva {
                                 if (ARPAGramBuilder::gram_line_to_tokens(m_line, tokens, level)) {
                                     //Add words to the index: count them
                                     for (size_t idx = 0; idx < level; idx++) {
-                                        LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index.";
-                                        p_word_index->count_word(tokens[idx]);
+                                        LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;
+                                        word_index.count_word(tokens[idx]);
                                         //Update the progress bar status
                                         Logger::updateProgressBar();
                                     }
@@ -416,7 +424,7 @@ namespace uva {
                         LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
 
                         //Test if we need to move on or we are done or an error is detected
-                        if ((level < N) && (m_line != END_OF_ARPA_FILE)) {
+                        if ((level < TrieType::max_level) && (m_line != END_OF_ARPA_FILE)) {
                             LOG_DEBUG1 << "Finished counting words in " << SSTR(level)
                                     << "-grams, going to the next level" << END_LOG;
                             //There are still N-Gram levels to read
@@ -437,8 +445,8 @@ namespace uva {
                  * one gram section again. After this method we can proceed
                  * reading M-grams and add them to the trie.
                  */
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::return_to_grams() {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::return_to_grams() {
                     //Reset the file
                     m_file.reset();
 
@@ -449,8 +457,8 @@ namespace uva {
                     read_headers();
 
                     //Read the DATA section of ARPA
-                    size_t counts[N];
-                    memset(counts, 0, N * sizeof (size_t));
+                    size_t counts[TrieType::max_level];
+                    memset(counts, 0, TrieType::max_level * sizeof (size_t));
                     read_data(counts);
                 }
 
@@ -462,14 +470,14 @@ namespace uva {
                 //will be limited by the N parameter provided to the class template and not
                 //the maximum N-gram level present in the file.
 
-                template<TModelLevel N>
-                void ARPATrieBuilder<N>::build() {
+                template<typename TrieType>
+                void ARPATrieBuilder<TrieType>::build() {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                     //Declare an array of N-Gram counts, that is to be filled from the
                     //headers. This data will be used to pre-allocate memory for the Trie 
-                    size_t counts[N];
-                    memset(counts, 0, N * sizeof (size_t));
+                    size_t counts[TrieType::max_level];
+                    memset(counts, 0, TrieType::max_level * sizeof (size_t));
 
                     try {
                         //Read the first line from the file
@@ -499,7 +507,35 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder< M_GRAM_LEVEL_MAX >;
+                template class ARPATrieBuilder<C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> >;
+                template class ARPATrieBuilder<C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+                template class ARPATrieBuilder<C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+                template class ARPATrieBuilder<C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+                template class ARPATrieBuilder<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex>::type >;
+                template class ARPATrieBuilder<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>::type >;
+                template class ARPATrieBuilder<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >::type >;
+                template class ARPATrieBuilder<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >::type >;
+
+                template class ARPATrieBuilder<C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> >;
+                template class ARPATrieBuilder<C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+                template class ARPATrieBuilder<C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+                template class ARPATrieBuilder<C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+                template class ARPATrieBuilder<W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> >;
+                template class ARPATrieBuilder<W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+                template class ARPATrieBuilder<W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+                template class ARPATrieBuilder<W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+                template class ARPATrieBuilder<C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> >;
+                template class ARPATrieBuilder<C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+                template class ARPATrieBuilder<C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+                template class ARPATrieBuilder<C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+                template class ARPATrieBuilder<G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> >;
+                template class ARPATrieBuilder<G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+                template class ARPATrieBuilder<G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+                template class ARPATrieBuilder<G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
             }
         }
     }

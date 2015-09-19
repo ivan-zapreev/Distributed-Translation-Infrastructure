@@ -30,13 +30,19 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
+
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            W2CHybridTrie<N, StorageFactory, StorageContainer>::W2CHybridTrie(AWordIndex * const p_word_index)
-            : ALayeredTrie<N>(p_word_index,
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
+            : ALayeredTrie<N, WordIndexType>(word_index,
             [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }, __W2CHybridTrie::DO_BITMAP_HASH_CACHE),
@@ -57,13 +63,13 @@ namespace uva {
                 memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
             }
 
-            template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            void W2CHybridTrie<N, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            void W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N>::pre_allocate(counts);
+                ALayeredTrie<N, WordIndexType>::pre_allocate(counts);
                 
                 //Compute the number of words to be stored
-                m_word_arr_size = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
+                m_word_arr_size = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);
@@ -97,8 +103,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, template<TModelLevel > class StorageFactory, class StorageContainer>
-            W2CHybridTrie<N, StorageFactory, StorageContainer>::~W2CHybridTrie() {
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (N - 1); idx++) {
                     //Delete the prob/back-off arrays per level
@@ -125,7 +131,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex>, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
         }
     }
 }

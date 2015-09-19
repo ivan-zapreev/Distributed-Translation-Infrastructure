@@ -105,8 +105,8 @@ namespace uva {
                 };
 
                 virtual bool getLine(TextPieceReader& out) {
-                    LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
-
+                    LOG_DEBUG3 << "Searching for a new line, m_file_ptr = " << m_file_ptr << END_LOG;
+                    
                     //First read the line from the file
                     ssize_t length = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
 

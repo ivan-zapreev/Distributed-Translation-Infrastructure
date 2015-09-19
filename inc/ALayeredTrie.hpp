@@ -76,8 +76,8 @@ namespace uva {
              * The purpose of having this as a template class is performance optimization.
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
-            template<TModelLevel N >
-            class ALayeredTrie : public ATrie<N> {
+            template<TModelLevel N, typename WordIndexType >
+            class ALayeredTrie : public ATrie<N, WordIndexType> {
             public:
 
                 /**
@@ -91,24 +91,17 @@ namespace uva {
                  * the multi-level context index tries which require a lot of searching when looking
                  * for an M-gram.
                  */
-                explicit ALayeredTrie(AWordIndex * const _pWordIndex,
+                explicit ALayeredTrie(WordIndexType & word_index,
                         TGetCtxIdFunct get_ctx_id_func, bool is_birmap_hash_cache)
-                : ATrie<N>(_pWordIndex, is_birmap_hash_cache),
+                : ATrie<N, WordIndexType>(word_index, is_birmap_hash_cache),
                 m_get_ctx_id_func(get_ctx_id_func),
-                m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
+                m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
 
                     LOG_DEBUG3 << "Creating the TextPieceReader with a data ptr" << END_LOG;
                     m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
-
-                    //This one is needed for having a proper non-null word index pointer.
-                    if (_pWordIndex == NULL) {
-                        stringstream msg;
-                        msg << "Unable to use " << __FILE__ << ", the word index pointer must not be NULL!";
-                        throw Exception(msg.str());
-                    }
                 };
 
                 /**
@@ -210,7 +203,7 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
-                virtual void get_prob_weight(const TModelLevel level, TLogProbBackOff & prob);
+                virtual void get_prob_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -219,17 +212,17 @@ namespace uva {
                  * In that case the back-off weight is just zero.
                  * @see ATrie
                  */
-                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob);
+                virtual void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
                 ALayeredTrie(const ALayeredTrie& orig)
-                : ATrie<N>(NULL),
+                : ATrie<N, WordIndexType>(orig.m_word_index),
                 m_get_ctx_id_func(NULL),
                 m_chached_ctx(),
-                m_chached_ctx_id(AWordIndex::UNDEFINED_WORD_ID) {
+                m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -247,60 +240,50 @@ namespace uva {
                  *   w1 w2 w3 w4 w5
                  *          ^  ^
                  * Hash will be computed for the 3-gram prefix w3 w4.
-                 * 
-                 * @param ctxLen the length of the context to compute
                  * @param is_back_off is the boolean flag that determines whether
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
-                 * @param ctxId [out] the context id to be computed
+                 * @param query the query state object
+                 * @param ctx_id [out] the context id to be computed
                  * @return the true if the context could be computed, otherwise false
                  * @throws nothing
                  */
                 template<bool is_back_off>
-                inline bool get_query_context_Id(const TModelLevel ctxLen, TLongId & ctxId) {
-                    const TModelLevel mGramEndIdx = (is_back_off ? (N - 2) : (N - 1));
-                    const TModelLevel eIdx = mGramEndIdx;
-                    const TModelLevel bIdx = mGramEndIdx - ctxLen;
-                    TModelLevel idx = bIdx;
+                inline bool get_query_context_Id(const MGramQuery<N, WordIndexType> & query, TLongId & ctx_id) {
+                    const TModelLevel mgram_end_idx = (is_back_off ? (N - 2) : (N - 1));
+                    const TModelLevel end_idx = mgram_end_idx;
+                    const TModelLevel begin_idx = mgram_end_idx - (query.curr_level - 1);
+                    TModelLevel idx = begin_idx;
 
-                    LOG_DEBUG1 << "Computing ctxId for context length: " << SSTR(ctxLen)
-                            << " for a  " << (is_back_off ? "back-off" : "probability")
-                            << " computation" << END_LOG;
+                    LOG_DEBUG1 << "Computing id of the " << SSTR(query.curr_level)
+                            << "-gram " << (is_back_off ? "back-off" : "probability")
+                            << " context" << END_LOG;
 
                     //Compute the first words' hash
-                    ctxId = ATrie<N>::m_tmp_word_ids[idx];
-                    LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctxId) << END_LOG;
+                    ctx_id = query.m_query_word_ids[idx];
+                    LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctx_id) << END_LOG;
                     idx++;
 
-                    //Since the first word defines the second word context, and
-                    //if this word is unknown then there is definitely no data
-                    //for this N-gram in the trie ... so we through!
-                    if (ctxId < AWordIndex::MIN_KNOWN_WORD_ID) {
-                        LOG_DEBUG1 << "The first " << SSTR(ctxLen + 1) << " wordId == "
-                                << SSTR(ctxId) << " i.e. <unk>, need to back-off!" << END_LOG;
-                        return false;
-                    } else {
-                        //Compute the subsequent context ids
-                        for (; idx < eIdx;) {
-                            LOG_DEBUG1 << "Start searching ctxId for mGramWordIds[" << SSTR(idx) << "]: "
-                                    << SSTR(ATrie<N>::m_tmp_word_ids[idx]) << " prevCtxId: " << SSTR(ctxId) << END_LOG;
-                            if (m_get_ctx_id_func(ATrie<N>::m_tmp_word_ids[idx], ctxId, (idx - bIdx) + 1)) {
-                                LOG_DEBUG1 << "getContextId(" << SSTR(ATrie<N>::m_tmp_word_ids[idx])
-                                        << ", prevCtxId) = " << SSTR(ctxId) << END_LOG;
-                                idx++;
-                            } else {
-                                //The next context id could not be retrieved
-                                return false;
-                            }
+                    //Compute the subsequent context ids
+                    for (; idx < end_idx;) {
+                        LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
+                                << SSTR(query.m_query_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
+                        if (m_get_ctx_id_func(query.m_query_word_ids[idx], ctx_id, (idx - begin_idx) + 1)) {
+                            LOG_DEBUG1 << "getContextId(" << SSTR(query.m_query_word_ids[idx])
+                                    << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
+                            idx++;
+                        } else {
+                            //The next context id could not be retrieved
+                            return false;
                         }
-
-                        LOG_DEBUG1 << "Resulting context hash for context length " << SSTR(ctxLen)
-                                << " of a  " << (is_back_off ? "back-off" : "probability")
-                                << " computation is: " << SSTR(ctxId) << END_LOG;
-
-                        return true;
                     }
+
+                    LOG_DEBUG1 << "Resulting id for the " << SSTR(query.curr_level)
+                            << "-gram " << (is_back_off ? "back-off" : "probability")
+                            << " context is: " << SSTR(ctx_id) << END_LOG;
+
+                    return true;
                 }
 
                 /**
@@ -313,14 +296,14 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<DebugLevelsEnum logLevel>
-                inline bool getContextId(const T_M_Gram & gram, TLongId &ctxId) {
+                inline bool get_context_id(const T_M_Gram & gram, TLongId &ctxId) {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
-                        TShortId wordId = ATrie<N>::get_word_index()->get_word_id(gram.tokens[0]);
+                        TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(gram.tokens[0]);
 
                         //There is no id cached for this M-gram context - find it
-                        if (wordId != AWordIndex::UNKNOWN_WORD_ID) {
+                        if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
                             //The first word id is the first context id
                             ctxId = wordId;
                             LOGGER(logLevel) << "ctxId = getId('" << gram.tokens[0].str()
@@ -328,8 +311,8 @@ namespace uva {
 
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
-                                wordId = ATrie<N>::get_word_index()->get_word_id(gram.tokens[i]);
-                                if (wordId != AWordIndex::UNKNOWN_WORD_ID) {
+                                wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(gram.tokens[i]);
+                                if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
                                     LOGGER(logLevel) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {

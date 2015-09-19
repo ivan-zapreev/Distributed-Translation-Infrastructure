@@ -30,31 +30,37 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
+
 using namespace __W2CArrayTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            W2CArrayTrie<N>::W2CArrayTrie(AWordIndex * const p_word_index)
-            : ALayeredTrie<N>(p_word_index,
+            template<TModelLevel N, typename WordIndexType>
+            W2CArrayTrie<N, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
+            : ALayeredTrie<N, WordIndexType>(word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }, __W2CArrayTrie::DO_BITMAP_HASH_CACHE),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
 
                 //Memset the M/N grams reference and data arrays
-                memset(m_M_gram_word_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
+                memset(m_M_gram_word_2_data, 0, ALayeredTrie<N, WordIndexType>::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
             }
 
-            template<TModelLevel N>
-            void W2CArrayTrie<N>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void W2CArrayTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N>::pre_allocate(counts);
+                ALayeredTrie<N, WordIndexType>::pre_allocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                m_num_word_ids = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
+                m_num_word_ids = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[m_num_word_ids];
                 memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
 
@@ -65,7 +71,7 @@ namespace uva {
 
                 //04) Allocate data for the M-grams
 
-                for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 0; i < ALayeredTrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; i++) {
                     preAllocateWordsData<T_M_GramWordEntry>(m_M_gram_word_2_data[i], counts[i + 1], counts[0]);
                 }
 
@@ -73,12 +79,12 @@ namespace uva {
                 preAllocateWordsData<T_N_GramWordEntry>(m_N_gram_word_2_data, counts[N - 1], counts[0]);
             }
 
-            template<TModelLevel N>
-            W2CArrayTrie<N>::~W2CArrayTrie() {
+            template<TModelLevel N, typename WordIndexType>
+            W2CArrayTrie<N, WordIndexType>::~W2CArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
-                    for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                    for (TModelLevel i = 0; i < ALayeredTrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; i++) {
                         delete[] m_M_gram_word_2_data[i];
                     }
                     delete[] m_N_gram_word_2_data;
@@ -86,7 +92,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX>;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

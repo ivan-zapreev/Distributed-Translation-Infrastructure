@@ -31,22 +31,28 @@
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            C2DMapTrie<N>::C2DMapTrie(AWordIndex * const _pWordIndex,
-                    const float _mGramMemFactor,
-                    const float _nGramMemFactor)
-            : ALayeredTrie<N>(_pWordIndex,
+            template<TModelLevel N, typename WordIndexType>
+            C2DMapTrie<N, WordIndexType>::C2DMapTrie(
+            WordIndexType & word_index,
+                    const float mgram_mem_factor,
+                    const float ngram_mem_factor)
+            : ALayeredTrie<N, WordIndexType>(word_index,
             [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
-                return C2DMapTrie<N>::getContextId(wordId, ctxId, level); }, __C2DMapTrie::DO_BITMAP_HASH_CACHE),
-            mGramMemFactor(_mGramMemFactor),
-            nGramMemFactor(_nGramMemFactor),
+                return C2DMapTrie<N, WordIndexType>::getContextId(wordId, ctxId, level); }, __C2DMapTrie::DO_BITMAP_HASH_CACHE),
+            m_mgram_mem_factor(mgram_mem_factor),
+            m_ngram_mem_factor(ngram_mem_factor),
                         m_1_gram_data(NULL) {
                 if (DO_SANITY_CHECKS) {
                     //Initialize the hash statistics map
@@ -66,10 +72,10 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N>
-            void C2DMapTrie<N>::preAllocateOGrams(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void C2DMapTrie<N, WordIndexType>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
-                const size_t num_word_ids = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
+                const size_t num_word_ids = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
                 
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
@@ -82,8 +88,8 @@ namespace uva {
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
             }
 
-            template<TModelLevel N>
-            void C2DMapTrie<N>::preAllocateMGrams(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void C2DMapTrie<N, WordIndexType>::preAllocateMGrams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
@@ -91,25 +97,25 @@ namespace uva {
                     const uint numEntries = counts[idx];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", mGramMemFactor);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", m_mgram_mem_factor);
                 }
             }
 
-            template<TModelLevel N>
-            void C2DMapTrie<N>::preAllocateNGrams(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void C2DMapTrie<N, WordIndexType>::preAllocateNGrams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", nGramMemFactor);
+                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", m_ngram_mem_factor);
             }
 
-            template<TModelLevel N>
-            void C2DMapTrie<N>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void C2DMapTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
 
-                ALayeredTrie<N>::pre_allocate(counts);
+                ALayeredTrie<N, WordIndexType>::pre_allocate(counts);
 
                 //Pre-allocate 0-Grams
                 preAllocateOGrams(counts);
@@ -121,8 +127,8 @@ namespace uva {
                 preAllocateNGrams(counts);
             }
 
-            template<TModelLevel N>
-            C2DMapTrie<N>::~C2DMapTrie() {
+            template<TModelLevel N, typename WordIndexType>
+            C2DMapTrie<N, WordIndexType>::~C2DMapTrie() {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics
                     for (int i = 0; i < N; i++) {
@@ -145,7 +151,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2DMapTrie<M_GRAM_LEVEL_MAX>;
+            template class C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

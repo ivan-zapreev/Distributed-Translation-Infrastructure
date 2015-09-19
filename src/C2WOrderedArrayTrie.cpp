@@ -30,46 +30,52 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
+
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            C2WArrayTrie<N>::C2WArrayTrie(AWordIndex * const p_word_index)
-            : ALayeredTrie<N>(p_word_index,
+            template<TModelLevel N, typename WordIndexType>
+            C2WArrayTrie<N, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
+            : ALayeredTrie<N, WordIndexType>(word_index,
             [&] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
 
                 return this->getContextId(wordId, ctxId, level); }, __C2WArrayTrie::DO_BITMAP_HASH_CACHE),
             m_1_gram_data(NULL), m_N_gram_data(NULL), m_one_gram_arr_size(0) {
 
                 //Memset the M grams reference and data arrays
-                memset(m_M_gram_ctx_2_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
-                memset(m_M_gram_data, 0, ALayeredTrie<N>::NUM_M_GRAM_LEVELS * sizeof (TWordIdPBEntry *));
+                memset(m_M_gram_ctx_2_data, 0, ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
+                memset(m_M_gram_data, 0, ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS * sizeof (TWordIdPBEntry *));
 
                 //Initialize the array of counters
-                memset(m_M_N_gram_num_ctx_ids, 0, ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
-                memset(m_M_N_gram_next_ctx_id, 0, ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_num_ctx_ids, 0, ATrie<N, WordIndexType>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
+                memset(m_M_N_gram_next_ctx_id, 0, ATrie<N, WordIndexType>::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
             }
 
-            template<TModelLevel N>
-            void C2WArrayTrie<N>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void C2WArrayTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N>::pre_allocate(counts);
+                ATrie<N, WordIndexType>::pre_allocate(counts);
 
                 //02) Compute and store the M-gram level sizes in terms of the number of M-grams per level
                 //Also initialize the M-gram index counters, for issuing context indexes
-                for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_N_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 0; i < ATrie<N, WordIndexType>::NUM_M_N_GRAM_LEVELS; i++) {
                     //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
-                    m_M_N_gram_next_ctx_id[i] = ALayeredTrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_N_gram_next_ctx_id[i] = ATrie<N, WordIndexType>::FIRST_VALID_CTX_ID;
                     //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
-                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + ALayeredTrie<N>::FIRST_VALID_CTX_ID;
+                    m_M_N_gram_num_ctx_ids[i] = counts[i + 1] + ATrie<N, WordIndexType>::FIRST_VALID_CTX_ID;
                 }
 
                 //03) Pre-allocate the 1-Gram data
                 //The size of this array is made two elements larger than the number
                 //of 1-Grams is since we want to account for the word indexes that start
                 //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                m_one_gram_arr_size = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
+                m_one_gram_arr_size = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[m_one_gram_arr_size];
                 memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (TProbBackOffEntry));
 
@@ -92,7 +98,7 @@ namespace uva {
                 memset(m_M_gram_data[0], 0, m_M_N_gram_num_ctx_ids[0] * sizeof (TWordIdPBEntry));
 
                 //Now the remaining elements can be added in a loop
-                for (TModelLevel i = 1; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                for (TModelLevel i = 1; i < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; i++) {
                     //Here i is the index of the array, the corresponding M-gram
                     //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
@@ -105,16 +111,16 @@ namespace uva {
                 }
 
                 //06) Allocate the data for the N-Grams.
-                m_N_gram_data = new TCtxIdProbEntry[m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR]];
-                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ALayeredTrie<N>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
+                m_N_gram_data = new TCtxIdProbEntry[m_M_N_gram_num_ctx_ids[ATrie<N, WordIndexType>::N_GRAM_IDX_IN_M_N_ARR]];
+                memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[ATrie<N, WordIndexType>::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
             }
 
-            template<TModelLevel N>
-            C2WArrayTrie<N>::~C2WArrayTrie() {
+            template<TModelLevel N, typename WordIndexType>
+            C2WArrayTrie<N, WordIndexType>::~C2WArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
-                    for (TModelLevel i = 0; i < ALayeredTrie<N>::NUM_M_GRAM_LEVELS; i++) {
+                    for (TModelLevel i = 0; i < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; i++) {
                         delete[] m_M_gram_ctx_2_data[i];
                         delete[] m_M_gram_data[i];
                     }
@@ -123,7 +129,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2WArrayTrie<M_GRAM_LEVEL_MAX>;
+            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

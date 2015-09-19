@@ -31,12 +31,19 @@
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "Logger.hpp"
+
 #include "MathUtils.hpp"
 
-#include "TextPieceReader.hpp"
-#include "AWordIndex.hpp"
 #include "MGrams.hpp"
+#include "TextPieceReader.hpp"
+
 #include "BitmapHashCache.hpp"
+
+#include "MGramQuery.hpp"
+
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -62,23 +69,16 @@ namespace uva {
             } TProbBackOffEntry;
 
             /**
-             * This data structure is to be used to return the N-Gram query result.
-             * It contains the computed Back-Off language model probability and
-             * potentially additional meta data for the decoder
-             * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
-             */
-            typedef struct {
-                TLogProbBackOff prob;
-            } TQueryResult;
-
-            /**
              * This is a common abstract class for a Trie implementation.
              * The purpose of having this as a template class is performance optimization.
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
-            template<TModelLevel N>
+            template<TModelLevel N, typename WordIndexType>
             class ATrie {
             public:
+                static const TModelLevel max_level;
+                typedef WordIndexType word_index_type;
+
                 //The offset, relative to the M-gram level M for the mgram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
@@ -108,10 +108,8 @@ namespace uva {
                  * the multi-level context index tries which require a lot of searching when looking
                  * for an M-gram.
                  */
-                explicit ATrie(AWordIndex * _pWordIndex, bool is_birmap_hash_cache = false)
-                : m_word_index_ptr(_pWordIndex), m_query_ptr(NULL),
-                m_is_birmap_hash_cache(is_birmap_hash_cache),
-                m_unk_word_flags(0) {
+                explicit ATrie(WordIndexType & word_index, bool is_bitmap_hash_cache = false)
+                : m_word_index(word_index), m_is_bitmap_hash_cache(is_bitmap_hash_cache) {
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
@@ -123,13 +121,11 @@ namespace uva {
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
                 virtual void pre_allocate(const size_t counts[N]) {
-                    if (m_word_index_ptr != NULL) {
-                        m_word_index_ptr->reserve(counts[0]);
-                        Logger::updateProgressBar();
-                    }
+                    m_word_index.reserve(counts[0]);
+                    Logger::updateProgressBar();
 
                     //Pre-allocate the bitmap-hash caches if needed
-                    if (m_is_birmap_hash_cache) {
+                    if (m_is_bitmap_hash_cache) {
                         for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
                             m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
                         }
@@ -143,7 +139,7 @@ namespace uva {
                  * @param gram the M-gram to cache
                  */
                 inline void register_m_gram_cache(const T_M_Gram &gram) {
-                    if (m_is_birmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
+                    if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
                         m_bitmap_hash_cach[gram.level - MGRAM_IDX_OFFSET].add_m_gram(gram);
                     }
                 }
@@ -208,69 +204,49 @@ namespace uva {
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
-                 * @param m_gram the given M-Gram we are going to query!
-                 * @param result the output parameter containing the the result
-                 *               probability and possibly some additional meta
-                 *               data for the decoder.
+                 * @param query the given M-Gram query and its state
                  */
-                void query(const T_M_Gram & m_gram, TQueryResult & result) {
-                    const TModelLevel level = m_gram.level;
+                void execute(MGramQuery<N, WordIndexType> & query) {
+                    LOG_DEBUG << "Starting to execute:" << tokensToString(query.m_gram) << END_LOG;
 
-                    //Check the number of elements in the N-Gram
-                    if (DO_SANITY_CHECKS && ((level < M_GRAM_LEVEL_1) || (level > N))) {
-                        stringstream msg;
-                        msg << "An improper N-Gram size, got " << level << ", must be between [1, " << N << "]!";
-                        throw Exception(msg.str());
-                    } else {
-                        //Store the pointer to the M-gram
-                        m_query_ptr = &m_gram;
+                    //Make sure that the query is prepared for execution
+                    query.prepare_query();
 
-                        //Transform the given M-gram into word hashes.
-                        store_m_gram_word_ids(m_gram);
-
-                        //Store unknown word flags
-                        store_unk_word_flags();
-
-                        //Compute the probability in the loop fashion, should be faster that recursion.
-                        TModelLevel curr_level = level;
-                        result.prob = ZERO_PROB_WEIGHT;
-                        while ((result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
-                            //Try to compute the next probability with decreased level
-                            cache_check_get_prob_weight(curr_level, result.prob);
-                            //Decrease the level
-                            curr_level--;
-                        }
-
-                        //If the probability is log-zero or snaller then there is no
-                        //need for a back-off as then we will only get smaller values.
-                        if (result.prob > ZERO_LOG_PROB_WEIGHT) {
-                            //If the curr_level is smaller than the original level then
-                            //it means that we needed to back-off, add back-off weights
-                            for (++curr_level; curr_level != level; ++curr_level) {
-                                //Get the back_off 
-                                cache_check_add_back_off_weight(curr_level, result.prob);
-                            }
-                        }
-
-                        LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.prob << END_LOG;
+                    //Compute the probability in the loop fashion, should be faster that recursion.
+                    while ((query.result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (query.curr_level != 0))) {
+                        //Try to compute the next probability with decreased level
+                        cache_check_get_prob_weight(query);
+                        //Decrease the level
+                        query.curr_level--;
                     }
+
+                    //If the probability is log-zero or snaller then there is no
+                    //need for a back-off as then we will only get smaller values.
+                    if (query.result.prob > ZERO_LOG_PROB_WEIGHT) {
+                        //If the curr_level is smaller than the original level then
+                        //it means that we needed to back-off, add back-off weights
+                        for (++query.curr_level; query.curr_level != query.m_gram.level; ++query.curr_level) {
+                            //Get the back_off 
+                            cache_check_add_back_off_weight(query);
+                        }
+                    }
+
+                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
+                            << " probability is: " << query.result.prob << END_LOG;
                 }
 
                 /**
                  * Allows to retrieve the stored word index, if any
                  * @return the pointer to the stored word index or NULL if none
                  */
-                inline AWordIndex * get_word_index() {
-                    return m_word_index_ptr;
+                inline WordIndexType & get_word_index() {
+                    return m_word_index;
                 }
 
                 /**
                  * The basic class destructor
                  */
                 virtual ~ATrie() {
-                    if (m_word_index_ptr != NULL) {
-                        delete m_word_index_ptr;
-                    }
                 };
 
                 /**
@@ -280,53 +256,10 @@ namespace uva {
 
             protected:
                 //Stores the reference to the word index to be used
-                AWordIndex * m_word_index_ptr;
-
-                //The temporary data structure to store the N-gram word ids
-                TShortId m_tmp_word_ids[N];
-                //Stores the pointer to the queries m-gram
-                const T_M_Gram * m_query_ptr;
+                WordIndexType & m_word_index;
 
                 //Stores a flag of whether we should use the birmap hash cache
-                const bool m_is_birmap_hash_cache;
-
-                /**
-                 * Gets the word hash for the end word of the back-off M-Gram
-                 * @return the word hash for the end word of the back-off M-Gram
-                 */
-                inline const TShortId & get_back_off_end_word_id() {
-                    return m_tmp_word_ids[N - 2];
-                }
-
-                /**
-                 * Gets the word hash for the last word in the M-gram
-                 * @return the word hash for the last word in the M-gram
-                 */
-                inline const TShortId & get_end_word_id() {
-                    return m_tmp_word_ids[N - 1];
-                }
-
-                /**
-                 * Converts the given tokens to ids and stores it in
-                 * m_gram_word_ids. The ids are aligned to the beginning
-                 * of the m_gram_word_ids[N-1] array.
-                 * @param m_gram the m-gram tokens to convert to hashes
-                 */
-                inline void store_m_gram_word_ids(const T_M_Gram & m_gram) {
-                    if (DO_SANITY_CHECKS && (m_word_index_ptr == NULL)) {
-                        throw Exception("The m_p_word_index is not set!");
-                    }
-
-                    //The start index depends on the value M of the given M-Gram
-                    TModelLevel idx = N - m_gram.level;
-                    LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(m_gram.level) << "-gram:" << END_LOG;
-                    for (TModelLevel i = 0; i < m_gram.level; i++) {
-                        //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                        m_tmp_word_ids[idx] = m_word_index_ptr->get_word_id(m_gram.tokens[i]);
-                        LOG_DEBUG1 << "wordId('" << m_gram.tokens[i].str() << "') = " << SSTR(m_tmp_word_ids[idx]) << END_LOG;
-                        idx++;
-                    }
-                }
+                const bool m_is_bitmap_hash_cache;
 
                 /**
                  * This method will be called after all the 1-grams are read.
@@ -356,12 +289,11 @@ namespace uva {
                 /**
                  * Allows to get the probability value also by checking the cache.
                  * If the probability is not found then the prob value is to stay intact!
-                 * @param level the M-gram level to get the probability for 
-                 * @param prob the probability to be filled in
-                 * @return true if the probability has been found, otherwise false
+                 * @param query the M-gram query for a specific current level
                  */
-                void cache_check_get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                    LOG_DEBUG << "cache_check_add_prob_value(" << level << ") = " << prob << END_LOG;
+                void cache_check_get_prob_weight(MGramQuery<N, WordIndexType> & query) {
+                    LOG_DEBUG << "cache_check_add_prob_value(" << query.curr_level
+                            << ") = " << query.result.prob << END_LOG;
 
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
@@ -369,12 +301,12 @@ namespace uva {
                     //2. If the context length is more then one and there is
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
-                    if ((level == M_GRAM_LEVEL_1) ||
-                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<false>(level)
-                            && is_bitmap_hash_cache<false>(level))) {
+                    if ((query.curr_level == M_GRAM_LEVEL_1) ||
+                            ((query.curr_level > M_GRAM_LEVEL_1) && query.has_no_unk_words_prob()
+                            && is_bitmap_hash_cache<false>(query))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        get_prob_weight(level, prob);
+                        get_prob_weight(query);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
                                 << "successful due to the present unk words! "
@@ -386,11 +318,11 @@ namespace uva {
                  * Allows to get the back-off weight value also by checking the cache.
                  * If the back-off is not found then the probability value is to stay intact.
                  * Then the back-off weight is considered to be zero!
-                 * @param level the M-gram level to get the back-off weight for 
-                 * @param prob the probability to be added by the found back-off weight
+                 * @param query the M-gram query for a specific current level
                  */
-                void cache_check_add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                    LOG_DEBUG << "cache_check_add_back_off_weight(" << level << ") = " << prob << END_LOG;
+                void cache_check_add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
+                    LOG_DEBUG << "cache_check_add_back_off_weight(" << query.curr_level
+                            << ") = " << query.result.prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
@@ -398,12 +330,12 @@ namespace uva {
                     //2. If the context length is more then one and there is
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
-                    if ((level == M_GRAM_LEVEL_1) ||
-                            ((level > M_GRAM_LEVEL_1) && has_no_unk_words<true>(level)
-                            && is_bitmap_hash_cache<true>(level))) {
+                    if ((query.curr_level == M_GRAM_LEVEL_1) ||
+                            ((query.curr_level > M_GRAM_LEVEL_1) && query.has_no_unk_words_back_off()
+                            && is_bitmap_hash_cache<true>(query))) {
                         //Let's look further, we definitely get some back-off weight or zero!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
-                        add_back_off_weight(level, prob);
+                        add_back_off_weight(query);
                     } else {
                         LOG_DEBUG << "Could try to back off but it will not be "
                                 << "successful due to the present unk words! Thus "
@@ -419,7 +351,7 @@ namespace uva {
                  * @param prob the probability variable that is to be set with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                virtual void get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
+                virtual void get_prob_weight(MGramQuery<N, WordIndexType> & query) = 0;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -429,107 +361,37 @@ namespace uva {
                  * @param level the level of the M-gram we need to compute probability for.
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
-                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) = 0;
-                
+                virtual void add_back_off_weight(MGramQuery<N, WordIndexType> & query) = 0;
+
             private:
-
-                //Stores the unknown word masks for the probability computations,
-                //up to and including 8-grams:
-                // 00000000, 00000001, 00000011, 00000111, 00001111,
-                // 00011111, 00111111, 01111111, 11111111
-                static const uint8_t PROB_UNK_MASKS[];
-                //Stores the unknown word masks for the back-off weight computations,
-                //up to and including 8-grams:
-                // 00000000, 00000010, 00000110, 00001110,
-                // 00011110, 00111110, 01111110, 11111110
-                static const uint8_t BACK_OFF_UNK_MASKS[];
-
-                //Unknown word bits
-                uint8_t m_unk_word_flags;
 
                 //Stores the bitmap hash caches per M-gram level
                 BitmapHashCache m_bitmap_hash_cach[NUM_M_N_GRAM_LEVELS];
 
                 /**
-                 * Has to be called after the method that stores the query word ids.
-                 * This one looks at the query word ids and creates binary flag map
-                 * of the unknown word ids present in the current M-gram
-                 */
-                inline void store_unk_word_flags() {
-                    const TModelLevel max_supp_level = (sizeof (PROB_UNK_MASKS) - 1);
-
-                    if (DO_SANITY_CHECKS && (N > max_supp_level)) {
-                        stringstream msg;
-                        msg << "store_unk_word_flags: Unsupported m-gram level: "
-                                << SSTR(N) << ", must be <= " << SSTR(max_supp_level)
-                                << "], insufficient m_unk_word_flags capacity!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Re-initialize the flags with zero
-                    m_unk_word_flags = 0;
-                    //Fill in the values from the currently considered M-gram word ids
-                    for (size_t idx = (N - m_query_ptr->level); idx < N; ++idx) {
-                        if (m_tmp_word_ids[idx] == AWordIndex::UNKNOWN_WORD_ID) {
-                            m_unk_word_flags |= (1u << ((N - 1) - idx));
-                        }
-                    }
-
-                    LOG_DEBUG << "The query unknown word flags are: "
-                            << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
-                }
-
-                /**
                  * Allows to check if the given sub-m-gram contains an unknown word
                  * @param level of the considered M-gram
                  * @return true if the unknown word is present, otherwise false
                  */
                 template<bool is_back_off>
-                inline bool is_bitmap_hash_cache(const TModelLevel level) {
-                    if (m_is_birmap_hash_cache) {
-                        const BitmapHashCache & ref = m_bitmap_hash_cach[level - MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<is_back_off>(this->m_query_ptr, level);
+                inline bool is_bitmap_hash_cache(MGramQuery<N, WordIndexType> & query) {
+                    if (m_is_bitmap_hash_cache) {
+                        const BitmapHashCache & ref = m_bitmap_hash_cach[query.curr_level - MGRAM_IDX_OFFSET];
+                        return ref.is_m_gram<is_back_off>(query);
                     } else {
                         return true;
                     }
                 }
-
-                /**
-                 * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param level of the considered M-gram
-                 * @return true if the unknown word is present, otherwise false
-                 */
-                template<bool is_back_off>
-                inline bool has_no_unk_words(const TModelLevel level) {
-                    uint8_t level_flags;
-
-                    if (is_back_off) {
-                        level_flags = (m_unk_word_flags & BACK_OFF_UNK_MASKS[level]);
-
-                        LOG_DEBUG << "The back-off level: " << level << " unknown word flags are: "
-                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
-
-                        return (level_flags == 0);
-                    } else {
-                        level_flags = (m_unk_word_flags & PROB_UNK_MASKS[level]);
-
-                        LOG_DEBUG << "The probability level: " << level << " unknown word flags are: "
-                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
-
-                        return (level_flags == 0);
-                    }
-                }
             };
 
-            template<TModelLevel N>
-            const uint8_t ATrie<N>::PROB_UNK_MASKS[] = {
-                0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF
-            };
+            template<TModelLevel N, typename WordIndexType>
+            const TModelLevel ATrie<N, WordIndexType>::max_level = N;
 
-            template<TModelLevel N>
-            const uint8_t ATrie<N>::BACK_OFF_UNK_MASKS[] = {
-                0x00, 0x02, 0x06, 0x0E, 0x1E, 0x3E, 0x7E, 0xFE
-            };
+            //Make sure that there will be templates instantiated, at least for the given parameter values
+            template class ATrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class ATrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class ATrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class ATrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

@@ -96,23 +96,24 @@ namespace uva {
              * This is a Gram to Data trie that is implemented as a HashMap.
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
-            template<TModelLevel N>
-            class G2DMapTrie : public ATrie<N> {
+            template<TModelLevel N, typename WordIndexType>
+            class G2DMapTrie : public ATrie<N, WordIndexType> {
             public:
 
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
-                explicit G2DMapTrie(AWordIndex * const _pWordIndex);
+                explicit G2DMapTrie(WordIndexType & word_index);
 
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
                 virtual void log_trie_type_usage_info() {
-                    LOG_USAGE << "Using the <" << __FILE__ << "> model with the #buckets divider: "
-                            << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << " and the "
-                            << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
+                    LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
+                    LOG_INFO << "Using the #buckets divider: "
+                            << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
+                    LOG_INFO << "Using  and the " << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
                             << " memory allocation strategy." << END_LOG;
                 }
 
@@ -154,7 +155,7 @@ namespace uva {
                     //data has to be ordered per bucket per id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || ATrie<N>::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || ATrie<N, WordIndexType>::is_post_grams(level);
                 }
 
                 /**
@@ -186,7 +187,7 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
-                virtual void get_prob_weight(const TModelLevel level, TLogProbBackOff & prob);
+                virtual void get_prob_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -195,7 +196,7 @@ namespace uva {
                  * In that case the back-off weight is just zero.
                  * @see ATrie
                  */
-                virtual void add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob);
+                virtual void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * Allows to get the bucket index for the given M-gram
@@ -270,13 +271,13 @@ namespace uva {
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
                 T_Gram_Id_Storage_Ptr m_tmp_gram_id;
-
+                        
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
                 typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
-                TProbBackOffBucket * m_M_gram_data[ATrie<N>::NUM_M_GRAM_LEVELS];
+                TProbBackOffBucket * m_M_gram_data[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
                 typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
@@ -305,13 +306,13 @@ namespace uva {
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
                  * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
-                 * @param level the level of the M-gram we compute probability for
+                 * @param query the query M-gram state 
                  * @param ref the bucket to search in
                  * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename BUCKET_TYPE, bool back_off = false >
-                bool get_payload_from_gram_level(const TModelLevel level, const BUCKET_TYPE & ref,
+                bool get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr);
 
             };

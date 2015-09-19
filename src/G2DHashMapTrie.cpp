@@ -31,20 +31,25 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
+using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::__G2DMapTrie;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N>
-            G2DMapTrie<N>::G2DMapTrie(AWordIndex * const _pWordIndex)
-            : ATrie<N>(_pWordIndex, __G2DMapTrie::DO_BITMAP_HASH_CACHE), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            template<TModelLevel N, typename WordIndexType>
+            G2DMapTrie<N, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
+            : ATrie<N, WordIndexType>(word_index, __G2DMapTrie::DO_BITMAP_HASH_CACHE), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
-                memset(m_M_gram_data, 0, ATrie<N>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
+                memset(m_M_gram_data, 0, ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 //Allocate the M-gram id memory for queries
                 Byte_M_Gram_Id::allocate_byte_m_gram_id(N, m_tmp_gram_id);
@@ -55,13 +60,13 @@ namespace uva {
                 LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //Call the base-class
-                ATrie<N>::pre_allocate(counts);
+                ATrie<N, WordIndexType>::pre_allocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                num_buckets[0] = ATrie<N>::get_word_index()->get_number_of_words(counts[0]);
+                num_buckets[0] = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
                 memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
@@ -71,7 +76,7 @@ namespace uva {
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
-                for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                for (TModelLevel idx = 0; idx < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; idx++) {
                     num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
                             __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
@@ -83,14 +88,14 @@ namespace uva {
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
-            template<TModelLevel N>
-            G2DMapTrie<N>::~G2DMapTrie() {
+            template<TModelLevel N, typename WordIndexType>
+            G2DMapTrie<N, WordIndexType>::~G2DMapTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     //De-allocate one grams
                     delete[] m_1_gram_data;
                     //De-allocate M-Grams
-                    for (TModelLevel idx = 0; idx < ATrie<N>::NUM_M_GRAM_LEVELS; idx++) {
+                    for (TModelLevel idx = 0; idx < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; idx++) {
 
                         delete[] m_M_gram_data[idx];
                     }
@@ -101,89 +106,93 @@ namespace uva {
                 M_Gram_Id::destroy(m_tmp_gram_id);
             };
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::add_1_gram(const T_M_Gram &oGram) {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::add_1_gram(const T_M_Gram &gram) {
                 //Register a new word, and the word id will be the one-gram id
 
-                const TShortId oneGramId = ATrie<N>::get_word_index()->register_word(oGram.tokens[0]);
+                const TShortId oneGramId = ATrie<N, WordIndexType>::get_word_index().register_word(gram.tokens[0]);
                 //Store the probability data in the one gram data storage, under its id
-                m_1_gram_data[oneGramId].prob = oGram.prob;
-                m_1_gram_data[oneGramId].back_off = oGram.back_off;
+                m_1_gram_data[oneGramId].prob = gram.prob;
+                m_1_gram_data[oneGramId].back_off = gram.back_off;
             };
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::add_m_gram(const T_M_Gram &mGram) {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::add_m_gram(const T_M_Gram &gram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
-                get_bucket_id(mGram, bucket_idx);
+                get_bucket_id(gram, bucket_idx);
 
                 //Compute the M-gram level index
-                const TModelLevel level_idx = (mGram.level - ATrie<N>::MGRAM_IDX_OFFSET);
+                const TModelLevel level_idx = (gram.level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
 
                 //Create a new M-Gram data entry
                 T_M_Gram_PB_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();
 
                 //Get the N-gram word ids
-                ATrie<N>::store_m_gram_word_ids(mGram);
+                TShortId mgram_word_ids[N] = {};
+                gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
 
                 //Create the M-gram id from the word ids
-                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, N - mGram.level, mGram.level, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(mGram) << END_LOG;
+                Byte_M_Gram_Id::create_m_gram_id(mgram_word_ids, N - gram.level, gram.level, data.id);
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
 
                 //Set the probability and back-off data
-                data.payload.prob = mGram.prob;
-                data.payload.back_off = mGram.back_off;
+                data.payload.prob = gram.prob;
+                data.payload.back_off = gram.back_off;
             };
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::add_n_gram(const T_M_Gram &nGram) {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::add_n_gram(const T_M_Gram &gram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
-                get_bucket_id(nGram, bucket_idx);
+                get_bucket_id(gram, bucket_idx);
 
                 //Create a new M-Gram data entry
                 T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
 
                 //Get the N-gram word ids
-                ATrie<N>::store_m_gram_word_ids(nGram);
+                TShortId mgram_word_ids[N] = {};
+                gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
 
                 //Create the N-gram id from the word ids
-                Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, 0, N, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(nGram) << END_LOG;
+                Byte_M_Gram_Id::create_m_gram_id(mgram_word_ids, 0, N, data.id);
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
 
                 //Set the probability data
-                data.payload = nGram.prob;
+                data.payload = gram.prob;
             };
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::post_m_grams(const TModelLevel level) {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::post_m_grams(const TModelLevel level) {
                 //Call the base class method first
 
-                ATrie<N>::post_m_grams(level);
+                ATrie<N, WordIndexType>::post_m_grams(level);
 
                 //Compute the M-gram level index
-                const TModelLevel level_idx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
+                const TModelLevel level_idx = (level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
 
                 //Sort the level's data
                 post_M_N_Grams<TProbBackOffBucket>(m_M_gram_data[level_idx], level);
             }
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::post_n_grams() {
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::post_n_grams() {
                 //Call the base class method first
 
-                ATrie<N>::post_n_grams();
+                ATrie<N, WordIndexType>::post_n_grams();
 
                 //Sort the level's data
                 post_M_N_Grams<TProbBucket>(m_N_gram_data, N);
             };
 
-            template<TModelLevel N>
+            template<TModelLevel N, typename WordIndexType>
             template<typename BUCKET_TYPE, bool back_off >
-            bool G2DMapTrie<N>::get_payload_from_gram_level(const TModelLevel level, const BUCKET_TYPE & ref,
+            bool G2DMapTrie<N, WordIndexType>::get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
                     const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) {
+                //The current level we are considering
+                const TModelLevel level = query.curr_level;
                 //Compute the begin index in the tokens and word ids arrays
                 const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - level) : (N - level));
                 LOG_DEBUG << "Retrieving payload for " << level << "-gram word id indexes: ["
@@ -193,7 +202,7 @@ namespace uva {
                 if (ref.has_data()) {
                     LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    Byte_M_Gram_Id::create_m_gram_id(ATrie<N>::m_tmp_word_ids, elem_begin_idx, level, m_tmp_gram_id);
+                    Byte_M_Gram_Id::create_m_gram_id(query.m_query_word_ids, elem_begin_idx, level, m_tmp_gram_id);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
@@ -226,117 +235,118 @@ namespace uva {
                 }
 
                 //Could not compute the probability for the given level, so backing off (recursive)!
-                LOG_DEBUG << "Unable to find the " << SSTR(level) << "-Gram  prob for: "
-                        << tokensToString(ATrie<N>::m_query_ptr->tokens, level)
-                        << ", need to back off!" << END_LOG;
+                LOG_DEBUG << "Unable to find the " << SSTR(level) << "-Gram, need to back off!" << END_LOG;
                 return false;
             }
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::get_prob_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                LOG_DEBUG << "Computing probability for a " << level << "-gram " << END_LOG;
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) {
+                LOG_DEBUG << "Computing probability for a " << query.curr_level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
-                if (level > M_GRAM_LEVEL_1) {
+                if (query.curr_level > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1
-                    LOG_DEBUG << "The level " << level << "-gram max level " << N << END_LOG;
+                    LOG_DEBUG << "The level " << query.curr_level << "-gram max level " << N << END_LOG;
 
                     //1.1.2. Compute the m-gram hash
-                    const uint8_t token_begin_idx = (ATrie<N>::m_query_ptr->level - level);
-                    const uint8_t token_end_idx = (ATrie<N>::m_query_ptr->level - 1);
-                    uint64_t gram_hash = ATrie<N>::m_query_ptr->suffix_hash(token_begin_idx);
-                    LOG_DEBUG << "The " << level << "-gram: " << tokensToString(ATrie<N>::m_query_ptr->tokens,
+                    const uint8_t token_begin_idx = (query.m_gram.level - query.curr_level);
+                    const uint8_t token_end_idx = (query.m_gram.level - 1);
+                    uint64_t gram_hash = query.m_gram.suffix_hash(token_begin_idx);
+                    LOG_DEBUG << "The " << query.curr_level << "-gram: " << tokensToString(query.m_gram.tokens,
                             token_begin_idx, token_end_idx) << " hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id(gram_hash, level);
-                    LOG_DEBUG << "The " << level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, query.curr_level);
+                    LOG_DEBUG << "The " << query.curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
-                    if (level == N) {
+                    if (query.curr_level == N) {
                         LOG_DEBUG << "Searching in N grams" << END_LOG;
 
                         //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBucket>(level, m_N_gram_data[bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBucket>(query, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
-                            prob = *payload_ptr;
-                            LOG_DEBUG << "The N-gram is found, prob: " << prob << END_LOG;
+                            query.result.prob = *payload_ptr;
+                            LOG_DEBUG << "The N-gram is found, prob: " << query.result.prob << END_LOG;
                         } else {
                             LOG_DEBUG << "The N-gram is not found!" << END_LOG;
                             //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     } else {
-                        const TModelLevel mgram_indx = level - ATrie<N>::MGRAM_IDX_OFFSET;
-                        LOG_DEBUG << "Searching in " << level << "-grams, array index: " << mgram_indx << END_LOG;
+                        const TModelLevel mgram_indx = query.curr_level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET;
+                        LOG_DEBUG << "Searching in " << query.curr_level << "-grams, array index: " << mgram_indx << END_LOG;
 
                         //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBackOffBucket>(level, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBackOffBucket>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
-                            prob = payload_ptr->prob;
-                            LOG_DEBUG << "The " << level << "-gram is found, prob: " << prob << END_LOG;
+                            query.result.prob = payload_ptr->prob;
+                            LOG_DEBUG << "The " << query.curr_level << "-gram is found, prob: " << query.result.prob << END_LOG;
                         } else {
-                            LOG_DEBUG << "The " << level << "-gram is not found!" << END_LOG;
+                            LOG_DEBUG << "The " << query.curr_level << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    prob = m_1_gram_data[ATrie<N>::get_end_word_id()].prob;
-                    LOG_DEBUG << "Getting the " << level << "-gram prob: " << prob << END_LOG;
+                    query.result.prob = m_1_gram_data[query.get_end_word_id()].prob;
+                    LOG_DEBUG << "Getting the " << query.curr_level << "-gram prob: " << query.result.prob << END_LOG;
                 }
             }
 
-            template<TModelLevel N>
-            void G2DMapTrie<N>::add_back_off_weight(const TModelLevel level, TLogProbBackOff & prob) {
-                LOG_DEBUG << "Computing back-off for a " << level << "-gram " << END_LOG;
+            template<TModelLevel N, typename WordIndexType>
+            void G2DMapTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
+                LOG_DEBUG << "Computing back-off for a " << query.curr_level << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed
-                if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1)) {
+                if (DO_SANITY_CHECKS && (query.curr_level < M_GRAM_LEVEL_1)) {
                     throw Exception("Trying to obtain a back-off weight for level zero!");
                 }
 
                 //1. Check which level M-gram we need to get probability for
-                if (level > M_GRAM_LEVEL_1) {
+                if (query.curr_level > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1 and clearly M < N
-                    LOG_DEBUG << "The level " << level << "-gram max level " << N << END_LOG;
+                    LOG_DEBUG << "The level " << query.curr_level << "-gram max level " << N << END_LOG;
 
                     //1.1.2. Compute the hash value for the back off M-gram
-                    const uint8_t token_begin_idx = (ATrie<N>::m_query_ptr->level - 1) - level;
-                    const uint8_t token_end_idx = (ATrie<N>::m_query_ptr->level - 2);
-                    uint64_t gram_hash = ATrie<N>::m_query_ptr->sub_hash(
+                    const uint8_t token_begin_idx = (query.m_gram.level - 1) - query.curr_level;
+                    const uint8_t token_end_idx = (query.m_gram.level - 2);
+                    uint64_t gram_hash = query.m_gram.sub_hash(
                             token_begin_idx, token_end_idx);
-                    LOG_DEBUG << "The: " << tokensToString(ATrie<N>::m_query_ptr->tokens, token_begin_idx, token_end_idx)
-                            << " " << level << "-gram back-off hash is " << gram_hash << END_LOG;
+                    LOG_DEBUG << "The: " << tokensToString(query.m_gram.tokens, token_begin_idx, token_end_idx)
+                            << " " << query.curr_level << "-gram back-off hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id(gram_hash, level);
-                    LOG_DEBUG << "The " << level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, query.curr_level);
+                    LOG_DEBUG << "The " << query.curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4 This is an M-gram case (1 < M < N))
                     const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                    const TModelLevel mgram_indx = (level - ATrie<N>::MGRAM_IDX_OFFSET);
-                    if (get_payload_from_gram_level<TProbBackOffBucket, true>(level, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                    const TModelLevel mgram_indx = (query.curr_level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
+                    if (get_payload_from_gram_level<TProbBackOffBucket, true>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
-                        prob += payload_ptr->back_off;
-                        LOG_DEBUG << "The " << level << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
+                        query.result.prob += payload_ptr->back_off;
+                        LOG_DEBUG << "The " << query.curr_level << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
                     } else {
                         //The query context id could be determined, but 
                         //the data was not found in the trie.
                         LOG_DEBUG << "Unable to find back-off data for "
-                                << level << "-Gram query!" << END_LOG;
+                                << query.curr_level << "-Gram query!" << END_LOG;
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    TLogProbBackOff back_off = m_1_gram_data[ATrie<N>::get_back_off_end_word_id()].back_off;
-                    prob += back_off;
-                    LOG_DEBUG << "Getting the " << level << "-gram back_off: " << back_off << END_LOG;
+                    TLogProbBackOff back_off = m_1_gram_data[query.get_back_off_end_word_id()].back_off;
+                    query.result.prob += back_off;
+                    LOG_DEBUG << "Getting the " << query.curr_level << "-gram back_off: " << back_off << END_LOG;
                 }
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class G2DMapTrie<M_GRAM_LEVEL_MAX>;
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
         }
     }
 }

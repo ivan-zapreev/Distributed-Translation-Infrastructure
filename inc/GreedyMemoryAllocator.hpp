@@ -213,7 +213,7 @@ namespace uva {
                         const size_type bytes = num * sizeof (T);
 
                         LOG_DEBUG4 << "Allocating: " << SSTR(num)
-                                << " of " << typeid (T).name() << " elements, of " << SSTR(bytes)
+                                << " elements for type " << typeid (T).name() << ", of " << SSTR(bytes)
                                 << " bytes. Available: " << SSTR(available()) << "/" << SSTR(max_size()) << END_LOG;
 
                         pointer const ptr = static_cast<pointer> (_manager.allocate(bytes));

@@ -46,7 +46,7 @@ namespace uva {
                  * This is the Trie builder class that reads an input file stream
                  * and creates n-grams and then records them into the provided Trie.
                  */
-                template<TModelLevel N>
+                template<typename TrieType>
                 class ARPATrieBuilder {
                 public:
                     /**
@@ -54,7 +54,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(ATrie<N> & trie, AFileReader & file);
+                    ARPATrieBuilder(TrieType & trie, AFileReader & file);
 
                     /**
                      * This function will read from the file and build the trie
@@ -64,7 +64,7 @@ namespace uva {
                     virtual ~ARPATrieBuilder();
                 private:
                     //The reference to the trie to be build
-                    ATrie<N> & m_trie;
+                    TrieType & m_trie;
                     //The reference to the input file with language model
                     AFileReader & m_file;
                     //Stores the next line data
@@ -78,7 +78,7 @@ namespace uva {
                      * The copy constructor
                      * @param orig the other builder to copy
                      */
-                    ARPATrieBuilder(const ARPATrieBuilder& orig);
+                    ARPATrieBuilder(const ARPATrieBuilder<TrieType>& orig);
 
                     /**
                      * This method is used to read and process the ARPA headers
@@ -90,7 +90,7 @@ namespace uva {
                      * Allows to pre-allocate memory in the tries and dictionaries
                      * @param counts the learned M-gram counts
                      */
-                    void pre_allocate(size_t counts[N]);
+                    void pre_allocate(size_t counts[TrieType::max_level]);
 
                     /**
                      * This method is used to read and process the ARPA data section
@@ -98,7 +98,7 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void read_data(size_t counts[N]);
+                    void read_data(size_t counts[TrieType::max_level]);
 
                     /**
                      * Allows to read the given Trie level M-grams from the file
