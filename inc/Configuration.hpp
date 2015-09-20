@@ -126,8 +126,9 @@ namespace uva {
                 //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
                 static const float UM_N_GRAM_MEMORY_FACTOR = 2.0;
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index does not seem to give any performance improvements
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //index does not seem to give any performance improvements. The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 static const bool DO_BITMAP_HASH_CACHE = false;
             }
@@ -138,8 +139,9 @@ namespace uva {
                 //The unordered map memory factor for the N-Grams in CtxMultiHashMapTrie
                 static const float UM_N_GRAM_MEMORY_FACTOR = 2.5;
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index does not seem to give any performance improvements
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = BASIC_WORD_INDEX;
+                //index does not seem to give any performance improvements. The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //The experiments show that with 20*bitmap cache this is about 5% faster
                 static const bool DO_BITMAP_HASH_CACHE = true;
@@ -161,8 +163,9 @@ namespace uva {
                 //this factor value 
                 static const float WORDS_PER_BUCKET_FACTOR = 1.0;
                 //Stores the word index type to be used in this trie, COUNTING
-                //index is a must to save memory for gram ids!
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //index is a must to save memory for gram ids! The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //NOTE: No need for bitmap hash cache as this is also a hashmap so there is no gain!
                 static const bool DO_BITMAP_HASH_CACHE = false;
@@ -186,8 +189,9 @@ namespace uva {
                 //with the growth of the #number of already allocated elements
                 static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
                 //Stores the word index type to be used in this trie, the  COUNTING
-                //index gives about 5% faster faster querying.
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //index gives about 5% faster faster querying. The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //The experiments show that with 20*bitmap cache this is about 5% faster
                 static const bool DO_BITMAP_HASH_CACHE = true;
@@ -195,8 +199,9 @@ namespace uva {
 
             namespace __C2WArrayTrie {
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index gives about 5% faster faster querying.
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //index gives about 5% faster faster querying. The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //The experiments show that with 20*bitmap cache this is about 5% faster
                 static const bool DO_BITMAP_HASH_CACHE = true;
@@ -207,8 +212,9 @@ namespace uva {
                 static const float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
 
                 //Stores the word index type to be used in this trie, the COUNTING
-                //index gives about 5% faster faster querying.
-                static const WordIndexTypesEnum WORD_INDEX_TYPE = COUNTING_WORD_INDEX;
+                //index gives about 5% faster faster querying. The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 static const bool DO_BITMAP_HASH_CACHE = false;
             }
