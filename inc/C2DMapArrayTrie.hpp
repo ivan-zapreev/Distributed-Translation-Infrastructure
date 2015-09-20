@@ -31,7 +31,9 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ALayeredTrie.hpp"
+
+#include "LayeredTrieBase.hpp"
+
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
@@ -60,8 +62,9 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel N, typename WordIndexType>
-            class C2DHybridTrie : public ALayeredTrie<N, WordIndexType> {
+            class C2DHybridTrie : public LayeredTrieBase<N, WordIndexType> {
             public:
+                typedef LayeredTrieBase<N, WordIndexType> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -95,6 +98,27 @@ namespace uva {
                         const float ngram_mem_factor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
+                 * @see LayeredTrieBase
+                 */
+                inline bool is_bitmap_hash_cache() {
+                    return __C2DHybridTrie::DO_BITMAP_HASH_CACHE;
+                }
+
+                /**
+                 * Computes the N-Gram context using the previous context and the current word id
+                 * 
+                 * WARNING: Must only be called for the M-gram level 1 < M < N!
+                 * @see LayeredTrieBase
+                 * 
+                 * @param wordId the current word id
+                 * @param ctxId [in] - the previous context id, [out] - the next context id
+                 * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
+                 * @return the resulting context
+                 * @throw nothing
+                 */
+                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level);
+
+                /**
                  * Allows to log the information about the instantiated trie type
                  */
                 virtual void log_trie_type_usage_info() {
@@ -109,32 +133,18 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[N]);
 
                 /**
-                 * The basic destructor
-                 */
-                virtual ~C2DHybridTrie();
-
-            protected:
-
-                /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
-                    //Get the word probability and back-off data reference
-                    return m_1_gram_data[wordId];
-                };
+                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
-                    //The data is always present.
-                    *ppData = &m_1_gram_data[wordId];
-                    return true;
-                };
+                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -142,24 +152,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TProbBackOffEntry & make_M_GramDataRef(const TModelLevel level, const TShortId wordId, TLongId ctxId) {
-                    //Store the N-tires from length 2 on and indexing starts
-                    //with 0, therefore "level-2". Get/Create the mapping for this
-                    //word in the Trie level of the N-gram
-
-                    //Obtain the context key and then create a new mapping
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-
-                    //Get the next context id
-                    const TModelLevel idx = (level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
-                    TShortId nextCtxId = m_M_gram_next_ctx_id[idx]++;
-
-                    //Store the context mapping inside the map
-                    pMGramMap[idx]->operator[](key) = nextCtxId;
-
-                    //Return the reference to the piece of memory
-                    return m_M_gram_data[idx][nextCtxId];
-                };
+                TProbBackOffEntry & make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -167,18 +160,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
-                        TLongId ctxId, const TProbBackOffEntry **ppData) {
-                    //Get the next context id
-                    if (getContextId(wordId, ctxId, level)) {
-                        //There is data found under this context
-                        *ppData = &m_M_gram_data[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET][ctxId];
-                        return true;
-                    } else {
-                        //The context id could not be found
-                        return false;
-                    }
-                };
+                bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData);
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -186,30 +168,18 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                virtual TLogProbBackOff & make_N_GramDataRef(const TShortId wordId, TLongId ctxId) {
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-                    return pNGramMap->operator[](key);
-                };
+                TLogProbBackOff & make_n_gram_data_ref(const TShortId wordId, TLongId ctxId);
 
                 /**
                  * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                virtual bool get_N_GramProb(const TShortId wordId, TLongId ctxId,
-                        TLogProbBackOff & prob) {
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                bool get_n_gram_data_ref(const TShortId wordId, TLongId ctxId, TLogProbBackOff & prob);
 
-                    //Search for the map for that context id
-                    TNGramsMap::const_iterator result = pNGramMap->find(key);
-                    if (result == pNGramMap->end()) {
-                        //There is no data found under this context
-                        return false;
-                    } else {
-                        //There is data found under this context
-                        prob = result->second;
-                        return true;
-                    }
-                };
+                /**
+                 * The basic destructor
+                 */
+                virtual ~C2DHybridTrie();
 
             private:
 
@@ -219,9 +189,9 @@ namespace uva {
                 const float m_ngram_mem_factor;
 
                 //Stores the context id counters per M-gram level: 1 < M < N
-                TShortId m_M_gram_next_ctx_id[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                TShortId m_M_gram_next_ctx_id[BASE::NUM_M_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_M_gram_num_ctx_ids[ATrie<N, WordIndexType>::NUM_M_N_GRAM_LEVELS];
+                TShortId m_M_gram_num_ctx_ids[BASE::NUM_M_N_GRAM_LEVELS];
 
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
@@ -233,12 +203,12 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                TMGramAllocator * pMGramAlloc[BASE::NUM_M_GRAM_LEVELS];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                TMGramsMap * pMGramMap[BASE::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TProbBackOffEntry * m_M_gram_data[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                TProbBackOffEntry * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -256,7 +226,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DHybridTrie(const C2DHybridTrie & orig)
-                : ALayeredTrie<N, WordIndexType>(orig.m_word_index, NULL, false), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
+                : LayeredTrieBase<N, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -280,34 +250,6 @@ namespace uva {
                  * @param counts the counts for the number of elements of each gram level
                  */
                 void preAllocateNGrams(const size_t counts[N]);
-
-                /**
-                 * Computes the N-Gram context using the previous context and the current word id
-                 * 
-                 * WARNING: Must only be called for the M-gram level 1 < M < N!
-                 * 
-                 * @param wordId the current word id
-                 * @param ctxId [in] - the previous context id, [out] - the next context id
-                 * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
-                 * @return the resulting context
-                 * @throw nothing
-                 */
-                inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-
-                    //Search for the map for that context id
-                    const TModelLevel idx = level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET;
-                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
-                    if (result == pMGramMap[idx]->end()) {
-                        //There is no data found under this context
-                        return false;
-                    } else {
-                        //Update the context with the found value uf the next context
-                        ctxId = result->second;
-                        //The context can always be computed
-                        return true;
-                    }
-                }
 
             };
         }

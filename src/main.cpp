@@ -40,8 +40,8 @@
 #include "FileStreamReader.hpp"
 #include "CStyleFileReader.hpp"
 
-#include "ATrie.hpp"
-#include "TrieExecutor.hpp"
+#include "TrieDriver.hpp"
+#include "Executor.hpp"
 
 using namespace std;
 using namespace uva::smt;
@@ -94,7 +94,7 @@ static void print_usage(const string name) {
     LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
     LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
     LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
-    LOG_USAGE << "      <trie_type>  - the trie type, one of " << __TrieExecutor::get_trie_types_str() << END_LOG;
+    LOG_USAGE << "      <trie_type>  - the trie type, one of " << __Executor::get_trie_types_str() << END_LOG;
     LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
@@ -115,7 +115,7 @@ static void print_usage(const string name) {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, __TrieExecutor::TExecutionParams & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, __Executor::TExecutionParams & params) {
     if (argc < EXPECTED_NUMBER_OF_ARGUMENTS) {
         stringstream msg;
         msg << "Incorrect number of arguments, expected >= " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
@@ -147,7 +147,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        __TrieExecutor::TExecutionParams params = {};
+        __Executor::TExecutionParams params = {};
 
         LOG_INFO << "Checking on the program arguments ..." << END_LOG;
 
@@ -159,7 +159,7 @@ int main(int argc, char** argv) {
                 << params.m_queries_file_name << "\' ..." << END_LOG;
 
         //Do the actual work, read the text corpse, create trie and do queries
-        __TrieExecutor::perform_tasks(params);
+        __Executor::perform_tasks(params);
 
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit

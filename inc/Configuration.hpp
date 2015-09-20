@@ -166,9 +166,6 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //NOTE: No need for bitmap hash cache as this is also a hashmap so there is no gain!
-                static const bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __W2CArrayTrie {

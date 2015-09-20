@@ -22,7 +22,7 @@
  *
  * Created on August 25, 2015, 29:27 PM
  */
-#include "ALayeredTrie.hpp"
+#include "LayeredTrieDriver.hpp"
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -32,29 +32,36 @@
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 
+#include "C2DHashMapTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
+
 using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, typename WordIndexType>
-            void ALayeredTrie<N, WordIndexType>::add_1_gram(const T_M_Gram &gram) {
+            template<typename TrieType >
+            void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram &gram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = gram.tokens[0];
 
                 LOG_DEBUG2 << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TShortId wordHash = ATrie<N, WordIndexType>::get_word_index().register_word(token);
+                TShortId wordHash = m_trie.get_word_index().register_word(token);
+
                 //Get the word probability and back-off data reference
-                TProbBackOffEntry & pbData = make_1_GramDataRef(wordHash);
+                TProbBackOffEntry & pbData = m_trie.make_1_gram_data_ref(wordHash);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-
-                    REPORT_COLLISION_WARNING(N, gram, wordHash, AWordIndex::UNDEFINED_WORD_ID,
+                    REPORT_COLLISION_WARNING(BASE::max_level, gram,
+                            wordHash, AWordIndex::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
                             gram.prob, gram.back_off);
                 }
@@ -65,20 +72,20 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(gram) << " wordHash = "
+                        << tokensToString<BASE::max_level>(gram) << " wordHash = "
                         << wordHash << END_LOG;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            void ALayeredTrie<N, WordIndexType>::add_m_gram(const T_M_Gram &gram) {
-                if (ATrie<N, WordIndexType>::m_is_bitmap_hash_cache) {
+            template<typename TrieType >
+            void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram &gram) {
+                if (m_is_bitmap_hash_cache) {
                     //Call the super class first, is needed for caching
-                    ATrie<N, WordIndexType>::register_m_gram_cache(gram);
+                    register_m_gram_cache(gram);
                 }
 
                 const TModelLevel level = gram.level;
                 LOG_DEBUG2 << "Adding a " << SSTR(level) << "-Gram "
-                        << tokensToString<N>(gram) << " to the Trie" << END_LOG;
+                        << tokensToString<BASE::max_level>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -88,29 +95,30 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(gram);
+                    msg << "Could not get ctxId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
 
                 // 2. Compute the hash of w4
                 const TextPieceReader & endWord = gram.tokens[level - 1];
-                TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(endWord);
+                TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
 
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(gram);
+                    msg << "Could not get end wordId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
 
                 LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
-                TProbBackOffEntry& pbData = make_M_GramDataRef(level, wordId, ctxId);
+                TProbBackOffEntry& pbData = m_trie.make_m_gram_data_ref(level, wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,
+                    REPORT_COLLISION_WARNING(BASE::max_level,
+                            gram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
                             gram.prob, gram.back_off);
                 }
@@ -121,18 +129,19 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokensToString<N>(gram) << " contextHash = "
+                        << tokensToString<BASE::max_level>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            void ALayeredTrie<N, WordIndexType>::add_n_gram(const T_M_Gram &gram) {
-                if (ATrie<N, WordIndexType>::m_is_bitmap_hash_cache) {
+            template<typename TrieType >
+            void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram &gram) {
+                if (m_is_bitmap_hash_cache) {
                     //Call the super class first, is needed for caching
-                    ATrie<N, WordIndexType>::register_m_gram_cache(gram);
+                    register_m_gram_cache(gram);
                 }
 
-                LOG_DEBUG2 << "Adding a " << N << "-Gram " << tokensToString<N>(gram) << " to the Trie" << END_LOG;
+                LOG_DEBUG2 << "Adding a " << BASE::max_level << "-Gram "
+                        << tokensToString<BASE::max_level>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
@@ -142,30 +151,31 @@ namespace uva {
 
                 if (DO_SANITY_CHECKS && !isFound) {
                     stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<N>(gram);
+                    msg << "Could not get ctxId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
 
                 // 2. Compute the hash of w4
-                const TextPieceReader & endWord = gram.tokens[N - 1];
-                TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(endWord);
+                const TextPieceReader & endWord = gram.tokens[BASE::max_level - 1];
+                TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
 
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokensToString<N>(gram);
+                    msg << "Could not get end wordId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
 
                 LOG_DEBUG2 << "wordId = computeId('" << endWord << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
-                TLogProbBackOff& pData = make_N_GramDataRef(wordId, ctxId);
+                TLogProbBackOff& pData = m_trie.make_n_gram_data_ref(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pData != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(N, gram, wordId, ctxId,
+                    REPORT_COLLISION_WARNING(BASE::max_level,
+                            gram, wordId, ctxId,
                             pData, UNDEF_LOG_PROB_WEIGHT,
                             gram.prob, UNDEF_LOG_PROB_WEIGHT);
                 }
@@ -174,12 +184,12 @@ namespace uva {
                 pData = gram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokensToString<N>(gram) << " contextHash = "
+                        << tokensToString<BASE::max_level>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            void ALayeredTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) {
+            template<typename TrieType >
+            void LayeredTrieDriver<TrieType>::get_prob_weight(TMGramQuery & query) {
                 //Get the last word in the N-gram
                 const TShortId & word_id = query.get_end_word_id();
 
@@ -194,11 +204,11 @@ namespace uva {
                     //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (get_query_context_Id<false>(query, ctx_id)) {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
-                        if (query.curr_level == N) {
+                        if (query.curr_level == BASE::max_level) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff n_gram_prob = ZERO_PROB_WEIGHT;
-                            if (get_N_GramProb(word_id, ctx_id, n_gram_prob)) {
-                                LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
+                            if (m_trie.get_n_gram_data_ref(word_id, ctx_id, n_gram_prob)) {
+                                LOG_DEBUG2 << "The " << BASE::max_level << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (wordId,ctxId) = (" << word_id << ", "
                                         << ctx_id << "), is: " << query.result.prob << END_LOG;
                                 query.result.prob = n_gram_prob;
@@ -214,7 +224,7 @@ namespace uva {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
                             const TProbBackOffEntry * entry_ptr;
-                            if (get_M_GramDataRef(query.curr_level, word_id, ctx_id, &entry_ptr)) {
+                            if (m_trie.get_m_gram_data_ref(query.curr_level, word_id, ctx_id, &entry_ptr)) {
                                 LOG_DEBUG2 << "The " << query.curr_level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
@@ -242,7 +252,7 @@ namespace uva {
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
                     const TProbBackOffEntry * entry_ptr;
-                    if (get_1_GramDataRef(word_id, & entry_ptr)) {
+                    if (m_trie.get_1_gram_data_ref(word_id, & entry_ptr)) {
 
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( prob. ) for word: " << word_id
@@ -261,8 +271,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            void ALayeredTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
+            template<typename TrieType >
+            void LayeredTrieDriver<TrieType>::add_back_off_weight(TMGramQuery & query) {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TShortId & word_id = query.get_back_off_end_word_id();
 
@@ -278,7 +288,7 @@ namespace uva {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntry * entry_ptr;
-                        if (get_M_GramDataRef(query.curr_level, word_id, ctx_id, &entry_ptr)) {
+                        if (m_trie.get_m_gram_data_ref(query.curr_level, word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
                             query.result.prob += entry_ptr->back_off;
                             LOG_DEBUG2 << "The " << query.curr_level << "-Gram log_"
@@ -304,7 +314,7 @@ namespace uva {
                     //1-Gram to try to get the back-off weight from
                     //Attempt to retrieve back-off weights
                     const TProbBackOffEntry * pb_data_ptr;
-                    if (get_1_GramDataRef(word_id, &pb_data_ptr)) {
+                    if (m_trie.get_1_gram_data_ref(word_id, &pb_data_ptr)) {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
                         query.result.prob += pb_data_ptr->back_off;
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
@@ -319,10 +329,30 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class ALayeredTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class ALayeredTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class ALayeredTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class ALayeredTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
+            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
+            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
+            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
+            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
+            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
+            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+
+            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >::type >;
+            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>::type >;
+            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >::type >;
+            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >::type >;
         }
     }
 }

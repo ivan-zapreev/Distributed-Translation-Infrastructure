@@ -44,12 +44,13 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             G2DMapTrie<N, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
-            : ATrie<N, WordIndexType>(word_index, __G2DMapTrie::DO_BITMAP_HASH_CACHE), m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            : GenericTrieBase<N, WordIndexType>(word_index),
+            m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
-                memset(m_M_gram_data, 0, ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
+                memset(m_M_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
 
                 //Allocate the M-gram id memory for queries
                 Byte_M_Gram_Id::allocate_byte_m_gram_id(N, m_tmp_gram_id);
@@ -63,10 +64,10 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             void G2DMapTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //Call the base-class
-                ATrie<N, WordIndexType>::pre_allocate(counts);
+                BASE::pre_allocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                num_buckets[0] = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
+                num_buckets[0] = BASE::get_word_index().get_number_of_words(counts[0]);
                 m_1_gram_data = new TProbBackOffEntry[num_buckets[0]];
                 memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TProbBackOffEntry));
 
@@ -76,7 +77,7 @@ namespace uva {
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
-                for (TModelLevel idx = 0; idx < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; idx++) {
+                for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
                     num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
                             __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
                     m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
@@ -95,7 +96,7 @@ namespace uva {
                     //De-allocate one grams
                     delete[] m_1_gram_data;
                     //De-allocate M-Grams
-                    for (TModelLevel idx = 0; idx < ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS; idx++) {
+                    for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
 
                         delete[] m_M_gram_data[idx];
                     }
@@ -110,7 +111,7 @@ namespace uva {
             void G2DMapTrie<N, WordIndexType>::add_1_gram(const T_M_Gram &gram) {
                 //Register a new word, and the word id will be the one-gram id
 
-                const TShortId oneGramId = ATrie<N, WordIndexType>::get_word_index().register_word(gram.tokens[0]);
+                const TShortId oneGramId = BASE::get_word_index().register_word(gram.tokens[0]);
                 //Store the probability data in the one gram data storage, under its id
                 m_1_gram_data[oneGramId].prob = gram.prob;
                 m_1_gram_data[oneGramId].back_off = gram.back_off;
@@ -124,7 +125,7 @@ namespace uva {
                 get_bucket_id(gram, bucket_idx);
 
                 //Compute the M-gram level index
-                const TModelLevel level_idx = (gram.level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
+                const TModelLevel level_idx = (gram.level - BASE::MGRAM_IDX_OFFSET);
 
                 //Create a new M-Gram data entry
                 T_M_Gram_PB_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();
@@ -167,11 +168,12 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             void G2DMapTrie<N, WordIndexType>::post_m_grams(const TModelLevel level) {
                 //Call the base class method first
-
-                ATrie<N, WordIndexType>::post_m_grams(level);
+                if (BASE::is_post_grams(level)) {
+                    BASE::post_m_grams(level);
+                }
 
                 //Compute the M-gram level index
-                const TModelLevel level_idx = (level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
+                const TModelLevel level_idx = (level - BASE::MGRAM_IDX_OFFSET);
 
                 //Sort the level's data
                 post_M_N_Grams<TProbBackOffBucket>(m_M_gram_data[level_idx], level);
@@ -180,8 +182,10 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             void G2DMapTrie<N, WordIndexType>::post_n_grams() {
                 //Call the base class method first
+                if (BASE::is_post_grams(N)) {
+                    BASE::post_n_grams();
+                }
 
-                ATrie<N, WordIndexType>::post_n_grams();
 
                 //Sort the level's data
                 post_M_N_Grams<TProbBucket>(m_N_gram_data, N);
@@ -274,7 +278,7 @@ namespace uva {
                             //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     } else {
-                        const TModelLevel mgram_indx = query.curr_level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET;
+                        const TModelLevel mgram_indx = query.curr_level - BASE::MGRAM_IDX_OFFSET;
                         LOG_DEBUG << "Searching in " << query.curr_level << "-grams, array index: " << mgram_indx << END_LOG;
 
                         //1.1.4.2 This is an M-gram case (1 < M < N))
@@ -323,7 +327,7 @@ namespace uva {
 
                     //1.1.4 This is an M-gram case (1 < M < N))
                     const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                    const TModelLevel mgram_indx = (query.curr_level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET);
+                    const TModelLevel mgram_indx = (query.curr_level - BASE::MGRAM_IDX_OFFSET);
                     if (get_payload_from_gram_level<TProbBackOffBucket, true>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
                         query.result.prob += payload_ptr->back_off;

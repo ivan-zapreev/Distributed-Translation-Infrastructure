@@ -23,15 +23,15 @@
  * Created on September 18, 2015, 7:10 PM
  */
 
-#ifndef TRIE_EXECUTOR_HPP
-#define	TRIE_EXECUTOR_HPP
+#ifndef EXECUTOR_HPP
+#define	EXECUTOR_HPP
 #include <string>
 
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
-#include "ATrie.hpp"
+#include "TrieDriver.hpp"
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
@@ -58,7 +58,7 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            namespace __TrieExecutor {
+            namespace __Executor {
 
                 //Initialize constants
                 static const string TC2DMapTrie_STR = string("c2dm");
@@ -154,6 +154,10 @@ namespace uva {
 
                     //A.1. Create the TrieBuilder and give the trie to it
                     ARPATrieBuilder<TrieType> builder(trie, fstr);
+                    
+                    LOG_INFO3 << "Collision detections are: "
+                            << (DO_SANITY_CHECKS ? "ON" : "OFF")
+                            << " !" << END_LOG;
 
                     //A.2. Build the trie
                     builder.build();
@@ -196,7 +200,7 @@ namespace uva {
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    MGramQuery<TrieType::max_level, typename TrieType::word_index_type> query(trie.get_word_index());
+                    MGramQuery < TrieType::max_level, typename TrieType::WordIndexType > query(trie.get_word_index());
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -227,16 +231,16 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void execute(const __TrieExecutor::TExecutionParams& params, AFileReader &modelFile, AFileReader &testFile) {
+                void execute(const __Executor::TExecutionParams& params, AFileReader &modelFile, AFileReader &testFile) {
                     //Get the word index type and make an instance of the word index
-                    typename TrieType::word_index_type word_index(params.m_word_index_mem_fact);
+                    typename TrieType::WordIndexType word_index(params.m_word_index_mem_fact);
                     //Make an instance of the trie
                     TrieType trie(word_index);
                     //Declare time variables for CPU times in seconds
                     double startTime, endTime;
                     //Declare the statistics monitor and its data
                     TMemotyUsage memStatStart = {}, memStatEnd = {};
-                    
+
                     //Log the usage information
                     trie.log_trie_type_usage_info();
 
@@ -272,26 +276,26 @@ namespace uva {
                 }
 
                 template<typename WordIndexType>
-                static void choose_trie_type_and_execute(const __TrieExecutor::TExecutionParams& params,
+                static void choose_trie_type_and_execute(const __Executor::TExecutionParams& params,
                         AFileReader &modelFile, AFileReader &testFile) {
                     switch (params.m_trie_type) {
                         case TrieTypesEnum::C2DH_TRIE:
-                            execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType> >(params, modelFile, testFile);
+                            execute < TrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2DM_TRIE:
-                            execute < C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType> >(params, modelFile, testFile);
+                            execute < TrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2WA_TRIE:
-                            execute < C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType> >(params, modelFile, testFile);
+                            execute < TrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::G2DM_TRIE:
-                            execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType> >(params, modelFile, testFile);
+                            execute < TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CA_TRIE:
-                            execute < W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType> >(params, modelFile, testFile);
+                            execute < TrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CH_TRIE:
-                            execute<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>::type > (params, modelFile, testFile);
+                            execute < TrieDriver < LayeredTrieDriver<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>::type>> > (params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;
@@ -307,7 +311,7 @@ namespace uva {
                  * @param testFile the model file existing and opened, will be closed by this function
                  */
                 static void choose_word_index_and_execute(
-                        __TrieExecutor::TExecutionParams& params,
+                        __Executor::TExecutionParams& params,
                         AFileReader &modelFile, AFileReader &testFile) {
                     LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
 
@@ -339,7 +343,7 @@ namespace uva {
                  * @param modelFile the open model file, will be closed within this call stack
                  * @param testFile the open queries file, will be closed within this call stack
                  */
-                static void choose_and_execute(__TrieExecutor::TExecutionParams& params,
+                static void choose_and_execute(__Executor::TExecutionParams& params,
                         AFileReader &modelFile, AFileReader &testFile) {
                     if (params.m_trie_type_name == TC2DMapTrie_STR) {
                         params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
@@ -384,7 +388,7 @@ namespace uva {
                  * file and query the trie for frequencies.
                  * @param params the runtime program parameters
                  */
-                static void perform_tasks(__TrieExecutor::TExecutionParams& params) {
+                static void perform_tasks(__Executor::TExecutionParams& params) {
                     //Declare the statistics monitor and its data
                     TMemotyUsage memStatStart = {}, memStatEnd = {};
 

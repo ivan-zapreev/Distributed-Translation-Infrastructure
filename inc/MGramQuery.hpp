@@ -178,23 +178,12 @@ namespace uva {
                  * Allows to check if the given back-off sub-m-gram contains 
                  * an unknown word for the given current level.
                  */
-                bool has_no_unk_words_back_off() const {
-                    uint8_t level_flags = (m_unk_word_flags & BACK_OFF_UNK_MASKS[curr_level]);
+                template<bool is_back_off>
+                bool has_no_unk_words() const {
+                    uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level] ));
 
-                    LOG_DEBUG << "The back-off level: " << curr_level << " unknown word flags are: "
-                            << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
-
-                    return (level_flags == 0);
-                }
-
-                /**
-                 * Allows to check if the given probability sub-m-gram contains
-                 * an unknown word for the given current level.
-                 */
-                bool has_no_unk_words_prob() const {
-                    uint8_t level_flags = (m_unk_word_flags & PROB_UNK_MASKS[curr_level]);
-
-                    LOG_DEBUG << "The probability level: " << curr_level << " unknown word flags are: "
+                    LOG_DEBUG << "The " << ( (is_back_off) ? "back-off" : "probability" )
+                            << " level: " << curr_level << " unknown word flags are: "
                             << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
 
                     return (level_flags == 0);

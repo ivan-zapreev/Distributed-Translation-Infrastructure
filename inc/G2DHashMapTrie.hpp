@@ -30,7 +30,6 @@
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 
-#include "ATrie.hpp"
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
 #include "BitMGramId.hpp"
@@ -40,6 +39,8 @@
 
 #include "ArrayUtils.hpp"
 #include "DynamicMemoryArrays.hpp"
+
+#include "GenericTrieBase.hpp"
 
 using namespace std;
 
@@ -97,14 +98,23 @@ namespace uva {
              * @param N - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel N, typename WordIndexType>
-            class G2DMapTrie : public ATrie<N, WordIndexType> {
+            class G2DMapTrie : public GenericTrieBase<N, WordIndexType> {
             public:
+                typedef GenericTrieBase<N, WordIndexType> BASE;
 
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
                  */
                 explicit G2DMapTrie(WordIndexType & word_index);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                template<bool is_back_off>
+                inline bool is_bitmap_hash_cache(MGramQuery<N, WordIndexType> & query) {
+                    return true;
+                };
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -129,20 +139,37 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                virtual void add_1_gram(const T_M_Gram &oGram);
+                void add_1_gram(const T_M_Gram &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
-                virtual void add_m_gram(const T_M_Gram &mGram);
+                void add_m_gram(const T_M_Gram &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                virtual void add_n_gram(const T_M_Gram &nGram);
+                void add_n_gram(const T_M_Gram &nGram);
+
+                /**
+                 * This function allows to retrieve the probability stored for the given M-gram level.
+                 * If the value is found then it must be set to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * @see ATrie
+                 */
+                void get_prob_weight(MGramQuery<N, WordIndexType> & query);
+
+                /**
+                 * This function allows to retrieve the back-off stored for the given M-gram level.
+                 * If the value is found then it must be added to the prob parameter of the function.
+                 * If the value is not found then the prob parameter of the function must not be changed.
+                 * In that case the back-off weight is just zero.
+                 * @see ATrie
+                 */
+                void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -155,7 +182,7 @@ namespace uva {
                     //data has to be ordered per bucket per id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || ATrie<N, WordIndexType>::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || BASE::is_post_grams(level);
                 }
 
                 /**
@@ -180,23 +207,6 @@ namespace uva {
                  * @see ATrie
                  */
                 virtual void post_n_grams();
-
-                /**
-                 * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be set to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * @see ATrie
-                 */
-                virtual void get_prob_weight(MGramQuery<N, WordIndexType> & query);
-
-                /**
-                 * This function allows to retrieve the back-off stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * In that case the back-off weight is just zero.
-                 * @see ATrie
-                 */
-                virtual void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
 
                 /**
                  * Allows to get the bucket index for the given M-gram
@@ -271,13 +281,13 @@ namespace uva {
             private:
                 //Stores the pointer to the temporary re-usable M-gram id for queries
                 T_Gram_Id_Storage_Ptr m_tmp_gram_id;
-                        
+
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
                 typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
-                TProbBackOffBucket * m_M_gram_data[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                TProbBackOffBucket * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
                 typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;

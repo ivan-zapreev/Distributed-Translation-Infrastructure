@@ -42,10 +42,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
-            : ALayeredTrie<N, WordIndexType>(word_index,
-            [&] (const TShortId wordId, TLongId &ctxId, const TModelLevel level) -> bool {
-
-                return this->getContextId(wordId, ctxId, level); }, __W2CHybridTrie::DO_BITMAP_HASH_CACHE),
+            : LayeredTrieBase<N, WordIndexType>(word_index),
             m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description
@@ -66,10 +63,10 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             void W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[N]) {
                 //01) Pre-allocate the word index super class call
-                ALayeredTrie<N, WordIndexType>::pre_allocate(counts);
-                
+                BASE::pre_allocate(counts);
+
                 //Compute the number of words to be stored
-                m_word_arr_size = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
+                m_word_arr_size = BASE::get_word_index().get_number_of_words(counts[0]);
 
                 //02) Allocate the factory
                 m_storage_factory = new StorageFactory<N>(counts);
@@ -102,6 +99,125 @@ namespace uva {
                     memset(m_mgram_mapping[idx], 0, m_word_arr_size * sizeof (StorageContainer*));
                 }
             }
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+                LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
+                        << wordId << ", ctxId: " << ctxId << END_LOG;
+                //Retrieve the context data for the given word
+                StorageContainer* ctx_mapping = m_mgram_mapping[level - BASE::MGRAM_IDX_OFFSET][wordId];
+
+                //Check that the context data is available
+                if (ctx_mapping != NULL) {
+                    typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                    if (result == ctx_mapping->end()) {
+                        LOG_DEBUG2 << "Can not find ctxId: " << SSTR(ctxId) << " for level: "
+                                << SSTR(level) << ", wordId: " << SSTR(wordId) << END_LOG;
+                        return false;
+                    } else {
+                        LOG_DEBUG2 << "Found next ctxId: " << SSTR(result->second)
+                                << " for level: " << SSTR(level) << ", wordId: "
+                                << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                        ctxId = result->second;
+                        return true;
+                    }
+                } else {
+                    LOG_DEBUG2 << "No context data for: " << SSTR(level)
+                            << ", wordId: " << SSTR(wordId) << END_LOG;
+                    return false;
+                }
+            }
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            TProbBackOffEntry & W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_1_gram_data_ref(const TShortId wordId) {
+                //Get the word probability and back-off data reference
+                return m_mgram_data[0][wordId];
+            };
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+                //Get the word probability and back-off data reference
+
+                *ppData = &m_mgram_data[0][wordId];
+
+                //The data should always be present, unless of course this is a bad index!
+                return true;
+            };
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            TProbBackOffEntry& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+                const TModelLevel idx = (level - BASE::MGRAM_IDX_OFFSET);
+
+                //Get the word mapping first
+                StorageContainer*& ctx_mapping = m_mgram_mapping[idx][wordId];
+
+                //If the mappings is not there yet for the contexts then create it
+                if (ctx_mapping == NULL) {
+                    ctx_mapping = m_storage_factory->create(level);
+                    LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(level) << END_LOG;
+                }
+
+                //Add the new element to the context mapping
+                TShortId & nextCtxId = ctx_mapping->operator[](ctxId);
+                nextCtxId = next_ctx_id[idx]++;
+
+                //Return the reference to it
+                return m_mgram_data[level - 1][nextCtxId];
+            };
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                    TLongId ctxId, const TProbBackOffEntry **ppData) {
+                //Get the context id, note we use short ids here!
+                if (get_ctx_id(wordId, ctxId, level)) {
+                    //Return the data by the context
+                    *ppData = &m_mgram_data[level - 1][ctxId];
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            TLogProbBackOff& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+                StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][wordId];
+                if (ctx_mapping == NULL) {
+                    ctx_mapping = m_storage_factory->create(N);
+                    LOG_DEBUG3 << "Allocating storage for level " << SSTR(N)
+                            << ", wordId " << SSTR(wordId) << END_LOG;
+                }
+
+                LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(N)
+                        << ", wordId " << SSTR(wordId)
+                        << ", ctxId " << SSTR(ctxId) << END_LOG;
+                return (TLogProbBackOff &) ctx_mapping->operator[](ctxId);
+            };
+
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
+                    TLogProbBackOff & prob) {
+                //Try to find the word mapping first
+                StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][wordId];
+
+                //If the mapping is present the search further, otherwise return false
+                if (ctx_mapping != NULL) {
+                    typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                    if (result == ctx_mapping->end()) {
+                        //The data could not be found
+                        return false;
+                    } else {
+                        //The data could be found
+                        LOG_DEBUG1 << "Found the probability value: " << SSTR((TLogProbBackOff) result->second)
+                                << ", wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+                        prob = (TLogProbBackOff &) result->second;
+                        return true;
+                    }
+                } else {
+                    LOG_DEBUG1 << "There are no elements @ level: " << SSTR(N) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                    return false;
+                }
+            };
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {

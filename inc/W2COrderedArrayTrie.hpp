@@ -34,7 +34,9 @@
 
 #include "Globals.hpp"
 #include "Logger.hpp"
-#include "ALayeredTrie.hpp"
+
+#include "LayeredTrieBase.hpp"
+
 #include "AWordIndex.hpp"
 #include "ArrayUtils.hpp"
 #include "DynamicMemoryArrays.hpp"
@@ -99,14 +101,36 @@ namespace uva {
              * @param N the maximum number of levels in the trie.
              */
             template<TModelLevel N, typename WordIndexType>
-            class W2CArrayTrie : public ALayeredTrie<N, WordIndexType> {
+            class W2CArrayTrie : public LayeredTrieBase<N, WordIndexType> {
             public:
+                typedef LayeredTrieBase<N, WordIndexType> BASE;
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
                 explicit W2CArrayTrie(WordIndexType & word_index);
+
+                /**
+                 * @see LayeredTrieBase
+                 */
+                inline bool is_bitmap_hash_cache() {
+                    return __W2CArrayTrie::DO_BITMAP_HASH_CACHE;
+                }
+
+                /**
+                 * Computes the N-Gram context using the previous context and the current word id
+                 * 
+                 * WARNING: Must only be called for the M-gram level 1 < M < N!
+                 * @see LayeredTrieBase
+                 * 
+                 * @param wordId the current word id
+                 * @param ctxId [in] - the previous context id, [out] - the next context id
+                 * @param level the M-gram level we are working with M
+                 * @return the resulting context
+                 * @throw nothing.
+                 */
+                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level);
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -135,9 +159,54 @@ namespace uva {
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || ATrie<N, WordIndexType>::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || BASE::is_post_grams(level);
                 }
 
+                /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId);
+
+                /**
+                 * Allows to retrieve the data storage structure for the One gram with the given Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData);
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                TProbBackOffEntry& make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId);
+
+                /**
+                 * Allows to retrieve the data storage structure for the M gram
+                 * with the given M-gram level Id. M-gram context and last word Id.
+                 * If the storage structure does not exist, throws an exception.
+                 * For more details @see ATrie
+                 */
+                bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                        const TLongId ctxId, const TProbBackOffEntry **ppData);
+
+                /**
+                 * Allows to retrieve the data storage structure for the N gram.
+                 * Given the N-gram context and last word Id.
+                 * If the storage structure does not exist, return a new one.
+                 * For more details @see ATrie
+                 */
+                TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+
+                /**
+                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
+                 * For more details @see ATrie
+                 */
+                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob);
+                
                 /**
                  * The basic destructor
                  */
@@ -167,117 +236,6 @@ namespace uva {
                 typedef WordDataEntry<T_N_GramData> T_N_GramWordEntry;
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
-                 */
-                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) {
-                    LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                    return m_1_gram_data[wordId];
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, throws an exception.
-                 * For more details @see ATrie
-                 */
-                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) {
-                    LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                    *ppData = &m_1_gram_data[wordId];
-
-                    //The data should always be present, unless of course this is a bad index!
-
-                    return true;
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
-                 */
-                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
-                    LOG_DEBUG2 << "Adding\t" << SSTR(level) << "-gram with ctxId:\t"
-                            << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
-
-                    //Get the sub-array reference. 
-                    typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET], wordId);
-
-                    //Store the context and word ids
-                    ref.id = ctxId;
-
-                    //Return the reference to the newly allocated element
-
-                    return ref.payload;
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
-                 * For more details @see ATrie
-                 */
-                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
-                        const TLongId ctxId, const TProbBackOffEntry **ppData) {
-                    LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
-                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                    //Get the entry
-                    const typename T_M_GramWordEntry::TElemType * pEntry;
-                    if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
-                        //Return the pointer to the probability and back-off structure
-                        *ppData = &pEntry->payload;
-                        return true;
-                    } else {
-                        //The data could not be found
-                        return false;
-                    }
-                };
-
-                /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
-                 */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) {
-                    LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with ctxId: "
-                            << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
-
-                    //Get the sub-array reference. 
-                    typename T_N_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, wordId);
-
-                    //Store the context and word ids
-                    ref.id = ctxId;
-
-                    //Return the reference to the probability
-                    return ref.payload;
-                };
-
-                /**
-                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
-                 * For more details @see ATrie
-                 */
-                virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
-                        TLogProbBackOff & prob) {
-                    LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
-                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                    //Get the entry
-                    const typename T_N_GramWordEntry::TElemType * pEntry;
-                    if (get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
-                        //Return the reference to the probability
-                        prob = pEntry->payload;
-                        return true;
-                    } else {
-                        //The data could not be found
-                        return false;
-                    }
-                };
-
-                /**
                  * The purpose of this local function is three fold:
                  * 1. First we compute the context index offset values.
                  * 2. Second we re-order the context data arrays per word.
@@ -291,7 +249,7 @@ namespace uva {
                     //The initial value is 1, although in this Trie it should
                     //not matter much, but it is better to reserve 0 for
                     //an undefined context value
-                    TShortId cio = ATrie<N, WordIndexType>::FIRST_VALID_CTX_ID;
+                    TShortId cio = BASE::FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
                     for (TShortId wordId = AWordIndex::UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
@@ -313,15 +271,20 @@ namespace uva {
 
                 virtual void post_m_grams(const TModelLevel level) {
                     //Call the base class method first
-                    ATrie<N, WordIndexType>::post_m_grams(level);
+                    //Call the base class method first
+                    if (BASE::is_post_grams(level)) {
+                        BASE::post_m_grams(level);
+                    }
 
                     //Sort the level's data
-                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET]);
+                    post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET]);
                 }
 
                 virtual void post_n_grams() {
                     //Call the base class method first
-                    ATrie<N, WordIndexType>::post_n_grams();
+                    if (BASE::is_post_grams(N)) {
+                        BASE::post_n_grams();
+                    }
 
                     //Sort the level's data
                     post_M_N_Grams<T_N_GramWordEntry>(m_N_gram_word_2_data);
@@ -337,7 +300,7 @@ namespace uva {
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                T_M_GramWordEntry * m_M_gram_word_2_data[ATrie<N, WordIndexType>::NUM_M_GRAM_LEVELS];
+                T_M_GramWordEntry * m_M_gram_word_2_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
@@ -432,68 +395,6 @@ namespace uva {
                         LOG_DEBUG2 << "Unable to find data entry for " << SSTR(level) << "-gram ctxId: "
                                 << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
 
-                        return false;
-                    }
-                }
-
-                /**
-                 * Computes the N-Gram context using the previous context and the current word id
-                 * 
-                 * WARNING: Must only be called for the M-gram level 1 < M < N!
-                 * 
-                 * @param wordId the current word id
-                 * @param ctxId [in] - the previous context id, [out] - the next context id
-                 * @param level the M-gram level we are working with M
-                 * @return the resulting context
-                 * @throw nothing.
-                 */
-                inline bool getContextId(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
-                    //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - ATrie<N, WordIndexType>::MGRAM_IDX_OFFSET;
-
-                    if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
-                        stringstream msg;
-                        msg << "Unsupported level id: " << level;
-                        throw Exception(msg.str());
-                    }
-
-                    LOG_DEBUG2 << "Searching next ctxId for " << SSTR(level)
-                            << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
-                            << SSTR(ctxId) << END_LOG;
-
-                    //First get the sub-array reference. 
-                    const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
-
-                    if (DO_SANITY_CHECKS && ref.has_data()) {
-                        LOG_DEBUG3 << "ref.size: " << SSTR(ref.size()) << ", ref.cio: "
-                                << SSTR(ref.cio) << ", ctxId range: [" << SSTR(ref[0].id) << ", "
-                                << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
-                    }
-
-                    //Check that if this is the 2-Gram case and the previous context
-                    //id is 0 then it is the unknown word id, at least this is how it
-                    //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
-                        LOG_WARNING << "Perhaps we are being paranoid but there "
-                                << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
-                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
-                                << ") or unknown(" << SSTR(AWordIndex::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
-                    }
-
-                    //Get the local entry index and then use it to compute the next context id
-                    typename T_M_GramWordEntry::TIndexType localIdx;
-                    //If the local entry index could be found then compute the next ctxId
-                    if (get_M_N_GramLocalEntryIdx(ref, ctxId, localIdx)) {
-                        LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
-                                << ", size = " << SSTR(ref.size()) << ", localIdx = "
-                                << SSTR(localIdx) << ", resulting ctxId = "
-                                << SSTR(ref.cio + localIdx) << END_LOG;
-
-                        //The next ctxId is the sum of the local index and the context index offset
-                        ctxId = ref.cio + localIdx;
-                        return true;
-                    } else {
-                        //The local index could not be found
                         return false;
                     }
                 }

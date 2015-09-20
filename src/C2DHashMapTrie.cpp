@@ -44,16 +44,13 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             C2DMapTrie<N, WordIndexType>::C2DMapTrie(
-            WordIndexType & word_index,
+                    WordIndexType & word_index,
                     const float mgram_mem_factor,
                     const float ngram_mem_factor)
-            : ALayeredTrie<N, WordIndexType>(word_index,
-            [] (const TShortId wordId, TLongId & ctxId, const TModelLevel level) -> bool {
-
-                return C2DMapTrie<N, WordIndexType>::getContextId(wordId, ctxId, level); }, __C2DMapTrie::DO_BITMAP_HASH_CACHE),
+            : LayeredTrieBase<N, WordIndexType>(word_index),
             m_mgram_mem_factor(mgram_mem_factor),
             m_ngram_mem_factor(ngram_mem_factor),
-                        m_1_gram_data(NULL) {
+            m_1_gram_data(NULL) {
                 if (DO_SANITY_CHECKS) {
                     //Initialize the hash statistics map
                     for (int i = 0; i < N; i++) {
@@ -75,12 +72,12 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             void C2DMapTrie<N, WordIndexType>::preAllocateOGrams(const size_t counts[N]) {
                 //Compute the number of words to be stored
-                const size_t num_word_ids = ATrie<N, WordIndexType>::get_word_index().get_number_of_words(counts[0]);
-                
+                const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
+
                 //Pre-allocate the 1-Gram data
                 m_1_gram_data = new TProbBackOffEntry[num_word_ids];
                 memset(m_1_gram_data, 0, num_word_ids * sizeof (TProbBackOffEntry));
-                
+
 
                 //Record the dummy probability and back-off values for the unknown word
                 TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
@@ -115,7 +112,7 @@ namespace uva {
             void C2DMapTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
                 //Call the super class pre-allocator!
 
-                ALayeredTrie<N, WordIndexType>::pre_allocate(counts);
+                BASE::pre_allocate(counts);
 
                 //Pre-allocate 0-Grams
                 preAllocateOGrams(counts);
@@ -126,6 +123,115 @@ namespace uva {
                 //Pre-allocate N-Grams
                 preAllocateNGrams(counts);
             }
+
+            template<TModelLevel N, typename WordIndexType>
+            bool C2DMapTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+                //Use the Szudzik algorithm as it outperforms Cantor
+                ctxId = szudzik(wordId, ctxId);
+                //The context can always be computed
+                return true;
+            }
+
+            template<TModelLevel N, typename WordIndexType>
+            TProbBackOffEntry & C2DMapTrie<N, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
+                if (DO_SANITY_CHECKS) {
+                    //Add hash key statistics
+                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                        hashSizes[0].first = min<TLongId>(wordId, hashSizes[0].first);
+                        hashSizes[0].second = max<TLongId>(wordId, hashSizes[0].second);
+                    }
+                }
+
+                //Get the word probability and back-off data reference
+                return m_1_gram_data[wordId];
+            };
+
+            template<TModelLevel N, typename WordIndexType>
+            bool C2DMapTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+                //The data is always present.
+                *ppData = &m_1_gram_data[wordId];
+                return true;
+            };
+
+            template<TModelLevel N, typename WordIndexType>
+            TProbBackOffEntry & C2DMapTrie<N, WordIndexType>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId) {
+                //Store the N-tires from length 2 on and indexing starts
+                //with 0, therefore "level-2". Get/Create the mapping for this
+                //word in the Trie level of the N-gram
+
+                //Note: there is no need to check on the result of the function
+                //as in this Trie the context can always be computed!
+                (void) get_ctx_id(wordId, ctxId);
+
+                //Add hash key statistics
+                if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                    hashSizes[level - 1].first = min<TLongId>(ctxId, hashSizes[level - 1].first);
+                    hashSizes[level - 1].second = max<TLongId>(ctxId, hashSizes[level - 1].second);
+                }
+
+                return pMGramMap[level - BASE::MGRAM_IDX_OFFSET]->operator[](ctxId);
+            };
+
+            template<TModelLevel N, typename WordIndexType>
+            bool C2DMapTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                    TLongId ctxId, const TProbBackOffEntry **ppData) {
+                //Get the next context id
+                if (get_ctx_id(wordId, ctxId)) {
+                    //Search for the map for that context id
+                    const TModelLevel idx = (level - BASE::MGRAM_IDX_OFFSET);
+                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(ctxId);
+                    if (result == pMGramMap[idx]->end()) {
+                        //There is no data found under this context
+                        return false;
+                    } else {
+                        //There is data found under this context
+                        *ppData = &result->second;
+                        return true;
+                    }
+                } else {
+                    //The context id could not be found
+                    return false;
+                }
+            };
+
+            template<TModelLevel N, typename WordIndexType>
+            TLogProbBackOff & C2DMapTrie<N, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, TLongId ctxId) {
+                //Data stores the N-tires from length 2 on, therefore "idx-1"
+                //Get/Create the mapping for this word in the Trie level of the N-gram
+
+                //Note: there is no need to check on the result of the function
+                //as in this Trie the context can always be computed!
+                (void) get_ctx_id(wordId, ctxId);
+
+                //Add hash key statistics
+                if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
+                    hashSizes[N - 1].first = min<TLongId>(ctxId, hashSizes[N - 1].first);
+                    hashSizes[N - 1].second = max<TLongId>(ctxId, hashSizes[N - 1].second);
+                }
+
+                return pNGramMap->operator[](ctxId);
+            };
+
+            template<TModelLevel N, typename WordIndexType>
+            bool C2DMapTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, TLongId ctxId,
+                    TLogProbBackOff & prob) {
+                //Get the next context id
+                if (get_ctx_id(wordId, ctxId)) {
+                    //Search for the map for that context id
+                    TNGramsMap::const_iterator result = pNGramMap->find(ctxId);
+                    if (result == pNGramMap->end()) {
+                        //There is no data found under this context
+                        return false;
+                    } else {
+                        //There is data found under this context
+                        prob = result->second;
+                        return true;
+                    }
+                } else {
+                    //The context id could not be found
+                    return false;
+                }
+            };
 
             template<TModelLevel N, typename WordIndexType>
             C2DMapTrie<N, WordIndexType>::~C2DMapTrie() {

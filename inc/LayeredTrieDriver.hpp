@@ -1,5 +1,5 @@
 /* 
- * File:   ALayeredTrie.hpp
+ * File:   LayeredTrieDriver.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -29,18 +29,23 @@
 #include <string>       // std::string
 #include <functional>   // std::function 
 
-#include "ATrie.hpp"
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
 
+#include "BitmapHashCache.hpp"
+
+#include "GenericTrieBase.hpp"
+#include "LayeredTrieBase.hpp"
+
 using namespace std;
 using namespace uva::smt::exceptions;
+using namespace uva::smt::file;
 using namespace uva::smt::hashing;
 using namespace uva::smt::tries;
-using namespace uva::smt::file;
+using namespace uva::smt::tries::caching;
 using namespace uva::smt::tries::dictionary;
 
 namespace uva {
@@ -57,45 +62,25 @@ namespace uva {
                         << newProb << "," << newBackOff << ")" << END_LOG;
 
             /**
-             * This is a function type for the function that should be able to
-             * provide a new (next) context id for a word id and a previous context.
-             * 
-             * WARNING: Must only be called for the M-gram level 1 < M <= N!
-             * 
-             * @param wordId the word id
-             * @param ctxId the in/out parameter that is a context id, the input is the previous context id, the output is the next context id
-             * @param level the M-gram level we are working with, must have 1 < M <= N or UNDEF_NGRAM_LEVEL!
-             * @result true if the next context id could be computed, otherwise false
-             * @throw nothign
+             * This is the common generic trie base class for layered tries.
+             * @param N the maximum level of the considered N-gram, i.e. the N value
+             * @param TrieType the type of word index to be used
              */
-            typedef std::function<bool (const TShortId wordId, TLongId & ctxId, const TModelLevel level) > TGetCtxIdFunct;
-
-            /**
-             * This is a common abstract class for a Layered Trie implementation. Layered
-             * means we need to go from context + word to context to get the N-Gram id.
-             * The purpose of having this as a template class is performance optimization.
-             * @param N - the maximum level of the considered N-gram, i.e. the N value
-             */
-            template<TModelLevel N, typename WordIndexType >
-            class ALayeredTrie : public ATrie<N, WordIndexType> {
+            template<typename TrieType >
+            class LayeredTrieDriver : public GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> {
             public:
+                typedef GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> BASE;
+                typedef typename TrieType::WordIndexType WordIndexType;
+                typedef typename TrieType::TMGramQuery TMGramQuery;
 
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
-                 * @param is_birmap_hash_cache - allows to enable the bitmap hash cache for the M-grams.
-                 * the latter records the hashes of all the M-gram present in the tries and then before
-                 * querying checks if the hash of the queries M-gram is present if not then we do an
-                 * immediate back-off, otherwise we search for the M-gram. This is an experimental feature
-                 * therefore it the parameter's default is false. Also this feature is to be used with
-                 * the multi-level context index tries which require a lot of searching when looking
-                 * for an M-gram.
                  */
-                explicit ALayeredTrie(WordIndexType & word_index,
-                        TGetCtxIdFunct get_ctx_id_func, bool is_birmap_hash_cache)
-                : ATrie<N, WordIndexType>(word_index, is_birmap_hash_cache),
-                m_get_ctx_id_func(get_ctx_id_func),
+                explicit LayeredTrieDriver(WordIndexType & word_index)
+                : GenericTrieBase<TrieType::max_level, WordIndexType>(word_index), m_trie(word_index), m_is_bitmap_hash_cache(m_trie.is_bitmap_hash_cache()),
                 m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
+
                     //Clear the memory for the buffer and initialize it
                     memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
                     m_context_c_str[0] = '\0';
@@ -105,124 +90,97 @@ namespace uva {
                 };
 
                 /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @param gram the 1-Gram data
+                 * @see GenericTrieBase
                  */
-                virtual void add_1_gram(const T_M_Gram &gram);
+                void pre_allocate(const size_t counts[TrieType::max_level]) {
+                    //Pre-allocate the bitmap-hash caches if needed
+                    if (m_is_bitmap_hash_cache) {
+                        for (size_t idx = 0; idx < BASE::NUM_M_N_GRAM_LEVELS; ++idx) {
+                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
+                            Logger::updateProgressBar();
+                        }
+                    }
+                    //Do the pre-allocation in the trie
+                    m_trie.pre_allocate(counts);
+                };
 
                 /**
-                 * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * @param gram the M-Gram data
-                 * @throws Exception if the level of this M-gram is not such that  1 < M < N
+                 * Allows to check if the given sub-m-gram contains an unknown word
+                 * @param level of the considered M-gram
+                 * @return true if the unknown word is present, otherwise false
                  */
-                virtual void add_m_gram(const T_M_Gram &gram);
+                template<bool is_back_off>
+                inline bool is_bitmap_hash_cache(TMGramQuery & query) {
+                    if (m_is_bitmap_hash_cache) {
+                        const BitmapHashCache & ref = m_bitmap_hash_cach[query.curr_level - BASE::MGRAM_IDX_OFFSET];
+                        return ref.is_m_gram<is_back_off>(query);
+                    } else {
+                        return true;
+                    }
+                }
 
                 /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * It it snot guaranteed that the parameter will be checked to be a N-Gram!
-                 * @param gram the N-Gram data
+                 * @see GenericTrieBase
                  */
-                virtual void add_n_gram(const T_M_Gram &gram);
+                void add_1_gram(const T_M_Gram &gram);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                void add_m_gram(const T_M_Gram &gram);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                void add_n_gram(const T_M_Gram &gram);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                void get_prob_weight(TMGramQuery & query);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                void add_back_off_weight(TMGramQuery & query);
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                inline void log_trie_type_usage_info() {
+                    m_trie.log_trie_type_usage_info();
+                };
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                bool is_post_grams(const TModelLevel level) {
+                    return m_trie.is_post_grams(level);
+                };
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                inline void post_grams(const TModelLevel level) {
+                    m_trie.post_grams(level);
+                };
 
                 /**
                  * The basic class destructor
                  */
-                virtual ~ALayeredTrie() {
+                virtual ~LayeredTrieDriver() {
                 };
 
             protected:
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * @param wordId the One-gram id
-                 * @return the reference to the storage structure
-                 */
-                virtual TProbBackOffEntry & make_1_GramDataRef(const TShortId wordId) = 0;
-
-                /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, throws an exception.
-                 * @param wordId the One-gram id
-                 * @param ppData[out] the pointer to a pointer to the found data
-                 * @return true if the element was found, otherwise false
-                 * @throw nothing
-                 */
-                virtual bool get_1_GramDataRef(const TShortId wordId, const TProbBackOffEntry ** ppData) = 0;
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * @param level the value of M in the M-gram
-                 * @param wordId the id of the M-gram's last word
-                 * @param ctxId the M-gram context (the M-gram's prefix) id
-                 * @return the reference to the storage structure
-                 */
-                virtual TProbBackOffEntry& make_M_GramDataRef(const TModelLevel level, const TShortId wordId, TLongId ctxId) = 0;
-
-                /**
-                 * Allows to retrieve the data storage structure for the M gram
-                 * with the given M-gram level Id. M-gram context and last word Id.
-                 * If the storage structure does not exist, throws an exception.
-                 * @param level the value of M in the M-gram
-                 * @param wordId the id of the M-gram's last word
-                 * @param ctxId the M-gram context (the M-gram's prefix) id
-                 * @param ppData[out] the pointer to a pointer to the found data
-                 * @return true if the element was found, otherwise false
-                 * @throw nothing
-                 */
-                virtual bool get_M_GramDataRef(const TModelLevel level, const TShortId wordId,
-                        TLongId ctxId, const TProbBackOffEntry **ppData) = 0;
-
-                /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * @param wordId the id of the N-gram's last word
-                 * @param ctxId the N-gram context (the N-gram's prefix) id
-                 * @return the reference to the storage structure
-                 */
-                virtual TLogProbBackOff& make_N_GramDataRef(const TShortId wordId, const TLongId ctxId) = 0;
-
-                /**
-                 * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
-                 * @param wordId the id of the N-gram's last word
-                 * @param ctxId the N-gram context (the N-gram's prefix) id
-                 * @param ppData[out] the pointer to a pointer to the found data
-                 * @return true if the probability was found, otherwise false
-                 * @throw nothing
-                 */
-                virtual bool get_N_GramProb(const TShortId wordId, const TLongId ctxId,
-                        TLogProbBackOff & prob) = 0;
-
-                /**
-                 * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be set to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * @see ATrie
-                 */
-                virtual void get_prob_weight(MGramQuery<N, WordIndexType> & query);
-
-                /**
-                 * This function allows to retrieve the back-off stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * In that case the back-off weight is just zero.
-                 * @see ATrie
-                 */
-                virtual void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
-
-                /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                ALayeredTrie(const ALayeredTrie& orig)
-                : ATrie<N, WordIndexType>(orig.m_word_index),
-                m_get_ctx_id_func(NULL),
-                m_chached_ctx(),
-                m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
+                LayeredTrieDriver(const LayeredTrieDriver& orig)
+                : GenericTrieBase<TrieType::max_level, WordIndexType>(orig.get_word_index()),
+                m_trie(orig.get_word_index()), m_is_bitmap_hash_cache(orig.m_is_bitmap_hash_cache),
+                m_chached_ctx(), m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
 
@@ -250,8 +208,8 @@ namespace uva {
                  * @throws nothing
                  */
                 template<bool is_back_off>
-                inline bool get_query_context_Id(const MGramQuery<N, WordIndexType> & query, TLongId & ctx_id) {
-                    const TModelLevel mgram_end_idx = (is_back_off ? (N - 2) : (N - 1));
+                inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) {
+                    const TModelLevel mgram_end_idx = (is_back_off ? (TrieType::max_level - 2) : (TrieType::max_level - 1));
                     const TModelLevel end_idx = mgram_end_idx;
                     const TModelLevel begin_idx = mgram_end_idx - (query.curr_level - 1);
                     TModelLevel idx = begin_idx;
@@ -269,7 +227,7 @@ namespace uva {
                     for (; idx < end_idx;) {
                         LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
                                 << SSTR(query.m_query_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-                        if (m_get_ctx_id_func(query.m_query_word_ids[idx], ctx_id, (idx - begin_idx) + 1)) {
+                        if (m_trie.get_ctx_id(query.m_query_word_ids[idx], ctx_id, (idx - begin_idx) + 1)) {
                             LOG_DEBUG1 << "getContextId(" << SSTR(query.m_query_word_ids[idx])
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             idx++;
@@ -300,7 +258,7 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (getCachedContextId(gram, ctxId)) {
                         //Get the start context value for the first token
-                        TShortId wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(gram.tokens[0]);
+                        TShortId wordId = m_trie.get_word_index().get_word_id(gram.tokens[0]);
 
                         //There is no id cached for this M-gram context - find it
                         if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
@@ -311,11 +269,11 @@ namespace uva {
 
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
-                                wordId = ATrie<N, WordIndexType>::get_word_index().get_word_id(gram.tokens[i]);
+                                wordId = m_trie.get_word_index().get_word_id(gram.tokens[i]);
                                 if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
                                     LOGGER(logLevel) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
-                                    if (m_get_ctx_id_func(wordId, ctxId, i + 1)) {
+                                    if (m_trie.get_ctx_id(wordId, ctxId, i + 1)) {
                                         LOGGER(logLevel) << "ctxId = computeCtxId( "
                                                 << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                                     } else {
@@ -367,12 +325,12 @@ namespace uva {
                     if (m_chached_ctx == mGram.context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram)
+                                << "], for m-gram: " << tokensToString<TrieType::max_level>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
-                                << "], for m-gram: " << tokensToString<N>(mGram)
+                                << "], for m-gram: " << tokensToString<TrieType::max_level>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
@@ -385,7 +343,7 @@ namespace uva {
                  */
                 inline void setCacheContextId(const T_M_Gram &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokensToString<N>(mGram) << END_LOG;
+                            << ", for m-gram: " << tokensToString<TrieType::max_level>(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_ctx_id = stx_id;
@@ -395,11 +353,14 @@ namespace uva {
                 }
 
             private:
+                //Stores the trie
+                TrieType m_trie;
 
-                //Stores the pointer to the function that will be used to compute
-                //the context id from a word id and the previous context,
-                //Throws out_of_range in case the context can not be computed, e.g. does not exist.
-                TGetCtxIdFunct m_get_ctx_id_func;
+                //Stores a flag of whether we should use the birmap hash cache
+                const bool m_is_bitmap_hash_cache;
+
+                //Stores the bitmap hash caches per M-gram level
+                BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
 
                 //The actual storage for the cached context c string
                 char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
@@ -407,6 +368,18 @@ namespace uva {
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
+
+                /**
+                 * Is to be used from the sub-classes from the add_X_gram methods.
+                 * This method allows to register the given M-gram in internal high
+                 * level caches if present.
+                 * @param gram the M-gram to cache
+                 */
+                inline void register_m_gram_cache(const T_M_Gram &gram) {
+                    if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[gram.level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
+                    }
+                }
 
             };
         }
