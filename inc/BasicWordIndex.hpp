@@ -70,7 +70,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @see AWordIndex
                      */
-                    virtual size_t get_number_of_words(const size_t num_words) {
+                    size_t get_number_of_words(const size_t num_words) const {
                         return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                     };
 
@@ -78,7 +78,7 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @see AWordIndex
                      */
-                    virtual void reserve(const size_t num_words) {
+                    void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
                         //Add an extra elements for the <unknown/> word
                         const size_t numWords = get_number_of_words(num_words);
@@ -97,7 +97,7 @@ namespace uva {
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @see AWordIndex
                      */
-                    virtual TShortId get_word_id(const TextPieceReader & token) const {
+                    TShortId get_word_id(const TextPieceReader & token) const {
                         TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
@@ -113,7 +113,7 @@ namespace uva {
                      * This function creates/gets a hash for the given word.
                      * @see AWordIndex
                      */
-                    virtual TShortId register_word(const TextPieceReader & token) {
+                    TShortId register_word(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
                         TShortId& hash = _pWordIndexMap->operator[](token.str());
 
@@ -132,7 +132,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    virtual bool is_word_counts_needed() const {
+                    bool is_word_counts_needed() const {
                         return false;
                     };
 
@@ -140,8 +140,9 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    virtual void count_word(const TextPieceReader & token) {
-                        throw Exception("BasicWordIndex::count_word: Not implemented as not needed!");
+                    void count_word(const TextPieceReader & token) {
+                        //There is nothing to be done
+                        THROW_MUST_NOT_CALL();
                     };
 
                     /**
@@ -149,8 +150,9 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    virtual void do_post_word_count() {
-                        throw Exception("BasicWordIndex::count_word: Not implemented as not needed!");
+                    void do_post_word_count() {
+                        //There is nothing to be done
+                        THROW_MUST_NOT_CALL();
                     };
 
                     /**
@@ -159,17 +161,18 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    virtual bool is_post_actions_needed() const {
+                    bool is_post_actions_needed() const {
                         return false;
                     };
 
                     /**
                      * Is to be called if the post actions are needed right after
-                     * that all the individual words have beed added into the index.
+                     * that all the individual words have been added into the index.
                      * @see AWordIndex
                      */
-                    virtual void do_post_actions() {
+                    void do_post_actions() {
                         //There is nothing to be done
+                        THROW_MUST_NOT_CALL();
                     };
 
                     /**
@@ -178,7 +181,7 @@ namespace uva {
                     virtual ~BasicWordIndex() {
                         deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
                     };
-                    
+
                     /**
                      * The type of key,value pairs to be stored in the word index
                      */
@@ -193,7 +196,7 @@ namespace uva {
                      * The word index map type
                      */
                     typedef unordered_map<string, TShortId, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
-                    
+
                     /**
                      * Defines the constant iterator type
                      */
@@ -203,18 +206,18 @@ namespace uva {
                      * Allows to get the begin constant iterator
                      * @return the begin constant iterator
                      */
-                    TWordIndexMapConstIter begin(){
+                    TWordIndexMapConstIter begin() {
                         return _pWordIndexMap->begin();
                     }
-                    
+
                     /**
                      * Allows to get the end constant iterator
                      * @return the end constant iterator
                      */
-                    TWordIndexMapConstIter end(){
+                    TWordIndexMapConstIter end() {
                         return _pWordIndexMap->end();
                     }
-                    
+
                 protected:
 
                     /**

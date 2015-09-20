@@ -9,7 +9,7 @@ if [ "$#" -ne ${NUM_PARAMS} ]; then
    exit 1
 fi
 
-FILTER=' | grep -v "Gram ctx hash" | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "Counting words in ARPA file" | grep -v " memory allocation strategy." | grep -v "Counting all words"'
+FILTER=' | grep -v "Gram ctx hash" | grep -v "CPU" | grep -v "vmsize" | grep -v "Cultivating" | grep -v "Counting words in ARPA file" | grep -v " memory allocation strategy." | grep -v "Counting all words" | grep -v "#buckets divider"'
 echo ${FILTER}
 
 echo "c2wa"

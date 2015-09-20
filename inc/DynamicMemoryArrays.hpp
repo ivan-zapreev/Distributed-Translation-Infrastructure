@@ -103,7 +103,7 @@ namespace uva {
                      * Allows to retrieve the strategy name
                      * @return the strategy name
                      */
-                    string getStrategyStr() const {
+                    string get_strategy_info() const {
                         stringstream msg;
                         msg << _memIncTypesEnumStr[m_stype] << ", memory increments: Min = "
                                 << SSTR(m_min_mem_inc) << " elements, Factor = "
@@ -117,7 +117,7 @@ namespace uva {
                      * @param capacity the current capacity
                      * @return the proposed capacity increase
                      */
-                    inline const size_t computeNewCapacity(const size_t capacity) const {
+                    inline const size_t compute_new_capacity(const size_t capacity) const {
                         //Get the float capacity value, make it minimum of one element to avoid problems
                         const float fcap = (capacity > 0) ? (float) capacity : 1.0;
                         const size_t cap_inc = (size_t) (m_mem_inc_factor * m_get_capacity_inc_func(fcap));
@@ -489,7 +489,7 @@ namespace uva {
                         //Compute the new number of elements
                         if (IS_INC) {
                             //Compute the new capacity
-                            size_t advised_capacity = ELEMENT_TYPE::m_mem_strat.computeNewCapacity(m_capacity);
+                            size_t advised_capacity = ELEMENT_TYPE::m_mem_strat.compute_new_capacity(m_capacity);
                             //Check if the given capacity passes within the maximum allowed values for capacity etc
                             if (advised_capacity <= MAX_SIZE_TYPE_VALUE) {
                                 //If it passes then set it in

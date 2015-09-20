@@ -52,6 +52,8 @@ namespace uva {
                  * The first real word index will be therefore 2 (MIN_KNOWN_WORD_ID).
                  * 
                  * The issued word ids must be continuous and non-repeating, unique!
+                 * 
+                 * NOTE: All of the methods are non-virtual for the sake of avoiding virtual method call overheads!
                  */
                 class AWordIndex {
                 public:
@@ -76,36 +78,46 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @param num_words the number of words
                      */
-                    virtual void reserve(const size_t num_words) = 0;
+                    void reserve(const size_t num_words) {
+                        THROW_MUST_OVERRIDE();
+                    };
 
                     /**
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    virtual size_t get_number_of_words(const size_t num_words) = 0;
-                    
+                    size_t get_number_of_words(const size_t num_words) const {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
                      * @return the resulting wordId or UNKNOWN_WORD_ID if the word is not found
                      */
-                    virtual TShortId get_word_id(const TextPieceReader & token) const = 0;
-                    
+                    TShortId get_word_id(const TextPieceReader & token) const {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * This function creates/gets an id for the given word.
                      * Note: The ids must be unique and continuous!
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    virtual TShortId register_word(const TextPieceReader & token) = 0;
-                    
+                    TShortId register_word(const TextPieceReader & token) {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * This method allows to indicate whether word counting is
                      * needed by the given implementation of the word index.
                      * @return true if the word counting is needed, otherwise false.
                      */
-                    virtual bool is_word_counts_needed() const = 0;
+                    bool is_word_counts_needed() const {
+                        THROW_MUST_OVERRIDE();
+                    };
 
                     /**
                      * This method is to be used when the word counting is needed.
@@ -114,13 +126,17 @@ namespace uva {
                      * that the most used words get the lowest ids.
                      * @param token the word to count
                      */
-                    virtual void count_word(const TextPieceReader & token) = 0;
-                    
+                    void count_word(const TextPieceReader & token) {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * Should be called if the word count is needed
                      * after all the words have been counted.
                      */
-                    virtual void do_post_word_count() = 0;
+                    void do_post_word_count() {
+                        THROW_MUST_OVERRIDE();
+                    };
 
                     /**
                      * Indicates if the post-actions are needed. The post actions
@@ -128,14 +144,18 @@ namespace uva {
                      * the index.
                      * @return true if the post-actions are needed, otherwise false
                      */
-                    virtual bool is_post_actions_needed() const = 0;
-                    
+                    bool is_post_actions_needed() const {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * Is to be called if the post actions are needed right after
                      * that all the individual words have beed added into the index.
                      */
-                    virtual void do_post_actions() = 0;
-                    
+                    void do_post_actions() {
+                        THROW_MUST_OVERRIDE();
+                    };
+
                     /**
                      * The basic destructor
                      */

@@ -93,7 +93,7 @@ namespace uva {
                      * This function creates/gets a hash for the given word.
                      * @see AWordIndex
                      */
-                    virtual TShortId register_word(const TextPieceReader & token) {
+                    TShortId register_word(const TextPieceReader & token) {
                         //Note that, by now all the words must have been counted
                         //and have their unique words ids, so here we do it simple!
                         //Return the id that has already been issued!
@@ -104,7 +104,7 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    virtual void count_word(const TextPieceReader & token) {
+                    void count_word(const TextPieceReader & token) {
                         //Misuse the internal word index map for storing the word counts in it.
                         LOG_DEBUG3 << "Counting word: [" << token.str() << "]" << END_LOG;
                         BasicWordIndex::_pWordIndexMap->operator[](token.str()) += 1;
@@ -115,7 +115,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    virtual bool is_word_counts_needed() const {
+                    bool is_word_counts_needed() const {
                         return true;
                     };
 
@@ -124,7 +124,7 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    virtual void do_post_word_count() {
+                    void do_post_word_count() {
                         //All the words have been filled in, it is time to give them ids.
                         LOG_DEBUG1 << "Starting the post word counting actions!" << END_LOG;
 
@@ -181,7 +181,7 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    virtual bool is_post_actions_needed() const {
+                    bool is_post_actions_needed() const {
                         return BasicWordIndex::is_post_actions_needed();
                     };
 
@@ -190,7 +190,7 @@ namespace uva {
                      * that all the individual words have beed added into the index.
                      * @see AWordIndex
                      */
-                    virtual void do_post_actions() {
+                    void do_post_actions() {
                         BasicWordIndex::do_post_actions();
                         //There is nothing to be done
                     };

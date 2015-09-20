@@ -113,7 +113,7 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
                     LOG_INFO << "Using the #buckets divider: "
                             << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
-                    LOG_INFO << "Using  and the " << T_M_Gram_PB_Entry::m_mem_strat.getStrategyStr()
+                    LOG_INFO << "Using  and the " << T_M_Gram_PB_Entry::m_mem_strat.get_strategy_info()
                             << " memory allocation strategy." << END_LOG;
                 }
 

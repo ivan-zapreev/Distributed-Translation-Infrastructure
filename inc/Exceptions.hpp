@@ -34,6 +34,15 @@ namespace uva {
     namespace smt {
         namespace exceptions {
 
+#define THROW_EXCEPTION(text) { \
+    stringstream msg; \
+    msg << __FILE__ << "::" << __FUNCTION__ \
+        << "(...)" << ": " << text; \
+    throw Exception(msg.str()); \
+    }
+#define THROW_MUST_OVERRIDE() THROW_EXCEPTION(" Must be overridden in the sub class!")
+#define THROW_MUST_NOT_CALL() THROW_EXCEPTION(" Must not be called, is not needed!")
+            
             /**
              * This is an application exception class that is capable of storing an error message
              */

@@ -97,7 +97,7 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @param num_words the number of words
                      */
-                    virtual void reserve(const size_t num_words) {
+                    void reserve(const size_t num_words) {
                         LOG_DEBUG2 << "Reserving " << num_words << " words!" << END_LOG;
 
                         if (m_disp_word_index_ptr != NULL) {
@@ -121,7 +121,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @see AWordIndex
                      */
-                    virtual size_t get_number_of_words(const size_t num_words) {
+                     size_t get_number_of_words(const size_t num_words) const {
                         if (m_disp_word_index_ptr != NULL) {
                             //If the disposable is still present then return its data
                             return m_disp_word_index_ptr->get_number_of_words(num_words);
@@ -138,7 +138,7 @@ namespace uva {
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * @see AWordIndex
                      */
-                    virtual TShortId get_word_id(const TextPieceReader & token) const {
+                     TShortId get_word_id(const TextPieceReader & token) const {
                         //Compute the bucket id
                         const uint_fast32_t bucket_idx = get_bucket_idx(token);
                         
@@ -156,7 +156,7 @@ namespace uva {
                      * This function creates/gets an id for the given word.
                      * @see AWordIndex
                      */
-                    virtual TShortId register_word(const TextPieceReader & token) {
+                     TShortId register_word(const TextPieceReader & token) {
                         return m_disp_word_index_ptr->register_word(token);
                     };
 
@@ -165,7 +165,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    virtual bool is_word_counts_needed() const {
+                     bool is_word_counts_needed() const {
                         return m_disp_word_index_ptr->is_word_counts_needed();
                     };
 
@@ -173,7 +173,7 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    virtual void count_word(const TextPieceReader & token) {
+                     void count_word(const TextPieceReader & token) {
                         m_disp_word_index_ptr->count_word(token);
                     };
 
@@ -182,7 +182,7 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    virtual void do_post_word_count() {
+                     void do_post_word_count() {
                         m_disp_word_index_ptr->do_post_word_count();
                     };
 
@@ -192,7 +192,7 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    virtual bool is_post_actions_needed() const {
+                     bool is_post_actions_needed() const {
                         return true || m_disp_word_index_ptr->is_post_actions_needed();
                     };
 
@@ -201,7 +201,7 @@ namespace uva {
                      * that all the individual words have beed added into the index.
                      * @see AWordIndex
                      */
-                    virtual void do_post_actions() {
+                     void do_post_actions() {
                         //Perform the post actions if needed, before starting further actions.
                         if (m_disp_word_index_ptr->is_post_actions_needed()) {
                             m_disp_word_index_ptr->do_post_actions();
