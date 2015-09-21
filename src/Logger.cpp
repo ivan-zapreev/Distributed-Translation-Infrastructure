@@ -51,7 +51,8 @@ namespace uva {
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, USAGE_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, INFO1_PARAM_VALUE, INFO2_PARAM_VALUE, INFO3_PARAM_VALUE,
                 DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE,
-                DEBUG4_PARAM_VALUE};
+                DEBUG4_PARAM_VALUE
+            };
 
             //Initialize the progress bar chars array
             const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
@@ -82,7 +83,9 @@ namespace uva {
                 for (size_t idx = 0; idx < DebugLevelsEnum::size; idx++) {
                     string level = _debugLevelStr[idx];
                     transform(level.begin(), level.end(), level.begin(), ::toupper);
-                    result += level + ", ";
+                    if (idx != (DebugLevelsEnum::size - 1)) {
+                        result += level + ", ";
+                    }
                 }
 
                 return result + " }";
