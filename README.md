@@ -22,7 +22,7 @@ this sentence include:
 "came by ."
 </code>
 
-Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lowercased.
+Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.
 
 ### References and Decisions
 This project is originally based on two papers:
@@ -108,13 +108,13 @@ Further, we give a few explanations of the structure above
     * make_release_centos.sh - the script to release debug configuration on the Centos platform
 
 ##Supported platforms
-Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and testd on:
+Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
 
 * <big>Centos 6.6 64-bit</big> - Complete functionality.
 * <big>Ubuntu 15.04 64-bit</big> - Complete functionality.
 * <big>Mac OS X Yosemite 10.10 64-bit</big> - Limited by inability to collect memory-usage statistics.
 
-Testing on 32-bit systems was not perfrormed.
+Testing on 32-bit systems was not performed.
 
 ##Building the project
 Building this project requires gcc version 4.9.1 and higher. The project can be build in two ways:
@@ -133,8 +133,8 @@ For the sake of simplicity and speed building on Centos platform is also possibl
 
 * make_debug_centos.sh - allows to build the debug configuration: ready to be used with valgrind and gdb.
 * make_profile_centos.sh - allows to build the profiling configuration: ready to be used for gathering performance information for gprof: produce the gmon.out file.
-* make_release_centos.sh - allows to build the release configuration: the version build for performance with platform specific optimiztions.
-* make_centos.sh - allows to build all the above confgurations at once.
+* make_release_centos.sh - allows to build the release configuration: the version build for performance with platform specific optimization's.
+* make_centos.sh - allows to build all the above configurations at once.
 
 One can limit the debug-level printing of the code by changing the value of the <i>LOGER_MAX_LEVEL</i> constant in the <i>./inc/Configuration.hpp</i>. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
 
@@ -191,11 +191,11 @@ The code contains the following important source files:
 * <big>Executor.cpp</big> -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
 * <big>ARPATrieBuilder.hpp / ARPATrieBuilder.cpp</big> - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.
 * <big>TrieDriver.hpp</big> - is the driver for all trie implementations - allows to execute queries to the tries.
-* <big>LayeredTrieDriver.hpp</big> - is a waraapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
+* <big>LayeredTrieDriver.hpp</big> - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
 * <big>C2DHashMapTrie.hpp / C2DHashMapTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based on unordered_map.
 * <big>C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.
 * <big>C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp</big> - contains the Context-to-Word mapping trie implementation based on ordered arrays.
-* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - contains the M-Gram-to-Data mapping trie implementation based on self-made hashmaps.
+* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.
 * <big>W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.
 * <big>W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on ordered arrays.
 * <big>Configuration.hpp</big> - contains configuration parameter for the word index and trie and memory management entities.
@@ -209,7 +209,7 @@ The code contains the following important source files:
 * <big> C2DHashMapTrie.hpp / C2DHashMapTrie.cpp </big> - the current implementation is potentially error prone to hash collisions in case of context id overflows. Overflows were not observed on the tries of up to 20 Gb but a more thorough testing must be needed and perhaps the collision detection must be always on for this trie.
 * <big>Tries</big> - It is possible to introduce more templating into the tries, e.g. the gram-level-based templating. It must improve performance as many checks can be resolved compile-time.
 * <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - This trie is very performance efficient but its memory consumption is at present sub optimal. It needs a significant re-work in the way data is stored.
-* <big>Thread safety</big> - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or quering. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
+* <big>Thread safety</big> - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or querying. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
 * <big>Testing</big> - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
 * <big>Code</big> - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
  
