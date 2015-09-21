@@ -83,8 +83,9 @@ namespace uva {
                 for (size_t idx = 0; idx < DebugLevelsEnum::size; idx++) {
                     string level = _debugLevelStr[idx];
                     transform(level.begin(), level.end(), level.begin(), ::toupper);
+                    result += level;
                     if (idx != (DebugLevelsEnum::size - 1)) {
-                        result += level + ", ";
+                        result += ", ";
                     }
                 }
 

@@ -106,7 +106,7 @@ static void print_usage(const string name) {
     LOG_USAGE << "    example, for a N-gram such as:" << END_LOG;
     LOG_USAGE << "       mortgages had lured borrowers and" << END_LOG;
     LOG_USAGE << "    the program may give the following output:" << END_LOG;
-    LOG_USAGE << "        log_2(Prob( word5 | word1 word2 word3 word4 )) = <log-probability>" << END_LOG;
+    LOG_USAGE << "        log_10( Prob( word5 | word1 word2 word3 word4 ) ) = <log-probability>" << END_LOG;
 }
 
 /**
