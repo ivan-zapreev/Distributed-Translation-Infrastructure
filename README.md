@@ -5,18 +5,13 @@
 <big>Git-Hub</big>: <https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT>
 
 ## Introduction
-This is a fork project from the Automated-Translation-Tries project, made as a test exercise for
-automated machine translation (aiming at automated translation of text in different languages).
+This is a fork project from the Automated-Translation-Tries project, made as a test exercise for automated machine translation (aiming at automated translation of text in different languages).
 
-For machine translation it is important to estimate and compare the fluency of different possible
-translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using
-a language model, which measures the probability of a string (which is commonly a sentence). Since
-entire sentences are unlikely to occur more than once, this is often approximated by using sliding
-windows of words (n-grams) occurring in some training data.
+For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using
+a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.
 
 ### Background
-An <i>n-gram</i> refers to a continuous sequence of n tokens. For instance, given the following
-sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
+An <i>n-gram</i> refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
 this sentence include: 
 <code>
 "our neighbor ,"
@@ -27,11 +22,10 @@ this sentence include:
 "came by ."
 </code>
 
-Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and
-that all words are lowercased.
+Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lowercased.
 
 ### References and Decisions
-This project is mostly based on two papers:
+This project is originally based on two papers:
 >        @inproceedings{DBLP:conf/acl/PaulsK11,
 >        author    = {Adam Pauls and
 >                       Dan Klein},
@@ -67,79 +61,86 @@ and
 >          bibsource = {dblp computer science bibliography, http://dblp.org}
 >        }
 
-The first paper discusses optimal Trie structures for storing the learned text
-corpus and the second indicates that using <i>std::unordered_map</i> of C++ delivers
-one of the best time and space performances, compared to other data structures,
-when using for Trie implementations
+The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using <i>std::unordered_map</i> of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
 
 ##License
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##Project structure
 This is a Netbeans 8.0.2 project, and its' top-level structure is as follows:
 
->     ./doc/
+>     ./docs/
 >     ./inc/
 >     ./src/
 >     ./nbproject/
 >     ./doxygen/
+>     ./test-data/
 >     ./LICENSE
 >     ./Makefile
 >     ./README.md
 >     ./Doxyfile
+>     ./make_centos.sh
+>     ./make_debug_centos.sh
+>     ./make_profile_centos.sh
+>     ./make_release_centos.sh
 
 Further, we give a few explanations of the structure above
 
 * [Project-Folder]/
-    * doc/ - contains the project documents, including the task text and the used papers
+    * doc/ - contains the project-related documents
     * inc/ - stores the C++ header files used in the implementation
     * src/ - stores the C++ source files used in the implementation
-    * nbproject/ - stores the Netbeans project data
+    * nbproject/ - stores the Netbeans project data, such as makefiles
     * doxygen/ - stores the Doxygen-generated code documentation
+    * test-data/ - stores the test-related data such as test models and query intput files, as well as the experimental results.
     * LICENSE - the code license (GPL 2.0)
     * Makefile - the Makefile used to build the project
     * README.md - this document
     * Doxyfile - the Doxygen configuration file
+    * make_centos.sh - the script to build all available configurations on the Centos platform
+    * make_debug_centos.sh - the script to build debug configuration on the Centos platform
+    * make_profile_centos.sh - the script to profiling debug configuration on the Centos platform
+    * make_release_centos.sh - the script to release debug configuration on the Centos platform
 
 ##Supported platforms
-Currently there are two supported platforms:
-* <big>Linux</big> - Complete functionality.
-* <big>Mac OS</big> - Limited by inability to collect memory-usage statistics.
+Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and testd on:
 
-This project was built and tested on Ubuntu 14.10 64-bit and OS X Yosemite, version 10.10.4.
+* <big>Centos 6.6 64-bit</big> - Complete functionality.
+* <big>Ubuntu 15.04 64-bit</big> - Complete functionality.
+* <big>Mac OS X Yosemite 10.10 64-bit</big> - Limited by inability to collect memory-usage statistics.
+
+Testing on 32-bit systems was not perfrormed.
 
 ##Building the project
-
-This project can be build in two ways:
+Building this project requires gcc version 4.9.1 and higher. The project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
 + From the Linux command-line console
     - Open the console
     - Navigate to the project folder
     - Run <i>"make all"</i>
-    - The binary will be generated and placed into <i>./dist/Release/[platform]/</i> folder
-    - The name of the executable is <i>automated-translation-tries</i>
+    - The binary will be generated and placed into <i>./dist/[type]_[platform]/</i> folder
+    - The name of the executable is <i>back-off-language-model-smt</i>
 
-In order to clean the project from the command line run <i>"make clean"</i>
+In order to clean the project from the command line run <i>"make clean"</i>.
 
-One can limit the debug-level printing of the code by defining the <i>LOGER_MAX_LEVEL<i> compile-time macros.
-The possible range of values, with increasing logging level is:
-Logger::USAGE, Logger::RESULT, Logger::ERROR, Logger::WARNING, Logger::INFO, Logger::DEBUG, Logger::DEBUG1, Logger::DEBUG2
+For the sake of simplicity and speed building on Centos platform is also possible by using make_*_centos.sh scripts. There are four of suck scripts available:
+
+* make_debug_centos.sh - allows to build the debug configuration: ready to be used with valgrind and gdb.
+* make_profile_centos.sh - allows to build the profiling configuration: ready to be used for gathering performance information for gprof: produce the gmon.out file.
+* make_release_centos.sh - allows to build the release configuration: the version build for performance with platform specific optimiztions.
+* make_centos.sh - allows to build all the above confgurations at once.
+
+One can limit the debug-level printing of the code by changing the value of the <i>LOGER_MAX_LEVEL</i> constant in the <i>./inc/Configuration.hpp</i>. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
+
 
 ##Usage
-In order to get the program usage information please run <i>./automated-translation-tries</i>
+In order to get the program usage information please run <i>./back-off-language-model-smt</i>
 from the command line, the output of the program is supposed to be as follows:
         
         USAGE:  ------------------------------------------------------------------ 

@@ -47,8 +47,8 @@ namespace uva {
 
             DebugLevelsEnum Logger::currLEvel = DebugLevelsEnum::RESULT;
 
-            const char * Logger::_debugLevelStr[DebugLevelsEnum::size] = {USAGE_PARAM_VALUE,
-                ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, RESULT_PARAM_VALUE,
+            const char * Logger::_debugLevelStr[DebugLevelsEnum::size] = {
+                ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, USAGE_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, INFO1_PARAM_VALUE, INFO2_PARAM_VALUE, INFO3_PARAM_VALUE,
                 DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE,
                 DEBUG4_PARAM_VALUE};

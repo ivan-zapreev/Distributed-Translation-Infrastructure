@@ -68,10 +68,10 @@ namespace uva {
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;
             //Here, the END_LOG is optional and is currently used for a new line only.
-#define LOG_USAGE   LOGGER(DebugLevelsEnum::USAGE)
-#define LOG_RESULT  LOGGER(DebugLevelsEnum::RESULT)
 #define LOG_ERROR   LOGGER(DebugLevelsEnum::ERROR)
 #define LOG_WARNING LOGGER(DebugLevelsEnum::WARNING)
+#define LOG_USAGE   LOGGER(DebugLevelsEnum::USAGE)
+#define LOG_RESULT  LOGGER(DebugLevelsEnum::RESULT)
 #define LOG_INFO    LOGGER(DebugLevelsEnum::INFO)
 #define LOG_INFO1    LOGGER(DebugLevelsEnum::INFO1)
 #define LOG_INFO2    LOGGER(DebugLevelsEnum::INFO2)
@@ -85,9 +85,9 @@ namespace uva {
 
 
             //The string representation values for debug levels
-#define USAGE_PARAM_VALUE "USAGE"
 #define ERROR_PARAM_VALUE "ERROR"
 #define WARNING_PARAM_VALUE "WARN"
+#define USAGE_PARAM_VALUE "USAGE"
 #define RESULT_PARAM_VALUE "RESULT"
 #define INFO_PARAM_VALUE "INFO"
 #define INFO1_PARAM_VALUE "INFO1"

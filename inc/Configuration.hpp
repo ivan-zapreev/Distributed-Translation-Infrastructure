@@ -37,7 +37,7 @@ namespace uva {
              * This enumeration stores all the available logging levels.
              */
             enum DebugLevelsEnum {
-                USAGE = 0, ERROR = USAGE + 1, WARNING = ERROR + 1, RESULT = WARNING + 1,
+                ERROR = 0, WARNING = ERROR + 1, USAGE = WARNING + 1, RESULT = USAGE + 1,
                 INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
                 DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1,
                 DEBUG4 = DEBUG3 + 1, size = DEBUG4 + 1

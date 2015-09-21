@@ -59,7 +59,7 @@ static void print_info() {
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
     LOG_USAGE << "|                 Back Off Language Model(s) for SMT     :)\\___/(: |" << END_LOG;
     LOG_USAGE << "|                       Software version 1.0             {(@)v(@)} |" << END_LOG;
-    LOG_USAGE << "|                                                        {|~- -~|} |" << END_LOG;
+    LOG_USAGE << "|                         The Owl release.               {|~- -~|} |" << END_LOG;
     LOG_USAGE << "|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |" << END_LOG;
     LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;
     LOG_USAGE << "|        This software is distributed under GPL 2.0 license        |" << END_LOG;
@@ -98,7 +98,7 @@ static void print_usage(const string name) {
     LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
 
     LOG_USAGE << "Output: " << END_LOG;
-    LOG_USAGE << "    The program reads in the test lines from the <test_file>. " << END_LOG;
+    LOG_USAGE << "    The program reads in the test queries from the <test_file>. " << END_LOG;
     LOG_USAGE << "    Each of these lines is a N-grams of the following form, e.g: " << END_LOG;
     LOG_USAGE << "       word1 word2 word3 word4 word5" << END_LOG;
     LOG_USAGE << "    For each of such N-grams the probability information is " << END_LOG;
@@ -106,7 +106,7 @@ static void print_usage(const string name) {
     LOG_USAGE << "    example, for a N-gram such as:" << END_LOG;
     LOG_USAGE << "       mortgages had lured borrowers and" << END_LOG;
     LOG_USAGE << "    the program may give the following output:" << END_LOG;
-    LOG_USAGE << "        probability( mortgages had lured borrowers and ) = 0.00024" << END_LOG;
+    LOG_USAGE << "        log_2(Prob( word5 | word1 word2 word3 word4 )) = <log-probability>" << END_LOG;
 }
 
 /**
