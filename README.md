@@ -143,51 +143,47 @@ One can limit the debug-level printing of the code by changing the value of the 
 In order to get the program usage information please run <i>./back-off-language-model-smt</i>
 from the command line, the output of the program is supposed to be as follows:
         
-        USAGE:  ------------------------------------------------------------------ 
-        USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
-        USAGE: |                     Test software version 1.1          {(@)v(@)} |
-        USAGE: |                                                        {|~- -~|} |
-        USAGE: |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\} |
-        USAGE: |  ═════════════════════════════════════════════════════════m-m══  |
-        USAGE: |        This software is distributed under GPL 2.0 license        |
-        USAGE: |          (GPL stands for GNU General Public License)             |
-        USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |
-        USAGE: |   This is a free software, you are welcome to redistribute it.   |
-        USAGE:  ------------------------------------------------------------------ 
-        ERROR: Incorrect number of arguments, expected >= 2, got 0
-        USAGE: Running: 
-        USAGE:   automated-translation-tries <train_file> <test_file> [debug-level]
-        USAGE:       <train_file> - a text file containing the training text corpus.
-        USAGE:                      This corpus should be already tokenized, i.e.,
-        USAGE:                      all words are already separated by white spaces,
-        USAGE:                      including punctuation marks. Also, each line in 
-        USAGE:                      this, file corresponds to one sentence.
-        USAGE:       <test_file>  - a text file containing test data.
-        USAGE:                      The test file consists of a number of 5-grams,
-        USAGE:                      where each line in the file consists of one 5-gram.
-        USAGE:      [debug-level] - the optional debug flag from {info, debug}
-        USAGE: Output: 
-        USAGE:     The program reads in the test lines from the <test_file>. 
-        USAGE:     Each of these lines is a 5-gram of the following form: 
-        USAGE:        word1 word2 word3 word4 word5
-        USAGE:     For each of such 5-grams the frequency information is 
-        USAGE:     computed, based on the data from the <train_file>. For
-        USAGE:     example, for a 5-gram such as:
-        USAGE:        mortgages had lured borrowers and
-        USAGE:     the program may give the following output:
-        USAGE:         frequency( mortgages had lured borrowers and ) = 0
-        USAGE:         frequency( had lured borrowers and ) = 2
-        USAGE:         frequency( lured borrowers and ) = 4
-        USAGE:         frequency( borrowers and ) = 56
-        USAGE:         frequency( and ) = 6453
-                        
+        $ ../dist/Release__MacOs_/back-off-language-model-smt
+        USAGE:	 ------------------------------------------------------------------ 
+        USAGE:	|                 Back Off Language Model(s) for SMT     :)\___/(: |
+        USAGE:	|                       Software version 1.0             {(@)v(@)} |
+        USAGE:	|                         The Owl release.               {|~- -~|} |
+        USAGE:	|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\} |
+        USAGE:	|  ═════════════════════════════════════════════════════════m-m══  |
+        USAGE:	|        This software is distributed under GPL 2.0 license        |
+        USAGE:	|          (GPL stands for GNU General Public License)             |
+        USAGE:	|          The product comes with ABSOLUTELY NO WARRANTY.          |
+        USAGE:	|   This is a free software, you are welcome to redistribute it.   |
+        USAGE:	|                     Running in 64 bit mode!                      |
+        USAGE:	|                 Build on: Sep 21 2015 17:26:44                   |
+        USAGE:	 ------------------------------------------------------------------ 
+        ERROR:	Incorrect number of arguments, expected >= 3, got 0
+        USAGE:	Running: 
+        USAGE:	  back-off-language-model-smt <model_file> <test_file> <trie_type> [debug-level]
+        USAGE:	      <model_file> - a text file containing the back-off language model.
+        USAGE:	                     This file is supposed to be in ARPA format, see: 
+        USAGE:	                          http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html
+        USAGE:	                     for more details. We also allow doe tags listed here:
+        USAGE:	                          https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx
+        USAGE:	      <test_file>  - a text file containing test data.
+        USAGE:	                     The test file consists of a number of N-grams,
+        USAGE:	                     where each line in the file consists of one N-gram.
+        USAGE:	      <trie_type>  - the trie type, one of {c2dm, w2ch, c2wa, w2ca, c2dh, g2dm}
+        USAGE:	     [debug-level] - the optional debug flag from { ERROR, WARN, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4 }
+        USAGE:	Output: 
+        USAGE:	    The program reads in the test queries from the <test_file>. 
+        USAGE:	    Each of these lines is a N-grams of the following form, e.g: 
+        USAGE:	       word1 word2 word3 word4 word5
+        USAGE:	    For each of such N-grams the probability information is 
+        USAGE:	    computed, based on the data from the <model_file>. For
+        USAGE:	    example, for a N-gram such as:
+        USAGE:	       mortgages had lured borrowers and
+        USAGE:	    the program may give the following output:
+        USAGE:	        log_10( Prob( word5 | word1 word2 word3 word4 ) ) = <log-probability>
 
 ##Implementation Details
 
-In this section we mention a few implementation details, for more details see the source code documentation.
-At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the
-Doxygen option <i>JAVADOC_AUTOBRIEF</i> set to <i>YES</i>. The generated documentation is located in the
-<big>./doxygen/</big> folder of the project.
+In this section we mention a few implementation details, for more details see the source code documentation. At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <i>JAVADOC_AUTOBRIEF</i> set to <i>YES</i>. The generated documentation is located in the <big>./doxygen/</big> folder of the project.
 
 The code contains the following important source files:
 * <big>ATries.hpp</big> - contains the common abstract class parent for all possible Trie classes

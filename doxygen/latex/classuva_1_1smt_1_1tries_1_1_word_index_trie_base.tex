@@ -1,0 +1,171 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:Word\+Index\+Trie\+Base$<$ N, Word\+Index $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base$<$ N, Word\+Index $>$@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base$<$ N, Word\+Index $>$}}
+
+
+{\ttfamily \#include $<$Word\+Index\+Trie\+Base.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Word\+Index \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_afd4bb660c032fbf012fac98fa89d10f6}{Word\+Index\+Trie\+Base} (\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a7481d7ffb51e7f7da90402a1c0ff5cb8}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6f4a5a898fc21351a2f41ff951fa4aea}{is\+\_\+post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_af2e97e26840915382281d6e13eaef383}{post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab284125ce75939a6812a0fb2b699a953}{get\+\_\+word\+\_\+index} () const 
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ac2a30fb4bcc07b5460ec70ee72d81efe}{max\+\_\+level} = N
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab37a62bdd458e196d9668f4a27794227}{post\+\_\+1\+\_\+grams} ()
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6256807c109c9ebce5887a93454e29a0}{post\+\_\+m\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a8411313f0f575b7972cf9e0993e89cf3}{post\+\_\+n\+\_\+grams} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a3b3d392c80d29ce2cf87c2e539ba4a0d}{m\+\_\+word\+\_\+index}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Model\+Level N, typename Word\+Index$>$class uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base$<$ N, Word\+Index $>$}
+
+This is a common base class for all Trie implementations. The purpose of having this as a template class is performance optimization. 
+\begin{DoxyParams}{Parameters}
+{\em N} & -\/ the maximum level of the considered N-\/gram, i.\+e. the N value \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!Word\+Index\+Type@{Word\+Index\+Type}}
+\index{Word\+Index\+Type@{Word\+Index\+Type}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{Word\+Index\+Type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ typedef Word\+Index {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::{\bf Word\+Index\+Type}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_afd4bb660c032fbf012fac98fa89d10f6}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!Word\+Index\+Trie\+Base@{Word\+Index\+Trie\+Base}}
+\index{Word\+Index\+Trie\+Base@{Word\+Index\+Trie\+Base}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{Word\+Index\+Trie\+Base(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::{\bf Word\+Index\+Trie\+Base} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_afd4bb660c032fbf012fac98fa89d10f6}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em word\+\_\+index} & the word index to be used \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab284125ce75939a6812a0fb2b699a953}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!get\+\_\+word\+\_\+index@{get\+\_\+word\+\_\+index}}
+\index{get\+\_\+word\+\_\+index@{get\+\_\+word\+\_\+index}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{get\+\_\+word\+\_\+index() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ {\bf Word\+Index\+Type}\& {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::get\+\_\+word\+\_\+index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab284125ce75939a6812a0fb2b699a953}
+Allows to retrieve the stored word index, if any \begin{DoxyReturn}{Returns}
+the pointer to the stored word index or N\+U\+L\+L if none 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6f4a5a898fc21351a2f41ff951fa4aea}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}}
+\index{is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{is\+\_\+post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ bool {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::is\+\_\+post\+\_\+grams (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6f4a5a898fc21351a2f41ff951fa4aea}
+This method allows to check if post processing should be called after all the X level grams are read. This method is virtual. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the X-\/grams that were finished to be read \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab37a62bdd458e196d9668f4a27794227}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!post\+\_\+1\+\_\+grams@{post\+\_\+1\+\_\+grams}}
+\index{post\+\_\+1\+\_\+grams@{post\+\_\+1\+\_\+grams}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{post\+\_\+1\+\_\+grams()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ virtual void {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::post\+\_\+1\+\_\+grams (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ab37a62bdd458e196d9668f4a27794227}
+This method will be called after all the 1-\/grams are read. The default implementation of this method is present. If overridden must be called from the child method. \hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_af2e97e26840915382281d6e13eaef383}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!post\+\_\+grams@{post\+\_\+grams}}
+\index{post\+\_\+grams@{post\+\_\+grams}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ void {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::post\+\_\+grams (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_af2e97e26840915382281d6e13eaef383}
+This method should be called after all the X level grams are read. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the X-\/grams that were finished to be read \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6256807c109c9ebce5887a93454e29a0}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!post\+\_\+m\+\_\+grams@{post\+\_\+m\+\_\+grams}}
+\index{post\+\_\+m\+\_\+grams@{post\+\_\+m\+\_\+grams}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{post\+\_\+m\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ virtual void {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::post\+\_\+m\+\_\+grams (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6256807c109c9ebce5887a93454e29a0}
+This method will be called after all the M-\/grams are read. The default implementation of this method is present. If overridden must be called from the child method. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the M-\/grams that were finished to be read \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_array_trie_a9c2e8d02c47f9e295af51d016ff9a7b7}{uva\+::smt\+::tries\+::\+W2\+C\+Array\+Trie$<$ N, Word\+Index\+Type $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_c2_w_array_trie_a44a4ab43b5d827ec7b05fca21aff109d}{uva\+::smt\+::tries\+::\+C2\+W\+Array\+Trie$<$ N, Word\+Index\+Type $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a95618a18f8ecadef63d8d33fc1d3e0e6}{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a8411313f0f575b7972cf9e0993e89cf3}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!post\+\_\+n\+\_\+grams@{post\+\_\+n\+\_\+grams}}
+\index{post\+\_\+n\+\_\+grams@{post\+\_\+n\+\_\+grams}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{post\+\_\+n\+\_\+grams()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ virtual void {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::post\+\_\+n\+\_\+grams (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a8411313f0f575b7972cf9e0993e89cf3}
+This method will be called after all the N-\/grams are read. The default implementation of this method is present. If overridden must be called from the child method. 
+
+Reimplemented in \hyperlink{classuva_1_1smt_1_1tries_1_1_c2_w_array_trie_a0467fe0af646410c8234fcfe00ee218a}{uva\+::smt\+::tries\+::\+C2\+W\+Array\+Trie$<$ N, Word\+Index\+Type $>$}, \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_array_trie_ae51519593b88f633f0d00c0a0feb8050}{uva\+::smt\+::tries\+::\+W2\+C\+Array\+Trie$<$ N, Word\+Index\+Type $>$}, and \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ad70a9f0ff58ffcda249492a16fc3faae}{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$}.
+
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a7481d7ffb51e7f7da90402a1c0ff5cb8}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ void {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+N\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a7481d7ffb51e7f7da90402a1c0ff5cb8}
+This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory 
+\begin{DoxyParams}{Parameters}
+{\em counts} & the array of N-\/\+Gram counts counts\mbox{[}0\mbox{]} is for 1-\/\+Gram \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a3b3d392c80d29ce2cf87c2e539ba4a0d}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!m\+\_\+word\+\_\+index@{m\+\_\+word\+\_\+index}}
+\index{m\+\_\+word\+\_\+index@{m\+\_\+word\+\_\+index}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{m\+\_\+word\+\_\+index}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ {\bf Word\+Index\+Type}\& {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::m\+\_\+word\+\_\+index\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a3b3d392c80d29ce2cf87c2e539ba4a0d}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ac2a30fb4bcc07b5460ec70ee72d81efe}{}\index{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}!max\+\_\+level@{max\+\_\+level}}
+\index{max\+\_\+level@{max\+\_\+level}!uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base@{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}}
+\subsubsection[{max\+\_\+level}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index$>$ const {\bf T\+Model\+Level} {\bf uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base}$<$ N, Word\+Index $>$\+::max\+\_\+level = N\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_ac2a30fb4bcc07b5460ec70ee72d81efe}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_word_index_trie_base_8hpp}{Word\+Index\+Trie\+Base.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,61 @@
+\hypertarget{_layered_trie_driver_8hpp}{}\section{inc/\+Layered\+Trie\+Driver.hpp File Reference}
+\label{_layered_trie_driver_8hpp}\index{inc/\+Layered\+Trie\+Driver.\+hpp@{inc/\+Layered\+Trie\+Driver.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$functional$>$}\\*
+{\ttfamily \#include \char`\"{}Globals.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Text\+Piece\+Reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}A\+Word\+Index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Bitmap\+Hash\+Cache.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Generic\+Trie\+Base.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Layered\+Trie\+Base.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver$<$ Trie\+Type $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries}{uva\+::smt\+::tries}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_layered_trie_driver_8hpp_a2c45b51944d9a37bb6b3e8e43541d2ab}{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}(N,  gram,  word\+Hash,  context\+Id,  prev\+Prob,  prev\+Back\+Off,  new\+Prob,  new\+Back\+Off)  
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_layered_trie_driver_8hpp_a2c45b51944d9a37bb6b3e8e43541d2ab}{}\index{Layered\+Trie\+Driver.\+hpp@{Layered\+Trie\+Driver.\+hpp}!R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}}
+\index{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}!Layered\+Trie\+Driver.\+hpp@{Layered\+Trie\+Driver.\+hpp}}
+\subsubsection[{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G(
+\begin{DoxyParamCaption}
+\item[{}]{N, }
+\item[{}]{gram, }
+\item[{}]{word\+Hash, }
+\item[{}]{context\+Id, }
+\item[{}]{prev\+Prob, }
+\item[{}]{prev\+Back\+Off, }
+\item[{}]{new\+Prob, }
+\item[{}]{new\+Back\+Off}
+\end{DoxyParamCaption}
+)}\label{_layered_trie_driver_8hpp_a2c45b51944d9a37bb6b3e8e43541d2ab}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{_logger_8hpp_adf4476a6a4ea6c74231c826e899d7189}{LOG\_WARNING} << \textcolor{stringliteral}{"The "} << gram.level << \textcolor{stringliteral}{"-Gram : "} << tokensToString<N>(gram)                    
+       \(\backslash\)
+                        << \textcolor{stringliteral}{" has been already seen! Word Id: "} << \hyperlink{_logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(wordHash)                       
+            \(\backslash\)
+                        << \textcolor{stringliteral}{", context Id: "} << \hyperlink{_logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(contextId) << \textcolor{stringliteral}{". "}                                 
+            \(\backslash\)
+                        << \textcolor{stringliteral}{"Changing the (prob,back-off) data from ("}                                      
+        \(\backslash\)
+                        << prevProb << \textcolor{stringliteral}{","} << prevBackOff << \textcolor{stringliteral}{") to ("}                                      
+        \(\backslash\)
+                        << newProb << \textcolor{stringliteral}{","} << newBackOff << \textcolor{stringliteral}{")"} << \hyperlink{_logger_8hpp_a80f2223fb302398deb65324a1543b8db}{END\_LOG};
+\end{DoxyCode}

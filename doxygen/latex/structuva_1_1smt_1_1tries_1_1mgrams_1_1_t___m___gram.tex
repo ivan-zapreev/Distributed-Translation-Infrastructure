@@ -12,6 +12,8 @@ uint64\+\_\+t \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a8
 uint64\+\_\+t \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_ad881b8fd36556fe70d67eeea21a0c878}{suffix\+\_\+hash} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} begin\+\_\+idx) const 
 \item 
 uint64\+\_\+t \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a59fec2addc530f943801a49a44e64fa9}{hash} () const 
+\item 
+{\footnotesize template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ }\\void \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a02588e28db792891161cef79e57f34ee}{store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids} (\hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+\_\+ids\mbox{[}N\mbox{]}, const Word\+Index\+Type \&word\+\_\+index) const 
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -55,6 +57,19 @@ This structure is used to store the N-\/\+Gram data of the back-\/off Language M
 This function allows to compute the hash of the given M-\/\+Gram It assumes, which should hold, that the memory pointed by the tokens is continuous \begin{DoxyReturn}{Returns}
 the hash value of the given token 
 \end{DoxyReturn}
+\hypertarget{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a02588e28db792891161cef79e57f34ee}{}\index{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram@{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram}!store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids@{store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids}}
+\index{store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids@{store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids}!uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram@{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram}}
+\subsubsection[{store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids(\+T\+Short\+Id word\+\_\+ids[N], const Word\+Index\+Type \&word\+\_\+index) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram\+::store\+\_\+m\+\_\+gram\+\_\+word\+\_\+ids (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+Short\+Id}}]{word\+\_\+ids\mbox{[}\+N\mbox{]}, }
+\item[{const Word\+Index\+Type \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a02588e28db792891161cef79e57f34ee}
+Converts the given tokens to ids and stores it in m\+\_\+gram\+\_\+word\+\_\+ids. The ids are aligned to the beginning of the m\+\_\+gram\+\_\+word\+\_\+ids\mbox{[}N-\/1\mbox{]} array. 
+\begin{DoxyParams}{Parameters}
+{\em m\+\_\+gram} & the m-\/gram tokens to convert to hashes \\
+\hline
+\end{DoxyParams}
 \hypertarget{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram_a87d9852f45d1302d444d3b675ac208ee}{}\index{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram@{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram}!sub\+\_\+hash@{sub\+\_\+hash}}
 \index{sub\+\_\+hash@{sub\+\_\+hash}!uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram@{uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram}}
 \subsubsection[{sub\+\_\+hash(const T\+Model\+Level begin\+\_\+idx, const T\+Model\+Level end\+\_\+idx) const }]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t uva\+::smt\+::tries\+::mgrams\+::\+T\+\_\+\+M\+\_\+\+Gram\+::sub\+\_\+hash (

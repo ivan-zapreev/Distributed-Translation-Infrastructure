@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['optimizing_5fbasic_5fword_5findex',['OPTIMIZING_BASIC_WORD_INDEX',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afaf2e0211e595a151b4406e638e20f0385',1,'uva::smt::tries::dictionary']]],
-  ['optimizing_5fcounting_5fword_5findex',['OPTIMIZING_COUNTING_WORD_INDEX',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa0318ba9b612a49c6e578b9961e404cd5',1,'uva::smt::tries::dictionary']]]
+  ['linear',['LINEAR',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1',1,'uva::smt::tries::alloc']]],
+  ['log_5f10',['LOG_10',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c',1,'uva::smt::tries::alloc']]],
+  ['log_5f2',['LOG_2',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1',1,'uva::smt::tries::alloc']]]
 ];

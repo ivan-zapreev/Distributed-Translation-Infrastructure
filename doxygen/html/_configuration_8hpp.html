@@ -135,10 +135,10 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ab82295a1c88a9605285d504893855427"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427">uva::smt::logging::DebugLevelsEnum</a> { <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427abc4ba61d2ee3433dd43040f17603bf6a">uva::smt::logging::USAGE</a> = 0, 
-<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427afe62f43ec1d0249d8c3a20e61911d469">uva::smt::logging::ERROR</a> = USAGE + 1, 
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427afe62f43ec1d0249d8c3a20e61911d469">uva::smt::logging::ERROR</a> = 0, 
 <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a87b82af01a3dab361757373d1ac96254">uva::smt::logging::WARNING</a> = ERROR + 1, 
-<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a65835a56f97da1994648f6dbd331434c">uva::smt::logging::RESULT</a> = WARNING + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427abc4ba61d2ee3433dd43040f17603bf6a">uva::smt::logging::USAGE</a> = WARNING + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a65835a56f97da1994648f6dbd331434c">uva::smt::logging::RESULT</a> = USAGE + 1, 
 <br />
 &#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a4a97ea4af2faeed51be5b2d86a4dc412">uva::smt::logging::INFO</a> = RESULT + 1, 
 <a class="el" href="namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a3b0f5996700bbed54d2955cbbf51474b">uva::smt::logging::INFO1</a> = INFO + 1, 
@@ -167,15 +167,28 @@ Enumerations</h2></td></tr>
  }<tr class="separator:aa19a45a19458f601785f08cb24e17f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </td></tr>
 <tr class="memitem:a2d9d8547b613df614eb53c510c5223af"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223af">uva::smt::tries::dictionary::WordIndexTypesEnum</a> { <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa20a86e5b38931abc7a82ecf8a8ec6e45">uva::smt::tries::dictionary::UNDEFINED</a> = 0, 
-<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa9d7aca4b6d0108c0e7b6b5336147f702">uva::smt::tries::dictionary::BASIC_WORD_INDEX</a> = UNDEFINED + 1, 
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afad3e5d3a48d4d42353e379d2488e69929">uva::smt::tries::dictionary::UNDEFINED_WORD_INDEX</a> = 0, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa9d7aca4b6d0108c0e7b6b5336147f702">uva::smt::tries::dictionary::BASIC_WORD_INDEX</a> = UNDEFINED_WORD_INDEX + 1, 
 <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afaea9522a585dd461e969eaecd2d0b86d5">uva::smt::tries::dictionary::COUNTING_WORD_INDEX</a> = BASIC_WORD_INDEX + 1, 
 <a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afaf2e0211e595a151b4406e638e20f0385">uva::smt::tries::dictionary::OPTIMIZING_BASIC_WORD_INDEX</a> = COUNTING_WORD_INDEX + 1, 
 <br />
 &#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa0318ba9b612a49c6e578b9961e404cd5">uva::smt::tries::dictionary::OPTIMIZING_COUNTING_WORD_INDEX</a> = OPTIMIZING_BASIC_WORD_INDEX + 1, 
-<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afabc7f3c2d4210c2d7a45ef425cb582ef3">uva::smt::tries::dictionary::size</a> = OPTIMIZING_COUNTING_WORD_INDEX + 1
+<a class="el" href="namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa7d1ffdd83a625017428ac58e56b57bc1">uva::smt::tries::dictionary::size_word_index</a> = OPTIMIZING_COUNTING_WORD_INDEX + 1
 <br />
  }<tr class="separator:a2d9d8547b613df614eb53c510c5223af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</td></tr>
+<tr class="memitem:adf9a302134fb7aba4a37f68452546532"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532">uva::smt::tries::TrieTypesEnum</a> { <br />
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532af0901b465b63e49e83362cf06052ad56">uva::smt::tries::UNDEFINED_TRIE</a> = 0, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532ac49e1e569922436c0a2938f36ceb4670">uva::smt::tries::C2DH_TRIE</a> = UNDEFINED_TRIE + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532a24d63eee06f22a2204272bd9fe93ac29">uva::smt::tries::C2DM_TRIE</a> = C2DH_TRIE + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532a47d410619deac4512c9c00b03a1d0b53">uva::smt::tries::G2DM_TRIE</a> = C2DM_TRIE + 1, 
+<br />
+&#160;&#160;<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532aa7970ca7d9ae57509fc0cc11230d3561">uva::smt::tries::W2CA_TRIE</a> = G2DM_TRIE + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532ab847f9990a8da0f2aac521c6f6efe97a">uva::smt::tries::C2WA_TRIE</a> = W2CA_TRIE + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532a054f408cba26b062e4c771d4d53001f5">uva::smt::tries::W2CH_TRIE</a> = C2WA_TRIE + 1, 
+<a class="el" href="namespaceuva_1_1smt_1_1tries.html#adf9a302134fb7aba4a37f68452546532a0307170847be1cfba7a1d60da22789c6">uva::smt::tries::size_trie</a> = W2CH_TRIE + 1
+<br />
+ }<tr class="separator:adf9a302134fb7aba4a37f68452546532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>

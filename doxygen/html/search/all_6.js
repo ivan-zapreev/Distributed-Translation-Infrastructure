@@ -5,7 +5,7 @@ var searchData=
   ['filestreamreader',['FileStreamReader',['../classuva_1_1smt_1_1file_1_1_file_stream_reader.html#a2e760fb9dc365a1bc5cbf88fa3468f16',1,'uva::smt::file::FileStreamReader']]],
   ['filestreamreader_2ehpp',['FileStreamReader.hpp',['../_file_stream_reader_8hpp.html',1,'']]],
   ['find',['find',['../classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage.html#a0d6c2d8a1f4f531f74b0ee8255b2033b',1,'uva::smt::tries::W2CH_UM_Storage']]],
-  ['first_5fvalid_5fctx_5fid',['FIRST_VALID_CTX_ID',['../classuva_1_1smt_1_1tries_1_1_a_trie.html#a364b68d11ca94eb1b38d78035376da39',1,'uva::smt::tries::ATrie']]],
+  ['first_5fvalid_5fctx_5fid',['FIRST_VALID_CTX_ID',['../classuva_1_1smt_1_1tries_1_1_generic_trie_base.html#afa0212a846983432cdb8def9a34e1cfb',1,'uva::smt::tries::GenericTrieBase']]],
   ['fnv_5foffset_5fbasis',['fnv_offset_basis',['../namespaceuva_1_1smt_1_1hashing.html#a114900b041415523076700317d62613a',1,'uva::smt::hashing']]],
   ['fnv_5fprime',['fnv_prime',['../namespaceuva_1_1smt_1_1hashing.html#a1d75c23c055906113f9c29f0ef93c3be',1,'uva::smt::hashing']]],
   ['force_5finline',['FORCE_INLINE',['../xxhash_8c.html#ac032d233a8ebfcd82fd49d0824eefb18',1,'xxhash.c']]],

@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad881b8fd36556fe70d67eeea21a0c878"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59fec2addc530f943801a49a44e64fa9"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#a59fec2addc530f943801a49a44e64fa9">hash</a> () const </td></tr>
 <tr class="separator:a59fec2addc530f943801a49a44e64fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02588e28db792891161cef79e57f34ee"><td class="memTemplParams" colspan="2">template&lt;TModelLevel N, typename WordIndexType &gt; </td></tr>
+<tr class="memitem:a02588e28db792891161cef79e57f34ee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram.html#a02588e28db792891161cef79e57f34ee">store_m_gram_word_ids</a> (<a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> word_ids[N], const WordIndexType &amp;word_index) const </td></tr>
+<tr class="separator:a02588e28db792891161cef79e57f34ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -154,6 +157,48 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>This function allows to compute the hash of the given M-Gram It assumes, which should hold, that the memory pointed by the tokens is continuous </p><dl class="section return"><dt>Returns</dt><dd>the hash value of the given token </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a02588e28db792891161cef79e57f34ee"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;TModelLevel N, typename WordIndexType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uva::smt::tries::mgrams::T_M_Gram::store_m_gram_word_ids </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td>
+          <td class="paramname"><em>word_ids</em>[N], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const WordIndexType &amp;&#160;</td>
+          <td class="paramname"><em>word_index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts the given tokens to ids and stores it in m_gram_word_ids. The ids are aligned to the beginning of the m_gram_word_ids[N-1] array. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m_gram</td><td>the m-gram tokens to convert to hashes </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>My Project: uva::smt::tries::C2WArrayTrie&lt; N &gt;::TSubArrReference Struct Reference</title>
+<title>My Project: uva::smt::tries::C2WArrayTrie&lt; N, WordIndexType &gt;::TSubArrReference Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structuva_1_1smt_1_1tries_1_1_c2_w_array_trie_1_1_t_sub_arr_reference-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">uva::smt::tries::C2WArrayTrie&lt; N &gt;::TSubArrReference Struct Reference</div>  </div>
+<div class="title">uva::smt::tries::C2WArrayTrie&lt; N, WordIndexType &gt;::TSubArrReference Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,14 +100,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a7ac947b9ce9220d6115209629a1bda0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html#a7ac947b9ce9220d6115209629a1bda0e">beginIdx</a></td></tr>
-<tr class="separator:a7ac947b9ce9220d6115209629a1bda0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae971b9041d86dee35237947786b8fef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html#ae971b9041d86dee35237947786b8fef1">endIdx</a></td></tr>
-<tr class="separator:ae971b9041d86dee35237947786b8fef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54b06953fa51f7646c7f491ee4d99372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html#a54b06953fa51f7646c7f491ee4d99372">beginIdx</a></td></tr>
+<tr class="separator:a54b06953fa51f7646c7f491ee4d99372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e7dd8f7b6007d10bb6b888eec498ec0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1smt_1_1tries_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html#a1e7dd8f7b6007d10bb6b888eec498ec0">endIdx</a></td></tr>
+<tr class="separator:a1e7dd8f7b6007d10bb6b888eec498ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;TModelLevel N&gt;<br />
-struct uva::smt::tries::C2WArrayTrie&lt; N &gt;::TSubArrReference</h3>
+<div class="textblock"><h3>template&lt;TModelLevel N, typename WordIndexType&gt;<br />
+struct uva::smt::tries::C2WArrayTrie&lt; N, WordIndexType &gt;::TSubArrReference</h3>
 
 <p>This structure is needed to store begin and end index to reference pieces of an array It is used to reference sub-array ranges for the M-gram data for levels 1 &lt; M &lt; N.</p>
 <p>WARNING: It is not possible to get rid of this structure as the contexts are not ordered. It is only true that the contexts will be filled one after another, but the context id will not be increased all the time.</p>
@@ -119,28 +119,28 @@ struct uva::smt::tries::C2WArrayTrie&lt; N &gt;::TSubArrReference</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a7ac947b9ce9220d6115209629a1bda0e"></a>
+<a class="anchor" id="a54b06953fa51f7646c7f491ee4d99372"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;TModelLevel N&gt; </div>
+template&lt;TModelLevel N, typename WordIndexType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html">uva::smt::tries::C2WArrayTrie</a>&lt; N &gt;::TSubArrReference::beginIdx</td>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html">uva::smt::tries::C2WArrayTrie</a>&lt; N, <a class="el" href="classuva_1_1smt_1_1tries_1_1_word_index_trie_base.html#a30c4fffe3a3423c87b229b66340dd2f8">WordIndexType</a> &gt;::TSubArrReference::beginIdx</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a class="anchor" id="ae971b9041d86dee35237947786b8fef1"></a>
+<a class="anchor" id="a1e7dd8f7b6007d10bb6b888eec498ec0"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;TModelLevel N&gt; </div>
+template&lt;TModelLevel N, typename WordIndexType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html">uva::smt::tries::C2WArrayTrie</a>&lt; N &gt;::TSubArrReference::endIdx</td>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> <a class="el" href="classuva_1_1smt_1_1tries_1_1_c2_w_array_trie.html">uva::smt::tries::C2WArrayTrie</a>&lt; N, <a class="el" href="classuva_1_1smt_1_1tries_1_1_word_index_trie_base.html#a30c4fffe3a3423c87b229b66340dd2f8">WordIndexType</a> &gt;::TSubArrReference::endIdx</td>
         </tr>
       </table>
 </div><div class="memdoc">

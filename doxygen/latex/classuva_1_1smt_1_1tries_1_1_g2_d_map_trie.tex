@@ -1,56 +1,63 @@
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:G2\+D\+Map\+Trie$<$ N $>$ Class Template Reference}
-\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N $>$@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N $>$}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$}}
 
 
 {\ttfamily \#include $<$G2\+D\+Hash\+Map\+Trie.\+hpp$>$}
 
-Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:G2\+D\+Map\+Trie$<$ N $>$\+:\begin{figure}[H]
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}
+\includegraphics[height=3.000000cm]{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}
 \end{center}
 \end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac292db3e38827a5eea2507b7bb548b0f}{B\+A\+S\+E}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a50e503dddc2a01ade2688c8df32d5640}{G2\+D\+Map\+Trie} (\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} $\ast$const \+\_\+p\+Word\+Index)
+\hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a1b6cdc27651cae48f65305bbb558e8ff}{G2\+D\+Map\+Trie} (\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \&word\+\_\+index)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a5d0c8c65881a5895692b726f2f8321}{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info} ()
+{\footnotesize template$<$bool is\+\_\+back\+\_\+off$>$ }\\bool \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a663261ab0600ab3efc34955e19e9e462}{is\+\_\+bitmap\+\_\+hash\+\_\+cache} (\hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \&query)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a1df16ae7be44509ac2d3da07b7bd71}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ae0799cd361b6ad82a9a9ced7aac0d4f9}{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info} ()
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a54e165e0783f90a74f3bb9675c012a28}{add\+\_\+1\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&o\+Gram)
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af587a4b2029ede0ca42f3c29d7ca1dbe}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4df6000a2413384cb895d70455fb085a}{add\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&m\+Gram)
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a5ef57c74c5a3c41cc082075a7f059a50}{add\+\_\+1\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&o\+Gram)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a0b9497cafbcd2d5330b76ea2ae5d8e87}{add\+\_\+n\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&n\+Gram)
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4d3616f4825f3272746c80fb2d550477}{add\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&m\+Gram)
 \item 
-virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af24619edf2b59c3299a32838512bb6bb}{is\+\_\+post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a39f6a97e094b0e149f798f35c034e25a}{add\+\_\+n\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&n\+Gram)
 \item 
-virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_afae7bbd4d95d2e11c2ecff60866d2756}{$\sim$\+G2\+D\+Map\+Trie} ()
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a14d724b28fd0b1a5da3661ec01dc7df6}{get\+\_\+prob\+\_\+weight} (\hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a02f7e960d66ef11aa6ebbc338b3f8183}{add\+\_\+back\+\_\+off\+\_\+weight} (\hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \&query)
+\item 
+virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a71523ced7125f6f55a1fb5ea91cc6e11}{is\+\_\+post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4c9af9115b4bf94e869ab6de29491be8}{$\sim$\+G2\+D\+Map\+Trie} ()
 \end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a593414c1e5fbd7522c6ef31643848532}{post\+\_\+m\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a95618a18f8ecadef63d8d33fc1d3e0e6}{post\+\_\+m\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a3cb280a715f72c97aaaf4ce0f05e657a}{post\+\_\+n\+\_\+grams} ()
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ad70a9f0ff58ffcda249492a16fc3faae}{post\+\_\+n\+\_\+grams} ()
 \item 
-virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a116303b3bc78d4df59e1ed09d2270708}{add\+\_\+prob\+\_\+weight} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \&prob)
+uint32\+\_\+t \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a6f924d69f1bc1034cae6ba0025600392}{get\+\_\+bucket\+\_\+id} (const uint64\+\_\+t gram\+\_\+hash, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a48646b91ccd38fcd89969ae5fd39a324}{add\+\_\+back\+\_\+off\+\_\+weight} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \&prob)
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab024b2e90c2b364a777a512a3599226b}{get\+\_\+bucket\+\_\+id} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \&bucket\+\_\+idx)
 \item 
-uint32\+\_\+t \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab929b5d16e396c52c1722890248677bf}{get\+\_\+bucket\+\_\+id} (const uint64\+\_\+t gram\+\_\+hash, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
-\item 
-void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab6b7e50aa34370ce415f3f84bc9ef694}{get\+\_\+bucket\+\_\+id} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} \&bucket\+\_\+idx)
-\item 
-{\footnotesize template$<$typename B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $>$ }\\void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac60651ab47c923fe8624b35f502c1835}{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams} (B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $\ast$buckets, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+{\footnotesize template$<$typename B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $>$ }\\void \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a2459fb26fc153185feecc0eb06a6438d}{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams} (B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $\ast$buckets, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
 \end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$T\+Model\+Level N$>$class uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N $>$}
+\subsubsection*{template$<$T\+Model\+Level N, typename Word\+Index\+Type$>$class uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie$<$ N, Word\+Index\+Type $>$}
 
 This is a Gram to Data trie that is implemented as a Hash\+Map. 
 \begin{DoxyParams}{Parameters}
@@ -59,109 +66,83 @@ This is a Gram to Data trie that is implemented as a Hash\+Map.
 \end{DoxyParams}
 
 
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac292db3e38827a5eea2507b7bb548b0f}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!B\+A\+S\+E@{B\+A\+S\+E}}
+\index{B\+A\+S\+E@{B\+A\+S\+E}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
+\subsubsection[{B\+A\+S\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ typedef {\bf Generic\+Trie\+Base}$<$N, {\bf Word\+Index\+Type}$>$ {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::{\bf B\+A\+S\+E}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac292db3e38827a5eea2507b7bb548b0f}
+
+
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a50e503dddc2a01ade2688c8df32d5640}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!G2\+D\+Map\+Trie@{G2\+D\+Map\+Trie}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a1b6cdc27651cae48f65305bbb558e8ff}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!G2\+D\+Map\+Trie@{G2\+D\+Map\+Trie}}
 \index{G2\+D\+Map\+Trie@{G2\+D\+Map\+Trie}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{G2\+D\+Map\+Trie(\+A\+Word\+Index $\ast$const \+\_\+p\+Word\+Index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::{\bf G2\+D\+Map\+Trie} (
+\subsubsection[{G2\+D\+Map\+Trie(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::{\bf G2\+D\+Map\+Trie} (
 \begin{DoxyParamCaption}
-\item[{{\bf A\+Word\+Index} $\ast$const}]{\+\_\+p\+Word\+Index}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a50e503dddc2a01ade2688c8df32d5640}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a1b6cdc27651cae48f65305bbb558e8ff}
 The basic constructor 
 \begin{DoxyParams}{Parameters}
 {\em \+\_\+word\+Index} & the word index to be used \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_afae7bbd4d95d2e11c2ecff60866d2756}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!````~G2\+D\+Map\+Trie@{$\sim$\+G2\+D\+Map\+Trie}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4c9af9115b4bf94e869ab6de29491be8}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!````~G2\+D\+Map\+Trie@{$\sim$\+G2\+D\+Map\+Trie}}
 \index{````~G2\+D\+Map\+Trie@{$\sim$\+G2\+D\+Map\+Trie}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{$\sim$\+G2\+D\+Map\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::$\sim${\bf G2\+D\+Map\+Trie} (
+\subsubsection[{$\sim$\+G2\+D\+Map\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::$\sim${\bf G2\+D\+Map\+Trie} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_afae7bbd4d95d2e11c2ecff60866d2756}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4c9af9115b4bf94e869ab6de29491be8}
 The basic class destructor 
 
 \subsection{Member Function Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a54e165e0783f90a74f3bb9675c012a28}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+1\+\_\+gram@{add\+\_\+1\+\_\+gram}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a5ef57c74c5a3c41cc082075a7f059a50}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+1\+\_\+gram@{add\+\_\+1\+\_\+gram}}
 \index{add\+\_\+1\+\_\+gram@{add\+\_\+1\+\_\+gram}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{add\+\_\+1\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&o\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::add\+\_\+1\+\_\+gram (
+\subsubsection[{add\+\_\+1\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&o\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::add\+\_\+1\+\_\+gram (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{o\+Gram}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a54e165e0783f90a74f3bb9675c012a28}
+)}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a5ef57c74c5a3c41cc082075a7f059a50}
 This method adds a 1-\/\+Gram (word) to the trie. It it snot guaranteed that the parameter will be checked to be a 1-\/\+Gram! \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a3ff08588c72cd70dfc3d8129968d57b5}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a48646b91ccd38fcd89969ae5fd39a324}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a02f7e960d66ef11aa6ebbc338b3f8183}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}}
 \index{add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{add\+\_\+back\+\_\+off\+\_\+weight(const T\+Model\+Level level, T\+Log\+Prob\+Back\+Off \&prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::add\+\_\+back\+\_\+off\+\_\+weight (
+\subsubsection[{add\+\_\+back\+\_\+off\+\_\+weight(\+M\+Gram\+Query$<$ N, Word\+Index\+Type $>$ \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::add\+\_\+back\+\_\+off\+\_\+weight (
 \begin{DoxyParamCaption}
-\item[{const {\bf T\+Model\+Level}}]{level, }
-\item[{{\bf T\+Log\+Prob\+Back\+Off} \&}]{prob}
+\item[{{\bf M\+Gram\+Query}$<$ N, {\bf Word\+Index\+Type} $>$ \&}]{query}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a48646b91ccd38fcd89969ae5fd39a324}
+)}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a02f7e960d66ef11aa6ebbc338b3f8183}
 This function allows to retrieve the back-\/off stored for the given M-\/gram level. If the value is found then it must be added to the prob parameter of the function. If the value is not found then the prob parameter of the function must not be changed. In that case the back-\/off weight is just zero. \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_aac350b954d22273e09db4890d80720e2}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4df6000a2413384cb895d70455fb085a}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4d3616f4825f3272746c80fb2d550477}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
 \index{add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{add\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&m\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::add\+\_\+m\+\_\+gram (
+\subsubsection[{add\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&m\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::add\+\_\+m\+\_\+gram (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{m\+Gram}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4df6000a2413384cb895d70455fb085a}
+)}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a4d3616f4825f3272746c80fb2d550477}
 This method adds a M-\/\+Gram (word) to the trie where 1 $<$ M $<$ N \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a469f894057a536141d84be00e8bd8f5f}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a0b9497cafbcd2d5330b76ea2ae5d8e87}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+n\+\_\+gram@{add\+\_\+n\+\_\+gram}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a39f6a97e094b0e149f798f35c034e25a}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+n\+\_\+gram@{add\+\_\+n\+\_\+gram}}
 \index{add\+\_\+n\+\_\+gram@{add\+\_\+n\+\_\+gram}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{add\+\_\+n\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&n\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::add\+\_\+n\+\_\+gram (
+\subsubsection[{add\+\_\+n\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&n\+Gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::add\+\_\+n\+\_\+gram (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{n\+Gram}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a0b9497cafbcd2d5330b76ea2ae5d8e87}
+)}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a39f6a97e094b0e149f798f35c034e25a}
 This method adds a N-\/\+Gram (word) to the trie where It it not guaranteed that the parameter will be checked to be a N-\/\+Gram! \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_aa4598e59915c77e7bf92d744d7d35f02}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a116303b3bc78d4df59e1ed09d2270708}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!add\+\_\+prob\+\_\+weight@{add\+\_\+prob\+\_\+weight}}
-\index{add\+\_\+prob\+\_\+weight@{add\+\_\+prob\+\_\+weight}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{add\+\_\+prob\+\_\+weight(const T\+Model\+Level level, T\+Log\+Prob\+Back\+Off \&prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ bool {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::add\+\_\+prob\+\_\+weight (
-\begin{DoxyParamCaption}
-\item[{const {\bf T\+Model\+Level}}]{level, }
-\item[{{\bf T\+Log\+Prob\+Back\+Off} \&}]{prob}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a116303b3bc78d4df59e1ed09d2270708}
-This function allows to retrieve the probability stored for the given M-\/gram level. If the value is found then it must be added to the prob parameter of the function. If the value is not found then the prob parameter of the function must not be changed. \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
-\end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_ac6bb33e835e42c2b4c36b6d71f1d936c}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab929b5d16e396c52c1722890248677bf}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a6f924d69f1bc1034cae6ba0025600392}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}}
 \index{get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{get\+\_\+bucket\+\_\+id(const uint64\+\_\+t gram\+\_\+hash, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ uint32\+\_\+t {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::get\+\_\+bucket\+\_\+id (
+\subsubsection[{get\+\_\+bucket\+\_\+id(const uint64\+\_\+t gram\+\_\+hash, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ uint32\+\_\+t {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+bucket\+\_\+id (
 \begin{DoxyParamCaption}
 \item[{const uint64\+\_\+t}]{gram\+\_\+hash, }
 \item[{const {\bf T\+Model\+Level}}]{level}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab929b5d16e396c52c1722890248677bf}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a6f924d69f1bc1034cae6ba0025600392}
 Allows to get the bucket index for the given M-\/gram 
 \begin{DoxyParams}{Parameters}
 {\em gram} & the M-\/gram to compute the bucked index for \\
@@ -169,14 +150,14 @@ Allows to get the bucket index for the given M-\/gram
 {\em bucket\+\_\+idx} & the resulting bucket index \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab6b7e50aa34370ce415f3f84bc9ef694}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab024b2e90c2b364a777a512a3599226b}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}}
 \index{get\+\_\+bucket\+\_\+id@{get\+\_\+bucket\+\_\+id}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{get\+\_\+bucket\+\_\+id(const T\+\_\+\+M\+\_\+\+Gram \&gram, T\+Short\+Id \&bucket\+\_\+idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::get\+\_\+bucket\+\_\+id (
+\subsubsection[{get\+\_\+bucket\+\_\+id(const T\+\_\+\+M\+\_\+\+Gram \&gram, T\+Short\+Id \&bucket\+\_\+idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+bucket\+\_\+id (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram, }
 \item[{{\bf T\+Short\+Id} \&}]{bucket\+\_\+idx}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab6b7e50aa34370ce415f3f84bc9ef694}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ab024b2e90c2b364a777a512a3599226b}
 Allows to get the bucket index for the given M-\/gram 
 \begin{DoxyParams}{Parameters}
 {\em gram} & the M-\/gram to compute the bucked index for \\
@@ -184,53 +165,65 @@ Allows to get the bucket index for the given M-\/gram
 {\em bucket\+\_\+idx} & the resulting bucket index \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af24619edf2b59c3299a32838512bb6bb}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a14d724b28fd0b1a5da3661ec01dc7df6}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}}
+\index{get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
+\subsubsection[{get\+\_\+prob\+\_\+weight(\+M\+Gram\+Query$<$ N, Word\+Index\+Type $>$ \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+prob\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{{\bf M\+Gram\+Query}$<$ N, {\bf Word\+Index\+Type} $>$ \&}]{query}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a14d724b28fd0b1a5da3661ec01dc7df6}
+This function allows to retrieve the probability stored for the given M-\/gram level. If the value is found then it must be set to the prob parameter of the function. If the value is not found then the prob parameter of the function must not be changed. \begin{DoxySeeAlso}{See also}
+A\+Trie 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a663261ab0600ab3efc34955e19e9e462}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}}
+\index{is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
+\subsubsection[{is\+\_\+bitmap\+\_\+hash\+\_\+cache(\+M\+Gram\+Query$<$ N, Word\+Index\+Type $>$ \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ template$<$bool is\+\_\+back\+\_\+off$>$ bool {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::is\+\_\+bitmap\+\_\+hash\+\_\+cache (
+\begin{DoxyParamCaption}
+\item[{{\bf M\+Gram\+Query}$<$ N, {\bf Word\+Index\+Type} $>$ \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a663261ab0600ab3efc34955e19e9e462}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a71523ced7125f6f55a1fb5ea91cc6e11}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}}
 \index{is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{is\+\_\+post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual bool {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::is\+\_\+post\+\_\+grams (
+\subsubsection[{is\+\_\+post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ virtual bool {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::is\+\_\+post\+\_\+grams (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Model\+Level}}]{level}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af24619edf2b59c3299a32838512bb6bb}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a71523ced7125f6f55a1fb5ea91cc6e11}
 This method allows to check if post processing should be called after all the X level grams are read. This method is virtual. \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_abaa5760dcdd087e3f977eae925862043}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a5d0c8c65881a5895692b726f2f8321}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ae0799cd361b6ad82a9a9ced7aac0d4f9}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}}
 \index{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ virtual void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info (
+\subsubsection[{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ virtual void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a5d0c8c65881a5895692b726f2f8321}
-Allows to log the information about the instantiated trie type 
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a4266759644e0ebfda77ab1a851a660af}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a593414c1e5fbd7522c6ef31643848532}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+m\+\_\+grams@{post\+\_\+m\+\_\+grams}}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ae0799cd361b6ad82a9a9ced7aac0d4f9}
+Allows to log the information about the instantiated trie type \hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a95618a18f8ecadef63d8d33fc1d3e0e6}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+m\+\_\+grams@{post\+\_\+m\+\_\+grams}}
 \index{post\+\_\+m\+\_\+grams@{post\+\_\+m\+\_\+grams}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{post\+\_\+m\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::post\+\_\+m\+\_\+grams (
+\subsubsection[{post\+\_\+m\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::post\+\_\+m\+\_\+grams (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Model\+Level}}]{level}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a593414c1e5fbd7522c6ef31643848532}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a95618a18f8ecadef63d8d33fc1d3e0e6}
 This method will be called after all the M-\/grams are read. The default implementation of this method is present. If overridden must be called from the child method. \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_ae2ccab11c90970e5f6d5e84e0caa5256}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a6256807c109c9ebce5887a93454e29a0}{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base$<$ N, Word\+Index\+Type $>$}.
 
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac60651ab47c923fe8624b35f502c1835}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams@{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a2459fb26fc153185feecc0eb06a6438d}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams@{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams}}
 \index{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams@{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams(\+B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $\ast$buckets, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ template$<$typename B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams (
+\subsubsection[{post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams(\+B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $\ast$buckets, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ template$<$typename B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::post\+\_\+\+M\+\_\+\+N\+\_\+\+Grams (
 \begin{DoxyParamCaption}
 \item[{B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E $\ast$}]{buckets, }
 \item[{const {\bf T\+Model\+Level}}]{level}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ac60651ab47c923fe8624b35f502c1835}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a2459fb26fc153185feecc0eb06a6438d}
 Performs the post-\/processing actions on the buckets in the given M-\/gram level 
 \begin{DoxyParams}{Parameters}
 {\em B\+U\+C\+K\+E\+T\+\_\+\+T\+Y\+P\+E} & the sort of buckets we should work with \\
@@ -240,34 +233,30 @@ Performs the post-\/processing actions on the buckets in the given M-\/gram leve
 {\em level} & the M-\/gram level value M \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a3cb280a715f72c97aaaf4ce0f05e657a}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+n\+\_\+grams@{post\+\_\+n\+\_\+grams}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ad70a9f0ff58ffcda249492a16fc3faae}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!post\+\_\+n\+\_\+grams@{post\+\_\+n\+\_\+grams}}
 \index{post\+\_\+n\+\_\+grams@{post\+\_\+n\+\_\+grams}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{post\+\_\+n\+\_\+grams()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::post\+\_\+n\+\_\+grams (
+\subsubsection[{post\+\_\+n\+\_\+grams()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::post\+\_\+n\+\_\+grams (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a3cb280a715f72c97aaaf4ce0f05e657a}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_ad70a9f0ff58ffcda249492a16fc3faae}
 This method will be called after all the N-\/grams are read. The default implementation of this method is present. If overridden must be called from the child method. \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
 
 
-Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a2e5175e70722e777d00cd38460dc465b}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
+Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a8411313f0f575b7972cf9e0993e89cf3}{uva\+::smt\+::tries\+::\+Word\+Index\+Trie\+Base$<$ N, Word\+Index\+Type $>$}.
 
-\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a1df16ae7be44509ac2d3da07b7bd71}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af587a4b2029ede0ca42f3c29d7ca1dbe}{}\index{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}!pre\+\_\+allocate@{pre\+\_\+allocate}}
 \index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie@{uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}}
-\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N $>$\+::pre\+\_\+allocate (
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+G2\+D\+Map\+Trie}$<$ N, {\bf Word\+Index\+Type} $>$\+::pre\+\_\+allocate (
 \begin{DoxyParamCaption}
 \item[{const size\+\_\+t}]{counts\mbox{[}\+N\mbox{]}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_a8a1df16ae7be44509ac2d3da07b7bd71}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie_af587a4b2029ede0ca42f3c29d7ca1dbe}
 This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a4c523028bdf0949d762d1bbfd3fdc262}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

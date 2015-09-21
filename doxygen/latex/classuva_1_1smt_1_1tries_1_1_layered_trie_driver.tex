@@ -1,0 +1,322 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:Layered\+Trie\+Driver$<$ Trie\+Type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver$<$ Trie\+Type $>$@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver$<$ Trie\+Type $>$}}
+
+
+{\ttfamily \#include $<$Layered\+Trie\+Driver.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:Layered\+Trie\+Driver$<$ Trie\+Type $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base}$<$ Trie\+Type\+::max\+\_\+level, typename Trie\+Type\+::\+Word\+Index\+Type $>$ \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a039f866f4bab8e7313cfc9fa2cb51f5b}{B\+A\+S\+E}
+\item 
+typedef Trie\+Type\+::\+Word\+Index\+Type \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aaa30a8f51f4e610158fa8cf0eb965c01}{Word\+Index\+Type}
+\item 
+typedef Trie\+Type\+::\+T\+M\+Gram\+Query \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{T\+M\+Gram\+Query}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3227c91c276b27e1b591a378b95de510}{Layered\+Trie\+Driver} (\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aaa30a8f51f4e610158fa8cf0eb965c01}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_af1726a1b69e0274be8c9dfed9283b3ff}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}Trie\+Type\+::max\+\_\+level\mbox{]})
+\item 
+{\footnotesize template$<$bool is\+\_\+back\+\_\+off$>$ }\\bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a1db7700d2609beeae0dfb2a1f3cd5c3a}{is\+\_\+bitmap\+\_\+hash\+\_\+cache} (\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{T\+M\+Gram\+Query} \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ade31d2fd4fa525d73f6431550c3ba3e6}{add\+\_\+1\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa9dbc4a56665624d03be9071a7b576cb}{add\+\_\+m\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aba8b64810a7a1b0dd89b129d42167446}{add\+\_\+n\+\_\+gram} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a41b2c53ae4c5fedf84d629296b5718b8}{get\+\_\+prob\+\_\+weight} (\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{T\+M\+Gram\+Query} \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ada9749d3e525c6cdf7121c7c224c4055}{add\+\_\+back\+\_\+off\+\_\+weight} (\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{T\+M\+Gram\+Query} \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa517364127a40f1942dcae633f819304}{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info} ()
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a178c3021bc5fd5ff9035c6f86a80e2b6}{is\+\_\+post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ad25a2d45904154530dee9ccd0945dd9c}{post\+\_\+grams} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_afca9b816915b28480c10624b3067ce3c}{$\sim$\+Layered\+Trie\+Driver} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3e49cd9f10938019643370bcf9c85d9c}{Layered\+Trie\+Driver} (const \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}{Layered\+Trie\+Driver} \&orig)
+\item 
+{\footnotesize template$<$bool is\+\_\+back\+\_\+off$>$ }\\bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ae0f2066edca3e2511809e35223fc0170}{get\+\_\+query\+\_\+context\+\_\+\+Id} (const \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{T\+M\+Gram\+Query} \&query, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+\_\+id)
+\item 
+{\footnotesize template$<$Debug\+Levels\+Enum log\+Level$>$ }\\bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a24f0de20cf024b090073103099bd76d5}{get\+\_\+context\+\_\+id} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&gram, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+Id)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa45ae9734e536721ba527abef4b09880}{get\+Cached\+Context\+Id} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&m\+Gram, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&result)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a17a46690a7c2c577bbc3379d9705b62e}{set\+Cache\+Context\+Id} (const \hyperlink{structuva_1_1smt_1_1tries_1_1mgrams_1_1_t___m___gram}{T\+\_\+\+M\+\_\+\+Gram} \&m\+Gram, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&stx\+\_\+id)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Trie\+Type$>$class uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver$<$ Trie\+Type $>$}
+
+This is the common generic trie base class for layered tries. 
+\begin{DoxyParams}{Parameters}
+{\em N} & the maximum level of the considered N-\/gram, i.\+e. the N value \\
+\hline
+{\em Trie\+Type} & the type of word index to be used \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a039f866f4bab8e7313cfc9fa2cb51f5b}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!B\+A\+S\+E@{B\+A\+S\+E}}
+\index{B\+A\+S\+E@{B\+A\+S\+E}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{B\+A\+S\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ typedef {\bf Generic\+Trie\+Base}$<$Trie\+Type\+::max\+\_\+level, typename Trie\+Type\+::\+Word\+Index\+Type$>$ {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::{\bf B\+A\+S\+E}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a039f866f4bab8e7313cfc9fa2cb51f5b}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!T\+M\+Gram\+Query@{T\+M\+Gram\+Query}}
+\index{T\+M\+Gram\+Query@{T\+M\+Gram\+Query}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{T\+M\+Gram\+Query}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ typedef Trie\+Type\+::\+T\+M\+Gram\+Query {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::{\bf T\+M\+Gram\+Query}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a260d262d60ecb64e33f39609e4dcfae9}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aaa30a8f51f4e610158fa8cf0eb965c01}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!Word\+Index\+Type@{Word\+Index\+Type}}
+\index{Word\+Index\+Type@{Word\+Index\+Type}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{Word\+Index\+Type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ typedef Trie\+Type\+::\+Word\+Index\+Type {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::{\bf Word\+Index\+Type}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aaa30a8f51f4e610158fa8cf0eb965c01}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3227c91c276b27e1b591a378b95de510}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!Layered\+Trie\+Driver@{Layered\+Trie\+Driver}}
+\index{Layered\+Trie\+Driver@{Layered\+Trie\+Driver}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{Layered\+Trie\+Driver(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::{\bf Layered\+Trie\+Driver} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3227c91c276b27e1b591a378b95de510}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+word\+Index} & the word index to be used \\
+\hline
+\end{DoxyParams}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_afca9b816915b28480c10624b3067ce3c}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!````~Layered\+Trie\+Driver@{$\sim$\+Layered\+Trie\+Driver}}
+\index{````~Layered\+Trie\+Driver@{$\sim$\+Layered\+Trie\+Driver}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{$\sim$\+Layered\+Trie\+Driver()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ virtual {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::$\sim${\bf Layered\+Trie\+Driver} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_afca9b816915b28480c10624b3067ce3c}
+The basic class destructor \hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3e49cd9f10938019643370bcf9c85d9c}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!Layered\+Trie\+Driver@{Layered\+Trie\+Driver}}
+\index{Layered\+Trie\+Driver@{Layered\+Trie\+Driver}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{Layered\+Trie\+Driver(const Layered\+Trie\+Driver \&orig)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::{\bf Layered\+Trie\+Driver} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Layered\+Trie\+Driver}$<$ Trie\+Type $>$ \&}]{orig}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a3e49cd9f10938019643370bcf9c85d9c}
+The copy constructor, is made private as we do not intend to copy this class objects 
+\begin{DoxyParams}{Parameters}
+{\em orig} & the object to copy from \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ade31d2fd4fa525d73f6431550c3ba3e6}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!add\+\_\+1\+\_\+gram@{add\+\_\+1\+\_\+gram}}
+\index{add\+\_\+1\+\_\+gram@{add\+\_\+1\+\_\+gram}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{add\+\_\+1\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::add\+\_\+1\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ade31d2fd4fa525d73f6431550c3ba3e6}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ada9749d3e525c6cdf7121c7c224c4055}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}}
+\index{add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{add\+\_\+back\+\_\+off\+\_\+weight(\+T\+M\+Gram\+Query \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::add\+\_\+back\+\_\+off\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+M\+Gram\+Query} \&}]{query}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ada9749d3e525c6cdf7121c7c224c4055}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa9dbc4a56665624d03be9071a7b576cb}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
+\index{add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{add\+\_\+m\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::add\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa9dbc4a56665624d03be9071a7b576cb}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aba8b64810a7a1b0dd89b129d42167446}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!add\+\_\+n\+\_\+gram@{add\+\_\+n\+\_\+gram}}
+\index{add\+\_\+n\+\_\+gram@{add\+\_\+n\+\_\+gram}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{add\+\_\+n\+\_\+gram(const T\+\_\+\+M\+\_\+\+Gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::add\+\_\+n\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aba8b64810a7a1b0dd89b129d42167446}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a24f0de20cf024b090073103099bd76d5}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!get\+\_\+context\+\_\+id@{get\+\_\+context\+\_\+id}}
+\index{get\+\_\+context\+\_\+id@{get\+\_\+context\+\_\+id}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{get\+\_\+context\+\_\+id(const T\+\_\+\+M\+\_\+\+Gram \&gram, T\+Long\+Id \&ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ template$<$Debug\+Levels\+Enum log\+Level$>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::get\+\_\+context\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{gram, }
+\item[{{\bf T\+Long\+Id} \&}]{ctx\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a24f0de20cf024b090073103099bd76d5}
+This function computes the context id of the N-\/gram given by the tokens, e.\+g. \mbox{[}w1 w2 w3 w4\mbox{]}
+
+W\+A\+R\+N\+I\+N\+G\+: Must be called on M-\/grams with M $>$ 1!
+
+
+\begin{DoxyParams}{Parameters}
+{\em gram} & the N-\/gram with its tokens to create context for \\
+\hline
+{\em the} & resulting hash of the context(w1 w2 w3) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the context was found otherwise false 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a41b2c53ae4c5fedf84d629296b5718b8}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}}
+\index{get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{get\+\_\+prob\+\_\+weight(\+T\+M\+Gram\+Query \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::get\+\_\+prob\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+M\+Gram\+Query} \&}]{query}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a41b2c53ae4c5fedf84d629296b5718b8}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ae0f2066edca3e2511809e35223fc0170}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!get\+\_\+query\+\_\+context\+\_\+\+Id@{get\+\_\+query\+\_\+context\+\_\+\+Id}}
+\index{get\+\_\+query\+\_\+context\+\_\+\+Id@{get\+\_\+query\+\_\+context\+\_\+\+Id}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{get\+\_\+query\+\_\+context\+\_\+\+Id(const T\+M\+Gram\+Query \&query, T\+Long\+Id \&ctx\+\_\+id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ template$<$bool is\+\_\+back\+\_\+off$>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::get\+\_\+query\+\_\+context\+\_\+\+Id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+M\+Gram\+Query} \&}]{query, }
+\item[{{\bf T\+Long\+Id} \&}]{ctx\+\_\+id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ae0f2066edca3e2511809e35223fc0170}
+Compute the context hash for the M-\/\+Gram prefix, example\+:
+
+N = 5
+
+0 1 2 3 4 w1 w2 w3 w4 w5
+
+context\+Length = 2
+
+0 1 2 3 4 w1 w2 w3 w4 w5 $^\wedge$ $^\wedge$ Hash will be computed for the 3-\/gram prefix w3 w4. 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+back\+\_\+off} & is the boolean flag that determines whether we compute the context for the entire M-\/\+Gram or for the back-\/off sub-\/\+M-\/gram. For the latter we consider w1 w2 w3 w4 only \\
+\hline
+{\em query} & the query state object \\
+\hline
+{\em ctx\+\_\+id} & \mbox{[}out\mbox{]} the context id to be computed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the true if the context could be computed, otherwise false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em nothing} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa45ae9734e536721ba527abef4b09880}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!get\+Cached\+Context\+Id@{get\+Cached\+Context\+Id}}
+\index{get\+Cached\+Context\+Id@{get\+Cached\+Context\+Id}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{get\+Cached\+Context\+Id(const T\+\_\+\+M\+\_\+\+Gram \&m\+Gram, T\+Long\+Id \&result)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::get\+Cached\+Context\+Id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{m\+Gram, }
+\item[{{\bf T\+Long\+Id} \&}]{result}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa45ae9734e536721ba527abef4b09880}
+Allows to retrieve the cached context id for the given M-\/gram if any 
+\begin{DoxyParams}{Parameters}
+{\em m\+Gram} & the m-\/gram to get the context id for \\
+\hline
+{\em result} & the output parameter, will store the cached id, if any \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there was nothing cached, otherwise false 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a1db7700d2609beeae0dfb2a1f3cd5c3a}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}}
+\index{is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{is\+\_\+bitmap\+\_\+hash\+\_\+cache(\+T\+M\+Gram\+Query \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ template$<$bool is\+\_\+back\+\_\+off$>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::is\+\_\+bitmap\+\_\+hash\+\_\+cache (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+M\+Gram\+Query} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a1db7700d2609beeae0dfb2a1f3cd5c3a}
+Allows to check if the given sub-\/m-\/gram contains an unknown word 
+\begin{DoxyParams}{Parameters}
+{\em level} & of the considered M-\/gram \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the unknown word is present, otherwise false 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a178c3021bc5fd5ff9035c6f86a80e2b6}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}}
+\index{is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{is\+\_\+post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::is\+\_\+post\+\_\+grams (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a178c3021bc5fd5ff9035c6f86a80e2b6}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa517364127a40f1942dcae633f819304}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}}
+\index{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_aa517364127a40f1942dcae633f819304}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ad25a2d45904154530dee9ccd0945dd9c}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!post\+\_\+grams@{post\+\_\+grams}}
+\index{post\+\_\+grams@{post\+\_\+grams}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{post\+\_\+grams(const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::post\+\_\+grams (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_ad25a2d45904154530dee9ccd0945dd9c}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_af1726a1b69e0274be8c9dfed9283b3ff}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[Trie\+Type\+::max\+\_\+level])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+Trie\+Type\+::max\+\_\+level\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_af1726a1b69e0274be8c9dfed9283b3ff}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a17a46690a7c2c577bbc3379d9705b62e}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}!set\+Cache\+Context\+Id@{set\+Cache\+Context\+Id}}
+\index{set\+Cache\+Context\+Id@{set\+Cache\+Context\+Id}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}}
+\subsubsection[{set\+Cache\+Context\+Id(const T\+\_\+\+M\+\_\+\+Gram \&m\+Gram, T\+Long\+Id \&stx\+\_\+id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Driver}$<$ Trie\+Type $>$\+::set\+Cache\+Context\+Id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+\_\+\+M\+\_\+\+Gram} \&}]{m\+Gram, }
+\item[{{\bf T\+Long\+Id} \&}]{stx\+\_\+id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_driver_a17a46690a7c2c577bbc3379d9705b62e}
+Allows to cache the context id of the given m-\/grams context 
+\begin{DoxyParams}{Parameters}
+{\em m\+Gram} & \\
+\hline
+{\em result} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_layered_trie_driver_8hpp}{Layered\+Trie\+Driver.\+hpp}\item 
+src/\hyperlink{_layered_trie_driver_8cpp}{Layered\+Trie\+Driver.\+cpp}\end{DoxyCompactItemize}

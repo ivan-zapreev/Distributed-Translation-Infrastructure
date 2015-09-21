@@ -93,7 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">uva::smt::tries::dictionary::AWordIndex Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">uva::smt::tries::dictionary::AWordIndex Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -104,32 +104,32 @@ Inheritance diagram for uva::smt::tries::dictionary::AWordIndex:</div>
  <div class="center">
   <img src="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.png" usemap="#uva::smt::tries::dictionary::AWordIndex_map" alt=""/>
   <map id="uva::smt::tries::dictionary::AWordIndex_map" name="uva::smt::tries::dictionary::AWordIndex_map">
-<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html" alt="uva::smt::tries::dictionary::BasicWordIndex" shape="rect" coords="0,56,273,80"/>
-<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html" alt="uva::smt::tries::dictionary::OptimizingWordIndex" shape="rect" coords="283,56,556,80"/>
-<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html" alt="uva::smt::tries::dictionary::CountingWordIndex" shape="rect" coords="0,112,273,136"/>
+<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html" alt="uva::smt::tries::dictionary::BasicWordIndex" shape="rect" coords="0,56,407,80"/>
+<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html" alt="uva::smt::tries::dictionary::OptimizingWordIndex&lt; SubWordIndexType &gt;" shape="rect" coords="417,56,824,80"/>
+<area href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html" alt="uva::smt::tries::dictionary::CountingWordIndex" shape="rect" coords="0,112,407,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a689b450039f29db04b29824b962afd9d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a689b450039f29db04b29824b962afd9d">reserve</a> (const size_t num_words)=0</td></tr>
-<tr class="separator:a689b450039f29db04b29824b962afd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89294cc177e2c701ba43a87c88ade4d4"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a89294cc177e2c701ba43a87c88ade4d4">get_number_of_words</a> (const size_t num_words)=0</td></tr>
-<tr class="separator:a89294cc177e2c701ba43a87c88ade4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23386149ef251966ced00130fa703d68"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a23386149ef251966ced00130fa703d68">get_word_id</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token) const  =0</td></tr>
-<tr class="separator:a23386149ef251966ced00130fa703d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1ccab0128595c2296cf65099de5d28f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#aa1ccab0128595c2296cf65099de5d28f">register_word</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)=0</td></tr>
-<tr class="separator:aa1ccab0128595c2296cf65099de5d28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf2e3da506e15aba952dbdbefdf301bd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#abf2e3da506e15aba952dbdbefdf301bd">is_word_counts_needed</a> () const  =0</td></tr>
-<tr class="separator:abf2e3da506e15aba952dbdbefdf301bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af802919ae94e6e6aeeec82a8e880b50c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#af802919ae94e6e6aeeec82a8e880b50c">count_word</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)=0</td></tr>
-<tr class="separator:af802919ae94e6e6aeeec82a8e880b50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a353853aa594ca7c23f18e4804fa09dab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a353853aa594ca7c23f18e4804fa09dab">do_post_word_count</a> ()=0</td></tr>
-<tr class="separator:a353853aa594ca7c23f18e4804fa09dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad06633d5705710089e467e84e5fd1aa0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#ad06633d5705710089e467e84e5fd1aa0">is_post_actions_needed</a> () const  =0</td></tr>
-<tr class="separator:ad06633d5705710089e467e84e5fd1aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45c07a088bac4655a3084ef301f312c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a45c07a088bac4655a3084ef301f312c6">do_post_actions</a> ()=0</td></tr>
-<tr class="separator:a45c07a088bac4655a3084ef301f312c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4ab5aba3627ab6d85f38ae23f3b66e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#aa4ab5aba3627ab6d85f38ae23f3b66e1">reserve</a> (const size_t num_words)</td></tr>
+<tr class="separator:aa4ab5aba3627ab6d85f38ae23f3b66e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cc4951136f05491e1fe6a9e4fe5ab38"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a1cc4951136f05491e1fe6a9e4fe5ab38">get_number_of_words</a> (const size_t num_words) const </td></tr>
+<tr class="separator:a1cc4951136f05491e1fe6a9e4fe5ab38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71e2ec73dbc78e48d24cdc7bd6cff5dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a71e2ec73dbc78e48d24cdc7bd6cff5dc">get_word_id</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token) const </td></tr>
+<tr class="separator:a71e2ec73dbc78e48d24cdc7bd6cff5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59cb30bc96710c776b7788895281acea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a59cb30bc96710c776b7788895281acea">register_word</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)</td></tr>
+<tr class="separator:a59cb30bc96710c776b7788895281acea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af09a04eb8a768c9dedbcad906af9da1e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#af09a04eb8a768c9dedbcad906af9da1e">is_word_counts_needed</a> () const </td></tr>
+<tr class="separator:af09a04eb8a768c9dedbcad906af9da1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c2538512ccdb89cf1371805e92d9126"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a2c2538512ccdb89cf1371805e92d9126">count_word</a> (const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)</td></tr>
+<tr class="separator:a2c2538512ccdb89cf1371805e92d9126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8b78345c3fb4b5dea625108267cd416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#af8b78345c3fb4b5dea625108267cd416">do_post_word_count</a> ()</td></tr>
+<tr class="separator:af8b78345c3fb4b5dea625108267cd416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd124ead7086c4f9943d3261ee4b4d78"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#afd124ead7086c4f9943d3261ee4b4d78">is_post_actions_needed</a> () const </td></tr>
+<tr class="separator:afd124ead7086c4f9943d3261ee4b4d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30ecbfbd6b316bf1f3ff246bc0fca759"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#a30ecbfbd6b316bf1f3ff246bc0fca759">do_post_actions</a> ()</td></tr>
+<tr class="separator:a30ecbfbd6b316bf1f3ff246bc0fca759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add51fdbee0f95e39c6ffee341ad8d586"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index.html#add51fdbee0f95e39c6ffee341ad8d586">~AWordIndex</a> ()</td></tr>
 <tr class="separator:add51fdbee0f95e39c6ffee341ad8d586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -150,7 +150,8 @@ Static Public Attributes</h2></td></tr>
 <div class="textblock"><p>This abstract class is used to represent the word dictionary. It contains no specific implementation but is more of an interface. It is used to allow for more word dictionary/index implementations.</p>
 <p>Any implementation of this class must issue the unknown word &lt;unk&gt; index 1 (UNKNOWN_WORD_ID).</p>
 <p>The first real word index will be therefore 2 (MIN_KNOWN_WORD_ID).</p>
-<p>The issued word ids must be continuous and non-repeating, unique! </p>
+<p>The issued word ids must be continuous and non-repeating, unique!</p>
+<p>NOTE: All of the methods are non-virtual for the sake of avoiding virtual method call overheads! </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="add51fdbee0f95e39c6ffee341ad8d586"></a>
 <div class="memitem">
@@ -177,7 +178,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af802919ae94e6e6aeeec82a8e880b50c"></a>
+<a class="anchor" id="a2c2538512ccdb89cf1371805e92d9126"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -185,7 +186,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void uva::smt::tries::dictionary::AWordIndex::count_word </td>
+          <td class="memname">void uva::smt::tries::dictionary::AWordIndex::count_word </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
@@ -194,7 +195,7 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -205,11 +206,9 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a7a640c40e5e3591f7c547fc096f5fbf0">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a932348f67a73ca34773ad0472faeda8c">uva::smt::tries::dictionary::BasicWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a2ea1e4f9b83be0d112374f3aed62afd8">uva::smt::tries::dictionary::CountingWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a45c07a088bac4655a3084ef301f312c6"></a>
+<a class="anchor" id="a30ecbfbd6b316bf1f3ff246bc0fca759"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -217,7 +216,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void uva::smt::tries::dictionary::AWordIndex::do_post_actions </td>
+          <td class="memname">void uva::smt::tries::dictionary::AWordIndex::do_post_actions </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -225,17 +224,15 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Is to be called if the post actions are needed right after that all the individual words have beed added into the index. </p>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#afbc88af75c91c7c366467bdc07dbc978">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a4c4ec12cb6c772d41fd5f39ce299a940">uva::smt::tries::dictionary::CountingWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a8f76161797b91979e1c94d3a8be6ae82">uva::smt::tries::dictionary::BasicWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a353853aa594ca7c23f18e4804fa09dab"></a>
+<a class="anchor" id="af8b78345c3fb4b5dea625108267cd416"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -243,7 +240,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void uva::smt::tries::dictionary::AWordIndex::do_post_word_count </td>
+          <td class="memname">void uva::smt::tries::dictionary::AWordIndex::do_post_word_count </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -251,17 +248,15 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Should be called if the word count is needed after all the words have been counted. </p>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a006bedc2159e545d6436a3bdb7a6a5c5">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#aa90d2673f5386030b8b1013c0a106efc">uva::smt::tries::dictionary::BasicWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a4723e7a931ff4732ce3c001848656c2a">uva::smt::tries::dictionary::CountingWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a89294cc177e2c701ba43a87c88ade4d4"></a>
+<a class="anchor" id="a1cc4951136f05491e1fe6a9e4fe5ab38"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -269,16 +264,16 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual size_t uva::smt::tries::dictionary::AWordIndex::get_number_of_words </td>
+          <td class="memname">size_t uva::smt::tries::dictionary::AWordIndex::get_number_of_words </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>num_words</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -289,11 +284,9 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a0f2e75f30cbe04d9e74538c54a515c59">uva::smt::tries::dictionary::OptimizingWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a63a18dd7eea972474405553879813516">uva::smt::tries::dictionary::BasicWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a23386149ef251966ced00130fa703d68"></a>
+<a class="anchor" id="a71e2ec73dbc78e48d24cdc7bd6cff5dc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -301,7 +294,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> uva::smt::tries::dictionary::AWordIndex::get_word_id </td>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> uva::smt::tries::dictionary::AWordIndex::get_word_id </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
@@ -310,7 +303,7 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -322,11 +315,9 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the resulting wordId or UNKNOWN_WORD_ID if the word is not found </dd></dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a157981a189cca43eed35aaf640c1aa67">uva::smt::tries::dictionary::OptimizingWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a2d11b65cbc479d49c9477c9546e6f1d7">uva::smt::tries::dictionary::BasicWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="ad06633d5705710089e467e84e5fd1aa0"></a>
+<a class="anchor" id="afd124ead7086c4f9943d3261ee4b4d78"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -334,7 +325,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool uva::smt::tries::dictionary::AWordIndex::is_post_actions_needed </td>
+          <td class="memname">bool uva::smt::tries::dictionary::AWordIndex::is_post_actions_needed </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -342,17 +333,15 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Indicates if the post-actions are needed. The post actions should be called after all the words have been filled into the index. </p><dl class="section return"><dt>Returns</dt><dd>true if the post-actions are needed, otherwise false </dd></dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a96f673f041e96ab38843c63a984f6ce5">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a760ba6fe9be1c7e3959f3f7ff3daefd5">uva::smt::tries::dictionary::CountingWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a50fbede350d439367b66d736c24a3dac">uva::smt::tries::dictionary::BasicWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="abf2e3da506e15aba952dbdbefdf301bd"></a>
+<a class="anchor" id="af09a04eb8a768c9dedbcad906af9da1e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -360,7 +349,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool uva::smt::tries::dictionary::AWordIndex::is_word_counts_needed </td>
+          <td class="memname">bool uva::smt::tries::dictionary::AWordIndex::is_word_counts_needed </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -368,17 +357,15 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>This method allows to indicate whether word counting is needed by the given implementation of the word index. </p><dl class="section return"><dt>Returns</dt><dd>true if the word counting is needed, otherwise false. </dd></dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#af749f27894b0b3f288311a5149c4e9f6">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a4b94094d513c9281cde965f91b71d970">uva::smt::tries::dictionary::BasicWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a9d164d285f9b7498d9db3086426e7876">uva::smt::tries::dictionary::CountingWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="aa1ccab0128595c2296cf65099de5d28f"></a>
+<a class="anchor" id="a59cb30bc96710c776b7788895281acea"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -386,7 +373,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> uva::smt::tries::dictionary::AWordIndex::register_word </td>
+          <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1hashing.html#adcf22e1982ad09d3a63494c006267469">TShortId</a> uva::smt::tries::dictionary::AWordIndex::register_word </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classuva_1_1smt_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
@@ -395,7 +382,7 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -407,11 +394,9 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the resulting hash </dd></dl>
 
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#ad23968ee31767ce6ae8a8ed85772532e">uva::smt::tries::dictionary::OptimizingWordIndex</a>, <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#abbc772ebe00dc62b65c6f412d70aa0ac">uva::smt::tries::dictionary::BasicWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_counting_word_index.html#a71c5719f7b5432866315ea0db9e1f770">uva::smt::tries::dictionary::CountingWordIndex</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a689b450039f29db04b29824b962afd9d"></a>
+<a class="anchor" id="aa4ab5aba3627ab6d85f38ae23f3b66e1"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -419,7 +404,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void uva::smt::tries::dictionary::AWordIndex::reserve </td>
+          <td class="memname">void uva::smt::tries::dictionary::AWordIndex::reserve </td>
           <td>(</td>
           <td class="paramtype">const size_t&#160;</td>
           <td class="paramname"><em>num_words</em></td><td>)</td>
@@ -428,7 +413,7 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -438,8 +423,6 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p>Implemented in <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a7381da7d8e7bedf2fdf1d88076a43cb2">uva::smt::tries::dictionary::OptimizingWordIndex</a>, and <a class="el" href="classuva_1_1smt_1_1tries_1_1dictionary_1_1_basic_word_index.html#a6255befbaf98669009f5fbff5b2b1321">uva::smt::tries::dictionary::BasicWordIndex</a>.</p>
 
 </div>
 </div>

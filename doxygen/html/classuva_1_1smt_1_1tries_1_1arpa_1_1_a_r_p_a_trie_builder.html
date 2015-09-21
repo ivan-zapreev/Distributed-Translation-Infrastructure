@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>My Project: uva::smt::tries::arpa::ARPATrieBuilder&lt; N &gt; Class Template Reference</title>
+<title>My Project: uva::smt::tries::arpa::ARPATrieBuilder&lt; TrieType &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,7 +92,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">uva::smt::tries::arpa::ARPATrieBuilder&lt; N &gt; Class Template Reference</div>  </div>
+<div class="title">uva::smt::tries::arpa::ARPATrieBuilder&lt; TrieType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,29 +100,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5381a4b1773965aee6f6cd24513166d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a5381a4b1773965aee6f6cd24513166d0">ARPATrieBuilder</a> (<a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;trie, <a class="el" href="classuva_1_1smt_1_1file_1_1_a_file_reader.html">AFileReader</a> &amp;file)</td></tr>
-<tr class="separator:a5381a4b1773965aee6f6cd24513166d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e01c726cb800efa9b5f157017eb35f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8e01c726cb800efa9b5f157017eb35f4">build</a> ()</td></tr>
-<tr class="separator:a8e01c726cb800efa9b5f157017eb35f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f0c6fc6e4f96d52b5380712b681bfef"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a8f0c6fc6e4f96d52b5380712b681bfef">~ARPATrieBuilder</a> ()</td></tr>
-<tr class="separator:a8f0c6fc6e4f96d52b5380712b681bfef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a547b05cc83831fc8a638aa4d9bba28c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a547b05cc83831fc8a638aa4d9bba28c3">ARPATrieBuilder</a> (TrieType &amp;trie, <a class="el" href="classuva_1_1smt_1_1file_1_1_a_file_reader.html">AFileReader</a> &amp;file)</td></tr>
+<tr class="separator:a547b05cc83831fc8a638aa4d9bba28c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c07e6c8116f2524a2422c718d961d9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#a6c07e6c8116f2524a2422c718d961d9b">build</a> ()</td></tr>
+<tr class="separator:a6c07e6c8116f2524a2422c718d961d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbcd4624bdeb530a5b58f31a5c580523"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html#adbcd4624bdeb530a5b58f31a5c580523">~ARPATrieBuilder</a> ()</td></tr>
+<tr class="separator:adbcd4624bdeb530a5b58f31a5c580523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;TModelLevel N&gt;<br />
-class uva::smt::tries::arpa::ARPATrieBuilder&lt; N &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TrieType&gt;<br />
+class uva::smt::tries::arpa::ARPATrieBuilder&lt; TrieType &gt;</h3>
 
 <p>This is the Trie builder class that reads an input file stream and creates n-grams and then records them into the provided Trie. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a5381a4b1773965aee6f6cd24513166d0"></a>
+<a class="anchor" id="a547b05cc83831fc8a638aa4d9bba28c3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;TModelLevel N&gt; </div>
+template&lt;typename TrieType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; N &gt;::<a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">ARPATrieBuilder</a> </td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; TrieType &gt;::<a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">ARPATrieBuilder</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classuva_1_1smt_1_1tries_1_1_a_trie.html">ATrie</a>&lt; N &gt; &amp;&#160;</td>
+          <td class="paramtype">TrieType &amp;&#160;</td>
           <td class="paramname"><em>trie</em>, </td>
         </tr>
         <tr>
@@ -148,17 +148,17 @@ template&lt;TModelLevel N&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a8f0c6fc6e4f96d52b5380712b681bfef"></a>
+<a class="anchor" id="adbcd4624bdeb530a5b58f31a5c580523"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;TModelLevel N&gt; </div>
+template&lt;typename TrieType &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; N &gt;::~<a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">ARPATrieBuilder</a> </td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; TrieType &gt;::~<a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">ARPATrieBuilder</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -174,14 +174,14 @@ template&lt;TModelLevel N&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a8e01c726cb800efa9b5f157017eb35f4"></a>
+<a class="anchor" id="a6c07e6c8116f2524a2422c718d961d9b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;TModelLevel N&gt; </div>
+template&lt;typename TrieType &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; N &gt;::build </td>
+          <td class="memname">void <a class="el" href="classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder.html">uva::smt::tries::arpa::ARPATrieBuilder</a>&lt; TrieType &gt;::build </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

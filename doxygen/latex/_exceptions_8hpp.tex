@@ -16,3 +16,45 @@ class \hyperlink{classuva_1_1smt_1_1exceptions_1_1_exception}{uva\+::smt\+::exce
 \item 
  \hyperlink{namespaceuva_1_1smt_1_1exceptions}{uva\+::smt\+::exceptions}
 \end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_exceptions_8hpp_af0cef80fd59702870671c5b0aff6308d}{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}(text)
+\item 
+\#define \hyperlink{_exceptions_8hpp_a26bbf40c42ee9bdf40814bf74e3470a2}{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E}()~\hyperlink{_exceptions_8hpp_af0cef80fd59702870671c5b0aff6308d}{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}(\char`\"{} Must be overridden in the sub class!\char`\"{})
+\item 
+\#define \hyperlink{_exceptions_8hpp_aa48cae2efe78985f442077587947c5ef}{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L}()~\hyperlink{_exceptions_8hpp_af0cef80fd59702870671c5b0aff6308d}{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}(\char`\"{} Must not be called, is not needed!\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_exceptions_8hpp_af0cef80fd59702870671c5b0aff6308d}{}\index{Exceptions.\+hpp@{Exceptions.\+hpp}!T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N@{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}}
+\index{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N@{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}!Exceptions.\+hpp@{Exceptions.\+hpp}}
+\subsubsection[{T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N(
+\begin{DoxyParamCaption}
+\item[{}]{text}
+\end{DoxyParamCaption}
+)}\label{_exceptions_8hpp_af0cef80fd59702870671c5b0aff6308d}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\{ \(\backslash\)
+    stringstream msg; \(\backslash\)
+    msg << \_\_FILE\_\_ << \textcolor{stringliteral}{"::"} << \_\_FUNCTION\_\_ \(\backslash\)
+        << \textcolor{stringliteral}{"(...)"} << \textcolor{stringliteral}{": "} << text; \(\backslash\)
+    throw Exception(msg.str()); \(\backslash\)
+    \}
+\end{DoxyCode}
+\hypertarget{_exceptions_8hpp_aa48cae2efe78985f442077587947c5ef}{}\index{Exceptions.\+hpp@{Exceptions.\+hpp}!T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L@{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L}}
+\index{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L@{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L}!Exceptions.\+hpp@{Exceptions.\+hpp}}
+\subsubsection[{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+N\+O\+T\+\_\+\+C\+A\+L\+L(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~{\bf T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}(\char`\"{} Must not be called, is not needed!\char`\"{})}\label{_exceptions_8hpp_aa48cae2efe78985f442077587947c5ef}
+\hypertarget{_exceptions_8hpp_a26bbf40c42ee9bdf40814bf74e3470a2}{}\index{Exceptions.\+hpp@{Exceptions.\+hpp}!T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E@{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E}}
+\index{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E@{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E}!Exceptions.\+hpp@{Exceptions.\+hpp}}
+\subsubsection[{T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\+H\+R\+O\+W\+\_\+\+M\+U\+S\+T\+\_\+\+O\+V\+E\+R\+R\+I\+D\+E(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~{\bf T\+H\+R\+O\+W\+\_\+\+E\+X\+C\+E\+P\+T\+I\+O\+N}(\char`\"{} Must be overridden in the sub class!\char`\"{})}\label{_exceptions_8hpp_a26bbf40c42ee9bdf40814bf74e3470a2}

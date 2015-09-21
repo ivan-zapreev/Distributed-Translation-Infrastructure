@@ -1,0 +1,246 @@
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:Layered\+Trie\+Base$<$ N, Word\+Index\+Type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base$<$ N, Word\+Index\+Type $>$@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base$<$ N, Word\+Index\+Type $>$}}
+
+
+{\ttfamily \#include $<$Layered\+Trie\+Base.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:Layered\+Trie\+Base$<$ N, Word\+Index\+Type $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.856597cm]{classuva_1_1smt_1_1tries_1_1_layered_trie_base}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7a1ab8df909979ee43d80637a45c96b7}{Layered\+Trie\+Base} (\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+\hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aff9e12b94ca02e27d6f8072254726de7}{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aa7140d9be8695cdb92075f40a1934f4a}{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
+\item 
+\hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a563683eef65f8b2829967a44c9fbf735}{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a20a29a5d8e231b7c13268c36064abc6e}{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a95087d99d7a5e2fa2b618d4eb2411b4f}{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7abdc310c082d7c4507754e8c0c18635}{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \&prob)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_af28d0ff5325216ce899a6daeecf9eb0e}{is\+\_\+bitmap\+\_\+hash\+\_\+cache} ()
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_ae313158c1fda05029b36de0555b76250}{get\+\_\+ctx\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+Id, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a12ad691094ced09f16fbf1f7ea16a9e4}{get\+\_\+prob\+\_\+weight} (\hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a905e001e8079747dfd4e7def0971e8c1}{add\+\_\+back\+\_\+off\+\_\+weight} (\hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \&query)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$T\+Model\+Level N, typename Word\+Index\+Type$>$class uva\+::smt\+::tries\+::\+Layered\+Trie\+Base$<$ N, Word\+Index\+Type $>$}
+
+This class defined the trie interface and functionality that is expected by the \hyperlink{classuva_1_1smt_1_1tries_1_1_trie_driver}{Trie\+Driver} class 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7a1ab8df909979ee43d80637a45c96b7}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!Layered\+Trie\+Base@{Layered\+Trie\+Base}}
+\index{Layered\+Trie\+Base@{Layered\+Trie\+Base}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{Layered\+Trie\+Base(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::{\bf Layered\+Trie\+Base} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7a1ab8df909979ee43d80637a45c96b7}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em word\+\_\+index} & the word index to be used \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a905e001e8079747dfd4e7def0971e8c1}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}}
+\index{add\+\_\+back\+\_\+off\+\_\+weight@{add\+\_\+back\+\_\+off\+\_\+weight}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{add\+\_\+back\+\_\+off\+\_\+weight(\+M\+Gram\+Query$<$ N, Word\+Index\+Type $>$ \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::add\+\_\+back\+\_\+off\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{{\bf M\+Gram\+Query}$<$ N, {\bf Word\+Index\+Type} $>$ \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a905e001e8079747dfd4e7def0971e8c1}
+Needs to become inaccessible from outside \hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aa7140d9be8695cdb92075f40a1934f4a}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{const {\bf T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$}]{pp\+Data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aa7140d9be8695cdb92075f40a1934f4a}
+Allows to retrieve the data storage structure for the One gram with the given Id. If the storage structure does not exist, throws an exception. 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the One-\/gram id \\
+\hline
+{\em pp\+Data\mbox{[}out\mbox{]}} & the pointer to a pointer to the found data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the element was found, otherwise false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em nothing} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_ae313158c1fda05029b36de0555b76250}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}}
+\index{get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{get\+\_\+ctx\+\_\+id(const T\+Short\+Id word\+Id, T\+Long\+Id \&ctx\+Id, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+ctx\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{{\bf T\+Long\+Id} \&}]{ctx\+Id, }
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_ae313158c1fda05029b36de0555b76250}
+Allows to get the the new context id for the word and previous context id given the level 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the word id on this level \\
+\hline
+{\em ctx\+Id} & the previous level context id \\
+\hline
+{\em level} & the level for which the context id is to be computed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if computation of the next context is succeeded 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a20a29a5d8e231b7c13268c36064abc6e}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, T\+Long\+Id ctx\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level, }
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{{\bf T\+Long\+Id}}]{ctx\+Id, }
+\item[{const {\bf T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$}]{pp\+Data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a20a29a5d8e231b7c13268c36064abc6e}
+Allows to retrieve the data storage structure for the M gram with the given M-\/gram level Id. M-\/gram context and last word Id. If the storage structure does not exist, throws an exception. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the value of M in the M-\/gram \\
+\hline
+{\em word\+Id} & the id of the M-\/gram\textquotesingle{}s last word \\
+\hline
+{\em ctx\+Id} & the M-\/gram context (the M-\/gram\textquotesingle{}s prefix) id \\
+\hline
+{\em pp\+Data\mbox{[}out\mbox{]}} & the pointer to a pointer to the found data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the element was found, otherwise false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em nothing} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7abdc310c082d7c4507754e8c0c18635}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id, T\+Log\+Prob\+Back\+Off \&prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{const {\bf T\+Long\+Id}}]{ctx\+Id, }
+\item[{{\bf T\+Log\+Prob\+Back\+Off} \&}]{prob}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a7abdc310c082d7c4507754e8c0c18635}
+Allows to retrieve the probability value for the N gram defined by the end word\+Id and ctx\+Id. 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the id of the N-\/gram\textquotesingle{}s last word \\
+\hline
+{\em ctx\+Id} & the N-\/gram context (the N-\/gram\textquotesingle{}s prefix) id \\
+\hline
+{\em pp\+Data\mbox{[}out\mbox{]}} & the pointer to a pointer to the found data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the probability was found, otherwise false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em nothing} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a12ad691094ced09f16fbf1f7ea16a9e4}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}}
+\index{get\+\_\+prob\+\_\+weight@{get\+\_\+prob\+\_\+weight}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{get\+\_\+prob\+\_\+weight(\+M\+Gram\+Query$<$ N, Word\+Index\+Type $>$ \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ void {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::get\+\_\+prob\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{{\bf M\+Gram\+Query}$<$ N, {\bf Word\+Index\+Type} $>$ \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a12ad691094ced09f16fbf1f7ea16a9e4}
+Needs to become inaccessible from outside \hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_af28d0ff5325216ce899a6daeecf9eb0e}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}}
+\index{is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{is\+\_\+bitmap\+\_\+hash\+\_\+cache()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ bool {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::is\+\_\+bitmap\+\_\+hash\+\_\+cache (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_af28d0ff5325216ce899a6daeecf9eb0e}
+Allows to check if the bitmap hash cache is to be used. \begin{DoxyReturn}{Returns}
+true if the bitmap hash cache is to be used, otherwise false 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aff9e12b94ca02e27d6f8072254726de7}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf T\+Prob\+Back\+Off\+Entry}\& {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_aff9e12b94ca02e27d6f8072254726de7}
+Allows to retrieve the data storage structure for the One gram with the given Id. If the storage structure does not exist, return a new one. 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the One-\/gram id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the reference to the storage structure 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a563683eef65f8b2829967a44c9fbf735}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf T\+Prob\+Back\+Off\+Entry}\& {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Model\+Level}}]{level, }
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{{\bf T\+Long\+Id}}]{ctx\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a563683eef65f8b2829967a44c9fbf735}
+Allows to retrieve the data storage structure for the M gram with the given M-\/gram level Id. M-\/gram context and last word Id. If the storage structure does not exist, return a new one. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the value of M in the M-\/gram \\
+\hline
+{\em word\+Id} & the id of the M-\/gram\textquotesingle{}s last word \\
+\hline
+{\em ctx\+Id} & the M-\/gram context (the M-\/gram\textquotesingle{}s prefix) id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the reference to the storage structure 
+\end{DoxyReturn}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a95087d99d7a5e2fa2b618d4eb2411b4f}{}\index{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}!make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+Layered\+Trie\+Base@{uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}}
+\subsubsection[{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type $>$ {\bf T\+Log\+Prob\+Back\+Off}\& {\bf uva\+::smt\+::tries\+::\+Layered\+Trie\+Base}$<$ N, {\bf Word\+Index\+Type} $>$\+::make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{const {\bf T\+Long\+Id}}]{ctx\+Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_layered_trie_base_a95087d99d7a5e2fa2b618d4eb2411b4f}
+Allows to retrieve the data storage structure for the N gram. Given the N-\/gram context and last word Id. If the storage structure does not exist, return a new one. 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the id of the N-\/gram\textquotesingle{}s last word \\
+\hline
+{\em ctx\+Id} & the N-\/gram context (the N-\/gram\textquotesingle{}s prefix) id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the reference to the storage structure 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/\hyperlink{_layered_trie_base_8hpp}{Layered\+Trie\+Base.\+hpp}\end{DoxyCompactItemize}

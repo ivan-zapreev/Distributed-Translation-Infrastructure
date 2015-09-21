@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['linear',['LINEAR',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16a449ea0b3eb9b0c835b97c605e4aa55b1',1,'uva::smt::tries::alloc']]],
-  ['log_5f10',['LOG_10',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ac7ca374f77ae82f23dfaa3e206549f4c',1,'uva::smt::tries::alloc']]],
-  ['log_5f2',['LOG_2',['../namespaceuva_1_1smt_1_1tries_1_1alloc.html#aa19a45a19458f601785f08cb24e17f16ada32950f90cdc18fd0012d770cfe72c1',1,'uva::smt::tries::alloc']]]
+  ['info',['INFO',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a4a97ea4af2faeed51be5b2d86a4dc412',1,'uva::smt::logging']]],
+  ['info1',['INFO1',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427a3b0f5996700bbed54d2955cbbf51474b',1,'uva::smt::logging']]],
+  ['info2',['INFO2',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427ad9ab770ecdf8350e187499ffb78e5889',1,'uva::smt::logging']]],
+  ['info3',['INFO3',['../namespaceuva_1_1smt_1_1logging.html#ab82295a1c88a9605285d504893855427ad144a114395be2fbab1842546f43838f',1,'uva::smt::logging']]]
 ];

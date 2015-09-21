@@ -11,6 +11,8 @@
 \item 
  \hyperlink{namespaceuva_1_1smt_1_1tries_1_1_____c2_w_array_trie}{\+\_\+\+\_\+\+C2\+W\+Array\+Trie}
 \item 
+ \hyperlink{namespaceuva_1_1smt_1_1tries_1_1_____executor}{\+\_\+\+\_\+\+Executor}
+\item 
  \hyperlink{namespaceuva_1_1smt_1_1tries_1_1_____g2_d_map_trie}{\+\_\+\+\_\+\+G2\+D\+Map\+Trie}
 \item 
  \hyperlink{namespaceuva_1_1smt_1_1tries_1_1_____w2_c_array_trie}{\+\_\+\+\_\+\+W2\+C\+Array\+Trie}
@@ -30,10 +32,6 @@
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie}{A\+Layered\+Trie}
-\item 
-class \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}
-\item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_c2_d_hybrid_trie}{C2\+D\+Hybrid\+Trie}
 \item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_c2_d_map_trie}{C2\+D\+Map\+Trie}
@@ -42,11 +40,19 @@ class \hyperlink{classuva_1_1smt_1_1tries_1_1_c2_w_array_trie}{C2\+W\+Array\+Tri
 \item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}
 \item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_generic_trie_base}{Generic\+Trie\+Base}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base}{Layered\+Trie\+Base}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_driver}{Layered\+Trie\+Driver}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1tries_1_1_m_gram_query}{M\+Gram\+Query}
+\item 
 struct \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry}
 \item 
 struct \hyperlink{structuva_1_1smt_1_1tries_1_1_t_query_result}{T\+Query\+Result}
 \item 
-class \hyperlink{classuva_1_1smt_1_1tries_1_1_trie_type_factory}{Trie\+Type\+Factory}
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_trie_driver}{Trie\+Driver}
 \item 
 struct \hyperlink{structuva_1_1smt_1_1tries_1_1_t_w2_c_hybrid_trie}{T\+W2\+C\+Hybrid\+Trie}
 \item 
@@ -57,15 +63,17 @@ class \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage}{W2\+C\+H\+
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_h___u_m___storage_factory}{W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory}
 \item 
 class \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}{W2\+C\+Hybrid\+Trie}
+\item 
+class \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base}{Word\+Index\+Trie\+Base}
 \end{DoxyCompactItemize}
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-typedef std\+::function$<$ bool(const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+Id, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level) $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a535548b30b94f85d4b3457a383f8076e}{T\+Get\+Ctx\+Id\+Funct}
-\item 
 typedef uint8\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level}
 \item 
 typedef float \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off}
+\item 
+typedef std\+::function$<$ bool(const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+Id, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level) $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a535548b30b94f85d4b3457a383f8076e}{T\+Get\+Ctx\+Id\+Funct}
 \item 
 typedef pair$<$ const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_affc598132a51209f50d781cf01733996}{T\+Storage\+Map\+Entry}
 \item 
@@ -74,6 +82,21 @@ typedef \hyperlink{classuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator
 typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, std\+::hash$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$, std\+::equal\+\_\+to$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$, \hyperlink{namespaceuva_1_1smt_1_1tries_a80642b3331407e41b0aca518e3a1ac31}{T\+Storage\+Map\+Allocator} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_a51747124086c47f6b3eb7b66599dbc81}{T\+Storage\+Unsigned\+Map}
 \item 
 typedef map$<$ \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1tries_adcb2d50a97c40fe1a3509d9f798c1d3b}{T\+Storage\+Map}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532}{Trie\+Types\+Enum} \{ \\*
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532af0901b465b63e49e83362cf06052ad56}{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E} = 0, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ac49e1e569922436c0a2938f36ceb4670}{C2\+D\+H\+\_\+\+T\+R\+I\+E} = U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a24d63eee06f22a2204272bd9fe93ac29}{C2\+D\+M\+\_\+\+T\+R\+I\+E} = C2\+D\+H\+\_\+\+T\+R\+I\+E + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a47d410619deac4512c9c00b03a1d0b53}{G2\+D\+M\+\_\+\+T\+R\+I\+E} = C2\+D\+M\+\_\+\+T\+R\+I\+E + 1, 
+\\*
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532aa7970ca7d9ae57509fc0cc11230d3561}{W2\+C\+A\+\_\+\+T\+R\+I\+E} = G2\+D\+M\+\_\+\+T\+R\+I\+E + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ab847f9990a8da0f2aac521c6f6efe97a}{C2\+W\+A\+\_\+\+T\+R\+I\+E} = W2\+C\+A\+\_\+\+T\+R\+I\+E + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a054f408cba26b062e4c771d4d53001f5}{W2\+C\+H\+\_\+\+T\+R\+I\+E} = C2\+W\+A\+\_\+\+T\+R\+I\+E + 1, 
+\hyperlink{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a0307170847be1cfba7a1d60da22789c6}{size\+\_\+trie} = W2\+C\+H\+\_\+\+T\+R\+I\+E + 1
+ \}
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -137,6 +160,33 @@ true if the next context id could be computed, otherwise false
 \hypertarget{namespaceuva_1_1smt_1_1tries_a51747124086c47f6b3eb7b66599dbc81}{}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!T\+Storage\+Unsigned\+Map@{T\+Storage\+Unsigned\+Map}}
 \index{T\+Storage\+Unsigned\+Map@{T\+Storage\+Unsigned\+Map}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}
 \subsubsection[{T\+Storage\+Unsigned\+Map}]{\setlength{\rightskip}{0pt plus 5cm}typedef unordered\+\_\+map$<${\bf T\+Short\+Id}, {\bf T\+Short\+Id}, std\+::hash$<${\bf T\+Short\+Id}$>$, std\+::equal\+\_\+to$<${\bf T\+Short\+Id}$>$, {\bf T\+Storage\+Map\+Allocator} $>$ {\bf uva\+::smt\+::tries\+::\+T\+Storage\+Unsigned\+Map}}\label{namespaceuva_1_1smt_1_1tries_a51747124086c47f6b3eb7b66599dbc81}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532}{}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!Trie\+Types\+Enum@{Trie\+Types\+Enum}}
+\index{Trie\+Types\+Enum@{Trie\+Types\+Enum}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}
+\subsubsection[{Trie\+Types\+Enum}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf uva\+::smt\+::tries\+::\+Trie\+Types\+Enum}}\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532af0901b465b63e49e83362cf06052ad56}{}U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532af0901b465b63e49e83362cf06052ad56}
+}]\index{C2\+D\+H\+\_\+\+T\+R\+I\+E@{C2\+D\+H\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!C2\+D\+H\+\_\+\+T\+R\+I\+E@{C2\+D\+H\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ac49e1e569922436c0a2938f36ceb4670}{}C2\+D\+H\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ac49e1e569922436c0a2938f36ceb4670}
+}]\index{C2\+D\+M\+\_\+\+T\+R\+I\+E@{C2\+D\+M\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!C2\+D\+M\+\_\+\+T\+R\+I\+E@{C2\+D\+M\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a24d63eee06f22a2204272bd9fe93ac29}{}C2\+D\+M\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a24d63eee06f22a2204272bd9fe93ac29}
+}]\index{G2\+D\+M\+\_\+\+T\+R\+I\+E@{G2\+D\+M\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!G2\+D\+M\+\_\+\+T\+R\+I\+E@{G2\+D\+M\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a47d410619deac4512c9c00b03a1d0b53}{}G2\+D\+M\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a47d410619deac4512c9c00b03a1d0b53}
+}]\index{W2\+C\+A\+\_\+\+T\+R\+I\+E@{W2\+C\+A\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!W2\+C\+A\+\_\+\+T\+R\+I\+E@{W2\+C\+A\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532aa7970ca7d9ae57509fc0cc11230d3561}{}W2\+C\+A\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532aa7970ca7d9ae57509fc0cc11230d3561}
+}]\index{C2\+W\+A\+\_\+\+T\+R\+I\+E@{C2\+W\+A\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!C2\+W\+A\+\_\+\+T\+R\+I\+E@{C2\+W\+A\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ab847f9990a8da0f2aac521c6f6efe97a}{}C2\+W\+A\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532ab847f9990a8da0f2aac521c6f6efe97a}
+}]\index{W2\+C\+H\+\_\+\+T\+R\+I\+E@{W2\+C\+H\+\_\+\+T\+R\+I\+E}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!W2\+C\+H\+\_\+\+T\+R\+I\+E@{W2\+C\+H\+\_\+\+T\+R\+I\+E}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a054f408cba26b062e4c771d4d53001f5}{}W2\+C\+H\+\_\+\+T\+R\+I\+E\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a054f408cba26b062e4c771d4d53001f5}
+}]\index{size\+\_\+trie@{size\+\_\+trie}!uva\+::smt\+::tries@{uva\+::smt\+::tries}}\index{uva\+::smt\+::tries@{uva\+::smt\+::tries}!size\+\_\+trie@{size\+\_\+trie}}\item[{\em 
+\hypertarget{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a0307170847be1cfba7a1d60da22789c6}{}size\+\_\+trie\label{namespaceuva_1_1smt_1_1tries_adf9a302134fb7aba4a37f68452546532a0307170847be1cfba7a1d60da22789c6}
+}]\end{description}
+\end{Desc}
 
 
 \subsection{Variable Documentation}

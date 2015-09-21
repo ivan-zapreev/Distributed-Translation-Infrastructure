@@ -1,46 +1,52 @@
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:W2\+C\+Hybrid\+Trie$<$ N, Storage\+Factory, Storage\+Container $>$ Class Template Reference}
-\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Storage\+Factory, Storage\+Container $>$@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Storage\+Factory, Storage\+Container $>$}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:W2\+C\+Hybrid\+Trie$<$ N, Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$}}
 
 
 {\ttfamily \#include $<$W2\+C\+Hybrid\+Memory\+Trie.\+hpp$>$}
 
-Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:W2\+C\+Hybrid\+Trie$<$ N, Storage\+Factory, Storage\+Container $>$\+:\begin{figure}[H]
+Inheritance diagram for uva\+:\+:smt\+:\+:tries\+:\+:W2\+C\+Hybrid\+Trie$<$ N, Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=3.000000cm]{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}
+\includegraphics[height=4.000000cm]{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie}
 \end{center}
 \end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base}{Layered\+Trie\+Base}$<$ N, \hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} $>$ \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a564f0d64c8b9cd163191a35ada63cf65}{B\+A\+S\+E}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_aaeb703bad005acd84483bf085ae94992}{W2\+C\+Hybrid\+Trie} (\hyperlink{classuva_1_1smt_1_1tries_1_1dictionary_1_1_a_word_index}{A\+Word\+Index} $\ast$const p\+\_\+word\+\_\+index)
+\hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a0e20a7cfca02bb286b8576071bb340b4}{W2\+C\+Hybrid\+Trie} (\hyperlink{classuva_1_1smt_1_1tries_1_1_word_index_trie_base_a30c4fffe3a3423c87b229b66340dd2f8}{Word\+Index\+Type} \&word\+\_\+index)
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_acfd9364a101a2ed142096fe91265d407}{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info} ()
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4ac4942927832a759b11984809dab5a8}{is\+\_\+bitmap\+\_\+hash\+\_\+cache} ()
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_abc1e576b9bbd934e0b4bd702b1b5b3f1}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a62e905c5540f3ded21718903663aba21}{get\+\_\+ctx\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} \&ctx\+Id, const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level)
 \item 
-virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a254fa371f69f827cafb20f17aa206dbc}{$\sim$\+W2\+C\+Hybrid\+Trie} ()
-\end{DoxyCompactItemize}
-\subsection*{Protected Member Functions}
-\begin{DoxyCompactItemize}
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ac6583adfa1e9088eaa38def3202da598}{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info} ()
 \item 
-virtual \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9b2a2d77e2dd74f72c8e3efcdf5eef91}{make\+\_\+1\+\_\+\+Gram\+Data\+Ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id)
+virtual void \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a629a73fe6a04cd50b876a164d06ed7e8}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}N\mbox{]})
 \item 
-virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad5d06f2b508ce32d5b7fb6e2057b7ede}{get\+\_\+1\+\_\+\+Gram\+Data\+Ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
+\hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a35808cad6f9558ba71cafd37b1a5124f}{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id)
 \item 
-virtual \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad9dd07f5dca7a6f0b961463c17dc3d86}{make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a452387e61436cb715d533d94dbf4763d}{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
 \item 
-virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad7c70b9f64fb4439e6d144bf7e39618d}{get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
+\hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a1f4db37830c4c3561095a6244ddbbc03}{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
 \item 
-virtual \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a79b65560fba7b15a8124e2f58af580af}{make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4b1e2ec30d12734a59e35d802d3dc7b2}{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1tries_a20577a44b3a42d26524250634379b7cb}{T\+Model\+Level} level, const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, const \hyperlink{structuva_1_1smt_1_1tries_1_1_t_prob_back_off_entry}{T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$pp\+Data)
 \item 
-virtual bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a2cfef7b9bcc92e35ed953063d14eb4ce}{get\+\_\+\+N\+\_\+\+Gram\+Prob} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \&prob)
+\hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \& \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ab768ad7dea68fac739a636725377a017}{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9940f047eb01101b3b68a7b0f9492b36}{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref} (const \hyperlink{namespaceuva_1_1smt_1_1hashing_adcf22e1982ad09d3a63494c006267469}{T\+Short\+Id} word\+Id, const \hyperlink{namespaceuva_1_1smt_1_1hashing_a5992ac0dea0fb3226fb403ede09fad55}{T\+Long\+Id} ctx\+Id, \hyperlink{namespaceuva_1_1smt_1_1tries_acd0660255dd9ef5d644f01de49102750}{T\+Log\+Prob\+Back\+Off} \&prob)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a5dea0b885e6b60ac4f947d7773c5914c}{$\sim$\+W2\+C\+Hybrid\+Trie} ()
 \end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container$>$class uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Storage\+Factory, Storage\+Container $>$}
+\subsubsection*{template$<$T\+Model\+Level N, typename Word\+Index\+Type, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container$>$class uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie$<$ N, Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$}
 
 This is the hybrid memory trie implementation class. It has three template parameters. 
 \begin{DoxyParams}{Parameters}
@@ -53,147 +59,162 @@ This is the hybrid memory trie implementation class. It has three template param
 \end{DoxyParams}
 
 
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a564f0d64c8b9cd163191a35ada63cf65}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!B\+A\+S\+E@{B\+A\+S\+E}}
+\index{B\+A\+S\+E@{B\+A\+S\+E}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{B\+A\+S\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ typedef {\bf Layered\+Trie\+Base}$<$N, {\bf Word\+Index\+Type}$>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::{\bf B\+A\+S\+E}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a564f0d64c8b9cd163191a35ada63cf65}
+
+
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_aaeb703bad005acd84483bf085ae94992}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!W2\+C\+Hybrid\+Trie@{W2\+C\+Hybrid\+Trie}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a0e20a7cfca02bb286b8576071bb340b4}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!W2\+C\+Hybrid\+Trie@{W2\+C\+Hybrid\+Trie}}
 \index{W2\+C\+Hybrid\+Trie@{W2\+C\+Hybrid\+Trie}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{W2\+C\+Hybrid\+Trie(\+A\+Word\+Index $\ast$const p\+\_\+word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::{\bf W2\+C\+Hybrid\+Trie} (
+\subsubsection[{W2\+C\+Hybrid\+Trie(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::{\bf W2\+C\+Hybrid\+Trie} (
 \begin{DoxyParamCaption}
-\item[{{\bf A\+Word\+Index} $\ast$const}]{p\+\_\+word\+\_\+index}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_aaeb703bad005acd84483bf085ae94992}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a0e20a7cfca02bb286b8576071bb340b4}
 The basic constructor 
 \begin{DoxyParams}{Parameters}
 {\em p\+\_\+word\+\_\+index} & the word index (dictionary) container \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a254fa371f69f827cafb20f17aa206dbc}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!````~W2\+C\+Hybrid\+Trie@{$\sim$\+W2\+C\+Hybrid\+Trie}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a5dea0b885e6b60ac4f947d7773c5914c}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!````~W2\+C\+Hybrid\+Trie@{$\sim$\+W2\+C\+Hybrid\+Trie}}
 \index{````~W2\+C\+Hybrid\+Trie@{$\sim$\+W2\+C\+Hybrid\+Trie}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{$\sim$\+W2\+C\+Hybrid\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::$\sim${\bf W2\+C\+Hybrid\+Trie} (
+\subsubsection[{$\sim$\+W2\+C\+Hybrid\+Trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::$\sim${\bf W2\+C\+Hybrid\+Trie} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a254fa371f69f827cafb20f17aa206dbc}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a5dea0b885e6b60ac4f947d7773c5914c}
 The basic destructor 
 
 \subsection{Member Function Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad5d06f2b508ce32d5b7fb6e2057b7ede}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+1\+\_\+\+Gram\+Data\+Ref@{get\+\_\+1\+\_\+\+Gram\+Data\+Ref}}
-\index{get\+\_\+1\+\_\+\+Gram\+Data\+Ref@{get\+\_\+1\+\_\+\+Gram\+Data\+Ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{get\+\_\+1\+\_\+\+Gram\+Data\+Ref(const T\+Short\+Id word\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+1\+\_\+\+Gram\+Data\+Ref (
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a452387e61436cb715d533d94dbf4763d}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Short\+Id}}]{word\+Id, }
 \item[{const {\bf T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$}]{pp\+Data}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad5d06f2b508ce32d5b7fb6e2057b7ede}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a452387e61436cb715d533d94dbf4763d}
 Allows to retrieve the data storage structure for the One gram with the given Id. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a62e905c5540f3ded21718903663aba21}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}}
+\index{get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{get\+\_\+ctx\+\_\+id(const T\+Short\+Id word\+Id, T\+Long\+Id \&ctx\+Id, const T\+Model\+Level level)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+ctx\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf T\+Short\+Id}}]{word\+Id, }
+\item[{{\bf T\+Long\+Id} \&}]{ctx\+Id, }
+\item[{const {\bf T\+Model\+Level}}]{level}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a62e905c5540f3ded21718903663aba21}
+Computes the N-\/\+Gram context using the previous context and the current word id
+
+W\+A\+R\+N\+I\+N\+G\+: Must only be called for the M-\/gram level 1 $<$ M $<$= N! \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base}{Layered\+Trie\+Base}
 \end{DoxySeeAlso}
 
+\begin{DoxyParams}{Parameters}
+{\em word\+Id} & the current word id \\
+\hline
+{\em ctx\+Id} & \mbox{[}in\mbox{]} -\/ the previous context id, \mbox{[}out\mbox{]} -\/ the next context id \\
+\hline
+{\em level} & the M-\/gram level we are working with M \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting context 
+\end{DoxyReturn}
 
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_a2f867efeae78d2db790cec7f844314db}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad7c70b9f64fb4439e6d144bf7e39618d}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref@{get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref}}
-\index{get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref@{get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, T\+Long\+Id ctx\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+\+M\+\_\+\+Gram\+Data\+Ref (
+\begin{DoxyExceptions}{Exceptions}
+{\em nothing} & \\
+\hline
+\end{DoxyExceptions}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4b1e2ec30d12734a59e35d802d3dc7b2}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, T\+Long\+Id ctx\+Id, const T\+Prob\+Back\+Off\+Entry $\ast$$\ast$pp\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Model\+Level}}]{level, }
 \item[{const {\bf T\+Short\+Id}}]{word\+Id, }
 \item[{{\bf T\+Long\+Id}}]{ctx\+Id, }
 \item[{const {\bf T\+Prob\+Back\+Off\+Entry} $\ast$$\ast$}]{pp\+Data}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad7c70b9f64fb4439e6d144bf7e39618d}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4b1e2ec30d12734a59e35d802d3dc7b2}
 Allows to retrieve the data storage structure for the M gram with the given M-\/gram level Id. M-\/gram context and last word Id. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_a05855f2069930d51739f040ce34de3dc}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a2cfef7b9bcc92e35ed953063d14eb4ce}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+\+N\+\_\+\+Gram\+Prob@{get\+\_\+\+N\+\_\+\+Gram\+Prob}}
-\index{get\+\_\+\+N\+\_\+\+Gram\+Prob@{get\+\_\+\+N\+\_\+\+Gram\+Prob}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{get\+\_\+\+N\+\_\+\+Gram\+Prob(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id, T\+Log\+Prob\+Back\+Off \&prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+\+N\+\_\+\+Gram\+Prob (
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9940f047eb01101b3b68a7b0f9492b36}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id, T\+Log\+Prob\+Back\+Off \&prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Short\+Id}}]{word\+Id, }
 \item[{const {\bf T\+Long\+Id}}]{ctx\+Id, }
 \item[{{\bf T\+Log\+Prob\+Back\+Off} \&}]{prob}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a2cfef7b9bcc92e35ed953063d14eb4ce}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9940f047eb01101b3b68a7b0f9492b36}
 Allows to retrieve the probability value for the N gram defined by the end word\+Id and ctx\+Id. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_aa49bc3aaba12ce2be46a611526b55e29}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_acfd9364a101a2ed142096fe91265d407}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}}
-\index{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual void {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info (
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4ac4942927832a759b11984809dab5a8}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}}
+\index{is\+\_\+bitmap\+\_\+hash\+\_\+cache@{is\+\_\+bitmap\+\_\+hash\+\_\+cache}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{is\+\_\+bitmap\+\_\+hash\+\_\+cache()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ bool {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::is\+\_\+bitmap\+\_\+hash\+\_\+cache (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_acfd9364a101a2ed142096fe91265d407}
-Allows to log the information about the instantiated trie type 
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a4266759644e0ebfda77ab1a851a660af}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9b2a2d77e2dd74f72c8e3efcdf5eef91}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+1\+\_\+\+Gram\+Data\+Ref@{make\+\_\+1\+\_\+\+Gram\+Data\+Ref}}
-\index{make\+\_\+1\+\_\+\+Gram\+Data\+Ref@{make\+\_\+1\+\_\+\+Gram\+Data\+Ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{make\+\_\+1\+\_\+\+Gram\+Data\+Ref(const T\+Short\+Id word\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual {\bf T\+Prob\+Back\+Off\+Entry}\& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+1\+\_\+\+Gram\+Data\+Ref (
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a4ac4942927832a759b11984809dab5a8}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1tries_1_1_layered_trie_base}{Layered\+Trie\+Base} 
+\end{DoxySeeAlso}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ac6583adfa1e9088eaa38def3202da598}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}}
+\index{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info@{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual void {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::log\+\_\+trie\+\_\+type\+\_\+usage\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ac6583adfa1e9088eaa38def3202da598}
+Allows to log the information about the instantiated trie type \hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a35808cad6f9558ba71cafd37b1a5124f}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf T\+Prob\+Back\+Off\+Entry} \& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+1\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Short\+Id}}]{word\+Id}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a9b2a2d77e2dd74f72c8e3efcdf5eef91}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a35808cad6f9558ba71cafd37b1a5124f}
 Allows to retrieve the data storage structure for the One gram with the given Id. If the storage structure does not exist, return a new one. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_ac555233f27ab1e5cb275823df7ab73db}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad9dd07f5dca7a6f0b961463c17dc3d86}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref@{make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref}}
-\index{make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref@{make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual {\bf T\+Prob\+Back\+Off\+Entry}\& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+\+M\+\_\+\+Gram\+Data\+Ref (
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a1f4db37830c4c3561095a6244ddbbc03}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref(const T\+Model\+Level level, const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf T\+Prob\+Back\+Off\+Entry} \& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+m\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Model\+Level}}]{level, }
 \item[{const {\bf T\+Short\+Id}}]{word\+Id, }
 \item[{const {\bf T\+Long\+Id}}]{ctx\+Id}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ad9dd07f5dca7a6f0b961463c17dc3d86}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a1f4db37830c4c3561095a6244ddbbc03}
 Allows to retrieve the data storage structure for the M gram with the given M-\/gram level Id. M-\/gram context and last word Id. If the storage structure does not exist, return a new one. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_afa0945f32d41fc20c8ce13bf0eda7b2e}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a79b65560fba7b15a8124e2f58af580af}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref@{make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref}}
-\index{make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref@{make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ virtual {\bf T\+Log\+Prob\+Back\+Off}\& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+\+N\+\_\+\+Gram\+Data\+Ref (
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ab768ad7dea68fac739a636725377a017}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}}
+\index{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref@{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
+\subsubsection[{make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref(const T\+Short\+Id word\+Id, const T\+Long\+Id ctx\+Id)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf T\+Log\+Prob\+Back\+Off} \& {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::make\+\_\+n\+\_\+gram\+\_\+data\+\_\+ref (
 \begin{DoxyParamCaption}
 \item[{const {\bf T\+Short\+Id}}]{word\+Id, }
 \item[{const {\bf T\+Long\+Id}}]{ctx\+Id}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a79b65560fba7b15a8124e2f58af580af}
+)}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_ab768ad7dea68fac739a636725377a017}
 Allows to retrieve the data storage structure for the N gram. Given the N-\/gram context and last word Id. For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Implements \hyperlink{classuva_1_1smt_1_1tries_1_1_a_layered_trie_a534dd252748652d2c3a5afc373ac5ca7}{uva\+::smt\+::tries\+::\+A\+Layered\+Trie$<$ N $>$}.
-
-\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_abc1e576b9bbd934e0b4bd702b1b5b3f1}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a629a73fe6a04cd50b876a164d06ed7e8}{}\index{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}!pre\+\_\+allocate@{pre\+\_\+allocate}}
 \index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie@{uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}}
-\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ void {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, Storage\+Factory, Storage\+Container $>$\+::pre\+\_\+allocate (
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[N])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N, typename Word\+Index\+Type , template$<$ T\+Model\+Level $>$ class Storage\+Factory, class Storage\+Container $>$ void {\bf uva\+::smt\+::tries\+::\+W2\+C\+Hybrid\+Trie}$<$ N, {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::pre\+\_\+allocate (
 \begin{DoxyParamCaption}
 \item[{const size\+\_\+t}]{counts\mbox{[}\+N\mbox{]}}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_abc1e576b9bbd934e0b4bd702b1b5b3f1}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1_w2_c_hybrid_trie_a629a73fe6a04cd50b876a164d06ed7e8}
 This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory For more details \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie} 
+A\+Trie 
 \end{DoxySeeAlso}
-
-
-Reimplemented from \hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie_a4c523028bdf0949d762d1bbfd3fdc262}{uva\+::smt\+::tries\+::\+A\+Trie$<$ N $>$}.
-
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

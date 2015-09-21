@@ -16,7 +16,7 @@ Note that punctuation marks such as comma and full stop are treated just like an
 
 \subsubsection*{References and Decisions}
 
-This project is mostly based on two papers\+: \begin{quote}
+This project is originally based on two papers\+: \begin{quote}
 \{D\+B\+L\+P\+:conf/acl/\+Pauls\+K11, author = \{Adam Pauls and Dan Klein\}, title = \{Faster and Smaller N-\/\+Gram Language Models\}, booktitle = \{The 49th Annual Meeting of the Association for Computational Linguistics\+: Human Language Technologies, Proceedings of the Conference, 19-\/24 June, 2011, Portland, Oregon, \{U\+S\+A\}\}, pages = \{258--267\}, year = \{2011\}, crossref = \{D\+B\+L\+P\+:conf/acl/2011\}, url = \{\href{http://www.aclweb.org/anthology/P11-1027}{\tt http\+://www.\+aclweb.\+org/anthology/\+P11-\/1027}\}, timestamp = \{Fri, 02 Dec 2011 14\+:17\+:37 +0100\}, biburl = \{\href{http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11}{\tt http\+://dblp.\+uni-\/trier.\+de/rec/bib/conf/acl/\+Pauls\+K11}\}, bibsource = \{dblp computer science bibliography, \href{http://dblp.org}{\tt http\+://dblp.\+org}\} \} \end{quote}
 
 
@@ -41,7 +41,7 @@ You should have received a copy of the G\+N\+U General Public License along with
 This is a Netbeans 8.\+0.\+2 project, and its\textquotesingle{} top-\/level structure is as follows\+:
 
 \begin{quote}
-./doc/ ./inc/ ./src/ ./nbproject/ ./doxygen/ ./\+L\+I\+C\+E\+N\+S\+E ./\+Makefile ./\+R\+E\+A\+D\+M\+E.md ./\+Doxyfile \end{quote}
+./docs/ ./inc/ ./src/ ./nbproject/ ./doxygen/ ./test-\/data/ ./\+L\+I\+C\+E\+N\+S\+E ./\+Makefile ./\+R\+E\+A\+D\+M\+E.md ./\+Doxyfile ./make\+\_\+centos.sh ./make\+\_\+debug\+\_\+centos.sh ./make\+\_\+profile\+\_\+centos.sh ./make\+\_\+release\+\_\+centos.sh \end{quote}
 
 
 Further, we give a few explanations of the structure above
@@ -50,31 +50,39 @@ Further, we give a few explanations of the structure above
 \begin{DoxyItemize}
 \item \mbox{[}Project-\/\+Folder\mbox{]}/
 \begin{DoxyItemize}
-\item doc/ -\/ contains the project documents, including the task text and the used papers
+\item doc/ -\/ contains the project-\/related documents
 \item inc/ -\/ stores the C++ header files used in the implementation
 \item src/ -\/ stores the C++ source files used in the implementation
-\item nbproject/ -\/ stores the Netbeans project data
+\item nbproject/ -\/ stores the Netbeans project data, such as makefiles
 \item doxygen/ -\/ stores the Doxygen-\/generated code documentation
+\item test-\/data/ -\/ stores the test-\/related data such as test models and query intput files, as well as the experimental results.
 \item L\+I\+C\+E\+N\+S\+E -\/ the code license (G\+P\+L 2.\+0)
 \item Makefile -\/ the Makefile used to build the project
 \item \hyperlink{_r_e_a_d_m_e_8md}{R\+E\+A\+D\+M\+E.\+md} -\/ this document
 \item Doxyfile -\/ the Doxygen configuration file
+\item make\+\_\+centos.\+sh -\/ the script to build all available configurations on the Centos platform
+\item make\+\_\+debug\+\_\+centos.\+sh -\/ the script to build debug configuration on the Centos platform
+\item make\+\_\+profile\+\_\+centos.\+sh -\/ the script to profiling debug configuration on the Centos platform
+\item make\+\_\+release\+\_\+centos.\+sh -\/ the script to release debug configuration on the Centos platform
 \end{DoxyItemize}
 \end{DoxyItemize}
 
 \subsection*{Supported platforms}
 
-Currently there are two supported platforms\+:
+Currently this project supports two major platforms\+: Linux and Mac Os X. It has been successfully build and testd on\+:
+
+
 \begin{DoxyItemize}
-\item $<$big$>$Linux$<$/big$>$ -\/ Complete functionality.
-\item $<$big$>$Mac O\+S$<$/big$>$ -\/ Limited by inability to collect memory-\/usage statistics.
+\item $<$big$>$Centos 6.\+6 64-\/bit$<$/big$>$ -\/ Complete functionality.
+\item $<$big$>$Ubuntu 15.\+04 64-\/bit$<$/big$>$ -\/ Complete functionality.
+\item $<$big$>$Mac O\+S X Yosemite 10.\+10 64-\/bit$<$/big$>$ -\/ Limited by inability to collect memory-\/usage statistics.
 \end{DoxyItemize}
 
-This project was built and tested on Ubuntu 14.\+10 64-\/bit and O\+S X Yosemite, version 10.\+10.\+4.
+Testing on 32-\/bit systems was not perfrormed.
 
 \subsection*{Building the project}
 
-This project can be build in two ways\+:
+Building this project requires gcc version 4.\+9.\+1 and higher. The project can be build in two ways\+:
 
 
 \begin{DoxyItemize}
@@ -84,20 +92,31 @@ This project can be build in two ways\+:
 \item Open the console
 \item Navigate to the project folder
 \item Run {\itshape \char`\"{}make all\char`\"{}}
-\item The binary will be generated and placed into {\itshape ./dist/\+Release/\mbox{[}platform\mbox{]}/} folder
-\item The name of the executable is {\itshape automated-\/translation-\/tries}
+\item The binary will be generated and placed into {\itshape ./dist/\mbox{[}type\mbox{]}\+\_\+\mbox{[}platform\mbox{]}/} folder
+\item The name of the executable is {\itshape back-\/off-\/language-\/model-\/smt}
 \end{DoxyItemize}
 \end{DoxyItemize}
 
-In order to clean the project from the command line run {\itshape \char`\"{}make clean\char`\"{}}
+In order to clean the project from the command line run {\itshape \char`\"{}make clean\char`\"{}}.
 
-One can limit the debug-\/level printing of the code by defining the {\itshape L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L{\itshape  compile-\/time macros. The possible range of values, with increasing logging level is\+: Logger\+::\+U\+S\+A\+G\+E, Logger\+::\+R\+E\+S\+U\+L\+T, Logger\+::\+E\+R\+R\+O\+R, Logger\+::\+W\+A\+R\+N\+I\+N\+G, Logger\+::\+I\+N\+F\+O, Logger\+::\+D\+E\+B\+U\+G, Logger\+::\+D\+E\+B\+U\+G1, Logger\+::\+D\+E\+B\+U\+G2}}
+For the sake of simplicity and speed building on Centos platform is also possible by using make\+\_\+$\ast$\+\_\+centos.sh scripts. There are four of suck scripts available\+:
 
-{\itshape {\itshape \subsection*{Usage}}}
 
-{\itshape {\itshape  In order to get the program usage information please run {\itshape ./automated-\/translation-\/tries} from the command line, the output of the program is supposed to be as follows\+: \begin{DoxyVerb}    USAGE:  ------------------------------------------------------------------ 
-    USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
-    USAGE: |                     Test software version 1.1          {(@)v(@)} |
-    USAGE: |                                                        {|~- -~|} |
-    USAGE: |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\end{DoxyVerb}
- }}
+\begin{DoxyItemize}
+\item make\+\_\+debug\+\_\+centos.\+sh -\/ allows to build the debug configuration\+: ready to be used with valgrind and gdb.
+\item make\+\_\+profile\+\_\+centos.\+sh -\/ allows to build the profiling configuration\+: ready to be used for gathering performance information for gprof\+: produce the gmon.\+out file.
+\item make\+\_\+release\+\_\+centos.\+sh -\/ allows to build the release configuration\+: the version build for performance with platform specific optimiztions.
+\item make\+\_\+centos.\+sh -\/ allows to build all the above confgurations at once.
+\end{DoxyItemize}
+
+One can limit the debug-\/level printing of the code by changing the value of the {\itshape L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L} constant in the {\itshape ./inc/\+Configuration.hpp}. The possible range of values, with increasing logging level is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
+
+\subsection*{Usage}
+
+In order to get the program usage information please run {\itshape ./back-\/off-\/language-\/model-\/smt} from the command line, the output of the program is supposed to be as follows\+: \begin{DoxyVerb}    $ ../dist/Release__MacOs_/back-off-language-model-smt
+    USAGE:   ------------------------------------------------------------------ 
+    USAGE:  |                 Back Off Language Model(s) for SMT     :)\___/(: |
+    USAGE:  |                       Software version 1.0             {(@)v(@)} |
+    USAGE:  |                         The Owl release.               {|~- -~|} |
+    USAGE:  |             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\end{DoxyVerb}
+ 

@@ -1,5 +1,5 @@
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:arpa\+:\+:A\+R\+P\+A\+Trie\+Builder$<$ N $>$ Class Template Reference}
-\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ N $>$@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ N $>$}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder}{}\section{uva\+:\+:smt\+:\+:tries\+:\+:arpa\+:\+:A\+R\+P\+A\+Trie\+Builder$<$ Trie\+Type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ Trie\+Type $>$@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ Trie\+Type $>$}}
 
 
 {\ttfamily \#include $<$A\+R\+P\+A\+Trie\+Builder.\+hpp$>$}
@@ -7,28 +7,28 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}{A\+R\+P\+A\+Trie\+Builder} (\hyperlink{classuva_1_1smt_1_1tries_1_1_a_trie}{A\+Trie}$<$ N $>$ \&trie, \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader}{A\+File\+Reader} \&file)
+\hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a547b05cc83831fc8a638aa4d9bba28c3}{A\+R\+P\+A\+Trie\+Builder} (Trie\+Type \&trie, \hyperlink{classuva_1_1smt_1_1file_1_1_a_file_reader}{A\+File\+Reader} \&file)
 \item 
-void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8e01c726cb800efa9b5f157017eb35f4}{build} ()
+void \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a6c07e6c8116f2524a2422c718d961d9b}{build} ()
 \item 
-virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8f0c6fc6e4f96d52b5380712b681bfef}{$\sim$\+A\+R\+P\+A\+Trie\+Builder} ()
+virtual \hyperlink{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_adbcd4624bdeb530a5b58f31a5c580523}{$\sim$\+A\+R\+P\+A\+Trie\+Builder} ()
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$T\+Model\+Level N$>$class uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ N $>$}
+\subsubsection*{template$<$typename Trie\+Type$>$class uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder$<$ Trie\+Type $>$}
 
 This is the Trie builder class that reads an input file stream and creates n-\/grams and then records them into the provided Trie. 
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a547b05cc83831fc8a638aa4d9bba28c3}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}}
 \index{A\+R\+P\+A\+Trie\+Builder@{A\+R\+P\+A\+Trie\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}}
-\subsubsection[{A\+R\+P\+A\+Trie\+Builder(\+A\+Trie$<$ N $>$ \&trie, A\+File\+Reader \&file)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ N $>$\+::{\bf A\+R\+P\+A\+Trie\+Builder} (
+\subsubsection[{A\+R\+P\+A\+Trie\+Builder(\+Trie\+Type \&trie, A\+File\+Reader \&file)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ Trie\+Type $>$\+::{\bf A\+R\+P\+A\+Trie\+Builder} (
 \begin{DoxyParamCaption}
-\item[{{\bf A\+Trie}$<$ N $>$ \&}]{trie, }
+\item[{Trie\+Type \&}]{trie, }
 \item[{{\bf A\+File\+Reader} \&}]{file}
 \end{DoxyParamCaption}
-)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a5381a4b1773965aee6f6cd24513166d0}
+)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a547b05cc83831fc8a638aa4d9bba28c3}
 The basic constructor that accepts a trie to be build up and the file stream to read from 
 \begin{DoxyParams}{Parameters}
 {\em trie} & the trie to fill in with data from the text corpus \\
@@ -36,23 +36,23 @@ The basic constructor that accepts a trie to be build up and the file stream to 
 {\em \+\_\+fstr} & the file stream to read from \\
 \hline
 \end{DoxyParams}
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8f0c6fc6e4f96d52b5380712b681bfef}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!````~A\+R\+P\+A\+Trie\+Builder@{$\sim$\+A\+R\+P\+A\+Trie\+Builder}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_adbcd4624bdeb530a5b58f31a5c580523}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!````~A\+R\+P\+A\+Trie\+Builder@{$\sim$\+A\+R\+P\+A\+Trie\+Builder}}
 \index{````~A\+R\+P\+A\+Trie\+Builder@{$\sim$\+A\+R\+P\+A\+Trie\+Builder}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}}
-\subsubsection[{$\sim$\+A\+R\+P\+A\+Trie\+Builder()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ N $>$\+::$\sim${\bf A\+R\+P\+A\+Trie\+Builder} (
+\subsubsection[{$\sim$\+A\+R\+P\+A\+Trie\+Builder()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ Trie\+Type $>$\+::$\sim${\bf A\+R\+P\+A\+Trie\+Builder} (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8f0c6fc6e4f96d52b5380712b681bfef}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_adbcd4624bdeb530a5b58f31a5c580523}
 
 
 \subsection{Member Function Documentation}
-\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8e01c726cb800efa9b5f157017eb35f4}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!build@{build}}
+\hypertarget{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a6c07e6c8116f2524a2422c718d961d9b}{}\index{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}!build@{build}}
 \index{build@{build}!uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder@{uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}}
-\subsubsection[{build()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$T\+Model\+Level N$>$ void {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ N $>$\+::build (
+\subsubsection[{build()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type $>$ void {\bf uva\+::smt\+::tries\+::arpa\+::\+A\+R\+P\+A\+Trie\+Builder}$<$ Trie\+Type $>$\+::build (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a8e01c726cb800efa9b5f157017eb35f4}
+)}\label{classuva_1_1smt_1_1tries_1_1arpa_1_1_a_r_p_a_trie_builder_a6c07e6c8116f2524a2422c718d961d9b}
 This function will read from the file and build the trie 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

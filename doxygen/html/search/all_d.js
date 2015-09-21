@@ -10,7 +10,7 @@ var searchData=
   ['optimizing_5fbasic_5fword_5findex',['OPTIMIZING_BASIC_WORD_INDEX',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afaf2e0211e595a151b4406e638e20f0385',1,'uva::smt::tries::dictionary']]],
   ['optimizing_5fcounting_5fword_5findex',['OPTIMIZING_COUNTING_WORD_INDEX',['../namespaceuva_1_1smt_1_1tries_1_1dictionary.html#a2d9d8547b613df614eb53c510c5223afa0318ba9b612a49c6e578b9961e404cd5',1,'uva::smt::tries::dictionary']]],
   ['optimizingwordindex',['OptimizingWordIndex',['../classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html',1,'uva::smt::tries::dictionary']]],
-  ['optimizingwordindex',['OptimizingWordIndex',['../classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a9c7f3e6299e77be4ce163c288bbd2c20',1,'uva::smt::tries::dictionary::OptimizingWordIndex']]],
+  ['optimizingwordindex',['OptimizingWordIndex',['../classuva_1_1smt_1_1tries_1_1dictionary_1_1_optimizing_word_index.html#a3b8aa990378a06935d58fe743749d435',1,'uva::smt::tries::dictionary::OptimizingWordIndex']]],
   ['optimizingwordindex_2ehpp',['OptimizingWordIndex.hpp',['../_optimizing_word_index_8hpp.html',1,'']]],
   ['other',['other',['../structuva_1_1smt_1_1tries_1_1alloc_1_1_greedy_memory_allocator_1_1rebind.html#a4c9a2812bdf3606f7e8a1cbe635fea90',1,'uva::smt::tries::alloc::GreedyMemoryAllocator::rebind']]]
 ];
