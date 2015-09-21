@@ -186,27 +186,34 @@ from the command line, the output of the program is supposed to be as follows:
 In this section we mention a few implementation details, for more details see the source code documentation. At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <i>JAVADOC_AUTOBRIEF</i> set to <i>YES</i>. The generated documentation is located in the <big>./doxygen/</big> folder of the project.
 
 The code contains the following important source files:
-* <big>ATries.hpp</big> - contains the common abstract class parent for all possible Trie classes
-* <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - contains the Hash-Map Trie implementation
-* <big>Globals.hpp</big> - contains global configuration macros and some important globally used data types
-* <big>Exceptions.hpp</big> - stores the implementations of the used exception classes
-* <big>HashingUtils.hpp</big> - stores the hashing utility functions
-* <big>NGramBuilder.hpp/NGramBuilder.cpp</big> - contains the class responsible for building n-grams from a line of text and storing it into Trie
-* <big>TrieBuilder.hpp/TrieBuilder.cpp</big> - contains the class responsible for reading the text corpus and filling in the Trie using a NGramBuilder
-* <big>StatisticsMonitor.hpp/StatisticsMonitor.cpp</big> - contains a class responsible for gathering memory and CPU usage statistics
-* <big>BasicLogger.hpp/BasicLogger.cpp</big> - contains a basic logging facility class
-* <big>main.cpp</big> - contains the entry point of the program and some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
+
+* <big>main.cpp</big> - contains the entry point of the program
+* <big>Executor.cpp</big> -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
+* <big>ARPATrieBuilder.hpp / ARPATrieBuilder.cpp</big> - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.
+* <big>TrieDriver.hpp</big> - is the driver for all trie implementations - allows to execute queries to the tries.
+* <big>LayeredTrieDriver.hpp</big> - is a waraapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
+* <big>C2DHashMapTrie.hpp / C2DHashMapTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based on unordered_map.
+* <big>C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.
+* <big>C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp</big> - contains the Context-to-Word mapping trie implementation based on ordered arrays.
+* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - contains the M-Gram-to-Data mapping trie implementation based on self-made hashmaps.
+* <big>W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.
+* <big>W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on ordered arrays.
+* <big>Configuration.hpp</big> - contains configuration parameter for the word index and trie and memory management entities.
+* <big>Exceptions.hpp</big> - stores the implementations of the used exception classes.
+* <big>HashingUtils.hpp</big> - stores the hashing utility functions.
+* <big> ARPAGramBuilder.hpp / ARPAGramBuilder.cpp</big> - contains the class responsible for building n-grams from a line of text and storing it into Trie.
+* <big>StatisticsMonitor.hpp / StatisticsMonitor.cpp</big> - contains a class responsible for gathering memory and CPU usage statistics
+* <big>Logger.hpp/Logger.cpp</big> - contains a basic logging facility class
 
 ##ToDo
-* <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - the current implementation of HashMapTrie is error prone to hash collisions. The build in checks are supposed to detect them and report an error message, but this is not enough. Yet the code was tested on data sets of up to 200.000 lines of text and no hash collisions were detected, so the hashing algorithms are currently sufficient good.
-* <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - the memory usage is not optimal, perhaps it is possible to provide a smarter implementation that will reduce the hash reference sizes so that less memory is used.
-* <big>HashMapTrie.hpp/HashMapTrie.cpp</big> - When storing frequencies or generating word hashes and N-gram references one can easily get overflows resulting in wrong results, it would be nice to build in overflow checks into the code for safe executions.
-* ~~<big>BasicLogger.hpp/BasicLogger.cpp</big> - by using compile time debug flags one can improve the applications performance by ensuring that the debug statements of higher order are compiled out. This is possible if the debugging is done using macros. Yet there will be no way to get finer debugging after the program is compiled.~~
-* ~~<big>BasicLogger.hpp/BasicLogger.cpp</big> - currently uses <code>vsprintf(buffer, data, args);</code> for printing parameterized debug statements. Therefore, when printing arbitrary text from the corpus or test file one can get a segmentation fault if such a text contains un-escaped special control characters. Currently this problem is solved by not using <code>vsprintf(buffer, data, args);</code> for unsafe debug statements, but in general the implementation of the logging facility has to be robust enough to handle that.~~
-* <big>Profiling</big> - although one takes case of not using dynamic allocated memory for the sake of performance improvements and avoiding memory leaks, it would be great to run <i>Valgrind</i> <http://valgrind.org/> and <i>Gprof</i> <https://sourceware.org/binutils/docs/gprof/> profiling to detect memory leaks, performance bottlenecks etc.
+* <big> C2DHashMapTrie.hpp / C2DHashMapTrie.cpp </big> - the current implementation is potentially error prone to hash collisions in case of context id overflows. Overflows were not observed on the tries of up to 20 Gb but a more thorough testing must be needed and perhaps the collision detection must be always on for this trie.
+* <big>Tries</big> - It is possible to introduce more templating into the tries, e.g. the gram-level-based templating. It must improve performance as many checks can be resolved compile-time.
+* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - This trie is very performance efficient but its memory consumption is at present sub optimal. It needs a significant re-work in the way data is stored.
+* <big>Thread safety</big> - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or quering. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
 * <big>Testing</big> - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
 * <big>Code</big> - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
  
 ##History
 * <big>21.04.2015</big> - Created
 * <big>27.07.2015</big> - Changed project name and some to-do's
+* <big>21.09.2015</big> - Updated with the latest developments preparing for the version 1, Owl release. 
