@@ -302,7 +302,7 @@ namespace uva {
                 //Search for the index using binary search
                 TShortId idx = BASE::UNDEFINED_ARR_IDX;
                 if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
-                        m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR], wordId, ctxId, idx)) {
+                        m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, wordId, ctxId, idx)) {
                     //return the reference to the probability
                     prob = m_N_gram_data[idx].prob;
                     return true;
