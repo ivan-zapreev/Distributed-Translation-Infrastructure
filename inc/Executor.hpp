@@ -31,7 +31,7 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
-#include "TrieDriver.hpp"
+#include "GenericTrieDriver.hpp"
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"

@@ -29,7 +29,7 @@
 #include <fstream>      // std::ifstream
 #include <regex>        // std::regex, std::regex_match
 
-#include "TrieDriver.hpp"
+#include "GenericTrieDriver.hpp"
 
 #include "TextPieceReader.hpp"
 #include "AFileReader.hpp"

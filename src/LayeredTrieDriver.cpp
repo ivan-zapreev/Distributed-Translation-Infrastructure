@@ -78,11 +78,6 @@ namespace uva {
 
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram &gram) {
-                if (m_is_bitmap_hash_cache) {
-                    //Call the super class first, is needed for caching
-                    register_m_gram_cache(gram);
-                }
-
                 const TModelLevel level = gram.level;
                 LOG_DEBUG2 << "Adding a " << SSTR(level) << "-Gram "
                         << tokensToString<BASE::max_level>(gram) << " to the Trie" << END_LOG;
@@ -135,11 +130,6 @@ namespace uva {
 
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram &gram) {
-                if (m_is_bitmap_hash_cache) {
-                    //Call the super class first, is needed for caching
-                    register_m_gram_cache(gram);
-                }
-
                 LOG_DEBUG2 << "Adding a " << BASE::max_level << "-Gram "
                         << tokensToString<BASE::max_level>(gram) << " to the Trie" << END_LOG;
 

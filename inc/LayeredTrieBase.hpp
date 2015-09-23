@@ -162,14 +162,6 @@ namespace uva {
                 };
                 
                 /**
-                 * Allows to check if the bitmap hash cache is to be used.
-                 * @return true if the bitmap hash cache is to be used, otherwise false
-                 */
-                inline bool is_bitmap_hash_cache() {
-                    THROW_MUST_OVERRIDE();
-                };
-                
-                /**
                  * Allows to get the the new context id for the word and previous context id given the level
                  * @param wordId the word id on this level
                  * @param ctxId the previous level context id

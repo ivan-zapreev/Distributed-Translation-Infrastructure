@@ -113,9 +113,9 @@ namespace uva {
                         const float ngram_mem_factor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                 /**
-                 * @see LayeredTrieBase
+                 * @see GenericTrieBase
                  */
-                inline bool is_bitmap_hash_cache() {
+                inline bool is_bitmap_hash_cache() const {
                     return __C2DMapTrie::DO_BITMAP_HASH_CACHE;
                 }
 

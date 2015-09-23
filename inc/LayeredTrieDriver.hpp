@@ -78,7 +78,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit LayeredTrieDriver(WordIndexType & word_index)
-                : GenericTrieBase<TrieType::max_level, WordIndexType>(word_index), m_trie(word_index), m_is_bitmap_hash_cache(m_trie.is_bitmap_hash_cache()),
+                : GenericTrieBase<TrieType::max_level, WordIndexType>(word_index), m_trie(word_index),
                 m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
 
                     //Clear the memory for the buffer and initialize it
@@ -92,32 +92,17 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
+                inline bool is_bitmap_hash_cache() const {
+                    return m_trie.is_bitmap_hash_cache();
+                }
+
+                /**
+                 * @see GenericTrieBase
+                 */
                 void pre_allocate(const size_t counts[TrieType::max_level]) {
-                    //Pre-allocate the bitmap-hash caches if needed
-                    if (m_is_bitmap_hash_cache) {
-                        for (size_t idx = 0; idx < BASE::NUM_M_N_GRAM_LEVELS; ++idx) {
-                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
-                            Logger::updateProgressBar();
-                        }
-                    }
                     //Do the pre-allocation in the trie
                     m_trie.pre_allocate(counts);
                 };
-
-                /**
-                 * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param level of the considered M-gram
-                 * @return true if the unknown word is present, otherwise false
-                 */
-                template<bool is_back_off>
-                inline bool is_bitmap_hash_cache(TMGramQuery & query) {
-                    if (m_is_bitmap_hash_cache) {
-                        const BitmapHashCache & ref = m_bitmap_hash_cach[query.curr_level - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<is_back_off>(query);
-                    } else {
-                        return true;
-                    }
-                }
 
                 /**
                  * @see GenericTrieBase
@@ -179,7 +164,7 @@ namespace uva {
                  */
                 LayeredTrieDriver(const LayeredTrieDriver& orig)
                 : GenericTrieBase<TrieType::max_level, WordIndexType>(orig.get_word_index()),
-                m_trie(orig.get_word_index()), m_is_bitmap_hash_cache(orig.m_is_bitmap_hash_cache),
+                m_trie(orig.get_word_index()),
                 m_chached_ctx(), m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };
@@ -356,30 +341,12 @@ namespace uva {
                 //Stores the trie
                 TrieType m_trie;
 
-                //Stores a flag of whether we should use the birmap hash cache
-                const bool m_is_bitmap_hash_cache;
-
-                //Stores the bitmap hash caches per M-gram level
-                BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
-
                 //The actual storage for the cached context c string
                 char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
                 //Stores the cached M-gram context (for 1 < M <= N )
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
-
-                /**
-                 * Is to be used from the sub-classes from the add_X_gram methods.
-                 * This method allows to register the given M-gram in internal high
-                 * level caches if present.
-                 * @param gram the M-gram to cache
-                 */
-                inline void register_m_gram_cache(const T_M_Gram &gram) {
-                    if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[gram.level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
-                    }
-                }
 
             };
         }

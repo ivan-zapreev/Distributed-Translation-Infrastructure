@@ -61,9 +61,9 @@ namespace uva {
                 explicit W2CHybridTrie(WordIndexType & word_index);
 
                 /**
-                 * @see LayeredTrieBase
+                 * @see GenericTrieBase
                  */
-                inline bool is_bitmap_hash_cache() {
+                inline bool is_bitmap_hash_cache() const {
                     return __W2CHybridTrie::DO_BITMAP_HASH_CACHE;
                 }
 

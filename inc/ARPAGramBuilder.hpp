@@ -29,7 +29,7 @@
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
 
-#include <TrieDriver.hpp>
+#include <GenericTrieDriver.hpp>
 
 #include "Globals.hpp"
 #include <Exceptions.hpp>

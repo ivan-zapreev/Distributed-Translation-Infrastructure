@@ -40,7 +40,7 @@
 #include "FileStreamReader.hpp"
 #include "CStyleFileReader.hpp"
 
-#include "TrieDriver.hpp"
+#include "GenericTrieDriver.hpp"
 #include "Executor.hpp"
 
 using namespace std;

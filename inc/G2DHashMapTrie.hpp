@@ -111,10 +111,9 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                template<bool is_back_off>
-                inline bool is_bitmap_hash_cache(MGramQuery<N, WordIndexType> & query) {
-                    return true;
-                };
+                inline bool is_bitmap_hash_cache() const {
+                    return __G2DMapTrie::DO_BITMAP_HASH_CACHE;
+                }
 
                 /**
                  * Allows to log the information about the instantiated trie type

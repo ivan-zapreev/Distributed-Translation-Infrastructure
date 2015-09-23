@@ -112,9 +112,9 @@ namespace uva {
                 explicit W2CArrayTrie(WordIndexType & word_index);
 
                 /**
-                 * @see LayeredTrieBase
+                 * @see GenericTrieBase
                  */
-                inline bool is_bitmap_hash_cache() {
+                inline bool is_bitmap_hash_cache() const {
                     return __W2CArrayTrie::DO_BITMAP_HASH_CACHE;
                 }
 

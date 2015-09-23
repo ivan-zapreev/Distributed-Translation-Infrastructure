@@ -155,6 +155,14 @@ namespace uva {
                 inline void add_back_off_weight(TMGramQuery & query) {
                     THROW_MUST_OVERRIDE();
                 };
+                
+                /**
+                 * Allows to check if the bitmap hash cache is to be used.
+                 * @return true if the bitmap hash cache is to be used, otherwise false
+                 */
+                inline bool is_bitmap_hash_cache() const {
+                    THROW_MUST_OVERRIDE();
+                };
 
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
@@ -162,9 +170,10 @@ namespace uva {
                  * @return true if the unknown word is present, otherwise false
                  */
                 template<bool is_back_off>
-                inline bool is_bitmap_hash_cache(TMGramQuery & query) {
+                inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
+               
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

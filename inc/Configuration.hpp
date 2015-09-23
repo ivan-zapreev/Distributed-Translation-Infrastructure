@@ -130,7 +130,7 @@ namespace uva {
                 //word index gives about 10% performance improvement!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static const bool DO_BITMAP_HASH_CACHE = false;
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
 
             namespace __C2DMapTrie {
@@ -166,6 +166,9 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                //The experiments show that with 20*bitmap cache this is about 5% faster
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
 
             namespace __W2CArrayTrie {
@@ -213,7 +216,7 @@ namespace uva {
                 //word index gives about 10% performance improvement!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static const bool DO_BITMAP_HASH_CACHE = false;
+                static const bool DO_BITMAP_HASH_CACHE = true;
             }
         }
     }
