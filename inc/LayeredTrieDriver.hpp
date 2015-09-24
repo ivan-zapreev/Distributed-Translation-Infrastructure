@@ -79,6 +79,7 @@ namespace uva {
                 typedef GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> BASE;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
+                typedef function<bool (const TrieType&, const TShortId, TLongId &) > TGetCtxIdFunct;
 
                 /**
                  * The basic constructor
@@ -222,7 +223,7 @@ namespace uva {
                     for (; idx < end_idx;) {
                         LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
                                 << SSTR(query.m_query_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-                        if (m_trie.get_ctx_id(query.m_query_word_ids[idx], ctx_id, (idx - begin_idx) + 1)) {
+                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_query_word_ids[idx], ctx_id )) {
                             LOG_DEBUG1 << "getContextId(" << SSTR(query.m_query_word_ids[idx])
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             idx++;
@@ -268,7 +269,7 @@ namespace uva {
                                 if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
                                     LOGGER(log_level) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
-                                    if (m_trie.get_ctx_id(wordId, ctxId, i + 1)) {
+                                    if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
                                         LOGGER(log_level) << "ctxId = computeCtxId( "
                                                 << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                                     } else {
@@ -357,9 +358,23 @@ namespace uva {
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
+
+                //Stores the pointers to instances of th get_ctx_id function templates
+                static const TGetCtxIdFunct get_ctx_id_func[];
             };
-            
-            
+
+            template<typename TrieType>
+            const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {
+                NULL,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_1>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_5>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_6>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_7>
+            };
+
 #define TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
             typedef LayeredTrieDriver< T##TRIE_NAME##TYPE > TLayeredTrieDriver##TRIE_NAME##TYPE;
 
@@ -368,7 +383,7 @@ namespace uva {
             TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \
             TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptBasic); \
             TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptCount);
-            
+
             /**************************************************************************/
             TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(C2DMapTrie);
             TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(C2WArrayTrie);

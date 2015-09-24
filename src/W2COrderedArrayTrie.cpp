@@ -77,7 +77,8 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
+            template<TModelLevel level>
+            bool W2CArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
 

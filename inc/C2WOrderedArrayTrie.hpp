@@ -167,7 +167,8 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const;
+                template<TModelLevel level>
+                bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
 
                 /**
                  * Allows to log the information about the instantiated trie type

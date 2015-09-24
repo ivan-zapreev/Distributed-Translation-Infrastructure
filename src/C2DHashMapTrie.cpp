@@ -125,7 +125,8 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DMapTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
+            template<TModelLevel level>
+            bool C2DMapTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 //Use the Szudzik algorithm as it outperforms Cantor
                 ctxId = szudzik(wordId, ctxId);
                 //The context can always be computed

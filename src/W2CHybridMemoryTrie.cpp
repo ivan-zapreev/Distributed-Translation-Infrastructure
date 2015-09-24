@@ -101,7 +101,8 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
+            template<TModelLevel level>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                         << wordId << ", ctxId: " << ctxId << END_LOG;
                 //Retrieve the context data for the given word
@@ -172,7 +173,7 @@ namespace uva {
             bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TShortId wordId,
                     TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the context id, note we use short ids here!
-                if (get_ctx_id(wordId, ctxId, level)) {
+                if (get_ctx_id<level>(wordId, ctxId)) {
                     //Return the data by the context
                     *ppData = &m_mgram_data[level - 1][ctxId];
                     return true;

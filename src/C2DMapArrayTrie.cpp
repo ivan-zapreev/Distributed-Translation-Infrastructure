@@ -145,7 +145,8 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
+            template<TModelLevel level>
+            bool C2DHybridTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                 //Search for the map for that context id
@@ -201,7 +202,7 @@ namespace uva {
             bool C2DHybridTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
                     TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the next context id
-                if (get_ctx_id(wordId, ctxId, level)) {
+                if (get_ctx_id<level>(wordId, ctxId)) {
                     //There is data found under this context
                     *ppData = &m_M_gram_data[level - BASE::MGRAM_IDX_OFFSET][ctxId];
                     return true;

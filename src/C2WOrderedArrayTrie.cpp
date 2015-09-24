@@ -113,7 +113,8 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2WArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
+                template<TModelLevel level>
+            bool C2WArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
 
@@ -250,7 +251,7 @@ namespace uva {
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                 //Get the context id, note we use short ids here!
-                if (get_ctx_id(wordId, ctxId, level)) {
+                if (get_ctx_id<level>(wordId, ctxId)) {
                     //Return the data by the context
                     *ppData = &m_M_gram_data[mgram_idx][ctxId].data;
                     return true;
