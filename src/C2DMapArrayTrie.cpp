@@ -145,7 +145,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+            bool C2DHybridTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
                 const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                 //Search for the map for that context id
@@ -169,7 +169,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+            bool C2DHybridTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
                 //The data is always present.
                 *ppData = &m_1_gram_data[wordId];
                 return true;
@@ -197,7 +197,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             bool C2DHybridTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                    TLongId ctxId, const TProbBackOffEntry **ppData) {
+                    TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the next context id
                 if (get_ctx_id(wordId, ctxId, level)) {
                     //There is data found under this context
@@ -217,7 +217,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             bool C2DHybridTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, TLongId ctxId,
-                    TLogProbBackOff & prob) {
+                    TLogProbBackOff & prob) const {
                 const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
 
                 //Search for the map for that context id

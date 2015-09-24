@@ -76,7 +76,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                  */
-                void pre_allocate(const size_t counts[N]) {
+                inline void pre_allocate(const size_t counts[N]) {
                     m_word_index.reserve(counts[0]);
                     Logger::updateProgressBar();
                 };
@@ -86,7 +86,7 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                inline bool is_post_grams(const TModelLevel level) {
+                inline bool is_post_grams(const TModelLevel level) const {
                     return false;
                 }
 

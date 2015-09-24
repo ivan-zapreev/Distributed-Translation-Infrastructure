@@ -45,15 +45,12 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             G2DMapTrie<N, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
             : GenericTrieBase<N, WordIndexType>(word_index),
-            m_tmp_gram_id(), m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Initialize the array of number of gram ids per level
                 memset(num_buckets, 0, N * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
                 memset(m_M_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
-
-                //Allocate the M-gram id memory for queries
-                Byte_M_Gram_Id::allocate_byte_m_gram_id(N, m_tmp_gram_id);
 
                 LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
                 LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
@@ -103,8 +100,6 @@ namespace uva {
                     //De-allocate N-Grams
                     delete[] m_N_gram_data;
                 }
-                //Destroy the query id if any
-                M_Gram_Id::destroy(m_tmp_gram_id);
             };
 
             template<TModelLevel N, typename WordIndexType>
@@ -194,7 +189,7 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             template<typename BUCKET_TYPE, bool back_off >
             bool G2DMapTrie<N, WordIndexType>::get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
-                    const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) {
+                    const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const {
                 //The current level we are considering
                 const TModelLevel level = query.curr_level;
                 //Compute the begin index in the tokens and word ids arrays
@@ -206,7 +201,10 @@ namespace uva {
                 if (ref.has_data()) {
                     LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    Byte_M_Gram_Id::create_m_gram_id(query.m_query_word_ids, elem_begin_idx, level, m_tmp_gram_id);
+                    DECLARE_STACK_GRAM_ID(mgram_id, level);
+                    T_Gram_Id_Storage_Ptr mgram_id_ptr = &mgram_id[0];
+
+                    Byte_M_Gram_Id::create_m_gram_id(query.m_query_word_ids, elem_begin_idx, level, mgram_id_ptr);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
@@ -214,16 +212,16 @@ namespace uva {
                     bool is_found = false;
                     switch (level) {
                         case M_GRAM_LEVEL_2:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_2>(ref, found_idx);
+                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_2>(mgram_id_ptr, ref, found_idx);
                             break;
                         case M_GRAM_LEVEL_3:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_3>(ref, found_idx);
+                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_3>(mgram_id_ptr, ref, found_idx);
                             break;
                         case M_GRAM_LEVEL_4:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_4>(ref, found_idx);
+                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_4>(mgram_id_ptr, ref, found_idx);
                             break;
                         case M_GRAM_LEVEL_5:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_5>(ref, found_idx);
+                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_5>(mgram_id_ptr, ref, found_idx);
                             break;
                         default:
                             stringstream msg;
@@ -244,7 +242,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            void G2DMapTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) {
+            void G2DMapTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) const {
                 LOG_DEBUG << "Computing probability for a " << query.curr_level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
@@ -300,7 +298,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            void G2DMapTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
+            void G2DMapTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) const {
                 LOG_DEBUG << "Computing back-off for a " << query.curr_level << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed

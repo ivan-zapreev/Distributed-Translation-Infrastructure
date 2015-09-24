@@ -130,12 +130,12 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing.
                  */
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level);
+                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const;
 
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
-                virtual void log_trie_type_usage_info() {
+                inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
                     LOG_INFO << "Using the " << T_M_GramData::m_mem_strat.get_strategy_info()
                             << "' memory allocation strategy." << END_LOG;
@@ -153,7 +153,7 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * For more details @see ATrie
                  */
-                virtual bool is_post_grams(const TModelLevel level) {
+                virtual bool is_post_grams(const TModelLevel level) const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
@@ -174,7 +174,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData);
+                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -191,7 +191,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                        const TLongId ctxId, const TProbBackOffEntry **ppData);
+                        const TLongId ctxId, const TProbBackOffEntry **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -205,7 +205,7 @@ namespace uva {
                  * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob);
+                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
                 
                 /**
                  * The basic destructor
@@ -332,7 +332,7 @@ namespace uva {
                  * @throw nothing
                  */
                 template<typename WORD_ENTRY_TYPE>
-                bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctxId, typename WORD_ENTRY_TYPE::TIndexType & localIdx) {
+                bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctxId, typename WORD_ENTRY_TYPE::TIndexType & localIdx) const {
                     LOG_DEBUG2 << "Searching word data entry for ctxId: " << SSTR(ctxId) << END_LOG;
 
                     //Check if there is data to search in
@@ -369,7 +369,7 @@ namespace uva {
                  */
                 template<typename WORD_ENTRY_TYPE>
                 bool get_M_N_GramEntry(const TModelLevel & level, const WORD_ENTRY_TYPE* wordsArray,
-                        const TShortId & wordId, const TShortId & ctxId, const typename WORD_ENTRY_TYPE::TElemType **ppData) {
+                        const TShortId & wordId, const TShortId & ctxId, const typename WORD_ENTRY_TYPE::TElemType **ppData) const {
                     LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << END_LOG;
                     //Get the sub-array reference. 

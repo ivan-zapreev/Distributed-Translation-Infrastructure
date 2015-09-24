@@ -179,7 +179,7 @@ namespace uva {
             };
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::get_prob_weight(TMGramQuery & query) {
+            void LayeredTrieDriver<TrieType>::get_prob_weight(TMGramQuery & query) const {
                 //Get the last word in the N-gram
                 const TShortId & word_id = query.get_end_word_id();
 
@@ -262,7 +262,7 @@ namespace uva {
             }
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::add_back_off_weight(TMGramQuery & query) {
+            void LayeredTrieDriver<TrieType>::add_back_off_weight(TMGramQuery & query) const {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TShortId & word_id = query.get_back_off_end_word_id();
 

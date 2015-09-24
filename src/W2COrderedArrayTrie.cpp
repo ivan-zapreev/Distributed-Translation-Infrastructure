@@ -77,7 +77,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+            bool W2CArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
 
@@ -136,7 +136,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+            bool W2CArrayTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
                 LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                 *ppData = &m_1_gram_data[wordId];
@@ -164,7 +164,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             bool W2CArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                    const TLongId ctxId, const TProbBackOffEntry **ppData) {
+                    const TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
@@ -197,7 +197,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             bool W2CArrayTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
-                    TLogProbBackOff & prob) {
+                    TLogProbBackOff & prob) const {
                 LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 

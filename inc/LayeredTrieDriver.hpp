@@ -122,24 +122,24 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void get_prob_weight(TMGramQuery & query);
+                void get_prob_weight(TMGramQuery & query) const;
 
                 /**
                  * @see GenericTrieBase
                  */
-                void add_back_off_weight(TMGramQuery & query);
+                void add_back_off_weight(TMGramQuery & query) const;
 
                 /**
                  * @see GenericTrieBase
                  */
-                inline void log_trie_type_usage_info() {
+                inline void log_trie_type_usage_info() const {
                     m_trie.log_trie_type_usage_info();
                 };
 
                 /**
                  * @see GenericTrieBase
                  */
-                bool is_post_grams(const TModelLevel level) {
+                bool is_post_grams(const TModelLevel level) const {
                     return m_trie.is_post_grams(level);
                 };
 
@@ -193,7 +193,7 @@ namespace uva {
                  * @throws nothing
                  */
                 template<bool is_back_off>
-                inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) {
+                inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) const {
                     const TModelLevel mgram_end_idx = (is_back_off ? (TrieType::max_level - 2) : (TrieType::max_level - 1));
                     const TModelLevel end_idx = mgram_end_idx;
                     const TModelLevel begin_idx = mgram_end_idx - (query.curr_level - 1);
@@ -238,10 +238,10 @@ namespace uva {
                  * @param the resulting hash of the context(w1 w2 w3)
                  * @return true if the context was found otherwise false
                  */
-                template<DebugLevelsEnum logLevel>
+                template<DebugLevelsEnum log_level>
                 inline bool get_context_id(const T_M_Gram & gram, TLongId &ctxId) {
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if (getCachedContextId(gram, ctxId)) {
+                    if (get_cached_context_id(gram, ctxId)) {
                         //Get the start context value for the first token
                         TShortId wordId = m_trie.get_word_index().get_word_id(gram.tokens[0]);
 
@@ -249,21 +249,21 @@ namespace uva {
                         if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
                             //The first word id is the first context id
                             ctxId = wordId;
-                            LOGGER(logLevel) << "ctxId = getId('" << gram.tokens[0].str()
+                            LOGGER(log_level) << "ctxId = getId('" << gram.tokens[0].str()
                                     << "') = " << SSTR(ctxId) << END_LOG;
 
                             //Iterate and compute the hash:
                             for (int i = 1; i < (gram.level - 1); i++) {
                                 wordId = m_trie.get_word_index().get_word_id(gram.tokens[i]);
                                 if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
-                                    LOGGER(logLevel) << "wordId = getId('" << gram.tokens[i].str()
+                                    LOGGER(log_level) << "wordId = getId('" << gram.tokens[i].str()
                                             << "') = " << SSTR(wordId) << END_LOG;
                                     if (m_trie.get_ctx_id(wordId, ctxId, i + 1)) {
-                                        LOGGER(logLevel) << "ctxId = computeCtxId( "
+                                        LOGGER(log_level) << "ctxId = computeCtxId( "
                                                 << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
                                     } else {
                                         //The next context id could not be computed
-                                        LOGGER(logLevel) << "The next context for wordId: "
+                                        LOGGER(log_level) << "The next context for wordId: "
                                                 << SSTR(wordId) << " and ctxId: "
                                                 << SSTR(ctxId) << "on level: " << SSTR((i + 1))
                                                 << "could not be computed!" << END_LOG;
@@ -272,29 +272,29 @@ namespace uva {
                                 } else {
                                     //The next word Id was not found, it is
                                     //unknown, so we can stop searching
-                                    LOGGER(logLevel) << "The wordId for '" << gram.tokens[i].str()
+                                    LOGGER(log_level) << "The wordId for '" << gram.tokens[i].str()
                                             << "' could not be found!" << END_LOG;
                                     return false;
                                 }
                             }
 
                             //Cache the newly computed context id for the given n-gram context
-                            setCacheContextId(gram, ctxId);
+                            set_cache_context_id(gram, ctxId);
 
                             //The context Id was found in the Trie
-                            LOGGER(logLevel) << "The ctxId could be computed, "
+                            LOGGER(log_level) << "The ctxId could be computed, "
                                     << "it's value is: " << SSTR(ctxId) << END_LOG;
                             return true;
                         } else {
                             //The context id could not be computed as
                             //the first N-gram's word is already unknown
-                            LOGGER(logLevel) << "The wordId for '" << gram.tokens[0].str()
+                            LOGGER(log_level) << "The wordId for '" << gram.tokens[0].str()
                                     << "' could not be found!" << END_LOG;
                             return false;
                         }
                     } else {
                         //The context Id was found in the cache
-                        LOGGER(logLevel) << "The ctxId was found in cache, "
+                        LOGGER(log_level) << "The ctxId was found in cache, "
                                 << "it's value is: " << SSTR(ctxId) << END_LOG;
                         return true;
                     }
@@ -306,7 +306,7 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool getCachedContextId(const T_M_Gram &mGram, TLongId & result) {
+                inline bool get_cached_context_id(const T_M_Gram &mGram, TLongId & result) const {
                     if (m_chached_ctx == mGram.context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
@@ -326,7 +326,7 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void setCacheContextId(const T_M_Gram &mGram, TLongId & stx_id) {
+                inline void set_cache_context_id(const T_M_Gram &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
                             << ", for m-gram: " << tokensToString<TrieType::max_level>(mGram) << END_LOG;
 

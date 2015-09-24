@@ -118,7 +118,7 @@ namespace uva {
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
-                virtual void log_trie_type_usage_info() {
+                inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
                     LOG_INFO << "Using the #buckets divider: "
                             << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
@@ -159,7 +159,7 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
-                void get_prob_weight(MGramQuery<N, WordIndexType> & query);
+                void get_prob_weight(MGramQuery<N, WordIndexType> & query) const;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -168,14 +168,14 @@ namespace uva {
                  * In that case the back-off weight is just zero.
                  * @see ATrie
                  */
-                void add_back_off_weight(MGramQuery<N, WordIndexType> & query);
+                void add_back_off_weight(MGramQuery<N, WordIndexType> & query) const;
 
                 /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
                  * @see ATrie
                  */
-                virtual bool is_post_grams(const TModelLevel level) {
+                virtual bool is_post_grams(const TModelLevel level) const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per bucket per id, see
@@ -212,7 +212,7 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param bucket_idx the resulting bucket index
                  */
-                inline uint32_t get_bucket_id(const uint64_t gram_hash, const TModelLevel level) {
+                inline uint32_t get_bucket_id(const uint64_t gram_hash, const TModelLevel level) const {
                     //Compute the index in the array of bucket sizes
                     const TModelLevel buckes_size_idx = level - 1;
 
@@ -225,7 +225,7 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param bucket_idx the resulting bucket index
                  */
-                inline void get_bucket_id(const T_M_Gram &gram, TShortId & bucket_idx) {
+                inline void get_bucket_id(const T_M_Gram &gram, TShortId & bucket_idx) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint64_t gram_hash = gram.hash();
@@ -278,9 +278,6 @@ namespace uva {
                 }
 
             private:
-                //Stores the pointer to the temporary re-usable M-gram id for queries
-                T_Gram_Id_Storage_Ptr m_tmp_gram_id;
-
                 //Stores the 1-gram data
                 TProbBackOffEntry * m_1_gram_data;
 
@@ -297,18 +294,18 @@ namespace uva {
 
                 /**
                  * Allows to perform search in the bucket for the given M-gram id
+                 * @param mgram_id_key the m-gram id to look for.
                  * @param ref the reference to the bucket
                  * @param found_idx the found index
                  * @return true if the M-gram id was found and otherwise false
                  */
                 template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
-                inline bool search_gram(const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) {
+                inline bool search_gram(T_Gram_Id_Storage_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,
                             Byte_M_Gram_Id::compare<M_GRAM_LEVEL> >
-                            (ref.data(), 0, ref.size() - 1, m_tmp_gram_id,
-                            found_idx);
+                            (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
                 }
 
                 /**
@@ -322,7 +319,7 @@ namespace uva {
                  */
                 template<typename BUCKET_TYPE, bool back_off = false >
                 bool get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
-                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr);
+                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };
         }

@@ -97,6 +97,9 @@ namespace uva {
                 //Stores the current query level during the query execution
                 TModelLevel curr_level = M_GRAM_LEVEL_UNDEF;
 
+                //Stores the current end word index during the query execution
+                TModelLevel curr_end_word_idx = 0;
+
                 /**
                  * The basic constructor for the structure
                  * @param word_index the word index reference to store
@@ -108,7 +111,7 @@ namespace uva {
                  * Allows t set a new query into this state object
                  * @param m_gram the query M-gram
                  */
-                void prepare_query() {
+                inline void prepare_query() {
                     //Check the number of elements in the N-Gram
                     if (DO_SANITY_CHECKS && ((m_gram.level < M_GRAM_LEVEL_1) || (m_gram.level > N))) {
                         stringstream msg;
@@ -134,6 +137,8 @@ namespace uva {
                  * @return the word hash for the end word of the back-off M-Gram
                  */
                 inline const TShortId & get_back_off_end_word_id() {
+                    //The word ids are always aligned to the end of the array
+                    //so the end word id for the back off m-gram is fixed!
                     return m_query_word_ids[N - 2];
                 }
 
@@ -142,6 +147,8 @@ namespace uva {
                  * @return the word hash for the last word in the M-gram
                  */
                 inline const TShortId & get_end_word_id() {
+                    //The word ids are always aligned to the end of the array
+                    //so the end word id for the probability m-gram is fixed!
                     return m_query_word_ids[N - 1];
                 }
 
@@ -180,9 +187,9 @@ namespace uva {
                  */
                 template<bool is_back_off>
                 bool has_no_unk_words() const {
-                    uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level] ));
+                    uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
 
-                    LOG_DEBUG << "The " << ( (is_back_off) ? "back-off" : "probability" )
+                    LOG_DEBUG << "The " << ((is_back_off) ? "back-off" : "probability")
                             << " level: " << curr_level << " unknown word flags are: "
                             << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
 

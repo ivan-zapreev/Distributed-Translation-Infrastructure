@@ -79,12 +79,12 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level);
+                bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const;
                 
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
-                virtual void log_trie_type_usage_info() {
+                inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
                 }
 
@@ -106,7 +106,7 @@ namespace uva {
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * For more details @see ATrie
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData);
+                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -122,7 +122,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                        TLongId ctxId, const TProbBackOffEntry **ppData);
+                        TLongId ctxId, const TProbBackOffEntry **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -135,7 +135,7 @@ namespace uva {
                  * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see ATrie
                  */
-                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob);
+                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
                 
                 /**
                  * The basic destructor

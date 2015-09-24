@@ -97,6 +97,9 @@ namespace uva {
                         5 * sizeof (TShortId) + M_GRAM_5_ID_TYPE_LEN_BYTES, // 5 TShortId values for 5 word ids, plus the memory needed to store type
                         6 * sizeof (TShortId) + M_GRAM_6_ID_TYPE_LEN_BYTES // 6 TShortId values for 5 word ids, plus the memory needed to store type
                     };
+                   
+                    //Allows to declare the stack allocated m-gram id for the given level and with the given name
+#define DECLARE_STACK_GRAM_ID(name, level) T_Gram_Id_Storage name[__Byte_M_Gram_Id::M_GRAM_MAX_ID_LEN_BYTES[(level)]];
                 }
 
                 /**

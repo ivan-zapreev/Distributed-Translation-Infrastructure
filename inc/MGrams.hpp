@@ -174,9 +174,11 @@ namespace uva {
                  * memory consumption
                  */
                 namespace M_Gram_Id {
-
+                    //define the basic type block for the M-gram id
+                    typedef uint8_t T_Gram_Id_Storage;
+                    
                     //Define the basic type as an alias for the compressed M-Gram id
-                    typedef uint8_t * T_Gram_Id_Storage_Ptr;
+                    typedef T_Gram_Id_Storage * T_Gram_Id_Storage_Ptr;
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -200,7 +202,6 @@ namespace uva {
                             delete[] m_p_gram_id;
                         }
                     }
-
                 }
             }
         }

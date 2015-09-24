@@ -89,7 +89,7 @@ namespace uva {
                  * @param wordId the One-gram id
                  * @return the reference to the storage structure
                  */
-                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId) {
+                inline TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId) {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -101,8 +101,8 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throw nothing
                  */
-                bool get_1_gram_data_ref(const TShortId wordId,
-                        const TProbBackOffEntry ** ppData) {
+                inline bool get_1_gram_data_ref(const TShortId wordId,
+                        const TProbBackOffEntry ** ppData) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -115,7 +115,7 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                TProbBackOffEntry& make_m_gram_data_ref(const TModelLevel level,
+                inline TProbBackOffEntry& make_m_gram_data_ref(const TModelLevel level,
                         const TShortId wordId, TLongId ctxId) {
                     THROW_MUST_OVERRIDE();
                 };
@@ -131,8 +131,8 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throw nothing
                  */
-                bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                        TLongId ctxId, const TProbBackOffEntry **ppData) {
+                inline bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                        TLongId ctxId, const TProbBackOffEntry **ppData) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -144,7 +144,7 @@ namespace uva {
                  * @param ctxId the N-gram context (the N-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+                inline TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -156,8 +156,8 @@ namespace uva {
                  * @return true if the probability was found, otherwise false
                  * @throw nothing
                  */
-                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
-                        TLogProbBackOff & prob) {
+                inline bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
+                        TLogProbBackOff & prob) const {
                     THROW_MUST_OVERRIDE();
                 };
                 
@@ -168,7 +168,7 @@ namespace uva {
                  * @param level the level for which the context id is to be computed
                  * @return true if computation of the next context is succeeded
                  */
-                inline bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+                inline bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
                     THROW_MUST_OVERRIDE();
                 }
                 
@@ -177,14 +177,14 @@ namespace uva {
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void get_prob_weight(MGramQuery<N, WordIndexType> & query) {
+                inline void get_prob_weight(MGramQuery<N, WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void add_back_off_weight(MGramQuery<N, WordIndexType> & query) {
+                inline void add_back_off_weight(MGramQuery<N, WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
             };

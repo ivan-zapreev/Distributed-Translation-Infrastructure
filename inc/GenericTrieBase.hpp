@@ -128,7 +128,7 @@ namespace uva {
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
-                inline void log_trie_type_usage_info() {
+                inline void log_trie_type_usage_info() const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -140,7 +140,7 @@ namespace uva {
                  * @param prob the probability variable that is to be set with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                inline void get_prob_weight(TMGramQuery & query) {
+                inline void get_prob_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -152,7 +152,7 @@ namespace uva {
                  * @param level the level of the M-gram we need to compute probability for.
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
-                inline void add_back_off_weight(TMGramQuery & query) {
+                inline void add_back_off_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
                 

@@ -27,6 +27,7 @@
 #define	GENERIC_TRIE_DRIVER_HPP
 
 #include <string>       // std::string
+#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -218,6 +219,9 @@ namespace uva {
 
                 //Stores the bitmap hash caches per M-gram level
                 BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
+                
+                //The typedef for the retrieving function
+                typedef function<void(const TrieDriver&, TMGramQuery & query)> TRetrieveDataFunct;
 
                 /**
                  * Is to be used from the sub-classes from the add_X_gram methods.
@@ -236,7 +240,8 @@ namespace uva {
                  * If the probability is not found then the prob value is to stay intact!
                  * @param query the M-gram query for a specific current level
                  */
-                void cache_check_get_prob_weight(TMGramQuery & query) {
+                //template<TModelLevel curr_level>
+                void cache_check_get_prob_weight(TMGramQuery & query) const {
                     LOG_DEBUG << "cache_check_add_prob_value(" << query.curr_level
                             << ") = " << query.result.prob << END_LOG;
 
@@ -266,7 +271,8 @@ namespace uva {
                  * Then the back-off weight is considered to be zero!
                  * @param query the M-gram query for a specific current level
                  */
-                void cache_check_add_back_off_weight(TMGramQuery & query) {
+                //template<TModelLevel curr_level>
+                void cache_check_add_back_off_weight(TMGramQuery & query) const {
                     LOG_DEBUG << "cache_check_add_back_off_weight(" << query.curr_level
                             << ") = " << query.result.prob << END_LOG;
 

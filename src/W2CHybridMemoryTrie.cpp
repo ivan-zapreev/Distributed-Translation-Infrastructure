@@ -101,7 +101,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) {
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
                 LOG_DEBUG3 << "Retrieving context level: " << level << ", wordId: "
                         << wordId << ", ctxId: " << ctxId << END_LOG;
                 //Retrieve the context data for the given word
@@ -136,7 +136,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) {
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
                 //Get the word probability and back-off data reference
 
                 *ppData = &m_mgram_data[0][wordId];
@@ -168,7 +168,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
-                    TLongId ctxId, const TProbBackOffEntry **ppData) {
+                    TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the context id, note we use short ids here!
                 if (get_ctx_id(wordId, ctxId, level)) {
                     //Return the data by the context
@@ -196,7 +196,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
-                    TLogProbBackOff & prob) {
+                    TLogProbBackOff & prob) const {
                 //Try to find the word mapping first
                 StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][wordId];
 
