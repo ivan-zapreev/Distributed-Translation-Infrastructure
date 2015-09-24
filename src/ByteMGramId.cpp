@@ -264,38 +264,10 @@ namespace uva {
                                 << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
                     };
 
-                    inline void create_2_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_2], M_GRAM_LEVEL_2 >
-                                (word_ids, m_p_gram_id);
+                    template<TModelLevel num_word_ids>
+                    inline void create_m_gram_id(const TShortId * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[num_word_ids], num_word_ids > (word_ids, m_p_gram_id);
                     }
-
-                    inline void create_3_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_3], M_GRAM_LEVEL_3 >
-                                (word_ids, m_p_gram_id);
-                    }
-
-                    inline void create_4_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_4], M_GRAM_LEVEL_4 >
-                                (word_ids, m_p_gram_id);
-                    }
-
-                    inline void create_5_gram_id(const TShortId * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        create_gram_id < __Byte_M_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[M_GRAM_LEVEL_5], M_GRAM_LEVEL_5 >
-                                (word_ids, m_p_gram_id);
-                    }
-
-                    /**
-                     * Define the function pointer to a create x-gram id function for some X-gram level x
-                     */
-                    typedef void(*create_x_gram_id)(const TShortId * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id);
-
-                    //This is an array of functions for creating m-grams per specific m-gram level m
-                    const static create_x_gram_id create_x_gram_funcs[] = {NULL, NULL,
-                        create_2_gram_id, create_3_gram_id, create_4_gram_id, create_5_gram_id};
 
                     /***********************************************************************************************************************/
 
@@ -374,9 +346,9 @@ namespace uva {
                         is_more_4_grams_id, is_more_5_grams_id};
                 }
 
+                template<uint8_t num_word_ids>
                 void Byte_M_Gram_Id::create_m_gram_id(const TShortId * word_ids,
-                        const uint8_t begin_idx, const uint8_t num_word_ids,
-                        T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                        const uint8_t begin_idx, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
 
                     if (DO_SANITY_CHECKS &&
                             ((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_5))) {
@@ -389,7 +361,7 @@ namespace uva {
                     }
 
                     //Call the appropriate function, use array instead of switch, should be faster.
-                    __Byte_M_Gram_Id::create_x_gram_funcs[num_word_ids](&word_ids[begin_idx], m_p_gram_id);
+                    __Byte_M_Gram_Id::create_m_gram_id<num_word_ids>(&word_ids[begin_idx], m_p_gram_id);
                 };
 
 #define IS_LESS -1
@@ -460,7 +432,15 @@ namespace uva {
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_5>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_6>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_7>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
-
+               
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_1>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_2>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_3>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_4>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_5>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_6>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id::create_m_gram_id<M_GRAM_LEVEL_7>(const TShortId* word_ids, const uint8_t begin_idx, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                
                 bool Byte_M_Gram_Id::is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                     return __Byte_M_Gram_Id::is_equal_x_grams_id_funcs[level](one, two);
                 }

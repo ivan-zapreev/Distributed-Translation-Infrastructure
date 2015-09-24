@@ -194,7 +194,7 @@ namespace uva {
                 void ARPATrieBuilder<TrieType>::read_m_gram_level(const TModelLevel level) {
                     //Declare the pointer to the N-Grma builder
                     ARPAGramBuilder *pNGBuilder = NULL;
-                    ARPAGramBuilderFactory::get_builder<TrieType>(level, m_trie, &pNGBuilder);
+                    ARPAGramBuilderFactory<TrieType>::get_builder(level, m_trie, &pNGBuilder);
 
                     try {
                         //The counter of the N-grams

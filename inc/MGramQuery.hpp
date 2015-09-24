@@ -208,13 +208,13 @@ namespace uva {
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template struct MGramQuery<M_GRAM_LEVEL_MAX, BasicWordIndex >;
             template struct MGramQuery<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            template struct MGramQuery<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
+            template struct MGramQuery<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
 
             typedef MGramQuery<M_GRAM_LEVEL_MAX, BasicWordIndex > TMGramQueryBasic;
             typedef MGramQuery<M_GRAM_LEVEL_MAX, CountingWordIndex > TMGramQueryCount;
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > TMGramQueryOptBasic;
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > TMGramQueryOptCount;
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TMGramQueryOptBasic;
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TMGramQueryOptCount;
         }
     }
 }

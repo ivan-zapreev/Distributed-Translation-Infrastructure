@@ -108,13 +108,14 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
+                template<TModelLevel level>
                 inline void add_m_gram(const T_M_Gram & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
                     }
 
-                    m_trie.add_m_gram(gram);
+                    m_trie.template add_m_gram<level>(gram);
                 };
 
                 /**

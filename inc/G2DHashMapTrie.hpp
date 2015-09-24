@@ -26,6 +26,7 @@
 #define	G2DHASHMAPTRIE_HPP
 
 #include <string>       // std::string
+#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -102,6 +103,9 @@ namespace uva {
             public:
                 typedef GenericTrieBase<N, WordIndexType> BASE;
 
+                //The typedef for the retrieving function
+                typedef function<uint32_t(const G2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
+
                 /**
                  * The basic constructor
                  * @param _wordIndex the word index to be used
@@ -144,6 +148,7 @@ namespace uva {
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
+                template<TModelLevel level>
                 void add_m_gram(const T_M_Gram &mGram);
 
                 /**
@@ -192,6 +197,8 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             protected:
+                //Stores the pointer to the instances of the get bucket id functions
+                static const TGetBucketIdFunct get_bucket_id_func[];
 
                 /**
                  * This method will be called after all the M-grams are read.
@@ -211,15 +218,22 @@ namespace uva {
 
                 /**
                  * Allows to get the bucket index for the given M-gram
-                 * @param gram the M-gram to compute the bucked index for
-                 * @param bucket_idx the resulting bucket index
+                 * @param gram_hash the M-gram hash
+                 * @param level the m-gram level
+                 * @retrurn the resulting bucket index in the given level
                  */
-                inline uint32_t get_bucket_id(const uint64_t gram_hash, const TModelLevel level) const {
+                template<TModelLevel level>
+                inline uint32_t get_bucket_id(const uint64_t gram_hash) const {
                     //Compute the index in the array of bucket sizes
                     const TModelLevel buckes_size_idx = level - 1;
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+                    //As the level is a template parameter, some template instances will violate 
+                    //the array index constraint. These templates will not be used @ runtime but we
+                    //need to disable these warnings in order to be able to build the code.
                     //Compute the bucket Id from the M-Gram hash
                     return gram_hash % num_buckets[buckes_size_idx];
+#pragma GCC diagnostic pop
                 }
 
                 /**
@@ -234,7 +248,7 @@ namespace uva {
                     LOG_DEBUG1 << "The " << gram.level << "-gram: " << tokensToString(gram)
                             << " hash is " << gram_hash << END_LOG;
 
-                    bucket_idx = get_bucket_id(gram_hash, gram.level);
+                    bucket_idx = get_bucket_id_func[gram.level](*this, gram_hash);
 
                     LOG_DEBUG1 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
@@ -325,7 +339,19 @@ namespace uva {
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };
-            
+
+            template<TModelLevel N, typename WordIndexType>
+            const typename G2DMapTrie<N, WordIndexType>::TGetBucketIdFunct G2DMapTrie<N, WordIndexType>::get_bucket_id_func[] = {
+                NULL,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_1>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_2>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_3>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_4>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_5>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_6>,
+                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_7>
+            };
+
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TG2DMapTrieBasic;
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TG2DMapTrieCount;
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TG2DMapTrieOptBasic;

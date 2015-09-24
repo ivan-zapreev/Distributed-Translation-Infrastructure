@@ -112,6 +112,7 @@ namespace uva {
                  * @param gram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
+                template<TModelLevel level>
                 inline void add_m_gram(const T_M_Gram & gram) {
                     THROW_MUST_OVERRIDE();
                 };

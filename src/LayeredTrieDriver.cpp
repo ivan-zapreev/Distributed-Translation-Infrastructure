@@ -77,8 +77,8 @@ namespace uva {
             };
 
             template<typename TrieType >
+            template<TModelLevel level>
             void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram &gram) {
-                const TModelLevel level = gram.level;
                 LOG_DEBUG2 << "Adding a " << SSTR(level) << "-Gram "
                         << tokensToString<BASE::max_level>(gram) << " to the Trie" << END_LOG;
 
@@ -95,7 +95,13 @@ namespace uva {
                 }
 
                 // 2. Compute the hash of w4
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+                        //As the curr_level is a template parameter, some template instances will violate 
+                        //the array index constraint. These templates will not be used @ runtime but we
+                        //need to disable these warnings in order to be able to build the code.
                 const TextPieceReader & endWord = gram.tokens[level - 1];
+#pragma GCC diagnostic pop
                 TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
 
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
@@ -321,7 +327,7 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            
+
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
             template class LayeredTrieDriver< T##TRIE_NAME##TYPE >; \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(TMGramQuery##TYPE & query) const; \
@@ -337,14 +343,20 @@ namespace uva {
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(TMGramQuery##TYPE & query) const; \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE & query) const; \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE & query) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE & query) const;
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram & gram); \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram & gram); \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram & gram); \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram & gram); \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram & gram); \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram & gram);
 
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptBasic); \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptCount);
-            
+
             /**************************************************************************/
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(C2DMapTrie);
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(C2WArrayTrie);

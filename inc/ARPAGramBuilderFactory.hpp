@@ -26,8 +26,9 @@
 #ifndef ARPANGRAMBUILDERFACTORY_HPP
 #define	ARPANGRAMBUILDERFACTORY_HPP
 
-#include <string> // std::stringstream
-#include <ios>    //std::hex
+#include <string>       // std::stringstream
+#include <ios>          //std::hex
+#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "ARPAGramBuilder.hpp"
@@ -53,8 +54,10 @@ namespace uva {
                  * and have to be added as vocabulary words into the Trie and not
                  * as regular N-grams.
                  */
+                template<typename TrieType>
                 class ARPAGramBuilderFactory {
                 public:
+                    typedef std::function<void (TrieType & trie, const T_M_Gram&) > TAddGramFunct;
 
                     /**
                      * This is a template method for getting the proper ARPA
@@ -71,19 +74,18 @@ namespace uva {
                      * @param trie the trie to be filled in with the N-grams
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
-                    template<typename TrieType>
                     static inline void get_builder(const TModelLevel level, TrieType & trie, ARPAGramBuilder **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
                         LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << TrieType::max_level << END_LOG;
-                        
-                        
+
+
                         //Then check that the level values are correct!
-                        if ( DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > TrieType::max_level) ) {
+                        if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > TrieType::max_level)) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
                                     << "', but it must be within [" << M_GRAM_LEVEL_1
-                                    << ", " <<  TrieType::max_level << "]!";
+                                    << ", " << TrieType::max_level << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
@@ -111,7 +113,8 @@ namespace uva {
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder(level,
                                             [&] (const T_M_Gram & gram) {
-                                                trie.add_m_gram(gram); });
+                                                add_m_gram_func[gram.level - ADD_M_GRAM_IDX_OFFSER](trie, gram);
+                                            });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }
                             }
@@ -122,12 +125,26 @@ namespace uva {
                     virtual ~ARPAGramBuilderFactory() {
                     }
                 private:
+                    //The add m-gram functions for levels between 1 and N
+                    static const TAddGramFunct add_m_gram_func[];
+                    //The level index offset for the array of add_m_gram functions
+                    static constexpr TModelLevel ADD_M_GRAM_IDX_OFFSER = 2;
 
                     ARPAGramBuilderFactory() {
                     }
 
                     ARPAGramBuilderFactory(const ARPAGramBuilderFactory & other) {
                     }
+                };
+
+                template<typename TrieType>
+                const typename ARPAGramBuilderFactory<TrieType>::TAddGramFunct ARPAGramBuilderFactory<TrieType>::add_m_gram_func[] = {
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_2>,
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_3>,
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_4>,
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_5>,
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_6>,
+                    &TrieType::template add_m_gram<M_GRAM_LEVEL_7>,
                 };
 
             }

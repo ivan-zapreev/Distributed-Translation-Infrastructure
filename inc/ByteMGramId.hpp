@@ -120,15 +120,15 @@ namespace uva {
                      * theat this instance was created with the one argument constructor of this class allocated
                      * maximum needed memory for this level. Then the argument M-gram level must be smaller or
                      * equal to  the level this object was created with.
+                     * @param num_word_ids the number of word ids
                      * @param word_ids the pointer to the array of word ids
                      * @param begin_idx the M-gram to create the id for
-                     * @param num_word_ids the number of word ids
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
+                    template<uint8_t num_word_ids>
                     static void create_m_gram_id(const TShortId * word_ids,
-                            const uint8_t begin_idx, const uint8_t num_word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                            const uint8_t begin_idx, T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory

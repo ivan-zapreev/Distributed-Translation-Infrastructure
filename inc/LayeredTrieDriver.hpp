@@ -119,6 +119,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
+                template<TModelLevel level>
                 void add_m_gram(const T_M_Gram &gram);
 
                 /**
