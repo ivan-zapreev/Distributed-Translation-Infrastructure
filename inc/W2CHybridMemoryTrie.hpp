@@ -49,7 +49,7 @@ namespace uva {
              * @param StorageFactory the factory to create storage containers
              * @param StorageContainer the storage container type that is created by the factory
              */
-            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
             class W2CHybridTrie : public LayeredTrieBase<N, WordIndexType> {
             public:
                 typedef LayeredTrieBase<N, WordIndexType> BASE;
@@ -114,14 +114,16 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                TProbBackOffEntry& make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId);
+                template<TModelLevel level>
+                TProbBackOffEntry& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * For more details @see ATrie
                  */
-                bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                template<TModelLevel level>
+                bool get_m_gram_data_ref(const TShortId wordId,
                         TLongId ctxId, const TProbBackOffEntry **ppData) const;
 
                 /**
@@ -184,15 +186,11 @@ namespace uva {
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
             };
-
-            template<TModelLevel N, typename WordIndexType> struct TW2CHybridTrie {
-                typedef W2CHybridTrie<N, WordIndexType, W2CH_UM_StorageFactory, W2CH_UM_Storage> type;
-            };
             
-            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >::type TW2CHybridTrieBasic;
-            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex >::type TW2CHybridTrieCount;
-            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >::type TW2CHybridTrieOptBasic;
-            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex >::type TW2CHybridTrieOptCount;
+            typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CHybridTrieBasic;
+            typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CHybridTrieCount;
+            typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CHybridTrieOptBasic;
+            typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TW2CHybridTrieOptCount;
         }
     }
 }

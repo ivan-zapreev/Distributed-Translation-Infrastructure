@@ -146,7 +146,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            TProbBackOffEntry& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+            template<TModelLevel level>
+            TProbBackOffEntry& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 const TModelLevel idx = (level - BASE::MGRAM_IDX_OFFSET);
 
                 //Get the word mapping first
@@ -167,7 +168,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+            template<TModelLevel level>
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TShortId wordId,
                     TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the context id, note we use short ids here!
                 if (get_ctx_id(wordId, ctxId, level)) {
@@ -247,10 +249,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
-            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
-            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex>, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
-            template class W2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>, W2CH_UM_StorageFactory, W2CH_UM_Storage>;
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CHybridTrie, BasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CHybridTrie, CountingWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CHybridTrie, TOptBasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CHybridTrie, TOptCountWordIndex);
         }
     }
 }

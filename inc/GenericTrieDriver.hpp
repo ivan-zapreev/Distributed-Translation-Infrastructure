@@ -159,13 +159,7 @@ namespace uva {
                 template<bool is_back_off, TModelLevel curr_level>
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     if (m_is_bitmap_hash_cache) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-                        //As the curr_level is a template parameter, some template instances will violate 
-                        //the array index constraint. These templates will not be used @ runtime but we
-                        //need to disable these warnings in order to be able to build the code.
                         const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - BASE::MGRAM_IDX_OFFSET];
-#pragma GCC diagnostic pop
                         return ref.is_m_gram<is_back_off, curr_level>(query);
                     } else {
                         return true;
@@ -327,36 +321,29 @@ namespace uva {
                 &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_7>
             };
 
+#define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, WORD_IDX_TYPE) \
+            template class TrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE>; \
+            typedef TrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE> TTrieDriver##TRIE_NAME##WORD_IDX_TYPE;
+
+#define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME(PREFIX, TRIE_NAME) \
+            INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, Basic); \
+            INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, Count); \
+            INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, OptBasic); \
+            INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, OptCount);
+
+#define INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(TRIE_NAME) \
+INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME( TLayeredTrieDriver, TRIE_NAME);         
+
+#define INSTANTIATE_TYPEDEF_GENERIC_TRIE_DRIVERS_NAME(TRIE_NAME) \
+INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME( T, TRIE_NAME);         
+            
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class TrieDriver<TLayeredTrieDriverC2DMapTrieBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2DMapTrieCount>;
-            template class TrieDriver<TLayeredTrieDriverC2DMapTrieOptBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2DMapTrieOptCount>;
-
-            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieCount>;
-            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieOptBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieOptCount>;
-
-            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieCount>;
-            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieOptBasic>;
-            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieOptCount>;
-
-            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieBasic>;
-            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieCount>;
-            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieOptBasic>;
-            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieOptCount>;
-
-            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieBasic>;
-            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieCount>;
-            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieOptBasic>;
-            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieOptCount>;
-
-            template class TrieDriver<TG2DMapTrieBasic>;
-            template class TrieDriver<TG2DMapTrieCount>;
-            template class TrieDriver<TG2DMapTrieOptBasic>;
-            template class TrieDriver<TG2DMapTrieOptCount>;
+            INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(C2DMapTrie);
+            INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(C2DHybridTrie);
+            INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(C2WArrayTrie);
+            INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(W2CHybridTrie);
+            INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(W2CArrayTrie);
+            INSTANTIATE_TYPEDEF_GENERIC_TRIE_DRIVERS_NAME(G2DMapTrie);
         }
     }
 }

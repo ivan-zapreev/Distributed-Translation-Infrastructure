@@ -507,35 +507,35 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > > >;
+                template class ARPATrieBuilder<TTrieDriverC2DMapTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2DMapTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverC2DMapTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2DMapTrieOptCount>;
 
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex>::type > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>::type > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >::type > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >::type > > >;
+                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieOptCount>;
 
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > > >;
+                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieOptCount>;
 
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > > >;
+                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieOptCount>;
 
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > > >;
-                template class ARPATrieBuilder<TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > > >;
+                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieOptCount>;
 
-                template class ARPATrieBuilder<TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex> > >;
-                template class ARPATrieBuilder<TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > >;
-                template class ARPATrieBuilder<TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > >;
-                template class ARPATrieBuilder<TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > >;
+                template class ARPATrieBuilder<TTrieDriverG2DMapTrieBasic>;
+                template class ARPATrieBuilder<TTrieDriverG2DMapTrieCount>;
+                template class ARPATrieBuilder<TTrieDriverG2DMapTrieOptBasic>;
+                template class ARPATrieBuilder<TTrieDriverG2DMapTrieOptCount>;
             }
         }
     }

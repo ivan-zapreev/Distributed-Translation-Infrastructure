@@ -176,7 +176,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            TProbBackOffEntry & C2DHybridTrie<N, WordIndexType>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId) {
+            template<TModelLevel level>
+            TProbBackOffEntry & C2DHybridTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                 //Store the N-tires from length 2 on and indexing starts
                 //with 0, therefore "level-2". Get/Create the mapping for this
                 //word in the Trie level of the N-gram
@@ -196,7 +197,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+            template<TModelLevel level>
+            bool C2DHybridTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
                     TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Get the next context id
                 if (get_ctx_id(wordId, ctxId, level)) {
@@ -250,10 +252,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, BasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, CountingWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, TOptBasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, TOptCountWordIndex);
         }
     }
 }

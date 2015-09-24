@@ -95,13 +95,7 @@ namespace uva {
                 }
 
                 // 2. Compute the hash of w4
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-                        //As the curr_level is a template parameter, some template instances will violate 
-                        //the array index constraint. These templates will not be used @ runtime but we
-                        //need to disable these warnings in order to be able to build the code.
-                const TextPieceReader & endWord = gram.tokens[level - 1];
-#pragma GCC diagnostic pop
+               const TextPieceReader & endWord = gram.tokens[level - 1];
                 TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
 
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
@@ -113,7 +107,7 @@ namespace uva {
                 LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
 
                 // 3. Insert the probability data into the trie
-                TProbBackOffEntry& pbData = m_trie.make_m_gram_data_ref(level, wordId, ctxId);
+                TProbBackOffEntry& pbData = m_trie.template make_m_gram_data_ref<level>(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
@@ -221,7 +215,7 @@ namespace uva {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
                             const TProbBackOffEntry * entry_ptr;
-                            if (m_trie.get_m_gram_data_ref(curr_level, word_id, ctx_id, &entry_ptr)) {
+                            if (m_trie.template get_m_gram_data_ref<curr_level>(word_id, ctx_id, &entry_ptr)) {
                                 LOG_DEBUG2 << "The " << curr_level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
@@ -286,7 +280,7 @@ namespace uva {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntry * entry_ptr;
-                        if (m_trie.get_m_gram_data_ref(curr_level, word_id, ctx_id, &entry_ptr)) {
+                        if (m_trie.template get_m_gram_data_ref<curr_level>(word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
                             query.result.prob += entry_ptr->back_off;
                             LOG_DEBUG2 << "The " << curr_level << "-Gram log_"
@@ -350,7 +344,7 @@ namespace uva {
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram & gram); \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram & gram); \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram & gram);
-
+            
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \

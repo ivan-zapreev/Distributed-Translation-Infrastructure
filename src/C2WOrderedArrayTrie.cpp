@@ -193,7 +193,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            TProbBackOffEntry& C2WArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+            template<TModelLevel level>
+            TProbBackOffEntry& C2WArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
 
@@ -239,7 +240,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2WArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+            template<TModelLevel level>
+            bool C2WArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
                     TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
@@ -315,10 +317,10 @@ namespace uva {
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, BasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, CountingWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, TOptBasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, TOptCountWordIndex);
         }
     }
 }

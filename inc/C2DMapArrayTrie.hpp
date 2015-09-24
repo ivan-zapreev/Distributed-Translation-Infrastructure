@@ -152,7 +152,8 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                TProbBackOffEntry & make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId);
+                template<TModelLevel level>
+                TProbBackOffEntry & make_m_gram_data_ref(const TShortId wordId, TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -160,7 +161,8 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const;
+                template<TModelLevel level>
+                bool get_m_gram_data_ref(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.

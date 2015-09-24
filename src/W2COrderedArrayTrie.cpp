@@ -147,7 +147,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            TProbBackOffEntry& W2CArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TModelLevel level, const TShortId wordId, const TLongId ctxId) {
+            template<TModelLevel level>
+            TProbBackOffEntry& W2CArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 LOG_DEBUG2 << "Adding\t" << SSTR(level) << "-gram with ctxId:\t"
                         << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
@@ -163,7 +164,8 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+            template<TModelLevel level>
+            bool W2CArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
                     const TLongId ctxId, const TProbBackOffEntry **ppData) const {
                 LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
@@ -226,10 +228,10 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, BasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, CountingWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, TOptBasicWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, TOptCountWordIndex);
         }
     }
 }

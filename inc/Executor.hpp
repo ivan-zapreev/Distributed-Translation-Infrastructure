@@ -154,7 +154,7 @@ namespace uva {
 
                     //A.1. Create the TrieBuilder and give the trie to it
                     ARPATrieBuilder<TrieType> builder(trie, fstr);
-                    
+
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
                             << " !" << END_LOG;
@@ -295,7 +295,7 @@ namespace uva {
                             execute < TrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CH_TRIE:
-                            execute < TrieDriver < LayeredTrieDriver<typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>::type>> > (params, modelFile, testFile);
+                            execute < TrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> > (params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;

@@ -226,14 +226,8 @@ namespace uva {
                 inline uint32_t get_bucket_id(const uint64_t gram_hash) const {
                     //Compute the index in the array of bucket sizes
                     const TModelLevel buckes_size_idx = level - 1;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-                    //As the level is a template parameter, some template instances will violate 
-                    //the array index constraint. These templates will not be used @ runtime but we
-                    //need to disable these warnings in order to be able to build the code.
                     //Compute the bucket Id from the M-Gram hash
                     return gram_hash % num_buckets[buckes_size_idx];
-#pragma GCC diagnostic pop
                 }
 
                 /**

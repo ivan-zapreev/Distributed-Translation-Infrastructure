@@ -75,12 +75,12 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             class LayeredTrieBase : public GenericTrieBase<N, WordIndexType> {
             public:
-                
+
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
-                explicit LayeredTrieBase(WordIndexType & word_index) :GenericTrieBase<N, WordIndexType> (word_index){
+                explicit LayeredTrieBase(WordIndexType & word_index) : GenericTrieBase<N, WordIndexType> (word_index) {
                 }
 
                 /**
@@ -115,8 +115,8 @@ namespace uva {
                  * @param ctxId the M-gram context (the M-gram's prefix) id
                  * @return the reference to the storage structure
                  */
-                inline TProbBackOffEntry& make_m_gram_data_ref(const TModelLevel level,
-                        const TShortId wordId, TLongId ctxId) {
+                template<TModelLevel level>
+                inline TProbBackOffEntry& make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -131,7 +131,8 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throw nothing
                  */
-                inline bool get_m_gram_data_ref(const TModelLevel level, const TShortId wordId,
+                template<TModelLevel curr_level>
+                inline bool get_m_gram_data_ref(const TShortId wordId,
                         TLongId ctxId, const TProbBackOffEntry **ppData) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -160,7 +161,7 @@ namespace uva {
                         TLogProbBackOff & prob) const {
                     THROW_MUST_OVERRIDE();
                 };
-                
+
                 /**
                  * Allows to get the the new context id for the word and previous context id given the level
                  * @param wordId the word id on this level
@@ -171,7 +172,7 @@ namespace uva {
                 inline bool get_ctx_id(const TShortId wordId, TLongId & ctxId, const TModelLevel level) const {
                     THROW_MUST_OVERRIDE();
                 }
-                
+
             protected:
 
                 /**
@@ -191,9 +192,25 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template class LayeredTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
+
+#define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
+            template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >; \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_2>(const TShortId wordId, const TLongId ctxId); \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_3>(const TShortId wordId, const TLongId ctxId); \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_4>(const TShortId wordId, const TLongId ctxId); \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_5>(const TShortId wordId, const TLongId ctxId); \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_6>(const TShortId wordId, const TLongId ctxId); \
+            template TProbBackOffEntry& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_7>(const TShortId wordId, const TLongId ctxId); \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_2>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_3>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_4>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_5>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_6>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_7>(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const;
+
         }
     }
 }

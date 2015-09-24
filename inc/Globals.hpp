@@ -54,6 +54,11 @@ namespace uva {
 #endif
 #endif
 
+//As the m-gram level is a template parameter, some template instances will violate 
+//the array index constraint. These templates will not be used @ runtime but we
+//need to disable these warnings in order to be able to build the code.
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
         //This is the pattern used for file path separation
         const string PATH_SEPARATION_SYMBOLS = "/\\";
         //This is a delimiter used in the test files
