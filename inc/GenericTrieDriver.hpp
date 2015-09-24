@@ -48,13 +48,6 @@
 
 #include "LayeredTrieDriver.hpp"
 
-#include "G2DHashMapTrie.hpp"
-#include "C2DHashMapTrie.hpp"
-#include "W2CHybridMemoryTrie.hpp"
-#include "C2WOrderedArrayTrie.hpp"
-#include "W2COrderedArrayTrie.hpp"
-#include "C2DMapArrayTrie.hpp"
-
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
@@ -77,6 +70,9 @@ namespace uva {
                 typedef GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> BASE;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
+
+                //The typedef for the retrieving function
+                typedef function<void(const TrieDriver&, TMGramQuery & query) > TRetrieveDataFunct;
 
                 /**
                  * The basic constructor
@@ -156,14 +152,20 @@ namespace uva {
 
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param level of the considered M-gram
+                 * @param curr_level the currently considered level of the m-gram
                  * @return true if the unknown word is present, otherwise false
                  */
-                template<bool is_back_off>
+                template<bool is_back_off, TModelLevel curr_level>
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     if (m_is_bitmap_hash_cache) {
-                        const BitmapHashCache & ref = m_bitmap_hash_cach[query.curr_level - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<is_back_off>(query);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+                        //As the curr_level is a template parameter, some template instances will violate 
+                        //the array index constraint. These templates will not be used @ runtime but we
+                        //need to disable these warnings in order to be able to build the code.
+                        const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - BASE::MGRAM_IDX_OFFSET];
+#pragma GCC diagnostic pop
+                        return ref.is_m_gram<is_back_off, curr_level>(query);
                     } else {
                         return true;
                     }
@@ -179,14 +181,14 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << tokensToString(query.m_gram) << END_LOG;
 
                     //Make sure that the query is prepared for execution
-                    query.prepare_query();
+                    TModelLevel curr_level = query.prepare_query();
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
-                    while ((query.result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (query.curr_level != 0))) {
+                    while ((query.result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
                         //Try to compute the next probability with decreased level
-                        cache_check_get_prob_weight(query);
+                        cache_check_get_prob_weight_func[curr_level](*this, query);
                         //Decrease the level
-                        query.curr_level--;
+                        curr_level--;
                     }
 
                     //If the probability is log-zero or snaller then there is no
@@ -194,9 +196,9 @@ namespace uva {
                     if (query.result.prob > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
-                        for (++query.curr_level; query.curr_level != query.m_gram.level; ++query.curr_level) {
+                        for (++curr_level; curr_level != query.m_gram.level; ++curr_level) {
                             //Get the back_off 
-                            cache_check_add_back_off_weight(query);
+                            cache_check_add_back_off_weight_func[curr_level](*this, query);
                         }
                     }
 
@@ -219,9 +221,10 @@ namespace uva {
 
                 //Stores the bitmap hash caches per M-gram level
                 BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
-                
-                //The typedef for the retrieving function
-                typedef function<void(const TrieDriver&, TMGramQuery & query)> TRetrieveDataFunct;
+
+                //Declare static arrays of pointers to the template function instances 
+                static const TRetrieveDataFunct cache_check_get_prob_weight_func[];
+                static const TRetrieveDataFunct cache_check_add_back_off_weight_func[];
 
                 /**
                  * Is to be used from the sub-classes from the add_X_gram methods.
@@ -238,11 +241,12 @@ namespace uva {
                 /**
                  * Allows to get the probability value also by checking the cache.
                  * If the probability is not found then the prob value is to stay intact!
+                 * @param curr_level the currently considered level of the m-gram
                  * @param query the M-gram query for a specific current level
                  */
-                //template<TModelLevel curr_level>
+                template<TModelLevel curr_level>
                 void cache_check_get_prob_weight(TMGramQuery & query) const {
-                    LOG_DEBUG << "cache_check_add_prob_value(" << query.curr_level
+                    LOG_DEBUG << "cache_check_add_prob_value(" << curr_level
                             << ") = " << query.result.prob << END_LOG;
 
                     //Try getting the probability value.
@@ -251,13 +255,13 @@ namespace uva {
                     //2. If the context length is more then one and there is
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
-                    if ((query.curr_level == M_GRAM_LEVEL_1) ||
-                            ((query.curr_level > M_GRAM_LEVEL_1)
-                            && query.template has_no_unk_words<false>()
-                            && is_bitmap_hash_cache<false>(query))) {
+                    if ((curr_level == M_GRAM_LEVEL_1) ||
+                            ((curr_level > M_GRAM_LEVEL_1)
+                            && query.template has_no_unk_words<false, curr_level>()
+                            && is_bitmap_hash_cache<false, curr_level>(query))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        m_trie.get_prob_weight(query);
+                        m_trie.template get_prob_weight<curr_level>(query);
                     } else {
                         LOG_DEBUG << "Could try to get probs but it will not be "
                                 << "successful due to the present unk words! "
@@ -269,11 +273,12 @@ namespace uva {
                  * Allows to get the back-off weight value also by checking the cache.
                  * If the back-off is not found then the probability value is to stay intact.
                  * Then the back-off weight is considered to be zero!
+                 * @param curr_level the currently considered level of the m-gram
                  * @param query the M-gram query for a specific current level
                  */
-                //template<TModelLevel curr_level>
+                template<TModelLevel curr_level>
                 void cache_check_add_back_off_weight(TMGramQuery & query) const {
-                    LOG_DEBUG << "cache_check_add_back_off_weight(" << query.curr_level
+                    LOG_DEBUG << "cache_check_add_back_off_weight(" << curr_level
                             << ") = " << query.result.prob << END_LOG;
 
                     //Try getting the back-off weight.
@@ -282,13 +287,13 @@ namespace uva {
                     //2. If the context length is more then one and there is
                     //an unknown word in the gram then it makes no sense to do
                     //searching as there are no M-grams with <unk> in them
-                    if ((query.curr_level == M_GRAM_LEVEL_1) ||
-                            ((query.curr_level > M_GRAM_LEVEL_1)
-                            && query.template has_no_unk_words<true>()
-                            && is_bitmap_hash_cache<true>(query))) {
+                    if ((curr_level == M_GRAM_LEVEL_1) ||
+                            ((curr_level > M_GRAM_LEVEL_1)
+                            && query.template has_no_unk_words<true, curr_level>()
+                            && is_bitmap_hash_cache<true, curr_level>(query))) {
                         //Let's look further, we definitely get some back-off weight or zero!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
-                        m_trie.add_back_off_weight(query);
+                        m_trie.template add_back_off_weight<curr_level>(query);
                     } else {
                         LOG_DEBUG << "Could try to back off but it will not be "
                                 << "successful due to the present unk words! Thus "
@@ -297,36 +302,60 @@ namespace uva {
                 }
             };
 
+            template<typename TrieType>
+            const typename TrieDriver<TrieType>::TRetrieveDataFunct TrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {
+                NULL,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_1>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_2>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_3>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_4>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_5>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_6>,
+                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_7>
+            };
+
+            template<typename TrieType>
+            const typename TrieDriver<TrieType>::TRetrieveDataFunct TrieDriver<TrieType>::cache_check_add_back_off_weight_func[] = {
+                NULL,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_1>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_2>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_3>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_4>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_5>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_6>,
+                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_7>
+            };
+
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > > >;
-            template class TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > >;
-            template class TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > >;
-            template class TrieDriver<LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > >;
+            template class TrieDriver<TLayeredTrieDriverC2DMapTrieBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2DMapTrieCount>;
+            template class TrieDriver<TLayeredTrieDriverC2DMapTrieOptBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2DMapTrieOptCount>;
 
-            template class TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > > >;
-            template class TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > >;
-            template class TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > >;
-            template class TrieDriver<LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > >;
+            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieCount>;
+            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieOptBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2DHybridTrieOptCount>;
 
-            template class TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > > >;
-            template class TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > >;
-            template class TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > >;
-            template class TrieDriver<LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > >;
+            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieCount>;
+            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieOptBasic>;
+            template class TrieDriver<TLayeredTrieDriverC2WArrayTrieOptCount>;
 
-            template class TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >::type > >;
-            template class TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>::type > >;
-            template class TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >::type > >;
-            template class TrieDriver<LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >::type > >;
+            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieBasic>;
+            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieCount>;
+            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieOptBasic>;
+            template class TrieDriver<TLayeredTrieDriverW2CHybridTrieOptCount>;
 
-            template class TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > > >;
-            template class TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> > >;
-            template class TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > > >;
-            template class TrieDriver<LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > > >;
+            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieBasic>;
+            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieCount>;
+            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieOptBasic>;
+            template class TrieDriver<TLayeredTrieDriverW2CArrayTrieOptCount>;
 
-            template class TrieDriver<G2DMapTrie< M_GRAM_LEVEL_MAX, BasicWordIndex > >;
-            template class TrieDriver<G2DMapTrie< M_GRAM_LEVEL_MAX, CountingWordIndex > >;
-            template class TrieDriver<G2DMapTrie< M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
-            template class TrieDriver<G2DMapTrie< M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+            template class TrieDriver<TG2DMapTrieBasic>;
+            template class TrieDriver<TG2DMapTrieCount>;
+            template class TrieDriver<TG2DMapTrieOptBasic>;
+            template class TrieDriver<TG2DMapTrieOptCount>;
         }
     }
 }

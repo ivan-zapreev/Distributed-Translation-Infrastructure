@@ -74,6 +74,10 @@ namespace uva {
                     //Possible id types: 4^6 = 4098
                     //The number of bits needed to store the type is ceil(log_2(4098)/8) = 2
                     static const uint8_t M_GRAM_6_ID_TYPE_LEN_BYTES = 2;
+                    //The number of bites needed to store a 7-gram id type
+                    //Possible id types: 4^7 = 16384
+                    //The number of bits needed to store the type is ceil(log_2(16384)/8) = 2
+                    static const uint8_t M_GRAM_7_ID_TYPE_LEN_BYTES = 2;
 
                     //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
                     static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BYTES[] = {
@@ -82,7 +86,8 @@ namespace uva {
                         M_GRAM_3_ID_TYPE_LEN_BYTES,
                         M_GRAM_4_ID_TYPE_LEN_BYTES,
                         M_GRAM_5_ID_TYPE_LEN_BYTES,
-                        M_GRAM_6_ID_TYPE_LEN_BYTES
+                        M_GRAM_6_ID_TYPE_LEN_BYTES,
+                        M_GRAM_7_ID_TYPE_LEN_BYTES
                     };
 
                     //Stores the maximum number of bits up to and including M-grams

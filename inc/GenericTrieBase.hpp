@@ -136,10 +136,12 @@ namespace uva {
                  * This function allows to retrieve the probability stored for the given M-gram level.
                  * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
-                 * @param level the level of the M-gram we need to compute probability for.
+                 * @param curr_level the currently considered level of the m-gram
+                 * @param query the m-gram query object
                  * @param prob the probability variable that is to be set with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
+                template<TModelLevel curr_level>
                 inline void get_prob_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -149,9 +151,11 @@ namespace uva {
                  * If the value is found then it must be added to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * In that case the back-off weight is just zero.
-                 * @param level the level of the M-gram we need to compute probability for.
+                 * @param curr_level the currently considered level of the m-gram
+                 * @param query the m-gram query object
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
+                template<TModelLevel curr_level>
                 inline void add_back_off_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -166,10 +170,10 @@ namespace uva {
 
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param level of the considered M-gram
+                 * @param curr_level the currently considered level of the m-gram
                  * @return true if the unknown word is present, otherwise false
                  */
-                template<bool is_back_off>
+                template<bool is_back_off, TModelLevel curr_level>
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };

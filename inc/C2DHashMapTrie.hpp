@@ -261,6 +261,11 @@ namespace uva {
                  */
                 void preAllocateNGrams(const size_t counts[N]);
             };
+            
+            typedef C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DMapTrieBasic;
+            typedef C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DMapTrieCount;
+            typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DMapTrieOptBasic;
+            typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2DMapTrieOptCount;
         }
     }
 }

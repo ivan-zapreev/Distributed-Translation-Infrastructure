@@ -699,12 +699,12 @@
           <commandLine>-march=native -Wall -Werror</commandLine>
         </cTool>
         <ccTool>
-          <developmentMode>6</developmentMode>
+          <developmentMode>0</developmentMode>
           <commandlineTool>g++ -std=c++0x -m64</commandlineTool>
           <incDir>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-march=native -Wall -Werror</commandLine>
+          <commandLine>-march=native</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>

@@ -228,8 +228,8 @@ namespace uva {
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template class W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
             template class W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
+            template class W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
         }
     }
 }

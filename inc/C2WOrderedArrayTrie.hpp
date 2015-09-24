@@ -330,6 +330,12 @@ namespace uva {
                 //Stores the context id counters per M-gram level: 1 < M <= N
                 TShortId m_M_N_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
             };
+            
+            typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2WArrayTrieBasic;
+            typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2WArrayTrieCount;
+            typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2WArrayTrieOptBasic;
+            typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2WArrayTrieOptCount;
+            
         }
     }
 }

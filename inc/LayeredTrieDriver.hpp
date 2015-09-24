@@ -40,6 +40,13 @@
 #include "GenericTrieBase.hpp"
 #include "LayeredTrieBase.hpp"
 
+#include "G2DHashMapTrie.hpp"
+#include "C2DHashMapTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
+
 using namespace std;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::file;
@@ -122,11 +129,13 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
+                template<TModelLevel curr_level>
                 void get_prob_weight(TMGramQuery & query) const;
 
                 /**
                  * @see GenericTrieBase
                  */
+                template<TModelLevel curr_level>
                 void add_back_off_weight(TMGramQuery & query) const;
 
                 /**
@@ -192,14 +201,14 @@ namespace uva {
                  * @return the true if the context could be computed, otherwise false
                  * @throws nothing
                  */
-                template<bool is_back_off>
+                template<bool is_back_off, TModelLevel curr_level>
                 inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) const {
                     const TModelLevel mgram_end_idx = (is_back_off ? (TrieType::max_level - 2) : (TrieType::max_level - 1));
                     const TModelLevel end_idx = mgram_end_idx;
-                    const TModelLevel begin_idx = mgram_end_idx - (query.curr_level - 1);
+                    const TModelLevel begin_idx = mgram_end_idx - (curr_level - 1);
                     TModelLevel idx = begin_idx;
 
-                    LOG_DEBUG1 << "Computing id of the " << SSTR(query.curr_level)
+                    LOG_DEBUG1 << "Computing id of the " << SSTR(curr_level)
                             << "-gram " << (is_back_off ? "back-off" : "probability")
                             << " context" << END_LOG;
 
@@ -222,7 +231,7 @@ namespace uva {
                         }
                     }
 
-                    LOG_DEBUG1 << "Resulting id for the " << SSTR(query.curr_level)
+                    LOG_DEBUG1 << "Resulting id for the " << SSTR(curr_level)
                             << "-gram " << (is_back_off ? "back-off" : "probability")
                             << " context is: " << SSTR(ctx_id) << END_LOG;
 
@@ -347,8 +356,25 @@ namespace uva {
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
-
             };
+            
+            
+#define TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
+            typedef LayeredTrieDriver< T##TRIE_NAME##TYPE > TLayeredTrieDriver##TRIE_NAME##TYPE;
+
+#define TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptBasic); \
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptCount);
+            
+            /**************************************************************************/
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(C2DMapTrie);
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(C2WArrayTrie);
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(W2CArrayTrie);
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(W2CHybridTrie);
+            TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME(C2DHybridTrie);
+            /**************************************************************************/
         }
     }
 }

@@ -187,13 +187,13 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            template<typename BUCKET_TYPE, bool back_off >
+            template<typename BUCKET_TYPE, bool back_off, TModelLevel curr_level >
             bool G2DMapTrie<N, WordIndexType>::get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
                     const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const {
                 //The current level we are considering
-                const TModelLevel level = query.curr_level;
+                const TModelLevel level = curr_level;
                 //Compute the begin index in the tokens and word ids arrays
-                const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - level) : (N - level));
+                const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - curr_level) : (N - curr_level));
                 LOG_DEBUG << "Retrieving payload for " << level << "-gram word id indexes: ["
                         << elem_begin_idx << "," << (back_off ? (N - 2) : (N - 1)) << "]" << END_LOG;
 
@@ -201,73 +201,53 @@ namespace uva {
                 if (ref.has_data()) {
                     LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    DECLARE_STACK_GRAM_ID(mgram_id, level);
+                    DECLARE_STACK_GRAM_ID(mgram_id, curr_level);
                     T_Gram_Id_Storage_Ptr mgram_id_ptr = &mgram_id[0];
 
-                    Byte_M_Gram_Id::create_m_gram_id(query.m_query_word_ids, elem_begin_idx, level, mgram_id_ptr);
+                    Byte_M_Gram_Id::create_m_gram_id(query.m_query_word_ids, elem_begin_idx, curr_level, mgram_id_ptr);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
                     typename BUCKET_TYPE::TIndexType found_idx;
-                    bool is_found = false;
-                    switch (level) {
-                        case M_GRAM_LEVEL_2:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_2>(mgram_id_ptr, ref, found_idx);
-                            break;
-                        case M_GRAM_LEVEL_3:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_3>(mgram_id_ptr, ref, found_idx);
-                            break;
-                        case M_GRAM_LEVEL_4:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_4>(mgram_id_ptr, ref, found_idx);
-                            break;
-                        case M_GRAM_LEVEL_5:
-                            is_found = search_gram<BUCKET_TYPE, M_GRAM_LEVEL_5>(mgram_id_ptr, ref, found_idx);
-                            break;
-                        default:
-                            stringstream msg;
-                            msg << "Unsupported M-gram level: " << SSTR(level)
-                                    << " must be within [ " << SSTR(M_GRAM_LEVEL_2)
-                                    << ", " << SSTR(M_GRAM_LEVEL_5) << " ]";
-                            throw Exception(msg.str());
-                    }
-                    if (is_found) {
+                    if (search_gram<BUCKET_TYPE, curr_level>(mgram_id_ptr, ref, found_idx)) {
                         payload_ptr = &ref[found_idx].payload;
                         return true;
                     }
                 }
 
                 //Could not compute the probability for the given level, so backing off (recursive)!
-                LOG_DEBUG << "Unable to find the " << SSTR(level) << "-Gram, need to back off!" << END_LOG;
+                LOG_DEBUG << "Unable to find the " << SSTR(curr_level) << "-Gram, need to back off!" << END_LOG;
                 return false;
             }
 
             template<TModelLevel N, typename WordIndexType>
+            template<TModelLevel curr_level>
             void G2DMapTrie<N, WordIndexType>::get_prob_weight(MGramQuery<N, WordIndexType> & query) const {
-                LOG_DEBUG << "Computing probability for a " << query.curr_level << "-gram " << END_LOG;
+                LOG_DEBUG << "Computing probability for a " << curr_level << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
-                if (query.curr_level > M_GRAM_LEVEL_1) {
+                if (curr_level > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1
-                    LOG_DEBUG << "The level " << query.curr_level << "-gram max level " << N << END_LOG;
+                    LOG_DEBUG << "The level " << curr_level << "-gram max level " << N << END_LOG;
 
                     //1.1.2. Compute the m-gram hash
-                    const uint8_t token_begin_idx = (query.m_gram.level - query.curr_level);
+                    const uint8_t token_begin_idx = (query.m_gram.level - curr_level);
                     const uint8_t token_end_idx = (query.m_gram.level - 1);
                     uint64_t gram_hash = query.m_gram.suffix_hash(token_begin_idx);
-                    LOG_DEBUG << "The " << query.curr_level << "-gram: " << tokensToString(query.m_gram.tokens,
+                    LOG_DEBUG << "The " << curr_level << "-gram: " << tokensToString(query.m_gram.tokens,
                             token_begin_idx, token_end_idx) << " hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id(gram_hash, query.curr_level);
-                    LOG_DEBUG << "The " << query.curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, curr_level);
+                    LOG_DEBUG << "The " << curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
-                    if (query.curr_level == N) {
+                    if (curr_level == N) {
                         LOG_DEBUG << "Searching in N grams" << END_LOG;
 
                         //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBucket>(query, m_N_gram_data[bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBucket, false, curr_level>(query, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
                             query.result.prob = *payload_ptr;
                             LOG_DEBUG << "The N-gram is found, prob: " << query.result.prob << END_LOG;
@@ -276,79 +256,97 @@ namespace uva {
                             //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     } else {
-                        const TModelLevel mgram_indx = query.curr_level - BASE::MGRAM_IDX_OFFSET;
-                        LOG_DEBUG << "Searching in " << query.curr_level << "-grams, array index: " << mgram_indx << END_LOG;
+                        const TModelLevel mgram_indx = curr_level - BASE::MGRAM_IDX_OFFSET;
+                        LOG_DEBUG << "Searching in " << curr_level << "-grams, array index: " << mgram_indx << END_LOG;
 
                         //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBackOffBucket>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level<TProbBackOffBucket, false, curr_level>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
                             query.result.prob = payload_ptr->prob;
-                            LOG_DEBUG << "The " << query.curr_level << "-gram is found, prob: " << query.result.prob << END_LOG;
+                            LOG_DEBUG << "The " << curr_level << "-gram is found, prob: " << query.result.prob << END_LOG;
                         } else {
-                            LOG_DEBUG << "The " << query.curr_level << "-gram is not found!" << END_LOG;
+                            LOG_DEBUG << "The " << curr_level << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     query.result.prob = m_1_gram_data[query.get_end_word_id()].prob;
-                    LOG_DEBUG << "Getting the " << query.curr_level << "-gram prob: " << query.result.prob << END_LOG;
+                    LOG_DEBUG << "Getting the " << curr_level << "-gram prob: " << query.result.prob << END_LOG;
                 }
             }
 
             template<TModelLevel N, typename WordIndexType>
+            template<TModelLevel curr_level>
             void G2DMapTrie<N, WordIndexType>::add_back_off_weight(MGramQuery<N, WordIndexType> & query) const {
-                LOG_DEBUG << "Computing back-off for a " << query.curr_level << "-gram " << END_LOG;
+                LOG_DEBUG << "Computing back-off for a " << curr_level << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed
-                if (DO_SANITY_CHECKS && (query.curr_level < M_GRAM_LEVEL_1)) {
+                if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
                     throw Exception("Trying to obtain a back-off weight for level zero!");
                 }
 
                 //1. Check which level M-gram we need to get probability for
-                if (query.curr_level > M_GRAM_LEVEL_1) {
+                if (curr_level > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1 and clearly M < N
-                    LOG_DEBUG << "The level " << query.curr_level << "-gram max level " << N << END_LOG;
+                    LOG_DEBUG << "The level " << curr_level << "-gram max level " << N << END_LOG;
 
                     //1.1.2. Compute the hash value for the back off M-gram
-                    const uint8_t token_begin_idx = (query.m_gram.level - 1) - query.curr_level;
+                    const uint8_t token_begin_idx = (query.m_gram.level - 1) - curr_level;
                     const uint8_t token_end_idx = (query.m_gram.level - 2);
                     uint64_t gram_hash = query.m_gram.sub_hash(
                             token_begin_idx, token_end_idx);
                     LOG_DEBUG << "The: " << tokensToString(query.m_gram.tokens, token_begin_idx, token_end_idx)
-                            << " " << query.curr_level << "-gram back-off hash is " << gram_hash << END_LOG;
+                            << " " << curr_level << "-gram back-off hash is " << gram_hash << END_LOG;
 
                     //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id(gram_hash, query.curr_level);
-                    LOG_DEBUG << "The " << query.curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    const uint32_t bucket_idx = get_bucket_id(gram_hash, curr_level);
+                    LOG_DEBUG << "The " << curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4 This is an M-gram case (1 < M < N))
                     const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                    const TModelLevel mgram_indx = (query.curr_level - BASE::MGRAM_IDX_OFFSET);
-                    if (get_payload_from_gram_level<TProbBackOffBucket, true>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                    const TModelLevel mgram_indx = (curr_level - BASE::MGRAM_IDX_OFFSET);
+                    if (get_payload_from_gram_level<TProbBackOffBucket, true, curr_level>(query, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
                         query.result.prob += payload_ptr->back_off;
-                        LOG_DEBUG << "The " << query.curr_level << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
+                        LOG_DEBUG << "The " << curr_level << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
                     } else {
                         //The query context id could be determined, but 
                         //the data was not found in the trie.
                         LOG_DEBUG << "Unable to find back-off data for "
-                                << query.curr_level << "-Gram query!" << END_LOG;
+                                << curr_level << "-Gram query!" << END_LOG;
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     TLogProbBackOff back_off = m_1_gram_data[query.get_back_off_end_word_id()].back_off;
                     query.result.prob += back_off;
-                    LOG_DEBUG << "Getting the " << query.curr_level << "-gram back_off: " << back_off << END_LOG;
+                    LOG_DEBUG << "Getting the " << curr_level << "-gram back_off: " << back_off << END_LOG;
                 }
             }
-
+            
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class G2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+#define INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(TYPE, TYPE_EXT) \
+            template class G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_2>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_3>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_4>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_1>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_2>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_3>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE_EXT & query) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE_EXT & query) const;
+
+            INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(BasicWordIndex, Basic);
+            INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(CountingWordIndex, Count);
+            INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(TOptBasicWordIndex, OptBasic);
+            INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(TOptCountWordIndex, OptCount);
         }
     }
 }

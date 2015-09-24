@@ -419,6 +419,9 @@ namespace uva {
                         }
                     };
                 };
+                
+                typedef OptimizingWordIndex<BasicWordIndex> TOptBasicWordIndex;
+                typedef OptimizingWordIndex<CountingWordIndex> TOptCountWordIndex;
             }
         }
     }

@@ -188,6 +188,11 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType> struct TW2CHybridTrie {
                 typedef W2CHybridTrie<N, WordIndexType, W2CH_UM_StorageFactory, W2CH_UM_Storage> type;
             };
+            
+            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >::type TW2CHybridTrieBasic;
+            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex >::type TW2CHybridTrieCount;
+            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >::type TW2CHybridTrieOptBasic;
+            typedef TW2CHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex >::type TW2CHybridTrieOptCount;
         }
     }
 }

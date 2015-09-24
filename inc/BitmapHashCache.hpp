@@ -123,20 +123,21 @@ namespace uva {
                     /**
                      * Allows to check if a sub-M-gram of the M-gram of the current level is present in the cache.
                      * @param is_back_off is true if this is a back-off M-gram we need to learn about
+                     * @param curr_level the currently considered level of the m-gram
                      * @param query the M-gram query
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
-                    template<bool is_back_off, TModelLevel N, typename WordIndexType>
+                    template<bool is_back_off,  TModelLevel curr_level, TModelLevel N, typename WordIndexType>
                     inline bool is_m_gram(const MGramQuery<N, WordIndexType> & query) const {
 
                         //Depending on the M-gram compute a proper hash
                         TModelLevel begin_idx = 0, end_idx = 0;
                         if (is_back_off) {
                             end_idx = (query.m_gram.level - 2);
-                            begin_idx = (query.m_gram.level - 1) - query.curr_level;
+                            begin_idx = (query.m_gram.level - 1) - curr_level;
                         } else {
                             end_idx = (query.m_gram.level - 1);
-                            begin_idx = query.m_gram.level - query.curr_level;
+                            begin_idx = query.m_gram.level - curr_level;
                         }
 
                         uint64_t hash = query.m_gram.sub_hash(begin_idx, end_idx);

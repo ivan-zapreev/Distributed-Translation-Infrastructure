@@ -252,6 +252,11 @@ namespace uva {
                 void preAllocateNGrams(const size_t counts[N]);
 
             };
+            
+            typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DHybridTrieBasic;
+            typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DHybridTrieCount;
+            typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DHybridTrieOptBasic;
+            typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2DHybridTrieOptCount;
         }
     }
 }

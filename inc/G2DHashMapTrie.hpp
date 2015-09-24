@@ -159,6 +159,7 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
+                template<TModelLevel curr_level>
                 void get_prob_weight(MGramQuery<N, WordIndexType> & query) const;
 
                 /**
@@ -168,6 +169,7 @@ namespace uva {
                  * In that case the back-off weight is just zero.
                  * @see ATrie
                  */
+                template<TModelLevel curr_level>
                 void add_back_off_weight(MGramQuery<N, WordIndexType> & query) const;
 
                 /**
@@ -312,16 +314,22 @@ namespace uva {
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
                  * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
+                 * @param curr_level the currently considered level of the m-gram
                  * @param query the query M-gram state 
                  * @param ref the bucket to search in
                  * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
-                template<typename BUCKET_TYPE, bool back_off = false >
+                template<typename BUCKET_TYPE, bool back_off, TModelLevel curr_level >
                 bool get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };
+            
+            typedef G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TG2DMapTrieBasic;
+            typedef G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TG2DMapTrieCount;
+            typedef G2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TG2DMapTrieOptBasic;
+            typedef G2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TG2DMapTrieOptCount;
         }
     }
 }

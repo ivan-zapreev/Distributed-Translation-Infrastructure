@@ -94,9 +94,6 @@ namespace uva {
                 //Stores the query result
                 TQueryResult result = {};
 
-                //Stores the current query level during the query execution
-                TModelLevel curr_level = M_GRAM_LEVEL_UNDEF;
-
                 //Stores the current end word index during the query execution
                 TModelLevel curr_end_word_idx = 0;
 
@@ -110,17 +107,15 @@ namespace uva {
                 /**
                  * Allows t set a new query into this state object
                  * @param m_gram the query M-gram
+                 * @return the m-gram's level
                  */
-                inline void prepare_query() {
+                inline TModelLevel prepare_query() {
                     //Check the number of elements in the N-Gram
                     if (DO_SANITY_CHECKS && ((m_gram.level < M_GRAM_LEVEL_1) || (m_gram.level > N))) {
                         stringstream msg;
                         msg << "An improper N-Gram size, got " << m_gram.level << ", must be between [1, " << N << "]!";
                         throw Exception(msg.str());
                     } else {
-                        //Set the currently considered M-gram level
-                        curr_level = m_gram.level;
-
                         //Set the result probability to zero
                         result.prob = ZERO_PROB_WEIGHT;
 
@@ -129,6 +124,9 @@ namespace uva {
 
                         //Store unknown word flags
                         store_unk_word_flags();
+
+                        //return the m-gram level
+                        return m_gram.level;
                     }
                 }
 
@@ -185,7 +183,7 @@ namespace uva {
                  * Allows to check if the given back-off sub-m-gram contains 
                  * an unknown word for the given current level.
                  */
-                template<bool is_back_off>
+                template<bool is_back_off,  TModelLevel curr_level>
                 bool has_no_unk_words() const {
                     uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
 
@@ -213,6 +211,10 @@ namespace uva {
             template struct MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
             template struct MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
 
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, BasicWordIndex > TMGramQueryBasic;
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, CountingWordIndex > TMGramQueryCount;
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > TMGramQueryOptBasic;
+            typedef MGramQuery<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > TMGramQueryOptCount;
         }
     }
 }

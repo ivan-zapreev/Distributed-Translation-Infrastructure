@@ -458,6 +458,8 @@ namespace uva {
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_3>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_4>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
                 template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_5>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_6>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                template int Byte_M_Gram_Id::compare<M_GRAM_LEVEL_7>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
 
                 bool Byte_M_Gram_Id::is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                     return __Byte_M_Gram_Id::is_equal_x_grams_id_funcs[level](one, two);

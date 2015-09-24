@@ -433,6 +433,11 @@ namespace uva {
                     }
                 }
             };
+            
+            typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CArrayTrieBasic;
+            typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CArrayTrieCount;
+            typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CArrayTrieOptBasic;
+            typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TW2CArrayTrieOptCount;
         }
     }
 }

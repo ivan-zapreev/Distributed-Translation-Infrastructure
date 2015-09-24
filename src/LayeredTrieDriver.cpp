@@ -179,22 +179,23 @@ namespace uva {
             };
 
             template<typename TrieType >
+            template<TModelLevel curr_level>
             void LayeredTrieDriver<TrieType>::get_prob_weight(TMGramQuery & query) const {
                 //Get the last word in the N-gram
                 const TShortId & word_id = query.get_end_word_id();
 
                 LOG_DEBUG2 << "Computing probability for an "
-                        << query.curr_level << "-gram" << END_LOG;
+                        << curr_level << "-gram" << END_LOG;
 
                 //Consider different variants based no the length of the context
-                if (query.curr_level > M_GRAM_LEVEL_1) {
+                if (curr_level > M_GRAM_LEVEL_1) {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
                     TLongId ctx_id;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (get_query_context_Id<false>(query, ctx_id)) {
+                    if (get_query_context_Id<false, curr_level>(query, ctx_id)) {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
-                        if (query.curr_level == BASE::max_level) {
+                        if (curr_level == BASE::max_level) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff n_gram_prob = ZERO_PROB_WEIGHT;
                             if (m_trie.get_n_gram_data_ref(word_id, ctx_id, n_gram_prob)) {
@@ -205,7 +206,7 @@ namespace uva {
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
-                                LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
+                                LOG_DEBUG2 << "Unable to find the " << SSTR(curr_level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << word_id << ", " << ctx_id
                                         << "), need to back off!" << END_LOG;
@@ -214,8 +215,8 @@ namespace uva {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
                             const TProbBackOffEntry * entry_ptr;
-                            if (m_trie.get_m_gram_data_ref(query.curr_level, word_id, ctx_id, &entry_ptr)) {
-                                LOG_DEBUG2 << "The " << query.curr_level
+                            if (m_trie.get_m_gram_data_ref(curr_level, word_id, ctx_id, &entry_ptr)) {
+                                LOG_DEBUG2 << "The " << curr_level
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (word,context) = ("
                                         << word_id << ", " << ctx_id
@@ -225,7 +226,7 @@ namespace uva {
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
-                                LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
+                                LOG_DEBUG2 << "Unable to find the " << SSTR(curr_level)
                                         << "-Gram  prob for a (wordId,ctxId) = ("
                                         << word_id << ", " << ctx_id
                                         << "), need to back off!" << END_LOG;
@@ -234,7 +235,7 @@ namespace uva {
                     } else {
                         //Could not compute the probability for
                         //the given level, so backing off (recursive)!
-                        LOG_DEBUG2 << "Unable to find the " << SSTR(query.curr_level)
+                        LOG_DEBUG2 << "Unable to find the " << SSTR(curr_level)
                                 << "-Gram  prob for a (wordId,ctxId) = ("
                                 << word_id << ", " << ctx_id
                                 << "), need to back off!" << END_LOG;
@@ -262,32 +263,33 @@ namespace uva {
             }
 
             template<typename TrieType >
+            template<TModelLevel curr_level>
             void LayeredTrieDriver<TrieType>::add_back_off_weight(TMGramQuery & query) const {
                 //Get the word hash for the en word of the back-off N-Gram
                 const TShortId & word_id = query.get_back_off_end_word_id();
 
                 LOG_DEBUG2 << "Computing back-off for an "
-                        << query.curr_level << "-gram" << END_LOG;
+                        << curr_level << "-gram" << END_LOG;
 
-                if (query.curr_level > M_GRAM_LEVEL_1) {
+                if (curr_level > M_GRAM_LEVEL_1) {
                     //Attempt to retrieve back-off weights
                     TLongId ctx_id;
 
                     //Compute the context hash
-                    if (get_query_context_Id<true>(query, ctx_id)) {
+                    if (get_query_context_Id<true, curr_level>(query, ctx_id)) {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntry * entry_ptr;
-                        if (m_trie.get_m_gram_data_ref(query.curr_level, word_id, ctx_id, &entry_ptr)) {
+                        if (m_trie.get_m_gram_data_ref(curr_level, word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
                             query.result.prob += entry_ptr->back_off;
-                            LOG_DEBUG2 << "The " << query.curr_level << "-Gram log_"
+                            LOG_DEBUG2 << "The " << curr_level << "-Gram log_"
                                     << LOG_PROB_WEIGHT_BASE << "( back-off ) for (wordId, ctxId)=("
                                     << word_id << ", " << ctx_id << "), is: " << entry_ptr->back_off << END_LOG;
                         } else {
                             //The query context id could be determined, but 
                             //the data was not found in the trie.
-                            LOG_DEBUG2 << "Unable to find data for " << (query.curr_level)
+                            LOG_DEBUG2 << "Unable to find data for " << (curr_level)
                                     << "-Gram query with end wordId: "
                                     << SSTR(word_id) << ", ctxId: "
                                     << SSTR(ctx_id) << "!" << END_LOG;
@@ -295,7 +297,7 @@ namespace uva {
                     } else {
                         //The query context id could not be determined,
                         //so the M-gram is not present!
-                        LOG_DEBUG2 << "Unable to find ctxId for " << (query.curr_level)
+                        LOG_DEBUG2 << "Unable to find ctxId for " << (curr_level)
                                 << "-Gram query with end wordId: "
                                 << SSTR(word_id) << "!" << END_LOG;
                     }
@@ -319,30 +321,38 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
-            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
-            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
-            template class LayeredTrieDriver< C2DMapTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+            
+#define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
+            template class LayeredTrieDriver< T##TRIE_NAME##TYPE >; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_2>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_3>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_4>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_1>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_2>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_3>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE & query) const; \
+            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE & query) const;
 
-            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
-            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
-            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
-            template class LayeredTrieDriver< C2DHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
+#define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptBasic); \
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, OptCount);
+            
+            /**************************************************************************/
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(C2DMapTrie);
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(C2WArrayTrie);
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(W2CArrayTrie);
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(W2CHybridTrie);
+            INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(C2DHybridTrie);
+            /**************************************************************************/
 
-            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
-            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
-            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
-            template class LayeredTrieDriver< C2WArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
-
-            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > >;
-            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex> >;
-            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> > >;
-            template class LayeredTrieDriver< W2CArrayTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> > >;
-
-            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex >::type >;
-            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex>::type >;
-            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >::type >;
-            template class LayeredTrieDriver< typename TW2CHybridTrie<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >::type >;
         }
     }
 }
