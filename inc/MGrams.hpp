@@ -152,7 +152,7 @@ namespace uva {
                         //The start index depends on the value M of the given M-Gram
                         TModelLevel idx = N - level;
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
-                        for (TModelLevel i = 0; i < level; i++) {
+                        for (TModelLevel i = 0; i != level; i++) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
                             word_ids[idx] = word_index.get_word_id(tokens[i]);
                             LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;

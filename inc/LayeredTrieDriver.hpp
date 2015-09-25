@@ -273,7 +273,7 @@ namespace uva {
                                 << "') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
-                        for (int i = 1; i < (gram.level - 1); i++) {
+                        for (int i = 1; i != (gram.level - 1); i++) {
                             wordId = mgram_word_ids[idx];
 
                             //The word has to be known, otherwise it is an error situation
