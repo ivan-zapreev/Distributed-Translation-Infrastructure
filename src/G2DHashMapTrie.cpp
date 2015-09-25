@@ -130,8 +130,13 @@ namespace uva {
                 TShortId mgram_word_ids[N] = {};
                 gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
 
-                //Create the M-gram id from the word ids
-                Byte_M_Gram_Id::create_m_gram_id<level>(mgram_word_ids, N - level, data.id);
+                //Create the M-gram id from the word ids.
+                //We do "((uint8_t) xxx % N)" here due to the template generation
+                //of all possible combinations of N and level we can get xxx negative. 
+                //These values are indeed improper and useless so to avoid building
+                //errors during linking we need to keep the begin index proper.
+                constexpr TModelLevel begin_idx = ((uint8_t)(N - level)) % N;
+                Byte_M_Gram_Id::create_m_gram_id<begin_idx, level>(mgram_word_ids, data.id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
 
                 //Set the probability and back-off data
@@ -154,7 +159,7 @@ namespace uva {
                 gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
 
                 //Create the N-gram id from the word ids
-                Byte_M_Gram_Id::create_m_gram_id<N>(mgram_word_ids, 0, data.id);
+                Byte_M_Gram_Id::create_m_gram_id<0u, N>(mgram_word_ids, data.id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
 
                 //Set the probability data
@@ -191,12 +196,14 @@ namespace uva {
             template<typename BUCKET_TYPE, bool back_off, TModelLevel curr_level >
             bool G2DMapTrie<N, WordIndexType>::get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
                     const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const {
-                //The current level we are considering
-                const TModelLevel level = curr_level;
-                //Compute the begin index in the tokens and word ids arrays
-                const TModelLevel elem_begin_idx = (back_off ? ((N - 1) - curr_level) : (N - curr_level));
-                LOG_DEBUG << "Retrieving payload for " << level << "-gram word id indexes: ["
-                        << elem_begin_idx << "," << (back_off ? (N - 2) : (N - 1)) << "]" << END_LOG;
+                //Compute the begin index in the tokens and word ids arrays.
+                //We do "((uint8_t) xxx % N)" here due to the template generation
+                //of all possible combinations of N and level we can get xxx negative. 
+                //These values are indeed improper and useless so to avoid building
+                //errors during linking we need to keep the begin index proper.
+                constexpr TModelLevel begin_idx = ((uint8_t)(back_off ? ((N - 1) - curr_level) : (N - curr_level))) % N;
+                LOG_DEBUG << "Retrieving payload for " << curr_level << "-gram word id indexes: ["
+                        << begin_idx << "," << (back_off ? (N - 2) : (N - 1)) << "]" << END_LOG;
 
                 //1. Check that the bucket with the given index is not empty
                 if (ref.has_data()) {
@@ -205,7 +212,7 @@ namespace uva {
                     DECLARE_STACK_GRAM_ID(mgram_id, curr_level);
                     T_Gram_Id_Storage_Ptr mgram_id_ptr = &mgram_id[0];
 
-                    Byte_M_Gram_Id::create_m_gram_id<curr_level>(query.m_query_word_ids, elem_begin_idx, mgram_id_ptr);
+                    Byte_M_Gram_Id::create_m_gram_id<begin_idx, curr_level>(query.m_query_word_ids, mgram_id_ptr);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array
