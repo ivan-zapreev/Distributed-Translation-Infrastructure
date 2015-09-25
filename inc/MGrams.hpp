@@ -154,7 +154,7 @@ namespace uva {
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
                         for (TModelLevel i = 0; i != level; i++) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            word_ids[idx] = word_index.get_word_id(tokens[i]);
+                            word_index.get_word_id(tokens[i], word_ids[idx]);
                             LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;
                             if (is_unk_flags && (word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
                                 unk_word_flags |= (1u << ((N - 1) - idx));
@@ -162,8 +162,7 @@ namespace uva {
                             idx++;
                         }
                         if (is_unk_flags) {
-                            LOG_DEBUG << "The query unknown word flags are: "
-                                    << bitset<NUM_BITS_IN_UINT_8>(unk_word_flags) << END_LOG;
+                            LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(unk_word_flags) << END_LOG;
                         }
                     }
                 } T_M_Gram;

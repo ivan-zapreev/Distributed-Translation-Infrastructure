@@ -78,7 +78,7 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @param num_words the number of words
                      */
-                    void reserve(const size_t num_words) {
+                    inline void reserve(const size_t num_words) {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -86,7 +86,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @param num_words the number of words in the language model
                      */
-                    size_t get_number_of_words(const size_t num_words) const {
+                    inline size_t get_number_of_words(const size_t num_words) const {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -94,9 +94,9 @@ namespace uva {
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
-                     * @return the resulting wordId or UNKNOWN_WORD_ID if the word is not found
+                     * @param word_id [out] the variable to put the word id into or UNKNOWN_WORD_ID if the word is not found
                      */
-                    TShortId get_word_id(const TextPieceReader & token) const {
+                    inline void get_word_id(const TextPieceReader & token, TShortId & word_id ) const {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -106,7 +106,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    TShortId register_word(const TextPieceReader & token) {
+                    inline TShortId register_word(const TextPieceReader & token) {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -115,7 +115,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @return true if the word counting is needed, otherwise false.
                      */
-                    bool is_word_counts_needed() const {
+                    inline bool is_word_counts_needed() const {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -126,7 +126,7 @@ namespace uva {
                      * that the most used words get the lowest ids.
                      * @param token the word to count
                      */
-                    void count_word(const TextPieceReader & token) {
+                    inline void count_word(const TextPieceReader & token) {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -134,7 +134,7 @@ namespace uva {
                      * Should be called if the word count is needed
                      * after all the words have been counted.
                      */
-                    void do_post_word_count() {
+                    inline void do_post_word_count() {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -144,7 +144,7 @@ namespace uva {
                      * the index.
                      * @return true if the post-actions are needed, otherwise false
                      */
-                    bool is_post_actions_needed() const {
+                    inline bool is_post_actions_needed() const {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -152,7 +152,7 @@ namespace uva {
                      * Is to be called if the post actions are needed right after
                      * that all the individual words have beed added into the index.
                      */
-                    void do_post_actions() {
+                    inline void do_post_actions() {
                         THROW_MUST_OVERRIDE();
                     };
 

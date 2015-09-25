@@ -70,7 +70,7 @@ namespace uva {
                      * Allows to get the total words count including the unknown and undefined words
                      * @see AWordIndex
                      */
-                    size_t get_number_of_words(const size_t num_words) const {
+                    inline size_t get_number_of_words(const size_t num_words) const {
                         return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
                     };
 
@@ -78,7 +78,7 @@ namespace uva {
                      * This method should be used to pre-allocate the word index
                      * @see AWordIndex
                      */
-                    void reserve(const size_t num_words) {
+                    inline void reserve(const size_t num_words) {
                         //Compute the number of words to be stored
                         //Add an extra elements for the <unknown/> word
                         const size_t numWords = get_number_of_words(num_words);
@@ -97,15 +97,15 @@ namespace uva {
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @see AWordIndex
                      */
-                    TShortId get_word_id(const TextPieceReader & token) const {
+                    inline void get_word_id(const TextPieceReader & token, TShortId & word_id ) const {
                         TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', id: "
                                     << SSTR(UNKNOWN_WORD_ID) << END_LOG;
-                            return UNKNOWN_WORD_ID;
+                            word_id = UNKNOWN_WORD_ID;
                         } else {
-                            return result->second;
+                            word_id = result->second;
                         }
                     }
 
@@ -113,7 +113,7 @@ namespace uva {
                      * This function creates/gets a hash for the given word.
                      * @see AWordIndex
                      */
-                    TShortId register_word(const TextPieceReader & token) {
+                    inline TShortId register_word(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
                         TShortId& hash = _pWordIndexMap->operator[](token.str());
 
@@ -132,7 +132,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @see AWordIndex
                      */
-                    bool is_word_counts_needed() const {
+                    inline bool is_word_counts_needed() const {
                         return false;
                     };
 
@@ -140,7 +140,7 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    void count_word(const TextPieceReader & token) {
+                    inline void count_word(const TextPieceReader & token) {
                         //There is nothing to be done
                         THROW_MUST_NOT_CALL();
                     };
@@ -150,7 +150,7 @@ namespace uva {
                      * after all the words have been counted.
                      * @see AWordIndex
                      */
-                    void do_post_word_count() {
+                    inline void do_post_word_count() {
                         //There is nothing to be done
                         THROW_MUST_NOT_CALL();
                     };
@@ -161,7 +161,7 @@ namespace uva {
                      * the index.
                      * @see AWordIndex
                      */
-                    bool is_post_actions_needed() const {
+                    inline bool is_post_actions_needed() const {
                         return false;
                     };
 
@@ -170,7 +170,7 @@ namespace uva {
                      * that all the individual words have been added into the index.
                      * @see AWordIndex
                      */
-                    void do_post_actions() {
+                    inline void do_post_actions() {
                         //There is nothing to be done
                         THROW_MUST_NOT_CALL();
                     };
