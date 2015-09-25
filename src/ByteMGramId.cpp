@@ -74,9 +74,17 @@ namespace uva {
                     };
 
                     /**
-                     * Stores the multipliers up to and including level 6
+                     * Stores the multipliers up to and including level 7
                      */
-                    const static uint32_t gram_id_type_mult[] = {1, 4, 4 * 4, 4 * 4 * 4, 4 * 4 * 4 * 4, 4 * 4 * 4 * 4 * 4};
+                    const static uint32_t gram_id_type_mult[] = {
+                        1,
+                        4,
+                        4 * 4,
+                        4 * 4 * 4,
+                        4 * 4 * 4 * 4,
+                        4 * 4 * 4 * 4 * 4,
+                        4 * 4 * 4 * 4 * 4 * 4
+                    };
 
                     /**
                      * This method is needed to compute the id type identifier.
@@ -449,7 +457,7 @@ namespace uva {
                 INSTANTIATE_CREATE_M_GRAM_ID_FUNC(4);
                 INSTANTIATE_CREATE_M_GRAM_ID_FUNC(5);
                 INSTANTIATE_CREATE_M_GRAM_ID_FUNC(6);
-                
+
                 bool Byte_M_Gram_Id::is_equal_m_grams_id(const T_Gram_Id_Storage_Ptr & one, const T_Gram_Id_Storage_Ptr & two, const TModelLevel level) {
                     return __Byte_M_Gram_Id::is_equal_x_grams_id_funcs[level](one, two);
                 }
