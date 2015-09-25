@@ -128,14 +128,15 @@ namespace uva {
 
                 //Get the N-gram word ids
                 TShortId mgram_word_ids[N] = {};
-                gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
+                uint8_t dummy;
+                gram.store_m_gram_word_ids<N, WordIndexType, false>(mgram_word_ids, dummy, this->get_word_index());
 
                 //Create the M-gram id from the word ids.
                 //We do "((uint8_t) xxx % N)" here due to the template generation
                 //of all possible combinations of N and level we can get xxx negative. 
                 //These values are indeed improper and useless so to avoid building
                 //errors during linking we need to keep the begin index proper.
-                constexpr TModelLevel begin_idx = ((uint8_t)(N - level)) % N;
+                constexpr TModelLevel begin_idx = ((uint8_t) (N - level)) % N;
                 Byte_M_Gram_Id::create_m_gram_id<begin_idx, level>(mgram_word_ids, data.id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
 
@@ -156,7 +157,8 @@ namespace uva {
 
                 //Get the N-gram word ids
                 TShortId mgram_word_ids[N] = {};
-                gram.store_m_gram_word_ids<N, WordIndexType>(mgram_word_ids, this->get_word_index());
+                uint8_t dummy;
+                gram.store_m_gram_word_ids<N, WordIndexType, false>(mgram_word_ids, dummy, this->get_word_index());
 
                 //Create the N-gram id from the word ids
                 Byte_M_Gram_Id::create_m_gram_id<0u, N>(mgram_word_ids, data.id);
@@ -201,7 +203,7 @@ namespace uva {
                 //of all possible combinations of N and level we can get xxx negative. 
                 //These values are indeed improper and useless so to avoid building
                 //errors during linking we need to keep the begin index proper.
-                constexpr TModelLevel begin_idx = ((uint8_t)(back_off ? ((N - 1) - curr_level) : (N - curr_level))) % N;
+                constexpr TModelLevel begin_idx = ((uint8_t) (back_off ? ((N - 1) - curr_level) : (N - curr_level))) % N;
                 LOG_DEBUG << "Retrieving payload for " << curr_level << "-gram word id indexes: ["
                         << begin_idx << "," << (back_off ? (N - 2) : (N - 1)) << "]" << END_LOG;
 

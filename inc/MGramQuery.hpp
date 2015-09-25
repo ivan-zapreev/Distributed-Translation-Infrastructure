@@ -79,6 +79,9 @@ namespace uva {
                 // 00011110, 00111110, 01111110, 11111110
                 static const uint8_t BACK_OFF_UNK_MASKS[];
 
+                //THe maximum supported level of the m-gram
+                static constexpr TModelLevel MAX_SUPP_LEVEL = (sizeof (PROB_UNK_MASKS) - 1);
+
                 //Unknown word bits
                 uint8_t m_unk_word_flags = 0;
 
@@ -115,19 +118,27 @@ namespace uva {
                         stringstream msg;
                         msg << "An improper N-Gram size, got " << m_gram.level << ", must be between [1, " << N << "]!";
                         throw Exception(msg.str());
-                    } else {
-                        //Set the result probability to zero
-                        result.prob = ZERO_PROB_WEIGHT;
-
-                        //Transform the given M-gram into word hashes.
-                        m_gram.store_m_gram_word_ids<N, WordIndexType>(m_query_word_ids, m_word_index);
-
-                        //Store unknown word flags
-                        store_unk_word_flags();
-
-                        //return the m-gram level
-                        return m_gram.level;
                     }
+                    //Check for the maximum supported unk flag level
+                    if (DO_SANITY_CHECKS && (N > MAX_SUPP_LEVEL)) {
+                        stringstream msg;
+                        msg << "store_unk_word_flags: Unsupported m-gram level: "
+                                << SSTR(N) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
+                                << "], insufficient m_unk_word_flags capacity!";
+                        throw Exception(msg.str());
+                    }
+
+                    //Set the result probability to zero
+                    result.prob = ZERO_PROB_WEIGHT;
+
+                    //Re-initialize the flags with zero
+                    m_unk_word_flags = 0;
+
+                    //Transform the given M-gram into word hashes and store the unk flags.
+                    m_gram.store_m_gram_word_ids<N, WordIndexType, true>(m_query_word_ids, m_unk_word_flags, m_word_index);
+
+                    //return the m-gram level
+                    return m_gram.level;
                 }
 
                 /**
@@ -151,39 +162,10 @@ namespace uva {
                 }
 
                 /**
-                 * Has to be called after the method that stores the query word ids.
-                 * This one looks at the query word ids and creates binary flag map
-                 * of the unknown word ids present in the current M-gram
-                 */
-                inline void store_unk_word_flags() {
-                    const TModelLevel max_supp_level = (sizeof (PROB_UNK_MASKS) - 1);
-
-                    if (DO_SANITY_CHECKS && (N > max_supp_level)) {
-                        stringstream msg;
-                        msg << "store_unk_word_flags: Unsupported m-gram level: "
-                                << SSTR(N) << ", must be <= " << SSTR(max_supp_level)
-                                << "], insufficient m_unk_word_flags capacity!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Re-initialize the flags with zero
-                    m_unk_word_flags = 0;
-                    //Fill in the values from the currently considered M-gram word ids
-                    for (size_t idx = (N - m_gram.level); idx < N; ++idx) {
-                        if (m_query_word_ids[idx] == AWordIndex::UNKNOWN_WORD_ID) {
-                            m_unk_word_flags |= (1u << ((N - 1) - idx));
-                        }
-                    }
-
-                    LOG_DEBUG << "The query unknown word flags are: "
-                            << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
-                }
-
-                /**
                  * Allows to check if the given back-off sub-m-gram contains 
                  * an unknown word for the given current level.
                  */
-                template<bool is_back_off,  TModelLevel curr_level>
+                template<bool is_back_off, TModelLevel curr_level>
                 bool has_no_unk_words() const {
                     uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
 
