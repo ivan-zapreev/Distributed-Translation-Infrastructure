@@ -71,13 +71,13 @@ namespace uva {
                 //up to and including 8-grams:
                 // 00000000, 00000001, 00000011, 00000111, 00001111,
                 // 00011111, 00111111, 01111111, 11111111
-                static const uint8_t PROB_UNK_MASKS[];
+                const static uint8_t PROB_UNK_MASKS[];
 
                 //Stores the unknown word masks for the back-off weight computations,
                 //up to and including 8-grams:
                 // 00000000, 00000010, 00000110, 00001110,
                 // 00011110, 00111110, 01111110, 11111110
-                static const uint8_t BACK_OFF_UNK_MASKS[];
+                const static uint8_t BACK_OFF_UNK_MASKS[];
 
                 //THe maximum supported level of the m-gram
                 static constexpr TModelLevel MAX_SUPP_LEVEL = (sizeof (PROB_UNK_MASKS) - 1);

@@ -138,7 +138,7 @@ namespace uva {
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * @see AWordIndex
                      */
-                    inline void get_word_id(const TextPieceReader & token, TShortId & word_id) const {
+                    inline TShortId get_word_id(const TextPieceReader & token) const {
                         //Compute the bucket id
                         const uint_fast32_t bucket_idx = get_bucket_idx(token);
 
@@ -146,11 +146,10 @@ namespace uva {
                         for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
                                 idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
                             if (IS_EQUAL(token, m_word_entries[idx])) {
-                                word_id = m_word_entries[idx].m_word_id;
-                                return;
+                                return m_word_entries[idx].m_word_id;
                             }
                         }
-                        word_id = UNKNOWN_WORD_ID;
+                        return UNKNOWN_WORD_ID;
                     };
 
                     /**

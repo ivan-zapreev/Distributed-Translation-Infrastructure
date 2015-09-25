@@ -57,6 +57,14 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
 
+                //Stores the unknown word masks for the probability computations,
+                //up to and including 8-grams:
+                // 10000000, 01000000, 00100000, 00010000,
+                // 00001000, 00000100, 00000010, 00000001
+                const static uint8_t UNK_WORD_MASKS[] = {
+                    0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
+                };
+
                 /**
                  * This structure is used to store the N-Gram data
                  * of the back-off Language Model.
@@ -70,10 +78,15 @@ namespace uva {
                  * @param level stores the number of meaningful elements in the tokens, the value of N for the N-gram
                  */
                 typedef struct {
+                    //Stores the m-gram probability
                     TLogProbBackOff prob;
+                    //Stores the m-gram back-off weight if applickable
                     TLogProbBackOff back_off;
+                    //Stores the m-gram context if needed
                     TextPieceReader context;
+                    //Stores the m-gram tokens
                     TextPieceReader tokens[M_GRAM_LEVEL_MAX];
+                    //Stores the m-gram level
                     TModelLevel level;
 
                     /**
@@ -154,10 +167,10 @@ namespace uva {
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
                         for (TModelLevel i = 0; i != level; i++) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            word_index.get_word_id(tokens[i], word_ids[idx]);
+                            word_ids[idx] = word_index.get_word_id(tokens[i]);
                             LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;
                             if (is_unk_flags && (word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
-                                unk_word_flags |= (1u << ((N - 1) - idx));
+                                unk_word_flags |= UNK_WORD_MASKS[idx];
                             }
                             idx++;
                         }

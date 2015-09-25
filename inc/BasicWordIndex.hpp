@@ -97,15 +97,15 @@ namespace uva {
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @see AWordIndex
                      */
-                    inline void get_word_id(const TextPieceReader & token, TShortId & word_id ) const {
+                    inline TShortId get_word_id(const TextPieceReader & token) const {
                         TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
                         if (result == _pWordIndexMap->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', id: "
                                     << SSTR(UNKNOWN_WORD_ID) << END_LOG;
-                            word_id = UNKNOWN_WORD_ID;
+                            return UNKNOWN_WORD_ID;
                         } else {
-                            word_id = result->second;
+                            return result->second;
                         }
                     }
 

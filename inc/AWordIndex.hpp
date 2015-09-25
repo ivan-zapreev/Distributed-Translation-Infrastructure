@@ -94,9 +94,9 @@ namespace uva {
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                      * @param token the word to hash
-                     * @param word_id [out] the variable to put the word id into or UNKNOWN_WORD_ID if the word is not found
+                     * @return the word id or UNKNOWN_WORD_ID if the word is not found
                      */
-                    inline void get_word_id(const TextPieceReader & token, TShortId & word_id ) const {
+                    inline TShortId get_word_id(const TextPieceReader & token) const {
                         THROW_MUST_OVERRIDE();
                     };
 
