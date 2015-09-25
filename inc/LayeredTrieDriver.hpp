@@ -223,7 +223,7 @@ namespace uva {
                     for (; idx < end_idx;) {
                         LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
                                 << SSTR(query.m_query_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_query_word_ids[idx], ctx_id )) {
+                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_query_word_ids[idx], ctx_id)) {
                             LOG_DEBUG1 << "getContextId(" << SSTR(query.m_query_word_ids[idx])
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             idx++;
@@ -245,69 +245,66 @@ namespace uva {
                  * 
                  * WARNING: Must be called on M-grams with M > 1!
                  * 
-                 * @param gram the N-gram with its tokens to create context for
+                 * @param gram the m-gram we need to compute the contex tfor. 
+                 * @param mgram_word_ids the m-gram word ids aligned to the end of the array
                  * @param the resulting hash of the context(w1 w2 w3)
                  * @return true if the context was found otherwise false
                  */
-                template<DebugLevelsEnum log_level>
-                inline bool get_context_id(const T_M_Gram & gram, TLongId &ctxId) {
+                template<TModelLevel level, DebugLevelsEnum log_level>
+                inline void get_context_id(const T_M_Gram &gram, const TShortId mgram_word_ids[BASE::max_level], TLongId &ctxId) {
+
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctxId)) {
+                        TModelLevel idx = (BASE::max_level - level);
                         //Get the start context value for the first token
-                        TShortId wordId = m_trie.get_word_index().get_word_id(gram.tokens[0]);
+                        TShortId wordId = mgram_word_ids[idx];
+                        idx++;
 
-                        //There is no id cached for this M-gram context - find it
-                        if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
-                            //The first word id is the first context id
-                            ctxId = wordId;
-                            LOGGER(log_level) << "ctxId = getId('" << gram.tokens[0].str()
-                                    << "') = " << SSTR(ctxId) << END_LOG;
+                        //The word has to be known, otherwise it is an error situation
+                        if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
+                            stringstream msg;
+                            msg << "The wordId for '" << gram.tokens[0].str() << "' could not be found!";
+                            throw Exception(msg.str());
+                        }
 
-                            //Iterate and compute the hash:
-                            for (int i = 1; i < (gram.level - 1); i++) {
-                                wordId = m_trie.get_word_index().get_word_id(gram.tokens[i]);
-                                if (wordId != WordIndexType::UNKNOWN_WORD_ID) {
-                                    LOGGER(log_level) << "wordId = getId('" << gram.tokens[i].str()
-                                            << "') = " << SSTR(wordId) << END_LOG;
-                                    if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
-                                        LOGGER(log_level) << "ctxId = computeCtxId( "
-                                                << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
-                                    } else {
-                                        //The next context id could not be computed
-                                        LOGGER(log_level) << "The next context for wordId: "
-                                                << SSTR(wordId) << " and ctxId: "
-                                                << SSTR(ctxId) << "on level: " << SSTR((i + 1))
-                                                << "could not be computed!" << END_LOG;
-                                        return false;
-                                    }
-                                } else {
-                                    //The next word Id was not found, it is
-                                    //unknown, so we can stop searching
-                                    LOGGER(log_level) << "The wordId for '" << gram.tokens[i].str()
-                                            << "' could not be found!" << END_LOG;
-                                    return false;
-                                }
+                        //The first word id is the first context id
+                        ctxId = wordId;
+                        LOGGER(log_level) << "ctxId = getId('" << gram.tokens[0].str()
+                                << "') = " << SSTR(ctxId) << END_LOG;
+
+                        //Iterate and compute the hash:
+                        for (int i = 1; i < (gram.level - 1); i++) {
+                            wordId = mgram_word_ids[idx];
+
+                            //The word has to be known, otherwise it is an error situation
+                            if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
+                                stringstream msg;
+                                msg << "The wordId for '" << gram.tokens[i].str() << "' could not be found!";
+                                throw Exception(msg.str());
                             }
 
-                            //Cache the newly computed context id for the given n-gram context
-                            set_cache_context_id(gram, ctxId);
+                            LOGGER(log_level) << "wordId = getId('" << gram.tokens[i].str() << "') = " << SSTR(wordId) << END_LOG;
 
-                            //The context Id was found in the Trie
-                            LOGGER(log_level) << "The ctxId could be computed, "
-                                    << "it's value is: " << SSTR(ctxId) << END_LOG;
-                            return true;
-                        } else {
-                            //The context id could not be computed as
-                            //the first N-gram's word is already unknown
-                            LOGGER(log_level) << "The wordId for '" << gram.tokens[0].str()
-                                    << "' could not be found!" << END_LOG;
-                            return false;
+                            if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
+                                LOGGER(log_level) << "ctxId = computeCtxId( " << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
+                            } else {
+                                //The next context id could not be computed
+                                stringstream msg;
+                                msg << "The next context for wordId: " << SSTR(wordId) << " and ctxId: "
+                                        << SSTR(ctxId) << "on level: " << SSTR((i + 1)) << "could not be computed!";
+                                throw Exception(msg.str());
+                            }
+                            idx++;
                         }
+
+                        //Cache the newly computed context id for the given n-gram context
+                        set_cache_context_id(gram, ctxId);
+
+                        //The context Id was found in the Trie
+                        LOGGER(log_level) << "The ctxId could be computed, " << "it's value is: " << SSTR(ctxId) << END_LOG;
                     } else {
                         //The context Id was found in the cache
-                        LOGGER(log_level) << "The ctxId was found in cache, "
-                                << "it's value is: " << SSTR(ctxId) << END_LOG;
-                        return true;
+                        LOGGER(log_level) << "The ctxId was found in cache, " << "it's value is: " << SSTR(ctxId) << END_LOG;
                     }
                 }
 
