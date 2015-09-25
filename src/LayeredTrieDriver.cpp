@@ -84,29 +84,23 @@ namespace uva {
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId;
-                bool isFound = get_context_id<DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                // 2. Get the N-gram word ids
+                TShortId mgram_word_ids[BASE::max_level] = {};
+                uint8_t dummy;
+                gram.store_m_gram_word_ids < BASE::max_level, typename BASE::WordIndexType, false > (mgram_word_ids, dummy, m_trie.get_word_index());
 
-                if (DO_SANITY_CHECKS && !isFound) {
-                    stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<BASE::max_level>(gram);
-                    throw Exception(msg.str());
-                }
+                // 3. Compute the context hash defined by w1 w2 w3
+                TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
+                get_context_id<level, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
 
-                // 2. Compute the hash of w4
-               const TextPieceReader & endWord = gram.tokens[level - 1];
-                TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
-
+                // 3. Insert the probability data into the trie
+                TShortId wordId = mgram_word_ids[BASE::max_level - 1];
+                //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
-
-                LOG_DEBUG2 << "wordId = computeId('" << endWord.str() << "') = " << wordId << END_LOG;
-
-                // 3. Insert the probability data into the trie
                 TProbBackOffEntry& pbData = m_trie.template make_m_gram_data_ref<level>(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -135,29 +129,23 @@ namespace uva {
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId;
-                bool isFound = get_context_id<DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                // 1. Get the N-gram word ids
+                TShortId mgram_word_ids[BASE::max_level] = {};
+                uint8_t dummy;
+                gram.store_m_gram_word_ids < BASE::max_level, typename BASE::WordIndexType, false > (mgram_word_ids, dummy, m_trie.get_word_index());
 
-                if (DO_SANITY_CHECKS && !isFound) {
-                    stringstream msg;
-                    msg << "Could not get ctxId for " << tokensToString<BASE::max_level>(gram);
-                    throw Exception(msg.str());
-                }
+                // 2. Compute the context hash defined by w1 w2 w3
+                TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
+                get_context_id<BASE::max_level, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
 
-                // 2. Compute the hash of w4
-                const TextPieceReader & endWord = gram.tokens[BASE::max_level - 1];
-                TShortId wordId = m_trie.get_word_index().get_word_id(endWord);
-
+                // 3. Insert the probability data into the trie
+                TShortId wordId = mgram_word_ids[BASE::max_level - 1];
+                //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << tokensToString<BASE::max_level>(gram);
                     throw Exception(msg.str());
                 }
-
-                LOG_DEBUG2 << "wordId = computeId('" << endWord << "') = " << wordId << END_LOG;
-
-                // 3. Insert the probability data into the trie
                 TLogProbBackOff& pData = m_trie.make_n_gram_data_ref(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
@@ -344,7 +332,7 @@ namespace uva {
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram & gram); \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram & gram); \
             template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram & gram);
-            
+
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Count); \
