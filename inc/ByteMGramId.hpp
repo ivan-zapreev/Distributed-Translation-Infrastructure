@@ -102,7 +102,7 @@ namespace uva {
                         5 * sizeof (TShortId) + M_GRAM_5_ID_TYPE_LEN_BYTES, // 5 TShortId values for 5 word ids, plus the memory needed to store type
                         6 * sizeof (TShortId) + M_GRAM_6_ID_TYPE_LEN_BYTES // 6 TShortId values for 5 word ids, plus the memory needed to store type
                     };
-                   
+
                     //Allows to declare the stack allocated m-gram id for the given level and with the given name
 #define DECLARE_STACK_GRAM_ID(name, level) T_Gram_Id_Storage name[__Byte_M_Gram_Id::M_GRAM_MAX_ID_LEN_BYTES[(level)]];
                 }
@@ -111,7 +111,6 @@ namespace uva {
                  * The byte-compressed implementation of the M-gram id class
                  */
                 struct Byte_M_Gram_Id {
-
                     /**
                      * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
                      * a) If there was no memory allocated for the M-gram id then there will be allocated as much
@@ -120,15 +119,15 @@ namespace uva {
                      * theat this instance was created with the one argument constructor of this class allocated
                      * maximum needed memory for this level. Then the argument M-gram level must be smaller or
                      * equal to  the level this object was created with.
+                     * @param begin_idx the M-gram to create the id for
                      * @param num_word_ids the number of word ids
                      * @param word_ids the pointer to the array of word ids
-                     * @param begin_idx the M-gram to create the id for
                      * @param m_p_gram_id the pointer to the data storage to be initialized
                      * @return true if the M-gram id could be created, otherwise false
                      */
-                    template<uint8_t num_word_ids>
+                    template<uint8_t begin_idx, uint8_t num_word_ids>
                     static void create_m_gram_id(const TShortId * word_ids,
-                            const uint8_t begin_idx, T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                            T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory

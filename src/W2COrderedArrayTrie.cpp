@@ -173,7 +173,8 @@ namespace uva {
 
                 //Get the entry
                 const typename T_M_GramWordEntry::TElemType * pEntry;
-                if (get_M_N_GramEntry<T_M_GramWordEntry>(level, m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET], wordId, ctxId, &pEntry)) {
+                const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET];
+                if (get_m_n_gram_entry<level, T_M_GramWordEntry>(ptr, wordId, ctxId, &pEntry)) {
                     //Return the pointer to the probability and back-off structure
                     *ppData = &pEntry->payload;
                     return true;
@@ -206,7 +207,7 @@ namespace uva {
 
                 //Get the entry
                 const typename T_N_GramWordEntry::TElemType * pEntry;
-                if (get_M_N_GramEntry<T_N_GramWordEntry>(N, m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
+                if (get_m_n_gram_entry<N, T_N_GramWordEntry>(m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
                     //Return the reference to the probability
                     prob = pEntry->payload;
                     return true;

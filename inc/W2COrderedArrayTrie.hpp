@@ -370,9 +370,10 @@ namespace uva {
                  * @return true if the data was found, otherwise false
                  * @throw nothing
                  */
-                template<typename WORD_ENTRY_TYPE>
-                bool get_M_N_GramEntry(const TModelLevel & level, const WORD_ENTRY_TYPE* wordsArray,
-                        const TShortId & wordId, const TShortId & ctxId, const typename WORD_ENTRY_TYPE::TElemType **ppData) const {
+                template<TModelLevel level, typename WORD_ENTRY_TYPE>
+                bool get_m_n_gram_entry(const WORD_ENTRY_TYPE* wordsArray,
+                        const TShortId & wordId, const TShortId & ctxId,
+                        const typename WORD_ENTRY_TYPE::TElemType **ppData) const {
                     LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
                             << "-gram with wordId: " << SSTR(wordId) << END_LOG;
                     //Get the sub-array reference. 
