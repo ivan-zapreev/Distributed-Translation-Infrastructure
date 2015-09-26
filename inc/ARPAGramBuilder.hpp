@@ -43,20 +43,24 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                typedef std::function<void (const T_M_Gram&) > TAddGramFunct;
+                template<TModelLevel N, typename WordIndexType> struct TAddGramFunct {
+                    typedef std::function<void (const T_M_Gram<N, WordIndexType>&) > func;
+                };
 
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
+                template<TModelLevel N, typename WordIndexType>
                 class ARPAGramBuilder {
                 public:
 
                     /**
                      * The constructor to be used in order to instantiate a N-Gram builder
+                     * @param word_index the word index to be used
                      * @param level the level of the N-grams to be processed
                      * @param addGarmFunc the strategy for adding the N-grams
                      */
-                    ARPAGramBuilder(const TModelLevel level, TAddGramFunct addGarmFunc);
+                    ARPAGramBuilder(const WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<N, WordIndexType>::func addGarmFunc);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -133,7 +137,7 @@ namespace uva {
                      * @param text the piece of text to tokenise
                      * @param gram the gram container to put data into
                      */
-                    static inline void gram_to_tokens(TextPieceReader &text, T_M_Gram & ngram) {
+                    static inline void gram_to_tokens(TextPieceReader &text, T_M_Gram<N, WordIndexType> & ngram) {
                         //Re-set the level to zero
                         ngram.level = 0;
 
@@ -146,7 +150,7 @@ namespace uva {
                     virtual ~ARPAGramBuilder();
                 protected:
                     //The function that is to be used to add an N-gram to a trie
-                    TAddGramFunct m_add_garm_func;
+                    typename TAddGramFunct<N, WordIndexType>::func m_add_garm_func;
 
                     //The level of the N-grams to be processed by the given builder
                     const TModelLevel m_level;
@@ -155,7 +159,7 @@ namespace uva {
                     TextPieceReader m_token;
 
                     //This is the N-Gram container to store the parsed N-gram data
-                    T_M_Gram m_ngram;
+                    T_M_Gram<N, WordIndexType> m_ngram;
 
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;

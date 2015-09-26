@@ -105,8 +105,9 @@ namespace uva {
                      * Allows to add the M-gram to the cache
                      * @param gram the M-gram to cache
                      */
-                    inline void add_m_gram(const T_M_Gram &gram) {
-                        LOG_DEBUG2 << "Adding M-gram: " << tokensToString(gram) << END_LOG;
+                    template<TModelLevel N, typename WordIndexType>
+                    inline void add_m_gram(const T_M_Gram<N, WordIndexType> &gram) {
+                        LOG_DEBUG2 << "Adding M-gram: " << tokens_to_string(gram) << END_LOG;
 
                         //Get the bit position
                         uint32_t byte_idx = 0;
@@ -143,7 +144,7 @@ namespace uva {
                         uint64_t hash = query.m_gram.sub_hash(begin_idx, end_idx);
 
                         LOG_DEBUG2 << "The [" << (uint32_t) begin_idx << ", " << (uint32_t) end_idx
-                                << "] sub M-gram of: " << tokensToString(query.m_gram) << " hash: "
+                                << "] sub M-gram of: " << tokens_to_string(query.m_gram) << " hash: "
                                 << hash << END_LOG;
 
                         //Get the M-gram hash positions
@@ -163,8 +164,9 @@ namespace uva {
                      * @param gram the M-gram to be checked
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
-                    inline bool is_m_gram(const T_M_Gram &gram) const {
-                        LOG_DEBUG2 << "Checking M-gram: " << tokensToString(gram) << END_LOG;
+                    template<TModelLevel N, typename WordIndexType>
+                    inline bool is_m_gram(const T_M_Gram<N, WordIndexType> &gram) const {
+                        LOG_DEBUG2 << "Checking M-gram: " << tokens_to_string(gram) << END_LOG;
 
                         //Get the bit position
                         uint32_t byte_idx = 0;
@@ -211,10 +213,11 @@ namespace uva {
                      * @param byte_idx [out] the M-gram byte index
                      * @param bit_offset_idx [out] the M-gram relative bit index
                      */
-                    inline void get_bit_pos(const T_M_Gram &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
+                    template<TModelLevel N, typename WordIndexType>
+                    inline void get_bit_pos(const T_M_Gram<N, WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                         const uint64_t hash = gram.hash();
                         
-                        LOG_DEBUG2 << "The M-gram: " << tokensToString(gram)
+                        LOG_DEBUG2 << "The M-gram: " << tokens_to_string(gram)
                                 << " hash: " << hash << END_LOG;
                         
                         return get_bit_pos(hash, byte_idx, bit_offset_idx);

@@ -60,7 +60,7 @@ namespace uva {
             template<TModelLevel N, typename WordIndex>
             class WordIndexTrieBase {
             public:
-                static const TModelLevel max_level;
+                static const TModelLevel MAX_LEVEL;
                 typedef WordIndex WordIndexType;
 
                 /**
@@ -150,7 +150,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndex>
-            const TModelLevel WordIndexTrieBase<N, WordIndex>::max_level = N;
+            const TModelLevel WordIndexTrieBase<N, WordIndex>::MAX_LEVEL = N;
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
             template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;

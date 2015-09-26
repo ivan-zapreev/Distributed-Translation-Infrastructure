@@ -35,12 +35,17 @@
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
 
+#include "BasicWordIndex.hpp"
+#include "CountingWordIndex.hpp"
+#include "OptimizingWordIndex.hpp"
+
 using namespace std;
 using namespace uva::utils::math::log2;
 using namespace uva::utils::math::bits;
 using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::dictionary;
 
 namespace uva {
     namespace smt {
@@ -57,37 +62,38 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
 
-                //Stores the unknown word masks for the probability computations,
-                //up to and including 8-grams:
-                // 10000000, 01000000, 00100000, 00010000,
-                // 00001000, 00000100, 00000010, 00000001
-                const static uint8_t UNK_WORD_MASKS[] = {
-                    0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
-                };
-
                 /**
-                 * This structure is used to store the N-Gram data
-                 * of the back-off Language Model.
-                 * @param prob stores the log_10 probability of the N-Gram Must be
-                 *             a negative value
-                 * @param back_off stores the log_10 back-off weight (probability)
-                 *        of the N-gram can be 0 is the probability is not available
-                 * @param context stores the n-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
-                 * @param tokens stores the N-gram words the size of this vector
-                 *        defines the N-gram level.
-                 * @param level stores the number of meaningful elements in the tokens, the value of N for the N-gram
+                 * This class is used to store the N-Gram data of the back-off Language Model.
                  */
-                typedef struct {
-                    //Stores the m-gram probability
+                template<TModelLevel N, typename WordIndexType>
+                class T_M_Gram {
+                public:
+
+                    //Stores the unknown word masks for the probability computations,
+                    //up to and including 8-grams:
+                    // 10000000, 01000000, 00100000, 00010000,
+                    // 00001000, 00000100, 00000010, 00000001
+                    static const uint8_t UNK_WORD_MASKS[];
+
+                    //Stores the reference to the used word index
+                    const WordIndexType & m_word_index;
+                    //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff prob;
-                    //Stores the m-gram back-off weight if applickable
+                    //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
                     TLogProbBackOff back_off;
-                    //Stores the m-gram context if needed
+                    //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader context;
                     //Stores the m-gram tokens
-                    TextPieceReader tokens[M_GRAM_LEVEL_MAX];
-                    //Stores the m-gram level
+                    TextPieceReader tokens[N];
+                    //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel level;
+
+                    /**
+                     * The basic constructor
+                     * @param word_index the used word index
+                     */
+                    T_M_Gram(const WordIndexType & word_index) : m_word_index(word_index) {
+                    }
 
                     /**
                      * This function allows to compute the hash of the sub M-Gram
@@ -160,33 +166,44 @@ namespace uva {
                      * @param m_gram the m-gram tokens to convert to hashes
                      * @paam unk_word_flags the variable into which the word flags will be stored.
                      */
-                    template<TModelLevel N, typename WordIndexType, bool is_unk_flags>
+                    template<bool is_unk_flags>
                     inline void store_m_gram_word_ids(TShortId word_ids[N], uint8_t & unk_word_flags, const WordIndexType & word_index) const {
                         //The start index depends on the value M of the given M-Gram
                         TModelLevel idx = N - level;
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
-                        for (TModelLevel i = 0; i != level; i++) {
+                        for (TModelLevel i = 0; i != level; ++i) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
                             word_ids[idx] = word_index.get_word_id(tokens[i]);
                             LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;
                             if (is_unk_flags && (word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
                                 unk_word_flags |= UNK_WORD_MASKS[idx];
                             }
-                            idx++;
+                            ++idx;
                         }
                         if (is_unk_flags) {
                             LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(unk_word_flags) << END_LOG;
                         }
                     }
-                } T_M_Gram;
+                };
+
+                template<TModelLevel N, typename WordIndexType>
+                const uint8_t T_M_Gram<N, WordIndexType>::UNK_WORD_MASKS[] = {
+                    0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
+                };
+
+                //Make sure that there will be templates instantiated, at least for the given parameter values
+                template class T_M_Gram<M_GRAM_LEVEL_MAX, BasicWordIndex>;
+                template class T_M_Gram<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+                template class T_M_Gram<M_GRAM_LEVEL_MAX, TOptBasicWordIndex>;
+                template class T_M_Gram<M_GRAM_LEVEL_MAX, TOptCountWordIndex>;
 
                 /**
                  * This function allows to convert the M-gram tokens into a string representation. 
                  * @param gram  the M-Gram to work with
                  */
-                template<TModelLevel N = M_GRAM_LEVEL_MAX>
-                inline string tokensToString(const T_M_Gram & gram) {
-                    return tokensToString<N>(gram.tokens, gram.level);
+                template<TModelLevel N = M_GRAM_LEVEL_MAX, typename WordIndexType>
+                inline string tokens_to_string(const T_M_Gram<N, WordIndexType> & gram) {
+                    return tokens_to_string<N>(gram.tokens, gram.level);
                 };
 
                 /**

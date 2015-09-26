@@ -103,7 +103,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            void G2DMapTrie<N, WordIndexType>::add_1_gram(const T_M_Gram &gram) {
+            void G2DMapTrie<N, WordIndexType>::add_1_gram(const T_M_Gram<N, WordIndexType> &gram) {
                 //Register a new word, and the word id will be the one-gram id
 
                 const TShortId oneGramId = BASE::get_word_index().register_word(gram.tokens[0]);
@@ -114,7 +114,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
-            void G2DMapTrie<N, WordIndexType>::add_m_gram(const T_M_Gram &gram) {
+            void G2DMapTrie<N, WordIndexType>::add_m_gram(const T_M_Gram<N, WordIndexType> &gram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
@@ -129,7 +129,7 @@ namespace uva {
                 //Get the N-gram word ids
                 TShortId mgram_word_ids[N] = {};
                 uint8_t dummy;
-                gram.store_m_gram_word_ids<N, WordIndexType, false>(mgram_word_ids, dummy, this->get_word_index());
+                gram.template store_m_gram_word_ids<false>(mgram_word_ids, dummy, this->get_word_index());
 
                 //Create the M-gram id from the word ids.
                 //We do "((uint8_t) xxx % N)" here due to the template generation
@@ -138,7 +138,7 @@ namespace uva {
                 //errors during linking we need to keep the begin index proper.
                 constexpr TModelLevel begin_idx = ((uint8_t) (N - level)) % N;
                 Byte_M_Gram_Id::create_m_gram_id<begin_idx, level>(mgram_word_ids, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokens_to_string(gram) << END_LOG;
 
                 //Set the probability and back-off data
                 data.payload.prob = gram.prob;
@@ -146,7 +146,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            void G2DMapTrie<N, WordIndexType>::add_n_gram(const T_M_Gram &gram) {
+            void G2DMapTrie<N, WordIndexType>::add_n_gram(const T_M_Gram<N, WordIndexType> &gram) {
                 //Get the bucket index
 
                 TShortId bucket_idx;
@@ -158,11 +158,11 @@ namespace uva {
                 //Get the N-gram word ids
                 TShortId mgram_word_ids[N] = {};
                 uint8_t dummy;
-                gram.store_m_gram_word_ids<N, WordIndexType, false>(mgram_word_ids, dummy, this->get_word_index());
+                gram.template store_m_gram_word_ids<false>(mgram_word_ids, dummy, this->get_word_index());
 
                 //Create the N-gram id from the word ids
                 Byte_M_Gram_Id::create_m_gram_id<0u, N>(mgram_word_ids, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokensToString(gram) << END_LOG;
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokens_to_string(gram) << END_LOG;
 
                 //Set the probability data
                 data.payload = gram.prob;
@@ -352,12 +352,12 @@ namespace uva {
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(TMGramQuery##TYPE_EXT & query) const; \
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(TMGramQuery##TYPE_EXT & query) const; \
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(TMGramQuery##TYPE_EXT & query) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram & gram); \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram & gram); \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram & gram); \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram & gram); \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram & gram); \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram & gram);
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram); \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram); \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram); \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram); \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram); \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram<M_GRAM_LEVEL_MAX, TYPE > & gram);
 
             INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(BasicWordIndex, Basic);
             INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(CountingWordIndex, Count);

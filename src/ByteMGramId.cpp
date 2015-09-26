@@ -372,10 +372,6 @@ namespace uva {
                     __Byte_M_Gram_Id::create_m_gram_id<num_word_ids>(&word_ids[begin_idx], m_p_gram_id);
                 };
 
-#define IS_LESS -1
-#define IS_EQUAL 0
-#define IS_LARGER +1
-
                 template<TModelLevel M_GRAM_LEVEL>
                 int Byte_M_Gram_Id::compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two) {
                     //Do the sanity check if needed
@@ -402,12 +398,12 @@ namespace uva {
                     if (type_one < type_two) {
                         //The first id type is smaller
                         LOG_DEBUG3 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
-                        return IS_LESS;
+                        return -1;
                     } else {
                         if (type_one > type_two) {
                             //The second id type is smaller
                             LOG_DEBUG3 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
-                            return IS_LARGER;
+                            return +1;
                         } else {
                             //The id types are the same! Compare the ids themselves
                             LOG_DEBUG3 << (void*) m_p_gram_id_one << " =(type)= " << (void*) m_p_gram_id_two << END_LOG;

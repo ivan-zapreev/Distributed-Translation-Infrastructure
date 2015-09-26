@@ -142,21 +142,21 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                void add_1_gram(const T_M_Gram &oGram);
+                void add_1_gram(const T_M_Gram<N, WordIndexType> &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
                 template<TModelLevel level>
-                void add_m_gram(const T_M_Gram &mGram);
+                void add_m_gram(const T_M_Gram<N, WordIndexType> &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                void add_n_gram(const T_M_Gram &nGram);
+                void add_n_gram(const T_M_Gram<N, WordIndexType> &nGram);
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
@@ -235,21 +235,21 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param bucket_idx the resulting bucket index
                  */
-                inline void get_bucket_id(const T_M_Gram &gram, TShortId & bucket_idx) const {
+                inline void get_bucket_id(const T_M_Gram<N, WordIndexType> &gram, TShortId & bucket_idx) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint64_t gram_hash = gram.hash();
-                    LOG_DEBUG1 << "The " << gram.level << "-gram: " << tokensToString(gram)
+                    LOG_DEBUG1 << "The " << gram.level << "-gram: " << tokens_to_string(gram)
                             << " hash is " << gram_hash << END_LOG;
 
                     bucket_idx = get_bucket_id_func[gram.level](*this, gram_hash);
 
-                    LOG_DEBUG1 << "Getting bucket for " << tokensToString(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_DEBUG1 << "Getting bucket for " << tokens_to_string(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(gram.level) << "-gram: " << tokensToString<N>(gram)
+                        msg << "The " << SSTR(gram.level) << "-gram: " << tokens_to_string<N>(gram)
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
                                 << ", must be within [0, " << SSTR(num_buckets[gram.level - 1]) << "]";
                         throw Exception(msg.str());

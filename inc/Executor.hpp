@@ -171,7 +171,8 @@ namespace uva {
                  * @param ngram the n-gram to transform
                  * @return the resulting string
                  */
-                static string get_mgram_prob_str(const T_M_Gram & mgram) {
+                template<TModelLevel N, typename WordIndexType>
+                static string get_mgram_prob_str(const T_M_Gram<N, WordIndexType> & mgram) {
                     if (mgram.level == 1) {
                         return mgram.tokens[0].str().empty() ? "<empty>" : mgram.tokens[0].str();
                     } else {
@@ -200,7 +201,7 @@ namespace uva {
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    MGramQuery < TrieType::max_level, typename TrieType::WordIndexType > query(trie.get_word_index());
+                    MGramQuery < TrieType::MAX_LEVEL, typename TrieType::WordIndexType > query(trie.get_word_index());
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -210,7 +211,7 @@ namespace uva {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                         //Parse the line into an N-Gram
-                        ARPAGramBuilder::gram_to_tokens(line, query.m_gram);
+                        ARPAGramBuilder<TrieType::MAX_LEVEL, typename TrieType::WordIndexType>::gram_to_tokens(line, query.m_gram);
 
                         //There can be an empty or "unreadable" line in the text file, just skip it ...
                         if (query.m_gram.level > 0) {
@@ -280,22 +281,22 @@ namespace uva {
                         AFileReader &modelFile, AFileReader &testFile) {
                     switch (params.m_trie_type) {
                         case TrieTypesEnum::C2DH_TRIE:
-                            execute < TrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2DM_TRIE:
-                            execute < TrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2WA_TRIE:
-                            execute < TrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::G2DM_TRIE:
-                            execute < TrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>> >(params, modelFile, testFile);
+                            execute < GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CA_TRIE:
-                            execute < TrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> >(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CH_TRIE:
-                            execute < TrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> > (params, modelFile, testFile);
+                            execute < GenericTrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>> > (params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;

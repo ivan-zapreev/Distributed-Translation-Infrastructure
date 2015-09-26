@@ -65,28 +65,29 @@ namespace uva {
              * @param TrieType the type of word index to be used
              */
             template<typename TrieType>
-            class TrieDriver : public GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> {
+            class GenericTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
             public:
-                typedef GenericTrieBase<TrieType::max_level, typename TrieType::WordIndexType> BASE;
+                static const TModelLevel N;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
+                typedef GenericTrieBase<N, WordIndexType> BASE;
 
                 //The typedef for the retrieving function
-                typedef function<void(const TrieDriver&, TMGramQuery & query) > TRetrieveDataFunct;
+                typedef function<void(const GenericTrieDriver&, TMGramQuery & query) > TRetrieveDataFunct;
 
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
-                explicit TrieDriver(WordIndexType & word_index)
-                : GenericTrieBase<TrieType::max_level, WordIndexType> (word_index),
+                explicit GenericTrieDriver(WordIndexType & word_index)
+                : GenericTrieBase<N, WordIndexType> (word_index),
                 m_trie(word_index), m_is_bitmap_hash_cache(m_trie.is_bitmap_hash_cache()) {
                 }
 
                 /**
                  * @see GenericTrieBase
                  */
-                void pre_allocate(const size_t counts[TrieType::max_level]) {
+                void pre_allocate(const size_t counts[N]) {
                     //Pre-allocate the bitmap-hash caches if needed
                     if (m_is_bitmap_hash_cache) {
                         for (size_t idx = 0; idx < BASE::NUM_M_N_GRAM_LEVELS; ++idx) {
@@ -101,7 +102,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_1_gram(const T_M_Gram &gram) {
+                inline void add_1_gram(const T_M_Gram<N, WordIndexType> &gram) {
                     m_trie.add_1_gram(gram);
                 };
 
@@ -109,7 +110,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel level>
-                inline void add_m_gram(const T_M_Gram & gram) {
+                inline void add_m_gram(const T_M_Gram<N, WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -121,7 +122,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_n_gram(const T_M_Gram & gram) {
+                inline void add_n_gram(const T_M_Gram<N, WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -173,7 +174,7 @@ namespace uva {
                  * @param query the given M-Gram query and its state
                  */
                 void execute(TMGramQuery & query) {
-                    LOG_DEBUG << "Starting to execute:" << tokensToString(query.m_gram) << END_LOG;
+                    LOG_DEBUG << "Starting to execute:" << tokens_to_string(query.m_gram) << END_LOG;
 
                     //Make sure that the query is prepared for execution
                     TModelLevel curr_level = query.prepare_query();
@@ -204,7 +205,7 @@ namespace uva {
                 /**
                  * The basic class destructor
                  */
-                virtual ~TrieDriver() {
+                virtual ~GenericTrieDriver() {
                 };
 
             protected:
@@ -227,7 +228,7 @@ namespace uva {
                  * level caches if present.
                  * @param gram the M-gram to cache
                  */
-                inline void register_m_gram_cache(const T_M_Gram &gram) {
+                inline void register_m_gram_cache(const T_M_Gram<N, WordIndexType> &gram) {
                     if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
                         m_bitmap_hash_cach[gram.level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
                     }
@@ -298,32 +299,35 @@ namespace uva {
             };
 
             template<typename TrieType>
-            const typename TrieDriver<TrieType>::TRetrieveDataFunct TrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {
+            const TModelLevel GenericTrieDriver<TrieType>::N = TrieType::MAX_LEVEL;
+
+            template<typename TrieType>
+            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {
                 NULL,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_1>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_2>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_3>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_4>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_5>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_6>,
-                &TrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_7>
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_1>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_2>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_3>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_4>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_5>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_6>,
+                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_7>
             };
 
             template<typename TrieType>
-            const typename TrieDriver<TrieType>::TRetrieveDataFunct TrieDriver<TrieType>::cache_check_add_back_off_weight_func[] = {
+            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_add_back_off_weight_func[] = {
                 NULL,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_1>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_2>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_3>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_4>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_5>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_6>,
-                &TrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_7>
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_1>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_2>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_3>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_4>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_5>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_6>,
+                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_7>
             };
 
 #define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, WORD_IDX_TYPE) \
-            template class TrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE>; \
-            typedef TrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE> TTrieDriver##TRIE_NAME##WORD_IDX_TYPE;
+            template class GenericTrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE>; \
+            typedef GenericTrieDriver<PREFIX##TRIE_NAME##WORD_IDX_TYPE> TTrieDriver##TRIE_NAME##WORD_IDX_TYPE;
 
 #define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME(PREFIX, TRIE_NAME) \
             INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, Basic); \
@@ -336,7 +340,7 @@ INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME( TLayeredTrieDriver, TRIE_NAME);
 
 #define INSTANTIATE_TYPEDEF_GENERIC_TRIE_DRIVERS_NAME(TRIE_NAME) \
 INSTANTIATE_TYPEDEF_TRIE_DRIVERS_PREFIX_NAME( T, TRIE_NAME);         
-            
+
             //Make sure that there will be templates instantiated, at least for the given parameter values
             INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(C2DMapTrie);
             INSTANTIATE_TYPEDEF_LAYERED_TRIE_DRIVERS_NAME(C2DHybridTrie);

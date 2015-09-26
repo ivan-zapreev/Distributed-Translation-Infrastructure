@@ -105,9 +105,9 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::pre_allocate(size_t counts[TrieType::max_level]) {
+                void ARPATrieBuilder<TrieType>::pre_allocate(size_t counts[N]) {
                     LOG_INFO << "Expected number of M-grams per level: "
-                            << arrayToString<size_t, TrieType::max_level>(counts) << END_LOG;
+                            << arrayToString<size_t, N>(counts) << END_LOG;
 
                     //Do the progress bard indicator
                     Logger::startProgressBar(string("Pre-allocating memory"));
@@ -123,7 +123,7 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::read_data(size_t counts[TrieType::max_level]) {
+                void ARPATrieBuilder<TrieType>::read_data(size_t counts[N]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
@@ -193,7 +193,7 @@ namespace uva {
                 template<typename TrieType>
                 void ARPATrieBuilder<TrieType>::read_m_gram_level(const TModelLevel level) {
                     //Declare the pointer to the N-Grma builder
-                    ARPAGramBuilder *pNGBuilder = NULL;
+                    ARPAGramBuilder<N, WordIndexType> *pNGBuilder = NULL;
                     ARPAGramBuilderFactory<TrieType>::get_builder(level, m_trie, &pNGBuilder);
 
                     try {
@@ -247,11 +247,11 @@ namespace uva {
                 template<typename TrieType>
                 void ARPATrieBuilder<TrieType>::check_and_go_m_grams(const TModelLevel level) {
                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << TrieType::max_level
+                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << N
                             << ", the current line is '" << m_line << "'" << END_LOG;
 
                     //Test if we need to move on or we are done or an error is detected
-                    if (level < TrieType::max_level) {
+                    if (level < N) {
                         //There are still N-Gram levels to read
                         if (m_line != END_OF_ARPA_FILE) {
                             //We did not encounter the \end\ tag yet so do recursion to the next level
@@ -259,7 +259,7 @@ namespace uva {
                         } else {
                             //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                             LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                    << "nothing more to read. The maximum allowed N-gram level is " << TrieType::max_level << END_LOG;
+                                    << "nothing more to read. The maximum allowed N-gram level is " << N << END_LOG;
                         }
                     } else {
                         //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
@@ -396,7 +396,7 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                         //The tokens array to put words into
-                        TextPieceReader tokens[TrieType::max_level];
+                        TextPieceReader tokens[N];
 
                         //Read the current level N-grams and add them to the trie
                         while (m_file.getLine(m_line)) {
@@ -405,7 +405,7 @@ namespace uva {
                             if (m_line.hasMore()) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
-                                if (ARPAGramBuilder::gram_line_to_tokens(m_line, tokens, level)) {
+                                if (ARPAGramBuilder<N, WordIndexType>::gram_line_to_tokens(m_line, tokens, level)) {
                                     //Add words to the index: count them
                                     for (size_t idx = 0; idx < level; idx++) {
                                         LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;
@@ -424,7 +424,7 @@ namespace uva {
                         LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
 
                         //Test if we need to move on or we are done or an error is detected
-                        if ((level < TrieType::max_level) && (m_line != END_OF_ARPA_FILE)) {
+                        if ((level < N) && (m_line != END_OF_ARPA_FILE)) {
                             LOG_DEBUG1 << "Finished counting words in " << SSTR(level)
                                     << "-grams, going to the next level" << END_LOG;
                             //There are still N-Gram levels to read
@@ -457,8 +457,8 @@ namespace uva {
                     read_headers();
 
                     //Read the DATA section of ARPA
-                    size_t counts[TrieType::max_level];
-                    memset(counts, 0, TrieType::max_level * sizeof (size_t));
+                    size_t counts[N];
+                    memset(counts, 0, N * sizeof (size_t));
                     read_data(counts);
                 }
 
@@ -476,8 +476,8 @@ namespace uva {
 
                     //Declare an array of N-Gram counts, that is to be filled from the
                     //headers. This data will be used to pre-allocate memory for the Trie 
-                    size_t counts[TrieType::max_level];
-                    memset(counts, 0, TrieType::max_level * sizeof (size_t));
+                    size_t counts[N];
+                    memset(counts, 0, N * sizeof (size_t));
 
                     try {
                         //Read the first line from the file

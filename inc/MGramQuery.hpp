@@ -89,7 +89,7 @@ namespace uva {
                 TShortId m_query_word_ids[N] = {};
 
                 //Stores the query m-gram
-                T_M_Gram m_gram;
+                T_M_Gram<N, WordIndexType> m_gram;
 
                 //Stores the reference to the word index to be used
                 const WordIndexType & m_word_index;
@@ -104,7 +104,7 @@ namespace uva {
                  * The basic constructor for the structure
                  * @param word_index the word index reference to store
                  */
-                MGramQuery(WordIndexType & word_index) : m_word_index(word_index) {
+                MGramQuery(WordIndexType & word_index) : m_gram(word_index), m_word_index(word_index) {
                 }
 
                 /**
@@ -135,7 +135,7 @@ namespace uva {
                     m_unk_word_flags = 0;
 
                     //Transform the given M-gram into word hashes and store the unk flags.
-                    m_gram.store_m_gram_word_ids<N, WordIndexType, true>(m_query_word_ids, m_unk_word_flags, m_word_index);
+                    m_gram.template store_m_gram_word_ids<true>(m_query_word_ids, m_unk_word_flags, m_word_index);
 
                     //return the m-gram level
                     return m_gram.level;

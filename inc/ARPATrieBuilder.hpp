@@ -49,6 +49,9 @@ namespace uva {
                 template<typename TrieType>
                 class ARPATrieBuilder {
                 public:
+                    static const TModelLevel N;
+                    typedef typename TrieType::WordIndexType WordIndexType;
+
                     /**
                      * The basic constructor that accepts a trie to be build up and the file stream to read from
                      * @param trie the trie to fill in with data from the text corpus
@@ -90,7 +93,7 @@ namespace uva {
                      * Allows to pre-allocate memory in the tries and dictionaries
                      * @param counts the learned M-gram counts
                      */
-                    void pre_allocate(size_t counts[TrieType::max_level]);
+                    void pre_allocate(size_t counts[N]);
 
                     /**
                      * This method is used to read and process the ARPA data section
@@ -98,14 +101,14 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void read_data(size_t counts[TrieType::max_level]);
+                    void read_data(size_t counts[N]);
 
                     /**
                      * Allows to read the given Trie level M-grams from the file
                      * @param level the currently read M-gram level M
                      */
                     void read_m_gram_level(const TModelLevel level);
-                    
+
                     /**
                      * Checks if this is the last M-gram level we had to read,
                      * if no read more otherwise we are done.
@@ -123,7 +126,7 @@ namespace uva {
                      * Allows to perform the word index post-actions if needed
                      */
                     void do_word_index_post_1_gram_actions();
-                    
+
                     /**
                      * If the word counts are needed then this method will 
                      * read all the M-gram sections of the ARPA file to get them.
@@ -156,6 +159,9 @@ namespace uva {
                      */
                     void read_grams(const TModelLevel level);
                 };
+
+                template<typename TrieType>
+                const TModelLevel ARPATrieBuilder<TrieType>::N = TrieType::MAX_LEVEL;
             }
         }
     }

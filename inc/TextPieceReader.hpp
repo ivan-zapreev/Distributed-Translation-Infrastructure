@@ -434,7 +434,7 @@ namespace uva {
              * @return the resulting string
              */
             template<TModelLevel N = M_GRAM_LEVEL_MAX>
-            inline string tokensToString(const TextPieceReader tokens[N], const TModelLevel level) {
+            inline string tokens_to_string(const TextPieceReader tokens[N], const TModelLevel level) {
                 const TModelLevel num_tokens = min<TModelLevel>(level, N);
                 LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
                 return tokensToString(tokens, 0, num_tokens - 1);
