@@ -45,14 +45,14 @@ namespace uva {
 
             /**
              * This is the hybrid memory trie implementation class. It has three template parameters.
-             * @param N the maximum number of levelns in the trie.
+             * @param MAX_LEVEL the maximum number of levelns in the trie.
              * @param StorageFactory the factory to create storage containers
              * @param StorageContainer the storage container type that is created by the factory
              */
-            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
-            class W2CHybridTrie : public LayeredTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
+            class W2CHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef LayeredTrieBase<N, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 /**
                  * The basic constructor
@@ -94,7 +94,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -151,7 +151,7 @@ namespace uva {
                 size_t m_word_arr_size;
 
                 //The factory to produce the storage containers
-                StorageFactory<N> * m_storage_factory;
+                StorageFactory<MAX_LEVEL> * m_storage_factory;
 
                 //M-Gram data for 1 <= M < N. This is a 2D array storing
                 //For each M-Gram level M an array of prob-back_off values
@@ -160,7 +160,7 @@ namespace uva {
                 // ...
                 // m_mgram_data[M][#M-Grams - 1] --//--
                 // m_mgram_data[M][#M-Grams] --//--
-                TProbBackOffEntry * m_mgram_data[N - 1];
+                TProbBackOffEntry * m_mgram_data[MAX_LEVEL - 1];
 
                 //M-Gram data for 1 < M <= N. This is a 2D array storing
                 //For each M-Gram level M an array of #words elements of
@@ -179,11 +179,11 @@ namespace uva {
                 //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                 //4 byte integer, so we minimize memory usage by storing float
                 //probability in place of the index.
-                StorageContainer** m_mgram_mapping[N - 1];
+                StorageContainer** m_mgram_mapping[MAX_LEVEL - 1];
 
                 //Will store the next context index counters per M-gram level
                 //for 1 < M < N.
-                const static TModelLevel NUM_IDX_COUNTERS = N - 2;
+                const static TModelLevel NUM_IDX_COUNTERS = MAX_LEVEL - 2;
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
             };

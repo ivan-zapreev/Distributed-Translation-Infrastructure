@@ -235,8 +235,8 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            C2DHybridTrie<N, WordIndexType>::~C2DHybridTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            C2DHybridTrie<MAX_LEVEL, WordIndexType>::~C2DHybridTrie() {
                 //Deallocate One-Grams
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;

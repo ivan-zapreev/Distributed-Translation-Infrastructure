@@ -164,8 +164,8 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            C2WArrayTrie<N, WordIndexType>::~C2WArrayTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            C2WArrayTrie<MAX_LEVEL, WordIndexType>::~C2WArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;

@@ -78,10 +78,10 @@ namespace uva {
              *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
              * 
              */
-            template<TModelLevel N, typename WordIndexType>
-            class C2DMapTrie : public LayeredTrieBase<N, WordIndexType>{
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class C2DMapTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType>{
             public:
-                typedef LayeredTrieBase<N, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -146,7 +146,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -216,9 +216,9 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TProbBackOffEntry, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[N - BASE::MGRAM_IDX_OFFSET];
+                TMGramAllocator * pMGramAlloc[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[N - BASE::MGRAM_IDX_OFFSET];
+                TMGramsMap * pMGramMap[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -232,14 +232,14 @@ namespace uva {
                 TNGramsMap * pNGramMap;
 
                 //The structure for storing the hash key values statistics
-                pair<TLongId, TLongId> hashSizes[N];
+                pair<TLongId, TLongId> hashSizes[MAX_LEVEL];
 
                 /**
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
                 C2DMapTrie(const C2DMapTrie & orig)
-                : LayeredTrieBase<N, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
+                : LayeredTrieBase<MAX_LEVEL, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -248,21 +248,21 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateOGrams(const size_t counts[N]);
+                void preAllocateOGrams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateMGrams(const size_t counts[N]);
+                void preAllocateMGrams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateNGrams(const size_t counts[N]);
+                void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
             };
             
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DMapTrieBasic;

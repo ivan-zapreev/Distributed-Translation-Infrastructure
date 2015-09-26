@@ -65,7 +65,7 @@ namespace uva {
                 /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
                  */
-                template<TModelLevel N, typename WordIndexType>
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
                 class T_M_Gram {
                 public:
 
@@ -84,7 +84,7 @@ namespace uva {
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader context;
                     //Stores the m-gram tokens
-                    TextPieceReader tokens[N];
+                    TextPieceReader tokens[MAX_LEVEL];
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel level;
 
@@ -167,9 +167,9 @@ namespace uva {
                      * @paam unk_word_flags the variable into which the word flags will be stored.
                      */
                     template<bool is_unk_flags>
-                    inline void store_m_gram_word_ids(TShortId word_ids[N], uint8_t & unk_word_flags, const WordIndexType & word_index) const {
+                    inline void store_m_gram_word_ids(TShortId word_ids[MAX_LEVEL], uint8_t & unk_word_flags, const WordIndexType & word_index) const {
                         //The start index depends on the value M of the given M-Gram
-                        TModelLevel idx = N - level;
+                        TModelLevel idx = MAX_LEVEL - level;
                         LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
                         for (TModelLevel i = 0; i != level; ++i) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID

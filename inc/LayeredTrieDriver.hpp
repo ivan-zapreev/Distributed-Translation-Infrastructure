@@ -60,8 +60,8 @@ namespace uva {
         namespace tries {
 
             //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(N, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.level << "-Gram : " << tokens_to_string<N>(gram)                     \
+#define REPORT_COLLISION_WARNING(MAX_LEVEL, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
+            LOG_WARNING << "The " << gram.level << "-Gram : " << tokens_to_string<MAX_LEVEL>(gram)           \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -76,10 +76,10 @@ namespace uva {
             template<typename TrieType >
             class LayeredTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
             public:
-                static const TModelLevel N;
+                static const TModelLevel MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
-                typedef GenericTrieBase<N, WordIndexType> BASE;
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
                 typedef function<bool (const TrieType&, const TShortId, TLongId &) > TGetCtxIdFunct;
 
                 /**
@@ -87,7 +87,7 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit LayeredTrieDriver(WordIndexType & word_index)
-                : GenericTrieBase<N, WordIndexType>(word_index), m_trie(word_index),
+                : GenericTrieBase<MAX_LEVEL, WordIndexType>(word_index), m_trie(word_index),
                 m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
 
                     //Clear the memory for the buffer and initialize it
@@ -108,7 +108,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void pre_allocate(const size_t counts[N]) {
+                void pre_allocate(const size_t counts[MAX_LEVEL]) {
                     //Do the pre-allocation in the trie
                     m_trie.pre_allocate(counts);
                 };
@@ -116,18 +116,18 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void add_1_gram(const T_M_Gram<N, WordIndexType> &gram);
+                void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
                  */
                 template<TModelLevel level>
-                void add_m_gram(const T_M_Gram<N, WordIndexType> &gram);
+                void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
                  */
-                void add_n_gram(const T_M_Gram<N, WordIndexType> &gram);
+                void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
@@ -175,7 +175,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 LayeredTrieDriver(const LayeredTrieDriver& orig)
-                : GenericTrieBase<N, WordIndexType>(orig.get_word_index()),
+                : GenericTrieBase<MAX_LEVEL, WordIndexType>(orig.get_word_index()),
                 m_trie(orig.get_word_index()),
                 m_chached_ctx(), m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
@@ -206,7 +206,7 @@ namespace uva {
                  */
                 template<bool is_back_off, TModelLevel curr_level>
                 inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) const {
-                    const TModelLevel mgram_end_idx = (is_back_off ? (N - 2) : (N - 1));
+                    const TModelLevel mgram_end_idx = (is_back_off ? (MAX_LEVEL - 2) : (MAX_LEVEL - 1));
                     const TModelLevel end_idx = mgram_end_idx;
                     const TModelLevel begin_idx = mgram_end_idx - (curr_level - 1);
                     TModelLevel idx = begin_idx;
@@ -252,7 +252,7 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<TModelLevel level, DebugLevelsEnum log_level>
-                inline void get_context_id(const T_M_Gram<N, WordIndexType> &gram, const TShortId mgram_word_ids[BASE::MAX_LEVEL], TLongId &ctxId) {
+                inline void get_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram, const TShortId mgram_word_ids[BASE::MAX_LEVEL], TLongId &ctxId) {
 
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctxId)) {
@@ -315,16 +315,16 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool get_cached_context_id(const T_M_Gram<N, WordIndexType> &mGram, TLongId & result) const {
+                inline bool get_cached_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & result) const {
                     if (m_chached_ctx == mGram.context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
-                                << "], for m-gram: " << tokens_to_string<N>(mGram)
+                                << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
-                                << "], for m-gram: " << tokens_to_string<N>(mGram)
+                                << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
@@ -335,9 +335,9 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void set_cache_context_id(const T_M_Gram<N, WordIndexType> &mGram, TLongId & stx_id) {
+                inline void set_cache_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokens_to_string<N>(mGram) << END_LOG;
+                            << ", for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
                     m_chached_ctx_id = stx_id;
@@ -362,7 +362,7 @@ namespace uva {
             };
 
             template<typename TrieType>
-            const TModelLevel LayeredTrieDriver<TrieType>::N = TrieType::MAX_LEVEL;
+            const TModelLevel LayeredTrieDriver<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
 
             template<typename TrieType>
             const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {

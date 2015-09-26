@@ -86,8 +86,8 @@ namespace uva {
                 m_N_gram_data = new TProbBucket[num_buckets[N - 1]];
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            G2DMapTrie<N, WordIndexType>::~G2DMapTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            G2DMapTrie<MAX_LEVEL, WordIndexType>::~G2DMapTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     //De-allocate one grams

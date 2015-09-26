@@ -61,10 +61,10 @@ namespace uva {
              * in the most efficient manner. The lookup should be just O(1) whereas in
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
-            template<TModelLevel N, typename WordIndexType>
-            class C2DHybridTrie : public LayeredTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class C2DHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef LayeredTrieBase<N, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -131,7 +131,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -229,7 +229,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DHybridTrie(const C2DHybridTrie & orig)
-                : LayeredTrieBase<N, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
+                : LayeredTrieBase<MAX_LEVEL, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
@@ -238,21 +238,21 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateOGrams(const size_t counts[N]);
+                void preAllocateOGrams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateMGrams(const size_t counts[N]);
+                void preAllocateMGrams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateNGrams(const size_t counts[N]);
+                void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
 
             };
             

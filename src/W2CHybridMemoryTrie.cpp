@@ -222,17 +222,17 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+            W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                 //Delete the probability and back-off data
-                for (TModelLevel idx = 0; idx < (N - 1); idx++) {
+                for (TModelLevel idx = 0; idx < (MAX_LEVEL - 1); idx++) {
                     //Delete the prob/back-off arrays per level
                     if (m_mgram_data[idx] != NULL) {
                         delete[] m_mgram_data[idx];
                     }
                 }
                 //Delete the mapping data
-                for (TModelLevel idx = 0; idx < (N - 1); idx++) {
+                for (TModelLevel idx = 0; idx < (MAX_LEVEL - 1); idx++) {
                     //Delete the word arrays per level
                     if (m_mgram_mapping[idx] != NULL) {
                         for (TShortId widx = 0; widx < m_word_arr_size; widx++) {

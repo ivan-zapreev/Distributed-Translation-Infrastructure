@@ -236,11 +236,11 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            C2DMapTrie<N, WordIndexType>::~C2DMapTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            C2DMapTrie<MAX_LEVEL, WordIndexType>::~C2DMapTrie() {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics
-                    for (int i = 0; i < N; i++) {
+                    for (int i = 0; i < MAX_LEVEL; i++) {
                         LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
                     }
                 }
@@ -251,7 +251,7 @@ namespace uva {
                 }
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
-                for (int idx = 0; idx < (N - 2); idx++) {
+                for (int idx = 0; idx < (MAX_LEVEL - 2); idx++) {
                     deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
                 }
 

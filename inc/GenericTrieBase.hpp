@@ -68,22 +68,22 @@ namespace uva {
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            template<TModelLevel N, typename WordIndexType>
-            class GenericTrieBase : public WordIndexTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class GenericTrieBase : public WordIndexTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef MGramQuery<N, WordIndexType> TMGramQuery;
+                typedef MGramQuery<MAX_LEVEL, WordIndexType> TMGramQuery;
 
                 //The offset, relative to the M-gram level M for the mgram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 //Will store the the number of M levels such that 1 < M < N.
-                const static TModelLevel NUM_M_GRAM_LEVELS = N - MGRAM_IDX_OFFSET;
+                const static TModelLevel NUM_M_GRAM_LEVELS = MAX_LEVEL - MGRAM_IDX_OFFSET;
 
                 //Will store the the number of M levels such that 1 < M <= N.
-                const static TModelLevel NUM_M_N_GRAM_LEVELS = N - 1;
+                const static TModelLevel NUM_M_N_GRAM_LEVELS = MAX_LEVEL - 1;
 
                 //Compute the N-gram index in in the arrays for M and N grams
-                static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = N - MGRAM_IDX_OFFSET;
+                static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = MAX_LEVEL - MGRAM_IDX_OFFSET;
 
                 // Stores the undefined index array value
                 static const TShortId UNDEFINED_ARR_IDX = 0;
@@ -95,7 +95,7 @@ namespace uva {
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
-                explicit GenericTrieBase(WordIndexType & word_index) :WordIndexTrieBase<N, WordIndexType> (word_index){
+                explicit GenericTrieBase(WordIndexType & word_index) :WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index){
                 }
 
                 /**
@@ -103,7 +103,7 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @param gram the 1-Gram data
                  */
-                inline void add_1_gram(const T_M_Gram<N, WordIndexType> &gram) {
+                inline void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -113,7 +113,7 @@ namespace uva {
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
                 template<TModelLevel level>
-                inline void add_m_gram(const T_M_Gram<N, WordIndexType> & gram) {
+                inline void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -122,7 +122,7 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a N-Gram!
                  * @param gram the N-Gram data
                  */
-                inline void add_n_gram(const T_M_Gram<N, WordIndexType> & gram) {
+                inline void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                     THROW_MUST_OVERRIDE();
                 };
 

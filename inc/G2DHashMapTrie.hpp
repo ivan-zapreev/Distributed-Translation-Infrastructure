@@ -96,12 +96,12 @@ namespace uva {
 
             /**
              * This is a Gram to Data trie that is implemented as a HashMap.
-             * @param N - the maximum level of the considered N-gram, i.e. the N value
+             * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
              */
-            template<TModelLevel N, typename WordIndexType>
-            class G2DMapTrie : public GenericTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class G2DMapTrie : public GenericTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef GenericTrieBase<N, WordIndexType> BASE;
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 //The typedef for the retrieving function
                 typedef function<uint32_t(const G2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
@@ -135,28 +135,28 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                void add_1_gram(const T_M_Gram<N, WordIndexType> &oGram);
+                void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &oGram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
                 template<TModelLevel level>
-                void add_m_gram(const T_M_Gram<N, WordIndexType> &mGram);
+                void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                void add_n_gram(const T_M_Gram<N, WordIndexType> &nGram);
+                void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &nGram);
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
@@ -165,7 +165,7 @@ namespace uva {
                  * @see ATrie
                  */
                 template<TModelLevel curr_level>
-                void get_prob_weight(MGramQuery<N, WordIndexType> & query) const;
+                void get_prob_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -175,7 +175,7 @@ namespace uva {
                  * @see ATrie
                  */
                 template<TModelLevel curr_level>
-                void add_back_off_weight(MGramQuery<N, WordIndexType> & query) const;
+                void add_back_off_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const;
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -235,7 +235,7 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param bucket_idx the resulting bucket index
                  */
-                inline void get_bucket_id(const T_M_Gram<N, WordIndexType> &gram, TShortId & bucket_idx) const {
+                inline void get_bucket_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram, TShortId & bucket_idx) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint64_t gram_hash = gram.hash();
@@ -249,7 +249,7 @@ namespace uva {
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(gram.level) << "-gram: " << tokens_to_string<N>(gram)
+                        msg << "The " << SSTR(gram.level) << "-gram: " << tokens_to_string<MAX_LEVEL>(gram)
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
                                 << ", must be within [0, " << SSTR(num_buckets[gram.level - 1]) << "]";
                         throw Exception(msg.str());
@@ -300,7 +300,7 @@ namespace uva {
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
-                TShortId num_buckets[N];
+                TShortId num_buckets[MAX_LEVEL];
 
                 /**
                  * Allows to perform search in the bucket for the given M-gram id
@@ -329,7 +329,7 @@ namespace uva {
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename BUCKET_TYPE, bool back_off, TModelLevel curr_level >
-                bool get_payload_from_gram_level(const MGramQuery<N, WordIndexType> & query, const BUCKET_TYPE & ref,
+                bool get_payload_from_gram_level(const MGramQuery<MAX_LEVEL, WordIndexType> & query, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };

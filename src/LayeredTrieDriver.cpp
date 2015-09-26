@@ -45,7 +45,7 @@ namespace uva {
         namespace tries {
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram<N, WordIndexType> &gram) {
+            void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                 //First get the token/word from the 1-Gram
                 const TextPieceReader & token = gram.tokens[0];
 
@@ -60,7 +60,7 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(N, gram,
+                    REPORT_COLLISION_WARNING(MAX_LEVEL, gram,
                             wordHash, AWordIndex::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
                             gram.prob, gram.back_off);
@@ -72,20 +72,20 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokens_to_string<N>(gram) << " wordHash = "
+                        << tokens_to_string<MAX_LEVEL>(gram) << " wordHash = "
                         << wordHash << END_LOG;
             };
 
             template<typename TrieType >
             template<TModelLevel level>
-            void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram<N, WordIndexType> &gram) {
+            void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                 LOG_DEBUG2 << "Adding a " << SSTR(level) << "-Gram "
-                        << tokens_to_string<N>(gram) << " to the Trie" << END_LOG;
+                        << tokens_to_string<MAX_LEVEL>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 2. Get the N-gram word ids
-                TShortId mgram_word_ids[N] = {};
+                TShortId mgram_word_ids[MAX_LEVEL] = {};
                 uint8_t dummy;
                 gram.template store_m_gram_word_ids < false > (mgram_word_ids, dummy, m_trie.get_word_index());
 
@@ -94,11 +94,11 @@ namespace uva {
                 get_context_id<level, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
 
                 // 3. Insert the probability data into the trie
-                TShortId wordId = mgram_word_ids[N - 1];
+                TShortId wordId = mgram_word_ids[MAX_LEVEL - 1];
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokens_to_string<N>(gram);
+                    msg << "Could not get end wordId for " << tokens_to_string<MAX_LEVEL>(gram);
                     throw Exception(msg.str());
                 }
                 TProbBackOffEntry& pbData = m_trie.template make_m_gram_data_ref<level>(wordId, ctxId);
@@ -106,7 +106,7 @@ namespace uva {
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(N,
+                    REPORT_COLLISION_WARNING(MAX_LEVEL,
                             gram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
                             gram.prob, gram.back_off);
@@ -118,32 +118,32 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokens_to_string<N>(gram) << " contextHash = "
+                        << tokens_to_string<MAX_LEVEL>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram<N, WordIndexType> &gram) {
-                LOG_DEBUG2 << "Adding a " << N << "-Gram "
-                        << tokens_to_string<N>(gram) << " to the Trie" << END_LOG;
+            void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
+                LOG_DEBUG2 << "Adding a " << MAX_LEVEL << "-Gram "
+                        << tokens_to_string<MAX_LEVEL>(gram) << " to the Trie" << END_LOG;
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Get the N-gram word ids
-                TShortId mgram_word_ids[N] = {};
+                TShortId mgram_word_ids[MAX_LEVEL] = {};
                 uint8_t dummy;
                 gram.template store_m_gram_word_ids <false > (mgram_word_ids, dummy, m_trie.get_word_index());
 
                 // 2. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
-                get_context_id<N, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
+                get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
 
                 // 3. Insert the probability data into the trie
-                TShortId wordId = mgram_word_ids[N - 1];
+                TShortId wordId = mgram_word_ids[MAX_LEVEL - 1];
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokens_to_string<N>(gram);
+                    msg << "Could not get end wordId for " << tokens_to_string<MAX_LEVEL>(gram);
                     throw Exception(msg.str());
                 }
                 TLogProbBackOff& pData = m_trie.make_n_gram_data_ref(wordId, ctxId);
@@ -152,7 +152,7 @@ namespace uva {
                 if (DO_SANITY_CHECKS && (pData != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(N,
+                    REPORT_COLLISION_WARNING(MAX_LEVEL,
                             gram, wordId, ctxId,
                             pData, UNDEF_LOG_PROB_WEIGHT,
                             gram.prob, UNDEF_LOG_PROB_WEIGHT);
@@ -162,7 +162,7 @@ namespace uva {
                 pData = gram.prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokens_to_string<N>(gram) << " contextHash = "
+                        << tokens_to_string<MAX_LEVEL>(gram) << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
@@ -183,11 +183,11 @@ namespace uva {
                     //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (get_query_context_Id<false, curr_level>(query, ctx_id)) {
                         LOG_DEBUG2 << "Got query context id: " << ctx_id << END_LOG;
-                        if (curr_level == N) {
+                        if (curr_level == MAX_LEVEL) {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff n_gram_prob = ZERO_PROB_WEIGHT;
                             if (m_trie.get_n_gram_data_ref(word_id, ctx_id, n_gram_prob)) {
-                                LOG_DEBUG2 << "The " << N << "-Gram log_" << LOG_PROB_WEIGHT_BASE
+                                LOG_DEBUG2 << "The " << MAX_LEVEL << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (wordId,ctxId) = (" << word_id << ", "
                                         << ctx_id << "), is: " << query.result.prob << END_LOG;
                                 query.result.prob = n_gram_prob;
@@ -310,12 +310,12 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_ADD_M_GRAM_METHOD_DRIVER_TYPE(DRIVER_TYPE) \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram<DRIVER_TYPE::N, DRIVER_TYPE::WordIndexType> & gram);
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram<DRIVER_TYPE::MAX_LEVEL, DRIVER_TYPE::WordIndexType> & gram);
 
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
             template class LayeredTrieDriver< T##TRIE_NAME##TYPE >; \

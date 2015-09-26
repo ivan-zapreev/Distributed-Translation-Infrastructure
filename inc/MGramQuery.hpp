@@ -65,7 +65,7 @@ namespace uva {
              * Stores the query and its internal for the sake of re-usability and
              * independency from the Tries and executor.
              */
-            template<TModelLevel N, typename WordIndexType>
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             struct MGramQuery {
                 //Stores the unknown word masks for the probability computations,
                 //up to and including 8-grams:
@@ -86,10 +86,10 @@ namespace uva {
                 uint8_t m_unk_word_flags = 0;
 
                 //The temporary data structure to store the N-gram word ids
-                TShortId m_query_word_ids[N] = {};
+                TShortId m_query_word_ids[MAX_LEVEL] = {};
 
                 //Stores the query m-gram
-                T_M_Gram<N, WordIndexType> m_gram;
+                T_M_Gram<MAX_LEVEL, WordIndexType> m_gram;
 
                 //Stores the reference to the word index to be used
                 const WordIndexType & m_word_index;
@@ -114,16 +114,16 @@ namespace uva {
                  */
                 inline TModelLevel prepare_query() {
                     //Check the number of elements in the N-Gram
-                    if (DO_SANITY_CHECKS && ((m_gram.level < M_GRAM_LEVEL_1) || (m_gram.level > N))) {
+                    if (DO_SANITY_CHECKS && ((m_gram.level < M_GRAM_LEVEL_1) || (m_gram.level > MAX_LEVEL))) {
                         stringstream msg;
-                        msg << "An improper N-Gram size, got " << m_gram.level << ", must be between [1, " << N << "]!";
+                        msg << "An improper N-Gram size, got " << m_gram.level << ", must be between [1, " << MAX_LEVEL << "]!";
                         throw Exception(msg.str());
                     }
                     //Check for the maximum supported unk flag level
-                    if (DO_SANITY_CHECKS && (N > MAX_SUPP_LEVEL)) {
+                    if (DO_SANITY_CHECKS && (MAX_LEVEL > MAX_SUPP_LEVEL)) {
                         stringstream msg;
                         msg << "store_unk_word_flags: Unsupported m-gram level: "
-                                << SSTR(N) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
+                                << SSTR(MAX_LEVEL) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
                                 << "], insufficient m_unk_word_flags capacity!";
                         throw Exception(msg.str());
                     }
@@ -148,7 +148,7 @@ namespace uva {
                 inline const TShortId & get_back_off_end_word_id() {
                     //The word ids are always aligned to the end of the array
                     //so the end word id for the back off m-gram is fixed!
-                    return m_query_word_ids[N - 2];
+                    return m_query_word_ids[MAX_LEVEL - 2];
                 }
 
                 /**
@@ -158,7 +158,7 @@ namespace uva {
                 inline const TShortId & get_end_word_id() {
                     //The word ids are always aligned to the end of the array
                     //so the end word id for the probability m-gram is fixed!
-                    return m_query_word_ids[N - 1];
+                    return m_query_word_ids[MAX_LEVEL - 1];
                 }
 
                 /**

@@ -49,7 +49,7 @@ namespace uva {
                 template<typename TrieType>
                 class ARPATrieBuilder {
                 public:
-                    static const TModelLevel N;
+                    static const TModelLevel MAX_LEVEL;
                     typedef typename TrieType::WordIndexType WordIndexType;
 
                     /**
@@ -93,7 +93,7 @@ namespace uva {
                      * Allows to pre-allocate memory in the tries and dictionaries
                      * @param counts the learned M-gram counts
                      */
-                    void pre_allocate(size_t counts[N]);
+                    void pre_allocate(size_t counts[MAX_LEVEL]);
 
                     /**
                      * This method is used to read and process the ARPA data section
@@ -101,7 +101,7 @@ namespace uva {
                      * @param counts the out parameters to store the retrieved
                      *               N-Gram counts from the data descriptions
                      */
-                    void read_data(size_t counts[N]);
+                    void read_data(size_t counts[MAX_LEVEL]);
 
                     /**
                      * Allows to read the given Trie level M-grams from the file
@@ -161,7 +161,7 @@ namespace uva {
                 };
 
                 template<typename TrieType>
-                const TModelLevel ARPATrieBuilder<TrieType>::N = TrieType::MAX_LEVEL;
+                const TModelLevel ARPATrieBuilder<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
             }
         }
     }

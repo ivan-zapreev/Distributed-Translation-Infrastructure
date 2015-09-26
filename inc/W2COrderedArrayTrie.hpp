@@ -98,12 +98,12 @@ namespace uva {
             /**
              * This is the Context to word array memory trie implementation class.
              * 
-             * @param N the maximum number of levels in the trie.
+             * @param MAX_LEVEL the maximum number of levels in the trie.
              */
-            template<TModelLevel N, typename WordIndexType>
-            class W2CArrayTrie : public LayeredTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class W2CArrayTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef LayeredTrieBase<N, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 /**
                  * The basic constructor
@@ -147,7 +147,7 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * For more details @see ATrie
                  */
-                virtual void pre_allocate(const size_t counts[N]);
+                virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -285,7 +285,7 @@ namespace uva {
 
                 virtual void post_n_grams() {
                     //Call the base class method first
-                    if (BASE::is_post_grams(N)) {
+                    if (BASE::is_post_grams(MAX_LEVEL)) {
                         BASE::post_n_grams();
                     }
 

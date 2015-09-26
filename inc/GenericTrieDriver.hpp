@@ -67,10 +67,10 @@ namespace uva {
             template<typename TrieType>
             class GenericTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
             public:
-                static const TModelLevel N;
+                static const TModelLevel MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
-                typedef GenericTrieBase<N, WordIndexType> BASE;
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 //The typedef for the retrieving function
                 typedef function<void(const GenericTrieDriver&, TMGramQuery & query) > TRetrieveDataFunct;
@@ -80,14 +80,14 @@ namespace uva {
                  * @param word_index the word index to be used
                  */
                 explicit GenericTrieDriver(WordIndexType & word_index)
-                : GenericTrieBase<N, WordIndexType> (word_index),
+                : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index),
                 m_trie(word_index), m_is_bitmap_hash_cache(m_trie.is_bitmap_hash_cache()) {
                 }
 
                 /**
                  * @see GenericTrieBase
                  */
-                void pre_allocate(const size_t counts[N]) {
+                void pre_allocate(const size_t counts[MAX_LEVEL]) {
                     //Pre-allocate the bitmap-hash caches if needed
                     if (m_is_bitmap_hash_cache) {
                         for (size_t idx = 0; idx < BASE::NUM_M_N_GRAM_LEVELS; ++idx) {
@@ -102,7 +102,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_1_gram(const T_M_Gram<N, WordIndexType> &gram) {
+                inline void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                     m_trie.add_1_gram(gram);
                 };
 
@@ -110,7 +110,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel level>
-                inline void add_m_gram(const T_M_Gram<N, WordIndexType> & gram) {
+                inline void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -122,7 +122,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_n_gram(const T_M_Gram<N, WordIndexType> & gram) {
+                inline void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -228,7 +228,7 @@ namespace uva {
                  * level caches if present.
                  * @param gram the M-gram to cache
                  */
-                inline void register_m_gram_cache(const T_M_Gram<N, WordIndexType> &gram) {
+                inline void register_m_gram_cache(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                     if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
                         m_bitmap_hash_cach[gram.level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
                     }
@@ -299,7 +299,7 @@ namespace uva {
             };
 
             template<typename TrieType>
-            const TModelLevel GenericTrieDriver<TrieType>::N = TrieType::MAX_LEVEL;
+            const TModelLevel GenericTrieDriver<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
 
             template<typename TrieType>
             const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {

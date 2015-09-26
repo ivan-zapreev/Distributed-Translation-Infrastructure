@@ -72,15 +72,15 @@ namespace uva {
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            template<TModelLevel N, typename WordIndexType>
-            class LayeredTrieBase : public GenericTrieBase<N, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            class LayeredTrieBase : public GenericTrieBase<MAX_LEVEL, WordIndexType> {
             public:
 
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
-                explicit LayeredTrieBase(WordIndexType & word_index) : GenericTrieBase<N, WordIndexType> (word_index) {
+                explicit LayeredTrieBase(WordIndexType & word_index) : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
                 }
 
                 /**
@@ -180,14 +180,14 @@ namespace uva {
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void get_prob_weight(MGramQuery<N, WordIndexType> & query) const {
+                inline void get_prob_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void add_back_off_weight(MGramQuery<N, WordIndexType> & query) const {
+                inline void add_back_off_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
             };
