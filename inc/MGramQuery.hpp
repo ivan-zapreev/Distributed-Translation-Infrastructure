@@ -58,7 +58,7 @@ namespace uva {
              * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
              */
             typedef struct {
-                TLogProbBackOff prob;
+                TLogProbBackOff m_prob;
             } TQueryResult;
 
             /**
@@ -67,35 +67,11 @@ namespace uva {
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             struct MGramQuery {
-                //Stores the unknown word masks for the probability computations,
-                //up to and including 8-grams:
-                // 00000000, 00000001, 00000011, 00000111, 00001111,
-                // 00011111, 00111111, 01111111, 11111111
-                const static uint8_t PROB_UNK_MASKS[];
-
-                //Stores the unknown word masks for the back-off weight computations,
-                //up to and including 8-grams:
-                // 00000000, 00000010, 00000110, 00001110,
-                // 00011110, 00111110, 01111110, 11111110
-                const static uint8_t BACK_OFF_UNK_MASKS[];
-
-                //THe maximum supported level of the m-gram
-                static constexpr TModelLevel MAX_SUPP_LEVEL = (sizeof (PROB_UNK_MASKS) - 1);
-
-                //Unknown word bits
-                uint8_t m_unk_word_flags = 0;
-
-                //The temporary data structure to store the N-gram word ids
-                TShortId m_query_word_ids[MAX_LEVEL] = {};
-
                 //Stores the query m-gram
                 T_M_Gram<MAX_LEVEL, WordIndexType> m_gram;
 
-                //Stores the reference to the word index to be used
-                const WordIndexType & m_word_index;
-
                 //Stores the query result
-                TQueryResult result = {};
+                TQueryResult m_result = {};
 
                 //Stores the current end word index during the query execution
                 TModelLevel curr_end_word_idx = 0;
@@ -104,7 +80,7 @@ namespace uva {
                  * The basic constructor for the structure
                  * @param word_index the word index reference to store
                  */
-                MGramQuery(WordIndexType & word_index) : m_gram(word_index), m_word_index(word_index) {
+                MGramQuery(WordIndexType & word_index) : m_gram(word_index) {
                 }
 
                 /**
@@ -114,51 +90,36 @@ namespace uva {
                  */
                 inline TModelLevel prepare_query() {
                     //Check the number of elements in the N-Gram
-                    if (DO_SANITY_CHECKS && ((m_gram.level < M_GRAM_LEVEL_1) || (m_gram.level > MAX_LEVEL))) {
+                    if (DO_SANITY_CHECKS && ((m_gram.m_used_level < M_GRAM_LEVEL_1) || (m_gram.m_used_level > MAX_LEVEL))) {
                         stringstream msg;
-                        msg << "An improper N-Gram size, got " << m_gram.level << ", must be between [1, " << MAX_LEVEL << "]!";
-                        throw Exception(msg.str());
-                    }
-                    //Check for the maximum supported unk flag level
-                    if (DO_SANITY_CHECKS && (MAX_LEVEL > MAX_SUPP_LEVEL)) {
-                        stringstream msg;
-                        msg << "store_unk_word_flags: Unsupported m-gram level: "
-                                << SSTR(MAX_LEVEL) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
-                                << "], insufficient m_unk_word_flags capacity!";
+                        msg << "An improper N-Gram size, got " << m_gram.m_used_level << ", must be between [1, " << MAX_LEVEL << "]!";
                         throw Exception(msg.str());
                     }
 
                     //Set the result probability to zero
-                    result.prob = ZERO_PROB_WEIGHT;
+                    m_result.m_prob = ZERO_PROB_WEIGHT;
 
-                    //Re-initialize the flags with zero
-                    m_unk_word_flags = 0;
-
-                    //Transform the given M-gram into word hashes and store the unk flags.
-                    m_gram.template store_m_gram_word_ids<true>(m_query_word_ids, m_unk_word_flags, m_word_index);
+                    //Prepare the m-gram for querying
+                    m_gram.prepare_for_querying();
 
                     //return the m-gram level
-                    return m_gram.level;
+                    return m_gram.m_used_level;
                 }
 
                 /**
                  * Gets the word hash for the end word of the back-off M-Gram
                  * @return the word hash for the end word of the back-off M-Gram
                  */
-                inline const TShortId & get_back_off_end_word_id() {
-                    //The word ids are always aligned to the end of the array
-                    //so the end word id for the back off m-gram is fixed!
-                    return m_query_word_ids[MAX_LEVEL - 2];
+                inline TShortId get_back_off_end_word_id() const {
+                    return m_gram.get_back_off_end_word_id();
                 }
 
                 /**
                  * Gets the word hash for the last word in the M-gram
                  * @return the word hash for the last word in the M-gram
                  */
-                inline const TShortId & get_end_word_id() {
-                    //The word ids are always aligned to the end of the array
-                    //so the end word id for the probability m-gram is fixed!
-                    return m_query_word_ids[MAX_LEVEL - 1];
+                inline TShortId get_end_word_id() const {
+                    return m_gram.get_end_word_id();
                 }
 
                 /**
@@ -166,25 +127,9 @@ namespace uva {
                  * an unknown word for the given current level.
                  */
                 template<bool is_back_off, TModelLevel curr_level>
-                bool has_no_unk_words() const {
-                    uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
-
-                    LOG_DEBUG << "The " << ((is_back_off) ? "back-off" : "probability")
-                            << " level: " << curr_level << " unknown word flags are: "
-                            << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
-
-                    return (level_flags == 0);
+                inline bool has_no_unk_words() const {
+                    return m_gram.template has_no_unk_words<is_back_off, curr_level>();
                 }
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            const uint8_t MGramQuery<N, WordIndexType>::PROB_UNK_MASKS[] = {
-                0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            const uint8_t MGramQuery<N, WordIndexType>::BACK_OFF_UNK_MASKS[] = {
-                0x00, 0x02, 0x06, 0x0E, 0x1E, 0x3E, 0x7E, 0xFE
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

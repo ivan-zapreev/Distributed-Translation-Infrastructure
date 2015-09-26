@@ -173,13 +173,13 @@ namespace uva {
                  */
                 template<TModelLevel N, typename WordIndexType>
                 static string get_mgram_prob_str(const T_M_Gram<N, WordIndexType> & mgram) {
-                    if (mgram.level == 1) {
-                        return mgram.tokens[0].str().empty() ? "<empty>" : mgram.tokens[0].str();
+                    if (mgram.m_used_level == 1) {
+                        return mgram.m_tokens[0].str().empty() ? "<empty>" : mgram.m_tokens[0].str();
                     } else {
-                        if (mgram.level > 1) {
-                            string result = mgram.tokens[mgram.level - 1].str() + " |";
-                            for (TModelLevel idx = 0; idx < (mgram.level - 1); idx++) {
-                                result += string(" ") + mgram.tokens[idx].str();
+                        if (mgram.m_used_level > 1) {
+                            string result = mgram.m_tokens[mgram.m_used_level - 1].str() + " |";
+                            for (TModelLevel idx = 0; idx < (mgram.m_used_level - 1); idx++) {
+                                result += string(" ") + mgram.m_tokens[idx].str();
                             }
                             return result;
                         } else {
@@ -214,14 +214,14 @@ namespace uva {
                         ARPAGramBuilder<TrieType::MAX_LEVEL, typename TrieType::WordIndexType>::gram_to_tokens(line, query.m_gram);
 
                         //There can be an empty or "unreadable" line in the text file, just skip it ...
-                        if (query.m_gram.level > 0) {
+                        if (query.m_gram.m_used_level > 0) {
 
                             //Query the Trie for the results
                             trie.execute(query);
 
                             //Print the results:
-                            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << get_mgram_prob_str(query.m_gram) << " ) ) = " << SSTR(query.result.prob) << END_LOG;
-                            LOG_INFO << "Prob( " << get_mgram_prob_str(query.m_gram) << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.result.prob)) << END_LOG;
+                            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << get_mgram_prob_str(query.m_gram) << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
+                            LOG_INFO << "Prob( " << get_mgram_prob_str(query.m_gram) << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
                         }
                     }
 

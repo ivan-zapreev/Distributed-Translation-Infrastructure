@@ -61,7 +61,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(MAX_LEVEL, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.level << "-Gram : " << tokens_to_string<MAX_LEVEL>(gram)           \
+            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << tokens_to_string<MAX_LEVEL>(gram)           \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -216,16 +216,16 @@ namespace uva {
                             << " context" << END_LOG;
 
                     //Compute the first words' hash
-                    ctx_id = query.m_query_word_ids[idx];
+                    ctx_id = query.m_gram.m_word_ids[idx];
                     LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctx_id) << END_LOG;
                     idx++;
 
                     //Compute the subsequent context ids
                     for (; idx < end_idx;) {
                         LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
-                                << SSTR(query.m_query_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_query_word_ids[idx], ctx_id)) {
-                            LOG_DEBUG1 << "getContextId(" << SSTR(query.m_query_word_ids[idx])
+                                << SSTR(query.m_gram.m_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
+                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_gram.m_word_ids[idx], ctx_id)) {
+                            LOG_DEBUG1 << "getContextId(" << SSTR(query.m_gram.m_word_ids[idx])
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             idx++;
                         } else {
@@ -252,39 +252,46 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<TModelLevel level, DebugLevelsEnum log_level>
-                inline void get_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram, const TShortId mgram_word_ids[BASE::MAX_LEVEL], TLongId &ctxId) {
+                inline void get_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram, TLongId &ctxId) {
+                    //Perform sanity check for the level values they should be the same!
+                    if (DO_SANITY_CHECKS && (level != gram.m_used_level)) {
+                        stringstream msg;
+                        msg << "The improper level values! Template level parameter = " << SSTR(level)
+                                << " but the m-gram level value is: " << SSTR(gram.m_used_level);
+                        throw Exception(msg.str());
+                    }
 
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctxId)) {
                         TModelLevel idx = (BASE::MAX_LEVEL - level);
                         //Get the start context value for the first token
-                        TShortId wordId = mgram_word_ids[idx];
+                        TShortId wordId = gram.m_word_ids[idx];
                         idx++;
 
                         //The word has to be known, otherwise it is an error situation
                         if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The wordId for '" << gram.tokens[0].str() << "' could not be found!";
+                            msg << "The wordId for '" << gram.m_tokens[0].str() << "' could not be found!";
                             throw Exception(msg.str());
                         }
 
                         //The first word id is the first context id
                         ctxId = wordId;
-                        LOGGER(log_level) << "ctxId = getId('" << gram.tokens[0].str()
+                        LOGGER(log_level) << "ctxId = getId('" << gram.m_tokens[0].str()
                                 << "') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
-                        for (int i = 1; i != (gram.level - 1); i++) {
-                            wordId = mgram_word_ids[idx];
+                        for (int i = 1; i != (gram.m_used_level - 1); i++) {
+                            wordId = gram.m_word_ids[idx];
 
                             //The word has to be known, otherwise it is an error situation
                             if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                                 stringstream msg;
-                                msg << "The wordId for '" << gram.tokens[i].str() << "' could not be found!";
+                                msg << "The wordId for '" << gram.m_tokens[i].str() << "' could not be found!";
                                 throw Exception(msg.str());
                             }
 
-                            LOGGER(log_level) << "wordId = getId('" << gram.tokens[i].str() << "') = " << SSTR(wordId) << END_LOG;
+                            LOGGER(log_level) << "wordId = getId('" << gram.m_tokens[i].str() << "') = " << SSTR(wordId) << END_LOG;
 
                             if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
                                 LOGGER(log_level) << "ctxId = computeCtxId( " << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
@@ -316,14 +323,14 @@ namespace uva {
                  * @return true if there was nothing cached, otherwise false
                  */
                 inline bool get_cached_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & result) const {
-                    if (m_chached_ctx == mGram.context) {
+                    if (m_chached_ctx == mGram.m_context) {
                         result = m_chached_ctx_id;
-                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.context
+                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.m_context
                                 << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
-                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.context
+                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.m_context
                                 << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
@@ -336,10 +343,10 @@ namespace uva {
                  * @param result
                  */
                 inline void set_cache_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & stx_id) {
-                    LOG_DEBUG2 << "Caching context = [ " << mGram.context << " ], id = " << stx_id
+                    LOG_DEBUG2 << "Caching context = [ " << mGram.m_context << " ], id = " << stx_id
                             << ", for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram) << END_LOG;
 
-                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.context);
+                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.m_context);
                     m_chached_ctx_id = stx_id;
 
                     LOG_DEBUG2 << "Cached context = [ " << m_chached_ctx

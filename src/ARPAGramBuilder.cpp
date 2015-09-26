@@ -42,40 +42,40 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                template<TModelLevel N, typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<N, WordIndexType>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                template<TModelLevel N, typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<N, WordIndexType>::MAX_NUM_TOKENS_NGRAM_STR = 3;
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                const unsigned short int ARPAGramBuilder<MAX_LEVEL, WordIndexType>::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                const unsigned short int ARPAGramBuilder<MAX_LEVEL, WordIndexType>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                template<TModelLevel N, typename WordIndexType>
-                ARPAGramBuilder<N, WordIndexType>::ARPAGramBuilder(const WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<N, WordIndexType>::func addGarmFunc)
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<MAX_LEVEL, WordIndexType>::func addGarmFunc)
                 : m_add_garm_func(addGarmFunc), m_level(level), m_token(), m_ngram(word_index) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
-                    m_ngram.level = m_level;
+                    m_ngram.m_used_level = m_level;
                 }
 
-                template<TModelLevel N, typename WordIndexType>
-                ARPAGramBuilder<N, WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<N, WordIndexType>& orig)
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<MAX_LEVEL, WordIndexType>& orig)
                 : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram.m_word_index) {
                 }
 
-                template<TModelLevel N, typename WordIndexType>
-                ARPAGramBuilder<N, WordIndexType>::~ARPAGramBuilder() {
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::~ARPAGramBuilder() {
                 }
 
-                template<TModelLevel N, typename WordIndexType>
-                bool ARPAGramBuilder<N, WordIndexType>::parse_to_gram(TextPieceReader &line) {
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                bool ARPAGramBuilder<MAX_LEVEL, WordIndexType>::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.getTab(m_token)) {
                         //Try to parse it float
-                        if (fast_stoT<float>(m_ngram.prob, m_token.getRestCStr())) {
-                            LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.prob << END_LOG;
+                        if (fast_stoT<float>(m_ngram.m_prob, m_token.getRestCStr())) {
+                            LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.m_prob << END_LOG;
 
                             //Read the all the N-Gram tokes, read until the tab as after the 
                             //tab there is a back-off weight or there is no tab in the line
                             //The context will contain all the N-gram tokens now. No worries
                             //though! The last one will be removed somewhat later! See below.
-                            if (!line.getTab(m_ngram.context)) {
+                            if (!line.getTab(m_ngram.m_context)) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
                                         << "' when reading the " << m_level << "'th "
                                         << m_level << "-gram token!" << END_LOG;
@@ -85,7 +85,7 @@ namespace uva {
 
                             //Read the N tokens of the N-gram - space separated
                             for (int i = 0; i < m_level; i++) {
-                                if (!m_ngram.context.getSpace(m_ngram.tokens[i])) {
+                                if (!m_ngram.m_context.getSpace(m_ngram.m_tokens[i])) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
                                             << "'th " << m_level << "-gram token!" << END_LOG;
@@ -98,25 +98,25 @@ namespace uva {
                             if (m_level > M_GRAM_LEVEL_1) {
                                 //The reduction factor for length is the length of the last N-gram token plus
                                 //one character which is the space symbol located between N-gram tokens.
-                                const size_t reduction = (m_ngram.tokens[m_level - 1].getLen() + 1);
-                                m_ngram.context.set(m_ngram.context.getBeginPtr(), m_ngram.context.getLen() - reduction);
+                                const size_t reduction = (m_ngram.m_tokens[m_level - 1].getLen() + 1);
+                                m_ngram.m_context.set(m_ngram.m_context.getBeginPtr(), m_ngram.m_context.getLen() - reduction);
                             }
 
                             //Now if there is something left it should be the back-off weight, otherwise we are done
                             if (line.hasMore()) {
                                 //Take the remainder of the line and try to parse it!
-                                if (!fast_stoT<float>(m_ngram.back_off, line.getRestCStr())) {
+                                if (!fast_stoT<float>(m_ngram.m_back_off, line.getRestCStr())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
                                             << "' as a back-off weight!" << END_LOG;
                                     //The first token was not a float, need to skip to another N-Gram section(?)
                                     return false;
                                 }
-                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.back_off << END_LOG;
+                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.m_back_off << END_LOG;
                             } else {
                                 //There is no back-off so set it to zero
-                                m_ngram.back_off = ZERO_BACK_OFF_WEIGHT;
+                                m_ngram.m_back_off = ZERO_BACK_OFF_WEIGHT;
                                 LOG_DEBUG2 << "The parsed N-gram '" << line.str()
-                                        << "' does not have back-off using: " << m_ngram.back_off << END_LOG;
+                                        << "' does not have back-off using: " << m_ngram.m_back_off << END_LOG;
                             }
                             return true;
                         } else {
@@ -140,14 +140,16 @@ namespace uva {
                     }
                 }
 
-                template<TModelLevel N, typename WordIndexType>
-                bool ARPAGramBuilder<N, WordIndexType>::parse_line(TextPieceReader & line) {
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                bool ARPAGramBuilder<MAX_LEVEL, WordIndexType>::parse_line(TextPieceReader & line) {
                     LOG_DEBUG << "Processing the " << m_level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
                     //First tokenize as a pattern "prob \t gram \t back-off"
                     if (parse_to_gram(line)) {
+                        //Prepare the N-gram and for being added to the trie
+                        m_ngram.prepare_for_adding();
                         //Add the obtained N-gram data to the Trie
                         m_add_garm_func(m_ngram);
                     } else {

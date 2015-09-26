@@ -60,7 +60,7 @@ namespace uva {
                      * @param level the level of the N-grams to be processed
                      * @param addGarmFunc the strategy for adding the N-grams
                      */
-                    ARPAGramBuilder(const WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<MAX_LEVEL, WordIndexType>::func addGarmFunc);
+                    ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<MAX_LEVEL, WordIndexType>::func addGarmFunc);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -139,11 +139,11 @@ namespace uva {
                      */
                     static inline void gram_to_tokens(TextPieceReader &text, T_M_Gram<MAX_LEVEL, WordIndexType> & ngram) {
                         //Re-set the level to zero
-                        ngram.level = 0;
+                        ngram.m_used_level = 0;
 
                         //Read the tokens one by one and do not forget to increment the level
-                        while (text.getSpace(ngram.tokens[ngram.level])) {
-                            ngram.level++;
+                        while (text.getSpace(ngram.m_tokens[ngram.m_used_level])) {
+                            ngram.m_used_level++;
                         }
                     }
 

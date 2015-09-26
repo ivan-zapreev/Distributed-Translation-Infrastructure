@@ -47,33 +47,33 @@ namespace uva {
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
                 //First get the token/word from the 1-Gram
-                const TextPieceReader & token = gram.tokens[0];
+                const TextPieceReader & token = gram.m_tokens[0];
 
                 LOG_DEBUG2 << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
 
                 //Compute it's hash value
-                TShortId wordHash = m_trie.get_word_index().register_word(token);
+                const TShortId word_id = gram.get_end_word_id();
 
                 //Get the word probability and back-off data reference
-                TProbBackOffEntry & pbData = m_trie.make_1_gram_data_ref(wordHash);
+                TProbBackOffEntry & pbData = m_trie.make_1_gram_data_ref(word_id);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(MAX_LEVEL, gram,
-                            wordHash, AWordIndex::UNDEFINED_WORD_ID,
+                            word_id, AWordIndex::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
-                            gram.prob, gram.back_off);
+                            gram.m_prob, gram.m_back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
-                pbData.prob = gram.prob;
-                pbData.back_off = gram.back_off;
+                pbData.prob = gram.m_prob;
+                pbData.back_off = gram.m_back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
                         << tokens_to_string<MAX_LEVEL>(gram) << " wordHash = "
-                        << wordHash << END_LOG;
+                        << word_id << END_LOG;
             };
 
             template<typename TrieType >
@@ -84,17 +84,12 @@ namespace uva {
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                // 2. Get the N-gram word ids
-                TShortId mgram_word_ids[MAX_LEVEL] = {};
-                uint8_t dummy;
-                gram.template store_m_gram_word_ids < false > (mgram_word_ids, dummy, m_trie.get_word_index());
-
-                // 3. Compute the context hash defined by w1 w2 w3
+                // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
-                get_context_id<level, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
+                get_context_id<level, DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
-                // 3. Insert the probability data into the trie
-                TShortId wordId = mgram_word_ids[MAX_LEVEL - 1];
+                // 2. Insert the probability data into the trie
+                TShortId wordId = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
@@ -109,12 +104,12 @@ namespace uva {
                     REPORT_COLLISION_WARNING(MAX_LEVEL,
                             gram, wordId, ctxId,
                             pbData.prob, pbData.back_off,
-                            gram.prob, gram.back_off);
+                            gram.m_prob, gram.m_back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
-                pbData.prob = gram.prob;
-                pbData.back_off = gram.back_off;
+                pbData.prob = gram.m_prob;
+                pbData.back_off = gram.m_back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
@@ -129,17 +124,12 @@ namespace uva {
 
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
-                // 1. Get the N-gram word ids
-                TShortId mgram_word_ids[MAX_LEVEL] = {};
-                uint8_t dummy;
-                gram.template store_m_gram_word_ids <false > (mgram_word_ids, dummy, m_trie.get_word_index());
-
-                // 2. Compute the context hash defined by w1 w2 w3
+                // 1. Compute the context hash defined by w1 w2 w3
                 TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
-                get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, mgram_word_ids, ctxId);
+                get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
-                // 3. Insert the probability data into the trie
-                TShortId wordId = mgram_word_ids[MAX_LEVEL - 1];
+                // 2. Insert the probability data into the trie
+                TShortId wordId = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
@@ -155,11 +145,11 @@ namespace uva {
                     REPORT_COLLISION_WARNING(MAX_LEVEL,
                             gram, wordId, ctxId,
                             pData, UNDEF_LOG_PROB_WEIGHT,
-                            gram.prob, UNDEF_LOG_PROB_WEIGHT);
+                            gram.m_prob, UNDEF_LOG_PROB_WEIGHT);
                 }
 
                 //Set/Update the probability
-                pData = gram.prob;
+                pData = gram.m_prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
                         << tokens_to_string<MAX_LEVEL>(gram) << " contextHash = "
@@ -187,10 +177,10 @@ namespace uva {
                             //If we are looking for a N-Gram probability
                             TLogProbBackOff n_gram_prob = ZERO_PROB_WEIGHT;
                             if (m_trie.get_n_gram_data_ref(word_id, ctx_id, n_gram_prob)) {
+                                query.m_result.m_prob = n_gram_prob;
                                 LOG_DEBUG2 << "The " << MAX_LEVEL << "-Gram log_" << LOG_PROB_WEIGHT_BASE
                                         << "( prob. ) for (wordId,ctxId) = (" << word_id << ", "
-                                        << ctx_id << "), is: " << query.result.prob << END_LOG;
-                                query.result.prob = n_gram_prob;
+                                        << ctx_id << "), is: " << query.m_result.m_prob << END_LOG;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
@@ -210,7 +200,7 @@ namespace uva {
                                         << word_id << ", " << ctx_id
                                         << "), is: " << entry_ptr->prob << END_LOG;
                                 //Return the stored probability
-                                query.result.prob = entry_ptr->prob;
+                                query.m_result.m_prob = entry_ptr->prob;
                             } else {
                                 //Could not compute the probability for
                                 //the given level, so backing off (recursive)!
@@ -238,14 +228,14 @@ namespace uva {
                                 << ", is: " << entry_ptr->prob << END_LOG;
 
                         //Return the stored probability
-                        query.result.prob = entry_ptr->prob;
+                        query.m_result.m_prob = entry_ptr->prob;
                     } else {
                         LOG_DEBUG2 << "Unable to find the 1-Gram entry for a word: "
                                 << word_id << " returning:" << ZERO_LOG_PROB_WEIGHT
                                 << " for log_" << LOG_PROB_WEIGHT_BASE << "( prob. )" << END_LOG;
 
                         //Return the default minimal probability for an unknown word
-                        query.result.prob = ZERO_LOG_PROB_WEIGHT;
+                        query.m_result.m_prob = ZERO_LOG_PROB_WEIGHT;
                     }
                 }
             }
@@ -270,7 +260,7 @@ namespace uva {
                         const TProbBackOffEntry * entry_ptr;
                         if (m_trie.template get_m_gram_data_ref<curr_level>(word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
-                            query.result.prob += entry_ptr->back_off;
+                            query.m_result.m_prob += entry_ptr->back_off;
                             LOG_DEBUG2 << "The " << curr_level << "-Gram log_"
                                     << LOG_PROB_WEIGHT_BASE << "( back-off ) for (wordId, ctxId)=("
                                     << word_id << ", " << ctx_id << "), is: " << entry_ptr->back_off << END_LOG;
@@ -296,7 +286,7 @@ namespace uva {
                     const TProbBackOffEntry * pb_data_ptr;
                     if (m_trie.get_1_gram_data_ref(word_id, &pb_data_ptr)) {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                        query.result.prob += pb_data_ptr->back_off;
+                        query.m_result.m_prob += pb_data_ptr->back_off;
                         LOG_DEBUG2 << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( back-off ) for word: " << word_id
                                 << ", is: " << pb_data_ptr->back_off << END_LOG;

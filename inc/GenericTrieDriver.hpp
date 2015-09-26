@@ -180,7 +180,7 @@ namespace uva {
                     TModelLevel curr_level = query.prepare_query();
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
-                    while ((query.result.prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
+                    while ((query.m_result.m_prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
                         //Try to compute the next probability with decreased level
                         cache_check_get_prob_weight_func[curr_level](*this, query);
                         //Decrease the level
@@ -189,17 +189,17 @@ namespace uva {
 
                     //If the probability is log-zero or snaller then there is no
                     //need for a back-off as then we will only get smaller values.
-                    if (query.result.prob > ZERO_LOG_PROB_WEIGHT) {
+                    if (query.m_result.m_prob > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
-                        for (++curr_level; curr_level != query.m_gram.level; ++curr_level) {
+                        for (++curr_level; curr_level != query.m_gram.m_used_level; ++curr_level) {
                             //Get the back_off 
                             cache_check_add_back_off_weight_func[curr_level](*this, query);
                         }
                     }
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
-                            << " probability is: " << query.result.prob << END_LOG;
+                            << " probability is: " << query.m_result.m_prob << END_LOG;
                 }
 
                 /**
@@ -229,8 +229,8 @@ namespace uva {
                  * @param gram the M-gram to cache
                  */
                 inline void register_m_gram_cache(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
-                    if (m_is_bitmap_hash_cache && (gram.level > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[gram.level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
+                    if (m_is_bitmap_hash_cache && (gram.m_used_level > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
                     }
                 }
 
@@ -243,7 +243,7 @@ namespace uva {
                 template<TModelLevel curr_level>
                 void cache_check_get_prob_weight(TMGramQuery & query) const {
                     LOG_DEBUG << "cache_check_add_prob_value(" << curr_level
-                            << ") = " << query.result.prob << END_LOG;
+                            << ") = " << query.m_result.m_prob << END_LOG;
 
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
@@ -275,7 +275,7 @@ namespace uva {
                 template<TModelLevel curr_level>
                 void cache_check_add_back_off_weight(TMGramQuery & query) const {
                     LOG_DEBUG << "cache_check_add_back_off_weight(" << curr_level
-                            << ") = " << query.result.prob << END_LOG;
+                            << ") = " << query.m_result.m_prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth

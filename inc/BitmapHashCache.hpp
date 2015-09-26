@@ -134,11 +134,11 @@ namespace uva {
                         //Depending on the M-gram compute a proper hash
                         TModelLevel begin_idx = 0, end_idx = 0;
                         if (is_back_off) {
-                            end_idx = (query.m_gram.level - 2);
-                            begin_idx = (query.m_gram.level - 1) - curr_level;
+                            end_idx = (query.m_gram.m_used_level - 2);
+                            begin_idx = (query.m_gram.m_used_level - 1) - curr_level;
                         } else {
-                            end_idx = (query.m_gram.level - 1);
-                            begin_idx = query.m_gram.level - curr_level;
+                            end_idx = (query.m_gram.m_used_level - 1);
+                            begin_idx = query.m_gram.m_used_level - curr_level;
                         }
 
                         uint64_t hash = query.m_gram.sub_hash(begin_idx, end_idx);

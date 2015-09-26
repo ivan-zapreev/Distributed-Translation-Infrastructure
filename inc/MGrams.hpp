@@ -64,6 +64,11 @@ namespace uva {
 
                 /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
+                 * @param INSTANCE_LEVEL the m-gram level m for which this m-gram was instantiated.
+                 * Note that, it is possible that the m-gram is instantiated for a higher level
+                 * than it will be used for. The rule is as follows. When the m-gram is used for
+                 * adding to the trie then it must be instantiated for the same level it will be 
+                 * used for. If the trie is instantiated for  
                  */
                 template<TModelLevel MAX_LEVEL, typename WordIndexType>
                 class T_M_Gram {
@@ -75,24 +80,66 @@ namespace uva {
                     // 00001000, 00000100, 00000010, 00000001
                     static const uint8_t UNK_WORD_MASKS[];
 
+                    //Stores the unknown word masks for the probability computations,
+                    //up to and including 8-grams:
+                    // 00000000, 00000001, 00000011, 00000111, 00001111,
+                    // 00011111, 00111111, 01111111, 11111111
+                    const static uint8_t PROB_UNK_MASKS[];
+
+                    //Stores the unknown word masks for the back-off weight computations,
+                    //up to and including 8-grams:
+                    // 00000000, 00000010, 00000110, 00001110,
+                    // 00011110, 00111110, 01111110, 11111110
+                    const static uint8_t BACK_OFF_UNK_MASKS[];
+
+                    //THe maximum supported level of the m-gram
+                    static constexpr TModelLevel MAX_SUPP_LEVEL = (sizeof (PROB_UNK_MASKS) - 1);
+
+                    //Unknown word bits
+                    uint8_t m_unk_word_flags = 0;
+
+                    //The temporary data structure to store the N-gram word ids
+                    TShortId m_word_ids[MAX_LEVEL] = {};
+
                     //Stores the reference to the used word index
-                    const WordIndexType & m_word_index;
+                    WordIndexType & m_word_index;
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
-                    TLogProbBackOff prob;
+                    TLogProbBackOff m_prob;
                     //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
-                    TLogProbBackOff back_off;
+                    TLogProbBackOff m_back_off;
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
-                    TextPieceReader context;
+                    TextPieceReader m_context;
                     //Stores the m-gram tokens
-                    TextPieceReader tokens[MAX_LEVEL];
+                    TextPieceReader m_tokens[MAX_LEVEL];
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
-                    TModelLevel level;
+                    TModelLevel m_used_level;
 
                     /**
                      * The basic constructor
                      * @param word_index the used word index
                      */
-                    T_M_Gram(const WordIndexType & word_index) : m_word_index(word_index) {
+                    T_M_Gram(WordIndexType & word_index) : m_word_index(word_index) {
+                    }
+
+                    /**
+                     * Allows to prepare the M-gram for being queried. 
+                     */
+                    inline void prepare_for_querying() {
+                        //Store the word ids and the unknown word flags
+                        store_m_gram_word_ids<true>();
+                    }
+
+                    /**
+                     * Allows to prepare the M-gram for being used for adding it to the trie
+                     * This includes registering the one gram in the word index
+                     */
+                    inline void prepare_for_adding() {
+                        //If we have a unigram then add it to the index otherwise get the word ids
+                        if (m_used_level == M_GRAM_LEVEL_1) {
+                            m_word_ids[MAX_LEVEL - 1] = m_word_index.register_word(m_tokens[0]);
+                        } else {
+                            store_m_gram_word_ids<false>();
+                        }
                     }
 
                     /**
@@ -109,8 +156,8 @@ namespace uva {
                         LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
 
                         //Compute the length of the gram tokens in memory, including spaces between
-                        const char * beginFirstPtr = tokens[begin_idx].getBeginCStr();
-                        const TextPieceReader & last = tokens[end_idx];
+                        const char * beginFirstPtr = m_tokens[begin_idx].getBeginCStr();
+                        const TextPieceReader & last = m_tokens[end_idx];
                         const char * beginLastPtr = last.getBeginCStr();
                         const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
                         LOG_DEBUG3 << "Hashing tokens length: " << totalLen << END_LOG;
@@ -121,7 +168,7 @@ namespace uva {
                             //Compute the exact length
                             size_t exactTotalLen = (end_idx - begin_idx); //The number of spaces in between tokens
                             for (TModelLevel idx = begin_idx; idx <= end_idx; idx++) {
-                                exactTotalLen += tokens[idx].getLen();
+                                exactTotalLen += m_tokens[idx].getLen();
                             }
                             //Check that the exact and fast computed lengths are the same
                             if (exactTotalLen != totalLen) {
@@ -145,7 +192,7 @@ namespace uva {
                      * @return the hash value of the given token
                      */
                     inline uint64_t suffix_hash(const TModelLevel begin_idx) const {
-                        const TModelLevel end_idx = level - 1;
+                        const TModelLevel end_idx = m_used_level - 1;
                         return sub_hash(begin_idx, end_idx);
                     }
 
@@ -159,6 +206,41 @@ namespace uva {
                     }
 
                     /**
+                     * Gets the word hash for the end word of the back-off M-Gram
+                     * @return the word hash for the end word of the back-off M-Gram
+                     */
+                    inline TShortId get_back_off_end_word_id() const {
+                        //The word ids are always aligned to the end of the array
+                        //so the end word id for the back off m-gram is fixed!
+                        return m_word_ids[MAX_LEVEL - 2];
+                    }
+
+                    /**
+                     * Gets the word hash for the last word in the M-gram
+                     * @return the word hash for the last word in the M-gram
+                     */
+                    inline TShortId get_end_word_id() const {
+                        //The word ids are always aligned to the end of the array
+                        //so the end word id for the probability m-gram is fixed!
+                        return m_word_ids[MAX_LEVEL - 1];
+                    }
+
+                    /**
+                     * Allows to check if the given back-off sub-m-gram contains 
+                     * an unknown word for the given current level.
+                     */
+                    template<bool is_back_off, TModelLevel curr_level>
+                    inline bool has_no_unk_words() const {
+                        uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
+
+                        LOG_DEBUG << "The " << ((is_back_off) ? "back-off" : "probability")
+                                << " level: " << curr_level << " unknown word flags are: "
+                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
+
+                        return (level_flags == 0);
+                    }
+
+                    /**
                      * Converts the given tokens to ids and stores it in
                      * m_gram_word_ids. The ids are aligned to the beginning
                      * of the m_gram_word_ids[N-1] array.
@@ -167,28 +249,54 @@ namespace uva {
                      * @paam unk_word_flags the variable into which the word flags will be stored.
                      */
                     template<bool is_unk_flags>
-                    inline void store_m_gram_word_ids(TShortId word_ids[MAX_LEVEL], uint8_t & unk_word_flags, const WordIndexType & word_index) const {
+                    inline void store_m_gram_word_ids() {
+                        //Check for the maximum supported unk flag level
+                        if (DO_SANITY_CHECKS && (MAX_LEVEL > MAX_SUPP_LEVEL)) {
+                            stringstream msg;
+                            msg << "store_unk_word_flags: Unsupported m-gram level: "
+                                    << SSTR(MAX_LEVEL) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
+                                    << "], insufficient m_unk_word_flags capacity!";
+                            throw Exception(msg.str());
+                        }
+
                         //The start index depends on the value M of the given M-Gram
-                        TModelLevel idx = MAX_LEVEL - level;
-                        LOG_DEBUG1 << "Computing hashes for the words of a " << SSTR(level) << "-gram:" << END_LOG;
-                        for (TModelLevel i = 0; i != level; ++i) {
+                        TModelLevel idx = MAX_LEVEL - m_used_level;
+
+                        if (is_unk_flags) {
+                            //Re-initialize the flags with zero
+                            m_unk_word_flags = 0;
+                        }
+
+                        LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
+                        for (TModelLevel i = 0; i != m_used_level; ++i) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            word_ids[idx] = word_index.get_word_id(tokens[i]);
-                            LOG_DEBUG1 << "wordId('" << tokens[i].str() << "') = " << SSTR(word_ids[idx]) << END_LOG;
-                            if (is_unk_flags && (word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
-                                unk_word_flags |= UNK_WORD_MASKS[idx];
+                            m_word_ids[idx] = m_word_index.get_word_id(m_tokens[i]);
+                            LOG_DEBUG1 << "wordId('" << m_tokens[i].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
+                            if (is_unk_flags && (m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
+                                m_unk_word_flags |= UNK_WORD_MASKS[idx];
                             }
                             ++idx;
                         }
+
                         if (is_unk_flags) {
-                            LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(unk_word_flags) << END_LOG;
+                            LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
                         }
                     }
                 };
 
-                template<TModelLevel N, typename WordIndexType>
-                const uint8_t T_M_Gram<N, WordIndexType>::UNK_WORD_MASKS[] = {
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::UNK_WORD_MASKS[] = {
                     0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
+                };
+
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::PROB_UNK_MASKS[] = {
+                    0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF
+                };
+
+                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::BACK_OFF_UNK_MASKS[] = {
+                    0x00, 0x02, 0x06, 0x0E, 0x1E, 0x3E, 0x7E, 0xFE
                 };
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
@@ -203,7 +311,7 @@ namespace uva {
                  */
                 template<TModelLevel N = M_GRAM_LEVEL_MAX, typename WordIndexType>
                 inline string tokens_to_string(const T_M_Gram<N, WordIndexType> & gram) {
-                    return tokens_to_string<N>(gram.tokens, gram.level);
+                    return tokens_to_string<N>(gram.m_tokens, gram.m_used_level);
                 };
 
                 /**

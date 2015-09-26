@@ -239,19 +239,19 @@ namespace uva {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint64_t gram_hash = gram.hash();
-                    LOG_DEBUG1 << "The " << gram.level << "-gram: " << tokens_to_string(gram)
+                    LOG_DEBUG1 << "The " << gram.m_used_level << "-gram: " << tokens_to_string(gram)
                             << " hash is " << gram_hash << END_LOG;
 
-                    bucket_idx = get_bucket_id_func[gram.level](*this, gram_hash);
+                    bucket_idx = get_bucket_id_func[gram.m_used_level](*this, gram_hash);
 
                     LOG_DEBUG1 << "Getting bucket for " << tokens_to_string(gram) << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.level - 1]))) {
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.m_used_level - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(gram.level) << "-gram: " << tokens_to_string<MAX_LEVEL>(gram)
+                        msg << "The " << SSTR(gram.m_used_level) << "-gram: " << tokens_to_string<MAX_LEVEL>(gram)
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[gram.level - 1]) << "]";
+                                << ", must be within [0, " << SSTR(num_buckets[gram.m_used_level - 1]) << "]";
                         throw Exception(msg.str());
                     }
                 }

@@ -57,9 +57,9 @@ namespace uva {
                 template<typename TrieType>
                 class ARPAGramBuilderFactory {
                 public:
-                    static const TModelLevel N;
+                    static const TModelLevel MAX_LEVEL;
                     typedef typename TrieType::WordIndexType WordIndexType;
-                    typedef std::function<void (TrieType & trie, const T_M_Gram<N, WordIndexType>&) > TAddGramFunct;
+                    typedef std::function<void (TrieType & trie, const T_M_Gram<MAX_LEVEL, WordIndexType>&) > TAddGramFunct;
 
                     /**
                      * This is a template method for getting the proper ARPA
@@ -76,18 +76,18 @@ namespace uva {
                      * @param trie the trie to be filled in with the N-grams
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
-                    static inline void get_builder(const TModelLevel level, TrieType & trie, ARPAGramBuilder<N, WordIndexType> **ppBuilder) {
+                    static inline void get_builder(const TModelLevel level, TrieType & trie, ARPAGramBuilder<MAX_LEVEL, WordIndexType> **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
-                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << N << END_LOG;
+                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << MAX_LEVEL << END_LOG;
 
 
                         //Then check that the level values are correct!
-                        if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > N)) {
+                        if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > MAX_LEVEL)) {
                             stringstream msg;
                             msg << "The requested N-gram level is '" << level
                                     << "', but it must be within [" << M_GRAM_LEVEL_1
-                                    << ", " << N << "]!";
+                                    << ", " << MAX_LEVEL << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
@@ -96,26 +96,26 @@ namespace uva {
                                 //If the level is at minimum it means we are filling in the dictionary
                                 LOG_DEBUG1 << "Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
-                                *ppBuilder = new ARPAGramBuilder<N, WordIndexType>(trie.get_word_index(), level,
-                                        [&] (const T_M_Gram<N, WordIndexType> & gram) {
+                                *ppBuilder = new ARPAGramBuilder<MAX_LEVEL, WordIndexType>(trie.get_word_index(), level,
+                                        [&] (const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                                             trie.add_1_gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
                             } else {
-                                if (level == N) {
+                                if (level == MAX_LEVEL) {
                                     //If the minimum is at maximum it means we are filling in the top N-gram level
-                                    LOG_DEBUG1 << "Instantiating the " << N << "-Gram builder..." << END_LOG;
+                                    LOG_DEBUG1 << "Instantiating the " << MAX_LEVEL << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<N, WordIndexType>(trie.get_word_index(), level,
-                                            [&] (const T_M_Gram<N, WordIndexType> & gram) {
+                                    *ppBuilder = new ARPAGramBuilder<MAX_LEVEL, WordIndexType>(trie.get_word_index(), level,
+                                            [&] (const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
                                                 trie.add_n_gram(gram); });
-                                    LOG_DEBUG2 << "DONE Instantiating the " << N << "-Gram builder!" << END_LOG;
+                                    LOG_DEBUG2 << "DONE Instantiating the " << MAX_LEVEL << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
                                     LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<N, WordIndexType>(trie.get_word_index(), level,
-                                            [&] (const T_M_Gram<N, WordIndexType> & gram) {
-                                                add_m_gram_func[gram.level - ADD_M_GRAM_IDX_OFFSER](trie, gram);
+                                    *ppBuilder = new ARPAGramBuilder<MAX_LEVEL, WordIndexType>(trie.get_word_index(), level,
+                                            [&] (const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
+                                                add_m_gram_func[gram.m_used_level - ADD_M_GRAM_IDX_OFFSER](trie, gram);
                                             });
                                     LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
                                 }
@@ -140,7 +140,7 @@ namespace uva {
                 };
 
                 template<typename TrieType>
-                const TModelLevel ARPAGramBuilderFactory<TrieType>::N = TrieType::MAX_LEVEL;
+                const TModelLevel ARPAGramBuilderFactory<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
 
                 template<typename TrieType>
                 const typename ARPAGramBuilderFactory<TrieType>::TAddGramFunct ARPAGramBuilderFactory<TrieType>::add_m_gram_func[] = {
