@@ -193,7 +193,7 @@ namespace uva {
                 template<typename TrieType>
                 void ARPATrieBuilder<TrieType>::read_m_gram_level(const TModelLevel level) {
                     //Declare the pointer to the N-Grma builder
-                    ARPAGramBuilder<MAX_LEVEL, WordIndexType> *pNGBuilder = NULL;
+                    ARPAGramBuilder<WordIndexType> *pNGBuilder = NULL;
                     ARPAGramBuilderFactory<TrieType>::get_builder(level, m_trie, &pNGBuilder);
 
                     try {
@@ -405,7 +405,7 @@ namespace uva {
                             if (m_line.hasMore()) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
-                                if (ARPAGramBuilder<MAX_LEVEL, WordIndexType>::gram_line_to_tokens(m_line, tokens, level)) {
+                                if (ARPAGramBuilder<WordIndexType>::gram_line_to_tokens(m_line, tokens, level)) {
                                     //Add words to the index: count them
                                     for (size_t idx = 0; idx < level; idx++) {
                                         LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;

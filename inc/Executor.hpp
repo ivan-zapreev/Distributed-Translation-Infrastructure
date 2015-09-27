@@ -171,8 +171,8 @@ namespace uva {
                  * @param ngram the n-gram to transform
                  * @return the resulting string
                  */
-                template<TModelLevel N, typename WordIndexType>
-                static string get_mgram_prob_str(const T_M_Gram<N, WordIndexType> & mgram) {
+                template<typename WordIndexType>
+                static string get_mgram_prob_str(const T_M_Gram<WordIndexType> & mgram) {
                     if (mgram.m_used_level == 1) {
                         return mgram.m_tokens[0].str().empty() ? "<empty>" : mgram.m_tokens[0].str();
                     } else {
@@ -201,7 +201,7 @@ namespace uva {
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    MGramQuery < TrieType::MAX_LEVEL, typename TrieType::WordIndexType > query(trie.get_word_index());
+                    MGramQuery <typename TrieType::WordIndexType > query(trie.get_word_index());
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -211,7 +211,7 @@ namespace uva {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                         //Parse the line into an N-Gram
-                        ARPAGramBuilder<TrieType::MAX_LEVEL, typename TrieType::WordIndexType>::gram_to_tokens(line, query.m_gram);
+                        ARPAGramBuilder<typename TrieType::WordIndexType>::gram_to_tokens(line, query.m_gram);
 
                         //There can be an empty or "unreadable" line in the text file, just skip it ...
                         if (query.m_gram.m_used_level > 0) {

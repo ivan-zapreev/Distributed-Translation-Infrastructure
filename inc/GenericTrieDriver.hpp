@@ -102,7 +102,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
+                inline void add_1_gram(const T_M_Gram<WordIndexType> &gram) {
                     m_trie.add_1_gram(gram);
                 };
 
@@ -110,7 +110,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel level>
-                inline void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
+                inline void add_m_gram(const T_M_Gram<WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -122,7 +122,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> & gram) {
+                inline void add_n_gram(const T_M_Gram<WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache(gram);
@@ -228,7 +228,7 @@ namespace uva {
                  * level caches if present.
                  * @param gram the M-gram to cache
                  */
-                inline void register_m_gram_cache(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram) {
+                inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
                     if (m_is_bitmap_hash_cache && (gram.m_used_level > M_GRAM_LEVEL_1)) {
                         m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
                     }

@@ -64,13 +64,8 @@ namespace uva {
 
                 /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
-                 * @param INSTANCE_LEVEL the m-gram level m for which this m-gram was instantiated.
-                 * Note that, it is possible that the m-gram is instantiated for a higher level
-                 * than it will be used for. The rule is as follows. When the m-gram is used for
-                 * adding to the trie then it must be instantiated for the same level it will be 
-                 * used for. If the trie is instantiated for  
                  */
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                template<typename WordIndexType>
                 class T_M_Gram {
                 public:
 
@@ -82,18 +77,20 @@ namespace uva {
 
                     //Stores the unknown word masks for the probability computations,
                     //up to and including 8-grams:
-                    // 00000000, 00000001, 00000011, 00000111, 00001111,
+                    // 00000000,
+                    // 00000001, 00000011, 00000111, 00001111,
                     // 00011111, 00111111, 01111111, 11111111
                     const static uint8_t PROB_UNK_MASKS[];
 
                     //Stores the unknown word masks for the back-off weight computations,
                     //up to and including 8-grams:
-                    // 00000000, 00000010, 00000110, 00001110,
-                    // 00011110, 00111110, 01111110, 11111110
+                    // 00000000,
+                    // 00000010, 00000110, 00001110, 00011110,
+                    // 00111110, 01111110, 11111110
                     const static uint8_t BACK_OFF_UNK_MASKS[];
 
-                    //THe maximum supported level of the m-gram
-                    static constexpr TModelLevel MAX_SUPP_LEVEL = (sizeof (PROB_UNK_MASKS) - 1);
+                    //The maximum supported level of the m-gram
+                    static constexpr TModelLevel MAX_LEVEL = sizeof (UNK_WORD_MASKS);
 
                     //Unknown word bits
                     uint8_t m_unk_word_flags = 0;
@@ -233,9 +230,10 @@ namespace uva {
                     inline bool has_no_unk_words() const {
                         uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
 
-                        LOG_DEBUG << "The " << ((is_back_off) ? "back-off" : "probability")
+                        LOG_USAGE << "The " << ((is_back_off) ? "back-off" : "probability")
                                 << " level: " << curr_level << " unknown word flags are: "
-                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << END_LOG;
+                                << bitset<NUM_BITS_IN_UINT_8>(level_flags) << ", originals are: "
+                                << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
 
                         return (level_flags == 0);
                     }
@@ -250,15 +248,6 @@ namespace uva {
                      */
                     template<bool is_unk_flags>
                     inline void store_m_gram_word_ids() {
-                        //Check for the maximum supported unk flag level
-                        if (DO_SANITY_CHECKS && (MAX_LEVEL > MAX_SUPP_LEVEL)) {
-                            stringstream msg;
-                            msg << "store_unk_word_flags: Unsupported m-gram level: "
-                                    << SSTR(MAX_LEVEL) << ", must be <= " << SSTR(MAX_SUPP_LEVEL)
-                                    << "], insufficient m_unk_word_flags capacity!";
-                            throw Exception(msg.str());
-                        }
-
                         //The start index depends on the value M of the given M-Gram
                         TModelLevel idx = MAX_LEVEL - m_used_level;
 
@@ -284,34 +273,56 @@ namespace uva {
                     }
                 };
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::UNK_WORD_MASKS[] = {
-                    0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
+                template<typename WordIndexType>
+                const uint8_t T_M_Gram<WordIndexType>::UNK_WORD_MASKS[] = {
+                    0x80,   //0: 10000000
+                    0x40,   //1: 01000000
+                    0x20,   //2: 00100000
+                    0x10,   //3: 00010000
+                    0x08,   //4: 00001000
+                    0x04,   //5: 00000100
+                    0x02,   //6: 00000010
+                    0x01    //7: 00000001
                 };
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::PROB_UNK_MASKS[] = {
-                    0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F, 0xFF
+                template<typename WordIndexType>
+                const uint8_t T_M_Gram<WordIndexType>::PROB_UNK_MASKS[] = {
+                    0x00,   //0: 00000000
+                    0x01,   //1: 00000001
+                    0x03,   //2: 00000011
+                    0x07,   //3: 00000111
+                    0x0F,   //4: 00001111
+                    0x1F,   //5: 00011111
+                    0x3F,   //6: 00111111
+                    0x7F,   //7: 01111111
+                    0xFF    //8: 11111111
                 };
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                const uint8_t T_M_Gram<MAX_LEVEL, WordIndexType>::BACK_OFF_UNK_MASKS[] = {
-                    0x00, 0x02, 0x06, 0x0E, 0x1E, 0x3E, 0x7E, 0xFE
+                template<typename WordIndexType>
+                const uint8_t T_M_Gram<WordIndexType>::BACK_OFF_UNK_MASKS[] = {
+                    0x00,   //0: 00000000
+                    0x02,   //1: 00000010
+                    0x06,   //2: 00000110
+                    0x0E,   //3: 00001110
+                    0x1E,   //4: 00011110
+                    0x3E,   //5: 00111110
+                    0x7E,   //6: 01111110
+                    0xFE    //7: 11111110
                 };
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class T_M_Gram<M_GRAM_LEVEL_MAX, BasicWordIndex>;
-                template class T_M_Gram<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-                template class T_M_Gram<M_GRAM_LEVEL_MAX, TOptBasicWordIndex>;
-                template class T_M_Gram<M_GRAM_LEVEL_MAX, TOptCountWordIndex>;
+                template class T_M_Gram<BasicWordIndex>;
+                template class T_M_Gram<CountingWordIndex>;
+                template class T_M_Gram<TOptBasicWordIndex>;
+                template class T_M_Gram<TOptCountWordIndex>;
 
                 /**
                  * This function allows to convert the M-gram tokens into a string representation. 
                  * @param gram  the M-Gram to work with
                  */
-                template<TModelLevel N = M_GRAM_LEVEL_MAX, typename WordIndexType>
-                inline string tokens_to_string(const T_M_Gram<N, WordIndexType> & gram) {
-                    return tokens_to_string<N>(gram.m_tokens, gram.m_used_level);
+                template<typename WordIndexType>
+                inline string tokens_to_string(const T_M_Gram<WordIndexType> & gram) {
+                    return tokens_to_string<T_M_Gram<WordIndexType>::MAX_LEVEL>(gram.m_tokens, gram.m_used_level);
                 };
 
                 /**

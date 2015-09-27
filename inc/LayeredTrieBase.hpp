@@ -180,14 +180,14 @@ namespace uva {
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void get_prob_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const {
+                inline void get_prob_weight(MGramQuery<WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
                  * Needs to become inaccessible from outside
                  */
-                inline void add_back_off_weight(MGramQuery<MAX_LEVEL, WordIndexType> & query) const {
+                inline void add_back_off_weight(MGramQuery<WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
             };

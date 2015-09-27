@@ -60,8 +60,8 @@ namespace uva {
         namespace tries {
 
             //This macro is needed to report the collision detection warnings!
-#define REPORT_COLLISION_WARNING(MAX_LEVEL, gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << tokens_to_string<MAX_LEVEL>(gram)           \
+#define REPORT_COLLISION_WARNING(gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
+            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << tokens_to_string(gram)               \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -116,18 +116,18 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void add_1_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
+                void add_1_gram(const T_M_Gram<WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
                  */
                 template<TModelLevel level>
-                void add_m_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
+                void add_m_gram(const T_M_Gram<WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
                  */
-                void add_n_gram(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram);
+                void add_n_gram(const T_M_Gram<WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
@@ -206,7 +206,7 @@ namespace uva {
                  */
                 template<bool is_back_off, TModelLevel curr_level>
                 inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) const {
-                    const TModelLevel mgram_end_idx = (is_back_off ? (MAX_LEVEL - 2) : (MAX_LEVEL - 1));
+                    const TModelLevel mgram_end_idx = (is_back_off ? (T_M_Gram<WordIndexType>::MAX_LEVEL - 2) : (T_M_Gram<WordIndexType>::MAX_LEVEL - 1));
                     const TModelLevel end_idx = mgram_end_idx;
                     const TModelLevel begin_idx = mgram_end_idx - (curr_level - 1);
                     TModelLevel idx = begin_idx;
@@ -252,7 +252,7 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<TModelLevel level, DebugLevelsEnum log_level>
-                inline void get_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &gram, TLongId &ctxId) {
+                inline void get_context_id(const T_M_Gram<WordIndexType> &gram, TLongId &ctxId) {
                     //Perform sanity check for the level values they should be the same!
                     if (DO_SANITY_CHECKS && (level != gram.m_used_level)) {
                         stringstream msg;
@@ -263,7 +263,7 @@ namespace uva {
 
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctxId)) {
-                        TModelLevel idx = (BASE::MAX_LEVEL - level);
+                        TModelLevel idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - level);
                         //Get the start context value for the first token
                         TShortId wordId = gram.m_word_ids[idx];
                         idx++;
@@ -322,16 +322,16 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool get_cached_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & result) const {
+                inline bool get_cached_context_id(const T_M_Gram<WordIndexType> &mGram, TLongId & result) const {
                     if (m_chached_ctx == mGram.m_context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.m_context
-                                << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
+                                << "], for m-gram: " << tokens_to_string(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.m_context
-                                << "], for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram)
+                                << "], for m-gram: " << tokens_to_string(mGram)
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
@@ -342,9 +342,9 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void set_cache_context_id(const T_M_Gram<MAX_LEVEL, WordIndexType> &mGram, TLongId & stx_id) {
+                inline void set_cache_context_id(const T_M_Gram<WordIndexType> &mGram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << mGram.m_context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokens_to_string<MAX_LEVEL>(mGram) << END_LOG;
+                            << ", for m-gram: " << tokens_to_string(mGram) << END_LOG;
 
                     m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.m_context);
                     m_chached_ctx_id = stx_id;

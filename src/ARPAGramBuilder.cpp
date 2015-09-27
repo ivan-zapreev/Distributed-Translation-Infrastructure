@@ -42,29 +42,29 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<MAX_LEVEL, WordIndexType>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<MAX_LEVEL, WordIndexType>::MAX_NUM_TOKENS_NGRAM_STR = 3;
+                template<typename WordIndexType>
+                const unsigned short int ARPAGramBuilder<WordIndexType>::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                template<typename WordIndexType>
+                const unsigned short int ARPAGramBuilder<WordIndexType>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<MAX_LEVEL, WordIndexType>::func addGarmFunc)
+                template<typename WordIndexType>
+                ARPAGramBuilder<WordIndexType>::ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
                 : m_add_garm_func(addGarmFunc), m_level(level), m_token(), m_ngram(word_index) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
                     m_ngram.m_used_level = m_level;
                 }
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<MAX_LEVEL, WordIndexType>& orig)
+                template<typename WordIndexType>
+                ARPAGramBuilder<WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType>& orig)
                 : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram.m_word_index) {
                 }
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                ARPAGramBuilder<MAX_LEVEL, WordIndexType>::~ARPAGramBuilder() {
+                template<typename WordIndexType>
+                ARPAGramBuilder<WordIndexType>::~ARPAGramBuilder() {
                 }
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                bool ARPAGramBuilder<MAX_LEVEL, WordIndexType>::parse_to_gram(TextPieceReader &line) {
+                template<typename WordIndexType>
+                bool ARPAGramBuilder<WordIndexType>::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.getTab(m_token)) {
                         //Try to parse it float
@@ -140,8 +140,8 @@ namespace uva {
                     }
                 }
 
-                template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                bool ARPAGramBuilder<MAX_LEVEL, WordIndexType>::parse_line(TextPieceReader & line) {
+                template<typename WordIndexType>
+                bool ARPAGramBuilder<WordIndexType>::parse_line(TextPieceReader & line) {
                     LOG_DEBUG << "Processing the " << m_level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
@@ -165,21 +165,10 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-
-#define INSTANTIATE_ARPA_GRAM_BUILDER_TYPE(TYPE) \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_1, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_2, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_3, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_4, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_5, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_6, TYPE>; \
-                template class ARPAGramBuilder<M_GRAM_LEVEL_7, TYPE>;
-
-                INSTANTIATE_ARPA_GRAM_BUILDER_TYPE(BasicWordIndex);
-                INSTANTIATE_ARPA_GRAM_BUILDER_TYPE(CountingWordIndex);
-                INSTANTIATE_ARPA_GRAM_BUILDER_TYPE(TOptBasicWordIndex);
-                INSTANTIATE_ARPA_GRAM_BUILDER_TYPE(TOptCountWordIndex);
-
+                template class ARPAGramBuilder<BasicWordIndex>;
+                template class ARPAGramBuilder<CountingWordIndex>;
+                template class ARPAGramBuilder<TOptBasicWordIndex>;
+                template class ARPAGramBuilder<TOptCountWordIndex>;
             }
         }
     }

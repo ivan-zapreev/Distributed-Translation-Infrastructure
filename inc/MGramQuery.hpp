@@ -65,10 +65,10 @@ namespace uva {
              * Stores the query and its internal for the sake of re-usability and
              * independency from the Tries and executor.
              */
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            template<typename WordIndexType>
             struct MGramQuery {
                 //Stores the query m-gram
-                T_M_Gram<MAX_LEVEL, WordIndexType> m_gram;
+                T_M_Gram<WordIndexType> m_gram;
 
                 //Stores the query result
                 TQueryResult m_result = {};
@@ -89,13 +89,6 @@ namespace uva {
                  * @return the m-gram's level
                  */
                 inline TModelLevel prepare_query() {
-                    //Check the number of elements in the N-Gram
-                    if (DO_SANITY_CHECKS && ((m_gram.m_used_level < M_GRAM_LEVEL_1) || (m_gram.m_used_level > MAX_LEVEL))) {
-                        stringstream msg;
-                        msg << "An improper N-Gram size, got " << m_gram.m_used_level << ", must be between [1, " << MAX_LEVEL << "]!";
-                        throw Exception(msg.str());
-                    }
-
                     //Set the result probability to zero
                     m_result.m_prob = ZERO_PROB_WEIGHT;
 
@@ -133,15 +126,15 @@ namespace uva {
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
-            template struct MGramQuery<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
+            template struct MGramQuery<BasicWordIndex>;
+            template struct MGramQuery<CountingWordIndex>;
+            template struct MGramQuery<TOptBasicWordIndex>;
+            template struct MGramQuery<TOptCountWordIndex>;
 
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, BasicWordIndex > TMGramQueryBasic;
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, CountingWordIndex > TMGramQueryCount;
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TMGramQueryOptBasic;
-            typedef MGramQuery<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TMGramQueryOptCount;
+            typedef MGramQuery<BasicWordIndex> TMGramQueryBasic;
+            typedef MGramQuery<CountingWordIndex> TMGramQueryCount;
+            typedef MGramQuery<TOptBasicWordIndex> TMGramQueryOptBasic;
+            typedef MGramQuery<TOptCountWordIndex> TMGramQueryOptCount;
         }
     }
 }
