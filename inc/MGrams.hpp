@@ -203,6 +203,27 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to compute the hash for the given sub-m-gram that is
+                     * defined by the level and whether it is a back-off m-gram or not
+                     * @param is_back_off true if this is a back-off case
+                     * @param curr_level the level of the sub-mgram
+                     * @return the resulting hash value
+                     */
+                    template<bool is_back_off, TModelLevel curr_level>
+                    inline uint64_t level_hash() const {
+                        const uint8_t token_begin_idx = (m_used_level - curr_level) + (is_back_off ? -1 : 0);
+                        const uint8_t token_end_idx = (m_used_level - 1) + (is_back_off ? -1 : 0);
+
+                        const uint64_t gram_hash = sub_hash(token_begin_idx, token_end_idx);
+
+                        LOG_DEBUG << "The " << curr_level << "-gram: " << tokens_to_string(m_tokens,
+                                token_begin_idx, token_end_idx) << (is_back_off ? "back-off" : "")
+                                << " hash is " << gram_hash << END_LOG;
+
+                        return gram_hash;
+                    }
+
+                    /**
                      * Gets the word hash for the end word of the back-off M-Gram
                      * @return the word hash for the end word of the back-off M-Gram
                      */
@@ -230,7 +251,7 @@ namespace uva {
                     inline bool has_no_unk_words() const {
                         uint8_t level_flags = (m_unk_word_flags & ((is_back_off) ? BACK_OFF_UNK_MASKS[curr_level] : PROB_UNK_MASKS[curr_level]));
 
-                        LOG_USAGE << "The " << ((is_back_off) ? "back-off" : "probability")
+                        LOG_DEBUG << "The " << ((is_back_off) ? "back-off" : "probability")
                                 << " level: " << curr_level << " unknown word flags are: "
                                 << bitset<NUM_BITS_IN_UINT_8>(level_flags) << ", originals are: "
                                 << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
@@ -271,43 +292,67 @@ namespace uva {
                             LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
                         }
                     }
+
+                    /**
+                     * For the given N-gram allows to give the string of the object
+                     * for which the probability is computed, e.g.:
+                     * N-gram = "word1" -> result = "word1"
+                     * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                     * @return the resulting string
+                     */
+                    inline string get_mgram_prob_str() {
+                        if (m_used_level == 1) {
+                            return m_tokens[0].str().empty() ? "<empty>" : m_tokens[0].str();
+                        } else {
+                            if (m_used_level > 1) {
+                                string result = m_tokens[m_used_level - 1].str() + " |";
+                                for (TModelLevel idx = 0; idx < (m_used_level - 1); idx++) {
+                                    result += string(" ") + m_tokens[idx].str();
+                                }
+                                return result;
+                            } else {
+                                return "<none>";
+                            }
+                        }
+                    }
+
                 };
 
                 template<typename WordIndexType>
                 const uint8_t T_M_Gram<WordIndexType>::UNK_WORD_MASKS[] = {
-                    0x80,   //0: 10000000
-                    0x40,   //1: 01000000
-                    0x20,   //2: 00100000
-                    0x10,   //3: 00010000
-                    0x08,   //4: 00001000
-                    0x04,   //5: 00000100
-                    0x02,   //6: 00000010
-                    0x01    //7: 00000001
+                    0x80, //0: 10000000
+                    0x40, //1: 01000000
+                    0x20, //2: 00100000
+                    0x10, //3: 00010000
+                    0x08, //4: 00001000
+                    0x04, //5: 00000100
+                    0x02, //6: 00000010
+                    0x01 //7: 00000001
                 };
 
                 template<typename WordIndexType>
                 const uint8_t T_M_Gram<WordIndexType>::PROB_UNK_MASKS[] = {
-                    0x00,   //0: 00000000
-                    0x01,   //1: 00000001
-                    0x03,   //2: 00000011
-                    0x07,   //3: 00000111
-                    0x0F,   //4: 00001111
-                    0x1F,   //5: 00011111
-                    0x3F,   //6: 00111111
-                    0x7F,   //7: 01111111
-                    0xFF    //8: 11111111
+                    0x00, //0: 00000000
+                    0x01, //1: 00000001
+                    0x03, //2: 00000011
+                    0x07, //3: 00000111
+                    0x0F, //4: 00001111
+                    0x1F, //5: 00011111
+                    0x3F, //6: 00111111
+                    0x7F, //7: 01111111
+                    0xFF //8: 11111111
                 };
 
                 template<typename WordIndexType>
                 const uint8_t T_M_Gram<WordIndexType>::BACK_OFF_UNK_MASKS[] = {
-                    0x00,   //0: 00000000
-                    0x02,   //1: 00000010
-                    0x06,   //2: 00000110
-                    0x0E,   //3: 00001110
-                    0x1E,   //4: 00011110
-                    0x3E,   //5: 00111110
-                    0x7E,   //6: 01111110
-                    0xFE    //7: 11111110
+                    0x00, //0: 00000000
+                    0x02, //1: 00000010
+                    0x06, //2: 00000110
+                    0x0E, //3: 00001110
+                    0x1E, //4: 00011110
+                    0x3E, //5: 00111110
+                    0x7E, //6: 01111110
+                    0xFE //7: 11111110
                 };
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values

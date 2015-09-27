@@ -46,11 +46,6 @@ namespace uva {
 
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram<WordIndexType> &gram) {
-                //First get the token/word from the 1-Gram
-                const TextPieceReader & token = gram.m_tokens[0];
-
-                LOG_DEBUG << "Adding a 1-Gram: '" << token << "' to the Trie." << END_LOG;
-
                 //Compute it's hash value
                 const TShortId word_id = gram.get_end_word_id();
 
@@ -79,9 +74,6 @@ namespace uva {
             template<typename TrieType >
             template<TModelLevel level>
             void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram<WordIndexType> &gram) {
-                LOG_DEBUG << "Adding a " << SSTR(level) << "-Gram "
-                        << tokens_to_string(gram) << " to the Trie" << END_LOG;
-
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
@@ -118,9 +110,6 @@ namespace uva {
 
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram<WordIndexType> &gram) {
-                LOG_DEBUG << "Adding a " << MAX_LEVEL << "-Gram "
-                        << tokens_to_string(gram) << " to the Trie" << END_LOG;
-
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3

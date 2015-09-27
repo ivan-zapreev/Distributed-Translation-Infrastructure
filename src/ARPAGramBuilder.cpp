@@ -150,6 +150,10 @@ namespace uva {
                     if (parse_to_gram(line)) {
                         //Prepare the N-gram and for being added to the trie
                         m_ngram.prepare_for_adding();
+
+                        LOG_DEBUG << "Adding a " << SSTR(m_ngram.m_used_level) << "-Gram "
+                                << tokens_to_string(m_ngram) << " to the Trie" << END_LOG;
+
                         //Add the obtained N-gram data to the Trie
                         m_add_garm_func(m_ngram);
                     } else {

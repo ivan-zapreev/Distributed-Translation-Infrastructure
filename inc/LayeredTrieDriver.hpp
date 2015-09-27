@@ -271,14 +271,14 @@ namespace uva {
                         //The word has to be known, otherwise it is an error situation
                         if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The wordId for '" << gram.m_tokens[0].str() << "' could not be found!";
+                            msg << "The first word_id of '" << tokens_to_string(gram) << "' could not be found!";
                             throw Exception(msg.str());
                         }
 
                         //The first word id is the first context id
                         ctxId = wordId;
-                        LOGGER(log_level) << "ctxId = getId('" << gram.m_tokens[0].str()
-                                << "') = " << SSTR(ctxId) << END_LOG;
+                        LOGGER(log_level) << "ctxId = getId('" << tokens_to_string(gram)
+                                << "[1]') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
                         for (int i = 1; i != (gram.m_used_level - 1); i++) {
@@ -287,11 +287,12 @@ namespace uva {
                             //The word has to be known, otherwise it is an error situation
                             if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                                 stringstream msg;
-                                msg << "The wordId for '" << gram.m_tokens[i].str() << "' could not be found!";
+                                msg << "The " << SSTR(i + 1) << "'th word_id for '" << tokens_to_string(gram) << "' could not be found!";
                                 throw Exception(msg.str());
                             }
 
-                            LOGGER(log_level) << "wordId = getId('" << gram.m_tokens[i].str() << "') = " << SSTR(wordId) << END_LOG;
+                            LOGGER(log_level) << "wordId = getId('" << tokens_to_string(gram)
+                                    << "[" << SSTR(i + 1) << "]') = " << SSTR(wordId) << END_LOG;
 
                             if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
                                 LOGGER(log_level) << "ctxId = computeCtxId( " << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;

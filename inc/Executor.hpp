@@ -164,31 +164,6 @@ namespace uva {
                 }
 
                 /**
-                 * For the given N-gram allows to give the string of the object
-                 * for which the probability is computed, e.g.:
-                 * N-gram = "word1" -> result = "word1"
-                 * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
-                 * @param ngram the n-gram to transform
-                 * @return the resulting string
-                 */
-                template<typename WordIndexType>
-                static string get_mgram_prob_str(const T_M_Gram<WordIndexType> & mgram) {
-                    if (mgram.m_used_level == 1) {
-                        return mgram.m_tokens[0].str().empty() ? "<empty>" : mgram.m_tokens[0].str();
-                    } else {
-                        if (mgram.m_used_level > 1) {
-                            string result = mgram.m_tokens[mgram.m_used_level - 1].str() + " |";
-                            for (TModelLevel idx = 0; idx < (mgram.m_used_level - 1); idx++) {
-                                result += string(" ") + mgram.m_tokens[idx].str();
-                            }
-                            return result;
-                        } else {
-                            return "<none>";
-                        }
-                    }
-                }
-
-                /**
                  * Allows to read and execute test queries from the given file on the given trie.
                  * @param trie the given trie, filled in with some data
                  * @param testFile the file containing the N-Gram (5-Gram queries)
@@ -220,8 +195,8 @@ namespace uva {
                             trie.execute(query);
 
                             //Print the results:
-                            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << get_mgram_prob_str(query.m_gram) << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
-                            LOG_INFO << "Prob( " << get_mgram_prob_str(query.m_gram) << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
+                            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
+                            LOG_INFO << "Prob( " << query.m_gram.get_mgram_prob_str() << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
                         }
                     }
 

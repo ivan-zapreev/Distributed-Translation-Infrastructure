@@ -224,11 +224,7 @@ namespace uva {
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Compute the m-gram hash
-                    const uint8_t token_begin_idx = (query.m_gram.m_used_level - curr_level);
-                    const uint8_t token_end_idx = (query.m_gram.m_used_level - 1);
-                    uint64_t gram_hash = query.m_gram.suffix_hash(token_begin_idx);
-                    LOG_DEBUG << "The " << curr_level << "-gram: " << tokensToString(query.m_gram.m_tokens,
-                            token_begin_idx, token_end_idx) << " hash is " << gram_hash << END_LOG;
+                    uint64_t gram_hash = query.m_gram.template level_hash<false, curr_level>();
 
                     //1.1.3. Search for the bucket
                     const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
@@ -286,12 +282,7 @@ namespace uva {
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Compute the hash value for the back off M-gram
-                    const uint8_t token_begin_idx = (query.m_gram.m_used_level - 1) - curr_level;
-                    const uint8_t token_end_idx = (query.m_gram.m_used_level - 2);
-                    uint64_t gram_hash = query.m_gram.sub_hash(
-                            token_begin_idx, token_end_idx);
-                    LOG_DEBUG << "The: " << tokensToString(query.m_gram.m_tokens, token_begin_idx, token_end_idx)
-                            << " " << curr_level << "-gram back-off hash is " << gram_hash << END_LOG;
+                    uint64_t gram_hash = query.m_gram.template level_hash<true, curr_level>();
 
                     //1.1.3. Search for the bucket
                     const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
