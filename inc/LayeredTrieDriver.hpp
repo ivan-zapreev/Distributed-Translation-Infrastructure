@@ -76,7 +76,7 @@ namespace uva {
             template<typename TrieType >
             class LayeredTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
             public:
-                static const TModelLevel MAX_LEVEL;
+                static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
@@ -368,9 +368,6 @@ namespace uva {
                 //Stores the pointers to instances of th get_ctx_id function templates
                 static const TGetCtxIdFunct get_ctx_id_func[];
             };
-
-            template<typename TrieType>
-            const TModelLevel LayeredTrieDriver<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
 
             template<typename TrieType>
             const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {

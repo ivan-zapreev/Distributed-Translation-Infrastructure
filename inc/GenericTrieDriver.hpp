@@ -67,7 +67,7 @@ namespace uva {
             template<typename TrieType>
             class GenericTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
             public:
-                static const TModelLevel MAX_LEVEL;
+                static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
@@ -297,9 +297,6 @@ namespace uva {
                     }
                 }
             };
-
-            template<typename TrieType>
-            const TModelLevel GenericTrieDriver<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
 
             template<typename TrieType>
             const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {
