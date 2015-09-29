@@ -49,7 +49,7 @@ namespace uva {
                 template<typename TrieType>
                 class ARPATrieBuilder {
                 public:
-                    static const TModelLevel MAX_LEVEL;
+                    static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                     typedef typename TrieType::WordIndexType WordIndexType;
 
                     /**
@@ -161,7 +161,7 @@ namespace uva {
                 };
 
                 template<typename TrieType>
-                const TModelLevel ARPATrieBuilder<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
+                constexpr TModelLevel ARPATrieBuilder<TrieType>::MAX_LEVEL;
             }
         }
     }
