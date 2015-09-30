@@ -88,14 +88,14 @@ namespace uva {
                     static inline bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens, const TModelLevel level) {
                         TextPieceReader storage;
                         //First read text until the first tab, it should be present if it is a M-gram line
-                        if (text.getTab(storage)) {
+                        if (text.get_first_tab(storage)) {
                             //There should be some text left it it is an M-gram
-                            if (text.hasMore()) {
+                            if (text.has_more()) {
                                 //Read until the next tab or end of line into the storage
-                                if (text.getTab(storage)) {
+                                if (text.get_first_tab(storage)) {
                                     //Note storage should contain all the space separated M-gram tokens, read them
                                     TModelLevel idx = 0;
-                                    while (storage.getSpace(tokens[idx])) {
+                                    while (storage.get_first_space(tokens[idx])) {
                                         idx++;
                                     }
                                     //We should read exactly as many tokens as expected
@@ -127,23 +127,6 @@ namespace uva {
                             LOG_WARNING << "An unexpected end of line '" << text.str()
                                     << "' when reading the " << level << "-gram!" << END_LOG;
                             return false;
-                        }
-                    }
-
-                    /**
-                     * Tokenise a given piece of text into a set of text peices.
-                     * The text piece should be a M-gram piece - a space separated
-                     * string of words.
-                     * @param text the piece of text to tokenise
-                     * @param gram the gram container to put data into
-                     */
-                    static inline void gram_to_tokens(TextPieceReader &text, T_M_Gram<WordIndexType> & ngram) {
-                        //Re-set the level to zero
-                        ngram.m_used_level = 0;
-
-                        //Read the tokens one by one and do not forget to increment the level
-                        while (text.getSpace(ngram.m_tokens[ngram.m_used_level])) {
-                            ngram.m_used_level++;
                         }
                     }
 

@@ -89,7 +89,7 @@ namespace uva {
                     m_file_stream.seekg(0, std::ios::beg);
                 };
 
-                virtual bool getLine(TextPieceReader& out) {
+                virtual bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
@@ -117,11 +117,11 @@ namespace uva {
                     }
                 }
 
-                virtual bool getSpace(TextPieceReader& out) {
+                virtual bool get_first_space(TextPieceReader& out) {
                     throw Exception("FileStreamReader::getSpace(TextPieceReader& out) must not be used!");
                 }
 
-                virtual bool getTab(TextPieceReader& out) {
+                virtual bool get_first_tab(TextPieceReader& out) {
                     throw Exception("FileStreamReader::getTab(TextPieceReader& out) must not be used!");
                 }
 

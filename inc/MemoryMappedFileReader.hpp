@@ -163,7 +163,7 @@ namespace uva {
                  * @return true if the file is successfully opened otherwise false.
                  */
                 virtual bool is_open() const {
-                    return (TextPieceReader::getBeginPtr() != NULL);
+                    return (TextPieceReader::get_begin_ptr() != NULL);
                 };
 
                 /**
@@ -179,8 +179,8 @@ namespace uva {
                  */
                 virtual void close() {
                     // Release the memory (unnecessary because the program exits).
-                    const void * filePtr = TextPieceReader::getBeginPtr();
-                    const size_t len = TextPieceReader::getLen();
+                    const void * filePtr = TextPieceReader::get_begin_ptr();
+                    const size_t len = TextPieceReader::length();
                     if (filePtr != NULL) {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;

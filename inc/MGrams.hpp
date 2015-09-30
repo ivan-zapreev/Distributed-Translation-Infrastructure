@@ -80,23 +80,23 @@ namespace uva {
                     // 00000000,
                     // 00000001, 00000011, 00000111, 00001111,
                     // 00011111, 00111111, 01111111, 11111111
-                    const static uint8_t PROB_UNK_MASKS[];
+                    static const uint8_t PROB_UNK_MASKS[];
 
                     //Stores the unknown word masks for the back-off weight computations,
                     //up to and including 8-grams:
                     // 00000000,
                     // 00000010, 00000110, 00001110, 00011110,
                     // 00111110, 01111110, 11111110
-                    const static uint8_t BACK_OFF_UNK_MASKS[];
+                    static const uint8_t BACK_OFF_UNK_MASKS[];
 
                     //The maximum supported level of the m-gram
                     static constexpr TModelLevel MAX_LEVEL = sizeof (UNK_WORD_MASKS);
 
+                    //The index of the last m-gram word in the tokens and word ids array
+                    static constexpr TModelLevel END_WORD_IDX = MAX_LEVEL - 1;
+
                     //Unknown word bits
                     uint8_t m_unk_word_flags = 0;
-
-                    //The temporary data structure to store the N-gram word ids
-                    TShortId m_word_ids[MAX_LEVEL] = {};
 
                     //Stores the reference to the used word index
                     WordIndexType & m_word_index;
@@ -106,8 +106,8 @@ namespace uva {
                     TLogProbBackOff m_back_off;
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader m_context;
-                    //Stores the m-gram tokens
-                    TextPieceReader m_tokens[MAX_LEVEL];
+                    //The data structure to store the N-gram word ids
+                    TShortId m_word_ids[MAX_LEVEL] = {};
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
 
@@ -133,64 +133,10 @@ namespace uva {
                     inline void prepare_for_adding() {
                         //If we have a unigram then add it to the index otherwise get the word ids
                         if (m_used_level == M_GRAM_LEVEL_1) {
-                            m_word_ids[MAX_LEVEL - 1] = m_word_index.register_word(m_tokens[0]);
+                            m_word_ids[END_WORD_IDX] = m_word_index.register_word(get_end_token());
                         } else {
                             store_m_gram_word_ids<false>();
                         }
-                    }
-
-                    /**
-                     * This function allows to compute the hash of the sub M-Gram
-                     * starting from and including the word on the given index,
-                     * and until and including the word of the given index. It
-                     * assumes, which should hold, that the memory pointed by the
-                     * tokens is continuous.
-                     * @param begin_idx  the index of the first word in tokens array
-                     * @param end_idx the index of the last word in tokens array
-                     * @return the hash value of the given token
-                     */
-                    inline uint64_t sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
-                        LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
-
-                        //Compute the length of the gram tokens in memory, including spaces between
-                        const char * beginFirstPtr = m_tokens[begin_idx].getBeginCStr();
-                        const TextPieceReader & last = m_tokens[end_idx];
-                        const char * beginLastPtr = last.getBeginCStr();
-                        const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.getLen();
-                        LOG_DEBUG3 << "Hashing tokens length: " << totalLen << END_LOG;
-
-                        //If the sanity check is on then test that the memory is continuous
-                        //Compute the same length but with a longer iterative algorithms
-                        if (DO_SANITY_CHECKS) {
-                            //Compute the exact length
-                            size_t exactTotalLen = (end_idx - begin_idx); //The number of spaces in between tokens
-                            for (TModelLevel idx = begin_idx; idx <= end_idx; idx++) {
-                                exactTotalLen += m_tokens[idx].getLen();
-                            }
-                            //Check that the exact and fast computed lengths are the same
-                            if (exactTotalLen != totalLen) {
-                                stringstream msg;
-                                msg << "The memory allocation for M-gram tokens is not continuous: totalLen (" <<
-                                        SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
-                                throw Exception(msg.str());
-                            }
-                        }
-
-                        //Compute the hash using the gram tokens with spaces with them
-                        return computeHash(beginFirstPtr, totalLen);
-                    }
-
-                    /**
-                     * This function allows to compute the hash of the M-Gram suffix
-                     * starting from and including the word on the given index. It
-                     * assumes, which should hold, that the memory pointed by the
-                     * tokens is continuous.
-                     * @param begin_idx  the index of the first word in tokens array
-                     * @return the hash value of the given token
-                     */
-                    inline uint64_t suffix_hash(const TModelLevel begin_idx) const {
-                        const TModelLevel end_idx = m_used_level - 1;
-                        return sub_hash(begin_idx, end_idx);
                     }
 
                     /**
@@ -199,7 +145,7 @@ namespace uva {
                      * @return the hash value of the given token
                      */
                     inline uint64_t hash() const {
-                        return suffix_hash(0);
+                        return suffix_hash(start_word_index());
                     }
 
                     /**
@@ -211,13 +157,20 @@ namespace uva {
                      */
                     template<bool is_back_off, TModelLevel curr_level>
                     inline uint64_t level_hash() const {
-                        const uint8_t token_begin_idx = (m_used_level - curr_level) + (is_back_off ? -1 : 0);
-                        const uint8_t token_end_idx = (m_used_level - 1) + (is_back_off ? -1 : 0);
+                        //Depending on the M-gram compute a proper hash
+                        TModelLevel begin_idx = 0, end_idx = 0;
+                        if (is_back_off) {
+                            begin_idx = (MAX_LEVEL - curr_level) - 1;
+                            end_idx = END_WORD_IDX - 1;
+                        } else {
+                            begin_idx = (MAX_LEVEL - curr_level);
+                            end_idx = END_WORD_IDX;
+                        }
 
-                        const uint64_t gram_hash = sub_hash(token_begin_idx, token_end_idx);
+                        const uint64_t gram_hash = sub_hash(begin_idx, end_idx);
 
                         LOG_DEBUG << "The " << curr_level << "-gram: " << tokens_to_string(m_tokens,
-                                token_begin_idx, token_end_idx) << (is_back_off ? "back-off" : "")
+                                begin_idx, end_idx) << (is_back_off ? "back-off" : "")
                                 << " hash is " << gram_hash << END_LOG;
 
                         return gram_hash;
@@ -230,7 +183,7 @@ namespace uva {
                     inline TShortId get_back_off_end_word_id() const {
                         //The word ids are always aligned to the end of the array
                         //so the end word id for the back off m-gram is fixed!
-                        return m_word_ids[MAX_LEVEL - 2];
+                        return m_word_ids[END_WORD_IDX - 1];
                     }
 
                     /**
@@ -240,7 +193,7 @@ namespace uva {
                     inline TShortId get_end_word_id() const {
                         //The word ids are always aligned to the end of the array
                         //so the end word id for the probability m-gram is fixed!
-                        return m_word_ids[MAX_LEVEL - 1];
+                        return m_word_ids[END_WORD_IDX];
                     }
 
                     /**
@@ -269,23 +222,19 @@ namespace uva {
                      */
                     template<bool is_unk_flags>
                     inline void store_m_gram_word_ids() {
-                        //The start index depends on the value M of the given M-Gram
-                        TModelLevel idx = MAX_LEVEL - m_used_level;
-
                         if (is_unk_flags) {
                             //Re-initialize the flags with zero
                             m_unk_word_flags = 0;
                         }
 
                         LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
-                        for (TModelLevel i = 0; i != m_used_level; ++i) {
+                        for (TModelLevel idx = start_word_index(); idx != MAX_LEVEL; ++idx) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
-                            m_word_ids[idx] = m_word_index.get_word_id(m_tokens[i]);
-                            LOG_DEBUG1 << "wordId('" << m_tokens[i].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
+                            m_word_ids[idx] = m_word_index.get_word_id(m_tokens[idx]);
+                            LOG_DEBUG1 << "wordId('" << m_tokens[idx].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
                             if (is_unk_flags && (m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
                                 m_unk_word_flags |= UNK_WORD_MASKS[idx];
                             }
-                            ++idx;
                         }
 
                         if (is_unk_flags) {
@@ -300,23 +249,163 @@ namespace uva {
                      * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
                      * @return the resulting string
                      */
-                    inline string get_mgram_prob_str() {
-                        if (m_used_level == 1) {
-                            return m_tokens[0].str().empty() ? "<empty>" : m_tokens[0].str();
+                    inline string get_mgram_prob_str() const {
+                        if (m_used_level == M_GRAM_LEVEL_1) {
+                            const TextPieceReader & token = get_end_token();
+                            return token.str().empty() ? "<empty>" : token.str();
                         } else {
-                            if (m_used_level > 1) {
-                                string result = m_tokens[m_used_level - 1].str() + " |";
-                                for (TModelLevel idx = 0; idx < (m_used_level - 1); idx++) {
+                            if (m_used_level == M_GRAM_LEVEL_UNDEF) {
+                                return "<none>";
+                            } else {
+                                string result = m_tokens[END_WORD_IDX].str() + " |";
+                                for (TModelLevel idx = start_word_index(); idx != END_WORD_IDX; idx++) {
                                     result += string(" ") + m_tokens[idx].str();
                                 }
                                 return result;
-                            } else {
-                                return "<none>";
                             }
                         }
                     }
 
+                    /**
+                     * Tokenise a given piece of text into a set of text peices.
+                     * The text piece should be a M-gram piece - a space separated
+                     * string of words.
+                     * @param text the piece of text to tokenise
+                     * @param gram the gram container to put data into
+                     */
+                    inline void set_m_gram_from_text(TextPieceReader &text) {
+                        m_curr_index = END_WORD_IDX;
+
+                        //Read the tokens one by one backwards and decrement the index
+                        while (text.get_last_space(m_tokens[m_curr_index--]));
+
+                        //Set the read m-gram level, do "END_WORD_IDX - 1" as
+                        //the value of m_curr_index is decreased unconditionally
+                        m_used_level = ((END_WORD_IDX - 1) - m_curr_index);
+                    }
+
+                    /**
+                     * Allows to start a new M-gram with the given level
+                     * @param level the level of the M-gram we are starting
+                     */
+                    inline void start_new_m_gram(const TModelLevel level) {
+                        m_curr_index = MAX_LEVEL - level;
+                    }
+
+                    /**
+                     * Returns the reference to the next new token of the m-gram
+                     * @return the reference to the next new token of the m-gram
+                     */
+                    inline TextPieceReader & get_next_new_token() {
+                        if (DO_SANITY_CHECKS && (m_curr_index > END_WORD_IDX)) {
+                            stringstream msg;
+                            msg << "The next token does not exist, exceeded the maximum of " << SSTR(MAX_LEVEL) << " elements!";
+                            throw Exception(msg.str());
+                        }
+                        return m_tokens[m_curr_index++];
+                    }
+
+                    /**
+                     * Return the last token of the read m-gram
+                     * @return the reference to the last token of the m-gram
+                     */
+                    inline const TextPieceReader & get_end_token() const {
+                        return m_tokens[END_WORD_IDX];
+                    }
+
+                    /**
+                     * If the context is set to be all the m-gram tokens, then this method
+                     * allows to exclude the last token from it. It also takes care of the
+                     * space in between. Note that, this method must only be called if the
+                     * context is initialized and it he m-gram level m is greater than one. 
+                     */
+                    inline void exclude_last_token_from_context() {
+                        //The reduction factor for length is the length of the last m-gram's token plus
+                        //one character which is the space symbol located between m-gram tokens.
+                        const size_t reduction = (get_end_token().length() + 1);
+                        m_context.set(m_context.get_begin_ptr(), m_context.length() - reduction);
+                    }
+
+                    /**
+                     * The basic to string conversion operator for the m-gram
+                     */
+                    inline operator string() const {
+                        return tokens_to_string<MAX_LEVEL>(m_tokens, m_used_level);
+                    };
+
+                private:
+                    //Stores the m-gram idx
+                    TModelLevel m_curr_index;
+                    //Stores the m-gram tokens
+                    TextPieceReader m_tokens[MAX_LEVEL];
+
+                    /**
+                     * Gives the start word index
+                     * @return the start word index.
+                     */
+                    inline TModelLevel start_word_index() const {
+                        return (MAX_LEVEL - m_used_level);
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the sub M-Gram
+                     * starting from and including the word on the given index,
+                     * and until and including the word of the given index. It
+                     * assumes, which should hold, that the memory pointed by the
+                     * tokens is continuous.
+                     * @param begin_idx  the index of the first word in tokens array
+                     * @param end_idx the index of the last word in tokens array
+                     * @return the hash value of the given token
+                     */
+                    inline uint64_t sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                        LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
+
+                        //Compute the length of the gram tokens in memory, including spaces between
+                        const char * beginFirstPtr = m_tokens[begin_idx].get_begin_c_str();
+                        const TextPieceReader & last = m_tokens[end_idx];
+                        const char * beginLastPtr = last.get_begin_c_str();
+                        const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.length();
+                        LOG_DEBUG3 << "Hashing tokens length: " << totalLen << END_LOG;
+
+                        //If the sanity check is on then test that the memory is continuous
+                        //Compute the same length but with a longer iterative algorithms
+                        if (DO_SANITY_CHECKS) {
+                            //Compute the exact length
+                            size_t exactTotalLen = (end_idx - begin_idx); //The number of spaces in between tokens
+                            for (TModelLevel idx = begin_idx; idx <= end_idx; idx++) {
+                                exactTotalLen += m_tokens[idx].length();
+                            }
+                            //Check that the exact and fast computed lengths are the same
+                            if (exactTotalLen != totalLen) {
+                                stringstream msg;
+                                msg << "The memory allocation for M-gram tokens is not continuous: totalLen (" <<
+                                        SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
+                                throw Exception(msg.str());
+                            }
+                        }
+
+                        //Compute the hash using the gram tokens with spaces with them
+                        return computeHash(beginFirstPtr, totalLen);
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the M-Gram suffix
+                     * starting from and including the word on the given index. It
+                     * assumes, which should hold, that the memory pointed by the
+                     * tokens is continuous.
+                     * @param begin_idx  the index of the first word in tokens array
+                     * @return the hash value of the given token
+                     */
+                    inline uint64_t suffix_hash(const TModelLevel begin_idx) const {
+                        return sub_hash(begin_idx, END_WORD_IDX);
+                    }
                 };
+
+                template<typename WordIndexType>
+                constexpr TModelLevel T_M_Gram<WordIndexType>::MAX_LEVEL;
+
+                template<typename WordIndexType>
+                constexpr TModelLevel T_M_Gram<WordIndexType>::END_WORD_IDX;
 
                 template<typename WordIndexType>
                 const uint8_t T_M_Gram<WordIndexType>::UNK_WORD_MASKS[] = {
@@ -360,15 +449,6 @@ namespace uva {
                 template class T_M_Gram<CountingWordIndex>;
                 template class T_M_Gram<TOptBasicWordIndex>;
                 template class T_M_Gram<TOptCountWordIndex>;
-
-                /**
-                 * This function allows to convert the M-gram tokens into a string representation. 
-                 * @param gram  the M-Gram to work with
-                 */
-                template<typename WordIndexType>
-                inline string tokens_to_string(const T_M_Gram<WordIndexType> & gram) {
-                    return tokens_to_string<T_M_Gram<WordIndexType>::MAX_LEVEL>(gram.m_tokens, gram.m_used_level);
-                };
 
                 /**
                  * The compressed implementation of the M-gram id class

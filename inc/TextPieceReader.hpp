@@ -26,17 +26,20 @@
 #ifndef TEXTPIECEREADER_HPP
 #define	TEXTPIECEREADER_HPP
 
+#include <string.h>     // std::memrchr
 #include <cstring>      // std::memchr std::strncpy
 #include <algorithm>    // std::min
 
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
+#include "StringUtils.hpp"
 
 using namespace std;
 using namespace uva::smt::tries;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::logging;
+using namespace uva::smt::utils::text;
 
 namespace uva {
     namespace smt {
@@ -70,9 +73,9 @@ namespace uva {
                 mutable string m_str;
 
                 //The pointer to the unread remainder of the file
-                const char * m_cursorPtr;
+                const char * m_cursor_ptr;
                 //The remaining length of the file to read
-                size_t m_restLen;
+                size_t m_rest_len;
 
             public:
 
@@ -80,7 +83,7 @@ namespace uva {
                  * The basic constructor initializes empty text
                  */
                 TextPieceReader()
-                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
+                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursor_ptr(NULL), m_rest_len(0) {
                 }
 
                 /**
@@ -89,7 +92,7 @@ namespace uva {
                  * @param len the length of the text
                  */
                 explicit TextPieceReader(void * beginPtr, const size_t len)
-                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursorPtr(NULL), m_restLen(0) {
+                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursor_ptr(NULL), m_rest_len(0) {
                     set(beginPtr, len);
                 }
 
@@ -102,8 +105,8 @@ namespace uva {
                     m_len = other.m_len;
                     m_is_gen_str = other.m_is_gen_str;
                     m_str = other.m_str;
-                    m_cursorPtr = other.m_cursorPtr;
-                    m_restLen = other.m_restLen;
+                    m_cursor_ptr = other.m_cursor_ptr;
+                    m_rest_len = other.m_rest_len;
                 }
 
                 /**
@@ -116,14 +119,14 @@ namespace uva {
                     m_len = len;
                     m_is_gen_str = true;
                     m_str.clear();
-                    m_cursorPtr = m_beginPtr;
-                    m_restLen = m_len;
+                    m_cursor_ptr = m_beginPtr;
+                    m_rest_len = m_len;
 
                     LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_beginPtr = "
                             << SSTR(static_cast<const void*> (m_beginPtr)) << ", m_cursorPtr = "
-                            << SSTR(static_cast<const void*> (m_cursorPtr)) << ", m_is_gen_str = "
+                            << SSTR(static_cast<const void*> (m_cursor_ptr)) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
-                            << ", m_restLen = " << SSTR(m_restLen) << END_LOG;
+                            << ", m_restLen = " << SSTR(m_rest_len) << END_LOG;
                 }
 
                 /**
@@ -132,7 +135,7 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the beginning of the text
                  */
-                inline const char * getBeginCStr() const {
+                inline const char * get_begin_c_str() const {
                     return m_beginPtr;
                 }
 
@@ -142,15 +145,15 @@ namespace uva {
                  * termination and it can be Gb long!
                  * @return the pointer to the remainder of the text
                  */
-                inline const char * getRestCStr() const {
-                    return m_cursorPtr;
+                inline const char * get_rest_c_str() const {
+                    return m_cursor_ptr;
                 }
 
                 /**
                  * Allows to get the pointer to the beginning of the text
                  * @return the pointer to the beginning of the text
                  */
-                inline const void * getBeginPtr() const {
+                inline const void * get_begin_ptr() const {
                     return (void *) m_beginPtr;
                 }
 
@@ -158,7 +161,7 @@ namespace uva {
                  * Allows to get the length of the text
                  * @return the length of the text
                  */
-                inline size_t getLen() const {
+                inline size_t length() const {
                     return m_len;
                 }
 
@@ -187,69 +190,136 @@ namespace uva {
                 }
 
                 /**
-                 * This function reads a line from the mapped file
-                 * @param out the out parameter - the read line 
+                 * This function searches forward for the first occurrence of the
+                 * argument delimiter symbol.
+                 * @param out the out parameter - the substring until the first next
+                 * found delimiter or the entire string if the delimiter was not found
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                inline bool getNext(TextPieceReader& out, const char delim) {
-                    //The next line begins where we stopped
-                    const char * out_m_beginPtr = m_cursorPtr;
+                template<const char delim>
+                inline bool get_first(TextPieceReader& out) {
+                    //The next piece begins where we stopped
+                    const char * out_m_begin_ptr = m_cursor_ptr;
 
-                    LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_beginPtr)) << END_LOG;
+                    LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
 
-                    //The next line length is first zero
+                    //The found piece length is first zero
                     size_t out_m_len = 0;
 
-                    //Search for the next new line symbol in the remainder of the file
-                    const char * charPtr = static_cast<const char *> (memchr(m_cursorPtr, delim, m_restLen));
+                    //Search for the next new delimiter from the front
+                    const char * char_ptr = static_cast<const char *> (memchr(m_cursor_ptr, delim, m_rest_len));
 
-                    LOG_DEBUG4 << "Searching for the character got: " << SSTR(static_cast<const void *> (charPtr)) << END_LOG;
+                    LOG_DEBUG4 << "Forward searching for the character got: "
+                            << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
 
-                    //Check if we found a pointer to the new line
-                    if (charPtr != NULL) {
-                        //Compute the line length
-                        size_t lineLen = charPtr - m_cursorPtr;
+                    //Check if we found something
+                    if (char_ptr != NULL) {
+                        //Compute the length
+                        size_t found_piece_length = char_ptr - m_cursor_ptr;
 
-                        LOG_DEBUG4 << "The substring length is " << SSTR(lineLen) << END_LOG;
+                        LOG_DEBUG4 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
 
-                        //Store the pointer to the remaining of the file
-                        m_cursorPtr = charPtr + 1;
-                        //Store the remaining length of the file
-                        m_restLen -= (lineLen + 1);
+                        //Store the pointer to the remaining text piece
+                        m_cursor_ptr = char_ptr + 1;
+                        //Store the remaining length
+                        m_rest_len -= (found_piece_length + 1);
 
-                        LOG_DEBUG4 << "Resetting m_cursorPtr = "
-                                << SSTR(static_cast<const void *> (m_cursorPtr))
-                                << ", m_restLen = " << m_restLen << END_LOG;
+                        LOG_DEBUG4 << "Resetting m_cursor_ptr = "
+                                << SSTR(static_cast<const void *> (m_cursor_ptr))
+                                << ", m_rest_len = " << m_rest_len << END_LOG;
 
-                        //Set the resulting length of the line
-                        out_m_len = lineLen;
+                        //Set the resulting length
+                        out_m_len = found_piece_length;
 
-                        //For Windows-format text files remove the '\r' as well
-                        //in case we were looking for the end of file
-                        if (lineLen && delim == '\n' && '\r' == out_m_beginPtr[lineLen - 1]) {
+                        //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
+                        if ((delim == '\n') && found_piece_length && (out_m_begin_ptr[found_piece_length - 1]) == '\r') {
                             out_m_len--;
-                            LOG_DEBUG4 << "A \\\\r detected, resetting m_restLen = "
-                                    << m_restLen << END_LOG;
+                            LOG_DEBUG4 << "A \\\\r detected, resetting out_m_len = " << out_m_len << END_LOG;
                         }
                     } else {
-                        //If the pointer is not found then the length of the
-                        //last file line is the length of the file remains
-                        out_m_len = m_restLen;
+                        //If the pointer is not found then the length if the entire remaining length
+                        out_m_len = m_rest_len;
 
-                        //If the remaining file length is zero then return file
-                        if (!m_restLen) {
+                        //If the remaining length is zero then return false as there is nothing to return
+                        if (!m_rest_len) {
                             return false;
                         } else {
                             //If there was something left then now we read it all.
                             //Set the remaining length to zero, as there is nothing left.
-                            m_restLen = 0;
+                            m_rest_len = 0;
                         }
                     }
 
                     //Set the return data
-                    out.set(out_m_beginPtr, out_m_len);
+                    out.set(out_m_begin_ptr, out_m_len);
 
-                    //Return true as we successfully read a new line
+                    //Return true as we successfully found a delimited substring
+                    return true;
+                }
+
+                /**
+                 * This function searches backwards for the first occurrence of the
+                 * argument delimiter symbol.
+                 * @param out the out parameter - the substring from the first next
+                 * found delimiter till the end of the string or the entire string
+                 * if the delimiter was not found
+                 * @return true if a line was read, otherwise false (end of file)
+                 */
+                template<const char delim>
+                inline bool get_last(TextPieceReader& out) {
+                    //The found piece length is first zero
+                    size_t out_m_len = 0;
+                    
+                    LOG_DEBUG3 << "Start searching for a new delimiter, m_cursor_ptr: "
+                            << SSTR(static_cast<const void *> (m_cursor_ptr))
+                            << ", m_rest_len: " << m_rest_len << END_LOG;
+
+                    //Search for the next new delimiter from the end
+                    const char * out_m_begin_ptr = static_cast<const char *> (memrchr(m_cursor_ptr, delim, m_rest_len));
+
+                    LOG_DEBUG4 << "Backward searching for the character got: "
+                            << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
+
+                    //Check if we found something
+                    if (out_m_begin_ptr != NULL) {
+                        //Store the current remaining length 
+                        out_m_len = m_rest_len;
+
+                        //Set the new remaining length and move the begin pointer past the delimiter
+                        m_rest_len = (out_m_begin_ptr++ - m_cursor_ptr);
+
+                        LOG_DEBUG4 << "Resetting m_cursor_ptr = "
+                                << SSTR(static_cast<const void *> (m_cursor_ptr))
+                                << ", m_rest_len = " << m_rest_len << END_LOG;
+
+                        //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
+                        if ((delim == '\n') && m_rest_len && (m_cursor_ptr[m_rest_len - 1] == '\r')) {
+                            m_rest_len--;
+                            LOG_DEBUG4 << "A \\\\r detected, resetting m_rest_len = " << m_rest_len << END_LOG;
+                        }
+
+                        //Set the resulting length for the found piece
+                        out_m_len -= (out_m_begin_ptr - m_cursor_ptr);
+                    } else {
+                        //If the pointer is not found then the length if the entire remaining length
+                        out_m_len = m_rest_len;
+                        //Also the pointer should then point to the beginning of the text we have
+                        out_m_begin_ptr = m_cursor_ptr;
+
+                        //If the remaining length is zero then return false as there is nothing to return
+                        if (!m_rest_len) {
+                            return false;
+                        } else {
+                            //If there was something left then now we read it all.
+                            //Set the remaining length to zero, as there is nothing left.
+                            m_rest_len = 0;
+                        }
+                    }
+
+                    //Set the return data
+                    out.set(out_m_begin_ptr, out_m_len);
+
+                    //Return true as we successfully found a delimited substring
                     return true;
                 }
 
@@ -257,44 +327,56 @@ namespace uva {
                  * Allows to check if there is something left to read
                  * @return true if there is yet something to read, otherwise false
                  */
-                inline bool hasMore() {
-                    return m_restLen > 0;
+                inline bool has_more() {
+                    return m_rest_len > 0;
                 }
 
                 /**
-                 * This function, from the current position, searches for the end of line
+                 * This function, searches forward for the first end of line char
                  * or until the end of the text and then sets the data about the found
                  * region into the provided output parameter.
                  * @param out the out parameter - the read line 
-                 * @return true if a line was read, otherwise false (end of file)
+                 * @return true if data was read, otherwise false
                  */
-                virtual bool getLine(TextPieceReader& out) {
-                    LOG_DEBUG4 << "Searching for a new line!" << END_LOG;
-                    return getNext(out, '\n');
+                virtual bool get_first_line(TextPieceReader& out) {
+                    LOG_DEBUG4 << "Searching forward for a new line!" << END_LOG;
+                    return get_first<'\n'>(out);
+                }
+
+                /**
+                 * This function, searches forward for the first end of space char
+                 * or until the end of the text and then sets the data about the found
+                 * region into the provided output parameter.
+                 * @param out the out parameter - the read line 
+                 * @return true if data was read, otherwise false
+                 */
+                virtual bool get_first_space(TextPieceReader& out) {
+                    LOG_DEBUG4 << "Searching forward for a space!" << END_LOG;
+                    return get_first<' '>(out);
                 }
 
                 /**
                  * This function, from the current position, searches for the space char
-                 * or until the end of the text and then sets the data about the found
+                 * or until the beginning of the text and then sets the data about the found
                  * region into the provided output parameter.
                  * @param out the out parameter - the read line 
-                 * @return true if a line was read, otherwise false (end of file)
+                 * @return true if data was read, otherwise false
                  */
-                virtual bool getSpace(TextPieceReader& out) {
-                    LOG_DEBUG4 << "Searching for a space!" << END_LOG;
-                    return getNext(out, ' ');
+                virtual bool get_last_space(TextPieceReader& out) {
+                    LOG_DEBUG4 << "Searching backward for a space!" << END_LOG;
+                    return get_last<' '>(out);
                 }
 
                 /**
-                 * This function, from the current position, searches for the tab char
+                 * This function, searches forward for the first end of tab char
                  * or until the end of the text and then sets the data about the found
                  * region into the provided output parameter.
                  * @param out the out parameter - the read line 
-                 * @return true if a line was read, otherwise false (end of file)
+                 * @return true if data was read, otherwise false
                  */
-                virtual bool getTab(TextPieceReader& out) {
-                    LOG_DEBUG4 << "Searching for a tab!" << END_LOG;
-                    return getNext(out, '\t');
+                virtual bool get_first_tab(TextPieceReader& out) {
+                    LOG_DEBUG4 << "Searching forward for a tab!" << END_LOG;
+                    return get_first<'\t'>(out);
                 }
 
                 /**

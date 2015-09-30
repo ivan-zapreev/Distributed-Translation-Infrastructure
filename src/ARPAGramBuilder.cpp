@@ -66,16 +66,16 @@ namespace uva {
                 template<typename WordIndexType>
                 bool ARPAGramBuilder<WordIndexType>::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
-                    if (line.getTab(m_token)) {
+                    if (line.get_first_tab(m_token)) {
                         //Try to parse it float
-                        if (fast_stoT<float>(m_ngram.m_prob, m_token.getRestCStr())) {
+                        if (fast_stoT<float>(m_ngram.m_prob, m_token.get_rest_c_str())) {
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.m_prob << END_LOG;
 
                             //Read the all the N-Gram tokes, read until the tab as after the 
                             //tab there is a back-off weight or there is no tab in the line
                             //The context will contain all the N-gram tokens now. No worries
                             //though! The last one will be removed somewhat later! See below.
-                            if (!line.getTab(m_ngram.m_context)) {
+                            if (!line.get_first_tab(m_ngram.m_context)) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
                                         << "' when reading the " << m_level << "'th "
                                         << m_level << "-gram token!" << END_LOG;
@@ -83,9 +83,12 @@ namespace uva {
                                 return false;
                             }
 
+                            //Start the new m-gram
+                            m_ngram.start_new_m_gram(m_level);
+
                             //Read the N tokens of the N-gram - space separated
                             for (int i = 0; i < m_level; i++) {
-                                if (!m_ngram.m_context.getSpace(m_ngram.m_tokens[i])) {
+                                if (!m_ngram.m_context.get_first_space(m_ngram.get_next_new_token())) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
                                             << "'th " << m_level << "-gram token!" << END_LOG;
@@ -96,16 +99,14 @@ namespace uva {
 
                             //Remove the last token from the context string
                             if (m_level > M_GRAM_LEVEL_1) {
-                                //The reduction factor for length is the length of the last N-gram token plus
-                                //one character which is the space symbol located between N-gram tokens.
-                                const size_t reduction = (m_ngram.m_tokens[m_level - 1].getLen() + 1);
-                                m_ngram.m_context.set(m_ngram.m_context.getBeginPtr(), m_ngram.m_context.getLen() - reduction);
+                                //Up until now the context was the entire list of m-gram tokens, now exclude the last one
+                                m_ngram.exclude_last_token_from_context();
                             }
 
                             //Now if there is something left it should be the back-off weight, otherwise we are done
-                            if (line.hasMore()) {
+                            if (line.has_more()) {
                                 //Take the remainder of the line and try to parse it!
-                                if (!fast_stoT<float>(m_ngram.m_back_off, line.getRestCStr())) {
+                                if (!fast_stoT<float>(m_ngram.m_back_off, line.get_rest_c_str())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
                                             << "' as a back-off weight!" << END_LOG;
                                     //The first token was not a float, need to skip to another N-Gram section(?)
@@ -152,7 +153,7 @@ namespace uva {
                         m_ngram.prepare_for_adding();
 
                         LOG_DEBUG << "Adding a " << SSTR(m_ngram.m_used_level) << "-Gram "
-                                << tokens_to_string(m_ngram) << " to the Trie" << END_LOG;
+                                << (string) m_ngram << " to the Trie" << END_LOG;
 
                         //Add the obtained N-gram data to the Trie
                         m_add_garm_func(m_ngram);

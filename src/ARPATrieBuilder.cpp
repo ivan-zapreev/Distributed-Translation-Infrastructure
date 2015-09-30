@@ -76,7 +76,7 @@ namespace uva {
                         LOG_DEBUG1 << "Read header (?) line: '" << m_line.str() << "'" << END_LOG;
 
                         //If the line is empty then we keep reading
-                        if (m_line.hasMore()) {
+                        if (m_line.has_more()) {
                             //If the line begins with "<" then it could be a header
                             //or something else that we do not need to read or
                             //interpret! Therefore we skip it and read on, otherwise
@@ -96,7 +96,7 @@ namespace uva {
                         Logger::updateProgressBar();
 
                         //Read the next line from the file if it is there
-                        if (!m_file.getLine(m_line)) {
+                        if (!m_file.get_first_line(m_line)) {
                             throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                         }
                     }
@@ -132,14 +132,14 @@ namespace uva {
                     if (m_line != END_OF_ARPA_FILE) {
                         TModelLevel level = M_GRAM_LEVEL_1;
                         while (true) {
-                            if (m_file.getLine(m_line)) {
+                            if (m_file.get_first_line(m_line)) {
                                 LOG_DEBUG1 << "Read data (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                 //Update the progress bar status
                                 Logger::updateProgressBar();
 
                                 //If the line is empty then we keep reading
-                                if (m_line.hasMore()) {
+                                if (m_line.has_more()) {
                                     //Check that the next line contains the meaningful N-gram amount information!
                                     if (regex_match(m_line.str(), m_ng_amount_reg_exp)) {
                                         //This is a valid data section entry, there is no need to do anything with it.
@@ -202,11 +202,11 @@ namespace uva {
                         //Read the current level N-grams and add them to the trie
                         while (true) {
                             //Try to read the next line
-                            if (m_file.getLine(m_line)) {
+                            if (m_file.get_first_line(m_line)) {
                                 LOG_DEBUG1 << "Read " << level << "-Gram (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                 //Empty lines will just be skipped
-                                if (m_line.hasMore()) {
+                                if (m_line.has_more()) {
                                     //Pass the given N-gram string to the N-Gram Builder. If the
                                     //N-gram is not matched then stop the loop and move on
                                     if (pNGBuilder->parse_line(m_line)) {
@@ -399,10 +399,10 @@ namespace uva {
                         TextPieceReader tokens[MAX_LEVEL];
 
                         //Read the current level N-grams and add them to the trie
-                        while (m_file.getLine(m_line)) {
+                        while (m_file.get_first_line(m_line)) {
                             LOG_DEBUG1 << "Reading " << SSTR(level) << "-gram, got: [" << m_line.str() << "]" << END_LOG;
                             //If this is not an empty line
-                            if (m_line.hasMore()) {
+                            if (m_line.has_more()) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
                                 if (ARPAGramBuilder<WordIndexType>::gram_line_to_tokens(m_line, tokens, level)) {
@@ -451,7 +451,7 @@ namespace uva {
                     m_file.reset();
 
                     //Read the first line from the file
-                    m_file.getLine(m_line);
+                    m_file.get_first_line(m_line);
 
                     //Skip on ARPA headers
                     read_headers();
@@ -481,7 +481,7 @@ namespace uva {
 
                     try {
                         //Read the first line from the file
-                        m_file.getLine(m_line);
+                        m_file.get_first_line(m_line);
 
                         //Skip on ARPA headers
                         read_headers();

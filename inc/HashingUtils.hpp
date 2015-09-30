@@ -587,7 +587,7 @@ namespace uva {
              * @return the resulting hash.
              */
             inline uint_fast64_t computeHash(const TextPieceReader & token) {
-                return computeHash(token.getBeginCStr(), token.getLen());
+                return computeHash(token.get_begin_c_str(), token.length());
             }
 
             /**
@@ -620,7 +620,7 @@ namespace uva {
              * @return the resulting hash < limit
              */
             inline uint_fast32_t computeBoundedHash(const TextPieceReader & token, const uint32_t limit) {
-                return computeBoundedHash(token.getBeginCStr(), token.getLen(), limit);
+                return computeBoundedHash(token.get_begin_c_str(), token.length(), limit);
             }
 
             /**

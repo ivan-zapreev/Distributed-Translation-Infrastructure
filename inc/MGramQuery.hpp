@@ -74,7 +74,7 @@ namespace uva {
                 TQueryResult m_result = {};
 
                 //Stores the current end word index during the query execution
-                TModelLevel curr_end_word_idx = 0;
+                TModelLevel m_curr_end_word_idx = 0;
 
                 /**
                  * The basic constructor for the structure

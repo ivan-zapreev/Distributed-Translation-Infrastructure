@@ -67,8 +67,7 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokens_to_string(gram) << " wordHash = "
-                        << word_id << END_LOG;
+                        << (string) gram << " wordHash = " << word_id << END_LOG;
             };
 
             template<typename TrieType >
@@ -85,7 +84,7 @@ namespace uva {
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokens_to_string(gram);
+                    msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
                 }
                 TProbBackOffEntry& pbData = m_trie.template make_m_gram_data_ref<level>(wordId, ctxId);
@@ -104,7 +103,7 @@ namespace uva {
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back_off << ") for "
-                        << tokens_to_string(gram) << " contextHash = "
+                        << (string) gram << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 
@@ -121,7 +120,7 @@ namespace uva {
                 //The word has to be known, otherwise it is an error situation
                 if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                     stringstream msg;
-                    msg << "Could not get end wordId for " << tokens_to_string(gram);
+                    msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
                 }
                 TLogProbBackOff& pData = m_trie.make_n_gram_data_ref(wordId, ctxId);
@@ -139,7 +138,7 @@ namespace uva {
                 pData = gram.m_prob;
 
                 LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
-                        << tokens_to_string(gram) << " contextHash = "
+                        << (string) gram << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
 

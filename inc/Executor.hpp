@@ -182,11 +182,11 @@ namespace uva {
                     startTime = StatisticsMonitor::getCPUTime();
 
                     //Read the test file line by line
-                    while (testFile.getLine(line)) {
+                    while (testFile.get_first_line(line)) {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                         //Parse the line into an N-Gram
-                        ARPAGramBuilder<typename TrieType::WordIndexType>::gram_to_tokens(line, query.m_gram);
+                        query.m_gram.set_m_gram_from_text(line);
 
                         //There can be an empty or "unreadable" line in the text file, just skip it ...
                         if (query.m_gram.m_used_level > 0) {

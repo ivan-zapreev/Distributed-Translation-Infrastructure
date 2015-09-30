@@ -129,7 +129,7 @@ namespace uva {
                 //Create the M-gram id from the word ids.
                 constexpr TModelLevel begin_idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - level);
                 Byte_M_Gram_Id::create_m_gram_id<begin_idx, level>(gram.m_word_ids, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokens_to_string(gram) << END_LOG;
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << (string) gram << END_LOG;
 
                 //Set the probability and back-off data
                 data.payload.prob = gram.m_prob;
@@ -149,7 +149,7 @@ namespace uva {
                 //Create the N-gram id from the word ids
                 constexpr TModelLevel begin_idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - MAX_LEVEL);
                 Byte_M_Gram_Id::create_m_gram_id<begin_idx, MAX_LEVEL>(gram.m_word_ids, data.id);
-                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << tokens_to_string(gram) << END_LOG;
+                LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << (string) gram << END_LOG;
 
                 //Set the probability data
                 data.payload = gram.m_prob;

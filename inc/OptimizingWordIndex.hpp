@@ -132,7 +132,7 @@ namespace uva {
                         }
                     };
 
-#define IS_EQUAL(token, entry) (((token).getLen() == (entry).m_len) && (strncmp((token).getBeginCStr(), (entry).m_word, (entry).m_len) == 0))
+#define IS_EQUAL(token, entry) (((token).length() == (entry).m_len) && (strncmp((token).get_begin_c_str(), (entry).m_word, (entry).m_len) == 0))
 
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.

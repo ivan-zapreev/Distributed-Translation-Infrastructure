@@ -61,7 +61,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << tokens_to_string(gram)               \
+            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << (string) gram               \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -271,13 +271,13 @@ namespace uva {
                         //The word has to be known, otherwise it is an error situation
                         if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The first word_id of '" << tokens_to_string(gram) << "' could not be found!";
+                            msg << "The first word_id of '" << (string) gram << "' could not be found!";
                             throw Exception(msg.str());
                         }
 
                         //The first word id is the first context id
                         ctxId = wordId;
-                        LOGGER(log_level) << "ctxId = getId('" << tokens_to_string(gram)
+                        LOGGER(log_level) << "ctxId = getId('" << (string) gram
                                 << "[1]') = " << SSTR(ctxId) << END_LOG;
 
                         //Iterate and compute the hash:
@@ -287,11 +287,11 @@ namespace uva {
                             //The word has to be known, otherwise it is an error situation
                             if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
                                 stringstream msg;
-                                msg << "The " << SSTR(i + 1) << "'th word_id for '" << tokens_to_string(gram) << "' could not be found!";
+                                msg << "The " << SSTR(i + 1) << "'th word_id for '" << (string) gram << "' could not be found!";
                                 throw Exception(msg.str());
                             }
 
-                            LOGGER(log_level) << "wordId = getId('" << tokens_to_string(gram)
+                            LOGGER(log_level) << "wordId = getId('" << (string) gram
                                     << "[" << SSTR(i + 1) << "]') = " << SSTR(wordId) << END_LOG;
 
                             if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
@@ -323,16 +323,16 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool get_cached_context_id(const T_M_Gram<WordIndexType> &mGram, TLongId & result) const {
-                    if (m_chached_ctx == mGram.m_context) {
+                inline bool get_cached_context_id(const T_M_Gram<WordIndexType> &gram, TLongId & result) const {
+                    if (m_chached_ctx == gram.m_context) {
                         result = m_chached_ctx_id;
-                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << mGram.m_context
-                                << "], for m-gram: " << tokens_to_string(mGram)
+                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << gram.m_context
+                                << "], for m-gram: " << (string) gram
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
-                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << mGram.m_context
-                                << "], for m-gram: " << tokens_to_string(mGram)
+                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << gram.m_context
+                                << "], for m-gram: " << (string) gram
                                 << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
@@ -343,11 +343,11 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void set_cache_context_id(const T_M_Gram<WordIndexType> &mGram, TLongId & stx_id) {
-                    LOG_DEBUG2 << "Caching context = [ " << mGram.m_context << " ], id = " << stx_id
-                            << ", for m-gram: " << tokens_to_string(mGram) << END_LOG;
+                inline void set_cache_context_id(const T_M_Gram<WordIndexType> &gram, TLongId & stx_id) {
+                    LOG_DEBUG2 << "Caching context = [ " << gram.m_context << " ], id = " << stx_id
+                            << ", for m-gram: " << (string) gram << END_LOG;
 
-                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(mGram.m_context);
+                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(gram.m_context);
                     m_chached_ctx_id = stx_id;
 
                     LOG_DEBUG2 << "Cached context = [ " << m_chached_ctx
@@ -368,6 +368,9 @@ namespace uva {
                 //Stores the pointers to instances of th get_ctx_id function templates
                 static const TGetCtxIdFunct get_ctx_id_func[];
             };
+
+            template<typename TrieType>
+            constexpr TModelLevel LayeredTrieDriver<TrieType>::MAX_LEVEL;
 
             template<typename TrieType>
             const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {

@@ -174,7 +174,7 @@ namespace uva {
                  * @param query the given M-Gram query and its state
                  */
                 void execute(TMGramQuery & query) {
-                    LOG_DEBUG << "Starting to execute:" << tokens_to_string(query.m_gram) << END_LOG;
+                    LOG_DEBUG << "Starting to execute:" << (string) query.m_gram << END_LOG;
 
                     //Make sure that the query is prepared for execution
                     TModelLevel curr_level = query.prepare_query();
