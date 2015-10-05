@@ -488,6 +488,7 @@ namespace uva {
 
 
             // 64-bit hash for 32-bit platforms
+
             template<uint64_t seed>
             uint64_t MurmurHash64B(const void * key, std::size_t len) {
                 const unsigned int m = 0x5bd1e995;
@@ -631,6 +632,18 @@ namespace uva {
              */
             inline uint_fast32_t compute_hash(const string & token, const uint32_t limit) {
                 return compute_hash(token.c_str(), token.length(), limit);
+            }
+
+            /*****************************************************************************************************/
+
+            /**
+             * Allows to combine two hashes into one
+             * @param hash_one the first hash value
+             * @param hash_two the second hash value
+             * @return the resulting combines hash value
+             */
+            inline uint_fast64_t hash_combine(const uint_fast64_t hash_one, const uint_fast64_t hash_two) {
+                return (hash_one ^ (hash_two + 0x9e3779b9 + (hash_one << 6) + (hash_one >> 2)));
             }
 
             /*****************************************************************************************************/

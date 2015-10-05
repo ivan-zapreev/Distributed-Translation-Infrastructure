@@ -117,8 +117,7 @@ namespace uva {
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_m_gram(const T_M_Gram<WordIndexType> &gram) {
                 //Get the bucket index
 
-                TShortId bucket_idx;
-                get_bucket_id(gram, bucket_idx);
+                TShortId bucket_idx = get_bucket_id<false, level>(gram);
 
                 //Compute the M-gram level index
                 const TModelLevel level_idx = (gram.m_used_level - BASE::MGRAM_IDX_OFFSET);
@@ -140,8 +139,7 @@ namespace uva {
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_n_gram(const T_M_Gram<WordIndexType> &gram) {
                 //Get the bucket index
 
-                TShortId bucket_idx;
-                get_bucket_id(gram, bucket_idx);
+                TShortId bucket_idx = get_bucket_id<false, MAX_LEVEL>(gram);
 
                 //Create a new M-Gram data entry
                 T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
@@ -223,11 +221,8 @@ namespace uva {
                     //1.1. This is the case of the M-gram with M > 1
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
-                    //1.1.2. Compute the m-gram hash
-                    uint64_t gram_hash = query.m_gram.template hash_level_tokens<false, curr_level>();
-
-                    //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
+                    //1.1.2. Obtain the bucket id
+                    const uint32_t bucket_idx = get_bucket_id<false, curr_level>(query.m_gram);
                     LOG_DEBUG << "The " << curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
@@ -281,11 +276,8 @@ namespace uva {
                     //1.1. This is the case of the M-gram with M > 1 and clearly M < N
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
-                    //1.1.2. Compute the hash value for the back off M-gram
-                    uint64_t gram_hash = query.m_gram.template hash_level_tokens<true, curr_level>();
-
-                    //1.1.3. Search for the bucket
-                    const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
+                    //1.1.2. Obtain the bucket id
+                    const uint32_t bucket_idx = get_bucket_id<true, curr_level>(query.m_gram);
                     LOG_DEBUG << "The " << curr_level << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4 This is an M-gram case (1 < M < N))

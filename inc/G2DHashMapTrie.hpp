@@ -197,9 +197,6 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             protected:
-                //Stores the pointer to the instances of the get bucket id functions
-                static const TGetBucketIdFunct get_bucket_id_func[];
-
                 /**
                  * This method will be called after all the M-grams are read.
                  * The default implementation of this method is present.
@@ -218,42 +215,33 @@ namespace uva {
 
                 /**
                  * Allows to get the bucket index for the given M-gram
-                 * @param gram_hash the M-gram hash
-                 * @param level the m-gram level
-                 * @retrurn the resulting bucket index in the given level
-                 */
-                template<TModelLevel level>
-                inline uint32_t get_bucket_id(const uint64_t gram_hash) const {
-                    //Compute the index in the array of bucket sizes
-                    const TModelLevel buckes_size_idx = level - 1;
-                    //Compute the bucket Id from the M-Gram hash
-                    return gram_hash % num_buckets[buckes_size_idx];
-                }
-
-                /**
-                 * Allows to get the bucket index for the given M-gram
+                 * @param curr_level the m-gram level we need the bucked id for
                  * @param gram the M-gram to compute the bucked index for
-                 * @param bucket_idx the resulting bucket index
+                 * @param return the resulting bucket index
                  */
-                inline void get_bucket_id(const T_M_Gram<WordIndexType> &gram, TShortId & bucket_idx) const {
+                template<bool is_back_off, TModelLevel curr_level>
+                inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.hash_tokens();
-                    LOG_DEBUG1 << "The " << gram.m_used_level << "-gram: " << (string) gram
+                    const uint64_t gram_hash = gram.template hash_level_tokens<is_back_off, curr_level>();
+
+                    LOG_DEBUG1 << "The " << curr_level << "-gram: " << (string) gram
                             << " hash is " << gram_hash << END_LOG;
 
-                    bucket_idx = get_bucket_id_func[gram.m_used_level](*this, gram_hash);
+                    TShortId bucket_idx = gram_hash % num_buckets[curr_level - 1];
 
                     LOG_DEBUG1 << "Getting bucket for " << (string) gram << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[gram.m_used_level - 1]))) {
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[curr_level - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(gram.m_used_level) << "-gram: " << (string) gram
+                        msg << "The " << SSTR(curr_level) << "-gram: " << (string) gram
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[gram.m_used_level - 1]) << "]";
+                                << ", must be within [0, " << SSTR(num_buckets[curr_level - 1]) << "]";
                         throw Exception(msg.str());
                     }
+
+                    return bucket_idx;
                 }
 
                 /**
@@ -332,18 +320,6 @@ namespace uva {
                 bool get_payload_from_gram_level(const MGramQuery<WordIndexType> & query, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            const typename G2DMapTrie<MAX_LEVEL, WordIndexType>::TGetBucketIdFunct G2DMapTrie<MAX_LEVEL, WordIndexType>::get_bucket_id_func[] = {
-                NULL,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_1>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_2>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_3>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_4>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_5>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_6>,
-                &G2DMapTrie::get_bucket_id<M_GRAM_LEVEL_7>
             };
 
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TG2DMapTrieBasic;

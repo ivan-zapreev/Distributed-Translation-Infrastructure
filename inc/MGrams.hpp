@@ -122,20 +122,19 @@ namespace uva {
 
                     //The index of the last m-gram word in the tokens and word ids array
                     static constexpr TModelLevel END_WORD_IDX = MAX_LEVEL - 1;
-
-                    //Unknown word bits
-                    uint8_t m_unk_word_flags = 0;
-
-                    //Stores the reference to the used word index
-                    WordIndexType & m_word_index;
+                    
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff m_prob;
+                    
                     //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
                     TLogProbBackOff m_back_off;
+                    
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader m_context;
+                    
                     //The data structure to store the N-gram word ids
                     TShortId m_word_ids[MAX_LEVEL] = {};
+                    
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
 
@@ -375,12 +374,26 @@ namespace uva {
                         return tokens_to_string<MAX_LEVEL>(m_tokens, m_used_level);
                     };
 
+                    /**
+                     * Allows to get the word index used in this m-gram
+                     * @return the word index
+                     */
+                    inline WordIndexType & get_word_index() const {
+                        return m_word_index;
+                    }
+                    
                 private:
                     //Stores the m-gram idx
                     TModelLevel m_curr_index;
 
                     //Stores the m-gram tokens
                     TextPieceReader m_tokens[MAX_LEVEL];
+
+                    //Unknown word bit flags
+                    uint8_t m_unk_word_flags = 0;
+
+                    //Stores the reference to the used word index
+                    WordIndexType & m_word_index;
 
                     /**
                      * Gives the start word index

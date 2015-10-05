@@ -56,7 +56,7 @@ namespace uva {
 
                 template<typename WordIndexType>
                 ARPAGramBuilder<WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType>& orig)
-                : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram.m_word_index) {
+                : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram.get_word_index()) {
                 }
 
                 template<typename WordIndexType>
