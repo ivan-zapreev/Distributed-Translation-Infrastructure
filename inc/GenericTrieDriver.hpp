@@ -113,7 +113,7 @@ namespace uva {
                 inline void add_m_gram(const T_M_Gram<WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
-                        register_m_gram_cache(gram);
+                        register_m_gram_cache<level>(gram);
                     }
 
                     m_trie.template add_m_gram<level>(gram);
@@ -125,7 +125,7 @@ namespace uva {
                 inline void add_n_gram(const T_M_Gram<WordIndexType> & gram) {
                     if (m_is_bitmap_hash_cache) {
                         //Call the super class first, is needed for caching
-                        register_m_gram_cache(gram);
+                        register_m_gram_cache<MAX_LEVEL>(gram);
                     }
 
                     m_trie.add_n_gram(gram);
@@ -228,9 +228,10 @@ namespace uva {
                  * level caches if present.
                  * @param gram the M-gram to cache
                  */
+                template<TModelLevel curr_level>
                 inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
                     if (m_is_bitmap_hash_cache && (gram.m_used_level > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].add_m_gram(gram);
+                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, curr_level>(gram);
                     }
                 }
 

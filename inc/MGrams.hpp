@@ -168,22 +168,6 @@ namespace uva {
                     }
 
                     /**
-                     * This function allows to compute the hash of the given M-Gram word ids
-                     * @return the hash value of the given word ids
-                     */
-                    inline uint64_t hash_word_ids() const {
-                        return hash_word_ids(begin_word_index());
-                    }
-
-                    /**
-                     * This function allows to compute the hash of the given M-Gram tokens
-                     * @return the hash value of the given tokens
-                     */
-                    inline uint64_t hash_tokens() const {
-                        return hash_tokens(begin_word_index());
-                    }
-
-                    /**
                      * Allows to compute the hash for the given sub-m-gram that is
                      * defined by the level and whether it is a back-off m-gram or not
                      * @param is_back_off true if this is a back-off case

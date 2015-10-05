@@ -105,14 +105,14 @@ namespace uva {
                      * Allows to add the M-gram to the cache
                      * @param gram the M-gram to cache
                      */
-                    template<typename WordIndexType>
+                    template<typename WordIndexType, TModelLevel curr_level>
                     inline void add_m_gram(const T_M_Gram<WordIndexType> &gram) {
                         LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
 
                         //Get the bit position
                         uint32_t byte_idx = 0;
                         uint32_t bit_offset_idx = 0;
-                        get_bit_pos(gram, byte_idx, bit_offset_idx);
+                        get_bit_pos<WordIndexType, curr_level>(gram, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Adding: " << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx])
                                 << ", to: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << END_LOG;
@@ -150,7 +150,7 @@ namespace uva {
                      * @param gram the M-gram to be checked
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
-                    template<typename WordIndexType>
+                    /*template<typename WordIndexType>
                     inline bool is_m_gram(const T_M_Gram<WordIndexType> &gram) const {
                         LOG_DEBUG2 << "Checking M-gram: " << (string) gram << END_LOG;
 
@@ -164,7 +164,7 @@ namespace uva {
 
                         //Return the bit on
                         return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
-                    }
+                    }*/
 
                 private:
                     //Stores the number of elements this bitset was pre-allocated for
@@ -199,9 +199,9 @@ namespace uva {
                      * @param byte_idx [out] the M-gram byte index
                      * @param bit_offset_idx [out] the M-gram relative bit index
                      */
-                    template<typename WordIndexType>
+                    template<typename WordIndexType, TModelLevel curr_level>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.hash_tokens();
+                        const uint64_t hash = gram.template hash_level_tokens<false, curr_level>();
                         
                         LOG_DEBUG2 << "The M-gram: " << (string) gram
                                 << " hash: " << hash << END_LOG;
