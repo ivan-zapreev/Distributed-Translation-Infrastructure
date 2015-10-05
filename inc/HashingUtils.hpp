@@ -576,7 +576,7 @@ namespace uva {
              * @param len the length of the data to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t computeHash(const char * data, uint32_t len) {
+            inline uint_fast64_t compute_hash(const char * data, uint32_t len) {
                 //return stupidHash(data, len);
                 return MurmurHash64A<16777619U>(data, len);
             }
@@ -586,8 +586,8 @@ namespace uva {
              * @param token the string to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t computeHash(const TextPieceReader & token) {
-                return computeHash(token.get_begin_c_str(), token.length());
+            inline uint_fast64_t compute_hash(const TextPieceReader & token) {
+                return compute_hash(token.get_begin_c_str(), token.length());
             }
 
             /**
@@ -595,8 +595,8 @@ namespace uva {
              * @param token the token to compute hash for
              * @return the resulting hash.
              */
-            inline uint_fast64_t computeHash(const string & token) {
-                return computeHash(token.c_str(), token.length());
+            inline uint_fast64_t compute_hash(const string & token) {
+                return compute_hash(token.c_str(), token.length());
             }
 
             /*****************************************************************************************************/
@@ -608,8 +608,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t computeBoundedHash(const char * data, uint32_t len, const uint32_t limit) {
-                const uint_fast32_t hash = computeHash(data, len);
+            inline uint_fast32_t compute_hash(const char * data, uint32_t len, const uint32_t limit) {
+                const uint_fast32_t hash = compute_hash(data, len);
                 return ( hash - (hash / limit) * limit);
             }
 
@@ -619,8 +619,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t computeBoundedHash(const TextPieceReader & token, const uint32_t limit) {
-                return computeBoundedHash(token.get_begin_c_str(), token.length(), limit);
+            inline uint_fast32_t compute_hash(const TextPieceReader & token, const uint32_t limit) {
+                return compute_hash(token.get_begin_c_str(), token.length(), limit);
             }
 
             /**
@@ -629,8 +629,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t computeBoundedHash(const string & token, const uint32_t limit) {
-                return computeBoundedHash(token.c_str(), token.length(), limit);
+            inline uint_fast32_t compute_hash(const string & token, const uint32_t limit) {
+                return compute_hash(token.c_str(), token.length(), limit);
             }
 
             /*****************************************************************************************************/

@@ -3,7 +3,7 @@
 NUM_PARAMS=3
 if [ "$#" -ne ${NUM_PARAMS} ]; then
    echo "Illegal number of parameters: $# expected ${NUM_PARAMS}"
-   echo "1 - the platform: {Linux, MaxOS, Centos}"
+   echo "1 - the platform: {Linux, MaxOs, Centos}"
    echo "2 - the model to run on"
    echo "3 - the query input file to use"
    exit 1

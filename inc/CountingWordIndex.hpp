@@ -182,16 +182,20 @@ namespace uva {
                      * @see AWordIndex
                      */
                     bool is_post_actions_needed() const {
-                        return BasicWordIndex::is_post_actions_needed();
+                        return BasicWordIndex::is_post_actions_needed() || false;
                     };
 
                     /**
                      * Is to be called if the post actions are needed right after
-                     * that all the individual words have beed added into the index.
+                     * that all the individual words have been added into the index.
                      * @see AWordIndex
                      */
                     void do_post_actions() {
-                        BasicWordIndex::do_post_actions();
+                        //Perform the post actions if needed, before starting further actions.
+                        if (BasicWordIndex::is_post_actions_needed()) {
+                            BasicWordIndex::do_post_actions();
+                        }
+                        
                         //There is nothing to be done
                     };
 

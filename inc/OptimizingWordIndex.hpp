@@ -301,7 +301,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const TextPieceReader & token) const {
-                        return computeBoundedHash(token, m_num_buckets);
+                        return compute_hash(token, m_num_buckets);
                     }
 
                     /**
@@ -310,7 +310,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const string & token) const {
-                        return computeBoundedHash(token, m_num_buckets);
+                        return compute_hash(token, m_num_buckets);
                     }
 
                     /**
