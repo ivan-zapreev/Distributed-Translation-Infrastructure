@@ -80,6 +80,7 @@ namespace uva {
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                //This is the function pointer type for the function that computes the m-gram context id
                 typedef function<bool (const TrieType&, const TShortId, TLongId &) > TGetCtxIdFunct;
 
                 /**
@@ -199,33 +200,50 @@ namespace uva {
                  *                  we compute the context for the entire M-Gram
                  *                  or for the back-off sub-M-gram. For the latter
                  *                  we consider w1 w2 w3 w4 only
-                 * @param query the query state object
+                 * @param curr_level the current level of the m-gram that we are considering
+                 * @param log_level the debug level to be used in this function, the default is DebugLevelsEnum::DEBUG1
+                 * @param gram the m-gram to compute the context id for
                  * @param ctx_id [out] the context id to be computed
                  * @return the true if the context could be computed, otherwise false
                  * @throws nothing
                  */
-                template<bool is_back_off, TModelLevel curr_level>
-                inline bool get_query_context_Id(const TMGramQuery & query, TLongId & ctx_id) const {
+                template<bool is_back_off, TModelLevel curr_level, DebugLevelsEnum log_level = DebugLevelsEnum::DEBUG1>
+                inline bool get_m_gram_ctx_Id(const T_M_Gram<WordIndexType> &gram, TLongId & ctx_id) const {
                     const TModelLevel mgram_end_idx = (is_back_off ? (T_M_Gram<WordIndexType>::MAX_LEVEL - 2) : (T_M_Gram<WordIndexType>::MAX_LEVEL - 1));
                     const TModelLevel end_idx = mgram_end_idx;
                     const TModelLevel begin_idx = mgram_end_idx - (curr_level - 1);
                     TModelLevel idx = begin_idx;
 
-                    LOG_DEBUG1 << "Computing id of the " << SSTR(curr_level)
+                    LOGGER(log_level) << "Computing id of the " << SSTR(curr_level)
                             << "-gram " << (is_back_off ? "back-off" : "probability")
                             << " context" << END_LOG;
 
                     //Compute the first words' hash
-                    ctx_id = query.m_gram.m_word_ids[idx];
-                    LOG_DEBUG1 << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctx_id) << END_LOG;
+                    ctx_id = gram.m_word_ids[idx];
+                    LOGGER(log_level) << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctx_id) << END_LOG;
                     idx++;
+
+                    //The word has to be known, otherwise it is an error situation
+                    if (DO_SANITY_CHECKS && (ctx_id == AWordIndex::UNKNOWN_WORD_ID)) {
+                        stringstream msg;
+                        msg << "The first word_id of '" << (string) gram << "' could not be found!";
+                        throw Exception(msg.str());
+                    }
 
                     //Compute the subsequent context ids
                     for (; idx < end_idx;) {
-                        LOG_DEBUG1 << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
-                                << SSTR(query.m_gram.m_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, query.m_gram.m_word_ids[idx], ctx_id)) {
-                            LOG_DEBUG1 << "getContextId(" << SSTR(query.m_gram.m_word_ids[idx])
+                        LOGGER(log_level) << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
+                                << SSTR(gram.m_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
+
+                        //The word has to be known, otherwise it is an error situation
+                        if (DO_SANITY_CHECKS && (gram.m_word_ids[idx] == AWordIndex::UNKNOWN_WORD_ID)) {
+                            stringstream msg;
+                            msg << "The " << SSTR(idx) << "'th word_id for '" << (string) gram << "' could not be found!";
+                            throw Exception(msg.str());
+                        }
+
+                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, gram.m_word_ids[idx], ctx_id)) {
+                            LOGGER(log_level) << "getContextId(" << SSTR(gram.m_word_ids[idx])
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             idx++;
                         } else {
@@ -234,7 +252,7 @@ namespace uva {
                         }
                     }
 
-                    LOG_DEBUG1 << "Resulting id for the " << SSTR(curr_level)
+                    LOGGER(log_level) << "Resulting id for the " << SSTR(curr_level)
                             << "-gram " << (is_back_off ? "back-off" : "probability")
                             << " context is: " << SSTR(ctx_id) << END_LOG;
 
@@ -251,69 +269,34 @@ namespace uva {
                  * @param the resulting hash of the context(w1 w2 w3)
                  * @return true if the context was found otherwise false
                  */
-                template<TModelLevel level, DebugLevelsEnum log_level>
-                inline void get_context_id(const T_M_Gram<WordIndexType> &gram, TLongId &ctxId) {
+                template<TModelLevel curr_level, DebugLevelsEnum log_level>
+                inline void get_context_id(const T_M_Gram<WordIndexType> &gram, TLongId &ctx_id) {
                     //Perform sanity check for the level values they should be the same!
-                    if (DO_SANITY_CHECKS && (level != gram.m_used_level)) {
+                    if (DO_SANITY_CHECKS && (curr_level != gram.m_used_level)) {
                         stringstream msg;
-                        msg << "The improper level values! Template level parameter = " << SSTR(level)
+                        msg << "The improper level values! Template level parameter = " << SSTR(curr_level)
                                 << " but the m-gram level value is: " << SSTR(gram.m_used_level);
                         throw Exception(msg.str());
                     }
 
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if (get_cached_context_id(gram, ctxId)) {
-                        TModelLevel idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - level);
-                        //Get the start context value for the first token
-                        TShortId wordId = gram.m_word_ids[idx];
-                        idx++;
-
-                        //The word has to be known, otherwise it is an error situation
-                        if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
+                    if (get_cached_context_id(gram, ctx_id)) {
+                        //Compute the context id
+                        if (!get_m_gram_ctx_Id<false, curr_level, log_level>(gram, ctx_id)) {
+                            //The next context id could not be computed
                             stringstream msg;
-                            msg << "The first word_id of '" << (string) gram << "' could not be found!";
+                            msg << "The m-gram:" << (string) gram << " context could not be computed!";
                             throw Exception(msg.str());
                         }
 
-                        //The first word id is the first context id
-                        ctxId = wordId;
-                        LOGGER(log_level) << "ctxId = getId('" << (string) gram
-                                << "[1]') = " << SSTR(ctxId) << END_LOG;
-
-                        //Iterate and compute the hash:
-                        for (int i = 1; i != (gram.m_used_level - 1); i++) {
-                            wordId = gram.m_word_ids[idx];
-
-                            //The word has to be known, otherwise it is an error situation
-                            if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
-                                stringstream msg;
-                                msg << "The " << SSTR(i + 1) << "'th word_id for '" << (string) gram << "' could not be found!";
-                                throw Exception(msg.str());
-                            }
-
-                            LOGGER(log_level) << "wordId = getId('" << (string) gram
-                                    << "[" << SSTR(i + 1) << "]') = " << SSTR(wordId) << END_LOG;
-
-                            if (get_ctx_id_func[i + 1](m_trie, wordId, ctxId)) {
-                                LOGGER(log_level) << "ctxId = computeCtxId( " << "wordId, ctxId ) = " << SSTR(ctxId) << END_LOG;
-                            } else {
-                                //The next context id could not be computed
-                                stringstream msg;
-                                msg << "The next context for wordId: " << SSTR(wordId) << " and ctxId: "
-                                        << SSTR(ctxId) << "on level: " << SSTR((i + 1)) << "could not be computed!";
-                                throw Exception(msg.str());
-                            }
-                            idx++;
-                        }
-
                         //Cache the newly computed context id for the given n-gram context
-                        set_cache_context_id(gram, ctxId);
+                        set_cache_context_id(gram, ctx_id);
 
                         //The context Id was found in the Trie
-                        LOGGER(log_level) << "The ctxId could be computed, " << "it's value is: " << SSTR(ctxId) << END_LOG;
+                        LOGGER(log_level) << "The ctxId could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
                     } else {
                         //The context Id was found in the cache
-                        LOGGER(log_level) << "The ctxId was found in cache, " << "it's value is: " << SSTR(ctxId) << END_LOG;
+                        LOGGER(log_level) << "The ctxId was found in cache, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
                     }
                 }
 

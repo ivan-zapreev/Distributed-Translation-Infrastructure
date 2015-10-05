@@ -131,7 +131,7 @@ namespace uva {
                     template<bool is_back_off, TModelLevel curr_level, typename WordIndexType>
                     inline bool is_m_gram(const MGramQuery<WordIndexType> & query) const {
                         //Get the m-gram's hash level
-                        uint64_t hash = query.m_gram.template level_hash<is_back_off,curr_level>();
+                        uint64_t hash = query.m_gram.template hash_level_tokens<is_back_off,curr_level>();
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;
@@ -201,7 +201,7 @@ namespace uva {
                      */
                     template<typename WordIndexType>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.hash();
+                        const uint64_t hash = gram.hash_tokens();
                         
                         LOG_DEBUG2 << "The M-gram: " << (string) gram
                                 << " hash: " << hash << END_LOG;

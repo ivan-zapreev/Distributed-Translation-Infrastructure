@@ -157,7 +157,7 @@ namespace uva {
                     TLongId ctx_id;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (get_query_context_Id<false, curr_level>(query, ctx_id)) {
+                    if (get_m_gram_ctx_Id<false, curr_level>(query.m_gram, ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         if (curr_level == MAX_LEVEL) {
                             //If we are looking for a N-Gram probability
@@ -240,7 +240,7 @@ namespace uva {
                     TLongId ctx_id;
 
                     //Compute the context hash
-                    if (get_query_context_Id<true, curr_level>(query, ctx_id)) {
+                    if (get_m_gram_ctx_Id<true, curr_level>(query.m_gram, ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
                         const TProbBackOffEntry * entry_ptr;

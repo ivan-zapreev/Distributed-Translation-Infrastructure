@@ -169,12 +169,19 @@ namespace uva {
                     }
 
                     /**
-                     * This function allows to compute the hash of the given M-Gram
-                     * It assumes, which should hold, that the memory pointed by the tokens is continuous
-                     * @return the hash value of the given token
+                     * This function allows to compute the hash of the given M-Gram word ids
+                     * @return the hash value of the given word ids
                      */
-                    inline uint64_t hash() const {
-                        return suffix_hash(start_word_index());
+                    inline uint64_t hash_word_ids() const {
+                        return hash_word_ids(begin_word_index());
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the given M-Gram tokens
+                     * @return the hash value of the given tokens
+                     */
+                    inline uint64_t hash_tokens() const {
+                        return hash_tokens(begin_word_index());
                     }
 
                     /**
@@ -185,24 +192,30 @@ namespace uva {
                      * @return the resulting hash value
                      */
                     template<bool is_back_off, TModelLevel curr_level>
-                    inline uint64_t level_hash() const {
+                    inline uint64_t hash_level_tokens() const {
                         //Depending on the M-gram compute a proper hash
-                        TModelLevel begin_idx = 0, end_idx = 0;
                         if (is_back_off) {
-                            begin_idx = (MAX_LEVEL - curr_level) - 1;
-                            end_idx = END_WORD_IDX - 1;
+                            return hash_tokens(((MAX_LEVEL - curr_level) - 1), (END_WORD_IDX - 1));
                         } else {
-                            begin_idx = (MAX_LEVEL - curr_level);
-                            end_idx = END_WORD_IDX;
+                            return hash_tokens((MAX_LEVEL - curr_level), END_WORD_IDX);
                         }
+                    }
 
-                        const uint64_t gram_hash = sub_hash(begin_idx, end_idx);
-
-                        LOG_DEBUG << "The " << curr_level << "-gram: " << tokens_to_string(m_tokens,
-                                begin_idx, end_idx) << (is_back_off ? "back-off" : "")
-                                << " hash is " << gram_hash << END_LOG;
-
-                        return gram_hash;
+                    /**
+                     * Allows to compute the hash for the given sub-m-gram that is
+                     * defined by the level and whether it is a back-off m-gram or not
+                     * @param is_back_off true if this is a back-off case
+                     * @param curr_level the level of the sub-mgram
+                     * @return the resulting hash value
+                     */
+                    template<bool is_back_off, TModelLevel curr_level>
+                    inline uint64_t hash_level_word_ids() const {
+                        //Depending on the M-gram compute a proper hash
+                        if (is_back_off) {
+                            return hash_word_ids(((MAX_LEVEL - curr_level) - 1), (END_WORD_IDX - 1));
+                        } else {
+                            return hash_word_ids((MAX_LEVEL - curr_level), END_WORD_IDX);
+                        }
                     }
 
                     /**
@@ -257,7 +270,7 @@ namespace uva {
                         }
 
                         LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
-                        for (TModelLevel idx = start_word_index(); idx != MAX_LEVEL; ++idx) {
+                        for (TModelLevel idx = begin_word_index(); idx != MAX_LEVEL; ++idx) {
                             //Do not check whether the word was found or not, if it was not then the id is UNKNOWN_WORD_ID
                             m_word_ids[idx] = m_word_index.get_word_id(m_tokens[idx]);
                             LOG_DEBUG1 << "wordId('" << m_tokens[idx].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
@@ -287,7 +300,7 @@ namespace uva {
                                 return "<none>";
                             } else {
                                 string result = m_tokens[END_WORD_IDX].str() + " |";
-                                for (TModelLevel idx = start_word_index(); idx != END_WORD_IDX; idx++) {
+                                for (TModelLevel idx = begin_word_index(); idx != END_WORD_IDX; idx++) {
                                     result += string(" ") + m_tokens[idx].str();
                                 }
                                 return result;
@@ -365,6 +378,7 @@ namespace uva {
                 private:
                     //Stores the m-gram idx
                     TModelLevel m_curr_index;
+
                     //Stores the m-gram tokens
                     TextPieceReader m_tokens[MAX_LEVEL];
 
@@ -372,13 +386,13 @@ namespace uva {
                      * Gives the start word index
                      * @return the start word index.
                      */
-                    inline TModelLevel start_word_index() const {
+                    inline TModelLevel begin_word_index() const {
                         return (MAX_LEVEL - m_used_level);
                     }
 
                     /**
                      * This function allows to compute the hash of the sub M-Gram
-                     * starting from and including the word on the given index,
+                     * tokens starting from and including the word on the given index,
                      * and until and including the word of the given index. It
                      * assumes, which should hold, that the memory pointed by the
                      * tokens is continuous.
@@ -386,7 +400,7 @@ namespace uva {
                      * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline uint64_t sub_hash(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                    inline uint64_t hash_tokens(const TModelLevel begin_idx, const TModelLevel end_idx) const {
                         LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
 
                         //Compute the length of the gram tokens in memory, including spaces between
@@ -418,15 +432,36 @@ namespace uva {
                     }
 
                     /**
-                     * This function allows to compute the hash of the M-Gram suffix
-                     * starting from and including the word on the given index. It
-                     * assumes, which should hold, that the memory pointed by the
-                     * tokens is continuous.
-                     * @param begin_idx  the index of the first word in tokens array
+                     * This function allows to compute the hash of the sub M-Gram
+                     * word ids starting from and including the word on the given index,
+                     * and until and including the word of the given index.
+                     * @param begin_idx  the index of the first word in word ids array
+                     * @param end_idx the index of the last word in  word ids array
                      * @return the hash value of the given token
                      */
-                    inline uint64_t suffix_hash(const TModelLevel begin_idx) const {
-                        return sub_hash(begin_idx, END_WORD_IDX);
+                    inline uint64_t hash_word_ids(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                        LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
+                        return 0;
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the M-Gram tokens 
+                     * suffix starting from and including the word on the given index.
+                     * @param begin_idx the index of the first word in tokens array
+                     * @return the hash value of the given suffix of tokens
+                     */
+                    inline uint64_t hash_tokens(const TModelLevel begin_idx) const {
+                        return hash_tokens(begin_idx, END_WORD_IDX);
+                    }
+
+                    /**
+                     * This function allows to compute the hash of the M-Gram word ids 
+                     * suffix starting from and including the word on the given index.
+                     * @param begin_idx  the index of the first word in word index array
+                     * @return the hash value of the given suffix of word ids
+                     */
+                    inline uint64_t hash_word_ids(const TModelLevel begin_idx) const {
+                        return hash_word_ids(begin_idx, END_WORD_IDX);
                     }
                 };
 

@@ -224,7 +224,7 @@ namespace uva {
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Compute the m-gram hash
-                    uint64_t gram_hash = query.m_gram.template level_hash<false, curr_level>();
+                    uint64_t gram_hash = query.m_gram.template hash_level_tokens<false, curr_level>();
 
                     //1.1.3. Search for the bucket
                     const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
@@ -282,7 +282,7 @@ namespace uva {
                     LOG_DEBUG << "The level " << curr_level << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Compute the hash value for the back off M-gram
-                    uint64_t gram_hash = query.m_gram.template level_hash<true, curr_level>();
+                    uint64_t gram_hash = query.m_gram.template hash_level_tokens<true, curr_level>();
 
                     //1.1.3. Search for the bucket
                     const uint32_t bucket_idx = get_bucket_id<curr_level>(gram_hash);
