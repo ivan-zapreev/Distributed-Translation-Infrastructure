@@ -161,7 +161,7 @@ namespace uva {
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     if (m_is_bitmap_hash_cache) {
                         const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<is_back_off, curr_level>(query);
+                        return ref.is_m_gram<is_back_off, curr_level>(query.m_gram);
                     } else {
                         return true;
                     }

@@ -341,7 +341,7 @@ namespace uva {
                         //Go through the buckets array and initialize the begin indexes
                         for (size_t idx = 0; idx < m_num_bucket_maps; ++idx) {
                             if (DO_SANITY_CHECKS && (m_word_hash_buckets[idx] > 2)) {
-                                LOG_WARNING << "A bucket with " << m_word_hash_buckets[idx] << " words is detected!" << END_LOG;
+                                LOG_WARNING << "Optimizing word index: A bucket with " << m_word_hash_buckets[idx] << " words is detected!" << END_LOG;
                             }
 
                             next_idx = curr_idx + m_word_hash_buckets[idx];

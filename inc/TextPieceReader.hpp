@@ -509,18 +509,6 @@ namespace uva {
                 data << "]";
                 return data.str();
             };
-
-            /**
-             * This function allows to convert the BasicTextFileReader elements tokens into a array string representation. 
-             * @param tokens the tokens to print
-             * @return the resulting string
-             */
-            template<TModelLevel N = M_GRAM_LEVEL_MAX>
-            inline string tokens_to_string(const TextPieceReader tokens[N], const TModelLevel level) {
-                const TModelLevel num_tokens = min<TModelLevel>(level, N);
-                LOG_DEBUG4 << "Appending " << SSTR(num_tokens) << "tokens" << END_LOG;
-                return tokens_to_string(tokens, 0, num_tokens - 1);
-            };
         }
     }
 }

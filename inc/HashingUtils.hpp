@@ -643,7 +643,8 @@ namespace uva {
              * @return the resulting combines hash value
              */
             inline uint_fast64_t combine_hash(const uint_fast64_t hash_one, const uint_fast64_t hash_two) {
-                return (hash_one ^ (hash_two + 0x9e3779b9 + (hash_one << 6) + (hash_one >> 2)));
+                //return (hash_one ^ (hash_two + 0x9e3779b9 + (hash_one << 6) + (hash_one >> 2)));
+                return hash_one ^ hash_two;
             }
 
             /*****************************************************************************************************/

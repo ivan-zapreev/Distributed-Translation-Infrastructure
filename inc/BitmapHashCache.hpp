@@ -129,9 +129,9 @@ namespace uva {
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
                     template<bool is_back_off, TModelLevel curr_level, typename WordIndexType>
-                    inline bool is_m_gram(const MGramQuery<WordIndexType> & query) const {
+                    inline bool is_m_gram(const T_M_Gram<WordIndexType> & gram) const {
                         //Get the m-gram's hash level
-                        uint64_t hash = query.m_gram.template hash<true, is_back_off, curr_level>();
+                        uint64_t hash = gram.template hash<false, is_back_off, curr_level>();
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;
@@ -144,27 +144,6 @@ namespace uva {
                         //Return the bit on
                         return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
                     }
-
-                    /**
-                     * Allows to check if the given M-gram is not present in the cache.
-                     * @param gram the M-gram to be checked
-                     * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
-                     */
-                    /*template<typename WordIndexType>
-                    inline bool is_m_gram(const T_M_Gram<WordIndexType> &gram) const {
-                        LOG_DEBUG2 << "Checking M-gram: " << (string) gram << END_LOG;
-
-                        //Get the bit position
-                        uint32_t byte_idx = 0;
-                        uint32_t bit_offset_idx = 0;
-                        get_bit_pos(gram, byte_idx, bit_offset_idx);
-
-                        LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
-                                << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx]) << END_LOG;
-
-                        //Return the bit on
-                        return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
-                    }*/
 
                 private:
                     //Stores the number of elements this bitset was pre-allocated for
@@ -201,7 +180,7 @@ namespace uva {
                      */
                     template<typename WordIndexType, TModelLevel curr_level>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.template hash<true, false, curr_level>();
+                        const uint64_t hash = gram.template hash<false, false, curr_level>();
 
                         LOG_DEBUG2 << "The M-gram: " << (string) gram
                                 << " hash: " << hash << END_LOG;

@@ -272,11 +272,11 @@ namespace uva {
                             }
 
                             //Compute the max level hash with the intermediate values
-                            if (idx == END_WORD_IDX) {
+                            if (idx == HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
                                 //The first top-level sub 1-gram hash is equal to the end word hash
                                 hash_values[idx] = m_word_ids[idx];
                             } else {
-                                if (idx == (END_WORD_IDX - 1)) {
+                                if (idx == BO_HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
                                     //The first top-level back-off 1-gram hash is the
                                     //id of the word word preceeding the last one
                                     bo_hash_values[idx] = m_word_ids[idx];
@@ -286,8 +286,10 @@ namespace uva {
                                     bo_hash_values[idx] = combine_hash(bo_hash_values[idx + 1], m_word_ids[idx]);
                                 }
                                 //The top-level sub m-gram hash is the back-off hash combined with the end word hash
-                                hash_values[idx] = combine_hash(bo_hash_values[idx], m_word_ids[END_WORD_IDX]);
+                                hash_values[idx] = combine_hash(hash_values[idx + 1], m_word_ids[idx]);
                             }
+                            LOG_DEBUG2 << "hash_values[" << (uint32_t) idx << "] = " << hash_values[idx] << END_LOG;
+                            LOG_DEBUG2 << "bo_hash_values[" << (uint32_t) idx << "] = " << bo_hash_values[idx] << END_LOG;
                         } while (idx != begin_word_index());
 
                         if (is_unk_flags) {
@@ -383,7 +385,8 @@ namespace uva {
                      * The basic to string conversion operator for the m-gram
                      */
                     inline operator string() const {
-                        return tokens_to_string<MAX_LEVEL>(m_tokens, m_used_level);
+                        LOG_DEBUG4 << "Appending " << SSTR(m_used_level) << "tokens" << END_LOG;
+                        return tokens_to_string(m_tokens, MAX_LEVEL - m_used_level, END_WORD_IDX);
                     };
 
                     /**
