@@ -89,11 +89,11 @@ namespace uva {
                         if (num_elems != 0) {
                             m_num_elems = num_elems * __BitmapHashCache::BUCKET_MULTIPLIER_FACTOR;
                             size_t num_bytes = NUM_BYTES_4_BITS(m_num_elems);
-                            
+
                             LOG_DEBUG2 << "Pre-allocating: " << m_num_elems
                                     << " elements, that is " << num_bytes
                                     << " bytes." << END_LOG;
-                            
+
                             m_data_ptr = new uint8_t[num_bytes];
                             fill_n(m_data_ptr, num_bytes, 0u);
                         } else {
@@ -131,7 +131,7 @@ namespace uva {
                     template<bool is_back_off, TModelLevel curr_level, typename WordIndexType>
                     inline bool is_m_gram(const MGramQuery<WordIndexType> & query) const {
                         //Get the m-gram's hash level
-                        uint64_t hash = query.m_gram.template hash_level_tokens<is_back_off,curr_level>();
+                        uint64_t hash = query.m_gram.template hash<true, is_back_off, curr_level>();
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;
@@ -181,10 +181,10 @@ namespace uva {
                     inline void get_bit_pos(const uint64_t hash, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                         LOG_DEBUG2 << "The hash value is: " << hash
                                 << ", the number of elements is: " << m_num_elems << END_LOG;
-                        
+
                         //Convert it to the number of elements
                         uint32_t global_bit_idx = hash % m_num_elems;
-                        
+
                         //Convert the global bit index into the byte index and bit offset
                         byte_idx = BYTE_IDX(global_bit_idx);
                         bit_offset_idx = REMAINING_BIT_IDX(global_bit_idx);
@@ -201,11 +201,11 @@ namespace uva {
                      */
                     template<typename WordIndexType, TModelLevel curr_level>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.template hash_level_tokens<false, curr_level>();
-                        
+                        const uint64_t hash = gram.template hash<true, false, curr_level>();
+
                         LOG_DEBUG2 << "The M-gram: " << (string) gram
                                 << " hash: " << hash << END_LOG;
-                        
+
                         return get_bit_pos(hash, byte_idx, bit_offset_idx);
                     }
                 };

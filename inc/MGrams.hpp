@@ -122,19 +122,19 @@ namespace uva {
 
                     //The index of the last m-gram word in the tokens and word ids array
                     static constexpr TModelLevel END_WORD_IDX = MAX_LEVEL - 1;
-                    
+
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff m_prob;
-                    
+
                     //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
                     TLogProbBackOff m_back_off;
-                    
+
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader m_context;
-                    
+
                     //The data structure to store the N-gram word ids
                     TShortId m_word_ids[MAX_LEVEL] = {};
-                    
+
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
 
@@ -174,13 +174,24 @@ namespace uva {
                      * @param curr_level the level of the sub-mgram
                      * @return the resulting hash value
                      */
-                    template<bool is_back_off, TModelLevel curr_level>
-                    inline uint64_t hash_level_tokens() const {
-                        //Depending on the M-gram compute a proper hash
+                    template<bool is_tokens, bool is_back_off, TModelLevel curr_level>
+                    inline uint64_t hash() const {
+                        constexpr TModelLevel begin_idx = (MAX_LEVEL - curr_level);
+                        constexpr TModelLevel end_idx = END_WORD_IDX;
                         if (is_back_off) {
-                            return hash_tokens(((MAX_LEVEL - curr_level) - 1), (END_WORD_IDX - 1));
+                            constexpr TModelLevel bo_begin_idx = begin_idx - 1;
+                            constexpr TModelLevel bo_end_idx = end_idx - 1;
+                            if (is_tokens) {
+                                return hash_tokens < bo_begin_idx, bo_end_idx>();
+                            } else {
+                                return hash_word_ids < bo_begin_idx, bo_end_idx>();
+                            }
                         } else {
-                            return hash_tokens((MAX_LEVEL - curr_level), END_WORD_IDX);
+                            if (is_tokens) {
+                                return hash_tokens < begin_idx, end_idx > ();
+                            } else {
+                                return hash_word_ids < begin_idx, end_idx > ();
+                            }
                         }
                     }
 
@@ -193,12 +204,6 @@ namespace uva {
                      */
                     template<bool is_back_off, TModelLevel curr_level>
                     inline uint64_t hash_level_word_ids() const {
-                        //Depending on the M-gram compute a proper hash
-                        if (is_back_off) {
-                            return hash_word_ids(((MAX_LEVEL - curr_level) - 1), (END_WORD_IDX - 1));
-                        } else {
-                            return hash_word_ids((MAX_LEVEL - curr_level), END_WORD_IDX);
-                        }
                     }
 
                     /**
@@ -365,7 +370,7 @@ namespace uva {
                     inline WordIndexType & get_word_index() const {
                         return m_word_index;
                     }
-                    
+
                 private:
                     //Stores the m-gram idx
                     TModelLevel m_curr_index;
@@ -397,7 +402,8 @@ namespace uva {
                      * @param end_idx the index of the last word in tokens array
                      * @return the hash value of the given token
                      */
-                    inline uint64_t hash_tokens(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                    template<TModelLevel begin_idx, TModelLevel end_idx>
+                    inline uint64_t hash_tokens() const {
                         LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
 
                         //Compute the length of the gram tokens in memory, including spaces between
@@ -436,29 +442,10 @@ namespace uva {
                      * @param end_idx the index of the last word in  word ids array
                      * @return the hash value of the given token
                      */
-                    inline uint64_t hash_word_ids(const TModelLevel begin_idx, const TModelLevel end_idx) const {
+                    template<TModelLevel begin_idx, TModelLevel end_idx>
+                    inline uint64_t hash_word_ids() const {
                         LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
                         return 0;
-                    }
-
-                    /**
-                     * This function allows to compute the hash of the M-Gram tokens 
-                     * suffix starting from and including the word on the given index.
-                     * @param begin_idx the index of the first word in tokens array
-                     * @return the hash value of the given suffix of tokens
-                     */
-                    inline uint64_t hash_tokens(const TModelLevel begin_idx) const {
-                        return hash_tokens(begin_idx, END_WORD_IDX);
-                    }
-
-                    /**
-                     * This function allows to compute the hash of the M-Gram word ids 
-                     * suffix starting from and including the word on the given index.
-                     * @param begin_idx  the index of the first word in word index array
-                     * @return the hash value of the given suffix of word ids
-                     */
-                    inline uint64_t hash_word_ids(const TModelLevel begin_idx) const {
-                        return hash_word_ids(begin_idx, END_WORD_IDX);
                     }
                 };
 

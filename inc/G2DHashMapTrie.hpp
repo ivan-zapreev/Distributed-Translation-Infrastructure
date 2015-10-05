@@ -223,7 +223,7 @@ namespace uva {
                 inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.template hash_level_tokens<is_back_off, curr_level>();
+                    const uint64_t gram_hash = gram.template hash<true, is_back_off, curr_level>();
 
                     LOG_DEBUG1 << "The " << curr_level << "-gram: " << (string) gram
                             << " hash is " << gram_hash << END_LOG;
