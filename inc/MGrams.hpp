@@ -185,7 +185,7 @@ namespace uva {
                      * @return the resulting hash value
                      */
                     template<bool is_tokens, bool is_back_off, TModelLevel curr_level>
-                    inline uint64_t hash() const {
+                    inline uint64_t get_hash() const {
                         if (is_tokens) {
                             constexpr TModelLevel begin_idx = (MAX_LEVEL - curr_level);
                             constexpr TModelLevel end_idx = END_WORD_IDX;
