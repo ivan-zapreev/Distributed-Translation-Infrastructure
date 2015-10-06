@@ -62,7 +62,7 @@ namespace uva {
                 memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
 
                 //03) Insert the unknown word data into the allocated array
-                TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
@@ -104,11 +104,11 @@ namespace uva {
                 //Check that if this is the 2-Gram case and the previous context
                 //id is 0 then it is the unknown word id, at least this is how it
                 //is now in ATrie implementation, so we need to do a warning!
-                if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < WordIndexType::MIN_KNOWN_WORD_ID)) {
                     LOG_WARNING << "Perhaps we are being paranoid but there "
                             << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
-                            << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
-                            << ") or unknown(" << SSTR(AWordIndex::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                            << SSTR(ctxId) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
+                            << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                 }
 
                 //Get the local entry index and then use it to compute the next context id

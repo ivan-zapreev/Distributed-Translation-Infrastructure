@@ -78,7 +78,7 @@ namespace uva {
                  * @param SubWordIndexType the sub WordIndex type to be used
                  */
                 template<typename SubWordIndexType>
-                class OptimizingWordIndex : public AWordIndex {
+                class OptimizingWordIndex : public AWordIndex<TShortId> {
                 public:
 
                     /**

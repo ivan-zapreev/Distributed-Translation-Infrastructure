@@ -54,7 +54,7 @@ namespace uva {
                 /**
                  * This is a hash-map based implementation of the word index.
                  */
-                class BasicWordIndex : public AWordIndex {
+                class BasicWordIndex : public AWordIndex<TShortId> {
                 public:
 
                     /**

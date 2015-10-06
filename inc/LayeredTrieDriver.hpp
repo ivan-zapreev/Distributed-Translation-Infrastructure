@@ -224,7 +224,7 @@ namespace uva {
                     idx++;
 
                     //The word has to be known, otherwise it is an error situation
-                    if (DO_SANITY_CHECKS && (ctx_id == AWordIndex::UNKNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (ctx_id == WordIndexType::UNKNOWN_WORD_ID)) {
                         stringstream msg;
                         msg << "The first word_id of '" << (string) gram << "' could not be found!";
                         throw Exception(msg.str());
@@ -236,7 +236,7 @@ namespace uva {
                                 << SSTR(gram.m_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
 
                         //The word has to be known, otherwise it is an error situation
-                        if (DO_SANITY_CHECKS && (gram.m_word_ids[idx] == AWordIndex::UNKNOWN_WORD_ID)) {
+                        if (DO_SANITY_CHECKS && (gram.m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
                             stringstream msg;
                             msg << "The " << SSTR(idx) << "'th word_id for '" << (string) gram << "' could not be found!";
                             throw Exception(msg.str());

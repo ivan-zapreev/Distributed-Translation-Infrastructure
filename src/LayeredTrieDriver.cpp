@@ -56,7 +56,7 @@ namespace uva {
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(gram,
-                            word_id, AWordIndex::UNDEFINED_WORD_ID,
+                            word_id, WordIndexType::UNDEFINED_WORD_ID,
                             pbData.prob, pbData.back_off,
                             gram.m_prob, gram.m_back_off);
                 }
@@ -76,13 +76,13 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
+                TLongId ctxId = WordIndexType::UNKNOWN_WORD_ID;
                 get_context_id<level, DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 // 2. Insert the probability data into the trie
                 TShortId wordId = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
-                if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (wordId == WordIndexType::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
@@ -112,13 +112,13 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId = AWordIndex::UNKNOWN_WORD_ID;
+                TLongId ctxId = WordIndexType::UNKNOWN_WORD_ID;
                 get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctxId);
 
                 // 2. Insert the probability data into the trie
                 TShortId wordId = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
-                if (DO_SANITY_CHECKS && (wordId == AWordIndex::UNKNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (wordId == WordIndexType::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());

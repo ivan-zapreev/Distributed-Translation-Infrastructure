@@ -79,7 +79,7 @@ namespace uva {
                 memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (TProbBackOffEntry));
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntry & pbData = m_mgram_data[0][AWordIndex::UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 

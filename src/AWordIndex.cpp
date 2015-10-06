@@ -41,20 +41,29 @@ namespace uva {
             namespace dictionary {
 
                 //Stores the string representation of an unknown word
-                const string AWordIndex::UNKNOWN_WORD_STR = "<unk>";
+                template<typename TIdType>
+                const string AWordIndex<TIdType>::UNKNOWN_WORD_STR = "<unk>";
 
                 //Stores the word hash for an unknown word, is 0
                 //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                const TShortId AWordIndex::UNDEFINED_WORD_ID = static_cast<TShortId> (0);
+                template<typename TIdType>
+                const TIdType AWordIndex<TIdType>::UNDEFINED_WORD_ID = 0;
 
                 //Stores the word id for an unknown word, it must have value 1
-                const TShortId AWordIndex::UNKNOWN_WORD_ID = static_cast<TShortId> (AWordIndex::UNDEFINED_WORD_ID + 1);
+                template<typename TIdType>
+                const TIdType AWordIndex<TIdType>::UNKNOWN_WORD_ID = (AWordIndex::UNDEFINED_WORD_ID + 1);
 
                 //Stores the minimum known word id, it must have value 2
-                const TShortId AWordIndex::MIN_KNOWN_WORD_ID = static_cast<TShortId> (AWordIndex::UNKNOWN_WORD_ID + 1);
+                template<typename TIdType>
+                const TIdType AWordIndex<TIdType>::MIN_KNOWN_WORD_ID = (AWordIndex::UNKNOWN_WORD_ID + 1);
 
                 //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                const TShortId AWordIndex::EXTRA_NUMBER_OF_WORD_IDs = 2;
+                template<typename TIdType>
+                const TIdType AWordIndex<TIdType>::EXTRA_NUMBER_OF_WORD_IDs = 2;
+
+                //Make sure at least these template instances are created
+                template class AWordIndex<TShortId>;
+                template class AWordIndex<TLongId>;
             }
         }
     }

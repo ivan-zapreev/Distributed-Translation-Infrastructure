@@ -255,7 +255,7 @@ namespace uva {
                     TShortId cio = BASE::FIRST_VALID_CTX_ID;
 
                     //Iterate through all the wordId sub-array mappings in the level and sort sub arrays
-                    for (TShortId wordId = AWordIndex::UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                    for (TShortId wordId = WordIndexType::UNDEFINED_WORD_ID; wordId < m_num_word_ids; wordId++) {
                         //First get the sub-array reference. 
                         WORD_ENTRY_TYPE & ref = wordsArray[wordId];
 
@@ -382,11 +382,11 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < AWordIndex::MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < WordIndexType::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
                                 << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
-                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(AWordIndex::UNDEFINED_WORD_ID)
-                                << ") or unknown(" << SSTR(AWordIndex::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                                << SSTR(ctxId) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                     }
 
                     //Get the local entry index
@@ -431,7 +431,7 @@ namespace uva {
                                 __W2CArrayTrie::MIN_MEM_INC_NUM);
 
                         //Pre-allocate capacity
-                        for (TShortId wordId = AWordIndex::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
+                        for (TShortId wordId = WordIndexType::MIN_KNOWN_WORD_ID; wordId < m_num_word_ids; wordId++) {
                             wordsArray[wordId].pre_allocate(capacity);
                         }
                     }

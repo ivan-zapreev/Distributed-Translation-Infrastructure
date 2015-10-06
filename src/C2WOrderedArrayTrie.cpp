@@ -77,7 +77,7 @@ namespace uva {
                 memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (TProbBackOffEntry));
 
                 //04) Insert the unknown word data into the allocated array
-                TProbBackOffEntry & pbData = m_1_gram_data[AWordIndex::UNKNOWN_WORD_ID];
+                TProbBackOffEntry & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 

@@ -55,6 +55,7 @@ namespace uva {
                  * 
                  * NOTE: All of the methods are non-virtual for the sake of avoiding virtual method call overheads!
                  */
+                template<typename TIdType>
                 class AWordIndex {
                 public:
 
@@ -63,16 +64,16 @@ namespace uva {
 
                     //Stores the word hash for an unknown word, is 0
                     //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                    const static TShortId UNDEFINED_WORD_ID;
+                    const static TIdType UNDEFINED_WORD_ID;
 
                     //Stores the word id for an unknown word, it must have value 1
-                    const static TShortId UNKNOWN_WORD_ID;
+                    const static TIdType UNKNOWN_WORD_ID;
 
                     //Stores the minimum known word id, it must have value 2
-                    const static TShortId MIN_KNOWN_WORD_ID;
+                    const static TIdType MIN_KNOWN_WORD_ID;
 
                     //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                    const static TShortId EXTRA_NUMBER_OF_WORD_IDs;
+                    const static TIdType EXTRA_NUMBER_OF_WORD_IDs;
 
                     /**
                      * This method should be used to pre-allocate the word index
@@ -96,7 +97,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the word id or UNKNOWN_WORD_ID if the word is not found
                      */
-                    inline TShortId get_word_id(const TextPieceReader & token) const {
+                    inline TIdType get_word_id(const TextPieceReader & token) const {
                         THROW_MUST_OVERRIDE();
                     };
 
@@ -106,7 +107,7 @@ namespace uva {
                      * @param token the word to hash
                      * @return the resulting hash
                      */
-                    inline TShortId register_word(const TextPieceReader & token) {
+                    inline TIdType register_word(const TextPieceReader & token) {
                         THROW_MUST_OVERRIDE();
                     };
 
