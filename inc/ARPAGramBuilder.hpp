@@ -50,7 +50,7 @@ namespace uva {
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
-                template<typename WordIndexType>
+                template<typename WordIndexType, TModelLevel level>
                 class ARPAGramBuilder {
                 public:
 
@@ -60,7 +60,7 @@ namespace uva {
                      * @param level the level of the N-grams to be processed
                      * @param addGarmFunc the strategy for adding the N-grams
                      */
-                    ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
+                    ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
 
                     /**
                      * This pure virtual method is supposed to parse the N-Gram
@@ -85,7 +85,7 @@ namespace uva {
                      * @param level the expected M-gram level
                      * @return true if the M-gram was successfully parsed
                      */
-                    static inline bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens, const TModelLevel level) {
+                    static inline bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens) {
                         TextPieceReader storage;
                         //First read text until the first tab, it should be present if it is a M-gram line
                         if (text.get_first_tab(storage)) {
@@ -134,9 +134,6 @@ namespace uva {
                 protected:
                     //The function that is to be used to add an N-gram to a trie
                     typename TAddGramFunct<WordIndexType>::func m_add_garm_func;
-
-                    //The level of the N-grams to be processed by the given builder
-                    const TModelLevel m_level;
 
                     //The temporary storage for read pieces of text
                     TextPieceReader m_token;

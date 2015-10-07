@@ -42,29 +42,29 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                template<typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<WordIndexType>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                template<typename WordIndexType>
-                const unsigned short int ARPAGramBuilder<WordIndexType>::MAX_NUM_TOKENS_NGRAM_STR = 3;
+                template<typename WordIndexType, TModelLevel level>
+                const unsigned short int ARPAGramBuilder<WordIndexType, level>::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                template<typename WordIndexType, TModelLevel level>
+                const unsigned short int ARPAGramBuilder<WordIndexType, level>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                template<typename WordIndexType>
-                ARPAGramBuilder<WordIndexType>::ARPAGramBuilder(WordIndexType & word_index, const TModelLevel level, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
-                : m_add_garm_func(addGarmFunc), m_level(level), m_token(), m_ngram(word_index) {
+                template<typename WordIndexType, TModelLevel level>
+                ARPAGramBuilder<WordIndexType, level>::ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
+                : m_add_garm_func(addGarmFunc), m_token(), m_ngram(word_index) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
-                    m_ngram.m_used_level = m_level;
+                    m_ngram.m_used_level = level;
                 }
 
-                template<typename WordIndexType>
-                ARPAGramBuilder<WordIndexType>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType>& orig)
-                : m_add_garm_func(orig.m_add_garm_func), m_level(orig.m_level), m_token(), m_ngram(orig.m_ngram.get_word_index()) {
+                template<typename WordIndexType, TModelLevel level>
+                ARPAGramBuilder<WordIndexType, level>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType, level>& orig)
+                : m_add_garm_func(orig.m_add_garm_func), m_token(), m_ngram(orig.m_ngram.get_word_index()) {
                 }
 
-                template<typename WordIndexType>
-                ARPAGramBuilder<WordIndexType>::~ARPAGramBuilder() {
+                template<typename WordIndexType, TModelLevel level>
+                ARPAGramBuilder<WordIndexType, level>::~ARPAGramBuilder() {
                 }
 
-                template<typename WordIndexType>
-                bool ARPAGramBuilder<WordIndexType>::parse_to_gram(TextPieceReader &line) {
+                template<typename WordIndexType, TModelLevel level>
+                bool ARPAGramBuilder<WordIndexType, level>::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.get_first_tab(m_token)) {
                         //Try to parse it float
@@ -77,28 +77,28 @@ namespace uva {
                             //though! The last one will be removed somewhat later! See below.
                             if (!line.get_first_tab(m_ngram.m_context)) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
-                                        << "' when reading the " << m_level << "'th "
-                                        << m_level << "-gram token!" << END_LOG;
+                                        << "' when reading the " << level << "'th "
+                                        << level << "-gram token!" << END_LOG;
                                 //The unexpected end of line, broken file format (?)
                                 return false;
                             }
 
                             //Start the new m-gram
-                            m_ngram.start_new_m_gram(m_level);
+                            m_ngram.template start_new_m_gram<level>();
 
                             //Read the N tokens of the N-gram - space separated
-                            for (int i = 0; i < m_level; i++) {
+                            for (int i = 0; i < level; i++) {
                                 if (!m_ngram.m_context.get_first_space(m_ngram.get_next_new_token())) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
-                                            << "'th " << m_level << "-gram token!" << END_LOG;
+                                            << "'th " << level << "-gram token!" << END_LOG;
                                     //The unexpected end of line, broken file format (?)
                                     return false;
                                 }
                             }
 
                             //Remove the last token from the context string
-                            if (m_level > M_GRAM_LEVEL_1) {
+                            if (level > M_GRAM_LEVEL_1) {
                                 //Up until now the context was the entire list of m-gram tokens, now exclude the last one
                                 m_ngram.exclude_last_token_from_context();
                             }
@@ -141,9 +141,9 @@ namespace uva {
                     }
                 }
 
-                template<typename WordIndexType>
-                bool ARPAGramBuilder<WordIndexType>::parse_line(TextPieceReader & line) {
-                    LOG_DEBUG << "Processing the " << m_level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                template<typename WordIndexType, TModelLevel level>
+                bool ARPAGramBuilder<WordIndexType, level>::parse_line(TextPieceReader & line) {
+                    LOG_DEBUG << "Processing the " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
@@ -163,17 +163,27 @@ namespace uva {
                         result = true;
                     }
 
-                    LOG_DEBUG << "Finished processing the " << m_level << "-Gram (?) line: '"
+                    LOG_DEBUG << "Finished processing the " << level << "-Gram (?) line: '"
                             << line << "', it is " << (result ? "NOT " : "") << "accepted" << END_LOG;
 
                     return result;
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPAGramBuilder<BasicWordIndex>;
-                template class ARPAGramBuilder<CountingWordIndex>;
-                template class ARPAGramBuilder<TOptBasicWordIndex>;
-                template class ARPAGramBuilder<TOptCountWordIndex>;
+                
+#define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(LEVEL) \
+                template class ARPAGramBuilder<BasicWordIndex, LEVEL>; \
+                template class ARPAGramBuilder<CountingWordIndex, LEVEL>; \
+                template class ARPAGramBuilder<TOptBasicWordIndex, LEVEL>; \
+                template class ARPAGramBuilder<TOptCountWordIndex, LEVEL>;
+
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_1);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_2);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_3);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_4);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_5);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_6);
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_7);
             }
         }
     }

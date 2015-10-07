@@ -49,11 +49,6 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                //The end of ARPA file constant
-                static const string END_OF_ARPA_FILE = "\\end\\";
-                //The N-gram Data Section Amoung delimiter
-                static const char NGRAM_COUNTS_DELIM = '=';
-
                 template<typename TrieType>
                 ARPATrieBuilder<TrieType>::ARPATrieBuilder(TrieType & trie, AFileReader & file) :
                 m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
@@ -191,10 +186,11 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::read_m_gram_level(const TModelLevel level) {
+                template<TModelLevel level>
+                void ARPATrieBuilder<TrieType>::read_m_gram_level() {
                     //Declare the pointer to the N-Grma builder
-                    ARPAGramBuilder<WordIndexType> *pNGBuilder = NULL;
-                    ARPAGramBuilderFactory<TrieType>::get_builder(level, m_trie, &pNGBuilder);
+                    ARPAGramBuilder<WordIndexType, level> *pNGBuilder = NULL;
+                    ARPAGramBuilderFactory<TrieType>::template get_builder<level>(m_trie, &pNGBuilder);
 
                     try {
                         //The counter of the N-grams
@@ -245,44 +241,17 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::check_and_go_m_grams(const TModelLevel level) {
-                    //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                    LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << MAX_LEVEL
-                            << ", the current line is '" << m_line << "'" << END_LOG;
-
-                    //Test if we need to move on or we are done or an error is detected
-                    if (level < MAX_LEVEL) {
-                        //There are still N-Gram levels to read
-                        if (m_line != END_OF_ARPA_FILE) {
-                            //We did not encounter the \end\ tag yet so do recursion to the next level
-                            read_grams(level + 1);
-                        } else {
-                            //We did encounter the \end\ tag, this is not really expected, but it is not fatal
-                            LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
-                                    << "nothing more to read. The maximum allowed N-gram level is " << MAX_LEVEL << END_LOG;
-                        }
-                    } else {
-                        //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
-                        if (m_line != END_OF_ARPA_FILE) {
-                            stringstream msg;
-                            msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '" << END_OF_ARPA_FILE
-                                    << "' when reading " << level << "-grams section!";
-                            throw Exception(msg.str());
-                        }
-                    }
-                }
-
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::do_post_m_gram_actions(const TModelLevel level) {
+                template<TModelLevel level>
+                void ARPATrieBuilder<TrieType>::do_post_m_gram_actions() {
                     //Check if the post gram actions are needed! If yes - perform.
-                    if (m_trie.is_post_grams(level)) {
+                    if (m_trie.template is_post_grams<level>()) {
                         //Do the progress bard indicator
                         stringstream msg;
                         msg << "Cultivating " << level << "-Grams";
                         Logger::startProgressBar(msg.str());
 
                         //Do the post level actions
-                        m_trie.post_grams(level);
+                        m_trie.template post_grams<level>();
 
                         //Stop the progress bar in case of no exception
                         Logger::stopProgressBar();
@@ -300,7 +269,7 @@ namespace uva {
                         Logger::startProgressBar(string("Counting all words"));
 
                         //Start recursive counting of words
-                        get_word_counts(1);
+                        get_level_word_counts<M_GRAM_LEVEL_1>();
                         LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
 
                         //Perform the post counting actions;
@@ -335,7 +304,8 @@ namespace uva {
                 }
 
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::read_grams(const TModelLevel level) {
+                template<TModelLevel level>
+                void ARPATrieBuilder<TrieType>::read_grams() {
                     stringstream msg;
                     //Do the progress bard indicator
                     msg << "Reading ARPA " << level << "-Grams";
@@ -350,7 +320,7 @@ namespace uva {
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                         //Read the M-grams of the given level
-                        read_m_gram_level(level);
+                        read_m_gram_level<level>();
 
                         //If the first M-gram level has been read then do
                         //the word index post-actions if needed.
@@ -359,10 +329,10 @@ namespace uva {
                         }
 
                         //Perform the post-M-gram actions if needed
-                        do_post_m_gram_actions(level);
+                        do_post_m_gram_actions<level>();
 
                         //Check if we need to keep reading and recurse or we are done
-                        check_and_go_m_grams(level);
+                        check_and_go_m_grams<level>();
                     } else {
                         //The obtained string is something else than the next n-grams section header
                         //So the only thing it is allowed to be is the end of file, let's check on
@@ -384,7 +354,8 @@ namespace uva {
                  * M-Gram sections and count them with the word index.
                  */
                 template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::get_word_counts(const TModelLevel level) {
+                template<TModelLevel level>
+                void ARPATrieBuilder<TrieType>::get_level_word_counts() {
                     typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
 
                     //The regular expression for matching the n-grams section
@@ -405,7 +376,7 @@ namespace uva {
                             if (m_line.has_more()) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
-                                if (ARPAGramBuilder<WordIndexType>::gram_line_to_tokens(m_line, tokens, level)) {
+                                if (ARPAGramBuilder<WordIndexType, level>::gram_line_to_tokens(m_line, tokens)) {
                                     //Add words to the index: count them
                                     for (size_t idx = 0; idx < level; idx++) {
                                         LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;
@@ -423,16 +394,10 @@ namespace uva {
 
                         LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
 
-                        //Test if we need to move on or we are done or an error is detected
-                        if ((level < MAX_LEVEL) && (m_line != END_OF_ARPA_FILE)) {
-                            LOG_DEBUG1 << "Finished counting words in " << SSTR(level)
-                                    << "-grams, going to the next level" << END_LOG;
-                            //There are still N-Gram levels to read
-                            //We did not encounter the \end\ tag yet so do recursion to the next level
-                            get_word_counts(level + 1);
-                        }
-                        LOG_DEBUG1 << "Finished counting words in "
-                                << SSTR(level) << "-grams" << END_LOG;
+                        //Go into recursion or stop if the maximum level is reached
+                        check_and_get_level_word_counts<level>();
+
+                        LOG_DEBUG1 << "Finished counting words in " << SSTR(level) << "-grams" << END_LOG;
                     }
 
                     //Update the progress bar status
@@ -496,7 +461,7 @@ namespace uva {
                         get_word_counts();
 
                         //Read the N-grams, starting from 1-Grams
-                        read_grams(1);
+                        read_grams<M_GRAM_LEVEL_1>();
                     } catch (...) {
                         //Stop the progress bar in case of an exception
                         Logger::stopProgressBar();

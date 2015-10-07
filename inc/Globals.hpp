@@ -54,9 +54,9 @@ namespace uva {
 #endif
 #endif
 
-//As the m-gram level is a template parameter, some template instances will violate 
-//the array index constraint. These templates will not be used @ runtime but we
-//need to disable these warnings in order to be able to build the code.
+        //As the m-gram level is a template parameter, some template instances will violate 
+        //the array index constraint. These templates will not be used @ runtime but we
+        //need to disable these warnings in order to be able to build the code.
 #pragma GCC diagnostic ignored "-Warray-bounds"
 
         //This is the pattern used for file path separation
@@ -95,8 +95,17 @@ namespace uva {
             //The value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = ZERO_LOG_PROB_WEIGHT;
 
-            //The considered maximum length of the N-gram 
-            const static TModelLevel M_GRAM_LEVEL_MAX = 5u;
+            namespace mgrams {
+                //Various M-gram levels
+                const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u;
+                const static TModelLevel M_GRAM_LEVEL_1 = 1u;
+                const static TModelLevel M_GRAM_LEVEL_2 = 2u;
+                const static TModelLevel M_GRAM_LEVEL_3 = 3u;
+                const static TModelLevel M_GRAM_LEVEL_4 = 4u;
+                const static TModelLevel M_GRAM_LEVEL_5 = 5u;
+                const static TModelLevel M_GRAM_LEVEL_6 = 6u;
+                const static TModelLevel M_GRAM_LEVEL_7 = 7u;
+            }
         }
 
         //The following type definitions are important for creating hashes

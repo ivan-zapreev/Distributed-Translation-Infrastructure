@@ -187,13 +187,35 @@ namespace uva {
                 /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
-                 * For more details @see ATrie
+                 * For more details @see WordIndexTrieBase
                  */
-                virtual bool is_post_grams(const TModelLevel level) const {
+                template<TModelLevel level>
+                bool is_post_grams() const {
                     //Check the base class and we need to do post actions
                     //for the N-grams. The N-grams level data has to be
                     //sorted see post_N_Grams method implementation below.
-                    return (level > M_GRAM_LEVEL_1) || BASE::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || BASE::template is_post_grams<level>();
+                };
+
+                /**
+                 * This method should be called after all the X level grams are read.
+                 * For more details @see WordIndexTrieBase
+                 */
+                template<TModelLevel level>
+                inline void post_grams() {
+                    //Call the base class method first
+                    if (BASE::template is_post_grams<level>()) {
+                        BASE::template post_grams<level>();
+                    }
+
+                    //Do the post actions here
+                    if (level == MAX_LEVEL) {
+                        post_n_grams();
+                    } else {
+                        if (level > M_GRAM_LEVEL_1) {
+                            post_m_grams<level>();
+                        }
+                    }
                 };
 
                 /**
@@ -242,7 +264,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
-                
+
                 /**
                  * The basic destructor
                  */
@@ -269,14 +291,10 @@ namespace uva {
                 typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
                 typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
-                virtual void post_m_grams(const TModelLevel level) {
-                    //Call the base class method first
-                    if (BASE::is_post_grams(level)) {
-                        BASE::post_m_grams(level);
-                    }
-
+                template<TModelLevel level>
+                inline void post_m_grams() {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = (level - BASE::MGRAM_IDX_OFFSET);
+                    constexpr TModelLevel mgram_idx = (level - BASE::MGRAM_IDX_OFFSET);
 
                     LOG_DEBUG2 << "Running post actions on " << level << "-grams, m-gram array index: " << mgram_idx << END_LOG;
 
@@ -294,12 +312,7 @@ namespace uva {
                     }
                 }
 
-                virtual void post_n_grams() {
-                    //Call the base class method first
-                    if (BASE::is_post_grams(MAX_LEVEL)) {
-                        BASE::post_n_grams();
-                    }
-
+                inline void post_n_grams() {
                     LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
                             << ", size: " << m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
 
@@ -333,12 +346,12 @@ namespace uva {
                 //Stores the context id counters per M-gram level: 1 < M <= N
                 TShortId m_M_N_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
             };
-            
+
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2WArrayTrieBasic;
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2WArrayTrieCount;
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2WArrayTrieOptBasic;
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2WArrayTrieOptCount;
-            
+
         }
     }
 }

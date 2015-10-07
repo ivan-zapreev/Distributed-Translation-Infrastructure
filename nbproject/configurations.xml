@@ -11,7 +11,6 @@
       <itemPath>./inc/AWordIndex.hpp</itemPath>
       <itemPath>inc/ArrayUtils.hpp</itemPath>
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
-      <itemPath>inc/BitMGramId.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
@@ -57,7 +56,6 @@
       <itemPath>src/ARPAGramBuilder.cpp</itemPath>
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/AWordIndex.cpp</itemPath>
-      <itemPath>src/BitMGramId.cpp</itemPath>
       <itemPath>src/ByteMGramId.cpp</itemPath>
       <itemPath>src/C2DHashMapTrie.cpp</itemPath>
       <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
@@ -437,8 +435,6 @@
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -512,8 +508,6 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -581,8 +575,6 @@
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -656,8 +648,6 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -733,8 +723,6 @@
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -809,8 +797,6 @@
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
@@ -876,8 +862,6 @@
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -952,8 +936,6 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1021,8 +1003,6 @@
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1096,8 +1076,6 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1165,8 +1143,6 @@
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1241,8 +1217,6 @@
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
@@ -1308,8 +1282,6 @@
       <item path="inc/ArrayUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/BasicWordIndex.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/BitMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1384,8 +1356,6 @@
       <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="src/BitMGramId.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="9">
       </item>

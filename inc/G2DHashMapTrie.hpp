@@ -33,7 +33,6 @@
 
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
-#include "BitMGramId.hpp"
 #include "ByteMGramId.hpp"
 
 #include "TextPieceReader.hpp"
@@ -82,7 +81,7 @@ namespace uva {
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
-                    M_Gram_Id::destroy(elem.id);
+                    __m_gram_id::destroy(elem.id);
                 };
 
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);
@@ -102,6 +101,7 @@ namespace uva {
             class G2DMapTrie : public GenericTrieBase<MAX_LEVEL, WordIndexType> {
             public:
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
 
                 //The typedef for the retrieving function
                 typedef function<uint32_t(const G2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
@@ -180,16 +180,38 @@ namespace uva {
                 /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
-                 * @see ATrie
+                 * For more details @see WordIndexTrieBase
                  */
-                virtual bool is_post_grams(const TModelLevel level) const {
+                template<TModelLevel level>
+                bool is_post_grams() const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per bucket per id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || BASE::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || BASE::template is_post_grams<level>();
                 }
+
+                /**
+                 * This method should be called after all the X level grams are read.
+                 * For more details @see WordIndexTrieBase
+                 */
+                template<TModelLevel level>
+                inline void post_grams() {
+                    //Call the base class method first
+                    if (BASE::template is_post_grams<level>()) {
+                        BASE::template post_grams<level>();
+                    }
+
+                    //Do the post actions here
+                    if (level == MAX_LEVEL) {
+                        post_n_grams();
+                    } else {
+                        if (level > M_GRAM_LEVEL_1) {
+                            post_m_grams<level>();
+                        }
+                    }
+                };
 
                 /**
                  * The basic class destructor
@@ -197,21 +219,30 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             protected:
+
                 /**
                  * This method will be called after all the M-grams are read.
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
-                 * @see ATrie
                  */
-                virtual void post_m_grams(const TModelLevel level);
+                template<TModelLevel level>
+                inline void post_m_grams() {
+                    //Compute the M-gram level index
+                    constexpr TModelLevel level_idx = (level - BASE::MGRAM_IDX_OFFSET);
+
+                    //Sort the level's data
+                    post_M_N_Grams<TProbBackOffBucket, level>(m_M_gram_data[level_idx]);
+                }
 
                 /**
                  * This method will be called after all the N-grams are read.
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
-                 * @see ATrie
                  */
-                virtual void post_n_grams();
+                inline void post_n_grams() {
+                    //Sort the level's data
+                    post_M_N_Grams<TProbBucket, MAX_LEVEL>(m_N_gram_data);
+                };
 
                 /**
                  * Allows to get the bucket index for the given M-gram
@@ -248,30 +279,30 @@ namespace uva {
                  * Performs the post-processing actions on the buckets in the given M-gram level
                  * @param BUCKET_TYPE the sort of buckets we should work with
                  * @param buckets the pointer to the array of buckets to process
-                 * @param level the M-gram level value M
+                 * @param curr_level the M-gram level value M
                  */
-                template<typename BUCKET_TYPE>
-                void post_M_N_Grams(BUCKET_TYPE * buckets, const TModelLevel level) {
+                template<typename BUCKET_TYPE, TModelLevel curr_level >
+                void post_M_N_Grams(BUCKET_TYPE * buckets) {
                     //Iterate through all buckets and shrink/sort sub arrays
-                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[level - 1]; ++bucket_idx) {
+                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[curr_level - 1]; ++bucket_idx) {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
-                        LOG_DEBUG1 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
                             LOG_DEBUG1 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
-                            return Byte_M_Gram_Id::is_less_m_grams_id(first.id, second.id, level);
+                            return TM_Gram_Id::template is_less_m_grams_id<curr_level>(first.id, second.id);
                         });
-                        LOG_DEBUG1 << "Sorting the " << SSTR(level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
                 }
 
@@ -302,7 +333,7 @@ namespace uva {
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            Byte_M_Gram_Id::compare<M_GRAM_LEVEL> >
+                            TM_Gram_Id::template compare<M_GRAM_LEVEL> >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
                 }
 

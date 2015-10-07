@@ -86,7 +86,8 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                inline bool is_post_grams(const TModelLevel level) const {
+                template<TModelLevel level>
+                inline bool is_post_grams() const {
                     return false;
                 }
 
@@ -94,18 +95,9 @@ namespace uva {
                  * This method should be called after all the X level grams are read.
                  * @param level the level of the X-grams that were finished to be read
                  */
-                inline void post_grams(const TModelLevel level) {
-                    switch (level) {
-                        case M_GRAM_LEVEL_1:
-                            this->post_1_grams();
-                            break;
-                        case N:
-                            this->post_n_grams();
-                            break;
-                        default:
-                            this->post_m_grams(level);
-                            break;
-                    }
+                template<TModelLevel level>
+                inline void post_grams() {
+                    THROW_MUST_OVERRIDE();
                 };
 
                 /**
@@ -119,34 +111,6 @@ namespace uva {
             protected:
                 //Stores the reference to the word index to be used
                 WordIndexType & m_word_index;
-
-                /**
-                 * This method will be called after all the 1-grams are read.
-                 * The default implementation of this method is present.
-                 * If overridden must be called from the child method.
-                 */
-                virtual void post_1_grams() {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * This method will be called after all the M-grams are read.
-                 * The default implementation of this method is present.
-                 * If overridden must be called from the child method.
-                 * @param level the level of the M-grams that were finished to be read
-                 */
-                virtual void post_m_grams(const TModelLevel level) {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * This method will be called after all the N-grams are read.
-                 * The default implementation of this method is present.
-                 * If overridden must be called from the child method.
-                 */
-                virtual void post_n_grams() {
-                    THROW_MUST_OVERRIDE();
-                };
             };
 
             template<TModelLevel N, typename WordIndex>

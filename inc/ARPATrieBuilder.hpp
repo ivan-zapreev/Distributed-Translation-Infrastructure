@@ -42,6 +42,11 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
+                //The end of ARPA file constant
+                static const string END_OF_ARPA_FILE = "\\end\\";
+                //The N-gram Data Section Amoung delimiter
+                static const char NGRAM_COUNTS_DELIM = '=';
+
                 /**
                  * This is the Trie builder class that reads an input file stream
                  * and creates n-grams and then records them into the provided Trie.
@@ -107,20 +112,100 @@ namespace uva {
                      * Allows to read the given Trie level M-grams from the file
                      * @param level the currently read M-gram level M
                      */
-                    void read_m_gram_level(const TModelLevel level);
+                    template<TModelLevel level>
+                    void read_m_gram_level();
+
+                    template<TModelLevel level, typename DUMMY = void>
+                    struct Func {
+
+                        /**
+                         * This template is to be used for the level parameter values < MAX_LEVEL
+                         */
+                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType> * builder) {
+                            //If we expect more N-grams then make a recursive call to read the higher order N-gram
+                            LOG_DEBUG2 << "The currently read N-grams level is " << level << ", the maximum level is " << MAX_LEVEL
+                                    << ", the current line is '" << builder->m_line << "'" << END_LOG;
+
+                            //There are still N-Gram levels to read
+                            if (builder->m_line != END_OF_ARPA_FILE) {
+                                //We did not encounter the \end\ tag yet so do recursion to the next level
+                                builder->read_grams < level + 1 > ();
+                            } else {
+                                //We did encounter the \end\ tag, this is not really expected, but it is not fatal
+                                LOG_WARNING << "End of ARPA file, read " << level << "-grams and there is "
+                                        << "nothing more to read. The maximum allowed N-gram level is " << MAX_LEVEL << END_LOG;
+                            }
+                        }
+                        
+                        /**
+                         * This template is to be used for the level parameter values < MAX_LEVEL
+                         */
+                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType> * builder) {
+                            //Test if we need to move on or we are done or an error is detected
+                            if ((level < MAX_LEVEL) && (builder->m_line != END_OF_ARPA_FILE)) {
+                                LOG_DEBUG1 << "Finished counting words in " << SSTR(level)
+                                        << "-grams, going to the next level" << END_LOG;
+                                //There are still N-Gram levels to read
+                                //We did not encounter the \end\ tag yet so do recursion to the next level
+                                builder->get_level_word_counts < level + 1 > ();
+                            }
+                        }
+                    };
+
+                    template<typename DUMMY>
+                    struct Func<MAX_LEVEL, DUMMY> {
+
+                        /**
+                         * This template specialization is to be used for the level parameter values == MAX_LEVEL
+                         */
+                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType> * builder) {
+                            //If we expect more N-grams then make a recursive call to read the higher order N-gram
+                            LOG_DEBUG2 << "The currently read N-grams level is " << MAX_LEVEL << ", the maximum level is " << MAX_LEVEL
+                                    << ", the current line is '" << builder->m_line << "'" << END_LOG;
+                            //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
+                            if (builder->m_line != END_OF_ARPA_FILE) {
+                                stringstream msg;
+                                msg << "Incorrect ARPA format: Got '" << builder->m_line
+                                        << "' instead of '" << END_OF_ARPA_FILE
+                                        << "' when reading " << MAX_LEVEL << "-grams section!";
+                                throw Exception(msg.str());
+                            }
+                        }
+                        
+                        /**
+                         * This template specialization is to be used for the level parameter values == MAX_LEVEL
+                         */
+                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType> * builder) {
+                            //Do nothing - stop recursion
+                        }
+                    };
 
                     /**
                      * Checks if this is the last M-gram level we had to read,
                      * if no read more otherwise we are done.
                      * @param level the currently read M-gram level M
                      */
-                    void check_and_go_m_grams(const TModelLevel level);
+                    template<TModelLevel level>
+                    inline void check_and_go_m_grams() {
+                        Func<level>::check_and_go_m_grams(this);
+                    }
+
+                    /**
+                     * Checks if this is the last M-gram level we had to read,
+                     * if no read more otherwise we are done.
+                     * @param level the M-gram level we are counting words for.
+                     */
+                    template<TModelLevel level>
+                    inline void check_and_get_level_word_counts() {
+                        Func<level>::check_and_get_level_word_counts(this);
+                    }
 
                     /**
                      * Allows to perform the post-gram actions if needed
                      * @param level the currently read M-gram level M
                      */
-                    void do_post_m_gram_actions(const TModelLevel level);
+                    template<TModelLevel level>
+                    void do_post_m_gram_actions();
 
                     /**
                      * Allows to perform the word index post-actions if needed
@@ -142,7 +227,8 @@ namespace uva {
                      * M-Gram sections and count them with the word index.
                      * @param level the M-gram level we are counting words for.
                      */
-                    void get_word_counts(const TModelLevel level);
+                    template<TModelLevel level>
+                    void get_level_word_counts();
 
                     /**
                      * This method should be called after the word counting is done.
@@ -157,7 +243,8 @@ namespace uva {
                      * @param line the in/out parameter storing the last read line
                      * @param level the level we are to read
                      */
-                    void read_grams(const TModelLevel level);
+                    template<TModelLevel level>
+                    void read_grams();
                 };
 
                 template<typename TrieType>

@@ -152,16 +152,38 @@ namespace uva {
                 /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
-                 * For more details @see ATrie
+                 * For more details @see WordIndexTrieBase
                  */
-                virtual bool is_post_grams(const TModelLevel level) const {
+                template<TModelLevel level>
+                bool is_post_grams() const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || BASE::is_post_grams(level);
+                    return (level > M_GRAM_LEVEL_1) || BASE::template is_post_grams<level>();
                 }
+
+                /**
+                 * This method should be called after all the X level grams are read.
+                 * For more details @see WordIndexTrieBase
+                 */
+                template<TModelLevel level>
+                inline void post_grams() {
+                    //Call the base class method first
+                    if (BASE::template is_post_grams<level>()) {
+                        BASE::template post_grams<level>();
+                    }
+
+                    //Do the post actions here
+                    if (level == MAX_LEVEL) {
+                        post_n_grams();
+                    } else {
+                        if (level > M_GRAM_LEVEL_1) {
+                            post_m_grams<level>();
+                        }
+                    }
+                };
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
@@ -272,23 +294,13 @@ namespace uva {
                     }
                 }
 
-                virtual void post_m_grams(const TModelLevel level) {
-                    //Call the base class method first
-                    //Call the base class method first
-                    if (BASE::is_post_grams(level)) {
-                        BASE::post_m_grams(level);
-                    }
-
+                template<TModelLevel level>
+                inline void post_m_grams() {
                     //Sort the level's data
                     post_M_N_Grams<T_M_GramWordEntry>(m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET]);
                 }
 
-                virtual void post_n_grams() {
-                    //Call the base class method first
-                    if (BASE::is_post_grams(MAX_LEVEL)) {
-                        BASE::post_n_grams();
-                    }
-
+                inline void post_n_grams() {
                     //Sort the level's data
                     post_M_N_Grams<T_N_GramWordEntry>(m_N_gram_word_2_data);
                 };

@@ -152,15 +152,17 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                bool is_post_grams(const TModelLevel level) const {
-                    return m_trie.is_post_grams(level);
+                template<TModelLevel level>
+                bool is_post_grams() const {
+                    return m_trie.template is_post_grams<level>();
                 };
 
                 /**
                  * @see GenericTrieBase
                  */
-                inline void post_grams(const TModelLevel level) {
-                    m_trie.post_grams(level);
+                template<TModelLevel level>
+                inline void post_grams() {
+                    m_trie.template post_grams<level>();
                 };
 
                 /**

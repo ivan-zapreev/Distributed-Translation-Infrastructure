@@ -57,6 +57,9 @@ namespace uva {
         //The following type definitions are important for storing the Tries information
         namespace tries {
 
+            //The considered maximum length of the N-gram 
+            const static uint8_t M_GRAM_LEVEL_MAX = 5u;
+
             namespace alloc {
 
                 //Stores the possible memory increase types

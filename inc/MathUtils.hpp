@@ -41,14 +41,39 @@ using namespace uva::smt::exceptions;
 namespace uva {
     namespace utils {
         namespace math {
-            
+
+            namespace const_expr {
+
+                /**
+                 * This is a limited implementation of log, the argument value must be >= 1.
+                 * The computations are also not exact, if the value of the logarithm is not
+                 * a natural number then we return the maximum integer smaller than the log
+                 * value plus 0.5
+                 */
+                constexpr inline double log2(double value, double pow = 0.0) {
+                    return (value == 1.0) ? pow : ((value < 2.0) ? (pow + 0.5) : log2(value / 2, pow + 1));
+                }
+
+                constexpr inline uint64_t ceil(double value) {
+                    return (static_cast<double> (static_cast<uint64_t> (value)) == value)
+                            ? static_cast<uint64_t> (value)
+                            : static_cast<uint64_t> (value) + ((value > 0) ? 1 : 0);
+                }
+
+                constexpr inline uint64_t power(size_t value, uint8_t pow) {
+                    return (pow == 0) ? 1 : value * power(value, pow - 1);
+                }
+            }
+
             /**
              * Allows to check if the given integer is an odd value
              * @param x the value to be tested
              * @return true if the value is odd otherwise false
              */
-            static inline bool is_odd_A(int x) { return x & 1; };
-            
+            static inline bool is_odd_A(int x) {
+                return x & 1;
+            };
+
             namespace log2 {
                 //These are the fast log2 computing functions originated from:
                 //http://stackoverflow.com/questions/11376288/fast-computing-of-log2-for-64-bit-integers

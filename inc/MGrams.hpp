@@ -35,6 +35,7 @@
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
 
+#include "ByteMGramId.hpp"
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
@@ -52,22 +53,17 @@ namespace uva {
         namespace tries {
             namespace mgrams {
 
-                //Various M-gram levels
-                const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u;
-                const static TModelLevel M_GRAM_LEVEL_1 = 1u;
-                const static TModelLevel M_GRAM_LEVEL_2 = 2u;
-                const static TModelLevel M_GRAM_LEVEL_3 = 3u;
-                const static TModelLevel M_GRAM_LEVEL_4 = 4u;
-                const static TModelLevel M_GRAM_LEVEL_5 = 5u;
-                const static TModelLevel M_GRAM_LEVEL_6 = 6u;
-                const static TModelLevel M_GRAM_LEVEL_7 = 7u;
-
                 /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
                  */
                 template<typename WordIndexType>
                 class T_M_Gram {
                 public:
+                    //The type of the word id
+                    typedef typename WordIndexType::TWordIdType TWordIdType;
+                    
+                    //Define the corresponding M-gram id type
+                    typedef Byte_M_Gram_Id<TWordIdType> TM_Gram_Id;
 
                     //Stores the unknown word masks for the probability computations,
                     //up to and including 8-grams:
@@ -133,7 +129,7 @@ namespace uva {
                     TextPieceReader m_context;
 
                     //The data structure to store the N-gram word ids
-                    TShortId m_word_ids[MAX_LEVEL] = {};
+                    TWordIdType m_word_ids[MAX_LEVEL] = {};
 
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
@@ -203,7 +199,7 @@ namespace uva {
                      * Gets the word hash for the end word of the back-off M-Gram
                      * @return the word hash for the end word of the back-off M-Gram
                      */
-                    inline TShortId get_back_off_end_word_id() const {
+                    inline TWordIdType get_back_off_end_word_id() const {
                         //The word ids are always aligned to the end of the array
                         //so the end word id for the back off m-gram is fixed!
                         return m_word_ids[END_WORD_IDX - 1];
@@ -213,7 +209,7 @@ namespace uva {
                      * Gets the word hash for the last word in the M-gram
                      * @return the word hash for the last word in the M-gram
                      */
-                    inline TShortId get_end_word_id() const {
+                    inline TWordIdType get_end_word_id() const {
                         //The word ids are always aligned to the end of the array
                         //so the end word id for the probability m-gram is fixed!
                         return m_word_ids[END_WORD_IDX];
@@ -343,7 +339,8 @@ namespace uva {
                      * Allows to start a new M-gram with the given level
                      * @param level the level of the M-gram we are starting
                      */
-                    inline void start_new_m_gram(const TModelLevel level) {
+                    template<TModelLevel level>
+                    inline void start_new_m_gram() {
                         m_curr_index = (MAX_LEVEL - level);
                     }
 
@@ -505,42 +502,6 @@ namespace uva {
                 template class T_M_Gram<CountingWordIndex>;
                 template class T_M_Gram<TOptBasicWordIndex>;
                 template class T_M_Gram<TOptCountWordIndex>;
-
-                /**
-                 * The compressed implementation of the M-gram id class
-                 * Made in form of a namespace for the sake of minimizing the
-                 * memory consumption
-                 */
-                namespace M_Gram_Id {
-                    //define the basic type block for the M-gram id
-                    typedef uint8_t T_Gram_Id_Storage;
-
-                    //Define the basic type as an alias for the compressed M-Gram id
-                    typedef T_Gram_Id_Storage * T_Gram_Id_Storage_Ptr;
-
-                    /**
-                     * The basic constructor that allocates maximum memory
-                     * needed to store the M-gram id of the given level.
-                     * @param level the level of the M-grams this object will store id for.
-                     * @param m_p_gram_id the pointer to initialize
-                     */
-                    static inline void allocate_m_gram_id(T_Gram_Id_Storage_Ptr & m_p_gram_id, uint8_t size) {
-                        //Allocate maximum memory that could be needed to store the given M-gram level id
-                        m_p_gram_id = new uint8_t[size];
-                        LOG_DEBUG3 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
-                    }
-
-                    /**
-                     * Allows to destroy the M-Gram id if it is not NULL.
-                     * @param m_p_gram_id the M-gram id pointer to destroy
-                     */
-                    static inline void destroy(T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-                        if (m_p_gram_id != NULL) {
-                            LOG_DEBUG3 << "Deallocating a M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
-                            delete[] m_p_gram_id;
-                        }
-                    }
-                }
             }
         }
     }

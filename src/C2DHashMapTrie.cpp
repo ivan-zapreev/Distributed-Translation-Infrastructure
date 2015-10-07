@@ -70,7 +70,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            void C2DMapTrie<N, WordIndexType>::preAllocateOGrams(const size_t counts[N]) {
+            void C2DMapTrie<N, WordIndexType>::pre_allocate_1_grams(const size_t counts[N]) {
                 //Compute the number of words to be stored
                 const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
@@ -86,7 +86,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            void C2DMapTrie<N, WordIndexType>::preAllocateMGrams(const size_t counts[N]) {
+            void C2DMapTrie<N, WordIndexType>::pre_allocate_m_grams(const size_t counts[N]) {
                 //Pre-allocate for the M-grams with 1 < M < N
                 for (int idx = 1; idx < (N - 1); idx++) {
                     //Get the number of elements to pre-allocate
@@ -99,7 +99,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            void C2DMapTrie<N, WordIndexType>::preAllocateNGrams(const size_t counts[N]) {
+            void C2DMapTrie<N, WordIndexType>::pre_allocate_n_grams(const size_t counts[N]) {
                 //Get the number of elements to pre-allocate
 
                 const size_t numEntries = counts[N - 1];
@@ -115,13 +115,13 @@ namespace uva {
                 BASE::pre_allocate(counts);
 
                 //Pre-allocate 0-Grams
-                preAllocateOGrams(counts);
+                pre_allocate_1_grams(counts);
 
                 //Pre-allocate M-Grams
-                preAllocateMGrams(counts);
+                pre_allocate_m_grams(counts);
 
                 //Pre-allocate N-Grams
-                preAllocateNGrams(counts);
+                pre_allocate_n_grams(counts);
             }
 
             template<TModelLevel N, typename WordIndexType>

@@ -127,7 +127,7 @@ namespace uva {
 
                 //Create the M-gram id from the word ids.
                 constexpr TModelLevel begin_idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - level);
-                Byte_M_Gram_Id::create_m_gram_id<begin_idx, level>(gram.m_word_ids, data.id);
+                TM_Gram_Id::template create_m_gram_id<begin_idx, level>(gram.m_word_ids, data.id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << (string) gram << END_LOG;
 
                 //Set the probability and back-off data
@@ -146,37 +146,11 @@ namespace uva {
 
                 //Create the N-gram id from the word ids
                 constexpr TModelLevel begin_idx = (T_M_Gram<WordIndexType>::MAX_LEVEL - MAX_LEVEL);
-                Byte_M_Gram_Id::create_m_gram_id<begin_idx, MAX_LEVEL>(gram.m_word_ids, data.id);
+                TM_Gram_Id::template create_m_gram_id<begin_idx, MAX_LEVEL>(gram.m_word_ids, data.id);
                 LOG_DEBUG << "Allocated M-gram id " << (void*) data.id << " for " << (string) gram << END_LOG;
 
                 //Set the probability data
                 data.payload = gram.m_prob;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::post_m_grams(const TModelLevel level) {
-                //Call the base class method first
-                if (BASE::is_post_grams(level)) {
-                    BASE::post_m_grams(level);
-                }
-
-                //Compute the M-gram level index
-                const TModelLevel level_idx = (level - BASE::MGRAM_IDX_OFFSET);
-
-                //Sort the level's data
-                post_M_N_Grams<TProbBackOffBucket>(m_M_gram_data[level_idx], level);
-            }
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::post_n_grams() {
-                //Call the base class method first
-                if (BASE::is_post_grams(MAX_LEVEL)) {
-                    BASE::post_n_grams();
-                }
-
-
-                //Sort the level's data
-                post_M_N_Grams<TProbBucket>(m_N_gram_data, MAX_LEVEL);
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -192,10 +166,10 @@ namespace uva {
                 if (ref.has_data()) {
                     LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                     //2. Compute the query id
-                    DECLARE_STACK_GRAM_ID(mgram_id, curr_level);
+                    DECLARE_STACK_GRAM_ID(TM_Gram_Id, mgram_id, curr_level);
                     T_Gram_Id_Storage_Ptr mgram_id_ptr = &mgram_id[0];
 
-                    Byte_M_Gram_Id::create_m_gram_id<begin_idx, curr_level>(query.m_gram.m_word_ids, mgram_id_ptr);
+                    TM_Gram_Id::template create_m_gram_id<begin_idx, curr_level>(query.m_gram.m_word_ids, mgram_id_ptr);
 
                     //3. Search for the query id in the bucket
                     //The data is available search for the word index in the array

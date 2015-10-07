@@ -248,21 +248,21 @@ namespace uva {
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateOGrams(const size_t counts[MAX_LEVEL]);
+                void pre_allocate_1_grams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateMGrams(const size_t counts[MAX_LEVEL]);
+                void pre_allocate_m_grams(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
                  */
-                void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
+                void pre_allocate_n_grams(const size_t counts[MAX_LEVEL]);
             };
             
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DMapTrieBasic;
