@@ -48,10 +48,10 @@ namespace uva {
                  * This is a limited implementation of log, the argument value must be >= 1.
                  * The computations are also not exact, if the value of the logarithm is not
                  * a natural number then we return the maximum integer smaller than the log
-                 * value plus 0.5
+                 * value plus 0.5. Also if the value is <= 1.0 then the result is 0.0
                  */
                 constexpr inline double log2(double value, double pow = 0.0) {
-                    return (value == 1.0) ? pow : ((value < 2.0) ? (pow + 0.5) : log2(value / 2, pow + 1));
+                    return (value <= 1.0) ? pow : ((value < 2.0) ? (pow + 0.5) : log2(value / 2, pow + 1));
                 }
 
                 constexpr inline uint64_t ceil(double value) {
@@ -137,380 +137,311 @@ namespace uva {
                 //Allows to convert the number of bytes into the number of bits
 #define BYTES_TO_BITS(number_of_bytes) ((number_of_bytes) * NUM_BITS_IN_UINT_8)
 
-                /*
-                 * Gets a byte with the bit on the given position set to 1, the rest are zero
-                 * The array is ordered as if the bits would have a reversed order, this is
-                 * needed as we treat them as an array, so we inverse the bit index
-                 */
-                static constexpr uint8_t ON_BIT_ARRAY[] = {
-                    0x00000080, 0x00000040, 0x00000020, 0x00000010,
-                    0x00000008, 0x00000004, 0x00000002, 0x00000001
-                };
+                //First transform the source uint into an array of bytes, taking
+                //care of endianness:
+                //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
+                //https://en.wikipedia.org/wiki/Endianness
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define HANDLE_ENDIAN(value_type, value) \
+if(sizeof(value_type) == 2) { \
+    (value) = __builtin_bswap16((value)); \
+} else { \
+    if(sizeof(value_type) == 4) { \
+        (value) = __builtin_bswap32((value)); \
+    } else { \
+        if(sizeof(value_type) == 8) { \
+            (value) = __builtin_bswap64((value)); \
+        } else { \
+            throw Exception("HANDLE_ENDIAN(value_type, value): Unsupported value type!"); \
+        } \
+    } \
+}
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                //This should work fine, no inversions or transformations are needed
+#define HANDLE_ENDIAN(value_type, value) ;
+#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
+#define HANDLE_ENDIAN(value_type, value) throw Exception("copy_end_bytes_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#endif
 
-                /**
-                 * Allows to copy the bit value within a byte from one byte to another
-                 * @param source the source byte
-                 * @param sbit_idx the source byte idx to copy from, the bit index should start from 0 and go until 7!
-                 * @param target the target byte
-                 * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
-                 */
-                static inline void copy_one_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
-                    LOG_DEBUG4 << "Source bits: " << bitset<NUM_BITS_IN_UINT_8>(source) << END_LOG;
-                    LOG_DEBUG4 << "Target bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
+            /*
+             * Gets a byte with the bit on the given position set to 1, the rest are zero
+             * The array is ordered as if the bits would have a reversed order, this is
+             * needed as we treat them as an array, so we inverse the bit index
+             */
+            static constexpr uint8_t ON_BIT_ARRAY[] = {
+                0x00000080, 0x00000040, 0x00000020, 0x00000010,
+                0x00000008, 0x00000004, 0x00000002, 0x00000001
+            };
 
-                    if (source & ON_BIT_ARRAY[sbit_idx]) {
-                        LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is ON" << END_LOG;
-                        target |= ON_BIT_ARRAY[tbit_idx];
+            /**
+             * Allows to copy the bit value within a byte from one byte to another
+             * @param source the source byte
+             * @param sbit_idx the source byte idx to copy from, the bit index should start from 0 and go until 7!
+             * @param target the target byte
+             * @param tbit_idx the target byte idx to copy to, the bit index should start from 0 and go until 7!
+             */
+            static inline void copy_one_bit(const uint8_t source, const uint8_t sbit_idx, uint8_t & target, const uint8_t tbit_idx) {
+                LOG_DEBUG4 << "Source bits: " << bitset<NUM_BITS_IN_UINT_8>(source) << END_LOG;
+                LOG_DEBUG4 << "Target bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
+
+                if (source & ON_BIT_ARRAY[sbit_idx]) {
+                    LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is ON" << END_LOG;
+                    target |= ON_BIT_ARRAY[tbit_idx];
+                } else {
+                    LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is OFF" << END_LOG;
+                    target &= ~ON_BIT_ARRAY[tbit_idx];
+                }
+
+                LOG_DEBUG4 << "Result bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
+            };
+
+            /**
+             * Allows to copy single bits one by one from one byte array to another
+             * @param p_source the byte array to copy from
+             * @param p_target the byte array to copy to (must be of sufficient capacity)
+             * @param from_pos_bit the bit index (left to right) to start copying bits from
+             * @param to_pos_bit  the bit index (left to right) to start placing bits to
+             * @param num_bits the number of bits to copy
+             */
+            static inline void copy_single_bits_old(const uint8_t * p_source, uint32_t from_pos_bit,
+                    uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
+                //Copy bits one by one
+                const uint8_t end_pos_bit = (from_pos_bit + num_bits);
+
+                LOG_DEBUG4 << "from_pos_bit = " << SSTR((uint32_t) from_pos_bit)
+                        << ", end_pos_bit = " << SSTR((uint32_t) end_pos_bit) << END_LOG;
+
+                while (from_pos_bit < end_pos_bit) {
+                    LOG_DEBUG4 << "BYTE_IDX(from_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(from_pos_bit))
+                            << ", REMAINING_BIT_IDX(from_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(from_pos_bit))
+                            << ", BYTE_IDX(to_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(to_pos_bit))
+                            << ", REMAINING_BIT_IDX(to_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(to_pos_bit)) << END_LOG;
+                    //Copy one bit
+                    copy_one_bit(p_source[BYTE_IDX(from_pos_bit)],
+                            REMAINING_BIT_IDX(from_pos_bit),
+                            p_target[BYTE_IDX(to_pos_bit)],
+                            REMAINING_BIT_IDX(to_pos_bit));
+
+                    //Increment the positions
+                    from_pos_bit++;
+                    to_pos_bit++;
+                }
+            };
+
+            /*
+             * This array contains the bitmap prefixes for cleaning preceeding bits
+             * 0xFF = 11111111
+             * 0x7F = 01111111
+             * 0x3F = 00111111
+             * 0x1F = 00011111
+             * 0x0F = 00001111
+             * 0x07 = 00000111
+             * 0x03 = 00000011
+             * 0x01 = 00000001
+             */
+            static uint8_t clean_prefix_bits_array[] = {
+                0xFF, 0x7F, 0x3F, 0x1F,
+                0x0F, 0x07, 0x03, 0x01
+            };
+
+            /**
+             * Allows to copy single bits one by one from one byte array to another
+             * @param p_source the byte array to copy from
+             * @param p_target the byte array to copy to (must be of sufficient capacity)
+             * @param from_pos_bit the bit index (left to right) to start copying bits from
+             * @param to_pos_bit  the bit index (left to right) to start placing bits to
+             * @param num_bits the number of bits to copy
+             */
+            static inline void copy_single_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                    uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
+                //Copy bits one by one
+                const uint8_t end_pos_bit = (from_pos_bit + num_bits);
+
+                LOG_DEBUG4 << "from_pos_bit = " << (uint32_t) from_pos_bit
+                        << ", end_pos_bit = " << (uint32_t) end_pos_bit << END_LOG;
+
+                while (from_pos_bit < end_pos_bit) {
+                    const uint8_t from_byte = BYTE_IDX(from_pos_bit);
+                    const uint8_t from_bit = REMAINING_BIT_IDX(from_pos_bit);
+                    const uint8_t to_byte = BYTE_IDX(to_pos_bit);
+                    const uint8_t to_bit = REMAINING_BIT_IDX(to_pos_bit);
+
+                    //Track the number of copied bits
+                    uint8_t num_copied_bits = 0;
+                    if (from_bit > to_bit) {
+                        //Need to shift to the left
+                        num_copied_bits = (NUM_BITS_IN_UINT_8 - from_bit);
+                        p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) << (from_bit - to_bit));
                     } else {
-                        LOG_DEBUG4 << "Copying bit " << SSTR((uint32_t) sbit_idx) << ", it is OFF" << END_LOG;
-                        target &= ~ON_BIT_ARRAY[tbit_idx];
-                    }
-
-                    LOG_DEBUG4 << "Result bits: " << bitset<NUM_BITS_IN_UINT_8>(target) << END_LOG;
-                };
-
-                /**
-                 * Allows to copy single bits one by one from one byte array to another
-                 * @param p_source the byte array to copy from
-                 * @param p_target the byte array to copy to (must be of sufficient capacity)
-                 * @param from_pos_bit the bit index (left to right) to start copying bits from
-                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
-                 * @param num_bits the number of bits to copy
-                 */
-                static inline void copy_single_bits_old(const uint8_t * p_source, uint32_t from_pos_bit,
-                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
-                    //Copy bits one by one
-                    const uint8_t end_pos_bit = (from_pos_bit + num_bits);
-
-                    LOG_DEBUG4 << "from_pos_bit = " << SSTR((uint32_t) from_pos_bit)
-                            << ", end_pos_bit = " << SSTR((uint32_t) end_pos_bit) << END_LOG;
-
-                    while (from_pos_bit < end_pos_bit) {
-                        LOG_DEBUG4 << "BYTE_IDX(from_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(from_pos_bit))
-                                << ", REMAINING_BIT_IDX(from_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(from_pos_bit))
-                                << ", BYTE_IDX(to_pos_bit) = " << SSTR((uint32_t) BYTE_IDX(to_pos_bit))
-                                << ", REMAINING_BIT_IDX(to_pos_bit) = " << SSTR((uint32_t) REMAINING_BIT_IDX(to_pos_bit)) << END_LOG;
-                        //Copy one bit
-                        copy_one_bit(p_source[BYTE_IDX(from_pos_bit)],
-                                REMAINING_BIT_IDX(from_pos_bit),
-                                p_target[BYTE_IDX(to_pos_bit)],
-                                REMAINING_BIT_IDX(to_pos_bit));
-
-                        //Increment the positions
-                        from_pos_bit++;
-                        to_pos_bit++;
-                    }
-                };
-
-                /*
-                 * This array contains the bitmap prefixes for cleaning preceeding bits
-                 * 0xFF = 11111111
-                 * 0x7F = 01111111
-                 * 0x3F = 00111111
-                 * 0x1F = 00011111
-                 * 0x0F = 00001111
-                 * 0x07 = 00000111
-                 * 0x03 = 00000011
-                 * 0x01 = 00000001
-                 */
-                static uint8_t clean_prefix_bits_array[] = {
-                    0xFF, 0x7F, 0x3F, 0x1F,
-                    0x0F, 0x07, 0x03, 0x01
-                };
-
-                /**
-                 * Allows to copy single bits one by one from one byte array to another
-                 * @param p_source the byte array to copy from
-                 * @param p_target the byte array to copy to (must be of sufficient capacity)
-                 * @param from_pos_bit the bit index (left to right) to start copying bits from
-                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
-                 * @param num_bits the number of bits to copy
-                 */
-                static inline void copy_single_bits(const uint8_t * p_source, uint32_t from_pos_bit,
-                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
-                    //Copy bits one by one
-                    const uint8_t end_pos_bit = (from_pos_bit + num_bits);
-
-                    LOG_DEBUG4 << "from_pos_bit = " << (uint32_t) from_pos_bit
-                            << ", end_pos_bit = " << (uint32_t) end_pos_bit << END_LOG;
-
-                    while (from_pos_bit < end_pos_bit) {
-                        const uint8_t from_byte = BYTE_IDX(from_pos_bit);
-                        const uint8_t from_bit = REMAINING_BIT_IDX(from_pos_bit);
-                        const uint8_t to_byte = BYTE_IDX(to_pos_bit);
-                        const uint8_t to_bit = REMAINING_BIT_IDX(to_pos_bit);
-
-                        //Track the number of copied bits
-                        uint8_t num_copied_bits = 0;
-                        if (from_bit > to_bit) {
-                            //Need to shift to the left
+                        if (from_bit == to_bit) {
+                            //No need to shift
                             num_copied_bits = (NUM_BITS_IN_UINT_8 - from_bit);
-                            p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) << (from_bit - to_bit));
+                            p_target[to_byte] |= (p_source[from_byte] & clean_prefix_bits_array[from_bit]);
                         } else {
-                            if (from_bit == to_bit) {
-                                //No need to shift
-                                num_copied_bits = (NUM_BITS_IN_UINT_8 - from_bit);
-                                p_target[to_byte] |= (p_source[from_byte] & clean_prefix_bits_array[from_bit]);
-                            } else {
-                                //Need to shift to the right
-                                num_copied_bits = (NUM_BITS_IN_UINT_8 - to_bit);
-                                p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) >> (to_bit - from_bit));
-                            }
-                        }
-                        //Increment the positions
-                        from_pos_bit += num_copied_bits;
-                        to_pos_bit += num_copied_bits;
-                    }
-                };
-
-                /**
-                 * Allows to copy bits from one byte array to another
-                 * @param p_source the byte array to copy from
-                 * @param p_target the byte array to copy to (must be of sufficient capacity)
-                 * @param from_pos_bit the bit index (left to right) to start copying bits from
-                 * @param to_pos_bit  the bit index (left to right) to start placing bits to
-                 * @param num_bits the number of bits to copy
-                 */
-                static inline void copy_all_bits(const uint8_t * p_source, uint32_t from_pos_bit,
-                        uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
-
-                    //Depending on whether the bits are byte aligned, we have two copying strategies.
-                    if ((REMAINING_BIT_IDX(from_pos_bit) > 0) || (REMAINING_BIT_IDX(to_pos_bit) > 0)) {
-                        //If there is no byte alignment: Copy bits one by one
-                        copy_single_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
-                    } else {
-                        //If there is byte alignment then we can fast copy
-                        //some whole bytes and then the remaining bits.
-
-                        //1. Copy as many whole bytes as possible
-                        const uint8_t num_full_bytes = NUM_FULL_BYTES(num_bits);
-                        if (num_full_bytes > 0) {
-                            const uint8_t from_pos_byte = BYTE_IDX(from_pos_bit);
-                            const uint8_t to_pos_byte = BYTE_IDX(to_pos_bit);
-                            memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_full_bytes);
-                        }
-
-                        //2. Copy the remaining bits one by one
-                        const uint8_t num_rem_bits = NUM_BITS_REMAINDER(num_bits);
-                        if (num_rem_bits > 0) {
-                            //Compute the number of remaining bytes to copy
-                            const uint8_t num_copied_bits = BYTES_TO_BITS(num_full_bytes);
-                            //Copy the remaining bytes
-                            copy_single_bits(p_source, from_pos_bit + num_copied_bits,
-                                    p_target, to_pos_bit + num_copied_bits,
-                                    num_rem_bits);
+                            //Need to shift to the right
+                            num_copied_bits = (NUM_BITS_IN_UINT_8 - to_bit);
+                            p_target[to_byte] |= ((p_source[from_byte] & clean_prefix_bits_array[from_bit]) >> (to_bit - from_bit));
                         }
                     }
-                };
-
-                /**
-                 * Allows to copy the given number of bits (starting from the end)
-                 * into the given bit position of the target byte array
-                 * @param source the source 32 bit unsigned integer to copy end bits from
-                 * @param num_bytes the number of bytes to copy
-                 * @param p_target the byte array to copy bits into, must have sufficient capacity
-                 * @param to_pos_byte the position into which the bytes are to be copied
-                 */
-                static inline void copy_end_bytes_to_pos(uint32_t source, const uint8_t num_bytes,
-                        uint8_t * p_target, const uint32_t to_pos_byte) {
-
-                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes) << " end bytes from "
-                            << bitset<NUM_BITS_IN_UINT_32>(source)
-                            << " to position: " << SSTR(to_pos_byte) << END_LOG;
-
-                    //First transform the source uint into an array of bytes, taking
-                    //care of endianness:
-                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
-                    //https://en.wikipedia.org/wiki/Endianness
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                    source = __builtin_bswap32(source);
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                    //This should work fine, no inversions or transformations are needed
-#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
-                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
-#endif
-                    const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
-
-                    LOG_DEBUG4 << "Converted source: "
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[0])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[1])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[2])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
-
-                    //Compute the position to start copying from
-                    const uint8_t from_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
-
-                    //Copy the bytes
-                    memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
-                };
-
-                /**
-                 * Allows to copy the given number of bits (starting from the end)
-                 * into the given bit position of the target byte array
-                 * @param source the source 32 bit unsigned integer to copy end bits from
-                 * @param num_bits the number of bits to copy
-                 * @param p_target the byte array to copy bits into, must have sufficient capacity
-                 * @param to_pos_bit the position into which the bits are to be copied
-                 */
-                static inline void copy_end_bits_to_pos(uint32_t source, const uint8_t num_bits,
-                        uint8_t * p_target, const uint32_t to_pos_bit) {
-
-                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bits) << " end bits from "
-                            << bitset<NUM_BITS_IN_UINT_32>(source)
-                            << " to position: " << SSTR(to_pos_bit) << END_LOG;
-
-                    //First transform the source uint into an array of bytes, taking
-                    //care of endianness:
-                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
-                    //https://en.wikipedia.org/wiki/Endianness
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                    source = __builtin_bswap32(source);
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                    //This should work fine, no inversions or transformations are needed
-#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
-                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
-#endif
-                    const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
-
-                    LOG_DEBUG4 << "Converted source: "
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[0])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[1])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[2])
-                            << bitset<NUM_BITS_IN_UINT_8>(p_source[3]) << END_LOG;
-
-                    //Compute the position to start copying from
-                    const uint8_t from_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
-
-                    //Copy the given number of bits from and to defined targets and positions 
-                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
-                };
-
-                /**
-                 * This function allows to copy the given number of bytes from the
-                 * beginning of the given byte array into the end of the given
-                 * target variable.
-                 * @param num_bytes the number of bytes to copy
-                 * @param p_source the byte array with data to copy from
-                 * @param target the variable to put the bits at the end of
-                 */
-                template<uint8_t num_bytes>
-                static inline void copy_begin_bytes_to_end(const uint8_t * p_source, uint32_t & target) {
-                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes)
-                            << " bits to " << bitset<NUM_BITS_IN_UINT_32>(target) << END_LOG;
-
-                    //Convert the id_type storing variable into an array of bytes
-                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
-
-                    //The position to start copying from
-                    const uint8_t from_pos_byte = 0;
-                    //The position to start copying to
-                    const uint8_t to_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
-
-                    //Copy the bytes
-                    memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
-
-                    //Now re-order the target uint, taking care of endianness:
-                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
-                    //https://en.wikipedia.org/wiki/Endianness
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                    target = __builtin_bswap32(target);
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                    //This should work fine, no inversions or transformations are needed
-#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
-                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
-#endif
+                    //Increment the positions
+                    from_pos_bit += num_copied_bits;
+                    to_pos_bit += num_copied_bits;
                 }
+            };
 
-                /**
-                 * This function allows to copy the given number of bits from the
-                 * beginning of the given byte array into the end of the given
-                 * target variable.
-                 * @param num_bits the number of bits to copy
-                 * @param p_source the byte array with data to copy from
-                 * @param target the variable to put the bits at the end of
-                 */
-                template<uint8_t num_bits>
-                static inline void copy_begin_bits_to_end(const uint8_t * p_source, uint32_t & target) {
-                    LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bits)
-                            << " bits to " << bitset<NUM_BITS_IN_UINT_32>(target) << END_LOG;
+            /**
+             * Allows to copy bits from one byte array to another
+             * @param p_source the byte array to copy from
+             * @param p_target the byte array to copy to (must be of sufficient capacity)
+             * @param from_pos_bit the bit index (left to right) to start copying bits from
+             * @param to_pos_bit  the bit index (left to right) to start placing bits to
+             * @param num_bits the number of bits to copy
+             */
+            static inline void copy_all_bits(const uint8_t * p_source, uint32_t from_pos_bit,
+                    uint8_t * p_target, uint32_t to_pos_bit, const uint8_t num_bits) {
 
-                    //Convert the id_type storing variable into an array of bytes
-                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+                //Depending on whether the bits are byte aligned, we have two copying strategies.
+                if ((REMAINING_BIT_IDX(from_pos_bit) > 0) || (REMAINING_BIT_IDX(to_pos_bit) > 0)) {
+                    //If there is no byte alignment: Copy bits one by one
+                    copy_single_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
+                } else {
+                    //If there is byte alignment then we can fast copy
+                    //some whole bytes and then the remaining bits.
 
-                    //The position to start copying from
-                    const uint8_t from_pos_bit = 0;
-                    //The position to start copying to
-                    const uint8_t to_pos_bit = (NUM_BITS_IN_UINT_32 - num_bits);
-
-                    //Copy the given number of bits from and to defined targets and positions 
-                    copy_all_bits(p_source, from_pos_bit, p_target, to_pos_bit, num_bits);
-
-                    //Now re-order the target uint, taking care of endianness:
-                    //https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html
-                    //https://en.wikipedia.org/wiki/Endianness
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                    target = __builtin_bswap32(target);
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                    //This should work fine, no inversions or transformations are needed
-#elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
-                    throw Exception("copy_end_bits_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
-#endif
-                };
-
-                /**
-                 * Allows to place the given data into the byte array
-                 * @param BEGIN_BYTE_IDX the array index from which start placing the data
-                 * @param DATA_TYPE the data type of the data to be placed
-                 * @param p_target the array to place data into
-                 * @param source the data to be placed
-                 */
-                template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
-                    //We do not care about endian type here as we just will store the data
-                    //and once it is extracted the order of bytes will be restored 
-                    const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
-
-                    //Copy the bytes
-                    memcpy(p_target + BEGIN_BYTE_IDX, p_source, sizeof (DATA_TYPE));
-                }
-
-                /**
-                 * Allows to extract data from the given position in the byte array
-                 * @param BEGIN_BYTE_IDX the array index from which start reading the data
-                 * @param DATA_TYPE the data type of the data to be extracted
-                 * @param p_source the array to extract data from
-                 * @param target the data to store the extracted
-                 */
-                template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
-                    //We do not care about endian type here as we just will store the data
-                    //and once it is extracted the order of bytes will be restored 
-
-                    //Convert the id_type storing variable into an array of bytes
-                    uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
-
-                    //Copy the bytes
-                    memcpy(p_target, p_source + BEGIN_BYTE_IDX, sizeof (DATA_TYPE));
-                }
-
-                /**
-                 * Allows to convert an array of bytes into its string representation in bits.
-                 * @param bytes the array of bytes, not bull
-                 * @param size the number of elements in the array
-                 * @return the string representation in bits
-                 */
-                inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
-                    stringstream data;
-                    data << "(";
-                    for (size_t idx = 0; idx < size; ++idx) {
-                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size - 1)) ? "," : "");
+                    //1. Copy as many whole bytes as possible
+                    const uint8_t num_full_bytes = NUM_FULL_BYTES(num_bits);
+                    if (num_full_bytes > 0) {
+                        const uint8_t from_pos_byte = BYTE_IDX(from_pos_bit);
+                        const uint8_t to_pos_byte = BYTE_IDX(to_pos_bit);
+                        memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_full_bytes);
                     }
-                    data << ")";
-                    return data.str();
+
+                    //2. Copy the remaining bits one by one
+                    const uint8_t num_rem_bits = NUM_BITS_REMAINDER(num_bits);
+                    if (num_rem_bits > 0) {
+                        //Compute the number of remaining bytes to copy
+                        const uint8_t num_copied_bits = BYTES_TO_BITS(num_full_bytes);
+                        //Copy the remaining bytes
+                        copy_single_bits(p_source, from_pos_bit + num_copied_bits,
+                                p_target, to_pos_bit + num_copied_bits,
+                                num_rem_bits);
+                    }
                 }
+            };
+
+            /**
+             * Allows to copy the given number of bits (starting from the end)
+             * into the given bit position of the target byte array
+             * @param source the source 32 bit unsigned integer to copy end bits from
+             * @param num_bytes the number of bytes to copy
+             * @param p_target the byte array to copy bits into, must have sufficient capacity
+             * @param to_pos_byte the position into which the bytes are to be copied
+             */
+            template<typename TSourceType>
+            static inline void copy_end_bytes_to_pos(TSourceType source, const uint8_t num_bytes,
+                    uint8_t * p_target, const uint32_t to_pos_byte) {
+
+                LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes) << " end bytes from "
+                        << bitset < BYTES_TO_BITS(sizeof (TSourceType))>(source)
+                        << " to position: " << SSTR(to_pos_byte) << END_LOG;
+
+                HANDLE_ENDIAN(TSourceType, source);
+
+                const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
+
+                LOG_DEBUG4 << "Converted source: " << END_LOG;
+                for (size_t i = 0; i < num_bytes; ++i) {
+                    LOG_DEBUG4 << "byte[" << i << "] = " << bitset<NUM_BITS_IN_UINT_8>(p_source[i]) << END_LOG;
+                }
+
+                //Compute the position to start copying from
+                const uint8_t from_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
+
+                //Copy the bytes
+                memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
+            };
+
+            /**
+             * This function allows to copy the given number of bytes from the
+             * beginning of the given byte array into the end of the given
+             * target variable.
+             * @param num_bytes the number of bytes to copy
+             * @param p_source the byte array with data to copy from
+             * @param target the variable to put the bits at the end of
+             */
+            template<uint8_t num_bytes, typename TSourceType>
+            static inline void copy_begin_bytes_to_end(const uint8_t * p_source, TSourceType & target) {
+                LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes) << " bits to "
+                        << bitset < BYTES_TO_BITS(sizeof (TSourceType))>(target) << END_LOG;
+
+                //Convert the id_type storing variable into an array of bytes
+                uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+
+                //The position to start copying from
+                const uint8_t from_pos_byte = 0;
+                //The position to start copying to
+                const uint8_t to_pos_byte = ((uint8_t)sizeof (uint32_t) - num_bytes);
+
+                //Copy the bytes
+                memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
+
+                HANDLE_ENDIAN(TSourceType, target);
+            }
+
+            /**
+             * Allows to place the given data into the byte array
+             * @param BEGIN_BYTE_IDX the array index from which start placing the data
+             * @param DATA_TYPE the data type of the data to be placed
+             * @param p_target the array to place data into
+             * @param source the data to be placed
+             */
+            template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
+            void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
+                //We do not care about endian type here as we just will store the data
+                //and once it is extracted the order of bytes will be restored 
+                const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
+
+                //Copy the bytes
+                memcpy(p_target + BEGIN_BYTE_IDX, p_source, sizeof (DATA_TYPE));
+            }
+
+            /**
+             * Allows to extract data from the given position in the byte array
+             * @param BEGIN_BYTE_IDX the array index from which start reading the data
+             * @param DATA_TYPE the data type of the data to be extracted
+             * @param p_source the array to extract data from
+             * @param target the data to store the extracted
+             */
+            template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
+            void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
+                //We do not care about endian type here as we just will store the data
+                //and once it is extracted the order of bytes will be restored 
+
+                //Convert the id_type storing variable into an array of bytes
+                uint8_t * p_target = static_cast<uint8_t *> (static_cast<void *> (&target));
+
+                //Copy the bytes
+                memcpy(p_target, p_source + BEGIN_BYTE_IDX, sizeof (DATA_TYPE));
+            }
+
+            /**
+             * Allows to convert an array of bytes into its string representation in bits.
+             * @param bytes the array of bytes, not bull
+             * @param size the number of elements in the array
+             * @return the string representation in bits
+             */
+            inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
+                stringstream data;
+                data << "(";
+                for (size_t idx = 0; idx < size; ++idx) {
+                    data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size - 1)) ? "," : "");
+                }
+                data << ")";
+                return data.str();
             }
         }
     }
+}
 }
 
 

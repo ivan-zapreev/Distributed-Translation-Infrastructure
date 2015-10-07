@@ -52,42 +52,64 @@ namespace uva {
 
                 namespace __m_gram_id {
 
+                    //The maximum values to be stored in so many bit data type values
+#define MAX_VALUE_IN_BYTES(NUM_BYTES) (const_expr::power(2, BYTES_TO_BITS(NUM_BYTES)) - 1)
+                    static constexpr uint64_t MAX_VALUE_UINT8_T = MAX_VALUE_IN_BYTES(1);
+                    static constexpr uint64_t MAX_VALUE_UINT16_T = MAX_VALUE_IN_BYTES(2);
+                    static constexpr uint64_t MAX_VALUE_UINT24_T = MAX_VALUE_IN_BYTES(3);
+                    static constexpr uint64_t MAX_VALUE_UINT32_T = MAX_VALUE_IN_BYTES(4);
+                    static constexpr uint64_t MAX_VALUE_UINT40_T = MAX_VALUE_IN_BYTES(5);
+                    static constexpr uint64_t MAX_VALUE_UINT48_T = MAX_VALUE_IN_BYTES(6);
+                    static constexpr uint64_t MAX_VALUE_UINT56_T = MAX_VALUE_IN_BYTES(7);
+                    static constexpr uint64_t MAX_VALUE_UINT64_T = MAX_VALUE_IN_BYTES(8);
+
                     /**
                      * This method allows to get the number of bytes needed to store this word id
-                     * @param wordId the word id to analyze
+                     * @param word_id the word id to analyze
                      * @return the number of bytes needed to store this word id
                      */
-                    static inline uint8_t get_number_of_bytes(const uint64_t wordId) {
-                        if (wordId <= 255u) {
+                    static inline uint8_t get_number_of_bytes(const uint64_t word_id) {
+                        if (word_id <= MAX_VALUE_UINT8_T) {
+                            LOG_DEBUG4 << "# bytes to store " << word_id << " is: 1, as it is <= " << MAX_VALUE_UINT8_T << END_LOG;
                             return 1u;
                         } else {
-                            if (wordId <= 65535u) {
+                            if (word_id <= MAX_VALUE_UINT16_T) {
+                                LOG_DEBUG4 << "# bytes to store " << word_id << " is: 2, as it is <= " << MAX_VALUE_UINT16_T << END_LOG;
                                 return 2u;
                             } else {
-                                if (wordId <= 16777215u) {
+                                if (word_id <= MAX_VALUE_UINT24_T) {
+                                    LOG_DEBUG4 << "# bytes to store " << word_id << " is: 3, as it is <= " << MAX_VALUE_UINT24_T << END_LOG;
                                     return 3u;
                                 } else {
-                                    if (wordId <= 4294967295u) {
+                                    if (word_id <= MAX_VALUE_UINT32_T) {
+                                        LOG_DEBUG4 << "# bytes to store " << word_id << " is: 4, as it is <= " << MAX_VALUE_UINT32_T << END_LOG;
                                         return 4u;
                                     } else {
-                                        throw Exception("uint8_t get_number_of_bytes(const uint64_t wordId): Does not support more than 4 byte values yet!");
+                                        if (word_id <= MAX_VALUE_UINT40_T) {
+                                            LOG_DEBUG4 << "# bytes to store " << word_id << " is: 5, as it is <= " << MAX_VALUE_UINT40_T << END_LOG;
+                                            return 5u;
+                                        } else {
+                                            if (word_id <= MAX_VALUE_UINT48_T) {
+                                                LOG_DEBUG4 << "# bytes to store " << word_id << " is: 6, as it is <= " << MAX_VALUE_UINT48_T << END_LOG;
+                                                return 6u;
+                                            } else {
+                                                if (word_id <= MAX_VALUE_UINT56_T) {
+                                                    LOG_DEBUG4 << "# bytes to store " << word_id << " is: 7, as it is <= " << MAX_VALUE_UINT56_T << END_LOG;
+                                                    return 7u;
+                                                } else {
+                                                    if (word_id <= MAX_VALUE_UINT64_T) {
+                                                        LOG_DEBUG4 << "# bytes to store " << word_id << " is: 8, as it is <= " << MAX_VALUE_UINT64_T << END_LOG;
+                                                        return 8u;
+                                                    } else {
+                                                        throw Exception("uint8_t get_number_of_bytes(const uint64_t wordId): Does not support more than 8 byte values yet!");
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    };
-
-                    /**
-                     * Stores the m-gram id multipliers multipliers up to and including level 7
-                     */
-                    static constexpr uint32_t gram_id_type_mult[] = {
-                        1,
-                        4,
-                        4 * 4,
-                        4 * 4 * 4,
-                        4 * 4 * 4 * 4,
-                        4 * 4 * 4 * 4 * 4,
-                        4 * 4 * 4 * 4 * 4 * 4
                     };
 
                     /**
@@ -101,7 +123,7 @@ namespace uva {
                      * @param len_bytes the bytes needed per word id
                      * @param id_type [out] the resulting id type the initial value is expected to be 0
                      */
-                    template<TModelLevel M_GRAM_LEVEL>
+                    template<TModelLevel M_GRAM_LEVEL, typename TWordIdType>
                     inline void gram_id_byte_len_2_type(uint8_t len_bytes[M_GRAM_LEVEL], uint32_t & id_type) {
                         //Do the sanity check for against overflows
                         if (DO_SANITY_CHECKS && (M_GRAM_LEVEL > M_GRAM_LEVEL_5)) {
@@ -117,9 +139,10 @@ namespace uva {
 
                         //Compute the M-gram id type. Here we use the pre-computed multipliers
                         for (size_t idx = 0; idx < M_GRAM_LEVEL; ++idx) {
-                            LOG_DEBUG3 << ((uint32_t) len_bytes[idx] - 1) << " * " << gram_id_type_mult[idx] << " =  "
-                                    << ((uint32_t) len_bytes[idx] - 1) * gram_id_type_mult[idx] << END_LOG;
-                            id_type += ((uint32_t) len_bytes[idx] - 1) * gram_id_type_mult[idx];
+                            LOG_DEBUG3 << ((uint32_t) len_bytes[idx] - 1) << " * " << Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx] << " =  "
+                                    << ((uint32_t) len_bytes[idx] - 1) * Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx] << END_LOG;
+
+                            id_type += ((uint32_t) len_bytes[idx] - 1) * Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx];
                         }
                         LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                     };
@@ -130,63 +153,24 @@ namespace uva {
                      * @param id_type the type id
                      * @param id_len_bytes [out] the total byte length to store the id of this type
                      */
-                    template<TModelLevel M_GRAM_LEVEL>
+                    template<TModelLevel M_GRAM_LEVEL, typename TWordIdType>
                     inline void gram_id_type_2_byte_len(uint32_t id_type, uint8_t & id_len_bytes) {
                         //2. Compute the M-gram id length from the M-gram id type.
                         //   Here we use the pre-computed multipliers we add the
                         //   final bits at the end of the function.
                         uint8_t coeff = 0;
                         for (int idx = (M_GRAM_LEVEL - 1); idx >= 0; --idx) {
-                            coeff = (uint8_t) (id_type / gram_id_type_mult[idx]);
-                            LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(gram_id_type_mult[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
-                            id_type = (uint8_t) (id_type % gram_id_type_mult[idx]);
+                            coeff = (uint8_t) (id_type / Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx]);
+
+                            LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
+
+                            id_type = (uint8_t) (id_type % Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[idx]);
                             id_len_bytes += coeff;
                         }
                         //Note that in the loop above we have "coeff = len_bits[idx] - 1"
                         //Therefore, here we add the number of tokens to account for this -1's
                         id_len_bytes += (uint8_t) M_GRAM_LEVEL;
                     }
-
-                    /**
-                     * Allows to extract the M-gram id length from the given M-gram level M and id
-                     * @param ID_TYPE_LEN_BYTES the maximum number of bytes needed to store the id type
-                     * @param M_GRAM_LEVEL the number of tokens in the M-gram
-                     * @param m_gram_id the given M-gram id
-                     * @param len_bytes [out] the M-gram id length in bytes
-                     */
-                    template<uint8_t ID_TYPE_LEN_BYTES, TModelLevel M_GRAM_LEVEL >
-                    void get_gram_id_len(const uint8_t * m_gram_id, uint8_t & len_bytes) {
-                        //If needed, do the sanity checks
-                        if (DO_SANITY_CHECKS) {
-                            if (m_gram_id == NULL) {
-                                throw Exception("get_m_gram_id_length: A NULL pointer M-gram id!");
-                            }
-                            if (M_GRAM_LEVEL > M_GRAM_LEVEL_6) {
-                                stringstream msg;
-                                msg << "get_gram_id_len: Unsupported m-gram level: "
-                                        << SSTR(M_GRAM_LEVEL) << ", must be within ["
-                                        << SSTR(M_GRAM_LEVEL_2) << ", "
-                                        << SSTR(M_GRAM_LEVEL_6) << "], otherwise overflows!";
-                                throw Exception(msg.str());
-                            }
-                        }
-
-                        //1. ToDo: Extract the id_type from the M-gram
-                        uint32_t id_type = 0;
-                        copy_begin_bytes_to_end<ID_TYPE_LEN_BYTES>(m_gram_id, id_type);
-
-                        //2. Compute the M-gram id length from the M-gram id type.
-                        //   Here we use the pre-computed multipliers we add the
-                        //   final bits at the end of the function.
-
-                        uint8_t id_len_bytes = ID_TYPE_LEN_BYTES;
-                        gram_id_type_2_byte_len<M_GRAM_LEVEL>(id_type, id_len_bytes);
-
-                        LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES)
-                                << ", Total id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
-
-                        len_bytes = id_len_bytes;
-                    };
 
                     /**
                      * This method is needed to compute the M-gram id.
@@ -222,8 +206,8 @@ namespace uva {
                      * allocated to store the id. For an M-gram it is (4*M) bytes that is needed to store
                      * the longed M-gram id.
                      */
-                    template<uint8_t ID_TYPE_LEN_BYTES, TModelLevel M_GRAM_LEVEL>
-                    static inline void create_gram_id(const TShortId * word_ids,
+                    template<uint8_t ID_TYPE_LEN_BYTES, TModelLevel M_GRAM_LEVEL, typename TWordIdType>
+                    static inline void create_gram_id(const TWordIdType * word_ids,
                             T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         uint8_t id_len_bytes = ID_TYPE_LEN_BYTES;
 
@@ -237,8 +221,8 @@ namespace uva {
                             //Get the number of bits needed to store this id
                             len_bytes[idx] = get_number_of_bytes(word_ids[idx]);
 
-                            LOG_DEBUG3 << "Word id: " << SSTR(word_ids[idx])
-                                    << " len. in bytes: " << SSTR((uint32_t) len_bytes[idx]) << END_LOG;
+                            LOG_DEBUG3 << "Word id: " << SSTR(word_ids[idx]) << " len. in bytes: "
+                                    << SSTR((uint32_t) len_bytes[idx]) << END_LOG;
 
                             //Compute the total gram id length in bits
                             id_len_bytes += len_bytes[idx];
@@ -257,8 +241,9 @@ namespace uva {
 
                         //Determine the type id value from the bit lengths of the words
                         uint32_t id_type_value = 0;
-                        gram_id_byte_len_2_type<M_GRAM_LEVEL>(len_bytes, id_type_value);
-                        LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << (uint32_t) ID_TYPE_LEN_BYTES << ", id_type_value: " << id_type_value << END_LOG;
+                        gram_id_byte_len_2_type<M_GRAM_LEVEL, TWordIdType>(len_bytes, id_type_value);
+                        LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << (uint32_t) ID_TYPE_LEN_BYTES
+                                << ", id_type_value: " << id_type_value << END_LOG;
 
                         //Append the id type to the M-gram id
                         uint8_t to_byte_pos = 0;
@@ -282,7 +267,7 @@ namespace uva {
 
                 template<typename TWordIdType>
                 template<uint8_t begin_idx, uint8_t num_word_ids>
-                void Byte_M_Gram_Id<TWordIdType>::create_m_gram_id(const TShortId * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                void Byte_M_Gram_Id<TWordIdType>::create_m_gram_id(const TWordIdType * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
 
                     if (DO_SANITY_CHECKS &&
                             ((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_5))) {
@@ -337,12 +322,12 @@ namespace uva {
 
                             //Get one of the lengths, as they both are the same
                             uint8_t id_len_bytes = 0;
-                            __m_gram_id::get_gram_id_len < ID_TYPE_LEN_BYTES, level > (m_p_gram_id_one, id_len_bytes);
+                            __m_gram_id::gram_id_type_2_byte_len<level, TWordIdType>(type_one, id_len_bytes);
 
                             //Start comparing the ids but not from the fist bytes as
                             //this is where the id type information is stored, start
                             //with the first byte that contains key information
-                            const uint8_t num_bytes_to_skip = ID_TYPE_LEN_BYTES;
+                            constexpr uint8_t num_bytes_to_skip = ID_TYPE_LEN_BYTES;
 
                             LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES)
                                     << ", start comparing id key from idx: " << SSTR((uint32_t) num_bytes_to_skip)
@@ -367,7 +352,7 @@ namespace uva {
 #define INSTANTIATE_COMPARE_FUNC_LEVEL(LEVEL) \
                 INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint32_t, LEVEL)\
                 INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint64_t, LEVEL)
-                
+
                 INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_1);
                 INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_2);
                 INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_3);
@@ -377,7 +362,7 @@ namespace uva {
                 INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_7);
 
 #define INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(WORD_ID_TYPE, BEGIN_IDX, LEVEL) \
-                template void Byte_M_Gram_Id<WORD_ID_TYPE>::create_m_gram_id<BEGIN_IDX, LEVEL>(const TShortId* word_ids, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id<WORD_ID_TYPE>::create_m_gram_id<BEGIN_IDX, LEVEL>(const WORD_ID_TYPE* word_ids, T_Gram_Id_Storage_Ptr& m_p_gram_id);
 
 #define INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, LEVEL) \
                 INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(uint32_t, BEGIN_IDX, LEVEL) \

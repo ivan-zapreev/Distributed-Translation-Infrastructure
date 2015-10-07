@@ -92,12 +92,28 @@ namespace uva {
                 class Byte_M_Gram_Id {
                 public:
 
+                    /**
+                     * Stores the m-gram id multipliers multipliers up to and including level 7
+                     */
+                    static constexpr uint32_t gram_id_type_mult[] = {
+                        const_expr::power(sizeof (TWordIdType), 0),
+                        const_expr::power(sizeof (TWordIdType), 1),
+                        const_expr::power(sizeof (TWordIdType), 2),
+                        const_expr::power(sizeof (TWordIdType), 3),
+                        const_expr::power(sizeof (TWordIdType), 4),
+                        const_expr::power(sizeof (TWordIdType), 5),
+                        const_expr::power(sizeof (TWordIdType), 6),
+                    };
+
+                    //Allows to compute the number of bytes needed to store the given value 
+#define VALUE_LEN_BYTES(VALUE) static_cast<uint8_t> (const_expr::ceil(const_expr::log2(VALUE)/8))
+
                     //Allows to compute the byte length of the id type if the word ids are of
                     //typeTWordIdType and there is NUMBER of them. For example if TWordIdType
                     //Is uint64_t and there is 7 word ids of that type then:
                     //Possible id types: 8^7 = 2,097,152
                     //The number of bits needed to store the type is ceil(log_2(2,097,152)/8) = 3
-#define N_GRAM_ID_TYPE_LEN_BYTES(NUMBER) static_cast<uint8_t> (const_expr::ceil(const_expr::log2(const_expr::power(sizeof (TWordIdType), (NUMBER)))/8))
+#define N_GRAM_ID_TYPE_LEN_BYTES(NUMBER) VALUE_LEN_BYTES(const_expr::power(sizeof (TWordIdType), (NUMBER)))
 
                     //The memory in bytes needed to store different M-gram id types in
                     //the M-gram id byte arrays
@@ -164,7 +180,7 @@ namespace uva {
                      * @return true if the M-gram id could be created, otherwise false
                      */
                     template<uint8_t begin_idx, uint8_t num_word_ids>
-                    static void create_m_gram_id(const TShortId * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id);
+                    static void create_m_gram_id(const TWordIdType * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id);
 
                     /**
                      * The basic constructor that allocates maximum memory
@@ -240,6 +256,9 @@ namespace uva {
 
                 template<typename TWordIdType>
                 constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_LEN_BYTES[];
+                
+                template<typename TWordIdType>
+                constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[];
             }
         }
     }
