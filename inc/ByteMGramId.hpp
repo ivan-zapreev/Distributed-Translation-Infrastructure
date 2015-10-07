@@ -105,12 +105,9 @@ namespace uva {
                         const_expr::power(sizeof (TWordIdType), 6),
                     };
 
-                    //Allows to compute the number of bytes needed to store the given value 
-#define VALUE_LEN_BYTES(VALUE) static_cast<uint8_t> (const_expr::ceil(const_expr::log2(VALUE)/8))
-
                     //Allows to compute the byte length of the id type if the word ids are of
                     //typeTWordIdType and there is NUMBER of them. For example if TWordIdType
-                    //Is uint64_t and there is 7 word ids of that type then:
+                    //is uint64_t and there is 7 word ids of that type then:
                     //Possible id types: 8^7 = 2,097,152
                     //The number of bits needed to store the type is ceil(log_2(2,097,152)/8) = 3
 #define N_GRAM_ID_TYPE_LEN_BYTES(NUMBER) VALUE_LEN_BYTES(const_expr::power(sizeof (TWordIdType), (NUMBER)))
