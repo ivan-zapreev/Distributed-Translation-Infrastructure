@@ -38,7 +38,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/ARPAGramBuilder.o \
 	${OBJECTDIR}/src/ARPATrieBuilder.o \
 	${OBJECTDIR}/src/AWordIndex.o \
-	${OBJECTDIR}/src/BitMGramId.o \
 	${OBJECTDIR}/src/ByteMGramId.o \
 	${OBJECTDIR}/src/C2DHashMapTrie.o \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
@@ -91,11 +90,6 @@ ${OBJECTDIR}/src/AWordIndex.o: nbproject/Makefile-${CND_CONF}.mk src/AWordIndex.
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
-
-${OBJECTDIR}/src/BitMGramId.o: nbproject/Makefile-${CND_CONF}.mk src/BitMGramId.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/BitMGramId.o src/BitMGramId.cpp
 
 ${OBJECTDIR}/src/ByteMGramId.o: nbproject/Makefile-${CND_CONF}.mk src/ByteMGramId.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

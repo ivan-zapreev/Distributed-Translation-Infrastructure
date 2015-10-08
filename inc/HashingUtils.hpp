@@ -433,8 +433,7 @@ namespace uva {
 
             // 64-bit hash for 64-bit platforms
 
-            template<uint64_t seed>
-            uint64_t MurmurHash64A(const void * key, std::size_t len) {
+            inline uint64_t MurmurHash64A(uint64_t seed, const void * key, std::size_t len) {
                 const uint64_t m = 0xc6a4a7935bd1e995ULL;
                 const int r = 47;
 
@@ -489,8 +488,7 @@ namespace uva {
 
             // 64-bit hash for 32-bit platforms
 
-            template<uint64_t seed>
-            uint64_t MurmurHash64B(const void * key, std::size_t len) {
+            inline uint64_t MurmurHash64B(uint64_t seed, const void * key, std::size_t len) {
                 const unsigned int m = 0x5bd1e995;
                 const int r = 24;
 
@@ -577,9 +575,9 @@ namespace uva {
              * @param len the length of the data to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const char * data, uint32_t len) {
+            inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
                 //return stupidHash(data, len);
-                return MurmurHash64A<16777619U>(data, len);
+                return MurmurHash64A(seed, data, len);
             }
 
             /**
@@ -587,8 +585,8 @@ namespace uva {
              * @param token the string to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const TextPieceReader & token) {
-                return compute_hash(token.get_begin_c_str(), token.length());
+            inline uint_fast64_t compute_hash(const TextPieceReader & token, const uint64_t seed = 16777619U) {
+                return compute_hash(token.get_begin_c_str(), token.length(), seed);
             }
 
             /**
@@ -596,8 +594,8 @@ namespace uva {
              * @param token the token to compute hash for
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const string & token) {
-                return compute_hash(token.c_str(), token.length());
+            inline uint_fast64_t compute_hash(const string & token, const uint64_t seed = 16777619U) {
+                return compute_hash(token.c_str(), token.length(), seed);
             }
 
             /*****************************************************************************************************/
@@ -609,8 +607,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t compute_hash(const char * data, uint32_t len, const uint32_t limit) {
-                const uint_fast32_t hash = compute_hash(data, len);
+            inline uint_fast32_t compute_hash(const uint32_t limit, const char * data, uint32_t len, const uint64_t seed = 16777619U) {
+                const uint_fast32_t hash = compute_hash(data, len, seed);
                 return ( hash - (hash / limit) * limit);
             }
 
@@ -620,8 +618,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t compute_hash(const TextPieceReader & token, const uint32_t limit) {
-                return compute_hash(token.get_begin_c_str(), token.length(), limit);
+            inline uint_fast32_t compute_hash(const uint32_t limit, const TextPieceReader & token, const uint64_t seed = 16777619U) {
+                return compute_hash(limit, token.get_begin_c_str(), token.length(), seed);
             }
 
             /**
@@ -630,8 +628,8 @@ namespace uva {
              * @param limit the upper limit of the resulting hash (non-reachable)
              * @return the resulting hash < limit
              */
-            inline uint_fast32_t compute_hash(const string & token, const uint32_t limit) {
-                return compute_hash(token.c_str(), token.length(), limit);
+            inline uint_fast32_t compute_hash(const uint32_t limit, const string & token, const uint64_t seed = 16777619U) {
+                return compute_hash(limit, token.c_str(), token.length(), seed);
             }
 
             /*****************************************************************************************************/

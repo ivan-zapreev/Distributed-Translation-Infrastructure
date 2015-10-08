@@ -254,7 +254,7 @@ namespace uva {
                 inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.template get_hash<false, is_back_off, curr_level>();
+                    const uint64_t gram_hash = gram.template get_hash<is_back_off, curr_level>();
 
                     LOG_DEBUG1 << "The " << curr_level << "-gram: " << (string) gram
                             << " hash is " << gram_hash << END_LOG;
@@ -330,6 +330,7 @@ namespace uva {
                  */
                 template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
                 inline bool search_gram(T_Gram_Id_Storage_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
+                    LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,

@@ -140,17 +140,21 @@ namespace uva {
                      * @see AWordIndex
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
-                        //Compute the bucket id
-                        const uint_fast32_t bucket_idx = get_bucket_idx(token);
+                        if (m_disp_word_index_ptr == NULL) {
+                            //Compute the bucket id
+                            const uint_fast32_t bucket_idx = get_bucket_idx(token);
 
-                        //Search within the bucket
-                        for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
-                                idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
-                            if (IS_EQUAL(token, m_word_entries[idx])) {
-                                return m_word_entries[idx].m_word_id;
+                            //Search within the bucket
+                            for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
+                                    idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
+                                if (IS_EQUAL(token, m_word_entries[idx])) {
+                                    return m_word_entries[idx].m_word_id;
+                                }
                             }
+                            return UNKNOWN_WORD_ID;
+                        } else {
+                            return m_disp_word_index_ptr->register_word(token);
                         }
-                        return UNKNOWN_WORD_ID;
                     };
 
                     /**
@@ -246,7 +250,7 @@ namespace uva {
                             //Delete entries
                             delete[] m_word_entries;
                         }
-                        
+
                         //Dispose the disposable word index if this is not done yet
                         dispose_disp_word_index();
                     };
@@ -302,7 +306,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const TextPieceReader & token) const {
-                        return compute_hash(token, m_num_buckets);
+                        return compute_hash(m_num_buckets, token);
                     }
 
                     /**
@@ -311,7 +315,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const string & token) const {
-                        return compute_hash(token, m_num_buckets);
+                        return compute_hash(m_num_buckets, token);
                     }
 
                     /**
@@ -420,7 +424,7 @@ namespace uva {
                         }
                     };
                 };
-                
+
                 typedef OptimizingWordIndex<BasicWordIndex> TOptBasicWordIndex;
                 typedef OptimizingWordIndex<CountingWordIndex> TOptCountWordIndex;
             }
