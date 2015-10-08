@@ -333,11 +333,11 @@ namespace uva {
                                     << ", start comparing id key from idx: " << SSTR((uint32_t) num_bytes_to_skip)
                                     << ", Total id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
-                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " = " << bytes_to_bit_string(m_p_gram_id_one, id_len_bytes) << END_LOG;
-                            LOG_DEBUG3 << (void*) m_p_gram_id_two << " = " << bytes_to_bit_string(m_p_gram_id_two, id_len_bytes) << END_LOG;
+                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " = " << bytes_to_bit_string(m_p_gram_id_one + num_bytes_to_skip, id_len_bytes) << END_LOG;
+                            LOG_DEBUG3 << (void*) m_p_gram_id_two << " = " << bytes_to_bit_string(m_p_gram_id_two + num_bytes_to_skip, id_len_bytes) << END_LOG;
 
                             //Compare with the fast system function
-                            return memcmp(m_p_gram_id_one + num_bytes_to_skip, m_p_gram_id_two + num_bytes_to_skip, (id_len_bytes - num_bytes_to_skip));
+                            return memcmp(m_p_gram_id_one + num_bytes_to_skip, m_p_gram_id_two + num_bytes_to_skip, id_len_bytes);
                         }
                     }
                 };

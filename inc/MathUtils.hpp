@@ -332,6 +332,22 @@ if(sizeof(value_type) == 2) { \
                 };
 
                 /**
+                 * Allows to convert an array of bytes into its string representation in bits.
+                 * @param bytes the array of bytes, not bull
+                 * @param size the number of elements in the array
+                 * @return the string representation in bits
+                 */
+                inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
+                    stringstream data;
+                    data << "(";
+                    for (size_t idx = 0; idx < size; ++idx) {
+                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size - 1)) ? "," : "");
+                    }
+                    data << ")";
+                    return data.str();
+                }
+
+                /**
                  * Allows to copy the given number of bits (starting from the end)
                  * into the given bit position of the target byte array
                  * @param source the source 32 bit unsigned integer to copy end bits from
@@ -351,10 +367,7 @@ if(sizeof(value_type) == 2) { \
 
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
 
-                    LOG_DEBUG4 << "Converted source: " << END_LOG;
-                    for (size_t i = 0; i < num_bytes; ++i) {
-                        LOG_DEBUG4 << "byte[" << i << "] = " << bitset<NUM_BITS_IN_UINT_8>(p_source[i]) << END_LOG;
-                    }
+                    LOG_DEBUG4 << "Converted source: " << bytes_to_bit_string(p_source, num_bytes) << END_LOG;
 
                     //Compute the position to start copying from
                     const uint8_t from_pos_byte = ((uint8_t)sizeof (TSourceType) - num_bytes);
@@ -386,6 +399,8 @@ if(sizeof(value_type) == 2) { \
 
                     //Copy the bytes
                     memcpy(p_target + to_pos_byte, p_source + from_pos_byte, num_bytes);
+
+                    LOG_DEBUG4 << "Converted target: " << bytes_to_bit_string(p_target + to_pos_byte, num_bytes) << END_LOG;
 
                     HANDLE_ENDIAN(TSourceType, target);
                 }
@@ -424,22 +439,6 @@ if(sizeof(value_type) == 2) { \
 
                     //Copy the bytes
                     memcpy(p_target, p_source + BEGIN_BYTE_IDX, sizeof (DATA_TYPE));
-                }
-
-                /**
-                 * Allows to convert an array of bytes into its string representation in bits.
-                 * @param bytes the array of bytes, not bull
-                 * @param size the number of elements in the array
-                 * @return the string representation in bits
-                 */
-                inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
-                    stringstream data;
-                    data << "(";
-                    for (size_t idx = 0; idx < size; ++idx) {
-                        data << bitset<NUM_BITS_IN_UINT_8>(bytes[idx]) << ((idx < (size - 1)) ? "," : "");
-                    }
-                    data << ")";
-                    return data.str();
                 }
             }
         }

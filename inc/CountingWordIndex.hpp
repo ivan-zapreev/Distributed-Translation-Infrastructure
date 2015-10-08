@@ -74,6 +74,9 @@ namespace uva {
                  * allows to count the word usages and then to issue lower
                  * word indexes to the more frequently used words. This allows
                  * for, for example, shorter M-gram ids.
+                 * 
+                 * ToDo: Change or create a new version of the word index that will
+                 * just use probabilities of the unigrams instead of counting words.
                  */
                 class CountingWordIndex : public BasicWordIndex {
                 public:
@@ -93,7 +96,7 @@ namespace uva {
                      * This function creates/gets a hash for the given word.
                      * @see AWordIndex
                      */
-                    TShortId register_word(const TextPieceReader & token) {
+                    TWordIdType register_word(const TextPieceReader & token) {
                         //Note that, by now all the words must have been counted
                         //and have their unique words ids, so here we do it simple!
                         //Return the id that has already been issued!

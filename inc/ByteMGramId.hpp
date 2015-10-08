@@ -70,7 +70,7 @@ namespace uva {
                     static inline void allocate_m_gram_id(T_Gram_Id_Storage_Ptr & m_p_gram_id, uint8_t size) {
                         //Allocate maximum memory that could be needed to store the given M-gram level id
                         m_p_gram_id = new uint8_t[size];
-                        LOG_DEBUG3 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
+                        LOG_DEBUG4 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
                     }
 
                     /**
@@ -79,7 +79,7 @@ namespace uva {
                      */
                     static inline void destroy(T_Gram_Id_Storage_Ptr & m_p_gram_id) {
                         if (m_p_gram_id != NULL) {
-                            LOG_DEBUG3 << "Deallocating a M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
+                            LOG_DEBUG4 << "Deallocating a M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
                             delete[] m_p_gram_id;
                         }
                     }

@@ -58,13 +58,14 @@ namespace uva {
                     /**
                      * This structure is to store the word index data, the word itself and its index
                      */
+                    template<typename TWordIdType>
                     struct WordIndexBucketEntry {
 
                         WordIndexBucketEntry() : m_word(NULL), m_len(0), m_word_id(0) {
                         }
                         char * m_word;
                         uint8_t m_len;
-                        TShortId m_word_id;
+                        TWordIdType m_word_id;
                     } __attribute__((packed));
                 }
 
@@ -138,7 +139,7 @@ namespace uva {
                      * This function gets an id for the given word word based no the stored 1-Grams.
                      * @see AWordIndex
                      */
-                    inline TShortId get_word_id(const TextPieceReader & token) const {
+                    inline TWordIdType get_word_id(const TextPieceReader & token) const {
                         //Compute the bucket id
                         const uint_fast32_t bucket_idx = get_bucket_idx(token);
 
@@ -156,7 +157,7 @@ namespace uva {
                      * This function creates/gets an id for the given word.
                      * @see AWordIndex
                      */
-                    inline TShortId register_word(const TextPieceReader & token) {
+                    inline TWordIdType register_word(const TextPieceReader & token) {
                         return m_disp_word_index_ptr->register_word(token);
                     };
 
@@ -267,7 +268,7 @@ namespace uva {
                     uint32_t * m_word_hash_buckets;
 
                     //Typedef the bucket entry
-                    typedef __OptimizingWordIndex::WordIndexBucketEntry TBucketEntry;
+                    typedef __OptimizingWordIndex::WordIndexBucketEntry<TWordIdType> TBucketEntry;
 
                     //Stores the buckets data
                     TBucketEntry * m_word_entries;
