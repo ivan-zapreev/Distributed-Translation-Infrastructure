@@ -108,7 +108,7 @@ namespace uva {
                      * needed by the given implementation of the word index.
                      * @return true if the word registering is needed, otherwise false.
                      */
-                    inline bool is_register_word_needed() const {
+                    inline bool is_word_registering_needed() const {
                         THROW_MUST_OVERRIDE();
                     };
 

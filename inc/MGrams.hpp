@@ -162,7 +162,7 @@ namespace uva {
                     inline void prepare_for_adding() {
                         //If we have a unigram then add it to the index otherwise get the word ids
                         if (m_used_level == M_GRAM_LEVEL_1) {
-                            if (m_word_index.is_register_word_needed()) {
+                            if (m_word_index.is_word_registering_needed()) {
                                 //Register the word if it is needed
                                 m_word_ids[END_WORD_IDX] = m_word_index.register_word(get_end_token());
                             }
