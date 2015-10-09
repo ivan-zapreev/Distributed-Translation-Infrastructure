@@ -162,8 +162,10 @@ namespace uva {
                     inline void prepare_for_adding() {
                         //If we have a unigram then add it to the index otherwise get the word ids
                         if (m_used_level == M_GRAM_LEVEL_1) {
-                            //Get the word id and its hash
-                            m_word_ids[END_WORD_IDX] = m_word_index.register_word(get_end_token());
+                            if (m_word_index.is_register_word_needed()) {
+                                //Register the word if it is needed
+                                m_word_ids[END_WORD_IDX] = m_word_index.register_word(get_end_token());
+                            }
                         }
                         //Store the word ids without the unknown word flags and pre-compute the m-gram hash values
                         store_m_gram_ids_and_hashes<false, true>();

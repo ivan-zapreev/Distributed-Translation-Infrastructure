@@ -108,6 +108,15 @@ namespace uva {
                             return result->second;
                         }
                     }
+                    
+                    /**
+                     * This method allows to indicate whether registering a word is
+                     * needed by the given implementation of the word index.
+                     * @see AWordIndex
+                     */
+                    inline bool is_register_word_needed() const {
+                        return true;
+                    };
 
                     /**
                      * This function creates/gets a hash for the given word.

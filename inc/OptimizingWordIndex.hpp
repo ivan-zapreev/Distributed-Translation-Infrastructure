@@ -156,8 +156,23 @@ namespace uva {
                             }
                             return UNKNOWN_WORD_ID;
                         } else {
-                            return m_disp_word_index_ptr->register_word(token);
+                            //If word registering is needed then get the id through
+                            //it otherwise just get the word id, if it is not needed
+                            if (m_disp_word_index_ptr->is_register_word_needed()) {
+                                return m_disp_word_index_ptr->register_word(token);
+                            } else {
+                                return m_disp_word_index_ptr->get_word_id(token);
+                            }
                         }
+                    };
+
+                    /**
+                     * This method allows to indicate whether registering a word is
+                     * needed by the given implementation of the word index.
+                     * @see AWordIndex
+                     */
+                    inline bool is_register_word_needed() const {
+                        return m_disp_word_index_ptr->is_register_word_needed();
                     };
 
                     /**

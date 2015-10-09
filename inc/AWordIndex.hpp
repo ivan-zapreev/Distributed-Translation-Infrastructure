@@ -104,6 +104,15 @@ namespace uva {
                     };
 
                     /**
+                     * This method allows to indicate whether registering a word is
+                     * needed by the given implementation of the word index.
+                     * @return true if the word registering is needed, otherwise false.
+                     */
+                    inline bool is_register_word_needed() const {
+                        THROW_MUST_OVERRIDE();
+                    };
+
+                    /**
                      * This function creates/gets an id for the given word.
                      * Note: The ids must be unique and continuous!
                      * @param token the word to hash
