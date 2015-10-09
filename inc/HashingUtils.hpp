@@ -51,20 +51,18 @@ namespace uva {
 
             /*****************************************************************************************************/
 
-            inline uint_fast32_t hash32(uint32_t key) {
+            inline uint_fast32_t hash32(uint_fast32_t key, uint_fast32_t seed = 2166136261U) {
                 uint8_t* bytes = (uint8_t*) (&key);
-                uint_fast32_t hash = 2166136261U;
-                hash = (16777619U * hash) ^ bytes[0];
+                uint_fast32_t hash = (16777619U * seed) ^ bytes[0];
                 hash = (16777619U * hash) ^ bytes[1];
                 hash = (16777619U * hash) ^ bytes[2];
                 hash = (16777619U * hash) ^ bytes[3];
                 return hash;
             }
 
-            inline uint_fast64_t hash64(uint64_t key) {
+            inline uint_fast64_t hash64(uint_fast64_t key, uint_fast64_t seed = 2166136261U) {
                 uint8_t* bytes = (uint8_t*) (&key);
-                uint_fast64_t hash = 2166136261U;
-                hash = (16777619U * hash) ^ bytes[0];
+                uint_fast32_t hash = (16777619U * seed) ^ bytes[0];
                 hash = (16777619U * hash) ^ bytes[1];
                 hash = (16777619U * hash) ^ bytes[2];
                 hash = (16777619U * hash) ^ bytes[3];
@@ -75,16 +73,16 @@ namespace uva {
                 return hash;
             }
 
-            inline uint_fast32_t hashStr(const char* data, int len) {
-                uint_fast32_t hash = 2166136261U;
+            inline uint_fast32_t hash32_str(const char* data, int len, uint_fast32_t seed = 2166136261U) {
+                uint_fast32_t hash = seed;
                 for (int32_t i = 0; i != len; ++i) {
                     hash = (16777619U * hash) ^ (uint8_t) (data[i]);
                 }
                 return hash;
             }
 
-            inline uint_fast32_t hashStr(const string & token) {
-                return hashStr(token.c_str(), token.length());
+            inline uint_fast32_t hash32_str(const string & token) {
+                return hash32_str(token.c_str(), token.length());
             }
 
             /*****************************************************************************************************/
@@ -288,7 +286,6 @@ namespace uva {
             inline uint_fast32_t computePrimesHash(const char * data, uint32_t len) {
                 uint_fast32_t h = 31 /* also prime */;
                 for (std::size_t i = 0; i != len; ++i) {
-
                     h = (h * A) ^ (data[i] * B);
                 }
                 return h; // or return h % C;
@@ -343,8 +340,7 @@ namespace uva {
              * @param seed the seed to use
              * @return the hash value
              */
-            template<uint32_t seed>
-            inline uint32_t crapWowHash(const char *key, uint32_t len) {
+            inline uint32_t crapWowHash(const char *key, uint32_t len, uint32_t seed) {
 #if !defined(__LP64__) && !defined(_MSC_VER) && ( defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) )
                 // esi = k, ebx = h
                 uint32_t hash;
@@ -433,7 +429,7 @@ namespace uva {
 
             // 64-bit hash for 64-bit platforms
 
-            inline uint64_t MurmurHash64A(uint64_t seed, const void * key, std::size_t len) {
+            inline uint64_t MurmurHash64A(const void * key, std::size_t len, uint64_t seed) {
                 const uint64_t m = 0xc6a4a7935bd1e995ULL;
                 const int r = 47;
 
@@ -577,7 +573,7 @@ namespace uva {
              */
             inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
                 //return stupidHash(data, len);
-                return MurmurHash64A(seed, data, len);
+                return MurmurHash64A(data, len, seed);
             }
 
             /**
@@ -641,8 +637,7 @@ namespace uva {
              * @return the resulting combines hash value
              */
             inline uint_fast64_t combine_hash(const uint_fast64_t hash_one, const uint_fast64_t hash_two) {
-                //The same way it is done in boost, simple exclusive or does not work quite well
-                return (hash_one ^ (hash_two + 0x9e3779b9 + (hash_one << 6) + (hash_one >> 2)));
+                return hash64(hash_one, hash_two);
             }
 
             /*****************************************************************************************************/

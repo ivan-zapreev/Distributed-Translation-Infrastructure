@@ -144,6 +144,9 @@ namespace uva {
                             //Compute the bucket id
                             const uint_fast32_t bucket_idx = get_bucket_idx(token);
 
+                            LOG_DEBUG3 << "Number of words in bucket: " << bucket_idx << " is: "
+                                    << (m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx]) << END_LOG;
+
                             //Search within the bucket
                             for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
                                     idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
