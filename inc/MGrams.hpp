@@ -54,19 +54,9 @@ namespace uva {
             namespace mgrams {
 
                 /**
-                 * Stores the available hash types for hashing the M-gram and its tokens
-                 */
-                enum HashTypesEnum {
-                    UNDEFINED_HASH_TYPE = 0,
-                    TOKENS_HASH_TYPE = UNDEFINED_HASH_TYPE + 1, //The hash will be based on hashing the tokens of the m-gram
-                    WORD_ID_HASH_TYPE = TOKENS_HASH_TYPE + 1, //The hash will be based on combining the word ids
-                    size_hashes = WORD_ID_HASH_TYPE + 1
-                };
-
-                /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
                  */
-                template<typename WordIndexType, HashTypesEnum hash_type = HashTypesEnum::WORD_ID_HASH_TYPE>
+                template<typename WordIndexType>
                 class T_M_Gram {
                 public:
                     //The type of the word id
@@ -271,19 +261,19 @@ namespace uva {
                             //Compute the max level hash with the intermediate values
                             if (idx == HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
                                 //The first top-level sub 1-gram hash is equal to the end word hash
-                                hash_values[idx] = get_first_hash(idx);
+                                hash_values[idx] = m_word_ids[idx];
                             } else {
                                 if (idx == BO_HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
                                     //The first top-level back-off 1-gram hash is the
                                     //id of the word word preceeding the last one
-                                    bo_hash_values[idx] = get_first_hash(idx);
+                                    bo_hash_values[idx] = m_word_ids[idx];
                                 } else {
                                     //The next top-level back-off m-gram hash is the combination of the
                                     //next previous word and the previous top-level back-off m-gram hash
-                                    bo_hash_values[idx] = get_next_hash(idx, bo_hash_values[idx + 1]);
+                                    bo_hash_values[idx] = combine_hash(m_word_ids[idx], bo_hash_values[idx + 1]);
                                 }
                                 //The top-level sub m-gram hash is the back-off hash combined with the end word hash
-                                hash_values[idx] = get_next_hash(idx, hash_values[idx + 1]);
+                                hash_values[idx] = combine_hash(m_word_ids[idx], hash_values[idx + 1]);
                             }
                             LOG_DEBUG2 << "hash_values[" << (uint32_t) idx << "] = " << hash_values[idx] << END_LOG;
                             LOG_DEBUG2 << "bo_hash_values[" << (uint32_t) idx << "] = " << bo_hash_values[idx] << END_LOG;
@@ -415,107 +405,28 @@ namespace uva {
                     uint64_t m_hash_values[2 * MAX_LEVEL][MAX_LEVEL];
 
                     /**
-                     * Allows to get the first hash value for the token under the given index
-                     * @param idx the index of the token to give the hash value for
-                     * @return the resulting hash value 
-                     */
-                    inline uint64_t get_first_hash(TModelLevel idx) {
-                        switch (hash_type) {
-                            case HashTypesEnum::WORD_ID_HASH_TYPE:
-                                return m_word_ids[idx];
-                            case HashTypesEnum::TOKENS_HASH_TYPE:
-                                return compute_hash(m_tokens[idx]);
-                            default:
-                                stringstream msg;
-                                msg << "Unsupported hash type enum value " << SSTR(hash_type) << " !";
-                                throw Exception(msg.str());
-                        }
-                    }
-
-                    /**
-                     * Allows to get the next/increments hash value for the prev_hash_value
-                     * and the token under the given index.
-                     * @param idx the index of the token to to combine with the previous hash value
-                     * @return the resulting hash value 
-                     */
-                    inline uint64_t get_next_hash(TModelLevel idx, uint64_t prev_hash_value) {
-                        switch (hash_type) {
-                            case HashTypesEnum::WORD_ID_HASH_TYPE:
-                                return combine_hash(m_word_ids[idx], prev_hash_value);
-                            case HashTypesEnum::TOKENS_HASH_TYPE:
-                                return compute_hash(m_tokens[idx], prev_hash_value);
-                            default:
-                                stringstream msg;
-                                msg << "Unsupported hash type enum value " << SSTR(hash_type) << " !";
-                                throw Exception(msg.str());
-                        }
-                    }
-
-                    /**
                      * Gives the start word index
                      * @return the start word index.
                      */
                     inline TModelLevel begin_word_index() const {
                         return (MAX_LEVEL - m_used_level);
                     }
-
-                    /**
-                     * This function allows to compute the hash of the sub M-Gram
-                     * tokens starting from and including the word on the given index,
-                     * and until and including the word of the given index. It
-                     * assumes, which should hold, that the memory pointed by the
-                     * tokens is continuous.
-                     * @param begin_idx  the index of the first word in tokens array
-                     * @param end_idx the index of the last word in tokens array
-                     * @return the hash value of the given token
-                     */
-                    template<TModelLevel begin_idx, TModelLevel end_idx>
-                    inline uint64_t hash_tokens() const {
-                        LOG_DEBUG3 << "Hashing tokens begin_idx: " << begin_idx << ", end_idx: " << end_idx << END_LOG;
-
-                        //Compute the length of the gram tokens in memory, including spaces between
-                        const char * beginFirstPtr = m_tokens[begin_idx].get_begin_c_str();
-                        const TextPieceReader & last = m_tokens[end_idx];
-                        const char * beginLastPtr = last.get_begin_c_str();
-                        const size_t totalLen = (beginLastPtr - beginFirstPtr) + last.length();
-                        LOG_DEBUG3 << "Hashing tokens length: " << totalLen << END_LOG;
-
-                        //If the sanity check is on then test that the memory is continuous
-                        //Compute the same length but with a longer iterative algorithms
-                        if (DO_SANITY_CHECKS) {
-                            //Compute the exact length
-                            size_t exactTotalLen = (end_idx - begin_idx); //The number of spaces in between tokens
-                            for (TModelLevel idx = begin_idx; idx <= end_idx; idx++) {
-                                exactTotalLen += m_tokens[idx].length();
-                            }
-                            //Check that the exact and fast computed lengths are the same
-                            if (exactTotalLen != totalLen) {
-                                stringstream msg;
-                                msg << "The memory allocation for M-gram tokens is not continuous: totalLen (" <<
-                                        SSTR(totalLen) << ") != exactTotalLen (" << SSTR(exactTotalLen) << ")";
-                                throw Exception(msg.str());
-                            }
-                        }
-
-                        //Compute the hash using the gram tokens with spaces with them
-                        return compute_hash(beginFirstPtr, totalLen);
-                    }
                 };
 
-                template<typename WordIndexType, HashTypesEnum hash_type>
-                constexpr TModelLevel T_M_Gram<WordIndexType, hash_type>::MAX_LEVEL;
+                template<typename WordIndexType>
+                constexpr TModelLevel T_M_Gram<WordIndexType>::MAX_LEVEL;
 
-                template<typename WordIndexType, HashTypesEnum hash_type>
-                constexpr TModelLevel T_M_Gram<WordIndexType, hash_type>::END_WORD_IDX;
+                template<typename WordIndexType>
+                constexpr TModelLevel T_M_Gram<WordIndexType>::END_WORD_IDX;
 
-                template<typename WordIndexType, HashTypesEnum hash_type>
-                constexpr uint8_t T_M_Gram<WordIndexType, hash_type>::UNK_WORD_MASKS[];
+                template<typename WordIndexType>
+                constexpr uint8_t T_M_Gram<WordIndexType>::UNK_WORD_MASKS[];
 
-                template<typename WordIndexType, HashTypesEnum hash_type>
-                constexpr uint8_t T_M_Gram<WordIndexType, hash_type>::PROB_UNK_MASKS[];
+                template<typename WordIndexType>
+                constexpr uint8_t T_M_Gram<WordIndexType>::PROB_UNK_MASKS[];
 
-                template<typename WordIndexType, HashTypesEnum hash_type>
-                constexpr uint8_t T_M_Gram<WordIndexType, hash_type>::BACK_OFF_UNK_MASKS[];
+                template<typename WordIndexType>
+                constexpr uint8_t T_M_Gram<WordIndexType>::BACK_OFF_UNK_MASKS[];
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
                 template class T_M_Gram<BasicWordIndex>;
