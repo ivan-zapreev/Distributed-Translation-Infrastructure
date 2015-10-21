@@ -201,19 +201,19 @@ namespace uva {
                  * This method should be called after all the X level grams are read.
                  * For more details @see WordIndexTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void post_grams() {
                     //Call the base class method first
-                    if (BASE::template is_post_grams<level>()) {
-                        BASE::template post_grams<level>();
+                    if (BASE::template is_post_grams<CURR_LEVEL>()) {
+                        BASE::template post_grams<CURR_LEVEL>();
                     }
 
                     //Do the post actions here
-                    if (level == MAX_LEVEL) {
+                    if (CURR_LEVEL == MAX_LEVEL) {
                         post_n_grams();
                     } else {
-                        if (level > M_GRAM_LEVEL_1) {
-                            post_m_grams<level>();
+                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                            post_m_grams<CURR_LEVEL>();
                         }
                     }
                 };
@@ -291,16 +291,16 @@ namespace uva {
                 typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
                 typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void post_m_grams() {
                     //Compute the m-gram index
-                    constexpr TModelLevel mgram_idx = (level - BASE::MGRAM_IDX_OFFSET);
+                    constexpr TModelLevel mgram_idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 
-                    LOG_DEBUG2 << "Running post actions on " << level << "-grams, m-gram array index: " << mgram_idx << END_LOG;
+                    LOG_DEBUG2 << "Running post actions on " << CURR_LEVEL << "-grams, m-gram array index: " << mgram_idx << END_LOG;
 
                     //Sort the entries per context with respect to the word index
                     //the order could be arbitrary if a non-basic word index is used!
-                    const size_t num_prev_ctx = (level == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
+                    const size_t num_prev_ctx = (CURR_LEVEL == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
                     LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
                     for (size_t ctxId = 0; ctxId < num_prev_ctx; ++ctxId) {
                         const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctxId];

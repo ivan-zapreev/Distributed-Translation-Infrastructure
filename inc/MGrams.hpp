@@ -47,11 +47,12 @@ using namespace uva::smt::hashing;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
+using namespace uva::smt::tries::m_grams::m_gram_id;
 
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace mgrams {
+            namespace m_grams {
 
                 /**
                  * This class is used to store the N-Gram data of the back-off Language Model.
@@ -63,7 +64,7 @@ namespace uva {
                     typedef typename WordIndexType::TWordIdType TWordIdType;
 
                     //Define the corresponding M-gram id type
-                    typedef Byte_M_Gram_Id<TWordIdType> TM_Gram_Id;
+                    typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> TM_Gram_Id;
 
                     //Stores the unknown word masks for the probability computations,
                     //up to and including 8-grams:
@@ -113,11 +114,14 @@ namespace uva {
                         0xFE //7: 11111110
                     };
 
-                    //The maximum supported level of the m-gram
-                    static constexpr TModelLevel MAX_LEVEL = sizeof (UNK_WORD_MASKS);
+                    //The maximum capacity level of the m-gram, i.e. the maximum number of words this M-gram can store
+                    static constexpr TModelLevel MAX_CAPACITY_LEVEL = sizeof (UNK_WORD_MASKS);
 
                     //The index of the last m-gram word in the tokens and word ids array
-                    static constexpr TModelLevel END_WORD_IDX = MAX_LEVEL - 1;
+                    static constexpr TModelLevel END_WORD_IDX = MAX_CAPACITY_LEVEL - 1;
+
+                    //The index of the last word in the back-off m-gram
+                    static constexpr TModelLevel END_BACK_OFF_WORD_IDX = END_WORD_IDX - 1;
 
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff m_prob;
@@ -128,11 +132,11 @@ namespace uva {
                     //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
                     TextPieceReader m_context;
 
-                    //The data structure to store the N-gram word ids
-                    TWordIdType m_word_ids[MAX_LEVEL] = {};
-
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
+
+                    //The data structure to store the N-gram word ids
+                    TWordIdType m_word_ids[MAX_CAPACITY_LEVEL] = {};
 
                     /**
                      * The basic constructor
@@ -152,7 +156,7 @@ namespace uva {
 #define HASH_LEVEL_IDX(level) ( 2 * ((level) - 1) )
 #define BO_HASH_LEVEL_IDX(level) ( HASH_LEVEL_IDX(level) + 1 )
 
-#define HASH_LEVEL_VALUE_IDX(level) ( MAX_LEVEL - (level) )
+#define HASH_LEVEL_VALUE_IDX(level) ( MAX_CAPACITY_LEVEL - (level) )
 #define BO_HASH_LEVEL_VALUE_IDX(level) ( HASH_LEVEL_VALUE_IDX(level) - 1 )
 
                     /**
@@ -182,9 +186,9 @@ namespace uva {
                     inline uint64_t get_hash() const {
                         LOG_DEBUG3 << "Hashing tokens is_back_off: " << is_back_off << ", curr_level: " << curr_level << END_LOG;
                         if (is_back_off) {
-                            return m_hash_values[BO_HASH_LEVEL_IDX(MAX_LEVEL)][BO_HASH_LEVEL_VALUE_IDX(curr_level)];
+                            return m_hash_values[BO_HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][BO_HASH_LEVEL_VALUE_IDX(curr_level)];
                         } else {
-                            return m_hash_values[HASH_LEVEL_IDX(MAX_LEVEL)][HASH_LEVEL_VALUE_IDX(curr_level)];
+                            return m_hash_values[HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][HASH_LEVEL_VALUE_IDX(curr_level)];
                         }
                     }
 
@@ -222,68 +226,6 @@ namespace uva {
                                 << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
 
                         return (level_flags == 0);
-                    }
-
-                    /**
-                     * Converts the given tokens to ids and stores it in
-                     * m_gram_word_ids. The ids are aligned to the beginning
-                     * of the m_gram_word_ids[N-1] array.
-                     * @param is_unk_flags if true then the unk word flags will be stored, otherwise not
-                     * @param m_gram the m-gram tokens to convert to hashes
-                     * @paam unk_word_flags the variable into which the word flags will be stored.
-                     */
-                    template<bool is_unk_flags, bool is_max_level_only>
-                    inline void store_m_gram_ids_and_hashes() {
-                        if (is_unk_flags) {
-                            //Re-initialize the flags with zero
-                            m_unk_word_flags = 0;
-                        }
-
-                        LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
-
-                        //Store the reference to the needed array level, for regular and back-off m-gram hashes
-                        uint64_t(&hash_values)[MAX_LEVEL] = m_hash_values[HASH_LEVEL_IDX(MAX_LEVEL)];
-                        uint64_t(&bo_hash_values)[MAX_LEVEL] = m_hash_values[BO_HASH_LEVEL_IDX(MAX_LEVEL)];
-
-                        //Get the word ids and compute the hashes
-                        TModelLevel idx = MAX_LEVEL;
-                        do {
-                            //Decrement the index
-                            idx--;
-
-                            //Get the word id, or UNKNOWN_WORD_ID if the word is unknown
-                            m_word_ids[idx] = m_word_index.get_word_id(m_tokens[idx]);
-                            LOG_DEBUG1 << "wordId('" << m_tokens[idx].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
-
-                            //If needed set the unknown word flag
-                            if (is_unk_flags && (m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
-                                m_unk_word_flags |= UNK_WORD_MASKS[idx];
-                            }
-
-                            //Compute the max level hash with the intermediate values
-                            if (idx == HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
-                                //The first top-level sub 1-gram hash is equal to the end word hash
-                                hash_values[idx] = m_word_ids[idx];
-                            } else {
-                                if (idx == BO_HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
-                                    //The first top-level back-off 1-gram hash is the
-                                    //id of the word word preceeding the last one
-                                    bo_hash_values[idx] = m_word_ids[idx];
-                                } else {
-                                    //The next top-level back-off m-gram hash is the combination of the
-                                    //next previous word and the previous top-level back-off m-gram hash
-                                    bo_hash_values[idx] = combine_hash(m_word_ids[idx], bo_hash_values[idx + 1]);
-                                }
-                                //The top-level sub m-gram hash is the back-off hash combined with the end word hash
-                                hash_values[idx] = combine_hash(m_word_ids[idx], hash_values[idx + 1]);
-                            }
-                            LOG_DEBUG2 << "hash_values[" << (uint32_t) idx << "] = " << hash_values[idx] << END_LOG;
-                            LOG_DEBUG2 << "bo_hash_values[" << (uint32_t) idx << "] = " << bo_hash_values[idx] << END_LOG;
-                        } while (idx != begin_word_index());
-
-                        if (is_unk_flags) {
-                            LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
-                        }
                     }
 
                     /**
@@ -330,11 +272,35 @@ namespace uva {
 
                     /**
                      * Allows to start a new M-gram with the given level
-                     * @param level the level of the M-gram we are starting
+                     * @param CURR_LEVEL the level of the M-gram we are starting
                      */
-                    template<TModelLevel level>
+                    template<TModelLevel CURR_LEVEL>
                     inline void start_new_m_gram() {
-                        m_curr_index = (MAX_LEVEL - level);
+                        m_curr_index = (MAX_CAPACITY_LEVEL - CURR_LEVEL);
+                    }
+
+                    /**
+                     * Allows to create a new m-gram id for the given m-gram of the specific current level, and the back-off flag.
+                     * For the argument reference to the id data pointer the following holds:
+                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
+                     * as needed to store the given id.
+                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
+                     * @param CURR_LEVEL the current M-gram level to compute the id for
+                     * @param IS_BACK_OFF true if the M-gram id is to be computed for the back-off M-gram of the given level, default is false.
+                     * @param m_p_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
+                     */
+                    template<TModelLevel CURR_LEVEL, bool IS_BACK_OFF = false >
+                    inline void create_m_gram_id(T_Gram_Id_Data_Ptr & m_p_gram_id) const {
+                        //Compute the begin index based on the input template parameters
+                        constexpr TModelLevel BEGIN_IDX = (MAX_CAPACITY_LEVEL - (IS_BACK_OFF ? 1 : 0) - CURR_LEVEL);
+
+                        LOG_DEBUG << "Computing " << CURR_LEVEL << "-gram word id for word indexes: [" << BEGIN_IDX
+                                << "," << (IS_BACK_OFF ? END_BACK_OFF_WORD_IDX : END_WORD_IDX) << "]" << END_LOG;
+
+                        //Create the M-gram id from the word ids.
+                        TM_Gram_Id::template create_m_gram_id<BEGIN_IDX, CURR_LEVEL>(m_word_ids, m_p_gram_id);
+
+                        LOG_DEBUG << "Allocated M-gram id " << (void*) m_p_gram_id << " for " << (string) (*this) << END_LOG;
                     }
 
                     /**
@@ -344,7 +310,7 @@ namespace uva {
                     inline TextPieceReader & get_next_new_token() {
                         if (DO_SANITY_CHECKS && (m_curr_index > END_WORD_IDX)) {
                             stringstream msg;
-                            msg << "The next token does not exist, exceeded the maximum of " << SSTR(MAX_LEVEL) << " elements!";
+                            msg << "The next token does not exist, exceeded the maximum of " << SSTR(MAX_CAPACITY_LEVEL) << " elements!";
                             throw Exception(msg.str());
                         }
                         return m_tokens[m_curr_index++];
@@ -376,7 +342,7 @@ namespace uva {
                      */
                     inline operator string() const {
                         LOG_DEBUG4 << "Appending " << SSTR(m_used_level) << "tokens" << END_LOG;
-                        return tokens_to_string(m_tokens, MAX_LEVEL - m_used_level, END_WORD_IDX);
+                        return tokens_to_string(m_tokens, MAX_CAPACITY_LEVEL - m_used_level, END_WORD_IDX);
                     };
 
                     /**
@@ -392,7 +358,7 @@ namespace uva {
                     TModelLevel m_curr_index;
 
                     //Stores the m-gram tokens
-                    TextPieceReader m_tokens[MAX_LEVEL];
+                    TextPieceReader m_tokens[MAX_CAPACITY_LEVEL];
 
                     //Unknown word bit flags
                     uint8_t m_unk_word_flags = 0;
@@ -404,19 +370,81 @@ namespace uva {
                     //This is a 2D array with twice the number of levels
                     //for regular and back-off m-gram hashes. The second
                     //index is for sub-m-gram hashes.
-                    uint64_t m_hash_values[2 * MAX_LEVEL][MAX_LEVEL];
+                    uint64_t m_hash_values[2 * MAX_CAPACITY_LEVEL][MAX_CAPACITY_LEVEL];
 
                     /**
                      * Gives the start word index
                      * @return the start word index.
                      */
                     inline TModelLevel begin_word_index() const {
-                        return (MAX_LEVEL - m_used_level);
+                        return (MAX_CAPACITY_LEVEL - m_used_level);
+                    }
+
+                    /**
+                     * Converts the given tokens to ids and stores it in
+                     * m_gram_word_ids. The ids are aligned to the beginning
+                     * of the m_gram_word_ids[N-1] array.
+                     * @param is_unk_flags if true then the unk word flags will be stored, otherwise not
+                     * @param m_gram the m-gram tokens to convert to hashes
+                     * @paam unk_word_flags the variable into which the word flags will be stored.
+                     */
+                    template<bool is_unk_flags, bool is_max_level_only>
+                    inline void store_m_gram_ids_and_hashes() {
+                        if (is_unk_flags) {
+                            //Re-initialize the flags with zero
+                            m_unk_word_flags = 0;
+                        }
+
+                        LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
+
+                        //Store the reference to the needed array level, for regular and back-off m-gram hashes
+                        uint64_t(&hash_values)[MAX_CAPACITY_LEVEL] = m_hash_values[HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)];
+                        uint64_t(&bo_hash_values)[MAX_CAPACITY_LEVEL] = m_hash_values[BO_HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)];
+
+                        //Get the word ids and compute the hashes
+                        TModelLevel idx = MAX_CAPACITY_LEVEL;
+                        do {
+                            //Decrement the index
+                            idx--;
+
+                            //Get the word id, or UNKNOWN_WORD_ID if the word is unknown
+                            m_word_ids[idx] = m_word_index.get_word_id(m_tokens[idx]);
+                            LOG_DEBUG1 << "wordId('" << m_tokens[idx].str() << "') = " << SSTR(m_word_ids[idx]) << END_LOG;
+
+                            //If needed set the unknown word flag
+                            if (is_unk_flags && (m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
+                                m_unk_word_flags |= UNK_WORD_MASKS[idx];
+                            }
+
+                            //Compute the max level hash with the intermediate values
+                            if (idx == HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
+                                //The first top-level sub 1-gram hash is equal to the end word hash
+                                hash_values[idx] = m_word_ids[idx];
+                            } else {
+                                if (idx == BO_HASH_LEVEL_VALUE_IDX(M_GRAM_LEVEL_1)) {
+                                    //The first top-level back-off 1-gram hash is the
+                                    //id of the word word preceeding the last one
+                                    bo_hash_values[idx] = m_word_ids[idx];
+                                } else {
+                                    //The next top-level back-off m-gram hash is the combination of the
+                                    //next previous word and the previous top-level back-off m-gram hash
+                                    bo_hash_values[idx] = combine_hash(m_word_ids[idx], bo_hash_values[idx + 1]);
+                                }
+                                //The top-level sub m-gram hash is the back-off hash combined with the end word hash
+                                hash_values[idx] = combine_hash(m_word_ids[idx], hash_values[idx + 1]);
+                            }
+                            LOG_DEBUG2 << "hash_values[" << (uint32_t) idx << "] = " << hash_values[idx] << END_LOG;
+                            LOG_DEBUG2 << "bo_hash_values[" << (uint32_t) idx << "] = " << bo_hash_values[idx] << END_LOG;
+                        } while (idx != begin_word_index());
+
+                        if (is_unk_flags) {
+                            LOG_DEBUG << "The query unknown word flags are: " << bitset<NUM_BITS_IN_UINT_8>(m_unk_word_flags) << END_LOG;
+                        }
                     }
                 };
 
                 template<typename WordIndexType>
-                constexpr TModelLevel T_M_Gram<WordIndexType>::MAX_LEVEL;
+                constexpr TModelLevel T_M_Gram<WordIndexType>::MAX_CAPACITY_LEVEL;
 
                 template<typename WordIndexType>
                 constexpr TModelLevel T_M_Gram<WordIndexType>::END_WORD_IDX;

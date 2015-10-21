@@ -48,9 +48,9 @@ using namespace std;
 namespace uva {
     namespace smt {
         namespace tries {
-            namespace mgrams {
+            namespace m_grams {
 
-                namespace __m_gram_id {
+                namespace m_gram_id {
 
                     //The maximum values to be stored in so many bit data type values
 #define MAX_VALUE_IN_BYTES(NUM_BYTES) (const_expr::power(2, BYTES_TO_BITS(NUM_BYTES)) - 1)
@@ -208,7 +208,7 @@ namespace uva {
                      */
                     template<uint8_t ID_TYPE_LEN_BYTES, TModelLevel M_GRAM_LEVEL, typename TWordIdType>
                     static inline void create_gram_id(const TWordIdType * word_ids,
-                            T_Gram_Id_Storage_Ptr & m_p_gram_id) {
+                            T_Gram_Id_Data_Ptr & m_p_gram_id) {
                         uint8_t id_len_bytes = ID_TYPE_LEN_BYTES;
 
                         LOG_DEBUG3 << "Creating the " << SSTR(M_GRAM_LEVEL) << "-gram id with "
@@ -261,129 +261,128 @@ namespace uva {
                                 << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
                     };
 
-                }
+                    /***********************************************************************************************************************/
 
-                /***********************************************************************************************************************/
+                    template<typename TWordIdType>
+                    template<uint8_t begin_idx, uint8_t num_word_ids>
+                    void Byte_M_Gram_Id<TWordIdType>::create_m_gram_id(const TWordIdType * word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id) {
 
-                template<typename TWordIdType>
-                template<uint8_t begin_idx, uint8_t num_word_ids>
-                void Byte_M_Gram_Id<TWordIdType>::create_m_gram_id(const TWordIdType * word_ids, T_Gram_Id_Storage_Ptr & m_p_gram_id) {
-
-                    if (DO_SANITY_CHECKS &&
-                            ((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_5))) {
-                        stringstream msg;
-                        msg << "create_m_gram_id: Unsupported m-gram level: "
-                                << SSTR(num_word_ids) << ", must be within ["
-                                << SSTR(M_GRAM_LEVEL_2) << ", "
-                                << SSTR(M_GRAM_LEVEL_5) << "]";
-                        throw Exception(msg.str());
-                    }
-
-                    //Call the appropriate function, use array instead of switch, should be faster.
-                    __m_gram_id::create_gram_id < M_GRAM_ID_TYPE_LEN_BYTES[num_word_ids], num_word_ids > (&word_ids[begin_idx], m_p_gram_id);
-                };
-
-                template<typename TWordIdType>
-                template<TModelLevel level>
-                int Byte_M_Gram_Id<TWordIdType>::compare(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two) {
-                    //Do the sanity check if needed
-                    if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
-                        stringstream msg;
-                        msg << "get_gram_id_len: Unsupported m-gram level: "
-                                << SSTR(level) << ", must be within ["
-                                << SSTR(M_GRAM_LEVEL_2) << ", "
-                                << SSTR(M_GRAM_LEVEL_6) << "], need to set proper type len!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Get the id len in bits
-                    static constexpr uint8_t ID_TYPE_LEN_BYTES = M_GRAM_ID_TYPE_LEN_BYTES[level];
-
-                    //Get the M-gram type ids
-                    TShortId type_one = 0;
-                    copy_begin_bytes_to_end < ID_TYPE_LEN_BYTES >(m_p_gram_id_one, type_one);
-                    TShortId type_two = 0;
-                    copy_begin_bytes_to_end < ID_TYPE_LEN_BYTES >(m_p_gram_id_two, type_two);
-
-                    LOG_DEBUG3 << "M_GRAM_LEVEL: " << (uint32_t) level << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
-
-                    if (type_one < type_two) {
-                        //The first id type is smaller
-                        LOG_DEBUG3 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
-                        return -1;
-                    } else {
-                        if (type_one > type_two) {
-                            //The second id type is smaller
-                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
-                            return +1;
-                        } else {
-                            //The id types are the same! Compare the ids themselves
-                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " =(type)= " << (void*) m_p_gram_id_two << END_LOG;
-
-                            //Get one of the lengths, as they both are the same
-                            uint8_t id_len_bytes = 0;
-                            __m_gram_id::gram_id_type_2_byte_len<level, TWordIdType>(type_one, id_len_bytes);
-
-                            //Start comparing the ids but not from the fist bytes as
-                            //this is where the id type information is stored, start
-                            //with the first byte that contains key information
-                            constexpr uint8_t num_bytes_to_skip = ID_TYPE_LEN_BYTES;
-
-                            LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES)
-                                    << ", start comparing id key from idx: " << SSTR((uint32_t) num_bytes_to_skip)
-                                    << ", Total id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
-
-                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " = " << bytes_to_bit_string(m_p_gram_id_one + num_bytes_to_skip, id_len_bytes) << END_LOG;
-                            LOG_DEBUG3 << (void*) m_p_gram_id_two << " = " << bytes_to_bit_string(m_p_gram_id_two + num_bytes_to_skip, id_len_bytes) << END_LOG;
-
-                            //Compare with the fast system function
-                            return memcmp(m_p_gram_id_one + num_bytes_to_skip, m_p_gram_id_two + num_bytes_to_skip, id_len_bytes);
+                        if (DO_SANITY_CHECKS &&
+                                ((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_5))) {
+                            stringstream msg;
+                            msg << "create_m_gram_id: Unsupported m-gram level: "
+                                    << SSTR(num_word_ids) << ", must be within ["
+                                    << SSTR(M_GRAM_LEVEL_2) << ", "
+                                    << SSTR(M_GRAM_LEVEL_5) << "]";
+                            throw Exception(msg.str());
                         }
-                    }
-                };
 
-                //Make sure at least the following templates are instantiated
-                template class Byte_M_Gram_Id<uint32_t>;
-                template class Byte_M_Gram_Id<uint64_t>;
+                        //Call the appropriate function, use array instead of switch, should be faster.
+                        m_gram_id::create_gram_id < M_GRAM_ID_TYPE_LEN_BYTES[num_word_ids], num_word_ids > (&word_ids[begin_idx], m_p_gram_id);
+                    };
+
+                    template<typename TWordIdType>
+                    template<TModelLevel level>
+                    int Byte_M_Gram_Id<TWordIdType>::compare(const T_Gram_Id_Data_Ptr & m_p_gram_id_one, const T_Gram_Id_Data_Ptr & m_p_gram_id_two) {
+                        //Do the sanity check if needed
+                        if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
+                            stringstream msg;
+                            msg << "get_gram_id_len: Unsupported m-gram level: "
+                                    << SSTR(level) << ", must be within ["
+                                    << SSTR(M_GRAM_LEVEL_2) << ", "
+                                    << SSTR(M_GRAM_LEVEL_6) << "], need to set proper type len!";
+                            throw Exception(msg.str());
+                        }
+
+                        //Get the id len in bits
+                        static constexpr uint8_t ID_TYPE_LEN_BYTES = M_GRAM_ID_TYPE_LEN_BYTES[level];
+
+                        //Get the M-gram type ids
+                        TShortId type_one = 0;
+                        copy_begin_bytes_to_end < ID_TYPE_LEN_BYTES >(m_p_gram_id_one, type_one);
+                        TShortId type_two = 0;
+                        copy_begin_bytes_to_end < ID_TYPE_LEN_BYTES >(m_p_gram_id_two, type_two);
+
+                        LOG_DEBUG3 << "M_GRAM_LEVEL: " << (uint32_t) level << ", type_one: " << type_one << ", type_two: " << type_two << END_LOG;
+
+                        if (type_one < type_two) {
+                            //The first id type is smaller
+                            LOG_DEBUG3 << (void*) m_p_gram_id_one << " < " << (void*) m_p_gram_id_two << END_LOG;
+                            return -1;
+                        } else {
+                            if (type_one > type_two) {
+                                //The second id type is smaller
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " > " << (void*) m_p_gram_id_two << END_LOG;
+                                return +1;
+                            } else {
+                                //The id types are the same! Compare the ids themselves
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " =(type)= " << (void*) m_p_gram_id_two << END_LOG;
+
+                                //Get one of the lengths, as they both are the same
+                                uint8_t id_len_bytes = 0;
+                                m_gram_id::gram_id_type_2_byte_len<level, TWordIdType>(type_one, id_len_bytes);
+
+                                //Start comparing the ids but not from the fist bytes as
+                                //this is where the id type information is stored, start
+                                //with the first byte that contains key information
+                                constexpr uint8_t num_bytes_to_skip = ID_TYPE_LEN_BYTES;
+
+                                LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES)
+                                        << ", start comparing id key from idx: " << SSTR((uint32_t) num_bytes_to_skip)
+                                        << ", Total id_len_bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
+
+                                LOG_DEBUG3 << (void*) m_p_gram_id_one << " = " << bytes_to_bit_string(m_p_gram_id_one + num_bytes_to_skip, id_len_bytes) << END_LOG;
+                                LOG_DEBUG3 << (void*) m_p_gram_id_two << " = " << bytes_to_bit_string(m_p_gram_id_two + num_bytes_to_skip, id_len_bytes) << END_LOG;
+
+                                //Compare with the fast system function
+                                return memcmp(m_p_gram_id_one + num_bytes_to_skip, m_p_gram_id_two + num_bytes_to_skip, id_len_bytes);
+                            }
+                        }
+                    };
+
+                    //Make sure at least the following templates are instantiated
+                    template class Byte_M_Gram_Id<uint32_t>;
+                    template class Byte_M_Gram_Id<uint64_t>;
 
 #define INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(WORD_ID_TYPE, LEVEL) \
-                template int Byte_M_Gram_Id<WORD_ID_TYPE>::compare<LEVEL>(const T_Gram_Id_Storage_Ptr & m_p_gram_id_one, const T_Gram_Id_Storage_Ptr & m_p_gram_id_two);
+                    template int Byte_M_Gram_Id<WORD_ID_TYPE>::compare<LEVEL>(const T_Gram_Id_Data_Ptr & m_p_gram_id_one, const T_Gram_Id_Data_Ptr & m_p_gram_id_two);
 
 #define INSTANTIATE_COMPARE_FUNC_LEVEL(LEVEL) \
-                INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint32_t, LEVEL)\
-                INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint64_t, LEVEL)
+                    INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint32_t, LEVEL)\
+                    INSTANTIATE_COMPARE_FUNC_WORD_ID_TYPE_LEVEL(uint64_t, LEVEL)
 
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_1);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_2);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_3);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_4);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_5);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_6);
-                INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_7);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_1);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_2);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_3);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_4);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_5);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_6);
+                    INSTANTIATE_COMPARE_FUNC_LEVEL(M_GRAM_LEVEL_7);
 
 #define INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(WORD_ID_TYPE, BEGIN_IDX, LEVEL) \
-                template void Byte_M_Gram_Id<WORD_ID_TYPE>::create_m_gram_id<BEGIN_IDX, LEVEL>(const WORD_ID_TYPE* word_ids, T_Gram_Id_Storage_Ptr& m_p_gram_id);
+                template void Byte_M_Gram_Id<WORD_ID_TYPE>::create_m_gram_id<BEGIN_IDX, LEVEL>(const WORD_ID_TYPE* word_ids, T_Gram_Id_Data_Ptr& m_p_gram_id);
 
 #define INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, LEVEL) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(uint32_t, BEGIN_IDX, LEVEL) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(uint64_t, BEGIN_IDX, LEVEL)
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(uint32_t, BEGIN_IDX, LEVEL) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_WORD_ID_TYPE_BEGIN_IDX_LEVEL(uint64_t, BEGIN_IDX, LEVEL)
 
 #define INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(BEGIN_IDX) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_1) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_2) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_3) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_4) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_5) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_6) \
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_7)
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_1) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_2) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_3) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_4) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_5) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_6) \
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX_LEVEL(BEGIN_IDX, M_GRAM_LEVEL_7)
 
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(0);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(1);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(2);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(3);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(4);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(5);
-                INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(6);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(0);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(1);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(2);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(3);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(4);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(5);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(6);
+                }
             }
         }
     }

@@ -47,7 +47,7 @@ using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::mgrams;
+using namespace uva::smt::tries::m_grams;
 using namespace uva::utils::math::bits;
 
 namespace uva {
@@ -112,7 +112,7 @@ namespace uva {
                  * @param gram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_M_Gram<WordIndexType> & gram) {
                     THROW_MUST_OVERRIDE();
                 };
@@ -137,12 +137,12 @@ namespace uva {
                  * This function allows to retrieve the probability stored for the given M-gram level.
                  * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
-                 * @param curr_level the currently considered level of the m-gram
+                 * @param CURR_LEVEL the currently considered level of the m-gram
                  * @param query the m-gram query object
                  * @param prob the probability variable that is to be set with the found probability weight
                  * @return true if the probability for the given M-gram level could be found, otherwise false.
                  */
-                template<TModelLevel curr_level>
+                template<TModelLevel CURR_LEVEL>
                 inline void get_prob_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -152,11 +152,11 @@ namespace uva {
                  * If the value is found then it must be added to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * In that case the back-off weight is just zero.
-                 * @param curr_level the currently considered level of the m-gram
+                 * @param CURR_LEVEL the currently considered level of the m-gram
                  * @param query the m-gram query object
                  * @param prob the probability variable that is to be increased with the found back-off weight
                  */
-                template<TModelLevel curr_level>
+                template<TModelLevel CURR_LEVEL>
                 inline void add_back_off_weight(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -174,7 +174,7 @@ namespace uva {
                  * @param curr_level the currently considered level of the m-gram
                  * @return true if the unknown word is present, otherwise false
                  */
-                template<bool is_back_off, TModelLevel curr_level>
+                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
                     THROW_MUST_OVERRIDE();
                 };

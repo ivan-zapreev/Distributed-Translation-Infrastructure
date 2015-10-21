@@ -71,57 +71,57 @@ namespace uva {
                      * Note: the returned pointer to the dynamically allocated
                      * builder is to be freed by the caller!
                      * 
-                     * @param level the level of the N-gram
+                     * @param CURR_LEVEL the level of the N-gram we currently need the builder for.
                      * @param trie the trie to be filled in with the N-grams
                      * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                      */
-                    template<TModelLevel level>
-                    static inline void get_builder(TrieType & trie, ARPAGramBuilder<WordIndexType, level> **ppBuilder) {
+                    template<TModelLevel CURR_LEVEL>
+                    static inline void get_builder(TrieType & trie, ARPAGramBuilder<WordIndexType, CURR_LEVEL> **ppBuilder) {
                         //First reset the pointer to NULL
                         *ppBuilder = NULL;
-                        LOG_DEBUG << "Requested a " << level << "-Gram builder, the maximum level is " << MAX_LEVEL << END_LOG;
+                        LOG_DEBUG << "Requested a " << CURR_LEVEL << "-Gram builder, the maximum level is " << MAX_LEVEL << END_LOG;
 
 
                         //Then check that the level values are correct!
-                        if (DO_SANITY_CHECKS && (level < M_GRAM_LEVEL_1 || level > MAX_LEVEL)) {
+                        if (DO_SANITY_CHECKS && (CURR_LEVEL < M_GRAM_LEVEL_1 || CURR_LEVEL > MAX_LEVEL)) {
                             stringstream msg;
-                            msg << "The requested N-gram level is '" << level
+                            msg << "The requested N-gram level is '" << CURR_LEVEL
                                     << "', but it must be within [" << M_GRAM_LEVEL_1
                                     << ", " << MAX_LEVEL << "]!";
                             throw Exception(msg.str());
                         } else {
                             //The N-gram level values are correct, so instantiate an appropriate builder
 
-                            if (level == M_GRAM_LEVEL_1) {
+                            if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //If the level is at minimum it means we are filling in the dictionary
                                 LOG_DEBUG1 << "Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
-                                *ppBuilder = new ARPAGramBuilder<WordIndexType, level>(trie.get_word_index(),
+                                *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
                                         [&] (const T_M_Gram<WordIndexType> & gram) {
                                             trie.add_1_gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
                             } else {
-                                if (level == MAX_LEVEL) {
+                                if (CURR_LEVEL == MAX_LEVEL) {
                                     //If the minimum is at maximum it means we are filling in the top N-gram level
                                     LOG_DEBUG1 << "Instantiating the " << MAX_LEVEL << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, level>(trie.get_word_index(),
+                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
                                             [&] (const T_M_Gram<WordIndexType> & gram) {
                                                 trie.add_n_gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << MAX_LEVEL << "-Gram builder!" << END_LOG;
                                 } else {
                                     //Here we are to get the builder for the intermediate N-gram levels
-                                    LOG_DEBUG1 << "Instantiating the " << level << "-Gram builder.." << END_LOG;
+                                    LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, level>(trie.get_word_index(),
+                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
                                             [&] (const T_M_Gram<WordIndexType> & gram) {
-                                                trie.template add_m_gram<level>(gram);
+                                                trie.template add_m_gram<CURR_LEVEL>(gram);
                                             });
-                                    LOG_DEBUG2 << "DONE Instantiating the " << level << "-Gram builder!" << END_LOG;
+                                    LOG_DEBUG2 << "DONE Instantiating the " << CURR_LEVEL << "-Gram builder!" << END_LOG;
                                 }
                             }
                         }
-                        LOG_DEBUG << "The " << level << "-Gram builder (" << hex << long(*ppBuilder) << ") is produced!" << END_LOG;
+                        LOG_DEBUG << "The " << CURR_LEVEL << "-Gram builder (" << hex << long(*ppBuilder) << ") is produced!" << END_LOG;
                     }
 
                     virtual ~ARPAGramBuilderFactory() {

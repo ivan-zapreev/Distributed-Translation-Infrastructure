@@ -42,17 +42,17 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, typename WordIndexType>
-            W2CArrayTrie<N, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<N, WordIndexType>(word_index),
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            W2CArrayTrie<MAX_LEVEL, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
 
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            void W2CArrayTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            void W2CArrayTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
                 //01) Pre-allocate the word index super class call
                 BASE::pre_allocate(counts);
 
@@ -73,22 +73,22 @@ namespace uva {
                 }
 
                 //05) Allocate the data for the N-Grams 
-                preAllocateWordsData<T_N_GramWordEntry>(m_N_gram_word_2_data, counts[N - 1], counts[0]);
+                preAllocateWordsData<T_N_GramWordEntry>(m_N_gram_word_2_data, counts[MAX_LEVEL - 1], counts[0]);
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            bool W2CArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            template<TModelLevel CURR_LEVEL>
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
                 //Compute the m-gram index
-                const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
+                const TModelLevel mgram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
-                if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
+                if (DO_SANITY_CHECKS && ((CURR_LEVEL == MAX_LEVEL) || (mgram_idx < 0))) {
                     stringstream msg;
-                    msg << "Unsupported level id: " << level;
+                    msg << "Unsupported level id: " << CURR_LEVEL;
                     throw Exception(msg.str());
                 }
 
-                LOG_DEBUG2 << "Searching next ctxId for " << SSTR(level)
+                LOG_DEBUG2 << "Searching next ctxId for " << SSTR(CURR_LEVEL)
                         << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
                         << SSTR(ctxId) << END_LOG;
 
@@ -104,9 +104,9 @@ namespace uva {
                 //Check that if this is the 2-Gram case and the previous context
                 //id is 0 then it is the unknown word id, at least this is how it
                 //is now in ATrie implementation, so we need to do a warning!
-                if (DO_SANITY_CHECKS && (level == M_GRAM_LEVEL_2) && (ctxId < WordIndexType::MIN_KNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (CURR_LEVEL == M_GRAM_LEVEL_2) && (ctxId < WordIndexType::MIN_KNOWN_WORD_ID)) {
                     LOG_WARNING << "Perhaps we are being paranoid but there "
-                            << "seems to be a problem! The " << SSTR(level) << "-gram ctxId: "
+                            << "seems to be a problem! The " << SSTR(CURR_LEVEL) << "-gram ctxId: "
                             << SSTR(ctxId) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
                             << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                 }
@@ -129,15 +129,15 @@ namespace uva {
                 }
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            TProbBackOffEntry & W2CArrayTrie<N, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            TProbBackOffEntry & W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
                 LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                 return m_1_gram_data[wordId];
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
                 LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                 *ppData = &m_1_gram_data[wordId];
@@ -147,14 +147,14 @@ namespace uva {
                 return true;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            TProbBackOffEntry& W2CArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                LOG_DEBUG2 << "Adding\t" << SSTR(level) << "-gram with ctxId:\t"
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            template<TModelLevel CURR_LEVEL>
+            TProbBackOffEntry& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+                LOG_DEBUG2 << "Adding\t" << SSTR(CURR_LEVEL) << "-gram with ctxId:\t"
                         << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
                 //Get the sub-array reference. 
-                typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET], wordId);
+                typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET], wordId);
 
                 //Store the context and word ids
                 ref.id = ctxId;
@@ -164,17 +164,17 @@ namespace uva {
                 return ref.payload;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            bool W2CArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            template<TModelLevel CURR_LEVEL>
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
                     const TLongId ctxId, const TProbBackOffEntry **ppData) const {
-                LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
+                LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                 //Get the entry
                 const typename T_M_GramWordEntry::TElemType * pEntry;
-                const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET];
-                if (get_m_n_gram_entry<level, T_M_GramWordEntry>(ptr, wordId, ctxId, &pEntry)) {
+                const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, wordId, ctxId, &pEntry)) {
                     //Return the pointer to the probability and back-off structure
                     *ppData = &pEntry->payload;
                     return true;
@@ -184,9 +184,9 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            TLogProbBackOff& W2CArrayTrie<N, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with ctxId: "
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            TLogProbBackOff& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+                LOG_DEBUG2 << "Adding " << SSTR(MAX_LEVEL) << "-gram with ctxId: "
                         << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
 
                 //Get the sub-array reference. 
@@ -199,15 +199,15 @@ namespace uva {
                 return ref.payload;
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            bool W2CArrayTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
                     TLogProbBackOff & prob) const {
-                LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
+                LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 
                 //Get the entry
                 const typename T_N_GramWordEntry::TElemType * pEntry;
-                if (get_m_n_gram_entry<N, T_N_GramWordEntry>(m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
+                if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
                     //Return the reference to the probability
                     prob = pEntry->payload;
                     return true;
@@ -217,8 +217,8 @@ namespace uva {
                 }
             };
 
-            template<TModelLevel N, typename WordIndexType>
-            W2CArrayTrie<N, WordIndexType>::~W2CArrayTrie() {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            W2CArrayTrie<MAX_LEVEL, WordIndexType>::~W2CArrayTrie() {
                 //Check that the one grams were allocated, if yes then the rest must have been either
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;

@@ -44,7 +44,7 @@ using namespace uva::utils::math;
 using namespace uva::smt::logging;
 using namespace uva::smt::hashing;
 using namespace uva::smt::exceptions;
-using namespace uva::smt::tries::mgrams;
+using namespace uva::smt::tries::m_grams;
 
 namespace uva {
     namespace smt {

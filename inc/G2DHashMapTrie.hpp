@@ -48,7 +48,7 @@ using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::alloc;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::mgrams;
+using namespace uva::smt::tries::m_grams;
 using namespace uva::smt::tries::__G2DMapTrie;
 
 namespace uva {
@@ -76,12 +76,12 @@ namespace uva {
                     typedef PAYLOAD_TYPE TPayloadType;
                 };
 
-                typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
-                typedef S_M_GramData<T_Gram_Id_Storage_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
+                typedef S_M_GramData<T_Gram_Id_Data_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
+                typedef S_M_GramData<T_Gram_Id_Data_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
                 void destroy_Comp_M_Gram_Id(ELEMENT_TYPE & elem) {
-                    __m_gram_id::destroy(elem.id);
+                    m_gram_id::destroy(elem.id);
                 };
 
                 template void destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry>(T_M_Gram_PB_Entry &elem);
@@ -148,7 +148,7 @@ namespace uva {
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 void add_m_gram(const T_M_Gram<WordIndexType> &mGram);
 
                 /**
@@ -164,7 +164,7 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @see ATrie
                  */
-                template<TModelLevel curr_level>
+                template<TModelLevel CURR_LEVEL>
                 void get_prob_weight(MGramQuery<WordIndexType> & query) const;
 
                 /**
@@ -174,7 +174,7 @@ namespace uva {
                  * In that case the back-off weight is just zero.
                  * @see ATrie
                  */
-                template<TModelLevel curr_level>
+                template<TModelLevel CURR_LEVEL>
                 void add_back_off_weight(MGramQuery<WordIndexType> & query) const;
 
                 /**
@@ -182,33 +182,33 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * For more details @see WordIndexTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 bool is_post_grams() const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per bucket per id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || BASE::template is_post_grams<level>();
+                    return (CURR_LEVEL > M_GRAM_LEVEL_1) || BASE::template is_post_grams<CURR_LEVEL>();
                 }
 
                 /**
                  * This method should be called after all the X level grams are read.
                  * For more details @see WordIndexTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void post_grams() {
                     //Call the base class method first
-                    if (BASE::template is_post_grams<level>()) {
-                        BASE::template post_grams<level>();
+                    if (BASE::template is_post_grams<CURR_LEVEL>()) {
+                        BASE::template post_grams<CURR_LEVEL>();
                     }
 
                     //Do the post actions here
-                    if (level == MAX_LEVEL) {
+                    if (CURR_LEVEL == MAX_LEVEL) {
                         post_n_grams();
                     } else {
-                        if (level > M_GRAM_LEVEL_1) {
-                            post_m_grams<level>();
+                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                            post_m_grams<CURR_LEVEL>();
                         }
                     }
                 };
@@ -225,13 +225,13 @@ namespace uva {
                  * The default implementation of this method is present.
                  * If overridden must be called from the child method.
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void post_m_grams() {
                     //Compute the M-gram level index
-                    constexpr TModelLevel level_idx = (level - BASE::MGRAM_IDX_OFFSET);
+                    constexpr TModelLevel CURR_LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 
                     //Sort the level's data
-                    post_M_N_Grams<TProbBackOffBucket, level>(m_M_gram_data[level_idx]);
+                    post_M_N_Grams<TProbBackOffBucket, CURR_LEVEL>(m_M_gram_data[CURR_LEVEL_IDX]);
                 }
 
                 /**
@@ -250,25 +250,25 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param return the resulting bucket index
                  */
-                template<bool is_back_off, TModelLevel curr_level>
+                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                 inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.template get_hash<is_back_off, curr_level>();
+                    const uint64_t gram_hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
 
-                    LOG_DEBUG1 << "The " << curr_level << "-gram: " << (string) gram
+                    LOG_DEBUG1 << "The " << CURR_LEVEL << "-gram: " << (string) gram
                             << " hash is " << gram_hash << END_LOG;
 
-                    TShortId bucket_idx = gram_hash % num_buckets[curr_level - 1];
+                    TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];
 
                     LOG_DEBUG1 << "Getting bucket for " << (string) gram << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[curr_level - 1]))) {
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[CURR_LEVEL - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(curr_level) << "-gram: " << (string) gram
+                        msg << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
                                 << " was given an incorrect hash: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[curr_level - 1]) << "]";
+                                << ", must be within [0, " << SSTR(num_buckets[CURR_LEVEL - 1]) << "]";
                         throw Exception(msg.str());
                     }
 
@@ -278,31 +278,31 @@ namespace uva {
                 /**
                  * Performs the post-processing actions on the buckets in the given M-gram level
                  * @param BUCKET_TYPE the sort of buckets we should work with
+                 * @param CURR_LEVEL the M-gram level value M
                  * @param buckets the pointer to the array of buckets to process
-                 * @param curr_level the M-gram level value M
                  */
-                template<typename BUCKET_TYPE, TModelLevel curr_level >
+                template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL >
                 void post_M_N_Grams(BUCKET_TYPE * buckets) {
                     //Iterate through all buckets and shrink/sort sub arrays
-                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[curr_level - 1]; ++bucket_idx) {
+                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[CURR_LEVEL - 1]; ++bucket_idx) {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Reduce capacity if there is unused memory
                         ref.shrink();
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Shrinking the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
-                        LOG_DEBUG1 << "Sorting the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
                             LOG_DEBUG1 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::updateProgressBar();
                                     //Return the result
-                            return TM_Gram_Id::template is_less_m_grams_id<curr_level>(first.id, second.id);
+                            return TM_Gram_Id::template is_less_m_grams_id<CURR_LEVEL>(first.id, second.id);
                         });
-                        LOG_DEBUG1 << "Sorting the " << SSTR(curr_level) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                        LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
                 }
 
@@ -329,7 +329,7 @@ namespace uva {
                  * @return true if the M-gram id was found and otherwise false
                  */
                 template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
-                inline bool search_gram(T_Gram_Id_Storage_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
+                inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
                     LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
@@ -342,13 +342,13 @@ namespace uva {
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
                  * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
-                 * @param curr_level the currently considered level of the m-gram
+                 * @param CURR_LEVEL the currently considered level of the m-gram
                  * @param query the query M-gram state 
                  * @param ref the bucket to search in
                  * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
-                template<typename BUCKET_TYPE, bool back_off, TModelLevel curr_level >
+                template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
                 bool get_payload_from_gram_level(const MGramQuery<WordIndexType> & query, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 

@@ -95,7 +95,7 @@ namespace uva {
             //The value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = ZERO_LOG_PROB_WEIGHT;
 
-            namespace mgrams {
+            namespace m_grams {
                 //Various M-gram levels
                 const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u;
                 const static TModelLevel M_GRAM_LEVEL_1 = 1u;

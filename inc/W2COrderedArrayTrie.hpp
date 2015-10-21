@@ -130,7 +130,7 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing.
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
 
                 /**
@@ -154,33 +154,33 @@ namespace uva {
                  * all the X level grams are read. This method is virtual.
                  * For more details @see WordIndexTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 bool is_post_grams() const {
                     //Check the base class and we need to do post actions
                     //for all the M-grams with 1 < M <= N. The M-grams level
                     //data has to be ordered per word by context id, see
                     //post_M_Grams, and post_N_Grams methods below.
 
-                    return (level > M_GRAM_LEVEL_1) || BASE::template is_post_grams<level>();
+                    return (CURR_LEVEL > M_GRAM_LEVEL_1) || BASE::template is_post_grams<CURR_LEVEL>();
                 }
 
                 /**
                  * This method should be called after all the X level grams are read.
                  * For more details @see WordIndexTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline void post_grams() {
                     //Call the base class method first
-                    if (BASE::template is_post_grams<level>()) {
-                        BASE::template post_grams<level>();
+                    if (BASE::template is_post_grams<CURR_LEVEL>()) {
+                        BASE::template post_grams<CURR_LEVEL>();
                     }
 
                     //Do the post actions here
-                    if (level == MAX_LEVEL) {
+                    if (CURR_LEVEL == MAX_LEVEL) {
                         post_n_grams();
                     } else {
-                        if (level > M_GRAM_LEVEL_1) {
-                            post_m_grams<level>();
+                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                            post_m_grams<CURR_LEVEL>();
                         }
                     }
                 };
@@ -205,7 +205,7 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 TProbBackOffEntry& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
@@ -214,7 +214,7 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 bool get_m_gram_data_ref(const TShortId wordId,
                         const TLongId ctxId, const TProbBackOffEntry **ppData) const;
 
