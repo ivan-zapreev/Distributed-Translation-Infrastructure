@@ -135,9 +135,6 @@ namespace uva {
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_used_level;
 
-                    //The data structure to store the N-gram word ids
-                    TWordIdType m_word_ids[MAX_CAPACITY_LEVEL] = {};
-
                     /**
                      * The basic constructor
                      * @param word_index the used word index
@@ -178,17 +175,17 @@ namespace uva {
                     /**
                      * Allows to compute the hash for the given sub-m-gram that is
                      * defined by the level and whether it is a back-off m-gram or not
-                     * @param is_back_off true if this is a back-off case
-                     * @param curr_level the level of the sub-mgram
+                     * @param IS_BACK_OFF true if this is a back-off case
+                     * @param CURR_LEVEL the level of the sub-mgram
                      * @return the resulting hash value
                      */
-                    template<bool is_back_off, TModelLevel curr_level>
+                    template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                     inline uint64_t get_hash() const {
-                        LOG_DEBUG3 << "Hashing tokens is_back_off: " << is_back_off << ", curr_level: " << curr_level << END_LOG;
-                        if (is_back_off) {
-                            return m_hash_values[BO_HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][BO_HASH_LEVEL_VALUE_IDX(curr_level)];
+                        LOG_DEBUG3 << "Hashing tokens is_back_off: " << IS_BACK_OFF << ", curr_level: " << CURR_LEVEL << END_LOG;
+                        if (IS_BACK_OFF) {
+                            return m_hash_values[BO_HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][BO_HASH_LEVEL_VALUE_IDX(CURR_LEVEL)];
                         } else {
-                            return m_hash_values[HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][HASH_LEVEL_VALUE_IDX(curr_level)];
+                            return m_hash_values[HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)][HASH_LEVEL_VALUE_IDX(CURR_LEVEL)];
                         }
                     }
 
@@ -342,7 +339,7 @@ namespace uva {
                      */
                     inline operator string() const {
                         LOG_DEBUG4 << "Appending " << SSTR(m_used_level) << "tokens" << END_LOG;
-                        return tokens_to_string(m_tokens, MAX_CAPACITY_LEVEL - m_used_level, END_WORD_IDX);
+                        return tokens_to_string(m_tokens, begin_word_index(), END_WORD_IDX);
                     };
 
                     /**
@@ -353,12 +350,46 @@ namespace uva {
                         return m_word_index;
                     }
 
+                    /**
+                     * Returns the begin "iterator" value, points right at the first
+                     * word id for the given level and depending on whether we work
+                     * with a back-off m-gram or not.
+                     * @param IS_BACK_OFF true if we work with a back-off m-gram otherwise false
+                     * @param CURR_LEVEL the level of the m-gram we work with
+                     * @return the begin "iterator" value
+                     */
+                    template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
+                    inline const TWordIdType * first() const {
+                        if (IS_BACK_OFF) {
+                            return &m_word_ids[MAX_CAPACITY_LEVEL - CURR_LEVEL - 1];
+                        } else {
+                            return &m_word_ids[MAX_CAPACITY_LEVEL - CURR_LEVEL];
+                        }
+                    }
+
+                    /**
+                     * Returns the end "iterator" value, points to the last word id array element
+                     * @param IS_BACK_OFF if true then we get an "iterator" for the back-off m-gram case
+                     * @return the end "iterator" value, different in case of regular and back-off
+                     */
+                    template<bool IS_BACK_OFF>
+                    inline const TWordIdType * last() const {
+                        if (IS_BACK_OFF) {
+                            return &m_word_ids[END_BACK_OFF_WORD_IDX];
+                        } else {
+                            return &m_word_ids[END_WORD_IDX];
+                        }
+                    }
+
                 private:
                     //Stores the m-gram idx
                     TModelLevel m_curr_index;
 
                     //Stores the m-gram tokens
                     TextPieceReader m_tokens[MAX_CAPACITY_LEVEL];
+
+                    //The data structure to store the N-gram word ids
+                    TWordIdType m_word_ids[MAX_CAPACITY_LEVEL] = {};
 
                     //Unknown word bit flags
                     uint8_t m_unk_word_flags = 0;
@@ -448,6 +479,9 @@ namespace uva {
 
                 template<typename WordIndexType>
                 constexpr TModelLevel T_M_Gram<WordIndexType>::END_WORD_IDX;
+
+                template<typename WordIndexType>
+                constexpr TModelLevel T_M_Gram<WordIndexType>::END_BACK_OFF_WORD_IDX;
 
                 template<typename WordIndexType>
                 constexpr uint8_t T_M_Gram<WordIndexType>::UNK_WORD_MASKS[];

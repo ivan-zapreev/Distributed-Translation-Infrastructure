@@ -78,6 +78,7 @@ namespace uva {
             public:
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
+                typedef typename WordIndexType::TWordIdType TWordIdType;
                 typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
                 //This is the function pointer type for the function that computes the m-gram context id
@@ -211,19 +212,19 @@ namespace uva {
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
                 inline bool get_m_gram_ctx_Id(const T_M_Gram<WordIndexType> &gram, TLongId & ctx_id) const {
-                    const TModelLevel mgram_end_idx = (IS_BACK_OFF ? (T_M_Gram<WordIndexType>::MAX_CAPACITY_LEVEL - 2) : (T_M_Gram<WordIndexType>::MAX_CAPACITY_LEVEL - 1));
-                    const TModelLevel end_idx = mgram_end_idx;
-                    const TModelLevel begin_idx = mgram_end_idx - (CURR_LEVEL - 1);
-                    TModelLevel idx = begin_idx;
+                    //Store the begin and end word id iterators and also the current
+                    const TWordIdType * const end_wid_iter = gram.template last<IS_BACK_OFF>();
+                    const TWordIdType * const begin_wid_iter = gram.template first<IS_BACK_OFF, CURR_LEVEL>();
+                    const TWordIdType * curr_wid_iter = begin_wid_iter;
 
                     LOGGER(LOG_LEVEL) << "Computing id of the " << SSTR(CURR_LEVEL)
                             << "-gram " << (IS_BACK_OFF ? "back-off" : "probability")
                             << " context" << END_LOG;
 
                     //Compute the first words' hash
-                    ctx_id = gram.m_word_ids[idx];
-                    LOGGER(LOG_LEVEL) << "First word @ idx: " << SSTR(idx) << " has wordId: " << SSTR(ctx_id) << END_LOG;
-                    idx++;
+                    ctx_id = *curr_wid_iter;
+                    LOGGER(LOG_LEVEL) << "m_word_ids[0]: " << SSTR(ctx_id) << END_LOG;
+                    curr_wid_iter++;
 
                     //The word has to be known, otherwise it is an error situation
                     if (DO_SANITY_CHECKS && (ctx_id == WordIndexType::UNKNOWN_WORD_ID)) {
@@ -233,20 +234,23 @@ namespace uva {
                     }
 
                     //Compute the subsequent context ids
-                    for (; idx < end_idx;) {
-                        LOGGER(LOG_LEVEL) << "Start searching ctx_id for m_query_word_ids[" << SSTR(idx) << "]: "
-                                << SSTR(gram.m_word_ids[idx]) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
+                    TModelLevel idx = 1; //This is the "second word index"
+                    for (; curr_wid_iter != end_wid_iter;) {
+                        LOGGER(LOG_LEVEL) << "Start searching ctx_id for m_word_ids[" << SSTR(idx) << "]: "
+                                << SSTR(*curr_wid_iter) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
 
                         //The word has to be known, otherwise it is an error situation
-                        if (DO_SANITY_CHECKS && (gram.m_word_ids[idx] == WordIndexType::UNKNOWN_WORD_ID)) {
+                        if (DO_SANITY_CHECKS && (*curr_wid_iter == WordIndexType::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The " << SSTR(idx) << "'th word_id for '" << (string) gram << "' could not be found!";
+                            msg << "The " << SSTR(idx) << "'th word_id for '"
+                                    << (string) gram << "' could not be found!";
                             throw Exception(msg.str());
                         }
 
-                        if (get_ctx_id_func[(idx - begin_idx) + 1](m_trie, gram.m_word_ids[idx], ctx_id)) {
-                            LOGGER(LOG_LEVEL) << "getContextId(" << SSTR(gram.m_word_ids[idx])
+                        if (get_ctx_id_func[idx](m_trie, *curr_wid_iter, ctx_id)) {
+                            LOGGER(LOG_LEVEL) << "getContextId(" << SSTR(*curr_wid_iter)
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
+                            curr_wid_iter++;
                             idx++;
                         } else {
                             //The next context id could not be retrieved
@@ -359,7 +363,6 @@ namespace uva {
 
             template<typename TrieType>
             const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {
-                NULL,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_1>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
