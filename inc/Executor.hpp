@@ -31,7 +31,6 @@
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
-#include "GenericTrieDriver.hpp"
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
@@ -39,12 +38,16 @@
 #include "ARPATrieBuilder.hpp"
 #include "ARPAGramBuilder.hpp"
 
+#include "GenericTrieDriver.hpp"
+#include "LayeredTrieDriver.hpp"
+
 #include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
 #include "C2DMapArrayTrie.hpp"
 #include "G2DHashMapTrie.hpp"
+#include "MGramQuery.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
@@ -176,7 +179,7 @@ namespace uva {
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    MGramQuery <typename TrieType::WordIndexType > query(trie.get_word_index());
+                    T_M_Gram_Query <TrieType> query(trie);
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -192,7 +195,7 @@ namespace uva {
                         if (query.m_gram.m_used_level > 0) {
 
                             //Query the Trie for the results
-                            trie.execute(query);
+                            trie.execute(query.prepare_query(), query.m_gram, query.m_result);
 
                             //Print the results:
                             LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;

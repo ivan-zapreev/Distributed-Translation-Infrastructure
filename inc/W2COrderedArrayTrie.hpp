@@ -71,7 +71,7 @@ namespace uva {
                 get_mem_incr_strat(__W2CArrayTrie::MEM_INC_TYPE,
                         __W2CArrayTrie::MIN_MEM_INC_NUM, __W2CArrayTrie::MEM_INC_FACTOR);
 
-                typedef S_M_GramData<TProbBackOffEntry> T_M_GramData;
+                typedef S_M_GramData<TMGramPayload> T_M_GramData;
                 typedef S_M_GramData<TLogProbBackOff> T_N_GramData;
 
                 /**
@@ -190,14 +190,14 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId);
+                TMGramPayload & make_1_gram_data_ref(const TShortId wordId);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const;
+                bool get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -206,7 +206,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 template<TModelLevel CURR_LEVEL>
-                TProbBackOffEntry& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+                TMGramPayload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -216,7 +216,7 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 bool get_m_gram_data_ref(const TShortId wordId,
-                        const TLongId ctxId, const TProbBackOffEntry **ppData) const;
+                        const TLongId ctxId, const TMGramPayload **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -311,7 +311,7 @@ namespace uva {
                 TShortId m_num_word_ids;
 
                 //Stores the 1-gram data
-                TProbBackOffEntry * m_1_gram_data;
+                TMGramPayload * m_1_gram_data;
 
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a two dimensional array

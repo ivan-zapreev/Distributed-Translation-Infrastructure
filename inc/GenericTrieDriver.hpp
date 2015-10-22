@@ -38,8 +38,6 @@
 #include "MGrams.hpp"
 #include "TextPieceReader.hpp"
 
-#include "MGramQuery.hpp"
-
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
@@ -69,11 +67,10 @@ namespace uva {
             public:
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
-                typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 //The typedef for the retrieving function
-                typedef function<void(const GenericTrieDriver&, TMGramQuery & query) > TRetrieveDataFunct;
+                typedef function<void(const GenericTrieDriver&, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) > TRetrieveDataFunct;
 
                 /**
                  * The basic constructor
@@ -157,13 +154,14 @@ namespace uva {
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
                  * @param curr_level the currently considered level of the m-gram
+                 * @param gram the M-gram query to be checked for its hash begin registered in the cache
                  * @return true if the unknown word is present, otherwise false
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
+                inline bool is_bitmap_hash_cache(const T_M_Gram<WordIndexType> & gram) const {
                     if (TrieType::needs_bitmap_hash_cache()) {
                         const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<IS_BACK_OFF, CURR_LEVEL>(query.m_gram);
+                        return ref.is_m_gram<IS_BACK_OFF, CURR_LEVEL>(gram);
                     } else {
                         return true;
                     }
@@ -173,35 +171,42 @@ namespace uva {
                  * This method will get the N-gram in a form of a vector, e.g.:
                  *      [word1 word2 word3 word4 word5]
                  * and will compute and return the Language Model Probability for it
-                 * @param query the given M-Gram query and its state
+                 * @param gram the given M-Gram query and its state
+                 * @param result the structure to store the resulting probability
                  */
-                void execute(TMGramQuery & query) {
-                    LOG_DEBUG << "Starting to execute:" << (string) query.m_gram << END_LOG;
-
-                    //Make sure that the query is prepared for execution
-                    TModelLevel curr_level = query.prepare_query();
+                void execute(TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) {
+                    LOG_DEBUG << "Starting to execute:" << (string) gram << END_LOG;
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
-                    while ((query.m_result.m_prob == ZERO_PROB_WEIGHT) && (!DO_SANITY_CHECKS || (curr_level != 0))) {
+                    while (result.m_prob == ZERO_PROB_WEIGHT) {
+                        //Do a sanity check if needed
+                        if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
+                            stringstream msg;
+                            msg << "An impossible value of curr_level: " << SSTR(curr_level) << ", it must be >= " << SSTR(M_GRAM_LEVEL_1);
+                            throw Exception(msg.str());
+                        }
+
                         //Try to compute the next probability with decreased level
-                        cache_check_get_prob_weight_func[curr_level](*this, query);
+                        cache_check_get_prob_weight_func[curr_level](*this, gram, result);
+
                         //Decrease the level
                         curr_level--;
                     }
 
+                    LOG_DEBUG << "The current level value is: " << curr_level << ", the current probability value is: " << result.m_prob << END_LOG;
+
                     //If the probability is log-zero or snaller then there is no
                     //need for a back-off as then we will only get smaller values.
-                    if (query.m_result.m_prob > ZERO_LOG_PROB_WEIGHT) {
+                    if (result.m_prob > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
-                        for (++curr_level; curr_level != query.m_gram.m_used_level; ++curr_level) {
+                        for (++curr_level; curr_level != gram.m_used_level; ++curr_level) {
                             //Get the back_off 
-                            cache_check_add_back_off_weight_func[curr_level](*this, query);
+                            cache_check_add_back_off_weight_func[curr_level](*this, gram, result);
                         }
                     }
 
-                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
-                            << " probability is: " << query.m_result.m_prob << END_LOG;
+                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.m_prob << END_LOG;
                 }
 
                 /**
@@ -212,6 +217,7 @@ namespace uva {
 
             protected:
                 //Stores the trie
+
                 TrieType m_trie;
 
                 //Stores the bitmap hash caches per M-gram level
@@ -230,6 +236,7 @@ namespace uva {
                 template<TModelLevel CURR_LEVEL>
                 inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
                     if (TrieType::needs_bitmap_hash_cache() && (gram.m_used_level > M_GRAM_LEVEL_1)) {
+
                         m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }
@@ -238,12 +245,12 @@ namespace uva {
                  * Allows to get the probability value also by checking the cache.
                  * If the probability is not found then the prob value is to stay intact!
                  * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the M-gram query for a specific current level
+                 * @param gram the M-gram query for a specific current level
+                 * @param result the result variable to get the probability set to
                  */
                 template<TModelLevel CURR_LEVEL>
-                void cache_check_get_prob_weight(TMGramQuery & query) const {
-                    LOG_DEBUG << "cache_check_add_prob_value(" << CURR_LEVEL
-                            << ") = " << query.m_result.m_prob << END_LOG;
+                void cache_check_get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                    LOG_DEBUG << "---> cache_check_add_prob_value(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
 
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
@@ -253,16 +260,17 @@ namespace uva {
                     //searching as there are no M-grams with <unk> in them
                     if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
                             ((CURR_LEVEL > M_GRAM_LEVEL_1)
-                            && query.template has_no_unk_words<false, CURR_LEVEL>()
-                            && is_bitmap_hash_cache<false, CURR_LEVEL>(query))) {
+                            && gram.template has_no_unk_words<false, CURR_LEVEL>()
+                            && is_bitmap_hash_cache<false, CURR_LEVEL>(gram))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        m_trie.template get_prob_weight<CURR_LEVEL>(query);
+                        m_trie.template get_prob_weight<CURR_LEVEL>(gram, result);
                     } else {
-                        LOG_DEBUG << "Could try to get probs but it will not be "
-                                << "successful due to the present unk words! "
-                                << "Thus backing off right away!" << END_LOG;
+
+                        LOG_DEBUG << "Could try to get probs but it will not be  successful due to "
+                                << "the present unk words!  Thus backing off right away!" << END_LOG;
                     }
+                    LOG_DEBUG << "<--- cache_check_add_prob_value(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
                 }
 
                 /**
@@ -270,12 +278,12 @@ namespace uva {
                  * If the back-off is not found then the probability value is to stay intact.
                  * Then the back-off weight is considered to be zero!
                  * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the M-gram query for a specific current level
+                 * @param gram the M-gram query for a specific current level
+                 * @param result the result variable to get the back-off weight added to
                  */
                 template<TModelLevel CURR_LEVEL>
-                void cache_check_add_back_off_weight(TMGramQuery & query) const {
-                    LOG_DEBUG << "cache_check_add_back_off_weight(" << CURR_LEVEL
-                            << ") = " << query.m_result.m_prob << END_LOG;
+                void cache_check_add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                    LOG_DEBUG << "---> cache_check_add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
@@ -285,16 +293,17 @@ namespace uva {
                     //searching as there are no M-grams with <unk> in them
                     if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
                             ((CURR_LEVEL > M_GRAM_LEVEL_1)
-                            && query.template has_no_unk_words<true, CURR_LEVEL>()
-                            && is_bitmap_hash_cache<true, CURR_LEVEL>(query))) {
+                            && gram.template has_no_unk_words<true, CURR_LEVEL>()
+                            && is_bitmap_hash_cache<true, CURR_LEVEL>(gram))) {
                         //Let's look further, we definitely get some back-off weight or zero!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
-                        m_trie.template add_back_off_weight<CURR_LEVEL>(query);
+                        m_trie.template add_back_off_weight<CURR_LEVEL>(gram, result);
                     } else {
                         LOG_DEBUG << "Could try to back off but it will not be "
                                 << "successful due to the present unk words! Thus "
                                 << "the back-off weight is zero!" << END_LOG;
                     }
+                    LOG_DEBUG << "<--- cache_check_add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
                 }
             };
 

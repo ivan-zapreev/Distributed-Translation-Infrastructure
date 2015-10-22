@@ -75,11 +75,11 @@ namespace uva {
 
                 //First allocate the memory for the One-grams, add an extra
                 //element for the unknown word and initialize it!
-                m_mgram_data[0] = new TProbBackOffEntry[m_word_arr_size];
-                memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (TProbBackOffEntry));
+                m_mgram_data[0] = new TMGramPayload[m_word_arr_size];
+                memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (TMGramPayload));
 
                 //Record the dummy probability and back-off values for the unknown word
-                TProbBackOffEntry & pbData = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
+                TMGramPayload & pbData = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
@@ -88,8 +88,8 @@ namespace uva {
                 //back-off weights and thus we will store the probabilities just
                 //Inside the C container class values.
                 for (int idx = 1; idx < (N - 1); idx++) {
-                    m_mgram_data[idx] = new TProbBackOffEntry[counts[idx]];
-                    memset(m_mgram_data[idx], 0, counts[idx] * sizeof (TProbBackOffEntry));
+                    m_mgram_data[idx] = new TMGramPayload[counts[idx]];
+                    memset(m_mgram_data[idx], 0, counts[idx] * sizeof (TMGramPayload));
                 }
 
                 //04) Allocate the word map arrays per level There is N-1 levels to have 
@@ -131,13 +131,13 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            TProbBackOffEntry & W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_1_gram_data_ref(const TShortId wordId) {
+            TMGramPayload & W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_1_gram_data_ref(const TShortId wordId) {
                 //Get the word probability and back-off data reference
                 return m_mgram_data[0][wordId];
             };
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
+            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const {
                 //Get the word probability and back-off data reference
 
                 *ppData = &m_mgram_data[0][wordId];
@@ -148,7 +148,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             template<TModelLevel level>
-            TProbBackOffEntry& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+            TMGramPayload& W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 const TModelLevel idx = (level - BASE::MGRAM_IDX_OFFSET);
 
                 //Get the word mapping first
@@ -171,7 +171,7 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             template<TModelLevel level>
             bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TShortId wordId,
-                    TLongId ctxId, const TProbBackOffEntry **ppData) const {
+                    TLongId ctxId, const TMGramPayload **ppData) const {
                 //Get the context id, note we use short ids here!
                 if (get_ctx_id<level>(wordId, ctxId)) {
                     //Return the data by the context

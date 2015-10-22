@@ -36,7 +36,6 @@
 #include "MGrams.hpp"
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
-#include "MGramQuery.hpp"
 
 using namespace std;
 
@@ -105,14 +104,14 @@ namespace uva {
                      * Allows to add the M-gram to the cache
                      * @param gram the M-gram to cache
                      */
-                    template<typename WordIndexType, TModelLevel curr_level>
+                    template<typename WordIndexType, TModelLevel CURR_LEVEL>
                     inline void add_m_gram(const T_M_Gram<WordIndexType> &gram) {
                         LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
 
                         //Get the bit position
                         uint32_t byte_idx = 0;
                         uint32_t bit_offset_idx = 0;
-                        get_bit_pos<WordIndexType, curr_level>(gram, byte_idx, bit_offset_idx);
+                        get_bit_pos<WordIndexType, CURR_LEVEL>(gram, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Adding: " << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx])
                                 << ", to: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << END_LOG;
@@ -128,10 +127,10 @@ namespace uva {
                      * @param query the M-gram query
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
-                    template<bool is_back_off, TModelLevel curr_level, typename WordIndexType>
+                    template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL, typename WordIndexType>
                     inline bool is_m_gram(const T_M_Gram<WordIndexType> & gram) const {
                         //Get the m-gram's hash level
-                        uint64_t hash = gram.template get_hash<is_back_off, curr_level>();
+                        uint64_t hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;
@@ -178,9 +177,9 @@ namespace uva {
                      * @param byte_idx [out] the M-gram byte index
                      * @param bit_offset_idx [out] the M-gram relative bit index
                      */
-                    template<typename WordIndexType, TModelLevel curr_level>
+                    template<typename WordIndexType, TModelLevel CURR_LEVEL>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.template get_hash<false, curr_level>();
+                        const uint64_t hash = gram.template get_hash<false, CURR_LEVEL>();
 
                         LOG_DEBUG2 << "The M-gram: " << (string) gram
                                 << " hash: " << hash << END_LOG;

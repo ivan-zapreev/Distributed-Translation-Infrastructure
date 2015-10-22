@@ -76,7 +76,7 @@ namespace uva {
                     typedef PAYLOAD_TYPE TPayloadType;
                 };
 
-                typedef S_M_GramData<T_Gram_Id_Data_Ptr, TProbBackOffEntry> T_M_Gram_PB_Entry;
+                typedef S_M_GramData<T_Gram_Id_Data_Ptr, TMGramPayload> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<T_Gram_Id_Data_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
@@ -165,7 +165,7 @@ namespace uva {
                  * @see ATrie
                  */
                 template<TModelLevel CURR_LEVEL>
-                void get_prob_weight(MGramQuery<WordIndexType> & query) const;
+                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
 
                 /**
                  * This function allows to retrieve the back-off stored for the given M-gram level.
@@ -175,7 +175,7 @@ namespace uva {
                  * @see ATrie
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(MGramQuery<WordIndexType> & query) const;
+                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -308,7 +308,7 @@ namespace uva {
 
             private:
                 //Stores the 1-gram data
-                TProbBackOffEntry * m_1_gram_data;
+                TMGramPayload * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
                 typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
@@ -349,7 +349,7 @@ namespace uva {
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
-                bool get_payload_from_gram_level(const MGramQuery<WordIndexType> & query, const BUCKET_TYPE & ref,
+                bool get_payload_from_gram_level(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };

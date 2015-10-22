@@ -33,6 +33,9 @@
 
 using namespace std;
 
+//Declare the maximum stack trace depth
+#define MAX_STACK_TRACE_LEN 100
+
 namespace uva {
     namespace smt {
 
@@ -106,6 +109,16 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
             }
+
+            /**
+             * This data structure is to be used to return the N-Gram query result.
+             * It contains the computed Back-Off language model probability and
+             * potentially additional meta data for the decoder
+             * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
+             */
+            typedef struct {
+                TLogProbBackOff m_prob;
+            } TQueryResult;
         }
 
         //The following type definitions are important for creating hashes

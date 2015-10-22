@@ -79,7 +79,6 @@ namespace uva {
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename WordIndexType::TWordIdType TWordIdType;
-                typedef typename TrieType::TMGramQuery TMGramQuery;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
                 //This is the function pointer type for the function that computes the m-gram context id
                 typedef function<bool (const TrieType&, const TShortId, TLongId &) > TGetCtxIdFunct;
@@ -135,13 +134,13 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void get_prob_weight(TMGramQuery & query) const;
+                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
 
                 /**
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(TMGramQuery & query) const;
+                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
 
                 /**
                  * @see GenericTrieBase

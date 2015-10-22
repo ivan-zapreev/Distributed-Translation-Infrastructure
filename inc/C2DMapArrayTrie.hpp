@@ -138,14 +138,14 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId);
+                TMGramPayload & make_1_gram_data_ref(const TShortId wordId);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see ATrie
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const;
+                bool get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -154,7 +154,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 template<TModelLevel level>
-                TProbBackOffEntry & make_m_gram_data_ref(const TShortId wordId, TLongId ctxId);
+                TMGramPayload & make_m_gram_data_ref(const TShortId wordId, TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -163,7 +163,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 template<TModelLevel level>
-                bool get_m_gram_data_ref(const TShortId wordId, TLongId ctxId, const TProbBackOffEntry **ppData) const;
+                bool get_m_gram_data_ref(const TShortId wordId, TLongId ctxId, const TMGramPayload **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -197,7 +197,7 @@ namespace uva {
                 TShortId m_M_gram_num_ctx_ids[BASE::NUM_M_N_GRAM_LEVELS];
 
                 //Stores the 1-gram data
-                TProbBackOffEntry * m_1_gram_data;
+                TMGramPayload * m_1_gram_data;
 
                 //The type of key,value pairs to be stored in the M Grams map
                 typedef pair< const TLongId, TShortId> TMGramEntry;
@@ -211,7 +211,7 @@ namespace uva {
                 TMGramsMap * pMGramMap[BASE::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TProbBackOffEntry * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
+                TMGramPayload * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;

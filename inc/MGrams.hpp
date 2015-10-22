@@ -497,6 +497,11 @@ namespace uva {
                 template class T_M_Gram<CountingWordIndex>;
                 template class T_M_Gram<TOptBasicWordIndex>;
                 template class T_M_Gram<TOptCountWordIndex>;
+
+                typedef T_M_Gram<BasicWordIndex> TMGramBasic;
+                typedef T_M_Gram<CountingWordIndex> TMGramCount;
+                typedef T_M_Gram<TOptBasicWordIndex> TMGramOptBasic;
+                typedef T_M_Gram<TOptCountWordIndex> TMGramOptCount;
             }
         }
     }

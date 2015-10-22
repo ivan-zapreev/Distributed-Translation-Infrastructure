@@ -101,13 +101,13 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see ATrie
                  */
-                TProbBackOffEntry & make_1_gram_data_ref(const TShortId wordId);
+                TMGramPayload & make_1_gram_data_ref(const TShortId wordId);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * For more details @see ATrie
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const;
+                bool get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -116,7 +116,7 @@ namespace uva {
                  * For more details @see ATrie
                  */
                 template<TModelLevel level>
-                TProbBackOffEntry& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+                TMGramPayload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
@@ -125,7 +125,7 @@ namespace uva {
                  */
                 template<TModelLevel level>
                 bool get_m_gram_data_ref(const TShortId wordId,
-                        TLongId ctxId, const TProbBackOffEntry **ppData) const;
+                        TLongId ctxId, const TMGramPayload **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -160,7 +160,7 @@ namespace uva {
                 // ...
                 // m_mgram_data[M][#M-Grams - 1] --//--
                 // m_mgram_data[M][#M-Grams] --//--
-                TProbBackOffEntry * m_mgram_data[MAX_LEVEL - 1];
+                TMGramPayload * m_mgram_data[MAX_LEVEL - 1];
 
                 //M-Gram data for 1 < M <= N. This is a 2D array storing
                 //For each M-Gram level M an array of #words elements of

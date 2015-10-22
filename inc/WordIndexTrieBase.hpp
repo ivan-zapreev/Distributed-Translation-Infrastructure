@@ -35,8 +35,6 @@
 #include "MGrams.hpp"
 #include "TextPieceReader.hpp"
 
-#include "MGramQuery.hpp"
-
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"

@@ -58,11 +58,11 @@ namespace uva {
 
                 //02) Pre-allocate the 1-Gram data
                 m_num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
-                m_1_gram_data = new TProbBackOffEntry[m_num_word_ids];
-                memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TProbBackOffEntry));
+                m_1_gram_data = new TMGramPayload[m_num_word_ids];
+                memset(m_1_gram_data, 0, m_num_word_ids * sizeof (TMGramPayload));
 
                 //03) Insert the unknown word data into the allocated array
-                TProbBackOffEntry & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                TMGramPayload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
                 pbData.back_off = ZERO_BACK_OFF_WEIGHT;
 
@@ -130,14 +130,14 @@ namespace uva {
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            TProbBackOffEntry & W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
+            TMGramPayload & W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
                 LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                 return m_1_gram_data[wordId];
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TProbBackOffEntry ** ppData) const {
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const {
                 LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
 
                 *ppData = &m_1_gram_data[wordId];
@@ -149,7 +149,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
-            TProbBackOffEntry& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
+            TMGramPayload& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 LOG_DEBUG2 << "Adding\t" << SSTR(CURR_LEVEL) << "-gram with ctxId:\t"
                         << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
 
@@ -167,7 +167,7 @@ namespace uva {
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
-                    const TLongId ctxId, const TProbBackOffEntry **ppData) const {
+                    const TLongId ctxId, const TMGramPayload **ppData) const {
                 LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
                         << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
 

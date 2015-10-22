@@ -35,8 +35,6 @@
 #include "MGrams.hpp"
 #include "TextPieceReader.hpp"
 
-#include "MGramQuery.hpp"
-
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
@@ -59,11 +57,15 @@ namespace uva {
              * back-off pari to be stored for M-grams with 1 <= M < N
              * @param prob stores the probability
              * @param back_off stores the back-off
+             * @param is_payload_set is the flag used when the payload is tried
+             * to be retrieved, contains true if the payload is set, i.e. was
+             * successfully retrieved from the trie.
              */
             typedef struct {
                 TLogProbBackOff prob;
                 TLogProbBackOff back_off;
-            } TProbBackOffEntry;
+                bool is_payload_set;
+            } TMGramPayload;
 
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
@@ -71,8 +73,6 @@ namespace uva {
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             class GenericTrieBase : public WordIndexTrieBase<MAX_LEVEL, WordIndexType> {
             public:
-                typedef MGramQuery<WordIndexType> TMGramQuery;
-
                 //The offset, relative to the M-gram level M for the m-gram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
@@ -138,12 +138,11 @@ namespace uva {
                  * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the m-gram query object
-                 * @param prob the probability variable that is to be set with the found probability weight
-                 * @return true if the probability for the given M-gram level could be found, otherwise false.
+                 * @param gram the m-gram query object
+                 * @param result the probability result variable that is to be set with the found probability weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(TMGramQuery & query) const {
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -153,11 +152,11 @@ namespace uva {
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * In that case the back-off weight is just zero.
                  * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the m-gram query object
-                 * @param prob the probability variable that is to be increased with the found back-off weight
+                 * @param gram the m-gram query object
+                 * @param result the probability result variable that is to be increased with the found back-off weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_back_off_weight(TMGramQuery & query) const {
+                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
                     THROW_MUST_OVERRIDE();
                 };
                 
@@ -173,10 +172,11 @@ namespace uva {
                 /**
                  * Allows to check if the given sub-m-gram contains an unknown word
                  * @param curr_level the currently considered level of the m-gram
+                 * @param gram the m-gram to be check if its hash is cached
                  * @return true if the unknown word is present, otherwise false
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
+                inline bool is_bitmap_hash_cache(const T_M_Gram<WordIndexType> & gram) const {
                     THROW_MUST_OVERRIDE();
                 };
                

@@ -27,7 +27,10 @@
 #include <iostream>     // std::cout
 #include <sstream>      // std::stringstream, std::stringbuf
 #include <fstream>      // std::ifstream
-#include <math.h>    //std::pow
+#include <math.h>       //std::pow
+
+#include <stdexcept>
+#include <execinfo.h>
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -136,11 +139,29 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 }
 
 /**
+ * The uncaught exceptions handler
+ */
+void handler() {
+    void *trace_elems[20];
+    int trace_elem_count(backtrace(trace_elems, MAX_STACK_TRACE_LEN));
+    char **stack_syms(backtrace_symbols(trace_elems, trace_elem_count));
+    LOG_ERROR << "Ooops, Sorry! Something terrible has happened, we crashed!" << END_LOG;
+    for (int i = 0; i < trace_elem_count; ++i) {
+        LOG_ERROR << stack_syms[i] << END_LOG;
+    }
+    free(stack_syms);
+    exit(1);
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
     //Declare the return code
     int returnCode = 0;
+
+    //Set the uncaught exception handler
+    std::set_terminate(handler);
 
     //First print the program info
     print_info();

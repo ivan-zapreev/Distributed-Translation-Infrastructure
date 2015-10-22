@@ -34,14 +34,24 @@
 #include "TextPieceReader.hpp"
 
 #include "AWordIndex.hpp"
-
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 
+#include "GenericTrieDriver.hpp"
+#include "LayeredTrieDriver.hpp"
+
+#include "C2DHashMapTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
+#include "G2DHashMapTrie.hpp"
+
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
+using namespace uva::smt::tries;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::m_grams;
 using namespace uva::utils::math::bits;
@@ -52,23 +62,16 @@ namespace uva {
         namespace tries {
 
             /**
-             * This data structure is to be used to return the N-Gram query result.
-             * It contains the computed Back-Off language model probability and
-             * potentially additional meta data for the decoder
-             * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
-             */
-            typedef struct {
-                TLogProbBackOff m_prob;
-            } TQueryResult;
-
-            /**
              * Stores the query and its internal for the sake of re-usability and
              * independency from the Tries and executor.
              */
-            template<typename WordIndexType>
-            struct MGramQuery {
+            template<typename TrieType>
+            struct T_M_Gram_Query {
+                //Stores the reference to the constant trie.
+                const TrieType & m_trie;
+                
                 //Stores the query m-gram
-                T_M_Gram<WordIndexType> m_gram;
+                T_M_Gram<typename TrieType::WordIndexType> m_gram;
 
                 //Stores the query result
                 TQueryResult m_result = {};
@@ -78,9 +81,9 @@ namespace uva {
 
                 /**
                  * The basic constructor for the structure
-                 * @param word_index the word index reference to store
+                 * @param trie the reference to the trie object
                  */
-                MGramQuery(WordIndexType & word_index) : m_gram(word_index) {
+                T_M_Gram_Query(TrieType & trie) : m_trie(trie), m_gram(trie.get_word_index()) {
                 }
 
                 /**
@@ -126,15 +129,26 @@ namespace uva {
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template struct MGramQuery<BasicWordIndex>;
-            template struct MGramQuery<CountingWordIndex>;
-            template struct MGramQuery<TOptBasicWordIndex>;
-            template struct MGramQuery<TOptCountWordIndex>;
+#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
+            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template struct T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>;
 
-            typedef MGramQuery<BasicWordIndex> TMGramQueryBasic;
-            typedef MGramQuery<CountingWordIndex> TMGramQueryCount;
-            typedef MGramQuery<TOptBasicWordIndex> TMGramQueryOptBasic;
-            typedef MGramQuery<TOptCountWordIndex> TMGramQueryOptCount;
+#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, CountingWordIndex); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptBasicWordIndex); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptCountWordIndex);
+
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_2);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_3);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_4);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_5);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_6);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_7);
         }
     }
 }
