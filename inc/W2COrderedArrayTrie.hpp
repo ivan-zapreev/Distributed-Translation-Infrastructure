@@ -114,7 +114,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline bool is_bitmap_hash_cache() const {
+                constexpr static inline bool needs_bitmap_hash_cache() {
                     return __W2CArrayTrie::DO_BITMAP_HASH_CACHE;
                 }
 

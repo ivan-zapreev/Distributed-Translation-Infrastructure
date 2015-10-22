@@ -81,7 +81,7 @@ namespace uva {
                  */
                 explicit GenericTrieDriver(WordIndexType & word_index)
                 : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index),
-                m_trie(word_index), m_is_bitmap_hash_cache(m_trie.is_bitmap_hash_cache()) {
+                m_trie(word_index) {
                 }
 
                 /**
@@ -89,7 +89,7 @@ namespace uva {
                  */
                 void pre_allocate(const size_t counts[MAX_LEVEL]) {
                     //Pre-allocate the bitmap-hash caches if needed
-                    if (m_is_bitmap_hash_cache) {
+                    if (TrieType::needs_bitmap_hash_cache()) {
                         for (size_t idx = 0; idx < BASE::NUM_M_N_GRAM_LEVELS; ++idx) {
                             m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
                             Logger::updateProgressBar();
@@ -111,7 +111,7 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_M_Gram<WordIndexType> & gram) {
-                    if (m_is_bitmap_hash_cache) {
+                    if (TrieType::needs_bitmap_hash_cache()) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache<CURR_LEVEL>(gram);
                     }
@@ -123,7 +123,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void add_n_gram(const T_M_Gram<WordIndexType> & gram) {
-                    if (m_is_bitmap_hash_cache) {
+                    if (TrieType::needs_bitmap_hash_cache()) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache<MAX_LEVEL>(gram);
                     }
@@ -161,7 +161,7 @@ namespace uva {
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                 inline bool is_bitmap_hash_cache(TMGramQuery & query) const {
-                    if (m_is_bitmap_hash_cache) {
+                    if (TrieType::needs_bitmap_hash_cache()) {
                         const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
                         return ref.is_m_gram<IS_BACK_OFF, CURR_LEVEL>(query.m_gram);
                     } else {
@@ -214,9 +214,6 @@ namespace uva {
                 //Stores the trie
                 TrieType m_trie;
 
-                //Stores a flag of whether we should use the bitmap hash cache
-                const bool m_is_bitmap_hash_cache;
-
                 //Stores the bitmap hash caches per M-gram level
                 BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
 
@@ -232,7 +229,7 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
-                    if (m_is_bitmap_hash_cache && (gram.m_used_level > M_GRAM_LEVEL_1)) {
+                    if (TrieType::needs_bitmap_hash_cache() && (gram.m_used_level > M_GRAM_LEVEL_1)) {
                         m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }

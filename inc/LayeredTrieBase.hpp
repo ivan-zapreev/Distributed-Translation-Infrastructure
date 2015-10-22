@@ -178,14 +178,14 @@ namespace uva {
             protected:
 
                 /**
-                 * Needs to become inaccessible from outside
+                 * Needs to become inaccessible from outside, as this method is only relevant for generic tries
                  */
                 inline void get_prob_weight(MGramQuery<WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
-                 * Needs to become inaccessible from outside
+                 * Needs to become inaccessible from outside, as this method is only relevant for generic tries
                  */
                 inline void add_back_off_weight(MGramQuery<WordIndexType> & query) const {
                     THROW_MUST_OVERRIDE();

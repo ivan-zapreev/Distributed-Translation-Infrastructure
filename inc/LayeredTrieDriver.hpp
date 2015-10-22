@@ -103,8 +103,8 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline bool is_bitmap_hash_cache() const {
-                    return m_trie.is_bitmap_hash_cache();
+                constexpr static inline bool needs_bitmap_hash_cache() {
+                    return TrieType::needs_bitmap_hash_cache();
                 }
 
                 /**

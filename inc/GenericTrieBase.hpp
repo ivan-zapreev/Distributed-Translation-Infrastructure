@@ -73,7 +73,7 @@ namespace uva {
             public:
                 typedef MGramQuery<WordIndexType> TMGramQuery;
 
-                //The offset, relative to the M-gram level M for the mgram mapping array index
+                //The offset, relative to the M-gram level M for the m-gram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                 //Will store the the number of M levels such that 1 < M < N.
@@ -163,10 +163,11 @@ namespace uva {
                 
                 /**
                  * Allows to check if the bitmap hash cache is to be used.
+                 * By default returns false, needs to be re-implemented in the sub-class.
                  * @return true if the bitmap hash cache is to be used, otherwise false
                  */
-                inline bool is_bitmap_hash_cache() const {
-                    THROW_MUST_OVERRIDE();
+                constexpr static inline bool needs_bitmap_hash_cache() {
+                    return false;
                 };
 
                 /**
