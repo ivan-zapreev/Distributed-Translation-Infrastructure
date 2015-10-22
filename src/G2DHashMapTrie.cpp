@@ -120,7 +120,7 @@ namespace uva {
                 TShortId bucket_idx = get_bucket_id<false, CURR_LEVEL>(gram);
 
                 //Compute the M-gram level index
-                const TModelLevel level_idx = (gram.m_used_level - BASE::MGRAM_IDX_OFFSET);
+                const TModelLevel level_idx = (gram.m_actual_level - BASE::MGRAM_IDX_OFFSET);
 
                 //Create a new M-Gram data entry
                 T_M_Gram_PB_Entry & data = m_M_gram_data[level_idx][bucket_idx].allocate();

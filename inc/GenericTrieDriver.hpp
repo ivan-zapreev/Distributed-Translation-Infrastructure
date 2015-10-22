@@ -288,8 +288,8 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
-                    if (TrieType::needs_bitmap_hash_cache() && (gram.m_used_level > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
+                    if (TrieType::needs_bitmap_hash_cache() && (gram.m_actual_level > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[gram.m_actual_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }
             };

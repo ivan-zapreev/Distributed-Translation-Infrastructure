@@ -191,16 +191,12 @@ namespace uva {
                         //Parse the line into an N-Gram
                         query.m_gram.set_m_gram_from_text(line);
 
-                        //There can be an empty or "unreadable" line in the text file, just skip it ...
-                        if (query.m_gram.m_used_level > 0) {
+                        //Query the Trie for the results
+                        query.execute();
 
-                            //Query the Trie for the results
-                            query.execute();
-
-                            //Print the results:
-                            LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
-                            LOG_INFO << "Prob( " << query.m_gram.get_mgram_prob_str() << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
-                        }
+                        //Print the results:
+                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
+                        LOG_INFO << "Prob( " << query.m_gram.get_mgram_prob_str() << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
                     }
 
                     //Stop the timer

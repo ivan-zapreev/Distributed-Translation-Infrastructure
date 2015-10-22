@@ -42,29 +42,29 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                template<typename WordIndexType, TModelLevel level>
-                const unsigned short int ARPAGramBuilder<WordIndexType, level>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                template<typename WordIndexType, TModelLevel level>
-                const unsigned short int ARPAGramBuilder<WordIndexType, level>::MAX_NUM_TOKENS_NGRAM_STR = 3;
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                const unsigned short int ARPAGramBuilder<WordIndexType, CURR_LEVEL>::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                const unsigned short int ARPAGramBuilder<WordIndexType, CURR_LEVEL>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                template<typename WordIndexType, TModelLevel level>
-                ARPAGramBuilder<WordIndexType, level>::ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                ARPAGramBuilder<WordIndexType, CURR_LEVEL>::ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
                 : m_add_garm_func(addGarmFunc), m_token(), m_ngram(word_index) {
-                    LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << level << ", trie)" << END_LOG;
-                    m_ngram.m_used_level = level;
+                    LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << CURR_LEVEL << ", trie)" << END_LOG;
+                    m_ngram.m_actual_level = CURR_LEVEL;
                 }
 
-                template<typename WordIndexType, TModelLevel level>
-                ARPAGramBuilder<WordIndexType, level>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType, level>& orig)
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                ARPAGramBuilder<WordIndexType, CURR_LEVEL>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType, CURR_LEVEL>& orig)
                 : m_add_garm_func(orig.m_add_garm_func), m_token(), m_ngram(orig.m_ngram.get_word_index()) {
                 }
 
-                template<typename WordIndexType, TModelLevel level>
-                ARPAGramBuilder<WordIndexType, level>::~ARPAGramBuilder() {
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                ARPAGramBuilder<WordIndexType, CURR_LEVEL>::~ARPAGramBuilder() {
                 }
 
-                template<typename WordIndexType, TModelLevel level>
-                bool ARPAGramBuilder<WordIndexType, level>::parse_to_gram(TextPieceReader &line) {
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                bool ARPAGramBuilder<WordIndexType, CURR_LEVEL>::parse_to_gram(TextPieceReader &line) {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.get_first_tab(m_token)) {
                         //Try to parse it float
@@ -77,28 +77,28 @@ namespace uva {
                             //though! The last one will be removed somewhat later! See below.
                             if (!line.get_first_tab(m_ngram.m_context)) {
                                 LOG_WARNING << "An unexpected end of line '" << line.str()
-                                        << "' when reading the " << level << "'th "
-                                        << level << "-gram token!" << END_LOG;
+                                        << "' when reading the " << CURR_LEVEL << "'th "
+                                        << CURR_LEVEL << "-gram token!" << END_LOG;
                                 //The unexpected end of line, broken file format (?)
                                 return false;
                             }
 
                             //Start the new m-gram
-                            m_ngram.template start_new_m_gram<level>();
+                            m_ngram.template start_new_m_gram<CURR_LEVEL>();
 
                             //Read the N tokens of the N-gram - space separated
-                            for (int i = 0; i < level; i++) {
+                            for (int i = 0; i < CURR_LEVEL; i++) {
                                 if (!m_ngram.m_context.get_first_space(m_ngram.get_next_new_token())) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
-                                            << "'th " << level << "-gram token!" << END_LOG;
+                                            << "'th " << CURR_LEVEL << "-gram token!" << END_LOG;
                                     //The unexpected end of line, broken file format (?)
                                     return false;
                                 }
                             }
 
                             //Remove the last token from the context string
-                            if (level > M_GRAM_LEVEL_1) {
+                            if (CURR_LEVEL > M_GRAM_LEVEL_1) {
                                 //Up until now the context was the entire list of m-gram tokens, now exclude the last one
                                 m_ngram.exclude_last_token_from_context();
                             }
@@ -141,9 +141,9 @@ namespace uva {
                     }
                 }
 
-                template<typename WordIndexType, TModelLevel level>
-                bool ARPAGramBuilder<WordIndexType, level>::parse_line(TextPieceReader & line) {
-                    LOG_DEBUG << "Processing the " << level << "-Gram (?) line: '" << line << "'" << END_LOG;
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                bool ARPAGramBuilder<WordIndexType, CURR_LEVEL>::parse_line(TextPieceReader & line) {
+                    LOG_DEBUG << "Processing the " << CURR_LEVEL << "-Gram (?) line: '" << line << "'" << END_LOG;
                     //We expect a good input, so the result is set to false by default.
                     bool result = false;
 
@@ -152,7 +152,7 @@ namespace uva {
                         //Prepare the N-gram and for being added to the trie
                         m_ngram.prepare_for_adding();
 
-                        LOG_DEBUG << "Adding a " << SSTR(m_ngram.m_used_level) << "-Gram "
+                        LOG_DEBUG << "Adding a " << SSTR(CURR_LEVEL) << "-Gram "
                                 << (string) m_ngram << " to the Trie" << END_LOG;
 
                         //Add the obtained N-gram data to the Trie
@@ -163,7 +163,7 @@ namespace uva {
                         result = true;
                     }
 
-                    LOG_DEBUG << "Finished processing the " << level << "-Gram (?) line: '"
+                    LOG_DEBUG << "Finished processing the " << CURR_LEVEL << "-Gram (?) line: '"
                             << line << "', it is " << (result ? "NOT " : "") << "accepted" << END_LOG;
 
                     return result;

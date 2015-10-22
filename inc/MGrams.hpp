@@ -133,7 +133,7 @@ namespace uva {
                     TextPieceReader m_context;
 
                     //Stores the m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
-                    TModelLevel m_used_level;
+                    TModelLevel m_actual_level;
 
                     /**
                      * The basic constructor
@@ -162,7 +162,7 @@ namespace uva {
                      */
                     inline void prepare_for_adding() {
                         //If we have a unigram then add it to the index otherwise get the word ids
-                        if (m_used_level == M_GRAM_LEVEL_1) {
+                        if (m_actual_level == M_GRAM_LEVEL_1) {
                             if (m_word_index.is_word_registering_needed()) {
                                 //Register the word if it is needed
                                 m_word_ids[END_WORD_IDX] = m_word_index.register_word(get_end_token());
@@ -233,11 +233,11 @@ namespace uva {
                      * @return the resulting string
                      */
                     inline string get_mgram_prob_str() const {
-                        if (m_used_level == M_GRAM_LEVEL_1) {
+                        if (m_actual_level == M_GRAM_LEVEL_1) {
                             const TextPieceReader & token = get_end_token();
                             return token.str().empty() ? "<empty>" : token.str();
                         } else {
-                            if (m_used_level == M_GRAM_LEVEL_UNDEF) {
+                            if (m_actual_level == M_GRAM_LEVEL_UNDEF) {
                                 return "<none>";
                             } else {
                                 string result = m_tokens[END_WORD_IDX].str() + " |";
@@ -264,7 +264,15 @@ namespace uva {
 
                         //Set the read m-gram level, do "END_WORD_IDX - 1" as
                         //the value of m_curr_index is decreased unconditionally
-                        m_used_level = ((END_WORD_IDX - 1) - m_curr_index);
+                        m_actual_level = ((END_WORD_IDX - 1) - m_curr_index);
+                        
+                        //Do the sanity check if needed!
+                        if (DO_SANITY_CHECKS && (m_actual_level < M_GRAM_LEVEL_1 )) {
+                            stringstream msg;
+                            msg << "A broken N-gram query: " << (string) *this
+                                    << ", level: " << SSTR(m_actual_level);
+                            throw Exception(msg.str());
+                        }
                     }
 
                     /**
@@ -338,7 +346,7 @@ namespace uva {
                      * The basic to string conversion operator for the m-gram
                      */
                     inline operator string() const {
-                        LOG_DEBUG4 << "Appending " << SSTR(m_used_level) << "tokens" << END_LOG;
+                        LOG_DEBUG4 << "Appending " << SSTR(m_actual_level) << "tokens" << END_LOG;
                         return tokens_to_string(m_tokens, begin_word_index(), END_WORD_IDX);
                     };
 
@@ -408,7 +416,7 @@ namespace uva {
                      * @return the start word index.
                      */
                     inline TModelLevel begin_word_index() const {
-                        return (MAX_CAPACITY_LEVEL - m_used_level);
+                        return (MAX_CAPACITY_LEVEL - m_actual_level);
                     }
 
                     /**
@@ -426,7 +434,7 @@ namespace uva {
                             m_unk_word_flags = 0;
                         }
 
-                        LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_used_level) << "-gram:" << END_LOG;
+                        LOG_DEBUG1 << "Computing ids for the words of a " << SSTR(m_actual_level) << "-gram:" << END_LOG;
 
                         //Store the reference to the needed array level, for regular and back-off m-gram hashes
                         uint64_t(&hash_values)[MAX_CAPACITY_LEVEL] = m_hash_values[HASH_LEVEL_IDX(MAX_CAPACITY_LEVEL)];

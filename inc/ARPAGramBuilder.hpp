@@ -50,7 +50,7 @@ namespace uva {
                 /**
                  * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                  */
-                template<typename WordIndexType, TModelLevel level>
+                template<typename WordIndexType, TModelLevel CURR_LEVEL>
                 class ARPAGramBuilder {
                 public:
 
@@ -99,25 +99,25 @@ namespace uva {
                                         idx++;
                                     }
                                     //We should read exactly as many tokens as expected
-                                    if (idx == level) {
+                                    if (idx == CURR_LEVEL) {
                                         //We read as many tokens as there should be
                                         return true;
                                     } else {
                                         //We read fewer tokens! This is not an M-gram we expected
                                         LOG_WARNING << "Read only " << SSTR(idx) << " words from a "
-                                                << SSTR(level) << "-gram: [" << text.str()
-                                                << "], expected: " << SSTR(level) << END_LOG;
+                                                << SSTR(CURR_LEVEL) << "-gram: [" << text.str()
+                                                << "], expected: " << SSTR(CURR_LEVEL) << END_LOG;
                                         return false;
                                     }
                                 } else {
                                     //Unexpected end of text
                                     LOG_WARNING << "An unexpected end of line '" << text.str()
-                                            << "' when reading the " << level << "-gram!" << END_LOG;
+                                            << "' when reading the " << CURR_LEVEL << "-gram!" << END_LOG;
                                     return false;
                                 }
                             } else {
                                 LOG_DEBUG1 << " Encountered [" << SSTR(text.str())
-                                        << "] while trying to parse an " << SSTR(level)
+                                        << "] while trying to parse an " << SSTR(CURR_LEVEL)
                                         << "-gram." << END_LOG;
                                 //There is nothing left, this is definitely not an M-gram!
                                 return false;
@@ -125,7 +125,7 @@ namespace uva {
                         } else {
                             //Unexpected end of text
                             LOG_WARNING << "An unexpected end of line '" << text.str()
-                                    << "' when reading the " << level << "-gram!" << END_LOG;
+                                    << "' when reading the " << CURR_LEVEL << "-gram!" << END_LOG;
                             return false;
                         }
                     }

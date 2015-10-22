@@ -90,7 +90,15 @@ namespace uva {
                  */
                 void execute() {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram << END_LOG;
-                    TModelLevel curr_level = prepare_query();
+
+                    //Set the result probability to zero
+                    m_result.m_prob = ZERO_PROB_WEIGHT;
+
+                    //Prepare the m-gram for querying
+                    m_gram.prepare_for_querying();
+
+                    //Get the used level and go on with execution
+                    TModelLevel curr_level = m_gram.m_actual_level;
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
                     while (m_result.m_prob == ZERO_PROB_WEIGHT) {
@@ -117,7 +125,7 @@ namespace uva {
                     if (m_result.m_prob > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
-                        for (++curr_level; curr_level != m_gram.m_used_level; ++curr_level) {
+                        for (++curr_level; curr_level != m_gram.m_actual_level; ++curr_level) {
                             //Get the back_off 
                             m_trie.add_back_off_weight(curr_level, m_gram, m_result);
                         }
@@ -130,47 +138,6 @@ namespace uva {
             private:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
-
-                /**
-                 * Allows t set a new query into this state object
-                 * @param m_gram the query M-gram
-                 * @return the m-gram's level
-                 */
-                inline TModelLevel prepare_query() {
-                    //Set the result probability to zero
-                    m_result.m_prob = ZERO_PROB_WEIGHT;
-
-                    //Prepare the m-gram for querying
-                    m_gram.prepare_for_querying();
-
-                    //return the m-gram level
-                    return m_gram.m_used_level;
-                }
-
-                /**
-                 * Gets the word hash for the end word of the back-off M-Gram
-                 * @return the word hash for the end word of the back-off M-Gram
-                 */
-                inline TShortId get_back_off_end_word_id() const {
-                    return m_gram.get_back_off_end_word_id();
-                }
-
-                /**
-                 * Gets the word hash for the last word in the M-gram
-                 * @return the word hash for the last word in the M-gram
-                 */
-                inline TShortId get_end_word_id() const {
-                    return m_gram.get_end_word_id();
-                }
-
-                /**
-                 * Allows to check if the given back-off sub-m-gram contains 
-                 * an unknown word for the given current level.
-                 */
-                template<bool is_back_off, TModelLevel curr_level>
-                inline bool has_no_unk_words() const {
-                    return m_gram.template has_no_unk_words<is_back_off, curr_level>();
-                }
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

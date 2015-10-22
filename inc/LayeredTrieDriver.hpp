@@ -57,7 +57,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.m_used_level << "-Gram : " << (string) gram               \
+            LOG_WARNING << "The " << gram.m_actual_level << "-Gram : " << (string) gram               \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -273,10 +273,10 @@ namespace uva {
                 template<TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
                 inline void get_context_id(const T_M_Gram<WordIndexType> &gram, TLongId &ctx_id) {
                     //Perform sanity check for the level values they should be the same!
-                    if (DO_SANITY_CHECKS && (CURR_LEVEL != gram.m_used_level)) {
+                    if (DO_SANITY_CHECKS && (CURR_LEVEL != gram.m_actual_level)) {
                         stringstream msg;
                         msg << "The improper level values! Template level parameter = " << SSTR(CURR_LEVEL)
-                                << " but the m-gram level value is: " << SSTR(gram.m_used_level);
+                                << " but the m-gram level value is: " << SSTR(gram.m_actual_level);
                         throw Exception(msg.str());
                     }
 
