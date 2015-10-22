@@ -195,7 +195,7 @@ namespace uva {
                         if (query.m_gram.m_used_level > 0) {
 
                             //Query the Trie for the results
-                            trie.execute(query.prepare_query(), query.m_gram, query.m_result);
+                            query.execute();
 
                             //Print the results:
                             LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;

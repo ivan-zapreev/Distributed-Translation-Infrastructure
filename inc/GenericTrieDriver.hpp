@@ -44,11 +44,20 @@
 
 #include "GenericTrieBase.hpp"
 
+#include "BitmapHashCache.hpp"
+
+#include "C2DHashMapTrie.hpp"
+#include "W2CHybridMemoryTrie.hpp"
+#include "C2WOrderedArrayTrie.hpp"
+#include "W2COrderedArrayTrie.hpp"
+#include "C2DMapArrayTrie.hpp"
 #include "LayeredTrieDriver.hpp"
+#include "G2DHashMapTrie.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
+using namespace uva::smt::tries::caching;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::m_grams;
 using namespace uva::utils::math::bits;
@@ -168,89 +177,37 @@ namespace uva {
                 }
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * @param gram the given M-Gram query and its state
-                 * @param result the structure to store the resulting probability
+                 * Allows to get the probability value also by checking the cache.
+                 * If the probability is not found then the prob value is to stay intact!
+                 * @param curr_level the currently considered level of the m-gram
+                 * @param gram the M-gram query for a specific current level
+                 * @param result the result variable to get the probability set to
                  */
-                void execute(TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) {
-                    LOG_DEBUG << "Starting to execute:" << (string) gram << END_LOG;
-
-                    //Compute the probability in the loop fashion, should be faster that recursion.
-                    while (result.m_prob == ZERO_PROB_WEIGHT) {
-                        //Do a sanity check if needed
-                        if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
-                            stringstream msg;
-                            msg << "An impossible value of curr_level: " << SSTR(curr_level) << ", it must be >= " << SSTR(M_GRAM_LEVEL_1);
-                            throw Exception(msg.str());
-                        }
-
-                        //Try to compute the next probability with decreased level
-                        cache_check_get_prob_weight_func[curr_level](*this, gram, result);
-
-                        //Decrease the level
-                        curr_level--;
-                    }
-
-                    LOG_DEBUG << "The current level value is: " << curr_level << ", the current probability value is: " << result.m_prob << END_LOG;
-
-                    //If the probability is log-zero or snaller then there is no
-                    //need for a back-off as then we will only get smaller values.
-                    if (result.m_prob > ZERO_LOG_PROB_WEIGHT) {
-                        //If the curr_level is smaller than the original level then
-                        //it means that we needed to back-off, add back-off weights
-                        for (++curr_level; curr_level != gram.m_used_level; ++curr_level) {
-                            //Get the back_off 
-                            cache_check_add_back_off_weight_func[curr_level](*this, gram, result);
-                        }
-                    }
-
-                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE << " probability is: " << result.m_prob << END_LOG;
+                inline void get_prob_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                    get_prob_weight_func[curr_level](*this, gram, result);
                 }
 
                 /**
-                 * The basic class destructor
+                 * Allows to get the back-off weight value also by checking the cache.
+                 * If the back-off is not found then the probability value is to stay intact.
+                 * Then the back-off weight is considered to be zero!
+                 * @param curr_level the currently considered level of the m-gram
+                 * @param gram the M-gram query for a specific current level
+                 * @param result the result variable to get the back-off weight added to
                  */
-                virtual ~GenericTrieDriver() {
-                };
-
-            protected:
-                //Stores the trie
-
-                TrieType m_trie;
-
-                //Stores the bitmap hash caches per M-gram level
-                BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
-
-                //Declare static arrays of pointers to the template function instances 
-                static const TRetrieveDataFunct cache_check_get_prob_weight_func[];
-                static const TRetrieveDataFunct cache_check_add_back_off_weight_func[];
-
-                /**
-                 * Is to be used from the sub-classes from the add_X_gram methods.
-                 * This method allows to register the given M-gram in internal high
-                 * level caches if present.
-                 * @param gram the M-gram to cache
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
-                    if (TrieType::needs_bitmap_hash_cache() && (gram.m_used_level > M_GRAM_LEVEL_1)) {
-
-                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
-                    }
+                inline void add_back_off_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                    add_back_off_weight_func[curr_level](*this, gram, result);
                 }
 
                 /**
                  * Allows to get the probability value also by checking the cache.
                  * If the probability is not found then the prob value is to stay intact!
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param gram the M-gram query for a specific current level
-                 * @param result the result variable to get the probability set to
+                 * 
+                 * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void cache_check_get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
-                    LOG_DEBUG << "---> cache_check_add_prob_value(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                    LOG_DEBUG << "---> get_prob_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
 
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
@@ -270,20 +227,19 @@ namespace uva {
                         LOG_DEBUG << "Could try to get probs but it will not be  successful due to "
                                 << "the present unk words!  Thus backing off right away!" << END_LOG;
                     }
-                    LOG_DEBUG << "<--- cache_check_add_prob_value(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                    LOG_DEBUG << "<--- get_prob_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
                 }
 
                 /**
                  * Allows to get the back-off weight value also by checking the cache.
                  * If the back-off is not found then the probability value is to stay intact.
                  * Then the back-off weight is considered to be zero!
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param gram the M-gram query for a specific current level
-                 * @param result the result variable to get the back-off weight added to
+                 * 
+                 * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void cache_check_add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
-                    LOG_DEBUG << "---> cache_check_add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                     LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
@@ -303,32 +259,63 @@ namespace uva {
                                 << "successful due to the present unk words! Thus "
                                 << "the back-off weight is zero!" << END_LOG;
                     }
-                    LOG_DEBUG << "<--- cache_check_add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                    LOG_DEBUG << "<--- add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+               }
+
+                /**
+                 * The basic class destructor
+                 */
+                virtual ~GenericTrieDriver() {
+                };
+
+            protected:
+                //Stores the trie
+
+                TrieType m_trie;
+
+                //Stores the bitmap hash caches per M-gram level
+                BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
+
+                //Declare static arrays of pointers to the template function instances 
+                static const TRetrieveDataFunct get_prob_weight_func[];
+                static const TRetrieveDataFunct add_back_off_weight_func[];
+
+                /**
+                 * Is to be used from the sub-classes from the add_X_gram methods.
+                 * This method allows to register the given M-gram in internal high
+                 * level caches if present.
+                 * @param gram the M-gram to cache
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline void register_m_gram_cache(const T_M_Gram<WordIndexType> &gram) {
+                    if (TrieType::needs_bitmap_hash_cache() && (gram.m_used_level > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[gram.m_used_level - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
+                    }
                 }
             };
 
             template<typename TrieType>
-            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_get_prob_weight_func[] = {
+            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::get_prob_weight_func[] = {
                 NULL,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_1>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_2>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_3>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_4>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_5>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_6>,
-                &GenericTrieDriver::cache_check_get_prob_weight<M_GRAM_LEVEL_7>
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_1>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_2>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_3>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_4>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_5>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_6>,
+                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_7>
             };
 
             template<typename TrieType>
-            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::cache_check_add_back_off_weight_func[] = {
+            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::add_back_off_weight_func[] = {
                 NULL,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_1>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_2>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_3>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_4>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_5>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_6>,
-                &GenericTrieDriver::cache_check_add_back_off_weight<M_GRAM_LEVEL_7>
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_1>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_2>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_3>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_4>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_5>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_6>,
+                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_7>
             };
 
 #define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, WORD_IDX_TYPE) \

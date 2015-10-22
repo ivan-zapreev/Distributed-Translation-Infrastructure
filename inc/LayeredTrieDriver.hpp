@@ -35,10 +35,7 @@
 #include "TextPieceReader.hpp"
 #include "AWordIndex.hpp"
 
-#include "BitmapHashCache.hpp"
-
 #include "GenericTrieBase.hpp"
-#include "LayeredTrieBase.hpp"
 
 #include "G2DHashMapTrie.hpp"
 #include "C2DHashMapTrie.hpp"
@@ -52,7 +49,6 @@ using namespace uva::smt::exceptions;
 using namespace uva::smt::file;
 using namespace uva::smt::hashing;
 using namespace uva::smt::tries;
-using namespace uva::smt::tries::caching;
 using namespace uva::smt::tries::dictionary;
 
 namespace uva {

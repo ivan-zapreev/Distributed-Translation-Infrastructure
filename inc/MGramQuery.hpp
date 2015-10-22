@@ -38,15 +38,14 @@
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 
-#include "GenericTrieDriver.hpp"
-#include "LayeredTrieDriver.hpp"
-
 #include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
 #include "C2DMapArrayTrie.hpp"
+#include "LayeredTrieDriver.hpp"
 #include "G2DHashMapTrie.hpp"
+#include "GenericTrieDriver.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -66,25 +65,71 @@ namespace uva {
              * independency from the Tries and executor.
              */
             template<typename TrieType>
-            struct T_M_Gram_Query {
-                //Stores the reference to the constant trie.
-                const TrieType & m_trie;
-                
+            class T_M_Gram_Query {
+            public:
+
                 //Stores the query m-gram
                 T_M_Gram<typename TrieType::WordIndexType> m_gram;
 
                 //Stores the query result
                 TQueryResult m_result = {};
 
-                //Stores the current end word index during the query execution
-                TModelLevel m_curr_end_word_idx = 0;
-
                 /**
                  * The basic constructor for the structure
                  * @param trie the reference to the trie object
                  */
-                T_M_Gram_Query(TrieType & trie) : m_trie(trie), m_gram(trie.get_word_index()) {
+                T_M_Gram_Query(TrieType & trie) : m_gram(trie.get_word_index()),  m_trie(trie) {
                 }
+
+                /**
+                 * This method will get the N-gram in a form of a vector, e.g.:
+                 *      [word1 word2 word3 word4 word5]
+                 * and will compute and return the Language Model Probability for it
+                 * @param gram the given M-Gram query and its state
+                 * @param result the structure to store the resulting probability
+                 */
+                void execute() {
+                    LOG_DEBUG << "Starting to execute:" << (string) m_gram << END_LOG;
+                    TModelLevel curr_level = prepare_query();
+
+                    //Compute the probability in the loop fashion, should be faster that recursion.
+                    while (m_result.m_prob == ZERO_PROB_WEIGHT) {
+                        //Do a sanity check if needed
+                        if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
+                            stringstream msg;
+                            msg << "An impossible value of curr_level: " << SSTR(curr_level)
+                                    << ", it must be >= " << SSTR(M_GRAM_LEVEL_1);
+                            throw Exception(msg.str());
+                        }
+
+                        //Try to compute the next probability with decreased level
+                        m_trie.get_prob_weight(curr_level, m_gram, m_result);
+
+                        //Decrease the level
+                        curr_level--;
+                    }
+
+                    LOG_DEBUG << "The current level value is: " << curr_level
+                            << ", the current probability value is: " << m_result.m_prob << END_LOG;
+
+                    //If the probability is log-zero or snaller then there is no
+                    //need for a back-off as then we will only get smaller values.
+                    if (m_result.m_prob > ZERO_LOG_PROB_WEIGHT) {
+                        //If the curr_level is smaller than the original level then
+                        //it means that we needed to back-off, add back-off weights
+                        for (++curr_level; curr_level != m_gram.m_used_level; ++curr_level) {
+                            //Get the back_off 
+                            m_trie.add_back_off_weight(curr_level, m_gram, m_result);
+                        }
+                    }
+
+                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
+                            << " probability is: " << m_result.m_prob << END_LOG;
+                }
+
+            private:
+                //Stores the reference to the constant trie.
+                const TrieType & m_trie;
 
                 /**
                  * Allows t set a new query into this state object
@@ -130,12 +175,12 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
-            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template struct T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template struct T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>;
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
+            template class T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>;
 
 #define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL); \
             INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
@@ -143,12 +188,7 @@ namespace uva {
             INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptBasicWordIndex); \
             INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptCountWordIndex);
 
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_2);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_3);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_4);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_5);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_6);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_7);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_MAX);
         }
     }
 }
