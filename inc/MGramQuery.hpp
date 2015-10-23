@@ -62,9 +62,21 @@ namespace uva {
 
             /**
              * Stores the query and its internal for the sake of re-usability and
-             * independency from the Tries and executor.
+             * independency from the Tries and executor. Allows to compute 
+             *      log_10(Prob(w_{5}|w_{1}w_{2}w_{3}w_{4}))
+             * or
+             *      \Sum_{1}^{5}log_10(Prob(w_{i}|w_{1}...w_{i-1}))
+             * where log_10(Prob(w_{i}|w_{1}...w_{i-1})) is > ZERO_LOG_PROB_WEIGHT
+             * depending on the value of the IS_CUMULATIVE template parameter.
+             * 
+             * Note that, here 5 is taken just as an example.
+             * 
+             * @param IS_CUMULATIVE if false then for the given M-gram only the
+             * conditional log probability is computed, if true then we compute
+             * the conditional probability of all sub M-grams and also the total
+             * sum, not taking into account the zero log probabilities.
              */
-            template<typename TrieType>
+            template<typename TrieType, bool IS_CUMULATIVE_PROB>
             class T_M_Gram_Query {
             public:
 
@@ -141,21 +153,22 @@ namespace uva {
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>;
+#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, WORD_INDEX_TYPE, IS_CUM_PROB); \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
+            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
+            template class T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>, IS_CUM_PROB>;
 
-#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, CountingWordIndex); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptBasicWordIndex); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptCountWordIndex);
+#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL, IS_CUM_PROB); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, BasicWordIndex, IS_CUM_PROB); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, CountingWordIndex, IS_CUM_PROB); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, TOptBasicWordIndex, IS_CUM_PROB); \
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, TOptCountWordIndex, IS_CUM_PROB);
 
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL(M_GRAM_LEVEL_MAX);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, true);
+            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, false);
         }
     }
 }
