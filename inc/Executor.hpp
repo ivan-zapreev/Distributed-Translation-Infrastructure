@@ -25,7 +25,9 @@
 
 #ifndef EXECUTOR_HPP
 #define	EXECUTOR_HPP
+
 #include <string>
+#include <vector>
 
 #include "Globals.hpp"
 #include "Logger.hpp"
@@ -72,24 +74,35 @@ namespace uva {
                 static const string G2DMapTrie_STR = string("g2dm");
 
                 /**
-                 * Allows to get a string with all available (known to the factory) trie types
-                 * @return the string with trie types, to be use from command line
+                 * Returns the default trie type name string
+                 * @return the default trie type name string
                  */
-                static inline string get_trie_types_str() {
-                    stringstream text;
-                    text << "{" << TC2DMapTrie_STR << ", "
-                            << TW2CHybridTrie_STR << ", "
-                            << TC2WArrayTrie_STR << ", "
-                            << TW2CArrayTrie_STR << ", "
-                            << C2DHybridTrie_STR << ", "
-                            << G2DMapTrie_STR << "}";
-                    return text.str();
+                static inline string get_default_trie_type_str (){
+                    //ToDo: Make configurable via the Configuration.h or Globals.h
+                    return TC2WArrayTrie_STR;
+                }
+                
+                /**
+                 * Allows to get a string with all available (known to the factory) trie types
+                 * @param p_supported_tries the pointer to the vector to be filled in with supported tries
+                 */
+                static inline void get_trie_types_str(vector<string> * p_supported_tries) {
+                    p_supported_tries->push_back(TC2DMapTrie_STR);
+                    p_supported_tries->push_back(TW2CHybridTrie_STR);
+                    p_supported_tries->push_back(TC2WArrayTrie_STR);
+                    p_supported_tries->push_back(TW2CArrayTrie_STR);
+                    p_supported_tries->push_back(C2DHybridTrie_STR);
+                    p_supported_tries->push_back(G2DMapTrie_STR);
                 }
 
                 /**
                  * This structure is needed to store the application parameters
                  */
                 typedef struct {
+                    //Stores true if the cumulative probability is to be computed
+                    //for each M-gram, otherwise false, and then we only compute
+                    //one conditional probability for this M-gram
+                    bool is_cumulative_prob;
                     //The train file name
                     string m_model_file_name;
                     //The test file name

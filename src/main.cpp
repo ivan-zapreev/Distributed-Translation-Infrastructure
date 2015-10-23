@@ -32,6 +32,8 @@
 #include <stdexcept>
 #include <execinfo.h>
 
+#include "tclap/CmdLine.h"
+
 #include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
@@ -47,6 +49,7 @@
 #include "Executor.hpp"
 
 using namespace std;
+using namespace TCLAP;
 using namespace uva::smt;
 using namespace uva::smt::tries;
 using namespace uva::smt::tries::dictionary;
@@ -61,7 +64,7 @@ using namespace uva::smt::exceptions;
 static void print_info() {
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
     LOG_USAGE << "|                 Back Off Language Model(s) for SMT     :)\\___/(: |" << END_LOG;
-    LOG_USAGE << "|                       Software version 1.0             {(@)v(@)} |" << END_LOG;
+    LOG_USAGE << "|                       Software version " << PROGRAM_VERSION_STR << "             {(@)v(@)} |" << END_LOG;
     LOG_USAGE << "|                         The Owl release.               {|~- -~|} |" << END_LOG;
     LOG_USAGE << "|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |" << END_LOG;
     LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;
@@ -78,38 +81,67 @@ static void print_info() {
     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
 }
 
+//The pointer to the command line parameters parser
+static CmdLine * p_cmd_args = NULL;
+static ValueArg<string> * p_model_arg = NULL;
+static ValueArg<string> * p_query_arg = NULL;
+static vector<string> trie_types;
+static ValuesConstraint<string> * p_trie_types_constr = NULL;
+static ValueArg<string> * p_trie_type_arg = NULL;
+static SwitchArg * p_cumulative_prob_arg = NULL;
+static vector<string> debug_levels;
+static ValuesConstraint<string> * p_debug_levels_constr = NULL;
+static ValueArg<string> * p_debug_level_arg = NULL;
+
 /**
- * This function prints the usage information for the software
- * @param name the absolute name of the application 
+ * Creates and sets up the command line parameters parser
  */
-static void print_usage(const string name) {
-    //Since we do not want the absolute file name, we need to chop off the directory prefix
-    const unsigned int lastSlashBeforeFileName = name.find_last_of(PATH_SEPARATION_SYMBOLS);
-    const string shortName = name.substr(lastSlashBeforeFileName + 1);
+void create_arguments_parser() {
+    //Declare the command line arguments parser
+    p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
-    LOG_USAGE << "Running: " << END_LOG;
-    LOG_USAGE << "  " << shortName.c_str() << " <model_file> <test_file> <trie_type> [debug-level]" << END_LOG;
-    LOG_USAGE << "      <model_file> - a text file containing the back-off language model." << END_LOG;
-    LOG_USAGE << "                     This file is supposed to be in ARPA format, see: " << END_LOG;
-    LOG_USAGE << "                          http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html" << END_LOG;
-    LOG_USAGE << "                     for more details. We also allow doe tags listed here:" << END_LOG;
-    LOG_USAGE << "                          https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx" << END_LOG;
-    LOG_USAGE << "      <test_file>  - a text file containing test data." << END_LOG;
-    LOG_USAGE << "                     The test file consists of a number of N-grams," << END_LOG;
-    LOG_USAGE << "                     where each line in the file consists of one N-gram." << END_LOG;
-    LOG_USAGE << "      <trie_type>  - the trie type, one of " << __Executor::get_trie_types_str() << END_LOG;
-    LOG_USAGE << "     [debug-level] - the optional debug flag from " << Logger::getReportingLevels() << END_LOG;
+    //Add the -m the input language model file parameter - compulsory
+    p_model_arg = new ValueArg<string>("m", "model", "A back-off language model file name in ARPA format", true, "", "string", *p_cmd_args);
 
-    LOG_USAGE << "Output: " << END_LOG;
-    LOG_USAGE << "    The program reads in the test queries from the <test_file>. " << END_LOG;
-    LOG_USAGE << "    Each of these lines is a N-grams of the following form, e.g: " << END_LOG;
-    LOG_USAGE << "       word1 word2 word3 word4 word5" << END_LOG;
-    LOG_USAGE << "    For each of such N-grams the probability information is " << END_LOG;
-    LOG_USAGE << "    computed, based on the data from the <model_file>. For" << END_LOG;
-    LOG_USAGE << "    example, for a N-gram such as:" << END_LOG;
-    LOG_USAGE << "       mortgages had lured borrowers and" << END_LOG;
-    LOG_USAGE << "    the program may give the following output:" << END_LOG;
-    LOG_USAGE << "        log_10( Prob( word5 | word1 word2 word3 word4 ) ) = <log-probability>" << END_LOG;
+    //Add the -q the input test queries file parameter - compulsory 
+    p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "string", *p_cmd_args);
+
+    //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
+    __Executor::get_trie_types_str(&trie_types);
+    p_trie_types_constr = new ValuesConstraint<string>(trie_types);
+    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __Executor::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
+
+    //Add the -c the "cumulative" probability switch - optional, default is cumulative
+    p_cumulative_prob_arg = new SwitchArg("c", "cumulative", "Compute the sum of cumulative log probabilities for each query m-gram", *p_cmd_args, false);
+
+    //Add the -d the debug level parameter - optional, default is e.g. RESULT
+    Logger::get_reporting_levels(&debug_levels);
+    p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
+    p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
+}
+
+#define SAFE_DESTROY(ptr) \
+    if (ptr != NULL) { \
+        delete ptr; \
+        ptr = NULL; \
+    }
+
+/**
+ * Allows to deallocate the parameters parser if it is needed
+ */
+void destroy_arguments_parser() {
+    SAFE_DESTROY(p_model_arg);
+    SAFE_DESTROY(p_query_arg);
+
+    SAFE_DESTROY(p_trie_types_constr);
+    SAFE_DESTROY(p_trie_type_arg);
+
+    SAFE_DESTROY(p_cumulative_prob_arg);
+
+    SAFE_DESTROY(p_debug_levels_constr);
+    SAFE_DESTROY(p_debug_level_arg);
+
+    SAFE_DESTROY(p_cmd_args);
 }
 
 /**
@@ -119,23 +151,23 @@ static void print_usage(const string name) {
  * @param params the structure that will be filled in with the parsed program arguments
  */
 static void extract_arguments(const uint argc, char const * const * const argv, __Executor::TExecutionParams & params) {
-    if (argc < EXPECTED_NUMBER_OF_ARGUMENTS) {
+    //Parse the arguments
+    try {
+        p_cmd_args->parse(argc, argv);
+    } catch (ArgException &e) {
         stringstream msg;
-        msg << "Incorrect number of arguments, expected >= " << EXPECTED_USER_NUMBER_OF_ARGUMENTS << ", got " << (argc - 1);
+        msg << "Error: " << e.error() << ", for argument: " << e.argId();
         throw Exception(msg.str());
-    } else {
-        params.m_model_file_name = argv[1];
-        params.m_queries_file_name = argv[2];
-        params.m_trie_type_name = argv[3];
-        //Set the default reporting level information for the logger
-        string errorLevelStr = RESULT_PARAM_VALUE;
-
-        //The third argument should be a debug level, get it and try to set.
-        if (argc > EXPECTED_NUMBER_OF_ARGUMENTS) {
-            errorLevelStr = argv[4];
-        }
-        Logger::setReportingLevel(errorLevelStr);
     }
+
+    //Store the parsed parameter values
+    params.is_cumulative_prob = p_cumulative_prob_arg->getValue();
+    params.m_model_file_name = p_model_arg->getValue();
+    params.m_queries_file_name = p_query_arg->getValue();
+    params.m_trie_type_name = p_trie_type_arg->getValue();
+
+    //Set the logging level right away
+    Logger::setReportingLevel(p_debug_level_arg->getValue());
 }
 
 /**
@@ -166,6 +198,9 @@ int main(int argc, char** argv) {
     //First print the program info
     print_info();
 
+    //Set up possible program arguments
+    create_arguments_parser();
+
     try {
         //Define en empty parameters structure
         __Executor::TExecutionParams params = {};
@@ -185,9 +220,11 @@ int main(int argc, char** argv) {
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.getMessage() << END_LOG;
-        print_usage((string) argv[0]);
         returnCode = 1;
     }
+
+    //Destroy the command line parameters parser
+    destroy_arguments_parser();
 
     return returnCode;
 }

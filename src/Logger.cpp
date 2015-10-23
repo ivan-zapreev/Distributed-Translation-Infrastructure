@@ -26,10 +26,10 @@
  * Created on July 26, 2015, 4:08 PM
  */
 
+#include <algorithm>    // std::transform
+
 #include "Logger.hpp"
 #include "StatisticsMonitor.hpp"
-
-#include <algorithm>    // std::transform
 
 using uva::smt::monitore::StatisticsMonitor;
 
@@ -77,19 +77,16 @@ namespace uva {
             //Initialize the previous output time string length
             size_t Logger::timeStrLen = 0;
 
-            string Logger::getReportingLevels() {
-                string result = "{ ";
-
-                for (size_t idx = 0; idx < DebugLevelsEnum::size; idx++) {
-                    string level = _debugLevelStr[idx];
-                    transform(level.begin(), level.end(), level.begin(), ::toupper);
-                    result += level;
-                    if (idx != (DebugLevelsEnum::size - 1)) {
-                        result += ", ";
-                    }
+            /**
+             * Allows to retrieve the list of supporter logging levels
+             * @param p_reporting_levels the pointer to the logging levels vector to be filled in
+             */
+            void Logger::get_reporting_levels(vector<string> * p_reporting_levels) {
+                for (size_t level_id = DebugLevelsEnum::ERROR; level_id <= LOGER_MAX_LEVEL; ++level_id) {
+                    string level = _debugLevelStr[level_id];
+                    transform(level.begin(), level.end(), level.begin(), ::tolower);
+                    p_reporting_levels->push_back(level);
                 }
-
-                return result + " }";
             }
 
             void Logger::setReportingLevel(string level) {

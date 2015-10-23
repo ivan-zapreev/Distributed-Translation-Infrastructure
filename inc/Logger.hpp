@@ -114,10 +114,10 @@ namespace uva {
                 };
 
                 /**
-                 * Returns a string containing all the possible reporting levels
-                 * @return a string containing all the possible reporting levels
+                 * Allows to retrieve the list of supporter logging levels
+                 * @param p_reporting_levels the pointer to the logging levels vector to be filled in
                  */
-                static string getReportingLevels();
+                static void get_reporting_levels(vector<string> * p_reporting_levels);
 
                 /**
                  * Allows to set the logging level from a string, if not recognized - reports a warning!
@@ -205,8 +205,8 @@ namespace uva {
                 //Stores the length of the previously output time
                 static size_t timeStrLen;
 
-                Logger() {
-                };
+                Logger();
+                ;
 
                 Logger(const Logger&) {
                 };

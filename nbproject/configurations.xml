@@ -404,6 +404,7 @@
           <developmentMode>6</developmentMode>
           <commandlineTool>g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-march=native -std=c++0x -lrt -m64</commandLine>
@@ -550,6 +551,7 @@
         <ccTool>
           <commandlineTool>g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-O0 -g -std=c++0x -lrt -m64 -pg -Wall -Werror</commandLine>
@@ -692,6 +694,7 @@
           <developmentMode>0</developmentMode>
           <commandlineTool>g++ -std=c++0x -m64</commandlineTool>
           <incDir>
+            <pElem>ext</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-march=native</commandLine>
@@ -838,6 +841,7 @@
         <ccTool>
           <commandlineTool>g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-O0 -g -std=c++0x -m64 -pg -Wall -Werror</commandLine>
@@ -979,6 +983,7 @@
           <developmentMode>6</developmentMode>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-march=native -std=c++0x -lrt -m64</commandLine>
@@ -1118,6 +1123,7 @@
         <ccTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-O0 -g -std=c++0x -lrt -m64</commandLine>
@@ -1258,6 +1264,7 @@
         <ccTool>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
+            <pElem>ext/tclap</pElem>
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-std=c++0x -lrt -m64 -pg -O3</commandLine>

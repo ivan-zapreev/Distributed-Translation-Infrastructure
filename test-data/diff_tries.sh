@@ -13,17 +13,17 @@ FILTER=' | grep -v "Gram ctx hash" | grep -v "CPU" | grep -v "vmsize" | grep -v 
 echo ${FILTER}
 
 echo "c2wa"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2wa info3 ${FILTER} > release.c2wa.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t c2wa -d info3 ${FILTER} > release.c2wa.out"
 echo "c2dm"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dm info3 ${FILTER} > release.c2dm.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t c2dm -d info3 ${FILTER} > release.c2dm.out"
 echo "w2ca"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ca info3 ${FILTER} > release.w2ca.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t w2ca -d info3 ${FILTER} > release.w2ca.out"
 echo "w2ch"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} w2ch info3 ${FILTER} > release.w2ch.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t w2ch -d info3 ${FILTER} > release.w2ch.out"
 echo "c2dh"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} c2dh info3 ${FILTER} > release.c2dh.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t c2dh -d info3 ${FILTER} > release.c2dh.out"
 echo "g2dm"
-eval "../dist/Release__${1}_/back-off-language-model-smt ${2} ${3} g2dm info3 ${FILTER} > release.g2dm.out"
+eval "../dist/Release__${1}_/back-off-language-model-smt -m ${2} -q ${3} -t g2dm -d info3 ${FILTER} > release.g2dm.out"
 
 echo "----> c2wa vs. c2dm"
 diff release.c2wa.out release.c2dm.out > diff.c2wa.c2dm.out

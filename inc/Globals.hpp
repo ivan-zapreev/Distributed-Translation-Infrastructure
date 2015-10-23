@@ -33,6 +33,9 @@
 
 using namespace std;
 
+//Declare the program version string
+#define PROGRAM_VERSION_STR "1.1"
+
 //Declare the maximum stack trace depth
 #define MAX_STACK_TRACE_LEN 100
 
