@@ -79,72 +79,72 @@ ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 ${OBJECTDIR}/src/ARPAGramBuilder.o: src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
 
 ${OBJECTDIR}/src/ARPATrieBuilder.o: src/ARPATrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
 ${OBJECTDIR}/src/AWordIndex.o: src/AWordIndex.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
 
 ${OBJECTDIR}/src/ByteMGramId.o: src/ByteMGramId.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
 
 ${OBJECTDIR}/src/C2DHashMapTrie.o: src/C2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DHashMapTrie.o src/C2DHashMapTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DHashMapTrie.o src/C2DHashMapTrie.cpp
 
 ${OBJECTDIR}/src/C2DMapArrayTrie.o: src/C2DMapArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DMapArrayTrie.o src/C2DMapArrayTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DMapArrayTrie.o src/C2DMapArrayTrie.cpp
 
 ${OBJECTDIR}/src/C2WOrderedArrayTrie.o: src/C2WOrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WOrderedArrayTrie.o src/C2WOrderedArrayTrie.cpp
 
 ${OBJECTDIR}/src/G2DHashMapTrie.o: src/G2DHashMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DHashMapTrie.o src/G2DHashMapTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DHashMapTrie.o src/G2DHashMapTrie.cpp
 
 ${OBJECTDIR}/src/LayeredTrieDriver.o: src/LayeredTrieDriver.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LayeredTrieDriver.o src/LayeredTrieDriver.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LayeredTrieDriver.o src/LayeredTrieDriver.cpp
 
 ${OBJECTDIR}/src/Logger.o: src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
 
 ${OBJECTDIR}/src/W2CHybridMemoryTrie.o: src/W2CHybridMemoryTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridMemoryTrie.o src/W2CHybridMemoryTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridMemoryTrie.o src/W2CHybridMemoryTrie.cpp
 
 ${OBJECTDIR}/src/W2COrderedArrayTrie.o: src/W2COrderedArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2COrderedArrayTrie.o src/W2COrderedArrayTrie.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2COrderedArrayTrie.o src/W2COrderedArrayTrie.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 ${OBJECTDIR}/src/xxhash.o: src/xxhash.c 
 	${MKDIR} -p ${OBJECTDIR}/src
