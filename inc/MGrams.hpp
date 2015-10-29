@@ -346,7 +346,6 @@ namespace uva {
                      * The basic to string conversion operator for the m-gram
                      */
                     inline operator string() const {
-                        LOG_DEBUG4 << "Appending " << SSTR(m_actual_level) << "tokens" << END_LOG;
                         return tokens_to_string(m_tokens, begin_word_index(), END_WORD_IDX);
                     };
 

@@ -167,10 +167,10 @@ namespace uva {
                  * @return true if the unknown word is present, otherwise false
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline bool is_bitmap_hash_cache(const T_M_Gram<WordIndexType> & gram) const {
+                inline bool is_m_gram_hash_cached(const T_M_Gram<WordIndexType> & gram) const {
                     if (TrieType::needs_bitmap_hash_cache()) {
                         const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram<IS_BACK_OFF, CURR_LEVEL>(gram);
+                        return ref.is_m_gram_hash_cached<IS_BACK_OFF, CURR_LEVEL>(gram);
                     } else {
                         return true;
                     }
@@ -218,7 +218,7 @@ namespace uva {
                     if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
                             ((CURR_LEVEL > M_GRAM_LEVEL_1)
                             && gram.template has_no_unk_words<false, CURR_LEVEL>()
-                            && is_bitmap_hash_cache<false, CURR_LEVEL>(gram))) {
+                            && is_m_gram_hash_cached<false, CURR_LEVEL>(gram))) {
                         //Let's look further, may be we will find something!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
                         m_trie.template get_prob_weight<CURR_LEVEL>(gram, result);
@@ -250,7 +250,7 @@ namespace uva {
                     if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
                             ((CURR_LEVEL > M_GRAM_LEVEL_1)
                             && gram.template has_no_unk_words<true, CURR_LEVEL>()
-                            && is_bitmap_hash_cache<true, CURR_LEVEL>(gram))) {
+                            && is_m_gram_hash_cached<true, CURR_LEVEL>(gram))) {
                         //Let's look further, we definitely get some back-off weight or zero!
                         LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
                         m_trie.template add_back_off_weight<CURR_LEVEL>(gram, result);

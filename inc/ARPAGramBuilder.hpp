@@ -29,11 +29,13 @@
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
 
-#include <GenericTrieDriver.hpp>
+#include "GenericTrieDriver.hpp"
 
 #include "Globals.hpp"
-#include <Exceptions.hpp>
+#include "Exceptions.hpp"
 #include "MemoryMappedFileReader.hpp"
+
+#include "ModelMGram.hpp"
 
 using namespace std;
 using namespace uva::smt::file;

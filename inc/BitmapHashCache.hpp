@@ -128,7 +128,7 @@ namespace uva {
                      * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
                      */
                     template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL, typename WordIndexType>
-                    inline bool is_m_gram(const T_M_Gram<WordIndexType> & gram) const {
+                    inline bool is_m_gram_hash_cached(const T_M_Gram<WordIndexType> & gram) const {
                         //Get the m-gram's hash level
                         uint64_t hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
 
