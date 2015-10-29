@@ -57,7 +57,7 @@ namespace uva {
 
             //This macro is needed to report the collision detection warnings!
 #define REPORT_COLLISION_WARNING(gram, wordHash, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
-            LOG_WARNING << "The " << gram.m_actual_level << "-Gram : " << (string) gram               \
+            LOG_WARNING << "The " << gram.get_m_gram_level() << "-Gram : " << (string) gram               \
                         << " has been already seen! Word Id: " << SSTR(wordHash)                             \
                         << ", context Id: " << SSTR(contextId) << ". "                                       \
                         << "Changing the (prob,back-off) data from ("                                        \
@@ -113,18 +113,18 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void add_1_gram(const T_M_Gram<WordIndexType> &gram);
+                void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram);
 
                 /**
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_m_gram(const T_M_Gram<WordIndexType> &gram);
+                void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * @see GenericTrieBase
                  */
-                void add_n_gram(const T_M_Gram<WordIndexType> &gram);
+                void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * @see GenericTrieBase
@@ -205,16 +205,13 @@ namespace uva {
                  * @return the true if the context could be computed, otherwise false
                  * @throws nothing
                  */
-                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
-                inline bool get_m_gram_ctx_Id(const T_M_Gram<WordIndexType> &gram, TLongId & ctx_id) const {
-                    //Store the begin and end word id iterators and also the current
-                    const TWordIdType * const end_wid_iter = gram.template last<IS_BACK_OFF>();
-                    const TWordIdType * const begin_wid_iter = gram.template first<IS_BACK_OFF, CURR_LEVEL>();
+                template<DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
+                inline bool get_m_gram_ctx_id(const TWordIdType * const begin_wid_iter,
+                        const TWordIdType * const end_wid_iter, TLongId & ctx_id) const {
+                    //Initialize the current word iterator
                     const TWordIdType * curr_wid_iter = begin_wid_iter;
 
-                    LOGGER(LOG_LEVEL) << "Computing id of the " << SSTR(CURR_LEVEL)
-                            << "-gram " << (IS_BACK_OFF ? "back-off" : "probability")
-                            << " context" << END_LOG;
+                    LOGGER(LOG_LEVEL) << "Computing id of the m-gram context" << END_LOG;
 
                     //Compute the first words' hash
                     ctx_id = *curr_wid_iter;
@@ -224,7 +221,7 @@ namespace uva {
                     //The word has to be known, otherwise it is an error situation
                     if (DO_SANITY_CHECKS && (ctx_id == WordIndexType::UNKNOWN_WORD_ID)) {
                         stringstream msg;
-                        msg << "The first word_id of '" << (string) gram << "' could not be found!";
+                        msg << "The first word of the m-gram is unknown!";
                         throw Exception(msg.str());
                     }
 
@@ -237,8 +234,7 @@ namespace uva {
                         //The word has to be known, otherwise it is an error situation
                         if (DO_SANITY_CHECKS && (*curr_wid_iter == WordIndexType::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The " << SSTR(idx) << "'th word_id for '"
-                                    << (string) gram << "' could not be found!";
+                            msg << "The " << SSTR(idx) << "'th word of the m-gram is unknown!";
                             throw Exception(msg.str());
                         }
 
@@ -253,9 +249,7 @@ namespace uva {
                         }
                     }
 
-                    LOGGER(LOG_LEVEL) << "Resulting id for the " << SSTR(CURR_LEVEL)
-                            << "-gram " << (IS_BACK_OFF ? "back-off" : "probability")
-                            << " context is: " << SSTR(ctx_id) << END_LOG;
+                    LOGGER(LOG_LEVEL) << "Resulting m-gram context id: " << SSTR(ctx_id) << END_LOG;
 
                     return true;
                 }
@@ -271,19 +265,19 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
-                inline void get_context_id(const T_M_Gram<WordIndexType> &gram, TLongId &ctx_id) {
+                inline void get_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId &ctx_id) {
                     //Perform sanity check for the level values they should be the same!
-                    if (DO_SANITY_CHECKS && (CURR_LEVEL != gram.m_actual_level)) {
+                    if (DO_SANITY_CHECKS && (CURR_LEVEL != gram.get_m_gram_level())) {
                         stringstream msg;
                         msg << "The improper level values! Template level parameter = " << SSTR(CURR_LEVEL)
-                                << " but the m-gram level value is: " << SSTR(gram.m_actual_level);
+                                << " but the m-gram level value is: " << SSTR(gram.get_m_gram_level());
                         throw Exception(msg.str());
                     }
 
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id
-                        if (!get_m_gram_ctx_Id<false, CURR_LEVEL, LOG_LEVEL>(gram, ctx_id)) {
+                        if (!get_m_gram_ctx_id<LOG_LEVEL>(gram.first(), gram.last(), ctx_id)) {
                             //The next context id could not be computed
                             stringstream msg;
                             msg << "The m-gram:" << (string) gram << " context could not be computed!";
@@ -307,7 +301,7 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
-                inline bool get_cached_context_id(const T_M_Gram<WordIndexType> &gram, TLongId & result) const {
+                inline bool get_cached_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & result) const {
                     if (m_chached_ctx == gram.m_context) {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << gram.m_context
@@ -327,7 +321,7 @@ namespace uva {
                  * @param mGram
                  * @param result
                  */
-                inline void set_cache_context_id(const T_M_Gram<WordIndexType> &gram, TLongId & stx_id) {
+                inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & stx_id) {
                     LOG_DEBUG2 << "Caching context = [ " << gram.m_context << " ], id = " << stx_id
                             << ", for m-gram: " << (string) gram << END_LOG;
 

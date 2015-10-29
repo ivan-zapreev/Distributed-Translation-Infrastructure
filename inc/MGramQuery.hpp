@@ -31,6 +31,7 @@
 #include "Logger.hpp"
 
 #include "MGrams.hpp"
+#include "QueryMGram.hpp"
 #include "TextPieceReader.hpp"
 
 #include "AWordIndex.hpp"

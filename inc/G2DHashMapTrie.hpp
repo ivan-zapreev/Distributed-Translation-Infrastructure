@@ -33,6 +33,7 @@
 
 #include "AWordIndex.hpp"
 #include "MGrams.hpp"
+#include "ModelMGram.hpp"
 #include "ByteMGramId.hpp"
 
 #include "TextPieceReader.hpp"
@@ -142,21 +143,21 @@ namespace uva {
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
                  * @see ATrie
                  */
-                void add_1_gram(const T_M_Gram<WordIndexType> &oGram);
+                void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see ATrie
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_m_gram(const T_M_Gram<WordIndexType> &mGram);
+                void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
                  * @see ATrie
                  */
-                void add_n_gram(const T_M_Gram<WordIndexType> &nGram);
+                void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
@@ -250,13 +251,44 @@ namespace uva {
                  * @param gram the M-gram to compute the bucked index for
                  * @param return the resulting bucket index
                  */
+                template<TModelLevel CURR_LEVEL>
+                inline TShortId get_bucket_id(const T_Model_M_Gram<WordIndexType> & gram) {
+                    //Compute the hash value for the given M-gram, it must
+                    //be the M-Gram id in the M-Gram data storage
+                    const uint64_t gram_hash = gram.get_hash();
+
+                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
+                            << " hash is " << gram_hash << END_LOG;
+
+                    TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];
+
+                    LOG_DEBUG1 << "Getting bucket for " << (string) gram << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+
+                    //If the sanity check is on then check on that the id is within the range
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[CURR_LEVEL - 1]))) {
+                        stringstream msg;
+                        msg << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
+                                << " was given an incorrect hash: " << SSTR(bucket_idx)
+                                << ", must be within [0, " << SSTR(num_buckets[CURR_LEVEL - 1]) << "]";
+                        throw Exception(msg.str());
+                    }
+
+                    return bucket_idx;
+                }
+
+                /**
+                 * Allows to get the bucket index for the given M-gram
+                 * @param curr_level the m-gram level we need the bucked id for
+                 * @param gram the M-gram to compute the bucked index for
+                 * @param return the resulting bucket index
+                 */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                 inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
                     //Compute the hash value for the given M-gram, it must
                     //be the M-Gram id in the M-Gram data storage
                     const uint64_t gram_hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
 
-                    LOG_DEBUG1 << "The " << CURR_LEVEL << "-gram: " << (string) gram
+                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
                             << " hash is " << gram_hash << END_LOG;
 
                     TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];

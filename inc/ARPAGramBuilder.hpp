@@ -46,7 +46,7 @@ namespace uva {
             namespace arpa {
 
                 template<typename WordIndexType> struct TAddGramFunct {
-                    typedef std::function<void (const T_M_Gram<WordIndexType>&) > func;
+                    typedef std::function<void (const T_Model_M_Gram<WordIndexType>&) > func;
                 };
 
                 /**
@@ -141,7 +141,7 @@ namespace uva {
                     TextPieceReader m_token;
 
                     //This is the N-Gram container to store the parsed N-gram data
-                    T_M_Gram<WordIndexType> m_ngram;
+                    T_Model_M_Gram<WordIndexType> m_ngram;
 
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;

@@ -97,7 +97,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder..." << END_LOG;
                                 //Create a builder with the proper lambda as an argument
                                 *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                        [&] (const T_M_Gram<WordIndexType> & gram) {
+                                        [&] (const T_Model_M_Gram<WordIndexType> & gram) {
                                             trie.add_1_gram(gram); });
                                 LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
                             } else {
@@ -106,7 +106,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << MAX_LEVEL << "-Gram builder..." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                            [&] (const T_M_Gram<WordIndexType> & gram) {
+                                            [&] (const T_Model_M_Gram<WordIndexType> & gram) {
                                                 trie.add_n_gram(gram); });
                                     LOG_DEBUG2 << "DONE Instantiating the " << MAX_LEVEL << "-Gram builder!" << END_LOG;
                                 } else {
@@ -114,7 +114,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                            [&] (const T_M_Gram<WordIndexType> & gram) {
+                                            [&] (const T_Model_M_Gram<WordIndexType> & gram) {
                                                 trie.template add_m_gram<CURR_LEVEL>(gram);
                                             });
                                     LOG_DEBUG2 << "DONE Instantiating the " << CURR_LEVEL << "-Gram builder!" << END_LOG;

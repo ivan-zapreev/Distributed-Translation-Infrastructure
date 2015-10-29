@@ -49,14 +49,13 @@ namespace uva {
 
                 template<typename WordIndexType, TModelLevel CURR_LEVEL>
                 ARPAGramBuilder<WordIndexType, CURR_LEVEL>::ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
-                : m_add_garm_func(addGarmFunc), m_token(), m_ngram(word_index) {
+                : m_add_garm_func(addGarmFunc), m_token(), m_ngram(word_index, CURR_LEVEL) {
                     LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << CURR_LEVEL << ", trie)" << END_LOG;
-                    m_ngram.m_actual_level = CURR_LEVEL;
                 }
 
                 template<typename WordIndexType, TModelLevel CURR_LEVEL>
                 ARPAGramBuilder<WordIndexType, CURR_LEVEL>::ARPAGramBuilder(const ARPAGramBuilder<WordIndexType, CURR_LEVEL>& orig)
-                : m_add_garm_func(orig.m_add_garm_func), m_token(), m_ngram(orig.m_ngram.get_word_index()) {
+                : m_add_garm_func(orig.m_add_garm_func), m_token(), m_ngram(orig.m_ngram.get_word_index(), CURR_LEVEL) {
                 }
 
                 template<typename WordIndexType, TModelLevel CURR_LEVEL>
@@ -84,7 +83,7 @@ namespace uva {
                             }
 
                             //Start the new m-gram
-                            m_ngram.template start_new_m_gram<CURR_LEVEL>();
+                            m_ngram.start_new_m_gram();
 
                             //Read the N tokens of the N-gram - space separated
                             for (int i = 0; i < CURR_LEVEL; i++) {

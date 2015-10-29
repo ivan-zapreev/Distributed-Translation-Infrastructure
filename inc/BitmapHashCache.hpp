@@ -34,6 +34,7 @@
 #include "Logger.hpp"
 
 #include "MGrams.hpp"
+#include "ModelMGram.hpp"
 #include "HashingUtils.hpp"
 #include "MathUtils.hpp"
 
@@ -105,7 +106,7 @@ namespace uva {
                      * @param gram the M-gram to cache
                      */
                     template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                    inline void add_m_gram(const T_M_Gram<WordIndexType> &gram) {
+                    inline void add_m_gram(const T_Model_M_Gram<WordIndexType> gram) {
                         LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
 
                         //Get the bit position
@@ -178,11 +179,25 @@ namespace uva {
                      * @param bit_offset_idx [out] the M-gram relative bit index
                      */
                     template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                    inline void get_bit_pos(const T_Model_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
+                        const uint64_t hash = gram.get_hash();
+
+                        LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << hash << END_LOG;
+
+                        return get_bit_pos(hash, byte_idx, bit_offset_idx);
+                    }
+
+                    /**
+                     * Allows to get the bit position for the M-gram
+                     * @param gram the M-gram to get position for
+                     * @param byte_idx [out] the M-gram byte index
+                     * @param bit_offset_idx [out] the M-gram relative bit index
+                     */
+                    template<typename WordIndexType, TModelLevel CURR_LEVEL>
                     inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                         const uint64_t hash = gram.template get_hash<false, CURR_LEVEL>();
 
-                        LOG_DEBUG2 << "The M-gram: " << (string) gram
-                                << " hash: " << hash << END_LOG;
+                        LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << hash << END_LOG;
 
                         return get_bit_pos(hash, byte_idx, bit_offset_idx);
                     }

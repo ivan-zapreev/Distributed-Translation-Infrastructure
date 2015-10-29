@@ -45,7 +45,7 @@ namespace uva {
         namespace tries {
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::add_1_gram(const T_M_Gram<WordIndexType> &gram) {
+            void LayeredTrieDriver<TrieType>::add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
                 //Compute it's hash value
                 const TShortId word_id = gram.get_end_word_id();
 
@@ -72,7 +72,7 @@ namespace uva {
 
             template<typename TrieType >
             template<TModelLevel CURR_LEVEL>
-            void LayeredTrieDriver<TrieType>::add_m_gram(const T_M_Gram<WordIndexType> &gram) {
+            void LayeredTrieDriver<TrieType>::add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
@@ -108,7 +108,7 @@ namespace uva {
             };
 
             template<typename TrieType >
-            void LayeredTrieDriver<TrieType>::add_n_gram(const T_M_Gram<WordIndexType> &gram) {
+            void LayeredTrieDriver<TrieType>::add_n_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
@@ -157,7 +157,7 @@ namespace uva {
                     TLongId ctx_id;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (get_m_gram_ctx_Id<false, CURR_LEVEL>(gram, ctx_id)) {
+                    if (get_m_gram_ctx_id(gram.template first<false, CURR_LEVEL>(), gram.template last<false>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //If we are looking for a N-Gram probability
@@ -240,7 +240,7 @@ namespace uva {
                     TLongId ctx_id;
 
                     //Compute the context hash
-                    if (get_m_gram_ctx_Id<true, CURR_LEVEL>(gram, ctx_id)) {
+                    if (get_m_gram_ctx_id(gram.template first<true, CURR_LEVEL>(), gram.template last<true>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
                         const TMGramPayload * entry_ptr;
@@ -286,12 +286,12 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_ADD_M_GRAM_METHOD_DRIVER_TYPE(DRIVER_TYPE) \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_2>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_3>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_4>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_5>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_6>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_7>(const T_M_Gram<DRIVER_TYPE::WordIndexType> & gram);
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_2>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_3>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_4>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_5>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_6>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
+            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_7>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram);
 
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
             template class LayeredTrieDriver< T##TRIE_NAME##TYPE >; \
