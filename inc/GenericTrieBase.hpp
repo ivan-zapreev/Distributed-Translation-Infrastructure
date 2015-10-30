@@ -34,6 +34,7 @@
 
 #include "MGrams.hpp"
 #include "ModelMGram.hpp"
+#include "QueryMGram.hpp"
 #include "TextPieceReader.hpp"
 
 #include "BasicWordIndex.hpp"
@@ -135,6 +136,36 @@ namespace uva {
                 };
 
                 /**
+                 * This method allows to get the probability and/or back off weight for the
+                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
+                 * Depending on the value of the IS_PROB template parameter we have two different behaviors:
+                 * A) IS_PROB == true
+                 *    if( m-gram found ) {
+                 *      prob += stored_prob
+                 *      back  = stored_back
+                 *    } else {
+                 *      //nothing
+                 *    }
+                 * B) IS_PROB == false
+                 *    if( m-gram found ) {
+                 *      back += stored_back
+                 *    } else {
+                 *      //nothing
+                 *    }
+                 *      
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param IS_PROB true if we need to obtain the probability and back-off weight, otherwise we only need back-off weight
+                 * @param gram the m-gram to work with
+                 * @param prob the reference to the probability storing variable 
+                 * @param back the reference to the back-off weight storing variable 
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool IS_PROB>
+                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) const {
+                    THROW_MUST_OVERRIDE();
+                };
+
+                /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
                  * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
@@ -143,7 +174,7 @@ namespace uva {
                  * @param result the probability result variable that is to be set with the found probability weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -157,7 +188,7 @@ namespace uva {
                  * @param result the probability result variable that is to be increased with the found back-off weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
+                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
                     THROW_MUST_OVERRIDE();
                 };
                 

@@ -96,9 +96,7 @@ namespace uva {
             const TLogProbBackOff LOG_PROB_WEIGHT_BASE = 10.0;
             //The value indicating an undefined probability/back-off weight
             const TLogProbBackOff UNDEF_LOG_PROB_WEIGHT = 100.0f;
-            //The value of the minimal probability weight
-            const TLogProbBackOff MIN_LOG_PROB_WEIGHT = -10.0f;
-            //The value of the unknown word probability weight
+            //The default value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = ZERO_LOG_PROB_WEIGHT;
 
             namespace m_grams {
@@ -112,19 +110,6 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
             }
-
-            
-            /**
-             * This data structure is to be used to return the N-Gram query result.
-             * It contains the computed Back-Off language model probability and
-             * potentially additional meta data for the decoder
-             * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
-             */
-            template<TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
-            struct SQueryResult {
-                bool is_set;
-                TLogProbBackOff m_total_prob;
-            };
         }
 
         //The following type definitions are important for creating hashes

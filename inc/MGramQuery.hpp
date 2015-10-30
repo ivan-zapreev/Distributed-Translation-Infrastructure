@@ -80,9 +80,9 @@ namespace uva {
             template<typename TrieType, bool IS_CUMULATIVE_PROB>
             class T_M_Gram_Query {
             public:
-
-                //Stores the query result
-                SQueryResult<TrieType::MAX_LEVEL> m_result = {};
+                
+                static constexpr TModelLevel FIRST_SUB_M_GRAM_IDX = 0;
+                static constexpr TModelLevel LAST_SUB_M_GRAM_IDX = TrieType::MAX_LEVEL - 1;
 
                 /**
                  * The basic constructor for the structure
@@ -108,9 +108,9 @@ namespace uva {
                 inline void log_results() const {
                     const string gram_str = m_gram.get_mgram_prob_str();
                     LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                            << " ) ) = " << SSTR(m_result.m_total_prob) << END_LOG;
+                            << " ) ) = " << SSTR(prob[LAST_SUB_M_GRAM_IDX]) << END_LOG;
                     LOG_INFO << "Prob( " << gram_str << " ) = "
-                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_result.m_total_prob)) << END_LOG;
+                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, prob[LAST_SUB_M_GRAM_IDX])) << END_LOG;
                 }
 
                 /**
@@ -124,7 +124,7 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram << END_LOG;
 
                     //Set the result probability to zero
-                    m_result.m_total_prob = ZERO_PROB_WEIGHT;
+                    prob[LAST_SUB_M_GRAM_IDX] = ZERO_PROB_WEIGHT;
 
                     //Prepare the m-gram for querying
                     m_gram.prepare_for_querying();
@@ -133,7 +133,7 @@ namespace uva {
                     TModelLevel curr_level = m_gram.m_actual_level;
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
-                    while (m_result.m_total_prob == ZERO_PROB_WEIGHT) {
+                    while (prob[LAST_SUB_M_GRAM_IDX] == ZERO_PROB_WEIGHT) {
                         //Do a sanity check if needed
                         if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
                             stringstream msg;
@@ -143,34 +143,40 @@ namespace uva {
                         }
 
                         //Try to compute the next probability with decreased level
-                        m_trie.get_prob_weight(curr_level, m_gram, m_result);
+                        m_trie.get_prob_weight(curr_level, m_gram, prob[LAST_SUB_M_GRAM_IDX]);
 
                         //Decrease the level
                         curr_level--;
                     }
 
                     LOG_DEBUG << "The current level value is: " << curr_level
-                            << ", the current probability value is: " << m_result.m_total_prob << END_LOG;
+                            << ", the current probability value is: " << prob[LAST_SUB_M_GRAM_IDX] << END_LOG;
 
                     //If the probability is log-zero or snaller then there is no
                     //need for a back-off as then we will only get smaller values.
-                    if (m_result.m_total_prob > ZERO_LOG_PROB_WEIGHT) {
+                    if (prob[LAST_SUB_M_GRAM_IDX] > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
                         for (++curr_level; curr_level != m_gram.m_actual_level; ++curr_level) {
                             //Get the back_off 
-                            m_trie.add_back_off_weight(curr_level, m_gram, m_result);
+                            m_trie.add_back_off_weight(curr_level, m_gram, prob[LAST_SUB_M_GRAM_IDX]);
                         }
                     }
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
-                            << " probability is: " << m_result.m_total_prob << END_LOG;
+                            << " probability is: " << prob[LAST_SUB_M_GRAM_IDX] << END_LOG;
                 }
 
             private:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
 
+                //Stores the probability results for the sub-m-grams
+                TLogProbBackOff prob[TrieType::MAX_LEVEL];
+
+                //Stores the back-off weights for the sub-m-grams
+                TLogProbBackOff back[TrieType::MAX_LEVEL];
+                
                 //Stores the query m-gram
                 T_M_Gram<typename TrieType::WordIndexType> m_gram;
 
