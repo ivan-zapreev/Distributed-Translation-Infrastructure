@@ -80,7 +80,7 @@ namespace uva {
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
                 //The typedef for the retrieving function
-                typedef function<void(const GenericTrieDriver&, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) > TRetrieveDataFunct;
+                typedef function<void(const GenericTrieDriver&, const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) > TRetrieveDataFunct;
 
                 /**
                  * The basic constructor
@@ -184,7 +184,7 @@ namespace uva {
                  * @param gram the M-gram query for a specific current level
                  * @param result the result variable to get the probability set to
                  */
-                inline void get_prob_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void get_prob_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     get_prob_weight_func[curr_level](*this, gram, result);
                 }
 
@@ -196,7 +196,7 @@ namespace uva {
                  * @param gram the M-gram query for a specific current level
                  * @param result the result variable to get the back-off weight added to
                  */
-                inline void add_back_off_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void add_back_off_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     add_back_off_weight_func[curr_level](*this, gram, result);
                 }
 
@@ -207,8 +207,8 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
-                    LOG_DEBUG << "---> get_prob_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
+                    LOG_DEBUG << "---> get_prob_weight(" << CURR_LEVEL << ") = " << result.m_total_prob << END_LOG;
 
                     //Try getting the probability value.
                     //1. If the level is one go on: we can get smth
@@ -228,7 +228,7 @@ namespace uva {
                         LOG_DEBUG << "Could try to get probs but it will not be  successful due to "
                                 << "the present unk words!  Thus backing off right away!" << END_LOG;
                     }
-                    LOG_DEBUG << "<--- get_prob_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                    LOG_DEBUG << "<--- get_prob_weight(" << CURR_LEVEL << ") = " << result.m_total_prob << END_LOG;
                 }
 
                 /**
@@ -239,8 +239,8 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
-                     LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
+                     LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_total_prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
@@ -260,7 +260,7 @@ namespace uva {
                                 << "successful due to the present unk words! Thus "
                                 << "the back-off weight is zero!" << END_LOG;
                     }
-                    LOG_DEBUG << "<--- add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_prob << END_LOG;
+                    LOG_DEBUG << "<--- add_back_off_weight(" << CURR_LEVEL << ") = " << result.m_total_prob << END_LOG;
                }
 
                 /**

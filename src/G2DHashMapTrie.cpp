@@ -179,7 +179,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+            void G2DMapTrie<MAX_LEVEL, WordIndexType>::get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                 LOG_DEBUG << "Computing probability for a " << CURR_LEVEL << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
@@ -199,8 +199,8 @@ namespace uva {
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_payload_from_gram_level<TProbBucket, false, CURR_LEVEL>(gram, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
-                            result.m_prob = *payload_ptr;
-                            LOG_DEBUG << "The N-gram is found, prob: " << result.m_prob << END_LOG;
+                            result.m_total_prob = *payload_ptr;
+                            LOG_DEBUG << "The N-gram is found, prob: " << result.m_total_prob << END_LOG;
                         } else {
                             LOG_DEBUG << "The N-gram is not found!" << END_LOG;
                             //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
@@ -213,8 +213,8 @@ namespace uva {
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
                         if (get_payload_from_gram_level<TProbBackOffBucket, false, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
-                            result.m_prob = payload_ptr->prob;
-                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, prob: " << result.m_prob << END_LOG;
+                            result.m_total_prob = payload_ptr->prob;
+                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, prob: " << result.m_total_prob << END_LOG;
                         } else {
                             LOG_DEBUG << "The " << CURR_LEVEL << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
@@ -222,14 +222,14 @@ namespace uva {
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    result.m_prob = m_1_gram_data[gram.get_end_word_id()].prob;
-                    LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram prob: " << result.m_prob << END_LOG;
+                    result.m_total_prob = m_1_gram_data[gram.get_end_word_id()].prob;
+                    LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram prob: " << result.m_total_prob << END_LOG;
                 }
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+            void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                 LOG_DEBUG << "Computing back-off for a " << CURR_LEVEL << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed
@@ -251,7 +251,7 @@ namespace uva {
                     const TModelLevel mgram_indx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
                     if (get_payload_from_gram_level<TProbBackOffBucket, true, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
-                        result.m_prob += payload_ptr->back_off;
+                        result.m_total_prob += payload_ptr->back_off;
                         LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
                     } else {
                         //The query context id could be determined, but 
@@ -262,7 +262,7 @@ namespace uva {
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     TLogProbBackOff back_off = m_1_gram_data[gram.get_back_off_end_word_id()].back_off;
-                    result.m_prob += back_off;
+                    result.m_total_prob += back_off;
                     LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram back_off: " << back_off << END_LOG;
                 }
             }
@@ -270,20 +270,20 @@ namespace uva {
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_G2D_TRIE_TEMPLATES_TYPE(TYPE, TYPE_EXT) \
             template class G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_2>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_3>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_4>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_5>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_6>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_7>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_1>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_2>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_3>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
-            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(const T_M_Gram<TYPE > & gram, TQueryResult & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_2>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_3>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_4>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_5>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_6>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::get_prob_weight<M_GRAM_LEVEL_7>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_1>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_2>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_3>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
+            template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(const T_M_Gram<TYPE > & gram, SQueryResult<M_GRAM_LEVEL_MAX> & result) const; \
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_2>(const T_Model_M_Gram<TYPE > & gram); \
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_3>(const T_Model_M_Gram<TYPE > & gram); \
             template void G2DMapTrie<M_GRAM_LEVEL_MAX, TYPE >::add_m_gram<M_GRAM_LEVEL_4>(const T_Model_M_Gram<TYPE > & gram); \

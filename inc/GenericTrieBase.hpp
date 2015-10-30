@@ -143,7 +143,7 @@ namespace uva {
                  * @param result the probability result variable that is to be set with the found probability weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -157,7 +157,7 @@ namespace uva {
                  * @param result the probability result variable that is to be increased with the found back-off weight
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     THROW_MUST_OVERRIDE();
                 };
                 

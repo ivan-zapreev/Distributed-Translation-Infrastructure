@@ -81,17 +81,36 @@ namespace uva {
             class T_M_Gram_Query {
             public:
 
-                //Stores the query m-gram
-                T_M_Gram<typename TrieType::WordIndexType> m_gram;
-
                 //Stores the query result
-                TQueryResult m_result = {};
+                SQueryResult<TrieType::MAX_LEVEL> m_result = {};
 
                 /**
                  * The basic constructor for the structure
                  * @param trie the reference to the trie object
                  */
-                T_M_Gram_Query(TrieType & trie) : m_gram(trie.get_word_index()),  m_trie(trie) {
+                T_M_Gram_Query(TrieType & trie) : m_gram(trie.get_word_index()), m_gram_new(trie.get_word_index()), m_trie(trie) {
+                }
+
+                /**
+                 * Tokenise a given piece of text into a space separated list of text pieces.
+                 * @param text the piece of text to tokenise
+                 * @param gram the gram container to put data into
+                 */
+                inline void set_m_gram_from_text(TextPieceReader &text) {
+                    m_gram.set_m_gram_from_text(text);
+                }
+
+                /**
+                 * Allows to log the query results after its execution.
+                 * Different logging is done based on enabled logging level
+                 * and the class template parameters.
+                 */
+                inline void log_results() const {
+                    const string gram_str = m_gram.get_mgram_prob_str();
+                    LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                            << " ) ) = " << SSTR(m_result.m_total_prob) << END_LOG;
+                    LOG_INFO << "Prob( " << gram_str << " ) = "
+                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_result.m_total_prob)) << END_LOG;
                 }
 
                 /**
@@ -105,7 +124,7 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram << END_LOG;
 
                     //Set the result probability to zero
-                    m_result.m_prob = ZERO_PROB_WEIGHT;
+                    m_result.m_total_prob = ZERO_PROB_WEIGHT;
 
                     //Prepare the m-gram for querying
                     m_gram.prepare_for_querying();
@@ -114,7 +133,7 @@ namespace uva {
                     TModelLevel curr_level = m_gram.m_actual_level;
 
                     //Compute the probability in the loop fashion, should be faster that recursion.
-                    while (m_result.m_prob == ZERO_PROB_WEIGHT) {
+                    while (m_result.m_total_prob == ZERO_PROB_WEIGHT) {
                         //Do a sanity check if needed
                         if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
                             stringstream msg;
@@ -131,11 +150,11 @@ namespace uva {
                     }
 
                     LOG_DEBUG << "The current level value is: " << curr_level
-                            << ", the current probability value is: " << m_result.m_prob << END_LOG;
+                            << ", the current probability value is: " << m_result.m_total_prob << END_LOG;
 
                     //If the probability is log-zero or snaller then there is no
                     //need for a back-off as then we will only get smaller values.
-                    if (m_result.m_prob > ZERO_LOG_PROB_WEIGHT) {
+                    if (m_result.m_total_prob > ZERO_LOG_PROB_WEIGHT) {
                         //If the curr_level is smaller than the original level then
                         //it means that we needed to back-off, add back-off weights
                         for (++curr_level; curr_level != m_gram.m_actual_level; ++curr_level) {
@@ -145,12 +164,18 @@ namespace uva {
                     }
 
                     LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
-                            << " probability is: " << m_result.m_prob << END_LOG;
+                            << " probability is: " << m_result.m_total_prob << END_LOG;
                 }
 
             private:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
+
+                //Stores the query m-gram
+                T_M_Gram<typename TrieType::WordIndexType> m_gram;
+
+                //Stores the query m-gram
+                T_Query_M_Gram<typename TrieType::WordIndexType, TrieType::MAX_LEVEL> m_gram_new;
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

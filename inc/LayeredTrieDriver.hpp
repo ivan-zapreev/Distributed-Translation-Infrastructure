@@ -130,13 +130,13 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
+                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const;
 
                 /**
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const;
+                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const;
 
                 /**
                  * @see GenericTrieBase

@@ -163,14 +163,14 @@ namespace uva {
                 /**
                  * Needs to become inaccessible from outside, as this method is only relevant for generic tries
                  */
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
                  * Needs to become inaccessible from outside, as this method is only relevant for generic tries
                  */
-                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TQueryResult & result) const {
+                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, SQueryResult<MAX_LEVEL> & result) const {
                     THROW_MUST_OVERRIDE();
                 };
             };

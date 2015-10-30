@@ -113,15 +113,18 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
             }
 
+            
             /**
              * This data structure is to be used to return the N-Gram query result.
              * It contains the computed Back-Off language model probability and
              * potentially additional meta data for the decoder
              * @param prob the computed Back-Off language model probability as log_${LOG_PROB_WEIGHT_BASE}
              */
-            typedef struct {
-                TLogProbBackOff m_prob;
-            } TQueryResult;
+            template<TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
+            struct SQueryResult {
+                bool is_set;
+                TLogProbBackOff m_total_prob;
+            };
         }
 
         //The following type definitions are important for creating hashes

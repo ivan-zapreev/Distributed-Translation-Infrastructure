@@ -60,6 +60,81 @@ namespace uva {
                     //Define the base class type
                     typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
 
+                    /**
+                     * The basic constructor, is to be used when the M-gram will
+                     * actual level is not known beforehand - used e.g. in the query
+                     * m-gram sub-class. The actual m-gram level is set to be
+                     * undefined. Filling in the M-gram tokens is done elsewhere.
+                     * @param word_index the used word index
+                     */
+                    T_Query_M_Gram(WordIndexType & word_index)
+                    : T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>(word_index) {
+                    }
+
+                    /**
+                     * For the given N-gram, for some level M <=N , this method
+                     * allows to give the string of the object for which the
+                     * probability is computed, e.g.:
+                     * N-gram = "word1" -> result = "word1"
+                     * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                     * for the first M tokens of the N-gram
+                     * @param level the level M of the sub-m-gram prefix to work with
+                     * @return the resulting string
+                     */
+                    inline string get_mgram_prob_str(const TModelLevel level) const {
+                        if (level == M_GRAM_LEVEL_1) {
+                            const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
+                            return token.str().empty() ? "<empty>" : token.str();
+                        } else {
+                            if (level == M_GRAM_LEVEL_UNDEF) {
+                                return "<none>";
+                            } else {
+                                const TModelLevel end_word_idx = (level - 1);
+                                string result = BASE::m_tokens[end_word_idx].str() + " |";
+                                for (TModelLevel idx = BASE::m_actual_begin_word_idx; idx != end_word_idx; idx++) {
+                                    result += string(" ") + BASE::m_tokens[idx].str();
+                                }
+                                return result;
+                            }
+                        }
+                    }
+
+                    /**
+                     * For the given N-gram, this method allows to give the string 
+                     * of the object for which the probability is computed, e.g.:
+                     * N-gram = "word1" -> result = "word1"
+                     * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                     * @return the resulting string
+                     */
+                    inline string get_mgram_prob_str() const {
+                        return get_mgram_prob_str(BASE::m_actual_level);
+                    }
+
+                    /**
+                     * Tokenise a given piece of text into a space separated list of text pieces.
+                     * @param text the piece of text to tokenise
+                     * @param gram the gram container to put data into
+                     */
+                    inline void set_m_gram_from_text(TextPieceReader &text) {
+                        BASE::m_actual_end_word_idx = BASE::m_actual_begin_word_idx;
+
+                        //Read the tokens one by one backwards and decrement the index
+                        while (text.get_last_space(BASE::m_tokens[BASE::m_actual_end_word_idx++]));
+
+                        //Set the actual level value
+                        BASE::m_actual_level = BASE::m_actual_end_word_idx;
+                        //Adjust the end word index, note the post increment in the loop above
+                        BASE::m_actual_end_word_idx--;
+
+                        //Do the sanity check if needed!
+                        if (DO_SANITY_CHECKS && (BASE::m_actual_level < M_GRAM_LEVEL_1)) {
+                            stringstream msg;
+                            msg << "A broken N-gram query: " << (string) * this
+                                    << ", level: " << SSTR(BASE::m_actual_level);
+                            throw Exception(msg.str());
+                        }
+                    }
+
                 private:
 
                     /**

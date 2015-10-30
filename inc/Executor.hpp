@@ -1,5 +1,5 @@
 /* 
- * File:   TrieExecutor.hpp
+ * File:   Executor.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -49,6 +49,8 @@
 #include "W2COrderedArrayTrie.hpp"
 #include "C2DMapArrayTrie.hpp"
 #include "G2DHashMapTrie.hpp"
+
+#include "QueryMGram.hpp"
 #include "MGramQuery.hpp"
 
 using namespace std;
@@ -202,14 +204,13 @@ namespace uva {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                         //Parse the line into an N-Gram
-                        query.m_gram.set_m_gram_from_text(line);
+                        query.set_m_gram_from_text(line);
 
                         //Query the Trie for the results
                         query.execute();
 
                         //Print the results:
-                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << query.m_gram.get_mgram_prob_str() << " ) ) = " << SSTR(query.m_result.m_prob) << END_LOG;
-                        LOG_INFO << "Prob( " << query.m_gram.get_mgram_prob_str() << " ) = " << SSTR(pow(LOG_PROB_WEIGHT_BASE, query.m_result.m_prob)) << END_LOG;
+                        query.log_results();
                     }
 
                     //Stop the timer
