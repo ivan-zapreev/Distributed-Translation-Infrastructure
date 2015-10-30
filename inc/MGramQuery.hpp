@@ -80,8 +80,9 @@ namespace uva {
             template<typename TrieType, bool IS_CUMULATIVE_PROB>
             class T_M_Gram_Query {
             public:
-                
+                //The index of the first sub-m-gram
                 static constexpr TModelLevel FIRST_SUB_M_GRAM_IDX = 0;
+                //The index of the last sub-m-gram
                 static constexpr TModelLevel LAST_SUB_M_GRAM_IDX = TrieType::MAX_LEVEL - 1;
 
                 /**
@@ -106,11 +107,30 @@ namespace uva {
                  * and the class template parameters.
                  */
                 inline void log_results() const {
-                    const string gram_str = m_gram.get_mgram_prob_str();
-                    LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                            << " ) ) = " << SSTR(prob[LAST_SUB_M_GRAM_IDX]) << END_LOG;
-                    LOG_INFO << "Prob( " << gram_str << " ) = "
-                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, prob[LAST_SUB_M_GRAM_IDX])) << END_LOG;
+                    //Initialize the current index, with the proper start value
+                    TModelLevel curr_idx = (IS_CUMULATIVE_PROB ? FIRST_SUB_M_GRAM_IDX : LAST_SUB_M_GRAM_IDX);
+                    TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
+
+                    //Print the intermediate results
+                    for (; curr_idx <= LAST_SUB_M_GRAM_IDX; ++curr_idx) {
+                        const string gram_str = m_gram.get_mgram_prob_str(curr_idx + 1);
+                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                << " ) ) = " << SSTR(prob[curr_idx]) << END_LOG;
+                        LOG_INFO << "Prob( " << gram_str << " ) = "
+                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, prob[curr_idx])) << END_LOG;
+                        if (prob[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
+                            cumulative_prob += prob[curr_idx];
+                        }
+                    }
+
+                    //Print the total cumulative probability if needed
+                    if (IS_CUMULATIVE_PROB) {
+                        const string gram_str = m_gram.get_mgram_prob_str();
+                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
+                        LOG_INFO << "Prob( " << gram_str << " ) = "
+                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
+                    }
                 }
 
                 /**
@@ -176,7 +196,7 @@ namespace uva {
 
                 //Stores the back-off weights for the sub-m-grams
                 TLogProbBackOff back[TrieType::MAX_LEVEL];
-                
+
                 //Stores the query m-gram
                 T_M_Gram<typename TrieType::WordIndexType> m_gram;
 

@@ -250,6 +250,24 @@ namespace uva {
                     }
 
                     /**
+                     * For the given N-gram, for some level M <=N , this method
+                     * allows to give the string of the object for which the
+                     * probability is computed, e.g.:
+                     * N-gram = "word1" -> result = "word1"
+                     * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                     * for the first M tokens of the N-gram
+                     * @param level the level M of the sub-m-gram prefix to work with
+                     * @return the resulting string
+                     */
+                    inline string get_mgram_prob_str(const TModelLevel level) const {
+                        if (level == m_actual_level) {
+                            return get_mgram_prob_str();
+                        } else {
+                            THROW_NOT_IMPLEMENTED();
+                        }
+                    }
+
+                    /**
                      * Tokenise a given piece of text into a set of text peices.
                      * The text piece should be a M-gram piece - a space separated
                      * string of words.
@@ -265,11 +283,11 @@ namespace uva {
                         //Set the read m-gram level, do "END_WORD_IDX - 1" as
                         //the value of m_curr_index is decreased unconditionally
                         m_actual_level = ((END_WORD_IDX - 1) - m_curr_index);
-                        
+
                         //Do the sanity check if needed!
-                        if (DO_SANITY_CHECKS && (m_actual_level < M_GRAM_LEVEL_1 )) {
+                        if (DO_SANITY_CHECKS && (m_actual_level < M_GRAM_LEVEL_1)) {
                             stringstream msg;
-                            msg << "A broken N-gram query: " << (string) *this
+                            msg << "A broken N-gram query: " << (string) * this
                                     << ", level: " << SSTR(m_actual_level);
                             throw Exception(msg.str());
                         }

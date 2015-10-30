@@ -82,12 +82,12 @@ namespace uva {
                      * @return the resulting string
                      */
                     inline string get_mgram_prob_str(const TModelLevel level) const {
-                        if (level == M_GRAM_LEVEL_1) {
-                            const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
-                            return token.str().empty() ? "<empty>" : token.str();
+                        if (level == M_GRAM_LEVEL_UNDEF) {
+                            return "<none>";
                         } else {
-                            if (level == M_GRAM_LEVEL_UNDEF) {
-                                return "<none>";
+                            if (level == M_GRAM_LEVEL_1) {
+                                const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
+                                return token.str().empty() ? "<empty>" : token.str();
                             } else {
                                 const TModelLevel end_word_idx = (level - 1);
                                 string result = BASE::m_tokens[end_word_idx].str() + " |";
@@ -107,7 +107,20 @@ namespace uva {
                      * @return the resulting string
                      */
                     inline string get_mgram_prob_str() const {
-                        return get_mgram_prob_str(BASE::m_actual_level);
+                        if (BASE::m_actual_level == M_GRAM_LEVEL_UNDEF) {
+                            return "<none>";
+                        } else {
+                            if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
+                                const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
+                                return token.str().empty() ? "<empty>" : token.str();
+                            } else {
+                                string result;
+                                for (TModelLevel idx = BASE::m_actual_begin_word_idx; idx <= BASE::m_actual_end_word_idx; idx++) {
+                                    result += BASE::m_tokens[idx].str() + string(" ");
+                                }
+                                return result.substr(0, result.length() - 1);
+                            }
+                        }
                     }
 
                     /**
