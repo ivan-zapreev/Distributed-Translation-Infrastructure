@@ -72,6 +72,14 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to prepare the M-gram for being queried. 
+                     */
+                    inline void prepare_for_querying() {
+                        //ToDo: Implement, here we need to obtain the word ids
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
                      * For the given N-gram, for some level M <=N , this method
                      * allows to give the string of the object for which the
                      * probability is computed, e.g.:

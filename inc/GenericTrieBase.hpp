@@ -148,7 +148,7 @@ namespace uva {
                  *    }
                  * B) IS_PROB == false
                  *    if( m-gram found ) {
-                 *      back += stored_back
+                 *      prob += stored_back
                  *    } else {
                  *      //nothing
                  *    }
@@ -162,6 +162,15 @@ namespace uva {
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool IS_PROB>
                 inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) const {
+                    THROW_MUST_OVERRIDE();
+                };
+                
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param prob the unknown word probability
+                 * @param back the unknown word back-off weight
+                 */
+                inline void get_unk_word_payload(TLogProbBackOff & prob, TLogProbBackOff & back) const {
                     THROW_MUST_OVERRIDE();
                 };
 

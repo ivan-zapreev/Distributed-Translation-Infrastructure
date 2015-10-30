@@ -95,7 +95,7 @@ namespace uva {
                     inline WordIndexType & get_word_index() const {
                         return m_word_index;
                     }
-                    
+
                     /**
                      * Allows to obtain the actual m-gram level
                      * @return the actual m-gram level
@@ -103,7 +103,7 @@ namespace uva {
                     inline TModelLevel get_m_gram_level() const {
                         return m_actual_level;
                     }
-                    
+
                     /**
                      * Allows to retrieve the actual end word id of the m-gram
                      * @return 
@@ -137,10 +137,19 @@ namespace uva {
                         return tokens_to_string(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
                     };
 
+                    /**
+                     * Allows to retrieve the word id for the given word index
+                     * @param word_idx the word index
+                     * @return the resulting word id
+                     */
+                    inline TWordIdType operator[](const TModelLevel word_idx) const {
+                        return m_word_ids[word_idx];
+                    };
+
                 protected:
                     //Stores the m-gram tokens
                     TextPieceReader m_tokens[MAX_LEVEL_CAPACITY];
-                    
+
                     //The data structure to store the N-gram word ids
                     TWordIdType m_word_ids[MAX_LEVEL_CAPACITY] = {};
 
