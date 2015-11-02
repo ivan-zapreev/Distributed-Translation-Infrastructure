@@ -84,6 +84,14 @@ namespace uva {
 
             //The type used for storing log probabilities and back-off values
             typedef float TLogProbBackOff;
+            
+            /**
+             * This data structure stores the probability and back off weight payload for an m-gram
+             */
+            typedef struct {
+                TLogProbBackOff prob;
+                TLogProbBackOff back;
+            } T_M_Gram_Payload;
 
             //The zero value for back-off weight
             const TLogProbBackOff ZERO_BACK_OFF_WEIGHT = 0.0f;

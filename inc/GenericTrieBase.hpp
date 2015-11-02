@@ -141,21 +141,19 @@ namespace uva {
                  * @param BEGIN_WORD_IDX the begin word index in the given m-gram
                  * @param END_WORD_IDX the end word index in the given m-gram
                  * @param gram the m-gram to work with
-                 * @param prob the reference to the probability variable that will be increased with the stored probability value 
-                 * @param back the reference to the back-off variable that will be increased with the stored back-off value 
-                 * @return true if the payload was found, otherwise false
+                 * @param payload the payload structure to put the values in
+                 * @return true if the payload has been found, otherwise false
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool add_payload(const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) const {
+                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
                 
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param prob the unknown word probability
-                 * @param back the unknown word back-off weight
+                 * @param payload the unknown word payload data
                  */
-                inline void get_unk_word_payload(TLogProbBackOff & prob, TLogProbBackOff & back) const {
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
 
