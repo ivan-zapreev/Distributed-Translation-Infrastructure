@@ -175,36 +175,25 @@ namespace uva {
                     TModelLevel begin_word_idx = FIRST_WORD_IDX;
                     //Define and initialize the last considered word index
                     TModelLevel end_word_idx = (IS_CUMULATIVE_PROB ? FIRST_WORD_IDX : LAST_WORD_IDX);
-                    //Define and initialize the flag saying that we retrieved a back-off weight to use
-                    bool got_back_off = false;
-                    //Define and initialize the flag indicating whether the probability was successfully retrieved or not
-                    bool got_no_prob = false;
 
-                    //Iterate through the model and compute probabilities
+                    //Iterate through the model and compute probabilities: going right in the row
                     for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
-                        //Get the sub-m-gram probability and back-off weight
-                        got_no_prob = m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
-
-                        //Do the back-offs until probabilities are computed
-                        while (got_no_prob) {
-                            //Check if the back-off has been stored
-                            if (got_back_off) {
+                        //Try to get the probability of the sub-m-gram, if it is not there: back-off
+                        if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back)) {
+                            //Compute the back-off sub-m-gram end word index
+                            const TModelLevel bo_end_word_idx = (end_word_idx - 1);
+                            //Add the back off weight from the previous computation, always available if not the first unigram
+                            if (end_word_idx > FIRST_WORD_IDX) {
                                 //Get the stored back-off from the previous level
-                                m_prob[end_word_idx] = m_back[end_word_idx - 1];
-                                //This back-off has been used, so it will not be used any more
-                                got_back_off = false;
-                            } else {
-                                //Get the back-off weight of the previous level
-                                m_add_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
+                                m_prob[end_word_idx] = m_back[bo_end_word_idx];
                             }
 
-                            //Get the back-off sub-m-gram probability and back-off weight
-                            //First we increment the begin word index to make it a back-off
-                            got_no_prob = m_add_prob_get_back_off[++begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
+                            //Now continue the back-off process: going down the column
+                            while (m_add_prob_get_back_off[++begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back)) {
+                                //Get the back-off weight of the previous level
+                                m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_prob, m_back);
+                            };
                         }
-
-                        //Now the back off is definitely stored again
-                        got_back_off = true;
                     }
                 }
 
@@ -340,7 +329,7 @@ namespace uva {
                         TLogProbBackOff prob[NUM_PROB_BACK_ELEMS], TLogProbBackOff back[NUM_PROB_BACK_ELEMS]) {
                     //Compute the end word index for the back-off m-gram
                     constexpr TModelLevel BACK_OFF_END_WORD_IDX = END_WORD_IDX - 1;
-                    
+
                     //ToDo: We do not want to check if the begin word is unknown! we want to jump the diagonal if needed!
 
                     //Check if the begin or end word is unknown
