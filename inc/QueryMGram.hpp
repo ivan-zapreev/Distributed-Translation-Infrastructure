@@ -73,9 +73,19 @@ namespace uva {
 
                     /**
                      * Allows to prepare the M-gram for being queried. 
+                     * If the cumulative probability is to be computed then all
+                     * word ids are needed, in case only the longest sub-m-gram
+                     * conditional probability is computed, we need to start
+                     * from the last word and go backwards. Then we shall stop
+                     * as soon as we reach the first unknown word!
                      */
+                    template<bool IS_CUMULATIVE_QUERY>
                     inline void prepare_for_querying() {
-                        //ToDo: Implement, here we need to obtain the word ids
+                        if (IS_CUMULATIVE_QUERY) {
+                            //ToDo: Retrieve all the word ids unconditionally, as we will need all of them
+                        } else {
+                            //ToDo: Start backwards and stop computing as soon as we reach the first <unk>
+                        }
                         THROW_NOT_IMPLEMENTED();
                     }
 

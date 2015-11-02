@@ -80,7 +80,7 @@ namespace uva {
              * the conditional probability of all sub M-grams and also the total
              * sum, not taking into account the zero log probabilities.
              */
-            template<typename TrieType, bool IS_CUMULATIVE_PROB>
+            template<typename TrieType, bool IS_CUMULATIVE_QUERY>
             class T_M_Gram_Query {
             public:
                 typedef typename TrieType::WordIndexType WordIndexType;
@@ -122,7 +122,7 @@ namespace uva {
                  */
                 inline void log_results() const {
                     //Initialize the current index, with the proper start value
-                    TModelLevel curr_idx = (IS_CUMULATIVE_PROB ? FIRST_SUB_M_GRAM_IDX : LAST_SUB_M_GRAM_IDX);
+                    TModelLevel curr_idx = (IS_CUMULATIVE_QUERY ? FIRST_SUB_M_GRAM_IDX : LAST_SUB_M_GRAM_IDX);
                     TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
 
                     //Print the intermediate results
@@ -138,7 +138,7 @@ namespace uva {
                     }
 
                     //Print the total cumulative probability if needed
-                    if (IS_CUMULATIVE_PROB) {
+                    if (IS_CUMULATIVE_QUERY) {
                         const string gram_str = m_gram_old.get_mgram_prob_str();
                         LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                                 << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
@@ -148,41 +148,45 @@ namespace uva {
                 }
 
                 /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * @param gram the given M-Gram query and its state
-                 * @param result the structure to store the resulting probability
+                 * Allows to execute m-gram the query
                  */
                 void execute_new() {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram_old << END_LOG;
 
-                    //Clean the sub-m-gram probability array
-                    if (IS_CUMULATIVE_PROB) {
-                        memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
-                    } else {
-                        m_prob[LAST_SUB_M_GRAM_IDX] = ZERO_PROB_WEIGHT;
-                    }
-
                     //Prepare the m-gram for querying
-                    m_gram.prepare_for_querying();
+                    m_gram.template prepare_for_querying<IS_CUMULATIVE_QUERY>();
 
-                    //Define the begin and end word index variables
+                    //Define the begin word index variable
                     TModelLevel begin_word_idx = FIRST_WORD_IDX;
-                    TModelLevel end_word_idx = (IS_CUMULATIVE_PROB) ? FIRST_WORD_IDX : LAST_WORD_IDX;
 
-                    //Iterate through sub-m-grams: going right through the row
-                    for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
-                        if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
-                            //If the sub-m-gram's end word is unknown back-off
-                            do_back_off_unknown(begin_word_idx, end_word_idx);
-                        } else {
-                            //If the sub-m-gram's word is known try to retrieve the payload
-                            if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
-                                //If the sub-m-gram payload is not defined then back-off
-                                do_back_off_undefined(begin_word_idx, end_word_idx);
+                    if (IS_CUMULATIVE_QUERY) {
+                        //Clean the sub-m-gram probability array
+                        memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
+
+                        //Define the end word index variable
+                        TModelLevel end_word_idx = FIRST_WORD_IDX;
+
+                        //Iterate through sub-m-grams: going right through the row
+                        for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
+                            if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
+                                //If the sub-m-gram's end word is unknown back-off
+                                do_back_off_unknown(begin_word_idx, end_word_idx);
+                            } else {
+                                //If the sub-m-gram's word is known try to retrieve the payload
+                                if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
+                                    //If the sub-m-gram payload is not defined then back-off
+                                    do_back_off_undefined(begin_word_idx, end_word_idx);
+                                }
                             }
                         }
+                    } else {
+                        //Clean the sub-m-gram probability array
+                        m_prob[LAST_SUB_M_GRAM_IDX] = ZERO_PROB_WEIGHT;
+
+                        //Define the end word index variable
+                        TModelLevel end_word_idx = LAST_WORD_IDX;
+
+                        //ToDo: The algorithms for non-cumulative query should be different!!!!
                     }
                 }
 
