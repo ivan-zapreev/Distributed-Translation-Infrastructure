@@ -27,6 +27,7 @@
 #define	MGRAMQUERY_HPP
 
 #include <functional>   //std::function
+#include <string>       //std::string
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -87,12 +88,16 @@ namespace uva {
                 //Define the maximum level constant
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
 
+                //Define the the number of elements in the probability and back of arrays. We 
+                //use one extra element in each to store the pre-fetches value for the <unk> word.
+                static constexpr TModelLevel NUM_PROB_BACK_ELEMS = MAX_LEVEL + 1;
+
                 //The index of the first m-gram word index
                 static constexpr TModelLevel FIRST_WORD_IDX = 0;
                 //The index of the last m-gram word index
                 static constexpr TModelLevel LAST_WORD_IDX = MAX_LEVEL - 1;
                 //The index of the unknown word
-                static constexpr TModelLevel UNKNONW_WORD_IDX = LAST_WORD_IDX + 1;
+                static constexpr TModelLevel UNKNOWN_WORD_IDX = NUM_PROB_BACK_ELEMS - 1;
 
                 //The index of the first sub-m-gram
                 static constexpr TModelLevel FIRST_SUB_M_GRAM_IDX = 0;
@@ -104,6 +109,7 @@ namespace uva {
                  * @param trie the reference to the trie object
                  */
                 T_M_Gram_Query(TrieType & trie) : m_trie(trie), m_gram(trie.get_word_index()), m_gram_old(trie.get_word_index()) {
+                    m_trie.get_unk_word_payload(m_prob[UNKNOWN_WORD_IDX], m_back[UNKNOWN_WORD_IDX]);
                 }
 
                 /**
@@ -157,9 +163,10 @@ namespace uva {
                 void execute_new() {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram_old << END_LOG;
 
-                    //Prepare the data structures for begin used
-                    memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
-                    memset(m_back, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
+                    //Prepare the data structures for begin used, do not clean the last elements as
+                    //they store the pre-fetched prob and back off values for the <unk> word.
+                    memset(m_prob, ZERO_PROB_WEIGHT, (NUM_PROB_BACK_ELEMS - 1) * sizeof (TLogProbBackOff));
+                    memset(m_back, ZERO_PROB_WEIGHT, (NUM_PROB_BACK_ELEMS - 1) * sizeof (TLogProbBackOff));
 
                     //Prepare the m-gram for querying
                     m_gram.prepare_for_querying();
@@ -168,18 +175,18 @@ namespace uva {
                     TModelLevel begin_word_idx = FIRST_WORD_IDX;
                     //Define and initialize the last considered word index
                     TModelLevel end_word_idx = (IS_CUMULATIVE_PROB ? FIRST_WORD_IDX : LAST_WORD_IDX);
-                    //Define and initialize the back-off weight retrieved flag
+                    //Define and initialize the flag saying that we retrieved a back-off weight to use
                     bool got_back_off = false;
-                    //Define the dummy variable for storing prob or back off weight
-                    TLogProbBackOff dummy;
+                    //Define and initialize the flag indicating whether the probability was successfully retrieved or not
+                    bool got_no_prob = false;
 
                     //Iterate through the model and compute probabilities
                     for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
                         //Get the sub-m-gram probability and back-off weight
-                        m_get_prob_back_funcs[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob[end_word_idx], m_back[end_word_idx]);
+                        got_no_prob = m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
 
                         //Do the back-offs until probabilities are computed
-                        while (m_prob[end_word_idx] == ZERO_PROB_WEIGHT) {
+                        while (got_no_prob) {
                             //Check if the back-off has been stored
                             if (got_back_off) {
                                 //Get the stored back-off from the previous level
@@ -188,12 +195,12 @@ namespace uva {
                                 got_back_off = false;
                             } else {
                                 //Get the back-off weight of the previous level
-                                m_get_back_funcs[begin_word_idx][end_word_idx - 1](m_trie, m_gram, m_prob[end_word_idx], dummy);
+                                m_add_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
                             }
 
                             //Get the back-off sub-m-gram probability and back-off weight
                             //First we increment the begin word index to make it a back-off
-                            m_get_prob_back_funcs[++begin_word_idx][end_word_idx](m_trie, m_gram, m_prob[end_word_idx], m_back[end_word_idx]);
+                            got_no_prob = m_add_prob_get_back_off[++begin_word_idx][end_word_idx](m_trie, m_gram, m_prob, m_back);
                         }
 
                         //Now the back off is definitely stored again
@@ -271,59 +278,113 @@ namespace uva {
                 TLogProbBackOff m_back[MAX_LEVEL + 1];
 
                 //The typedef for the function that gets the payload from the trie
-                typedef std::function<void (const TrieType&, const T_Query_M_Gram<WordIndexType> &, TLogProbBackOff &, TLogProbBackOff &) > TGetPayloadFunc;
+                typedef std::function<bool (const TrieType&, const T_Query_M_Gram<WordIndexType> &,
+                        TLogProbBackOff[NUM_PROB_BACK_ELEMS], TLogProbBackOff[NUM_PROB_BACK_ELEMS]) > TAddProbGetBackFunc;
 
                 //Stores the get-payload function pointers for getting probabilities and back offs
-                static const TGetPayloadFunc m_get_prob_back_funcs[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
+                static const TAddProbGetBackFunc m_add_prob_get_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
+
+                //The typedef for the function that gets the payload from the trie
+                typedef std::function<void (const TrieType&, const T_Query_M_Gram<WordIndexType> &,
+                        TLogProbBackOff[NUM_PROB_BACK_ELEMS], TLogProbBackOff[NUM_PROB_BACK_ELEMS]) > TAddBackOffFunc;
 
                 //Stores the get-payload function pointers for getting back-offs
-                static const TGetPayloadFunc m_get_back_funcs[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
+                static const TAddBackOffFunc m_add_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
 
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool IS_PROB>
-                static inline void get_payload(const TrieType& trie, const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) {
-                    //ToDo: We do not ant to check if the begin word is unknown! we want to jump the diagonal if needed!
+                /**
+                 * Depending on the value of the IS_PROB template parameter we have two different behaviors:
+                 * A) IS_PROB == true
+                 *    if( m-gram found ) {
+                 *      prob += stored_prob
+                 *      back  = stored_back
+                 *    } else {
+                 *      //nothing
+                 *    }
+                 * B) IS_PROB == false
+                 *    if( m-gram found ) {
+                 *      prob += stored_back
+                 *    } else {
+                 *      //nothing
+                 *    }
+                 * @param trie
+                 * @param gram
+                 * @param prob
+                 * @param back
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                static inline bool add_prob_get_back_off(const TrieType& trie, const T_Query_M_Gram<WordIndexType> & gram,
+                        TLogProbBackOff prob[NUM_PROB_BACK_ELEMS], TLogProbBackOff back[NUM_PROB_BACK_ELEMS]) {
+                    //ToDo: We do not want to check if the begin word is unknown! we want to jump the diagonal if needed!
 
                     //Check if the begin or end word is unknown
                     if ((gram[BEGIN_WORD_IDX] == WordIndexType::UNKNOWN_WORD_ID)
                             || (gram[END_WORD_IDX] == WordIndexType::UNKNOWN_WORD_ID)) {
                         //If true then the payload is unavailable unless this is an unknown word unigram
                         if (BEGIN_WORD_IDX == END_WORD_IDX) {
-                            //ToDo: The m_prob and m_back array is not accessible so can not get unknown prob and back from there!
-                            
-                            //If it is a single unknown word then use the pre-
-                            //fetched probability and back-off of the unknown word
-                            trie.get_unk_word_payload(prob, back);
+                            prob[END_WORD_IDX] += prob[UNKNOWN_WORD_IDX];
+                            back[END_WORD_IDX] = back[UNKNOWN_WORD_IDX];
+                            //we got the data for the unknown word, so return true
+                            return true;
+                        } else {
+                            //The data is not to be found, so return false
+                            return false;
                         }
                     } else {
                         //Retrieve the payload from the trie
-                        trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, IS_PROB>(gram, prob, back);
+                        return trie.template add_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, prob[END_WORD_IDX], back[END_WORD_IDX]);
                     }
                 };
+
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                static inline void add_back_off(const TrieType& trie, const T_Query_M_Gram<WordIndexType> & gram,
+                        TLogProbBackOff prob[NUM_PROB_BACK_ELEMS], TLogProbBackOff back[NUM_PROB_BACK_ELEMS]) {
+                    //Compute the end word index for the back-off m-gram
+                    constexpr TModelLevel BACK_OFF_END_WORD_IDX = END_WORD_IDX - 1;
+                    
+                    //ToDo: We do not want to check if the begin word is unknown! we want to jump the diagonal if needed!
+
+                    //Check if the begin or end word is unknown
+                    if ((gram[BEGIN_WORD_IDX] == WordIndexType::UNKNOWN_WORD_ID)
+                            || (gram[BACK_OFF_END_WORD_IDX] == WordIndexType::UNKNOWN_WORD_ID)) {
+                        //If true then the payload is unavailable unless this is an unknown word unigram
+                        if (BEGIN_WORD_IDX == BACK_OFF_END_WORD_IDX) {
+                            //Add he <unk> word back-off weight
+                            prob[END_WORD_IDX] += back[UNKNOWN_WORD_IDX];
+                        } else {
+                            //The data is not to be found, so the back-off is zero
+                        }
+                    } else {
+                        //Define the dummy probability variable, who's value will not be used
+                        TLogProbBackOff dummy_prob;
+                        //Add the back-off weight to the probability
+                        (void) trie.template add_payload<BEGIN_WORD_IDX, BACK_OFF_END_WORD_IDX>(gram, dummy_prob, prob[END_WORD_IDX]);
+                    }
+                }
 
                 //Stores the query m-gram
                 T_M_Gram<WordIndexType> m_gram_old;
             };
 
             template<typename TrieType, bool IS_CUMULATIVE_PROB>
-            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TGetPayloadFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_get_prob_back_funcs[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
-                {&get_payload<0, 0, true>, &get_payload<0, 1, true>, &get_payload<0, 2, true>, &get_payload<0, 3, true>, &get_payload<0, 4, true>, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, &get_payload<0, 1, true>, &get_payload<0, 2, true>, &get_payload<0, 3, true>, &get_payload<0, 4, true>, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, NULL, &get_payload<0, 2, true>, &get_payload<0, 3, true>, &get_payload<0, 4, true>, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, NULL, NULL, &get_payload<0, 3, true>, &get_payload<0, 4, true>, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, NULL, NULL, NULL, &get_payload<0, 4, true>, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, NULL, NULL, NULL, NULL, &get_payload<0, 5, true>, &get_payload<0, 6, true>},
-                {NULL, NULL, NULL, NULL, NULL, NULL, &get_payload<0, 6, true>}
+            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TAddProbGetBackFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_add_prob_get_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                {&add_prob_get_back_off<0, 0>, &add_prob_get_back_off<0, 1>, &add_prob_get_back_off<0, 2>, &add_prob_get_back_off<0, 3>, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, &add_prob_get_back_off<0, 1>, &add_prob_get_back_off<0, 2>, &add_prob_get_back_off<0, 3>, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, NULL, &add_prob_get_back_off<0, 2>, &add_prob_get_back_off<0, 3>, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, NULL, NULL, &add_prob_get_back_off<0, 3>, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &add_prob_get_back_off<0, 6>}
             };
 
             template<typename TrieType, bool IS_CUMULATIVE_PROB>
-            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TGetPayloadFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_get_back_funcs[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
-                {&get_payload<0, 0, false>, &get_payload<0, 1, false>, &get_payload<0, 2, false>, &get_payload<0, 3, false>, &get_payload<0, 4, false>, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, &get_payload<0, 1, false>, &get_payload<0, 2, false>, &get_payload<0, 3, false>, &get_payload<0, 4, false>, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, NULL, &get_payload<0, 2, false>, &get_payload<0, 3, false>, &get_payload<0, 4, false>, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, NULL, NULL, &get_payload<0, 3, false>, &get_payload<0, 4, false>, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, NULL, NULL, NULL, &get_payload<0, 4, false>, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, NULL, NULL, NULL, NULL, &get_payload<0, 5, false>, &get_payload<0, 6, false>},
-                {NULL, NULL, NULL, NULL, NULL, NULL, &get_payload<0, 6, false>}
+            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TAddBackOffFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_add_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                {&add_back_off<0, 0>, &add_back_off<0, 1>, &add_back_off<0, 2>, &add_back_off<0, 3>, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, &add_back_off<0, 1>, &add_back_off<0, 2>, &add_back_off<0, 3>, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, NULL, &add_back_off<0, 2>, &add_back_off<0, 3>, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, NULL, NULL, &add_back_off<0, 3>, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &add_back_off<0, 5>, &add_back_off<0, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &add_back_off<0, 6>}
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

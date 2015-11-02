@@ -138,30 +138,15 @@ namespace uva {
                 /**
                  * This method allows to get the probability and/or back off weight for the
                  * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
-                 * Depending on the value of the IS_PROB template parameter we have two different behaviors:
-                 * A) IS_PROB == true
-                 *    if( m-gram found ) {
-                 *      prob += stored_prob
-                 *      back  = stored_back
-                 *    } else {
-                 *      //nothing
-                 *    }
-                 * B) IS_PROB == false
-                 *    if( m-gram found ) {
-                 *      prob += stored_back
-                 *    } else {
-                 *      //nothing
-                 *    }
-                 *      
                  * @param BEGIN_WORD_IDX the begin word index in the given m-gram
                  * @param END_WORD_IDX the end word index in the given m-gram
-                 * @param IS_PROB true if we need to obtain the probability and back-off weight, otherwise we only need back-off weight
                  * @param gram the m-gram to work with
-                 * @param prob the reference to the probability storing variable 
-                 * @param back the reference to the back-off weight storing variable 
+                 * @param prob the reference to the probability variable that will be increased with the stored probability value 
+                 * @param back the reference to the back-off variable that will be increased with the stored back-off value 
+                 * @return true if the payload was found, otherwise false
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool IS_PROB>
-                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) const {
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool add_payload(const T_Query_M_Gram<WordIndexType> & gram, TLogProbBackOff & prob, TLogProbBackOff & back) const {
                     THROW_MUST_OVERRIDE();
                 };
                 
