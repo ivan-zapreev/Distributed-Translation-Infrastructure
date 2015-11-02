@@ -75,14 +75,14 @@ namespace uva {
                 const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
                 //Pre-allocate the 1-Gram data
-                m_1_gram_data = new TMGramPayload[num_word_ids];
-                memset(m_1_gram_data, 0, num_word_ids * sizeof (TMGramPayload));
+                m_1_gram_data = new T_M_Gram_Payload[num_word_ids];
+                memset(m_1_gram_data, 0, num_word_ids * sizeof (T_M_Gram_Payload));
 
 
                 //Record the dummy probability and back-off values for the unknown word
-                TMGramPayload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
-                pbData.back_off = ZERO_BACK_OFF_WEIGHT;
+                pbData.back = ZERO_BACK_OFF_WEIGHT;
             }
 
             template<TModelLevel N, typename WordIndexType>
@@ -134,7 +134,7 @@ namespace uva {
             }
 
             template<TModelLevel N, typename WordIndexType>
-            TMGramPayload & C2DMapTrie<N, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
+            T_M_Gram_Payload & C2DMapTrie<N, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
                 if (DO_SANITY_CHECKS) {
                     //Add hash key statistics
                     if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
@@ -148,7 +148,7 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DMapTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const {
+            bool C2DMapTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
                 //The data is always present.
                 *ppData = &m_1_gram_data[wordId];
                 return true;
@@ -156,7 +156,7 @@ namespace uva {
 
             template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
-            TMGramPayload & C2DMapTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
+            T_M_Gram_Payload & C2DMapTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                 //Store the N-tires from length 2 on and indexing starts
                 //with 0, therefore "level-2". Get/Create the mapping for this
                 //word in the Trie level of the N-gram
@@ -177,7 +177,7 @@ namespace uva {
             template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
             bool C2DMapTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
-                    TLongId ctxId, const TMGramPayload **ppData) const {
+                    TLongId ctxId, const T_M_Gram_Payload **ppData) const {
                 //Get the next context id
                 if (get_ctx_id(wordId, ctxId)) {
                     //Search for the map for that context id

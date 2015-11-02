@@ -178,6 +178,28 @@ namespace uva {
                 }
 
                 /**
+                 * This method allows to get the probability and/or back off weight for the
+                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param gram the m-gram to work with
+                 * @param payload the payload structure to put the values in
+                 * @return true if the payload has been found, otherwise false
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                    return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, payload);
+                };
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    m_trie.get_unk_word_payload(payload);
+                };
+
+                /**
                  * Allows to get the probability value also by checking the cache.
                  * If the probability is not found then the prob value is to stay intact!
                  * @param curr_level the currently considered level of the m-gram

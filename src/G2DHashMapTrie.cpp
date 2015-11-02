@@ -65,13 +65,13 @@ namespace uva {
 
                 //02) Pre-allocate the 1-Gram data
                 num_buckets[0] = BASE::get_word_index().get_number_of_words(counts[0]);
-                m_1_gram_data = new TMGramPayload[num_buckets[0]];
-                memset(m_1_gram_data, 0, num_buckets[0] * sizeof (TMGramPayload));
+                m_1_gram_data = new T_M_Gram_Payload[num_buckets[0]];
+                memset(m_1_gram_data, 0, num_buckets[0] * sizeof (T_M_Gram_Payload));
 
                 //03) Insert the unknown word data into the allocated array
-                TMGramPayload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
-                pbData.back_off = ZERO_BACK_OFF_WEIGHT;
+                pbData.back = ZERO_BACK_OFF_WEIGHT;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
@@ -109,7 +109,7 @@ namespace uva {
 
                 //Store the probability data in the one gram data storage, under its id
                 m_1_gram_data[word_id].prob = gram.m_prob;
-                m_1_gram_data[word_id].back_off = gram.m_back_off;
+                m_1_gram_data[word_id].back = gram.m_back_off;
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -130,7 +130,7 @@ namespace uva {
 
                 //Set the probability and back-off data
                 data.payload.prob = gram.m_prob;
-                data.payload.back_off = gram.m_back_off;
+                data.payload.back = gram.m_back_off;
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -251,8 +251,8 @@ namespace uva {
                     const TModelLevel mgram_indx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
                     if (get_payload_from_gram_level<TProbBackOffBucket, true, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
-                        total_prob += payload_ptr->back_off;
-                        LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, back_off: " << payload_ptr->back_off << END_LOG;
+                        total_prob += payload_ptr->back;
+                        LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, back_off: " << payload_ptr->back << END_LOG;
                     } else {
                         //The query context id could be determined, but 
                         //the data was not found in the trie.
@@ -261,7 +261,7 @@ namespace uva {
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    TLogProbBackOff back_off = m_1_gram_data[gram.get_back_off_end_word_id()].back_off;
+                    TLogProbBackOff back_off = m_1_gram_data[gram.get_back_off_end_word_id()].back;
                     total_prob += back_off;
                     LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram back_off: " << back_off << END_LOG;
                 }

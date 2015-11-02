@@ -162,6 +162,14 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    m_trie.get_unk_word_payload(payload);
+                };
+
+                /**
                  * The basic class destructor
                  */
                 virtual ~LayeredTrieDriver() {

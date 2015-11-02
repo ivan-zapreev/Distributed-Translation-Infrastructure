@@ -46,6 +46,14 @@ namespace uva {
             namespace m_grams {
 
                 /**
+                 * This data structure stores the probability and back off weight payload for an m-gram
+                 */
+                typedef struct {
+                    TLogProbBackOff prob;
+                    TLogProbBackOff back;
+                } T_M_Gram_Payload;
+
+                /**
                  * This class is the base class for all the M-gram classes used
                  */
                 template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>

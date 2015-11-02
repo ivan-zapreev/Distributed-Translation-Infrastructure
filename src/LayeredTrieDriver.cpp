@@ -50,23 +50,23 @@ namespace uva {
                 const TShortId word_id = gram.get_end_word_id();
 
                 //Get the word probability and back-off data reference
-                TMGramPayload & pbData = m_trie.make_1_gram_data_ref(word_id);
+                T_M_Gram_Payload & pbData = m_trie.make_1_gram_data_ref(word_id);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(gram,
                             word_id, WordIndexType::UNDEFINED_WORD_ID,
-                            pbData.prob, pbData.back_off,
+                            pbData.prob, pbData.back,
                             gram.m_prob, gram.m_back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
                 pbData.prob = gram.m_prob;
-                pbData.back_off = gram.m_back_off;
+                pbData.back = gram.m_back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
-                        << pbData.prob << "," << pbData.back_off << ") for "
+                        << pbData.prob << "," << pbData.back << ") for "
                         << (string) gram << " wordHash = " << word_id << END_LOG;
             };
 
@@ -87,22 +87,22 @@ namespace uva {
                     msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
                 }
-                TMGramPayload& pbData = m_trie.template make_m_gram_data_ref<CURR_LEVEL>(wordId, ctxId);
+                T_M_Gram_Payload& pbData = m_trie.template make_m_gram_data_ref<CURR_LEVEL>(wordId, ctxId);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
                     REPORT_COLLISION_WARNING(gram, wordId, ctxId,
-                            pbData.prob, pbData.back_off,
+                            pbData.prob, pbData.back,
                             gram.m_prob, gram.m_back_off);
                 }
 
                 //Set/Update the probability and back-off values for the word
                 pbData.prob = gram.m_prob;
-                pbData.back_off = gram.m_back_off;
+                pbData.back = gram.m_back_off;
 
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
-                        << pbData.prob << "," << pbData.back_off << ") for "
+                        << pbData.prob << "," << pbData.back << ") for "
                         << (string) gram << " contextHash = "
                         << ctxId << ", wordHash = " << wordId << END_LOG;
             };
@@ -178,7 +178,7 @@ namespace uva {
                         } else {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
-                            const TMGramPayload * entry_ptr;
+                            const T_M_Gram_Payload * entry_ptr;
                             if (m_trie.template get_m_gram_data_ref<CURR_LEVEL>(word_id, ctx_id, &entry_ptr)) {
                                 LOG_DEBUG << "The " << CURR_LEVEL
                                         << "-Gram log_" << LOG_PROB_WEIGHT_BASE
@@ -206,7 +206,7 @@ namespace uva {
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
-                    const TMGramPayload * entry_ptr;
+                    const T_M_Gram_Payload * entry_ptr;
                     if (m_trie.get_1_gram_data_ref(word_id, & entry_ptr)) {
 
                         LOG_DEBUG << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
@@ -243,13 +243,13 @@ namespace uva {
                     if (get_m_gram_ctx_id(gram.template first<true, CURR_LEVEL>(), gram.template last<true>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         //The context length plus one is M value of the M-Gram
-                        const TMGramPayload * entry_ptr;
+                        const T_M_Gram_Payload * entry_ptr;
                         if (m_trie.template get_m_gram_data_ref<CURR_LEVEL>(word_id, ctx_id, &entry_ptr)) {
                             //Obtained the stored back-off weight
-                            total_prob += entry_ptr->back_off;
+                            total_prob += entry_ptr->back;
                             LOG_DEBUG << "The " << CURR_LEVEL << "-Gram log_"
                                     << LOG_PROB_WEIGHT_BASE << "( back-off ) for (wordId, ctxId)=("
-                                    << word_id << ", " << ctx_id << "), is: " << entry_ptr->back_off << END_LOG;
+                                    << word_id << ", " << ctx_id << "), is: " << entry_ptr->back << END_LOG;
                         } else {
                             //The query context id could be determined, but 
                             //the data was not found in the trie.
@@ -269,13 +269,13 @@ namespace uva {
                     //We came to a zero context, which means we have an
                     //1-Gram to try to get the back-off weight from
                     //Attempt to retrieve back-off weights
-                    const TMGramPayload * pb_data_ptr;
+                    const T_M_Gram_Payload * pb_data_ptr;
                     if (m_trie.get_1_gram_data_ref(word_id, &pb_data_ptr)) {
                         //Note that: If the stored back-off is UNDEFINED_LOG_PROB_WEIGHT then the back of is just zero
-                        total_prob += pb_data_ptr->back_off;
+                        total_prob += pb_data_ptr->back;
                         LOG_DEBUG << "The 1-Gram log_" << LOG_PROB_WEIGHT_BASE
                                 << "( back-off ) for word: " << word_id
-                                << ", is: " << pb_data_ptr->back_off << END_LOG;
+                                << ", is: " << pb_data_ptr->back << END_LOG;
                     } else {
                         //The one gram data is not present!
                         LOG_DEBUG << "Unable to find the 1-Gram entry for a word: "

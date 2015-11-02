@@ -55,21 +55,6 @@ namespace uva {
         namespace tries {
 
             /**
-             * This structure is used to define the trivial probability/
-             * back-off pari to be stored for M-grams with 1 <= M < N
-             * @param prob stores the probability
-             * @param back_off stores the back-off
-             * @param is_payload_set is the flag used when the payload is tried
-             * to be retrieved, contains true if the payload is set, i.e. was
-             * successfully retrieved from the trie.
-             */
-            typedef struct {
-                TLogProbBackOff prob;
-                TLogProbBackOff back_off;
-                bool is_payload_set;
-            } TMGramPayload;
-
-            /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -148,7 +133,7 @@ namespace uva {
                 inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
-                
+
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
                  * @param payload the unknown word payload data

@@ -77,7 +77,7 @@ namespace uva {
                     typedef PAYLOAD_TYPE TPayloadType;
                 };
 
-                typedef S_M_GramData<T_Gram_Id_Data_Ptr, TMGramPayload> T_M_Gram_PB_Entry;
+                typedef S_M_GramData<T_Gram_Id_Data_Ptr, T_M_Gram_Payload> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<T_Gram_Id_Data_Ptr, TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 template<typename ELEMENT_TYPE>
@@ -116,7 +116,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                constexpr static inline bool needs_bitmap_hash_cache() {
+                constexpr static inline bool do_bitmap_hash_cache() {
                     return __G2DMapTrie::DO_BITMAP_HASH_CACHE;
                 }
 
@@ -134,20 +134,20 @@ namespace uva {
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
                  * This method adds a 1-Gram (word) to the trie.
                  * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram);
 
                 /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
                 void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
@@ -155,15 +155,37 @@ namespace uva {
                 /**
                  * This method adds a N-Gram (word) to the trie where
                  * It it not guaranteed that the parameter will be checked to be a N-Gram!
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram);
+
+                /**
+                 * This method allows to get the probability and/or back off weight for the
+                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param gram the m-gram to work with
+                 * @param payload the payload structure to put the values in
+                 * @return true if the payload has been found, otherwise false
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                    THROW_NOT_IMPLEMENTED();
+                };
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                };
 
                 /**
                  * This function allows to retrieve the probability stored for the given M-gram level.
                  * If the value is found then it must be set to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
                 void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
@@ -173,7 +195,7 @@ namespace uva {
                  * If the value is found then it must be added to the prob parameter of the function.
                  * If the value is not found then the prob parameter of the function must not be changed.
                  * In that case the back-off weight is just zero.
-                 * @see ATrie
+                 * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
                 void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
@@ -340,7 +362,7 @@ namespace uva {
 
             private:
                 //Stores the 1-gram data
-                TMGramPayload * m_1_gram_data;
+                T_M_Gram_Payload * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
                 typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;

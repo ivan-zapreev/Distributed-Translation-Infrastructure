@@ -54,7 +54,7 @@ namespace uva {
                  */
                 typedef struct {
                     TShortId id;
-                    TMGramPayload data;
+                    T_M_Gram_Payload data;
                 } TWordIdPBData;
 
                 /**
@@ -180,7 +180,7 @@ namespace uva {
                 /**
                  * This method can be used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
@@ -221,49 +221,57 @@ namespace uva {
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
-                TMGramPayload & make_1_gram_data_ref(const TShortId wordId);
+                T_M_Gram_Payload & make_1_gram_data_ref(const TShortId wordId);
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * If the storage structure does not exist, throws an exception.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
-                bool get_1_gram_data_ref(const TShortId wordId, const TMGramPayload ** ppData) const;
+                bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel level>
-                TMGramPayload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+                T_M_Gram_Payload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, throws an exception.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel level>
                 bool get_m_gram_data_ref(const TShortId wordId,
-                        TLongId ctxId, const TMGramPayload **ppData) const;
+                        TLongId ctxId, const T_M_Gram_Payload **ppData) const;
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
                 TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
-                 * For more details @see ATrie
+                 * For more details @see LayeredTrieBase
                  */
                 bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                };
 
                 /**
                  * The basic destructor
@@ -327,7 +335,7 @@ namespace uva {
             private:
 
                 //Stores the 1-gram data
-                TMGramPayload * m_1_gram_data;
+                T_M_Gram_Payload * m_1_gram_data;
 
                 //Stores the M-gram context to data mappings for: 1 < M < N
                 //This is a two dimensional array
