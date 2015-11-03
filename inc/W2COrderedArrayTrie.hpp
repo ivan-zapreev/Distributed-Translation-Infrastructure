@@ -199,6 +199,16 @@ namespace uva {
                 bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline bool get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[wordId];
+                    return true;
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -218,6 +228,29 @@ namespace uva {
                         const TLongId ctxId, const T_M_Gram_Payload **ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
+                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                    //Get the entry
+                    const typename T_M_GramWordEntry::TElemType * pEntry;
+                    const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                    if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, wordId, ctxId, &pEntry)) {
+                        //Return the data
+                        payload = pEntry->payload;
+                        return true;
+                    } else {
+                        //The data could not be found
+                        return false;
+                    }
+                }
+
+                /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -232,13 +265,34 @@ namespace uva {
                 bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
 
                 /**
+                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
+                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                    //Get the entry
+                    const typename T_N_GramWordEntry::TElemType * pEntry;
+                    if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
+                        //Return the data
+                        payload.prob = pEntry->payload;
+                        return true;
+                    } else {
+                        //The data could not be found
+                        return false;
+                    }
+                }
+
+                /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
                  * @param payload the unknown word payload data
                  */
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 };
-                
+
                 /**
                  * The basic destructor
                  */
@@ -456,7 +510,7 @@ namespace uva {
                     }
                 }
             };
-            
+
             typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CArrayTrieBasic;
             typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CArrayTrieCount;
             typedef W2CArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CArrayTrieOptBasic;
