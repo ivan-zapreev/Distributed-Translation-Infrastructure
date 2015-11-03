@@ -129,11 +129,12 @@ namespace uva {
                     /**
                      * Allows to get the address of the given word id cell by word index (number)
                      * Note the data array storing word ids is continuous.
-                     * @param word_idx the word index, the word number as in the m-gram w1w2w3w4w5
+                     * @param WORD_IDX the word index, the word number as in the m-gram w1w2w3w4w5
                      * @return the pointer to the cell storing the word id with the given index
                      */
-                    inline const TWordIdType * ptr(const TModelLevel word_idx) const {
-                        return &m_word_ids[word_idx];
+                    template<TModelLevel WORD_IDX>
+                    inline const TWordIdType * ptr() const {
+                        return &m_word_ids[WORD_IDX];
                     }
                     
                     /**
