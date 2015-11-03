@@ -187,14 +187,14 @@ namespace uva {
                  * @param testFile the file containing the N-Gram (5-Gram queries)
                  * @return the CPU seconds used to run the queries, without time needed to read the test file
                  */
-                template<typename TrieType, bool IS_CUMULATIVE_PROB>
+                template<typename TrieType, bool IS_CUM_QUERY>
                 static void read_and_execute_queries(TrieType & trie, AFileReader &testFile) {
                     //Declare time variables for CPU times in seconds
                     double startTime = 0.0, endTime = 0.0;
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    T_M_Gram_Query <TrieType, IS_CUMULATIVE_PROB> query(trie);
+                    T_M_Gram_Query <TrieType, IS_CUM_QUERY> query(trie);
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -219,7 +219,7 @@ namespace uva {
                     LOG_USAGE << "Total query execution time is " << (endTime - startTime) << " CPU seconds." << END_LOG;
                 }
 
-                template<typename TrieType, bool IS_CUM_PROB>
+                template<typename TrieType, bool IS_CUM_QUERY>
                 void execute(const __Executor::TExecutionParams& params, AFileReader &modelFile, AFileReader &testFile) {
                     //Get the word index type and make an instance of the word index
                     typename TrieType::WordIndexType word_index(params.m_word_index_mem_fact);
@@ -257,34 +257,34 @@ namespace uva {
                     //report_memory_usage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
                     LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-                    read_and_execute_queries<TrieType, IS_CUM_PROB>(trie, testFile);
+                    read_and_execute_queries<TrieType, IS_CUM_QUERY>(trie, testFile);
                     testFile.close();
 
                     //Deallocate the trie
                     LOG_USAGE << "Cleaning up memory ..." << END_LOG;
                 }
 
-                template<typename WordIndexType, bool IS_CUM_PROB>
+                template<typename WordIndexType, bool IS_CUM_QUERY>
                 static void choose_trie_type_and_execute(const __Executor::TExecutionParams& params,
                         AFileReader &modelFile, AFileReader &testFile) {
                     switch (params.m_trie_type) {
                         case TrieTypesEnum::C2DH_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_PROB>(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2DM_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_PROB>(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2WA_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_PROB>(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::G2DM_TRIE:
-                            execute < GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>, IS_CUM_PROB>(params, modelFile, testFile);
+                            execute < GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CA_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_PROB>(params, modelFile, testFile);
+                            execute < GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CH_TRIE:
-                            execute < GenericTrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_PROB> (params, modelFile, testFile);
+                            execute < GenericTrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY> (params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;
@@ -299,7 +299,7 @@ namespace uva {
                  * @param modelFile the model file existing and opened, will be closed by this function
                  * @param testFile the model file existing and opened, will be closed by this function
                  */
-                template<bool IS_CUM_PROB>
+                template<bool IS_CUM_QUERY>
                 static void choose_word_index_and_execute(
                         __Executor::TExecutionParams& params,
                         AFileReader &modelFile, AFileReader &testFile) {
@@ -309,16 +309,16 @@ namespace uva {
                     params.m_word_index_mem_fact = __HashMapWordIndex::MEMORY_FACTOR;
                     switch (params.m_word_index_type) {
                         case WordIndexTypesEnum::BASIC_WORD_INDEX:
-                            choose_trie_type_and_execute<BasicWordIndex, IS_CUM_PROB>(params, modelFile, testFile);
+                            choose_trie_type_and_execute<BasicWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case WordIndexTypesEnum::COUNTING_WORD_INDEX:
-                            choose_trie_type_and_execute<CountingWordIndex, IS_CUM_PROB>(params, modelFile, testFile);
+                            choose_trie_type_and_execute<CountingWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX:
-                            choose_trie_type_and_execute<OptimizingWordIndex<BasicWordIndex>, IS_CUM_PROB>(params, modelFile, testFile);
+                            choose_trie_type_and_execute<OptimizingWordIndex<BasicWordIndex>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
-                            choose_trie_type_and_execute<OptimizingWordIndex<CountingWordIndex>, IS_CUM_PROB>(params, modelFile, testFile);
+                            choose_trie_type_and_execute<OptimizingWordIndex<CountingWordIndex>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;

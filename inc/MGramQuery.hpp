@@ -80,7 +80,7 @@ namespace uva {
              * the conditional probability of all sub M-grams and also the total
              * sum, not taking into account the zero log probabilities.
              */
-            template<typename TrieType, bool IS_CUMULATIVE_QUERY>
+            template<typename TrieType, bool IS_CUM_QUERY>
             class T_M_Gram_Query {
             public:
                 typedef typename TrieType::WordIndexType WordIndexType;
@@ -122,7 +122,7 @@ namespace uva {
                  */
                 inline void log_results() const {
                     //Initialize the current index, with the proper start value
-                    TModelLevel curr_idx = (IS_CUMULATIVE_QUERY ? FIRST_SUB_M_GRAM_IDX : LAST_SUB_M_GRAM_IDX);
+                    TModelLevel curr_idx = (IS_CUM_QUERY ? FIRST_SUB_M_GRAM_IDX : LAST_SUB_M_GRAM_IDX);
                     TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
 
                     //Print the intermediate results
@@ -138,7 +138,7 @@ namespace uva {
                     }
 
                     //Print the total cumulative probability if needed
-                    if (IS_CUMULATIVE_QUERY) {
+                    if (IS_CUM_QUERY) {
                         const string gram_str = m_gram_old.get_mgram_prob_str();
                         LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                                 << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
@@ -154,12 +154,12 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << (string) m_gram_old << END_LOG;
 
                     //Prepare the m-gram for querying
-                    m_gram.template prepare_for_querying<IS_CUMULATIVE_QUERY>();
+                    m_gram.template prepare_for_querying<IS_CUM_QUERY>();
 
                     //Define the begin word index variable
                     TModelLevel begin_word_idx = FIRST_WORD_IDX;
 
-                    if (IS_CUMULATIVE_QUERY) {
+                    if (IS_CUM_QUERY) {
                         //Clean the sub-m-gram probability array
                         memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
 
@@ -187,6 +187,11 @@ namespace uva {
                         TModelLevel end_word_idx = LAST_WORD_IDX;
 
                         //ToDo: The algorithms for non-cumulative query should be different!!!!
+                        //1. If the end word is unknown then it is the unknown probability
+                        //2. If the one before the end word is unknown then it is the unk
+                        //   back off plus the last word prob 
+                        //3. If the third from the end word is unknown then it is the prob
+                        //   of the last two word's m-gram or the back-off thereof
                     }
                 }
 
