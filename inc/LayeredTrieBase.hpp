@@ -174,14 +174,6 @@ namespace uva {
                     THROW_MUST_NOT_CALL();
                 };
 
-                /**
-                 * Needs to become inaccessible from outside, as this method is only relevant for generic tries
-                 */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
-                    THROW_MUST_NOT_CALL();
-                };
-
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
@@ -192,12 +184,14 @@ namespace uva {
 
 #define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
             template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >; \
+            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_1>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_2>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_3>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_4>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_5>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_6>(const TShortId wordId, const TLongId ctxId); \
             template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_7>(const TShortId wordId, const TLongId ctxId); \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_1>(const TShortId wordId, TLongId ctxId, const T_M_Gram_Payload **ppData) const; \
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_2>(const TShortId wordId, TLongId ctxId, const T_M_Gram_Payload **ppData) const; \
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_3>(const TShortId wordId, TLongId ctxId, const T_M_Gram_Payload **ppData) const; \
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_m_gram_data_ref<M_GRAM_LEVEL_4>(const TShortId wordId, TLongId ctxId, const T_M_Gram_Payload **ppData) const; \

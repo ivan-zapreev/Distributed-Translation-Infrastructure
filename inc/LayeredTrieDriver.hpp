@@ -129,6 +129,12 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const;
+
+                /**
+                 * @see GenericTrieBase
+                 */
                 template<TModelLevel CURR_LEVEL>
                 void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
 

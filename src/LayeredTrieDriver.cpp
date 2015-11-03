@@ -143,6 +143,12 @@ namespace uva {
             };
 
             template<typename TrieType >
+            template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+            bool  LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                THROW_NOT_IMPLEMENTED();
+            };
+
+            template<typename TrieType >
             template<TModelLevel CURR_LEVEL>
             void LayeredTrieDriver<TrieType>::get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
                 //Get the last word in the N-gram
@@ -285,31 +291,8 @@ namespace uva {
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_ADD_M_GRAM_METHOD_DRIVER_TYPE(DRIVER_TYPE) \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_2>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_3>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_4>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_5>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_6>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram); \
-            template void DRIVER_TYPE::add_m_gram<M_GRAM_LEVEL_7>(const T_Model_M_Gram<DRIVER_TYPE::WordIndexType> & gram);
-
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
-            template class LayeredTrieDriver< T##TRIE_NAME##TYPE >; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_1>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_2>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_3>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_4>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_5>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_6>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::get_prob_weight<M_GRAM_LEVEL_7>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_1>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_2>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_3>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_4>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_5>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_6>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void LayeredTrieDriver< T##TRIE_NAME##TYPE >::add_back_off_weight<M_GRAM_LEVEL_7>(const T_M_Gram<T##TRIE_NAME##TYPE::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            INSTANTIATE_ADD_M_GRAM_METHOD_DRIVER_TYPE(LayeredTrieDriver< T##TRIE_NAME##TYPE >)
+            INSTANTIATE_TRIE_TEMPLATE_TYPE(LayeredTrieDriver,T##TRIE_NAME##TYPE)
 
 #define INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME(TRIE_NAME) \
             INSTANTIATE_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, Basic); \
