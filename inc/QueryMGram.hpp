@@ -82,11 +82,38 @@ namespace uva {
                     template<bool IS_CUM_QUERY>
                     inline void prepare_for_querying() {
                         if (IS_CUM_QUERY) {
-                            //ToDo: Retrieve all the word ids unconditionally, as we will need all of them
+                            //Retrieve all the word ids unconditionally, as we will need all of them
+                            for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
+                                BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
+                            }
                         } else {
-                            //ToDo: Start backwards and stop computing as soon as we reach the first <unk>
+                            //Start retrieving the word ids backwards and stop as soon as we reach the first <unk>
+                            m_last_unk_word_idx = BASE::m_actual_begin_word_idx;
+                            for (TModelLevel curr_word_idx = BASE::m_actual_end_word_idx; curr_word_idx >= BASE::m_actual_begin_word_idx; curr_word_idx--) {
+                                BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
+                                if (BASE::m_word_ids[curr_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
+                                    m_last_unk_word_idx = BASE::m_word_ids[curr_word_idx];
+                                    break;
+                                }
+                            }
                         }
-                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to retrieve the index of the last unknown word
+                     * If the unknown word is not present in the m-gram then
+                     * the first index is returned. This method is only relevant
+                     * for the template parameter IS_CUM_QUERY == false. Also, it
+                     * should be called after the prepare_for_querying method.
+                     * @return  the index of the last unknown word or the first word index
+                     */
+                    template<bool IS_CUM_QUERY>
+                    inline TModelLevel get_last_unk_word_idx() {
+                        if (IS_CUM_QUERY) {
+                            THROW_MUST_NOT_CALL();
+                        } else {
+                            return m_last_unk_word_idx;
+                        }
                     }
 
                     /**
@@ -167,6 +194,9 @@ namespace uva {
                     }
 
                 private:
+                    //Stores the last unknown word index, or the first word index
+                    //if there are no unknown words. For non cumulative queries.
+                    TModelLevel m_last_unk_word_idx;
 
                     /**
                      * This constructor is made private as it is not to be used

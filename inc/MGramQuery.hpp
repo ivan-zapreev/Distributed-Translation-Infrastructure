@@ -156,42 +156,37 @@ namespace uva {
                     //Prepare the m-gram for querying
                     m_gram.template prepare_for_querying<IS_CUM_QUERY>();
 
-                    //Define the begin word index variable
-                    TModelLevel begin_word_idx = FIRST_WORD_IDX;
+                    //Define the begin and end word index variable
+                    TModelLevel begin_word_idx, end_word_idx;
 
                     if (IS_CUM_QUERY) {
                         //Clean the sub-m-gram probability array
                         memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
 
-                        //Define the end word index variable
-                        TModelLevel end_word_idx = FIRST_WORD_IDX;
-
-                        //Iterate through sub-m-grams: going right through the row
-                        for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
-                            if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
-                                //If the sub-m-gram's end word is unknown back-off
-                                do_back_off_unknown(begin_word_idx, end_word_idx);
-                            } else {
-                                //If the sub-m-gram's word is known try to retrieve the payload
-                                if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
-                                    //If the sub-m-gram payload is not defined then back-off
-                                    do_back_off_undefined(begin_word_idx, end_word_idx);
-                                }
-                            }
-                        }
+                        //Initialize the begin and end index variables
+                        begin_word_idx = FIRST_WORD_IDX;
+                        end_word_idx = FIRST_WORD_IDX;
                     } else {
                         //Clean the sub-m-gram probability array
                         m_prob[LAST_SUB_M_GRAM_IDX] = ZERO_PROB_WEIGHT;
 
-                        //Define the end word index variable
-                        TModelLevel end_word_idx = LAST_WORD_IDX;
+                        //Initialize the begin and end index variables
+                        begin_word_idx = m_gram.template get_last_unk_word_idx<IS_CUM_QUERY>();
+                        end_word_idx = LAST_WORD_IDX;
+                    }
 
-                        //ToDo: The algorithms for non-cumulative query should be different!!!!
-                        //1. If the end word is unknown then it is the unknown probability
-                        //2. If the one before the end word is unknown then it is the unk
-                        //   back off plus the last word prob 
-                        //3. If the third from the end word is unknown then it is the prob
-                        //   of the last two word's m-gram or the back-off thereof
+                    //Iterate through sub-m-grams: going right through the row
+                    for (; end_word_idx <= LAST_WORD_IDX; ++end_word_idx) {
+                        if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
+                            //If the sub-m-gram's end word is unknown back-off
+                            do_back_off_unknown(begin_word_idx, end_word_idx);
+                        } else {
+                            //If the sub-m-gram's word is known try to retrieve the payload
+                            if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
+                                //If the sub-m-gram payload is not defined then back-off
+                                do_back_off_undefined(begin_word_idx, end_word_idx);
+                            }
+                        }
                     }
                 }
 
