@@ -233,6 +233,16 @@ namespace uva {
                 bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline bool get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[wordId];
+                    return true;
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -252,6 +262,30 @@ namespace uva {
                         TLongId ctxId, const T_M_Gram_Payload **ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    //Compute the m-gram index
+                    constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+
+                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
+                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                    //Get the context id, note we use short ids here!
+                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                        //Return the data
+                        payload = m_M_gram_data[LEVEL_IDX][ctxId].data;
+                        return true;
+                    } else {
+                        //The data could not be found
+                        return false;
+                    }
+                }
+
+                /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -264,6 +298,34 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
+                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+
+                    //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
+                    const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
+                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
+                            << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
+
+                    //Search for the index using binary search
+                    TShortId idx = BASE::UNDEFINED_ARR_IDX;
+                    if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
+                            m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, wordId, ctxId, idx)) {
+                        //Return the data
+                        payload.prob = m_N_gram_data[idx].prob;
+                        return true;
+                    } else {
+                        LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctxId: " << SSTR(ctxId)
+                                << ", wordId: " << SSTR(wordId) << ", key " << SSTR(key) << END_LOG;
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
