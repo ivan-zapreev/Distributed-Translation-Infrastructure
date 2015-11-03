@@ -229,7 +229,14 @@ namespace uva {
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                 inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
-                    return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, payload);
+                    //Check if the sub-m-gram hash has been cached
+                    if( is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram) ) {
+                        //Check the trie for this m-gram's payload
+                        return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, payload);
+                    } else {
+                        //There is no data cached for this sub-m-gram so it is definitely not present in the trie.
+                        return false;
+                    }
                 };
 
                 /**
