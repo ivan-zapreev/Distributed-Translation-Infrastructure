@@ -81,7 +81,7 @@ namespace uva {
                  */
                 template<TModelLevel level>
                 bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
-                
+
                 /**
                  * Allows to log the information about the instantiated trie type
                  */
@@ -110,6 +110,16 @@ namespace uva {
                 bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline bool get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_mgram_data[0][wordId];
+                    return true;
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -124,8 +134,25 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel level>
-                bool get_m_gram_data_ref(const TShortId wordId,
-                        TLongId ctxId, const T_M_Gram_Payload **ppData) const;
+                bool get_m_gram_data_ref(const TShortId wordId, TLongId ctxId,
+                        const T_M_Gram_Payload **ppData) const;
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    //Get the context id, note we use short ids here!
+                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                        //Return the data by the context
+                        payload = m_mgram_data[CURR_LEVEL - 1][ctxId];
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -138,7 +165,36 @@ namespace uva {
                  * Allows to retrieve the probability value for the N gram defined by the end wordId and ctxId.
                  * For more details @see LayeredTrieBase
                  */
-                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId, TLogProbBackOff & prob) const;
+                bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
+                        TLogProbBackOff & prob) const;
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    //Try to find the word mapping first
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][wordId];
+
+                    //If the mapping is present the search further, otherwise return false
+                    if (ctx_mapping != NULL) {
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                        if (result == ctx_mapping->end()) {
+                            //The data could not be found
+                            return false;
+                        } else {
+                            //The data could be found
+                            LOG_DEBUG1 << "Found the probability value: " << SSTR((TLogProbBackOff) result->second)
+                                    << ", wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+                            payload.prob = result->second;
+                            return true;
+                        }
+                    } else {
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
@@ -147,7 +203,7 @@ namespace uva {
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     payload = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
                 };
-                
+
                 /**
                  * The basic destructor
                  */
@@ -195,7 +251,7 @@ namespace uva {
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
             };
-            
+
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CHybridTrieBasic;
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CHybridTrieCount;
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CHybridTrieOptBasic;
