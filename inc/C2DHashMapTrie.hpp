@@ -159,11 +159,7 @@ namespace uva {
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
                  * For more details @see LayeredTrieBase
                  */
-                inline bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
-                    //The data is always present.
-                    *ppData = &m_1_gram_data[wordId];
-                    return true;
-                };
+                bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
                  * Allows to retrieve the payload for the One gram with the given Id.

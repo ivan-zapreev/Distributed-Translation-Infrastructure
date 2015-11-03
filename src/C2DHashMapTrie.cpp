@@ -148,6 +148,13 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
+            bool C2DMapTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
+                //The data is always present.
+                *ppData = &m_1_gram_data[wordId];
+                return true;
+            };
+
+            template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
             T_M_Gram_Payload & C2DMapTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                 //Store the N-tires from length 2 on and indexing starts

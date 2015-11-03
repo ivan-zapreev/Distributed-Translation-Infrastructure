@@ -148,12 +148,22 @@ namespace uva {
                 bool get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const;
 
                 /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline bool get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[wordId];
+                    return true;
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 T_M_Gram_Payload & make_m_gram_data_ref(const TShortId wordId, TLongId ctxId);
 
                 /**
@@ -162,8 +172,26 @@ namespace uva {
                  * If the storage structure does not exist, throws an exception.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 bool get_m_gram_data_ref(const TShortId wordId, TLongId ctxId, const T_M_Gram_Payload **ppData) const;
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    //Get the next context id
+                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                        //There is data found under this context
+                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctxId];
+                        return true;
+                    } else {
+                        //The context id could not be found
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the data storage structure for the N gram.
@@ -178,6 +206,26 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 bool get_n_gram_data_ref(const TShortId wordId, TLongId ctxId, TLogProbBackOff & prob) const;
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+
+                    //Search for the map for that context id
+                    TNGramsMap::const_iterator result = pNGramMap->find(key);
+                    if (result == pNGramMap->end()) {
+                        //There is no data found under this context
+                        return false;
+                    } else {
+                        //There is data found under this context
+                        payload.prob = result->second;
+                        return true;
+                    }
+                }
 
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
@@ -263,7 +311,7 @@ namespace uva {
                 void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
 
             };
-            
+
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DHybridTrieBasic;
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DHybridTrieCount;
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DHybridTrieOptBasic;
