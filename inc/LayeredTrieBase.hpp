@@ -79,7 +79,6 @@ namespace uva {
 
                 /**
                  * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, throws an exception.
                  * @param wordId the One-gram id
                  * @param ppData[out] the pointer to a pointer to the found data
                  * @return true if the element was found, otherwise false
@@ -87,6 +86,18 @@ namespace uva {
                  */
                 inline bool get_1_gram_data_ref(const TShortId wordId,
                         const T_M_Gram_Payload ** ppData) const {
+                    THROW_MUST_OVERRIDE();
+                };
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @param wordId the One-gram id
+                 * @param payload[out] the reference to the data that is to be set with the stored one.
+                 * @return true if the element was found, otherwise false
+                 * @throw nothing
+                 */
+                inline bool get_1_gram_payload(const TShortId wordId,
+                        T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -122,6 +133,21 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * @param CURR_LEVEL the currently considered m-gram level
+                 * @param wordId the id of the M-gram's last word
+                 * @param ctxId the M-gram context (the M-gram's prefix) id
+                 * @param payload[out] the reference to the data that is to be set with the stored one.
+                 * @return true if the element was found, otherwise false
+                 * @throw nothing
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
+                    THROW_MUST_OVERRIDE();
+                };
+
+                /**
                  * Allows to retrieve the data storage structure for the N gram.
                  * Given the N-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -143,6 +169,19 @@ namespace uva {
                  */
                 inline bool get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
                         TLogProbBackOff & prob) const {
+                    THROW_MUST_OVERRIDE();
+                };
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * @param wordId the id of the N-gram's last word
+                 * @param ctxId the N-gram context (the N-gram's prefix) id
+                 * @param payload[out] the reference to the data that is to be set with the stored one.
+                 * @return true if the probability was found, otherwise false
+                 * @throw nothing
+                 */
+                inline bool get_n_gram_payload(const TShortId wordId, const TLongId ctxId,
+                        T_M_Gram_Payload &payload) const {
                     THROW_MUST_OVERRIDE();
                 };
 

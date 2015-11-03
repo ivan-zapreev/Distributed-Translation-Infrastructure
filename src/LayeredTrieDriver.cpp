@@ -144,8 +144,39 @@ namespace uva {
 
             template<typename TrieType >
             template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-            bool  LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
-                THROW_NOT_IMPLEMENTED();
+            bool LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                //Compute the current level from the begin and end word indexes
+                constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
+
+                //Get the last word in the N-gram
+                const TShortId & word_id = gram.get_end_word_id();
+
+                LOG_DEBUG << "Computing probability for an " << CURR_LEVEL << "-gram" << END_LOG;
+
+                //Consider different variants based no the length of the context
+                if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                    //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
+                    TLongId ctx_id;
+
+                    //Compute the context id based on what is stored in m_GramWordIds and context length
+                    if (get_m_gram_ctx_id(gram.ptr(BEGIN_WORD_IDX), gram.ptr(END_WORD_IDX), ctx_id)) {
+                        LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            return m_trie.get_n_gram_payload(word_id, ctx_id, payload);
+                        } else {
+                            //If we are looking for a M-Gram probability with 1 < M < N
+                            //The context length plus one is M value of the M-Gram
+                            return m_trie.template get_m_gram_payload<CURR_LEVEL>(word_id, ctx_id, payload);
+                        }
+                    } else {
+                        //Could not compute the context id for the given level, so backing off (recursive)!
+                        LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-Gram context id, need to back off!" << END_LOG;
+                        return false;
+                    }
+                } else {
+                    //If we are looking for a 1-Gram probability, no need to compute the context
+                    return m_trie.get_1_gram_payload(word_id, payload);
+                }
             };
 
             template<typename TrieType >
