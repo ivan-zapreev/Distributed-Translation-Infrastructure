@@ -382,6 +382,7 @@ namespace uva {
                     INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(4);
                     INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(5);
                     INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(6);
+                    INSTANTIATE_CREATE_M_GRAM_ID_FUNC_BEGIN_IDX(7);
                 }
             }
         }

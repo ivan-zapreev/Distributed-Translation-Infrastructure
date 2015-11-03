@@ -169,9 +169,7 @@ namespace uva {
                  * @return true if the payload has been found, otherwise false
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
-                    THROW_NOT_IMPLEMENTED();
-                };
+                bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const;
 
                 /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
@@ -268,60 +266,21 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to get the bucket index for the given M-gram
+                 * Allows to get the bucket index for the given M-gram hash
                  * @param curr_level the m-gram level we need the bucked id for
-                 * @param gram the M-gram to compute the bucked index for
+                 * @param gram_hash the M-gram hash to compute the bucked index for
                  * @param return the resulting bucket index
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline TShortId get_bucket_id(const T_Model_M_Gram<WordIndexType> & gram) {
-                    //Compute the hash value for the given M-gram, it must
-                    //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.get_hash();
-
-                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
-                            << " hash is " << gram_hash << END_LOG;
-
+                inline TShortId get_bucket_id(const uint64_t gram_hash) const {
+                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram hash is: " << gram_hash << END_LOG;
                     TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];
-
-                    LOG_DEBUG1 << "Getting bucket for " << (string) gram << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[CURR_LEVEL - 1]))) {
                         stringstream msg;
-                        msg << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
-                                << " was given an incorrect hash: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[CURR_LEVEL - 1]) << "]";
-                        throw Exception(msg.str());
-                    }
-
-                    return bucket_idx;
-                }
-
-                /**
-                 * Allows to get the bucket index for the given M-gram
-                 * @param curr_level the m-gram level we need the bucked id for
-                 * @param gram the M-gram to compute the bucked index for
-                 * @param return the resulting bucket index
-                 */
-                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline TShortId get_bucket_id(const T_M_Gram<WordIndexType> &gram) const {
-                    //Compute the hash value for the given M-gram, it must
-                    //be the M-Gram id in the M-Gram data storage
-                    const uint64_t gram_hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
-
-                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
-                            << " hash is " << gram_hash << END_LOG;
-
-                    TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];
-
-                    LOG_DEBUG1 << "Getting bucket for " << (string) gram << " bucket_idx: " << SSTR(bucket_idx) << END_LOG;
-
-                    //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[CURR_LEVEL - 1]))) {
-                        stringstream msg;
-                        msg << "The " << SSTR(CURR_LEVEL) << "-gram: " << (string) gram
-                                << " was given an incorrect hash: " << SSTR(bucket_idx)
+                        msg << "The " << SSTR(CURR_LEVEL) << "-gram has a bad bucket index: " << SSTR(bucket_idx)
                                 << ", must be within [0, " << SSTR(num_buckets[CURR_LEVEL - 1]) << "]";
                         throw Exception(msg.str());
                     }
@@ -404,6 +363,20 @@ namespace uva {
                  */
                 template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
                 bool get_payload_from_gram_level(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
+                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
+
+                /**
+                 * Gets the probability for the given level M-gram, searches on specific level
+                 * @param BUCKET_TYPE the level bucket type
+                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
+                 * @param CURR_LEVEL the currently considered level of the m-gram
+                 * @param query the query M-gram state 
+                 * @param ref the bucket to search in
+                 * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
+                 * @return true if the M-gram was found and otherwise false.
+                 */
+                template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
+                bool get_payload_from_gram_level(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
             };

@@ -51,6 +51,12 @@ namespace uva {
                 typedef struct {
                     TLogProbBackOff prob;
                     TLogProbBackOff back;
+
+                    operator string() const {
+                        stringstream strbf;
+                        strbf << "[ prob: " << prob << ", back: " << back << " ]" ; 
+                        return strbf.str();
+                    }
                 } T_M_Gram_Payload;
 
                 /**
@@ -154,24 +160,6 @@ namespace uva {
                         return m_word_ids[word_idx];
                     };
 
-                protected:
-                    //Stores the m-gram tokens
-                    TextPieceReader m_tokens[MAX_LEVEL_CAPACITY];
-
-                    //The data structure to store the N-gram word ids
-                    TWordIdType m_word_ids[MAX_LEVEL_CAPACITY] = {};
-
-                    //Stores the reference to the used word index
-                    WordIndexType & m_word_index;
-
-                    //Stores the actual m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
-                    TModelLevel m_actual_level;
-
-                    //These variables store the actual begin and end word index
-                    //for all the words of this M-gram stored in the internal arrays
-                    constexpr static TModelLevel m_actual_begin_word_idx = 0;
-                    TModelLevel m_actual_end_word_idx;
-
                     /**
                      * Allows to create a new m-gram id for the sub-m-gram defined by the given of the method template parameters.
                      * For the argument reference to the id data pointer the following holds:
@@ -200,6 +188,24 @@ namespace uva {
                         LOG_DEBUG << "Allocated " << NUMBER_OF_WORDS << "-gram id is: " << (void*) p_m_gram_id
                                 << " for " << tokens_to_string(m_tokens, BEGIN_WORD_IDX, END_WORD_IDX) << END_LOG;
                     }
+
+                protected:
+                    //Stores the m-gram tokens
+                    TextPieceReader m_tokens[MAX_LEVEL_CAPACITY];
+
+                    //The data structure to store the N-gram word ids
+                    TWordIdType m_word_ids[MAX_LEVEL_CAPACITY] = {};
+
+                    //Stores the reference to the used word index
+                    WordIndexType & m_word_index;
+
+                    //Stores the actual m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
+                    TModelLevel m_actual_level;
+
+                    //These variables store the actual begin and end word index
+                    //for all the words of this M-gram stored in the internal arrays
+                    constexpr static TModelLevel m_actual_begin_word_idx = 0;
+                    TModelLevel m_actual_end_word_idx;
                 };
             }
         }

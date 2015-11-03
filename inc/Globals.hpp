@@ -109,6 +109,7 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_5 = 5u;
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
+                const static TModelLevel M_GRAM_LEVEL_8 = 8u;
             }
         }
 
