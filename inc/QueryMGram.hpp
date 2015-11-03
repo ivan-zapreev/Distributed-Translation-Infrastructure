@@ -117,6 +117,16 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to retrieve the hash value for the sub-m-gram 
+                     * defined by the template parameters
+                     * @return the hash value for the given sub-m-gram
+                     */
+                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                    inline uint64_t get_hash() const {
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
                      * For the given N-gram, for some level M <=N , this method
                      * allows to give the string of the object for which the
                      * probability is computed, e.g.:

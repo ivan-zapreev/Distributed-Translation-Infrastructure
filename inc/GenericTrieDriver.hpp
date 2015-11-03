@@ -162,17 +162,58 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param curr_level the currently considered level of the m-gram
+                 * Allows to check if the given sub-m-gram is potentially present in the trie.
+                 * @param IS_BACK_OFF true if this is for the back-off m-gram case
+                 * @param CURR_LEVEL the currently considered level of the m-gram
                  * @param gram the M-gram query to be checked for its hash begin registered in the cache
-                 * @return true if the unknown word is present, otherwise false
+                 * @return true if the sub-m-gram is potentially present, otherwise false
                  */
                 template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
                 inline bool is_m_gram_hash_cached(const T_M_Gram<WordIndexType> & gram) const {
                     if (TrieType::needs_bitmap_hash_cache()) {
-                        const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram_hash_cached<IS_BACK_OFF, CURR_LEVEL>(gram);
+                        //Check on which sub-m-gram level it is
+                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                            const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                            return ref.is_m_gram_hash_cached<IS_BACK_OFF, CURR_LEVEL>(gram);
+                        } else {
+                            //If this is a unigram then we always check the trie
+                            //as retrieving the word probability costs nothing.
+                            return true;
+                        }
                     } else {
+                        return true;
+                    }
+                }
+
+                /**
+                 * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
+                 * and END_WORD_IDX template parameters, is potentially present in the trie.
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param gram the m-gram to work with
+                 * @return true if the sub-m-gram is potentially present, otherwise false
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
+                    //Check if the caching is enabled
+                    if (TrieType::needs_bitmap_hash_cache()) {
+                        //If the caching is enabled
+                        
+                        //Compute the model level
+                        constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
+                        
+                        //Check on which sub-m-gram level it is
+                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                            //The higher sub-m-gram levels always require checking
+                            const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                            return ref.is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
+                        } else {
+                            //If this is a unigram then we always check the trie
+                            //as retrieving the word probability costs nothing.
+                            return true;
+                        }
+                    } else {
+                        //If caching is not enabled then we always check the trie
                         return true;
                     }
                 }
@@ -262,7 +303,7 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                     LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
+                    LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
 
                     //Try getting the back-off weight.
                     //1. If the context length is one go on: we can get smth
@@ -283,7 +324,7 @@ namespace uva {
                                 << "the back-off weight is zero!" << END_LOG;
                     }
                     LOG_DEBUG << "<--- add_back_off_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
-               }
+                }
 
                 /**
                  * The basic class destructor
@@ -296,7 +337,7 @@ namespace uva {
 
                 TrieType m_trie;
 
-                //Stores the bitmap hash caches per M-gram level
+                //Stores the bitmap hash caches per M-gram level for 1 < M <= N
                 BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
 
                 //Declare static arrays of pointers to the template function instances 

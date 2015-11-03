@@ -145,6 +145,31 @@ namespace uva {
                         return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
                     }
 
+                    /**
+                 * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
+                 * and END_WORD_IDX template parameters, is potentially present in the trie.
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param gram the m-gram to work with
+                 * @return true if the sub-m-gram is potentially present, otherwise false
+                     */
+                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, typename WordIndexType>
+                    inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
+                        //Get the m-gram's hash level
+                        uint64_t hash = gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
+
+                        //Get the M-gram hash positions
+                        uint32_t byte_idx = 0;
+                        uint32_t bit_offset_idx = 0;
+                        get_bit_pos(hash, byte_idx, bit_offset_idx);
+
+                        LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
+                                << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx]) << END_LOG;
+
+                        //Return the bit on
+                        return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
+                    }
+
                 private:
                     //Stores the number of elements this bitset was pre-allocated for
                     size_t m_num_elems;
