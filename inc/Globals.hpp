@@ -97,7 +97,7 @@ namespace uva {
             //The value indicating an undefined probability/back-off weight
             const TLogProbBackOff UNDEF_LOG_PROB_WEIGHT = 100.0f;
             //The default value of the unknown word probability weight
-            const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = -100.0f;
+            const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
 
             namespace m_grams {
                 //Various M-gram levels
