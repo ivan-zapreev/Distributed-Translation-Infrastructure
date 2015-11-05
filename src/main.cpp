@@ -101,10 +101,10 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
     //Add the -m the input language model file parameter - compulsory
-    p_model_arg = new ValueArg<string>("m", "model", "A back-off language model file name in ARPA format", true, "", "string", *p_cmd_args);
+    p_model_arg = new ValueArg<string>("m", "model", "A back-off language model file name in ARPA format", true, "", "model file name", *p_cmd_args);
 
     //Add the -q the input test queries file parameter - compulsory 
-    p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "string", *p_cmd_args);
+    p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
     //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
     __Executor::get_trie_types_str(&trie_types);
