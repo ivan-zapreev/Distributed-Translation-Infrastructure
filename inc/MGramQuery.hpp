@@ -124,23 +124,28 @@ namespace uva {
                     //Print the intermediate results
                     for (; curr_idx <= m_gram.get_actual_end_word_idx(); ++curr_idx) {
                         const string gram_str = m_gram.get_mgram_prob_str(curr_idx + 1);
-                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                                 << " ) ) = " << SSTR(m_prob[curr_idx]) << END_LOG;
-                        LOG_INFO << "Prob( " << gram_str << " ) = "
+                        LOG_INFO << "  Prob( " << gram_str << " ) = "
                                 << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_prob[curr_idx])) << END_LOG;
                         if (m_prob[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
                             cumulative_prob += m_prob[curr_idx];
+                        }
+
+                        if (IS_CUM_QUERY) {
+                            LOG_RESULT << "---" << END_LOG;
                         }
                     }
 
                     //Print the total cumulative probability if needed
                     if (IS_CUM_QUERY) {
                         const string gram_str = m_gram.get_mgram_prob_str();
-                        LOG_RESULT << "log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                                 << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
-                        LOG_INFO << "Prob( " << gram_str << " ) = "
+                        LOG_INFO << "  Prob( " << gram_str << " ) = "
                                 << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
                     }
+                    LOG_RESULT << "-------------------------------------------" << END_LOG;
                 }
 
                 /**
@@ -323,7 +328,7 @@ namespace uva {
                                 << ") >= end_word_idx (" << SSTR(end_word_idx) << ")!";
                         throw Exception(msg.str());
                     }
-                    
+
                     //Define the index of the end word for the back-off n-gram
                     const TModelLevel bo_end_word_idx = end_word_idx - 1;
 
