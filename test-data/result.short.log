@@ -1,0 +1,100 @@
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.7017393	musharraf has said zawahiri escaped'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.7017393	musharraf has said zawahiri escaped'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ musharraf has said zawahiri escaped ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.701739) for [ musharraf has said zawahiri escaped ] contextHash = 14871, wordHash = 3345
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.7017393	musharraf has said zawahiri escaped', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.7788136	australia , new zealand and'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.7788136	australia , new zealand and'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ australia , new zealand and ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.778814) for [ australia , new zealand and ] contextHash = 15458, wordHash = 7
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.7788136	australia , new zealand and', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.9864852	australia and new zealand are'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.9864852	australia and new zealand are'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ australia and new zealand are ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.986485) for [ australia and new zealand are ] contextHash = 15459, wordHash = 43
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.9864852	australia and new zealand are', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.9856839	australia and new zealand have'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.9856839	australia and new zealand have'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ australia and new zealand have ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.985684) for [ australia and new zealand have ] contextHash = 15459, wordHash = 32
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.9856839	australia and new zealand have', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.5164739	said , quoting zhao xijun'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.5164739	said , quoting zhao xijun'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ said , quoting zhao xijun ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.516474) for [ said , quoting zhao xijun ] contextHash = 18071, wordHash = 3224
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.5164739	said , quoting zhao xijun', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.8073062	- star , zito went'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.8073062	- star , zito went'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ - star , zito went ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.807306) for [ - star , zito went ] contextHash = 14202, wordHash = 676
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.8073062	- star , zito went', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.8073062	<s> weaver , zito among'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.8073062	<s> weaver , zito among'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ <s> weaver , zito among ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.807306) for [ <s> weaver , zito among ] contextHash = 14203, wordHash = 780
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.8073062	<s> weaver , zito among', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.7278888	- star barry zito decided'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.7278888	- star barry zito decided'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ - star barry zito decided ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.727889) for [ - star barry zito decided ] contextHash = 14205, wordHash = 595
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.7278888	- star barry zito decided', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.6630109	tuesday clearly was zito ,'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.6630109	tuesday clearly was zito ,'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ tuesday clearly was zito , ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.663011) for [ tuesday clearly was zito , ] contextHash = 14204, wordHash = 3
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.6630109	tuesday clearly was zito ,', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.6303216	mile ) buffer zone around'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.6303216	mile ) buffer zone around'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ mile ) buffer zone around ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.630322) for [ mile ) buffer zone around ] contextHash = 16843, wordHash = 326
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.6303216	mile ) buffer zone around', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '-0.6300567	a troubled frontier zone amid'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '-0.6300567	a troubled frontier zone amid'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):154>:	Adding a 5-Gram [ a troubled frontier zone amid ] to the Trie
+DEBUG1 	<src/LayeredTrieDriver.cpp::add_n_gram(...):140>:	Inserted the prob. data (-0.630057) for [ a troubled frontier zone amid ] contextHash = 16842, wordHash = 190
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '-0.6300567	a troubled frontier zone amid', it is accepted
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '<NULL>'
+DEBUG1 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):202>:	Read 5-Gram (?) line: '\end\'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):145>:	Processing the 5-Gram (?) line: '\end\'
+DEBUG 	<src/ARPAGramBuilder.cpp::parse_line(...):165>:	Finished processing the 5-Gram (?) line: '\end\', it is NOT accepted
+DEBUG 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):211>:	Actual number of 5-grams is: 19618
+DEBUG 	<src/ARPATrieBuilder.cpp::read_m_gram_level(...):238>:	Finished reading ARPA 5-Grams.
+
+INFO2:	Cultivating 5-Grams:	 0 hour(s) 0 minute(s) 0 second(s) 
+DEBUG 	<src/ARPATrieBuilder.cpp::do_post_m_gram_actions(...):258>:	Finished post actions of 5-Grams.
+DEBUG 	<src/ARPATrieBuilder.cpp::build(...):471>:	Done reading the file and building the trie.
+DEBUG 	<inc/Executor.hpp::execute(...):242>:	Getting the time statistics after creating the Trie ...
+USAGE:	Reading the Language Model took 4.81573 CPU seconds.
+DEBUG 	<inc/Executor.hpp::execute(...):245>:	Getting the memory statistics after creating the Trie ...
+DEBUG 	<src/StatisticsMonitor.cpp::getMemoryStatistics(...):62>:	Unable to obtain memory usage statistics on Mac OS yet!
+DEBUG 	<inc/Executor.hpp::execute(...):247>:	Reporting on the memory consumption
+USAGE:	Action: 'Creating the Language Model Trie' memory change:
+DEBUG 	<inc/Executor.hpp::report_memory_usage(...):142>:		memory before: vmsize=0 Kb, vmpeak=0 Kb, vmrss=0 Kb, vmhwm=0 Kb
+DEBUG 	<inc/Executor.hpp::report_memory_usage(...):145>:	memory after: vmsize=0 Kb, vmpeak=0 Kb, vmrss=0 Kb, vmhwm=0 Kb
+USAGE:	vmsize=+0 Mb, vmpeak=+0 Mb, vmrss=+0 Mb, vmhwm=+0 Mb
+INFO:	  vmsize - Virtual memory size; vmpeak - Peak virtual memory size
+INFO:	    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)
+INFO:	  vmrss  - Resident set size; vmhwm  - Peak resident set size
+INFO:	    Resident set size is how much memory this process currently has in main memory (RAM)
+DEBUG 	<inc/Executor.hpp::execute(...):250>:	Getting the memory statistics before closing the Model file ...
+DEBUG 	<src/StatisticsMonitor.cpp::getMemoryStatistics(...):62>:	Unable to obtain memory usage statistics on Mac OS yet!
+DEBUG 	<inc/Executor.hpp::execute(...):252>:	Closing the model file ...
+DEBUG 	<inc/Executor.hpp::execute(...):254>:	Getting the memory statistics after closing the Model file ...
+DEBUG 	<src/StatisticsMonitor.cpp::getMemoryStatistics(...):62>:	Unable to obtain memory usage statistics on Mac OS yet!
+USAGE:	Start reading and executing the test queries ...
+DEBUG 	<inc/Executor.hpp::read_and_execute_queries(...):204>:	Got query line [ but the will to achieve ]
+DEBUG 	<inc/MGramQuery.hpp::execute(...):155>:	Starting to execute:[ but the will to achieve ]
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):84>:	Preparing for the SINGLE query execution!
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):98>:	Start retrieving the word ids: backwards
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):103>:	Getting the id for the word @ index: 4
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):106>:	The word: 'achieve' @ index: 4 is UNKNOWN!
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):120>:	Done preparing for the query execution!
+DEBUG 	<inc/MGramQuery.hpp::execute(...):191>:	-----> Considering cumulative sub-m-gram [5, 4]
+DEBUG1 	<inc/MGramQuery.hpp::do_last_word_unknown(...):304>:	The last word (index: 4) is unknonwn, using the <unk> word data!
+DEBUG1 	<inc/MGramQuery.hpp::do_last_word_unknown(...):310>:	Adding the <unk> word probability data for [5, 4] = -100
+RESULT:	  log_10( Prob( achieve | but the will to ) ) = -100
+INFO:	  Prob( achieve | but the will to ) = 0
+RESULT:	-------------------------------------------
+USAGE:	Total query execution time is 0.000295 CPU seconds.
+USAGE:	Cleaning up memory ...
+INFO:	Done

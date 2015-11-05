@@ -167,6 +167,8 @@ namespace uva {
 
                         //Iterate through sub-m-grams: going right through the row
                         for (; end_word_idx <= m_gram.get_actual_end_word_idx(); ++end_word_idx) {
+                            LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
+                                    << ", " << SSTR(end_word_idx) << "]" << END_LOG;
                             if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
                                 //If the sub-m-gram's end word is unknown back-off
                                 do_back_off_unknown(begin_word_idx, end_word_idx);
@@ -185,6 +187,9 @@ namespace uva {
 
                         //Clean the sub-m-gram probability array
                         m_prob[end_word_idx] = ZERO_PROB_WEIGHT;
+
+                        LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
+                                << ", " << SSTR(end_word_idx) << "]" << END_LOG;
 
                         //Check if the en word is unknown
                         if (begin_word_idx > end_word_idx) {
