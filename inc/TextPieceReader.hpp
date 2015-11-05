@@ -495,8 +495,8 @@ namespace uva {
              * @param to_idx the to index
              * @return the resulting string
              */
-            template<TModelLevel N = M_GRAM_LEVEL_MAX>
-            inline string tokens_to_string(const TextPieceReader tokens[N], const TModelLevel begin_idx, const TModelLevel end_idx) {
+            template<TModelLevel MAX_LEVEL = M_GRAM_LEVEL_MAX>
+            inline string tokens_to_string(const TextPieceReader tokens[MAX_LEVEL], const TModelLevel begin_idx, const TModelLevel end_idx) {
                 stringstream data;
                 data << "[ ";
                 LOG_DEBUG4 << "Appending tokens from idx: " << SSTR(begin_idx) << " to idx: " << SSTR(end_idx) << END_LOG;

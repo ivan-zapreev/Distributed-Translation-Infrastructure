@@ -253,7 +253,7 @@ namespace uva {
                         }
 
                         if (get_ctx_id_func[idx](m_trie, *curr_wid_iter, ctx_id)) {
-                            LOGGER(LOG_LEVEL) << "getContextId(" << SSTR(*curr_wid_iter)
+                            LOGGER(LOG_LEVEL) << "get_context_id(" << SSTR(*curr_wid_iter)
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             curr_wid_iter++;
                             idx++;

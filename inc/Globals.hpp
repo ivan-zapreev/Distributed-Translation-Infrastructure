@@ -101,7 +101,7 @@ namespace uva {
 
             namespace m_grams {
                 //Various M-gram levels
-                const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u;
+                const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u; //MUST BE ZERO
                 const static TModelLevel M_GRAM_LEVEL_1 = 1u;
                 const static TModelLevel M_GRAM_LEVEL_2 = 2u;
                 const static TModelLevel M_GRAM_LEVEL_3 = 3u;

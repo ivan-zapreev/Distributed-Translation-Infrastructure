@@ -120,10 +120,26 @@ namespace uva {
 
                     /**
                      * Allows to retrieve the actual end word id of the m-gram
-                     * @return 
+                     * @return the id of the last word
                      */
                     inline TWordIdType get_end_word_id() const {
                         return m_word_ids[m_actual_end_word_idx];
+                    }
+
+                    /**
+                     * Allows to retrieve the actual begin word index
+                     * @return the index of the begin word
+                     */
+                    inline TModelLevel get_actual_begin_word_idx() const {
+                        return m_actual_begin_word_idx;
+                    }
+
+                    /**
+                     * Allows to retrieve the actual end word index
+                     * @return the index of the end word
+                     */
+                    inline TModelLevel get_actual_end_word_idx() const {
+                        return m_actual_end_word_idx;
                     }
 
                     /**

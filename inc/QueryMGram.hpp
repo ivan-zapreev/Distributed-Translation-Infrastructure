@@ -81,38 +81,63 @@ namespace uva {
                      */
                     template<bool IS_CUM_QUERY>
                     inline void prepare_for_querying() {
+                        LOG_DEBUG1 << "Preparing for the " << (IS_CUM_QUERY ? "CUMULATIVE" : "SINGLE") << " query execution!" << END_LOG;
+
+                        //Set all the "computed hash level" flags to "undefined"
+                        memset(computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL_CAPACITY * sizeof (TModelLevel));
+
                         if (IS_CUM_QUERY) {
+                            LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
                             //Retrieve all the word ids unconditionally, as we will need all of them
                             for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
                                 BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
+                                LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
+                                        << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
                             }
                         } else {
+                            LOG_DEBUG1 << "Start retrieving the word ids: backwards" << END_LOG;
                             //Start retrieving the word ids backwards and stop as soon as we reach the first <unk>
-                            m_last_unk_word_idx = BASE::m_actual_begin_word_idx;
-                            for (TModelLevel curr_word_idx = BASE::m_actual_end_word_idx; curr_word_idx >= BASE::m_actual_begin_word_idx; curr_word_idx--) {
+                            //WARNING: Use the signed integer as in the loop we can get a negative index
+                            int8_t curr_word_idx = BASE::m_actual_end_word_idx;
+                            for (; curr_word_idx >= BASE::m_actual_begin_word_idx; curr_word_idx--) {
+                                LOG_DEBUG1 << "Getting the id for the word @ index: " << SSTR(curr_word_idx) << END_LOG;
                                 BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
                                 if (BASE::m_word_ids[curr_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
-                                    m_last_unk_word_idx = BASE::m_word_ids[curr_word_idx];
+                                    LOG_DEBUG1 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' @ index: "
+                                            << SSTR(curr_word_idx) << " is UNKNOWN!" << END_LOG;
                                     break;
                                 }
+                                LOG_DEBUG1 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' @ index: " << SSTR(curr_word_idx)
+                                        << " has id: " << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
                             }
+                            //The first last known word index will be then the current word index + 1
+                            //If there were no unknown words the value will be equal to the actual begin
+                            //index. If the was an unknown word then it will point to the first known
+                            //word after it. In case the last m-gram word was unknown we will simply point
+                            //to outside the last m-gram word, which is also easy to check.
+                            m_flk_word_idx = curr_word_idx + 1;
                         }
+                        LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
                     }
 
                     /**
-                     * Allows to retrieve the index of the last unknown word
+                     * Allows to retrieve the first last known word index.
                      * If the unknown word is not present in the m-gram then
-                     * the first index is returned. This method is only relevant
-                     * for the template parameter IS_CUM_QUERY == false. Also, it
-                     * should be called after the prepare_for_querying method.
-                     * @return  the index of the last unknown word or the first word index
+                     * the the value is larger than the index of the actual last word.
+                     * This method is only relevant for the template parameter:
+                     *     IS_CUM_QUERY == false.
+                     * Otherwise it will throw. Also, it should be called after
+                     * the prepare_for_querying method.
+                     * @param IS_CUM_QUERY true if this is the cumulative query computation
+                     * @return  the index of the first last known
                      */
                     template<bool IS_CUM_QUERY>
-                    inline TModelLevel get_last_unk_word_idx() {
+                    inline TModelLevel get_flk_word_idx() {
                         if (IS_CUM_QUERY) {
                             THROW_MUST_NOT_CALL();
                         } else {
-                            return m_last_unk_word_idx;
+                            LOG_DEBUG2 << "The first last known word index is: " << SSTR(m_flk_word_idx) << END_LOG;
+                            return m_flk_word_idx;
                         }
                     }
 
@@ -123,7 +148,59 @@ namespace uva {
                      */
                     template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                     inline uint64_t get_hash() const {
-                        THROW_NOT_IMPLEMENTED();
+                        LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
+                                << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
+                                << "is: " << SSTR(computed_hash_level[END_WORD_IDX]) << END_LOG;
+
+                        //The column has not been processed before, we need to iterate and incrementally compute hashes
+                        uint64_t(& hash_column)[MAX_LEVEL_CAPACITY] = const_cast<uint64_t(&)[MAX_LEVEL_CAPACITY]> (m_hash_matrix[END_WORD_IDX]);
+
+                        //Check if the given column has already been processed.
+                        //This is not an exact check, as not all the rows of the
+                        //column could have been assigned with hashes. However, in
+                        //case of proper use of the class this is the only check we need.
+                        if (computed_hash_level[END_WORD_IDX] == M_GRAM_LEVEL_UNDEF) {
+                            //Start iterating from the end of the sub-m-gram
+                            TModelLevel curr_idx = END_WORD_IDX;
+                            //If the word is not unknown then the first hash, the word's hash is its id
+                            hash_column[curr_idx] = BASE::m_word_ids[curr_idx];
+
+                            LOG_DEBUG1 << "hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
+
+                            //Iterate through the word ids, and build-up hashes
+                            do {
+                                //Decrement the word id
+                                curr_idx--;
+
+                                //Incrementally build up hash, using the previous hash value and the next word id
+                                hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
+
+                                LOG_DEBUG1 << "word[" << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
+                                        << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
+
+                                //Stop iterating if the reached the beginning of the m-gram
+                            } while (curr_idx != BEGIN_WORD_IDX);
+
+                            //Cast the const modifier away to set the internal flag
+                            const_cast<TModelLevel&> (computed_hash_level[END_WORD_IDX]) = BEGIN_WORD_IDX;
+
+                            LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
+                                    << computed_hash_level[END_WORD_IDX] << END_LOG;
+                        }
+
+                        //Perform the sanity check if needed
+                        if (DO_SANITY_CHECKS && (BEGIN_WORD_IDX < computed_hash_level[END_WORD_IDX])) {
+                            stringstream msg;
+                            msg << "The sub-m-gram [" << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]: "
+                                    << (string) * this << ", hash has not been computed! The hash is only there for "
+                                    << "[" << SSTR(computed_hash_level[END_WORD_IDX]) << ", " << SSTR(END_WORD_IDX) << "]";
+                            throw Exception(msg.str());
+                        }
+
+                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[BEGIN_WORD_IDX] << END_LOG;
+
+                        //Return the hash value that must have been pre-computed
+                        return hash_column[BEGIN_WORD_IDX];
                     }
 
                     /**
@@ -187,15 +264,21 @@ namespace uva {
                         BASE::m_actual_end_word_idx = BASE::m_actual_begin_word_idx;
 
                         //Read the tokens one by one backwards and decrement the index
-                        while (text.get_last_space(BASE::m_tokens[BASE::m_actual_end_word_idx++]));
+                        while (text.get_first_space(BASE::m_tokens[BASE::m_actual_end_word_idx++]));
 
-                        //Set the actual level value
-                        BASE::m_actual_level = BASE::m_actual_end_word_idx;
-                        //Adjust the end word index, note the post increment in the loop above
-                        BASE::m_actual_end_word_idx--;
+                        //Adjust the end word index, in the loop above we always
+                        //increment for the one extra time, for the false result.
+                        //So after the loop the end word index is equal to the word
+                        //count + 1. Now set it to the proper value, subtracting 2
+                        BASE::m_actual_end_word_idx -= 2;
+
+                        //Set the actual level value to be the number of read words
+                        BASE::m_actual_level = BASE::m_actual_end_word_idx + 1;
 
                         //Do the sanity check if needed!
-                        if (DO_SANITY_CHECKS && (BASE::m_actual_level < M_GRAM_LEVEL_1)) {
+                        if (DO_SANITY_CHECKS && (
+                                (BASE::m_actual_level < M_GRAM_LEVEL_1) ||
+                                (BASE::m_actual_level > MAX_LEVEL_CAPACITY))) {
                             stringstream msg;
                             msg << "A broken N-gram query: " << (string) * this
                                     << ", level: " << SSTR(BASE::m_actual_level);
@@ -204,9 +287,12 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the last unknown word index, or the first word index
-                    //if there are no unknown words. For non cumulative queries.
-                    TModelLevel m_last_unk_word_idx;
+                    //Stores the first known word index following the last unknown word. For non cumulative queries.
+                    TModelLevel m_flk_word_idx;
+                    //Stores the hash computed flags
+                    TModelLevel computed_hash_level[MAX_LEVEL_CAPACITY];
+                    //Stores the computed hash values
+                    uint64_t m_hash_matrix[MAX_LEVEL_CAPACITY][MAX_LEVEL_CAPACITY];
 
                     /**
                      * This constructor is made private as it is not to be used
@@ -269,7 +355,7 @@ namespace uva {
                             LOG_DEBUG << "Computed " << NUMBER_OF_WORDS << "-gram hash is: " << word_ids[curr_idx]
                                     << " for the maximum sub-m-gram: " << tokens_to_string(BASE::m_tokens, curr_idx, END_WORD_IDX) << END_LOG;
                         } else {
-                            //We did not compute all the required hashed because of <unk>
+                            //We did not compute all the required hashes because of <unk>
                             result = false;
 
                             //Log the result

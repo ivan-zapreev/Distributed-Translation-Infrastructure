@@ -116,7 +116,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                constexpr static inline bool do_bitmap_hash_cache() {
+                constexpr static inline bool needs_bitmap_hash_cache() {
                     return __G2DMapTrie::DO_BITMAP_HASH_CACHE;
                 }
 
@@ -362,7 +362,7 @@ namespace uva {
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
-                bool get_payload_from_gram_level(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
+                bool get_payload_from_gram_level_old(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
                         const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
                 /**

@@ -46,7 +46,7 @@ namespace uva {
 
             template<typename TrieType >
             void LayeredTrieDriver<TrieType>::add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
-                //Compute it's hash value
+                //Get the word id of this unigram, so there is just one word in it and its the end one
                 const TShortId word_id = gram.get_end_word_id();
 
                 //Get the word probability and back-off data reference
@@ -76,23 +76,23 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId = WordIndexType::UNKNOWN_WORD_ID;
-                get_context_id<CURR_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                get_context_id<CURR_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctx_id);
 
                 // 2. Insert the probability data into the trie
-                TShortId wordId = gram.get_end_word_id();
+                TShortId end_word_id = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
-                if (DO_SANITY_CHECKS && (wordId == WordIndexType::UNKNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (end_word_id == WordIndexType::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
                 }
-                T_M_Gram_Payload& pbData = m_trie.template make_m_gram_data_ref<CURR_LEVEL>(wordId, ctxId);
+                T_M_Gram_Payload& pbData = m_trie.template make_m_gram_data_ref<CURR_LEVEL>(end_word_id, ctx_id);
 
                 //Check that the probability data is not set yet, otherwise a warning!
                 if (DO_SANITY_CHECKS && (pbData.prob != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
-                    REPORT_COLLISION_WARNING(gram, wordId, ctxId,
+                    REPORT_COLLISION_WARNING(gram, end_word_id, ctx_id,
                             pbData.prob, pbData.back,
                             gram.m_prob, gram.m_back_off);
                 }
@@ -104,7 +104,7 @@ namespace uva {
                 LOG_DEBUG1 << "Inserted the (prob,back-off) data ("
                         << pbData.prob << "," << pbData.back << ") for "
                         << (string) gram << " contextHash = "
-                        << ctxId << ", wordHash = " << wordId << END_LOG;
+                        << ctx_id << ", wordHash = " << end_word_id << END_LOG;
             };
 
             template<typename TrieType >
@@ -112,34 +112,34 @@ namespace uva {
                 //To add the new N-gram (e.g.: w1 w2 w3 w4) data inserted, we need to:
 
                 // 1. Compute the context hash defined by w1 w2 w3
-                TLongId ctxId = WordIndexType::UNKNOWN_WORD_ID;
-                get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctxId);
+                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                get_context_id<MAX_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctx_id);
 
                 // 2. Insert the probability data into the trie
-                TShortId wordId = gram.get_end_word_id();
+                const TShortId end_word_id = gram.get_end_word_id();
                 //The word has to be known, otherwise it is an error situation
-                if (DO_SANITY_CHECKS && (wordId == WordIndexType::UNKNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (end_word_id == WordIndexType::UNKNOWN_WORD_ID)) {
                     stringstream msg;
                     msg << "Could not get end wordId for " << (string) gram;
                     throw Exception(msg.str());
                 }
-                TLogProbBackOff& pData = m_trie.make_n_gram_data_ref(wordId, ctxId);
+                TLogProbBackOff& prob_ref = m_trie.make_n_gram_data_ref(end_word_id, ctx_id);
 
                 //Check that the probability data is not set yet, otherwise a warning!
-                if (DO_SANITY_CHECKS && (pData != ZERO_PROB_WEIGHT)) {
+                if (DO_SANITY_CHECKS && (prob_ref != ZERO_PROB_WEIGHT)) {
                     //If the probability is not zero then this word has been already seen!
 
-                    REPORT_COLLISION_WARNING(gram, wordId, ctxId,
-                            pData, UNDEF_LOG_PROB_WEIGHT,
+                    REPORT_COLLISION_WARNING(gram, end_word_id, ctx_id,
+                            prob_ref, UNDEF_LOG_PROB_WEIGHT,
                             gram.m_prob, UNDEF_LOG_PROB_WEIGHT);
                 }
 
                 //Set/Update the probability
-                pData = gram.m_prob;
+                prob_ref = gram.m_prob;
 
-                LOG_DEBUG1 << "Inserted the prob. data (" << pData << ") for "
+                LOG_DEBUG1 << "Inserted the prob. data (" << prob_ref << ") for "
                         << (string) gram << " contextHash = "
-                        << ctxId << ", wordHash = " << wordId << END_LOG;
+                        << ctx_id << ", wordHash = " << end_word_id << END_LOG;
             };
 
             template<typename TrieType >
@@ -149,9 +149,10 @@ namespace uva {
                 constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
                 //Get the last word in the N-gram
-                const TShortId & word_id = gram.get_end_word_id();
+                const TShortId & end_word_id = gram[END_WORD_IDX];
 
-                LOG_DEBUG << "Computing probability for an " << CURR_LEVEL << "-gram" << END_LOG;
+                LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                        << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
 
                 //Consider different variants based no the length of the context
                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
@@ -162,11 +163,11 @@ namespace uva {
                     if (get_m_gram_ctx_id(gram.template ptr<BEGIN_WORD_IDX>(), gram.template ptr<END_WORD_IDX>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            return m_trie.get_n_gram_payload(word_id, ctx_id, payload);
+                            return m_trie.get_n_gram_payload(end_word_id, ctx_id, payload);
                         } else {
                             //If we are looking for a M-Gram probability with 1 < M < N
                             //The context length plus one is M value of the M-Gram
-                            return m_trie.template get_m_gram_payload<CURR_LEVEL>(word_id, ctx_id, payload);
+                            return m_trie.template get_m_gram_payload<CURR_LEVEL>(end_word_id, ctx_id, payload);
                         }
                     } else {
                         //Could not compute the context id for the given level, so backing off (recursive)!
@@ -175,7 +176,7 @@ namespace uva {
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
-                    return m_trie.get_1_gram_payload(word_id, payload);
+                    return m_trie.get_1_gram_payload(end_word_id, payload);
                 }
             };
 

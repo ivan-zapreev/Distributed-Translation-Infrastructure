@@ -169,29 +169,32 @@ namespace uva {
                         TLogProbBackOff & prob) const;
 
                 /**
-                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
+                 * Allows to retrieve the payload for the N gram defined by the
+                 * end_word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline bool get_n_gram_payload(const TShortId end_word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][wordId];
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];
 
                     //If the mapping is present the search further, otherwise return false
                     if (ctx_mapping != NULL) {
-                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctxId);
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
                         if (result == ctx_mapping->end()) {
                             //The data could not be found
                             return false;
                         } else {
                             //The data could be found
-                            LOG_DEBUG1 << "Found the probability value: " << SSTR((TLogProbBackOff) result->second)
-                                    << ", wordId: " << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-                            payload.prob = result->second;
+                            LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
+                                    << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+                            //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
+                            payload.prob = (TLogProbBackOff &) result->second;
                             return true;
                         }
                     } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL) << " for wordId: " << SSTR(wordId) << "!" << END_LOG;
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
+                                << " for wordId: " << SSTR(end_word_id) << "!" << END_LOG;
                         return false;
                     }
                 }

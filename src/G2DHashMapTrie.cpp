@@ -104,7 +104,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
-                //Get the word id of this one gram
+                //Get the word id of this unigram, so there is just one word in it and its the end one
                 const TShortId word_id = gram.get_end_word_id();
 
                 //Store the probability data in the one gram data storage, under its id
@@ -151,7 +151,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
-            bool G2DMapTrie<MAX_LEVEL, WordIndexType>::get_payload_from_gram_level(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
+            bool G2DMapTrie<MAX_LEVEL, WordIndexType>::get_payload_from_gram_level_old(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
                     const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const {
                 //1. Check that the bucket with the given index is not empty
                 if (ref.has_data()) {
@@ -184,6 +184,9 @@ namespace uva {
                 //Compute the current level of the sub-m-gram
                 constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
+                LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                        << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
+
                 //1. Check that the bucket with the given index is not empty
                 if (ref.has_data()) {
                     LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
@@ -204,7 +207,7 @@ namespace uva {
                 }
 
                 //Could not compute the probability for the given level, so backing off (recursive)!
-                LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-Gram, need to back off!" << END_LOG;
+                LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-gram, need to back off!" << END_LOG;
                 return false;
             }
 
@@ -214,25 +217,28 @@ namespace uva {
                 //Compute the current level of the sub-m-gram
                 constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
-                LOG_DEBUG << "Computing probability for a " << CURR_LEVEL << "-gram " << END_LOG;
+                LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                        << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
 
                 //1. Check which level M-gram we need to get payload for
                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1
-                    LOG_DEBUG << "The level " << CURR_LEVEL << "-gram max level " << MAX_LEVEL << END_LOG;
+                    LOG_DEBUG << "The level " << SSTR(CURR_LEVEL) << "-gram max level is: " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Obtain the bucket id
-                    LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
+                    LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                            << BEGIN_WORD_IDX << "," << END_WORD_IDX << "] of: " << (string) gram << END_LOG;
                     const uint32_t bucket_idx = this->template get_bucket_id<CURR_LEVEL>(gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>());
-                    LOG_DEBUG << "The " << CURR_LEVEL << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
                     if (CURR_LEVEL == MAX_LEVEL) {
-                        LOG_DEBUG << "Searching in N grams" << END_LOG;
+                        LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                         //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBucket, BEGIN_WORD_IDX, END_WORD_IDX>(gram, m_N_gram_data[bucket_idx], payload_ptr)) {
+                        LOG_DEBUG << "Calling: get_payload_from_gram_level<TProbBucket, " << BEGIN_WORD_IDX << ", " << END_WORD_IDX << ">" << END_LOG;
+                        if (this->template get_payload_from_gram_level<TProbBucket, BEGIN_WORD_IDX, END_WORD_IDX>(gram, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
                             payload.prob = *payload_ptr;
                             LOG_DEBUG << "The N-gram is found, payload: " << (string) payload << END_LOG;
@@ -244,25 +250,26 @@ namespace uva {
                         }
                     } else {
                         const TModelLevel mgram_indx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
-                        LOG_DEBUG << "Searching in " << CURR_LEVEL << "-grams, array index: " << mgram_indx << END_LOG;
+                        LOG_DEBUG << "Searching in " << SSTR(CURR_LEVEL) << "-grams, array index: " << mgram_indx << END_LOG;
 
                         //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBackOffBucket, BEGIN_WORD_IDX, END_WORD_IDX>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                        LOG_DEBUG << "Calling: get_payload_from_gram_level<TProbBackOffBucket, " << BEGIN_WORD_IDX << ", " << END_WORD_IDX << ">" << END_LOG;
+                        if (this->template get_payload_from_gram_level<TProbBackOffBucket, BEGIN_WORD_IDX, END_WORD_IDX>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
                             payload = *payload_ptr;
-                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, payload: " << (string) payload << END_LOG;
+                            LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is found, payload: " << (string) payload << END_LOG;
                             return true;
                         } else {
-                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is not found!" << END_LOG;
+                            LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
                             return false;
                         }
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
-                    payload = m_1_gram_data[gram.get_end_word_id()];
-                    LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram payload: " << (string) payload << END_LOG;
+                    payload = m_1_gram_data[gram[END_WORD_IDX]];
+                    LOG_DEBUG << "Getting the " << SSTR(CURR_LEVEL) << "-gram payload: " << (string) payload << END_LOG;
                     return true;
                 }
             }
@@ -270,17 +277,17 @@ namespace uva {
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                LOG_DEBUG << "Computing probability for a " << CURR_LEVEL << "-gram " << END_LOG;
+                LOG_DEBUG << "Computing probability for a " << SSTR(CURR_LEVEL) << "-gram " << END_LOG;
 
                 //1. Check which level M-gram we need to get probability for
                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1
-                    LOG_DEBUG << "The level " << CURR_LEVEL << "-gram max level " << MAX_LEVEL << END_LOG;
+                    LOG_DEBUG << "The level " << SSTR(CURR_LEVEL) << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Obtain the bucket id
                     LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
                     const uint32_t bucket_idx = this->template get_bucket_id<CURR_LEVEL>(gram.template get_hash<false, CURR_LEVEL>());
-                    LOG_DEBUG << "The " << CURR_LEVEL << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4. Search for the probability on the given M-gram level
                     if (CURR_LEVEL == MAX_LEVEL) {
@@ -288,7 +295,7 @@ namespace uva {
 
                         //1.1.4.1 This is an N-gram case
                         const typename TProbBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBucket, false, CURR_LEVEL>(gram, m_N_gram_data[bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level_old<TProbBucket, false, CURR_LEVEL>(gram, m_N_gram_data[bucket_idx], payload_ptr)) {
                             //1.1.4.1.1 The probability is nicely found
                             total_prob = *payload_ptr;
                             LOG_DEBUG << "The N-gram is found, prob: " << total_prob << END_LOG;
@@ -298,30 +305,30 @@ namespace uva {
                         }
                     } else {
                         const TModelLevel mgram_indx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
-                        LOG_DEBUG << "Searching in " << CURR_LEVEL << "-grams, array index: " << mgram_indx << END_LOG;
+                        LOG_DEBUG << "Searching in " << SSTR(CURR_LEVEL) << "-grams, array index: " << mgram_indx << END_LOG;
 
                         //1.1.4.2 This is an M-gram case (1 < M < N))
                         const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
-                        if (get_payload_from_gram_level<TProbBackOffBucket, false, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                        if (get_payload_from_gram_level_old<TProbBackOffBucket, false, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                             //1.1.4.2.1 The probability is nicely found
                             total_prob = payload_ptr->prob;
-                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, prob: " << total_prob << END_LOG;
+                            LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is found, prob: " << total_prob << END_LOG;
                         } else {
-                            LOG_DEBUG << "The " << CURR_LEVEL << "-gram is not found!" << END_LOG;
+                            LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
                         }
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     total_prob = m_1_gram_data[gram.get_end_word_id()].prob;
-                    LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram prob: " << total_prob << END_LOG;
+                    LOG_DEBUG << "Getting the " << SSTR(CURR_LEVEL) << "-gram prob: " << total_prob << END_LOG;
                 }
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                LOG_DEBUG << "Computing back-off for a " << CURR_LEVEL << "-gram " << END_LOG;
+                LOG_DEBUG << "Computing back-off for a " << SSTR(CURR_LEVEL) << "-gram " << END_LOG;
 
                 //Perform a sanity check if needed
                 if (DO_SANITY_CHECKS && (CURR_LEVEL < M_GRAM_LEVEL_1)) {
@@ -331,31 +338,31 @@ namespace uva {
                 //1. Check which level M-gram we need to get probability for
                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
                     //1.1. This is the case of the M-gram with M > 1 and clearly M < N
-                    LOG_DEBUG << "The level " << CURR_LEVEL << "-gram max level " << MAX_LEVEL << END_LOG;
+                    LOG_DEBUG << "The level " << SSTR(CURR_LEVEL) << "-gram max level " << MAX_LEVEL << END_LOG;
 
                     //1.1.2. Obtain the bucket id
                     LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
                     const uint32_t bucket_idx = this->template get_bucket_id<CURR_LEVEL>(gram.template get_hash<true, CURR_LEVEL>());
-                    LOG_DEBUG << "The " << CURR_LEVEL << "-gram hash bucket idx is " << bucket_idx << END_LOG;
+                    LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is " << bucket_idx << END_LOG;
 
                     //1.1.4 This is an M-gram case (1 < M < N))
                     const typename TProbBackOffBucket::TElemType::TPayloadType * payload_ptr = NULL;
                     const TModelLevel mgram_indx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
-                    if (get_payload_from_gram_level<TProbBackOffBucket, true, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
+                    if (get_payload_from_gram_level_old<TProbBackOffBucket, true, CURR_LEVEL>(gram, m_M_gram_data[mgram_indx][bucket_idx], payload_ptr)) {
                         //1.1.4.1 The probability is nicely found
                         total_prob += payload_ptr->back;
-                        LOG_DEBUG << "The " << CURR_LEVEL << "-gram is found, back_off: " << payload_ptr->back << END_LOG;
+                        LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is found, back_off: " << payload_ptr->back << END_LOG;
                     } else {
                         //The query context id could be determined, but 
                         //the data was not found in the trie.
                         LOG_DEBUG << "Unable to find back-off data for "
-                                << CURR_LEVEL << "-Gram query!" << END_LOG;
+                                << SSTR(CURR_LEVEL) << "-Gram query!" << END_LOG;
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     TLogProbBackOff back_off = m_1_gram_data[gram.get_back_off_end_word_id()].back;
                     total_prob += back_off;
-                    LOG_DEBUG << "Getting the " << CURR_LEVEL << "-gram back_off: " << back_off << END_LOG;
+                    LOG_DEBUG << "Getting the " << SSTR(CURR_LEVEL) << "-gram back_off: " << back_off << END_LOG;
                 }
             }
 

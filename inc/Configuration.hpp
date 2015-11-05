@@ -44,14 +44,14 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static const DebugLevelsEnum LOGER_MAX_LEVEL = INFO3;
+            static const DebugLevelsEnum LOGER_MAX_LEVEL = DEBUG3;
 
             //Defines the log level from which the detailed timing info is available
             static const DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            const bool DO_SANITY_CHECKS = false;
+            const bool DO_SANITY_CHECKS = true;
         }
 
         //The following type definitions are important for storing the Tries information
