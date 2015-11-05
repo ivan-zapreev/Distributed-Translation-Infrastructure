@@ -180,25 +180,6 @@ namespace uva {
                 };
 
                 /**
-                 * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be set to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
-
-                /**
-                 * This function allows to retrieve the back-off stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * In that case the back-off weight is just zero.
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
-
-                /**
                  * This method allows to check if post processing should be called after
                  * all the X level grams are read. This method is virtual.
                  * For more details @see WordIndexTrieBase
@@ -350,20 +331,6 @@ namespace uva {
                             TM_Gram_Id::template compare<M_GRAM_LEVEL> >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
                 }
-
-                /**
-                 * Gets the probability for the given level M-gram, searches on specific level
-                 * @param BUCKET_TYPE the level bucket type
-                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the query M-gram state 
-                 * @param ref the bucket to search in
-                 * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
-                 * @return true if the M-gram was found and otherwise false.
-                 */
-                template<typename BUCKET_TYPE, bool IS_BACK_OFF, TModelLevel CURR_LEVEL >
-                bool get_payload_from_gram_level_old(const T_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
-                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
 
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level

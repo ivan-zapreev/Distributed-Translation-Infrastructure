@@ -170,13 +170,6 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
-                //The data is always present.
-                *ppData = &m_1_gram_data[wordId];
-                return true;
-            };
-
-            template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
             T_M_Gram_Payload & C2DHybridTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                 //Store the N-tires from length 2 on and indexing starts
@@ -198,41 +191,9 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            bool C2DHybridTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
-                    TLongId ctxId, const T_M_Gram_Payload **ppData) const {
-                //Get the next context id
-                if (get_ctx_id<level>(wordId, ctxId)) {
-                    //There is data found under this context
-                    *ppData = &m_M_gram_data[level - BASE::MGRAM_IDX_OFFSET][ctxId];
-                    return true;
-                } else {
-                    //The context id could not be found
-                    return false;
-                }
-            };
-
-            template<TModelLevel N, typename WordIndexType>
             TLogProbBackOff & C2DHybridTrie<N, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, TLongId ctxId) {
                 const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
                 return pNGramMap->operator[](key);
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            bool C2DHybridTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, TLongId ctxId,
-                    TLogProbBackOff & prob) const {
-                const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
-
-                //Search for the map for that context id
-                TNGramsMap::const_iterator result = pNGramMap->find(key);
-                if (result == pNGramMap->end()) {
-                    //There is no data found under this context
-                    return false;
-                } else {
-                    //There is data found under this context
-                    prob = result->second;
-                    return true;
-                }
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>

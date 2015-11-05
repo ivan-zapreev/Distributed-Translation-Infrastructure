@@ -184,16 +184,6 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            bool C2WArrayTrie<N, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
-                LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                *ppData = &m_1_gram_data[wordId];
-
-                //The data should always be present, unless of course this is a bad index!
-                return true;
-            };
-
-            template<TModelLevel N, typename WordIndexType>
             template<TModelLevel level>
             T_M_Gram_Payload& C2WArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 //Compute the m-gram index
@@ -241,27 +231,6 @@ namespace uva {
             };
 
             template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            bool C2WArrayTrie<N, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
-                    TLongId ctxId, const T_M_Gram_Payload **ppData) const {
-                //Compute the m-gram index
-                const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
-
-                LOG_DEBUG2 << "Getting " << SSTR(level) << "-gram with wordId: "
-                        << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                //Get the context id, note we use short ids here!
-                if (get_ctx_id<level>(wordId, ctxId)) {
-                    //Return the data by the context
-                    *ppData = &m_M_gram_data[mgram_idx][ctxId].data;
-                    return true;
-                } else {
-                    //The data could not be found
-                    return false;
-                }
-            };
-
-            template<TModelLevel N, typename WordIndexType>
             TLogProbBackOff& C2WArrayTrie<N, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 //Get the new n-gram index
                 const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
@@ -289,32 +258,6 @@ namespace uva {
 
                 //return the reference to the probability
                 return m_N_gram_data[n_gram_idx].prob;
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            bool C2WArrayTrie<N, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
-                    TLogProbBackOff & prob) const {
-                LOG_DEBUG2 << "Getting " << SSTR(N) << "-gram with wordId: "
-                        << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
-                LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
-                        << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
-
-                //Search for the index using binary search
-                TShortId idx = BASE::UNDEFINED_ARR_IDX;
-                if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
-                        m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, wordId, ctxId, idx)) {
-                    //return the reference to the probability
-                    prob = m_N_gram_data[idx].prob;
-                    return true;
-                } else {
-                    LOG_DEBUG1 << "Unable to find " << SSTR(N) << "-gram data for ctxId: "
-                            << SSTR(ctxId) << ", wordId: " << SSTR(wordId)
-                            << ", key " << SSTR(key) << END_LOG;
-                    return false;
-                }
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

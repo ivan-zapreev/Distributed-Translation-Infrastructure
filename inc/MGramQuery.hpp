@@ -88,17 +88,12 @@ namespace uva {
                 //Define the maximum level constant
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
 
-                //The index of the first sub-m-gram
-                static constexpr TModelLevel FIRST_SUB_M_GRAM_IDX = 0;
-                //The index of the last sub-m-gram
-                static constexpr TModelLevel LAST_SUB_M_GRAM_IDX = MAX_LEVEL - 1;
-
                 /**
                  * The basic constructor for the structure
                  * @param trie the reference to the trie object
                  */
                 T_M_Gram_Query(TrieType & trie)
-                : m_trie(trie), m_gram(trie.get_word_index()), m_gram_old(trie.get_word_index()) {
+                : m_trie(trie), m_gram(trie.get_word_index()) {
                     m_trie.get_unk_word_payload(m_unk_word_data);
                 }
 
@@ -193,6 +188,12 @@ namespace uva {
 
                         //Check if the en word is unknown
                         if (begin_word_idx > end_word_idx) {
+                            //-------------------------------------------------------------------------------------
+                            //ToDo: We actually need to get all the back-offs if present and
+                            //      not just set the value to <unk> probability! This means we
+                            //      need all the m-gram word ids and we also need to be able
+                            //      to check if the given m-gram contains <unk> words.
+                            //-------------------------------------------------------------------------------------
                             //The last word is unknown so no need to do any back-off,  
                             do_last_word_unknown(begin_word_idx, end_word_idx);
                         } else {
@@ -205,69 +206,12 @@ namespace uva {
                     }
                 }
 
-                /**
-                 * This method will get the N-gram in a form of a vector, e.g.:
-                 *      [word1 word2 word3 word4 word5]
-                 * and will compute and return the Language Model Probability for it
-                 * @param gram the given M-Gram query and its state
-                 * @param result the structure to store the resulting probability
-                 */
-                void execute_old() {
-                    LOG_DEBUG << "Starting to execute:" << (string) m_gram_old << END_LOG;
-
-                    //Set the result probability to zero
-                    m_prob[LAST_SUB_M_GRAM_IDX] = ZERO_PROB_WEIGHT;
-
-                    //Prepare the m-gram for querying
-                    m_gram_old.prepare_for_querying();
-
-                    //Get the used level and go on with execution
-                    TModelLevel curr_level = m_gram_old.m_actual_level;
-
-                    //Compute the probability in the loop fashion, should be faster that recursion.
-                    while (m_prob[LAST_SUB_M_GRAM_IDX] == ZERO_PROB_WEIGHT) {
-                        //Do a sanity check if needed
-                        if (DO_SANITY_CHECKS && (curr_level < M_GRAM_LEVEL_1)) {
-                            stringstream msg;
-                            msg << "An impossible value of curr_level: " << SSTR(curr_level)
-                                    << ", it must be >= " << SSTR(M_GRAM_LEVEL_1);
-                            throw Exception(msg.str());
-                        }
-
-                        //Try to compute the next probability with decreased level
-                        m_trie.get_prob_weight(curr_level, m_gram_old, m_prob[LAST_SUB_M_GRAM_IDX]);
-
-                        //Decrease the level
-                        curr_level--;
-                    }
-
-                    LOG_DEBUG << "The current level value is: " << curr_level
-                            << ", the current probability value is: " << m_prob[LAST_SUB_M_GRAM_IDX] << END_LOG;
-
-                    //If the probability is log-zero or snaller then there is no
-                    //need for a back-off as then we will only get smaller values.
-                    if (m_prob[LAST_SUB_M_GRAM_IDX] > ZERO_LOG_PROB_WEIGHT) {
-                        //If the curr_level is smaller than the original level then
-                        //it means that we needed to back-off, add back-off weights
-                        for (++curr_level; curr_level != m_gram_old.m_actual_level; ++curr_level) {
-                            //Get the back_off 
-                            m_trie.add_back_off_weight(curr_level, m_gram_old, m_prob[LAST_SUB_M_GRAM_IDX]);
-                        }
-                    }
-
-                    LOG_DEBUG << "The computed log_" << LOG_PROB_WEIGHT_BASE
-                            << " probability is: " << m_prob[LAST_SUB_M_GRAM_IDX] << END_LOG;
-                }
-
             private:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
 
                 //Stores the query m-gram
                 T_Query_M_Gram<WordIndexType, MAX_LEVEL> m_gram;
-
-                //Stores the query m-gram
-                T_M_Gram<WordIndexType> m_gram_old;
 
                 //Stores the probability results for the sub-m-grams, add
                 //an extra element for the pre-fetched unknown word data
@@ -348,7 +292,11 @@ namespace uva {
                         //Get the stored back-off from the previous level
                         m_prob[end_word_idx] += m_payload[begin_word_idx][bo_end_word_idx].back;
                     } else {
-                        //If this is not cumulative query then we need to get the back-off from the trie
+                        //If this is single query then we need to get the back-off get the data from the model
+                        //-------------------------------------------------------------------------------------
+                        //ToDo: If the back-off m-gram contains an unknown word then we do 
+                        //      not need to search for the data as it will not be found any way!
+                        //-------------------------------------------------------------------------------------
                         m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
                     }
 
@@ -361,6 +309,10 @@ namespace uva {
                                 << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
 
                         //Get the back-off weight of the previous level
+                        //-------------------------------------------------------------------------------------
+                        //ToDo: If the back-off m-gram contains an unknown word then we do 
+                        //      not need to search for the data as it will not be found any way!
+                        //-------------------------------------------------------------------------------------
                         m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
                     };
                 }
@@ -523,6 +475,7 @@ namespace uva {
 
             INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, true);
             INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, false);
+            
         }
     }
 }

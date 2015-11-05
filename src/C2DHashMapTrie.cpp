@@ -139,13 +139,6 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            bool C2DMapTrie<MAX_LEVEL, WordIndexType>::get_1_gram_data_ref(const TShortId word_id, const T_M_Gram_Payload ** ppData) const {
-                //The data is always present.
-                *ppData = &m_1_gram_data[word_id];
-                return true;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             T_M_Gram_Payload & C2DMapTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId word_id, TLongId ctx_id) {
                 //Store the N-tires from length 2 on and indexing starts
@@ -166,29 +159,6 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            template<TModelLevel CURR_LEVEL>
-            bool C2DMapTrie<MAX_LEVEL, WordIndexType>::get_m_gram_data_ref(const TShortId word_id,
-                    TLongId ctx_id, const T_M_Gram_Payload **ppData) const {
-                //Get the next context id
-                if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                    //Search for the map for that context id
-                    const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
-                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(ctx_id);
-                    if (result == pMGramMap[idx]->end()) {
-                        //There is no data found under this context
-                        return false;
-                    } else {
-                        //There is data found under this context
-                        *ppData = &result->second;
-                        return true;
-                    }
-                } else {
-                    //The context id could not be found
-                    return false;
-                }
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             TLogProbBackOff & C2DMapTrie<MAX_LEVEL, WordIndexType>::make_n_gram_data_ref(const TShortId word_id, TLongId ctx_id) {
                 //Data stores the N-tires from length 2 on, therefore "idx-1"
                 //Get/Create the mapping for this word in the Trie level of the N-gram
@@ -204,27 +174,6 @@ namespace uva {
                 }
 
                 return pNGramMap->operator[](ctx_id);
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            bool C2DMapTrie<MAX_LEVEL, WordIndexType>::get_n_gram_data_ref(const TShortId word_id, TLongId ctx_id,
-                    TLogProbBackOff & prob) const {
-                //Get the next context id
-                if (get_ctx_id<MAX_LEVEL>(word_id, ctx_id)) {
-                    //Search for the map for that context id
-                    TNGramsMap::const_iterator result = pNGramMap->find(ctx_id);
-                    if (result == pNGramMap->end()) {
-                        //There is no data found under this context
-                        return false;
-                    } else {
-                        //There is data found under this context
-                        prob = result->second;
-                        return true;
-                    }
-                } else {
-                    //The context id could not be found
-                    return false;
-                }
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>

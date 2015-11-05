@@ -138,16 +138,6 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::get_1_gram_data_ref(const TShortId word_id, const T_M_Gram_Payload ** ppData) const {
-                //Get the word probability and back-off data reference
-
-                *ppData = &m_mgram_data[0][word_id];
-
-                //The data should always be present, unless of course this is a bad index!
-                return true;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             template<TModelLevel level>
             T_M_Gram_Payload& W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::make_m_gram_data_ref(const TShortId word_id, const TLongId ctx_id) {
                 const TModelLevel idx = (level - BASE::MGRAM_IDX_OFFSET);
@@ -169,20 +159,6 @@ namespace uva {
                 return m_mgram_data[level - 1][nextCtxId];
             };
 
-            template<TModelLevel N, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            template<TModelLevel level>
-            bool W2CHybridTrie<N, WordIndexType, StorageFactory, StorageContainer>::get_m_gram_data_ref(const TShortId word_id,
-                    TLongId ctx_id, const T_M_Gram_Payload **ppData) const {
-                //Get the context id, note we use short ids here!
-                if (get_ctx_id<level>(word_id, ctx_id)) {
-                    //Return the data by the context
-                    *ppData = &m_mgram_data[level - 1][ctx_id];
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             TLogProbBackOff& W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::make_n_gram_data_ref(const TShortId word_id, const TLongId ctx_id) {
                 StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
@@ -195,31 +171,6 @@ namespace uva {
                 LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(MAX_LEVEL) << ", word_id "
                         << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                 return (TLogProbBackOff &) ctx_mapping->operator[](ctx_id);
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            bool W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::get_n_gram_data_ref(const TShortId word_id, const TLongId ctx_id,
-                    TLogProbBackOff & prob) const {
-                //Try to find the word mapping first
-                StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
-
-                //If the mapping is present the search further, otherwise return false
-                if (ctx_mapping != NULL) {
-                    typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
-                    if (result == ctx_mapping->end()) {
-                        //The data could not be found
-                        return false;
-                    } else {
-                        //The data could be found
-                        LOG_DEBUG1 << "Found the probability value: " << SSTR((TLogProbBackOff) result->second)
-                                << ", word_id: " << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-                        prob = (TLogProbBackOff &) result->second;
-                        return true;
-                    }
-                } else {
-                    LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL) << " for word_id: " << SSTR(word_id) << "!" << END_LOG;
-                    return false;
-                }
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>

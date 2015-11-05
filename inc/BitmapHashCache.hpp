@@ -122,36 +122,12 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to check if a sub-M-gram of the M-gram of the current level is present in the cache.
-                     * @param is_back_off is true if this is a back-off M-gram we need to learn about
-                     * @param curr_level the currently considered level of the m-gram
-                     * @param query the M-gram query
-                     * @return false if the M-gram is not present, otherwise true (the latter means potentially present)
-                     */
-                    template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL, typename WordIndexType>
-                    inline bool is_m_gram_hash_cached(const T_M_Gram<WordIndexType> & gram) const {
-                        //Get the m-gram's hash level
-                        uint64_t hash = gram.template get_hash<IS_BACK_OFF, CURR_LEVEL>();
-
-                        //Get the M-gram hash positions
-                        uint32_t byte_idx = 0;
-                        uint32_t bit_offset_idx = 0;
-                        get_bit_pos(hash, byte_idx, bit_offset_idx);
-
-                        LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
-                                << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx]) << END_LOG;
-
-                        //Return the bit on
-                        return (m_data_ptr[byte_idx] & ON_BIT_ARRAY[bit_offset_idx]);
-                    }
-
-                    /**
-                 * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
-                 * and END_WORD_IDX template parameters, is potentially present in the trie.
-                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
-                 * @param END_WORD_IDX the end word index in the given m-gram
-                 * @param gram the m-gram to work with
-                 * @return true if the sub-m-gram is potentially present, otherwise false
+                     * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
+                     * and END_WORD_IDX template parameters, is potentially present in the trie.
+                     * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                     * @param END_WORD_IDX the end word index in the given m-gram
+                     * @param gram the m-gram to work with
+                     * @return true if the sub-m-gram is potentially present, otherwise false
                      */
                     template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, typename WordIndexType>
                     inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
@@ -206,21 +182,6 @@ namespace uva {
                     template<typename WordIndexType, TModelLevel CURR_LEVEL>
                     inline void get_bit_pos(const T_Model_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                         const uint64_t hash = gram.get_hash();
-
-                        LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << hash << END_LOG;
-
-                        return get_bit_pos(hash, byte_idx, bit_offset_idx);
-                    }
-
-                    /**
-                     * Allows to get the bit position for the M-gram
-                     * @param gram the M-gram to get position for
-                     * @param byte_idx [out] the M-gram byte index
-                     * @param bit_offset_idx [out] the M-gram relative bit index
-                     */
-                    template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                    inline void get_bit_pos(const T_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.template get_hash<false, CURR_LEVEL>();
 
                         LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << hash << END_LOG;
 

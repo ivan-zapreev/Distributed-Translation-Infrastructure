@@ -137,17 +137,6 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_1_gram_data_ref(const TShortId wordId, const T_M_Gram_Payload ** ppData) const {
-                LOG_DEBUG2 << "Getting 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                *ppData = &m_1_gram_data[wordId];
-
-                //The data should always be present, unless of course this is a bad index!
-
-                return true;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             T_M_Gram_Payload& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 LOG_DEBUG2 << "Adding\t" << SSTR(CURR_LEVEL) << "-gram with ctxId:\t"
@@ -165,26 +154,6 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            template<TModelLevel CURR_LEVEL>
-            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_m_gram_data_ref(const TShortId wordId,
-                    const TLongId ctxId, const T_M_Gram_Payload **ppData) const {
-                LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
-                        << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                //Get the entry
-                const typename T_M_GramWordEntry::TElemType * pEntry;
-                const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, wordId, ctxId, &pEntry)) {
-                    //Return the pointer to the probability and back-off structure
-                    *ppData = &pEntry->payload;
-                    return true;
-                } else {
-                    //The data could not be found
-                    return false;
-                }
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             TLogProbBackOff& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
                 LOG_DEBUG2 << "Adding " << SSTR(MAX_LEVEL) << "-gram with ctxId: "
                         << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
@@ -197,24 +166,6 @@ namespace uva {
 
                 //Return the reference to the probability
                 return ref.payload;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_n_gram_data_ref(const TShortId wordId, const TLongId ctxId,
-                    TLogProbBackOff & prob) const {
-                LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
-                        << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
-
-                //Get the entry
-                const typename T_N_GramWordEntry::TElemType * pEntry;
-                if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, wordId, ctxId, &pEntry)) {
-                    //Return the reference to the probability
-                    prob = pEntry->payload;
-                    return true;
-                } else {
-                    //The data could not be found
-                    return false;
-                }
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>

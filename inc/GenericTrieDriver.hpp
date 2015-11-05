@@ -79,9 +79,6 @@ namespace uva {
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
 
-                //The typedef for the retrieving function
-                typedef function<void(const GenericTrieDriver&, const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) > TRetrieveDataFunct;
-
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
@@ -162,30 +159,6 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to check if the given sub-m-gram is potentially present in the trie.
-                 * @param IS_BACK_OFF true if this is for the back-off m-gram case
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param gram the M-gram query to be checked for its hash begin registered in the cache
-                 * @return true if the sub-m-gram is potentially present, otherwise false
-                 */
-                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline bool is_m_gram_hash_cached(const T_M_Gram<WordIndexType> & gram) const {
-                    if (TrieType::needs_bitmap_hash_cache()) {
-                        //Check on which sub-m-gram level it is
-                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
-                            const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                            return ref.is_m_gram_hash_cached<IS_BACK_OFF, CURR_LEVEL>(gram);
-                        } else {
-                            //If this is a unigram then we always check the trie
-                            //as retrieving the word probability costs nothing.
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-
-                /**
                  * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
                  * and END_WORD_IDX template parameters, is potentially present in the trie.
                  * @param BEGIN_WORD_IDX the begin word index in the given m-gram
@@ -248,92 +221,6 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to get the probability value also by checking the cache.
-                 * If the probability is not found then the prob value is to stay intact!
-                 * @param curr_level the currently considered level of the m-gram
-                 * @param gram the M-gram query for a specific current level
-                 * @param result the result variable to get the probability set to
-                 */
-                inline void get_prob_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    get_prob_weight_func[curr_level](*this, gram, total_prob);
-                }
-
-                /**
-                 * Allows to get the back-off weight value also by checking the cache.
-                 * If the back-off is not found then the probability value is to stay intact.
-                 * Then the back-off weight is considered to be zero!
-                 * @param curr_level the currently considered level of the m-gram
-                 * @param gram the M-gram query for a specific current level
-                 * @param result the result variable to get the back-off weight added to
-                 */
-                inline void add_back_off_weight(const TModelLevel curr_level, const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    add_back_off_weight_func[curr_level](*this, gram, total_prob);
-                }
-
-                /**
-                 * Allows to get the probability value also by checking the cache.
-                 * If the probability is not found then the prob value is to stay intact!
-                 * 
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    LOG_DEBUG << "---> get_prob_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
-
-                    //Try getting the probability value.
-                    //1. If the level is one go on: we can get smth
-                    //even if the 1-Gram consists of just an unknown word.
-                    //2. If the context length is more then one and there is
-                    //an unknown word in the gram then it makes no sense to do
-                    //searching as there are no M-grams with <unk> in them
-                    if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
-                            ((CURR_LEVEL > M_GRAM_LEVEL_1)
-                            && gram.template has_no_unk_words<false, CURR_LEVEL>()
-                            && is_m_gram_hash_cached<false, CURR_LEVEL>(gram))) {
-                        //Let's look further, may be we will find something!
-                        LOG_DEBUG1 << "All pre-checks are passed, calling add_prob_value(level, prob)!" << END_LOG;
-                        m_trie.template get_prob_weight<CURR_LEVEL>(gram, total_prob);
-                    } else {
-
-                        LOG_DEBUG << "Could try to get probs but it will not be  successful due to "
-                                << "the present unk words!  Thus backing off right away!" << END_LOG;
-                    }
-                    LOG_DEBUG << "<--- get_prob_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
-                }
-
-                /**
-                 * Allows to get the back-off weight value also by checking the cache.
-                 * If the back-off is not found then the probability value is to stay intact.
-                 * Then the back-off weight is considered to be zero!
-                 * 
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    LOG_DEBUG << "---> add_back_off_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
-
-                    //Try getting the back-off weight.
-                    //1. If the context length is one go on: we can get smth
-                    //even if the 1-Gram consists of just an unknown word.
-                    //2. If the context length is more then one and there is
-                    //an unknown word in the gram then it makes no sense to do
-                    //searching as there are no M-grams with <unk> in them
-                    if ((CURR_LEVEL == M_GRAM_LEVEL_1) ||
-                            ((CURR_LEVEL > M_GRAM_LEVEL_1)
-                            && gram.template has_no_unk_words<true, CURR_LEVEL>()
-                            && is_m_gram_hash_cached<true, CURR_LEVEL>(gram))) {
-                        //Let's look further, we definitely get some back-off weight or zero!
-                        LOG_DEBUG1 << "All pre-checks are passed, calling add_back_off_weight(level, prob)!" << END_LOG;
-                        m_trie.template add_back_off_weight<CURR_LEVEL>(gram, total_prob);
-                    } else {
-                        LOG_DEBUG << "Could try to back off but it will not be "
-                                << "successful due to the present unk words! Thus "
-                                << "the back-off weight is zero!" << END_LOG;
-                    }
-                    LOG_DEBUG << "<--- add_back_off_weight(" << CURR_LEVEL << ") = " << total_prob << END_LOG;
-                }
-
-                /**
                  * The basic class destructor
                  */
                 virtual ~GenericTrieDriver() {
@@ -347,10 +234,6 @@ namespace uva {
                 //Stores the bitmap hash caches per M-gram level for 1 < M <= N
                 BitmapHashCache m_bitmap_hash_cach[BASE::NUM_M_N_GRAM_LEVELS];
 
-                //Declare static arrays of pointers to the template function instances 
-                static const TRetrieveDataFunct get_prob_weight_func[];
-                static const TRetrieveDataFunct add_back_off_weight_func[];
-
                 /**
                  * Is to be used from the sub-classes from the add_X_gram methods.
                  * This method allows to register the given M-gram in internal high
@@ -363,30 +246,6 @@ namespace uva {
                         m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }
-            };
-
-            template<typename TrieType>
-            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::get_prob_weight_func[] = {
-                NULL,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_1>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_2>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_3>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_4>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_5>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_6>,
-                &GenericTrieDriver::get_prob_weight<M_GRAM_LEVEL_7>
-            };
-
-            template<typename TrieType>
-            const typename GenericTrieDriver<TrieType>::TRetrieveDataFunct GenericTrieDriver<TrieType>::add_back_off_weight_func[] = {
-                NULL,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_1>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_2>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_3>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_4>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_5>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_6>,
-                &GenericTrieDriver::add_back_off_weight<M_GRAM_LEVEL_7>
             };
 
 #define INSTANTIATE_TYPEDEF_TRIE_DRIVERS_TRIE_NAME_WORD_IDX_TYPE(PREFIX, TRIE_NAME, WORD_IDX_TYPE) \

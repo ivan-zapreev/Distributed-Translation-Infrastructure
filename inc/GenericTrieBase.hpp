@@ -141,33 +141,6 @@ namespace uva {
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
-
-                /**
-                 * This function allows to retrieve the probability stored for the given M-gram level.
-                 * If the value is found then it must be set to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param gram the m-gram query object
-                 * @param result the probability result variable that is to be set with the found probability weight
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * This function allows to retrieve the back-off stored for the given M-gram level.
-                 * If the value is found then it must be added to the prob parameter of the function.
-                 * If the value is not found then the prob parameter of the function must not be changed.
-                 * In that case the back-off weight is just zero.
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param gram the m-gram query object
-                 * @param result the probability result variable that is to be increased with the found back-off weight
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const {
-                    THROW_MUST_OVERRIDE();
-                };
                 
                 /**
                  * Allows to check if the bitmap hash cache is to be used.
@@ -176,17 +149,6 @@ namespace uva {
                  */
                 constexpr static inline bool needs_bitmap_hash_cache() {
                     return false;
-                };
-
-                /**
-                 * Allows to check if the given sub-m-gram contains an unknown word
-                 * @param curr_level the currently considered level of the m-gram
-                 * @param gram the m-gram to be check if its hash is cached
-                 * @return true if the unknown word is present, otherwise false
-                 */
-                template<bool IS_BACK_OFF, TModelLevel CURR_LEVEL>
-                inline bool is_bitmap_hash_cache(const T_M_Gram<WordIndexType> & gram) const {
-                    THROW_MUST_OVERRIDE();
                 };
                
             };
@@ -232,8 +194,6 @@ namespace uva {
             INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 0, TRIE_TYPE_NAME, __VA_ARGS__);
 
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::get_prob_weight<LEVEL>(const T_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::add_back_off_weight<LEVEL>(const T_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, TLogProbBackOff & total_prob) const; \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
 
 #define INSTANTIATE_TRIE_TEMPLATE_TYPE(TRIE_TYPE_NAME, ...) \

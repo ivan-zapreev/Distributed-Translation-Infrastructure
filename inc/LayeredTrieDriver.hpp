@@ -135,18 +135,6 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
-                void get_prob_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                void add_back_off_weight(const T_M_Gram<WordIndexType> & gram, TLogProbBackOff & total_prob) const;
-
-                /**
-                 * @see GenericTrieBase
-                 */
                 inline void log_trie_type_usage_info() const {
                     m_trie.log_trie_type_usage_info();
                 };
