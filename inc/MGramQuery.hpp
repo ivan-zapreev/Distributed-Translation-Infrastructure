@@ -296,6 +296,7 @@ namespace uva {
                         //-------------------------------------------------------------------------------------
                         //ToDo: If the back-off m-gram contains an unknown word then we do 
                         //      not need to search for the data as it will not be found any way!
+                        //      The unknown word can only be present in case we compute single probability.
                         //-------------------------------------------------------------------------------------
                         m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
                     }
@@ -312,6 +313,7 @@ namespace uva {
                         //-------------------------------------------------------------------------------------
                         //ToDo: If the back-off m-gram contains an unknown word then we do 
                         //      not need to search for the data as it will not be found any way!
+                        //      The unknown word can only be present in case we compute single probability.
                         //-------------------------------------------------------------------------------------
                         m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
                     };
