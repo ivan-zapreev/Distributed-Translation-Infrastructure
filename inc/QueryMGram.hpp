@@ -138,14 +138,15 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to check if the sub-m-gram defined by the template parameters has unknown words in it.
+                     * Allows to check if the sub-m-gram defined by the method arguments has unknown words in it.
                      * The word flags are properly initialized iff the prepare_for_querying method was called with
                      * the IS_UNK_WORD_FLAGS template parameter set to true.
+                     * @param begin_word_idx the first word index of the sub-m-gram
+                     * @param end_word_idx the last word index of the sub-m-gram
                      * @return true if the sub-m-gram contains <unk> words, otherwise false
                      */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                    inline bool has_unk_words() const {
-                        return m_unk_word_flags & SMG_UNK_WORD_MASKS[BEGIN_WORD_IDX][END_WORD_IDX];
+                    inline bool has_unk_words(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                        return m_unk_word_flags & SMG_UNK_WORD_MASKS[begin_word_idx][end_word_idx];
                     }
 
                     /**

@@ -96,12 +96,12 @@ namespace uva {
                 inline void log_results() const {
                     //Print the query results
                     const string gram_str = BASE::m_gram.get_mgram_prob_str(BASE::m_gram.get_m_gram_level());
-                    
+
                     LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                             << " ) ) = " << SSTR(m_prob) << END_LOG;
                     LOG_INFO << "  Prob( " << gram_str << " ) = "
                             << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_prob)) << END_LOG;
-                    
+
                     LOG_RESULT << "-------------------------------------------" << END_LOG;
                 }
 
@@ -124,24 +124,26 @@ namespace uva {
                     LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
                             << ", " << SSTR(end_word_idx) << "]" << END_LOG;
 
-                    THROW_NOT_IMPLEMENTED();
-                    //Check if the en word is unknown
-                    /*if (begin_word_idx > end_word_idx) {
-                        //-------------------------------------------------------------------------------------
-                        //ToDo: We actually need to get all the back-offs if present and
-                        //      not just set the value to <unk> probability! This means we
-                        //      need all the m-gram word ids and we also need to be able
-                        //      to check if the given m-gram contains <unk> words.
-                        //-------------------------------------------------------------------------------------
-                        //The last word is unknown so no need to do any back-off,  
-                        do_last_word_unknown(begin_word_idx, end_word_idx);
+                    //Define the index of the end word for the back-off n-gram
+                    const TModelLevel bo_end_word_idx = end_word_idx - 1;
+
+                    //Check if there is unknown words in the m-gram
+                    if (BASE::m_gram.has_unk_words(begin_word_idx, end_word_idx)) {
+                        //There are unknown words in the given m-gram
+                        THROW_NOT_IMPLEMENTED();
                     } else {
-                        //The last word is known, try to retrieve the payload
-                        if (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
-                            //If the sub-m-gram payload is not defined then back-off
-                            do_back_off_undefined(begin_word_idx, end_word_idx);
-                        }
-                    }*/
+                        //There is no unknown words in the given m-gram, try to retrieve the probability, if not present then back off
+                        while (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
+                            LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
+                                    << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
+
+                            //Retrieve the back-off weight
+                            BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+
+                            //Move to the next sub-m-gram probability retrieval
+                            begin_word_idx++;
+                        };
+                    }
                 }
 
             private:
