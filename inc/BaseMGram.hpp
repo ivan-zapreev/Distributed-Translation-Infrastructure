@@ -130,7 +130,7 @@ namespace uva {
                      * Allows to retrieve the actual begin word index
                      * @return the index of the begin word
                      */
-                    inline TModelLevel get_actual_begin_word_idx() const {
+                    inline TModelLevel get_begin_word_idx() const {
                         return m_actual_begin_word_idx;
                     }
 
@@ -138,7 +138,7 @@ namespace uva {
                      * Allows to retrieve the actual end word index
                      * @return the index of the end word
                      */
-                    inline TModelLevel get_actual_end_word_idx() const {
+                    inline TModelLevel get_end_word_idx() const {
                         return m_actual_end_word_idx;
                     }
 
@@ -149,7 +149,7 @@ namespace uva {
                      * @return the pointer to the cell storing the word id with the given index
                      */
                     template<TModelLevel WORD_IDX>
-                    inline const TWordIdType * ptr() const {
+                    inline const TWordIdType * get_word_id_ptr() const {
                         return &m_word_ids[WORD_IDX];
                     }
                     
@@ -158,7 +158,7 @@ namespace uva {
                      * This function retrieves the pointer to the last word id of the m-gram.
                      * @return the pointer to the last word id element, 
                      */
-                    inline const TWordIdType * first() const {
+                    inline const TWordIdType * first_word_id() const {
                         return &m_word_ids[m_actual_begin_word_idx];
                     }
 
@@ -167,7 +167,7 @@ namespace uva {
                      * This function retrieves the pointer to the last word id of the m-gram.
                      * @return the pointer to the last word id element, 
                      */
-                    inline const TWordIdType * last() const {
+                    inline const TWordIdType * last_word_id() const {
                         return &m_word_ids[m_actual_end_word_idx];
                     }
 

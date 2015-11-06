@@ -33,23 +33,8 @@
 #include "Exceptions.hpp"
 #include "Logger.hpp"
 
-#include "MGrams.hpp"
 #include "QueryMGram.hpp"
 #include "TextPieceReader.hpp"
-
-#include "AWordIndex.hpp"
-#include "BasicWordIndex.hpp"
-#include "CountingWordIndex.hpp"
-#include "OptimizingWordIndex.hpp"
-
-#include "C2DHashMapTrie.hpp"
-#include "W2CHybridMemoryTrie.hpp"
-#include "C2WOrderedArrayTrie.hpp"
-#include "W2COrderedArrayTrie.hpp"
-#include "C2DMapArrayTrie.hpp"
-#include "LayeredTrieDriver.hpp"
-#include "G2DHashMapTrie.hpp"
-#include "GenericTrieDriver.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -80,7 +65,7 @@ namespace uva {
              * the conditional probability of all sub M-grams and also the total
              * sum, not taking into account the zero log probabilities.
              */
-            template<typename TrieType, bool IS_CUM_QUERY>
+            template<typename TrieType>
             class T_M_Gram_Query {
             public:
                 typedef typename TrieType::WordIndexType WordIndexType;
@@ -94,6 +79,15 @@ namespace uva {
                  */
                 T_M_Gram_Query(TrieType & trie)
                 : m_trie(trie), m_gram(trie.get_word_index()) {
+                    //Check that the level is supported
+                    if(MAX_LEVEL > M_GRAM_LEVEL_7) {
+                        stringstream msg;
+                        msg << "The T_M_Gram_Query class in " << __FILE__ << " does not support "
+                                << "trie level: " << SSTR(MAX_LEVEL) << ", the maximum supported "
+                                << "level is: " << SSTR(M_GRAM_LEVEL_7) << ", please extend!";
+                        throw Exception(msg.str());
+                    }
+                    
                     m_trie.get_unk_word_payload(m_unk_word_data);
                 }
 
@@ -106,116 +100,12 @@ namespace uva {
                     m_gram.set_m_gram_from_text(text);
                 }
 
-                /**
-                 * Allows to log the query results after its execution.
-                 * Different logging is done based on enabled logging level
-                 * and the class template parameters.
-                 */
-                inline void log_results() const {
-                    //Initialize the current index, with the proper start value
-                    TModelLevel curr_idx = (IS_CUM_QUERY) ? m_gram.get_actual_begin_word_idx() : m_gram.get_actual_end_word_idx();
-                    TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
-
-                    //Print the intermediate results
-                    for (; curr_idx <= m_gram.get_actual_end_word_idx(); ++curr_idx) {
-                        const string gram_str = m_gram.get_mgram_prob_str(curr_idx + 1);
-                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                << " ) ) = " << SSTR(m_prob[curr_idx]) << END_LOG;
-                        LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_prob[curr_idx])) << END_LOG;
-                        if (m_prob[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
-                            cumulative_prob += m_prob[curr_idx];
-                        }
-
-                        if (IS_CUM_QUERY) {
-                            LOG_RESULT << "---" << END_LOG;
-                        }
-                    }
-
-                    //Print the total cumulative probability if needed
-                    if (IS_CUM_QUERY) {
-                        const string gram_str = m_gram.get_mgram_prob_str();
-                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
-                        LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
-                    }
-                    LOG_RESULT << "-------------------------------------------" << END_LOG;
-                }
-
-                /**
-                 * Allows to execute m-gram the query
-                 */
-                void execute() {
-                    LOG_DEBUG << "Starting to execute:" << (string) m_gram << END_LOG;
-
-                    //Prepare the m-gram for querying
-                    m_gram.template prepare_for_querying<IS_CUM_QUERY>();
-
-                    if (IS_CUM_QUERY) {
-                        //Initialize the begin and end index variables
-                        TModelLevel begin_word_idx = m_gram.get_actual_begin_word_idx();
-                        TModelLevel end_word_idx = m_gram.get_actual_begin_word_idx();
-
-                        //Clean the sub-m-gram probability array
-                        memset(m_prob, ZERO_PROB_WEIGHT, MAX_LEVEL * sizeof (TLogProbBackOff));
-
-                        //Iterate through sub-m-grams: going right through the row
-                        for (; end_word_idx <= m_gram.get_actual_end_word_idx(); ++end_word_idx) {
-                            LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
-                                    << ", " << SSTR(end_word_idx) << "]" << END_LOG;
-                            if (m_gram[end_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
-                                //If the sub-m-gram's end word is unknown back-off
-                                do_back_off_unknown(begin_word_idx, end_word_idx);
-                            } else {
-                                //If the sub-m-gram's word is known try to retrieve the payload
-                                if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
-                                    //If the sub-m-gram payload is not defined then back-off
-                                    do_back_off_undefined(begin_word_idx, end_word_idx);
-                                }
-                            }
-                        }
-                    } else {
-                        //Initialize the begin and end index variables
-                        TModelLevel begin_word_idx = m_gram.template get_flk_word_idx<IS_CUM_QUERY>();
-                        TModelLevel end_word_idx = m_gram.get_actual_end_word_idx();
-
-                        //Clean the sub-m-gram probability array
-                        m_prob[end_word_idx] = ZERO_PROB_WEIGHT;
-
-                        LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
-                                << ", " << SSTR(end_word_idx) << "]" << END_LOG;
-
-                        //Check if the en word is unknown
-                        if (begin_word_idx > end_word_idx) {
-                            //-------------------------------------------------------------------------------------
-                            //ToDo: We actually need to get all the back-offs if present and
-                            //      not just set the value to <unk> probability! This means we
-                            //      need all the m-gram word ids and we also need to be able
-                            //      to check if the given m-gram contains <unk> words.
-                            //-------------------------------------------------------------------------------------
-                            //The last word is unknown so no need to do any back-off,  
-                            do_last_word_unknown(begin_word_idx, end_word_idx);
-                        } else {
-                            //The last word is known, try to retrieve the payload
-                            if (m_add_prob_get_back_off[begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
-                                //If the sub-m-gram payload is not defined then back-off
-                                do_back_off_undefined(begin_word_idx, end_word_idx);
-                            }
-                        }
-                    }
-                }
-
-            private:
+            protected:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
 
                 //Stores the query m-gram
                 T_Query_M_Gram<WordIndexType, MAX_LEVEL> m_gram;
-
-                //Stores the probability results for the sub-m-grams, add
-                //an extra element for the pre-fetched unknown word data
-                TLogProbBackOff m_prob[MAX_LEVEL];
 
                 //Stores the unknown word payload data
                 T_M_Gram_Payload m_unk_word_data;
@@ -236,140 +126,6 @@ namespace uva {
 
                 //Stores the get-payload function pointers for getting back-offs
                 static const TAddBackOffFunc m_add_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
-
-                /**
-                 * The last word of the m-gram is an unknown word, just assign use 
-                 * the unknown word payload. We could have used back-offs and such 
-                 * but there is no need as the probability will only get lower.
-                 * @param begin_word_idx the index of the begin word defining this sub-m-gram
-                 * @param end_word_idx the index of the end word defining this sub-m-gram
-                 */
-                inline void do_last_word_unknown(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) {
-                    LOG_DEBUG1 << "The last word (index: " << SSTR(end_word_idx)
-                            << ") is unknonwn, using the <unk> word data!" << END_LOG;
-
-                    //The unigram is an unknown word so copy the payload from <unk>
-                    m_payload[end_word_idx][end_word_idx] = m_unk_word_data;
-
-                    LOG_DEBUG1 << "Adding the <unk> word probability data for [" << SSTR(begin_word_idx)
-                            << ", " << SSTR(end_word_idx) << "] = " << m_unk_word_data.prob << END_LOG;
-
-                    //Add the <unk> word probability to the sub-m-gram probability
-                    m_prob[end_word_idx] += m_unk_word_data.prob;
-                }
-
-                /**
-                 * This back-off function is used in case that the sub-m-gram contains
-                 * no unknown words but is still not present in the trie. Naturally this
-                 * means that it is the case of a sub-m-gram with level > 1.
-                 * @param begin_word_idx the index of the begin word defining this sub-m-gram
-                 * @param end_word_idx the index of the end word defining this sub-m-gram
-                 */
-                inline void do_back_off_undefined(TModelLevel & begin_word_idx, const TModelLevel end_word_idx) {
-                    LOG_DEBUG1 << "The sub-m-gram [" << SSTR(begin_word_idx) << ", " << SSTR(end_word_idx)
-                            << "] was not found, need to back off!" << END_LOG;
-
-                    //Perform sanity checks if needed
-                    if (DO_SANITY_CHECKS && (begin_word_idx >= end_word_idx)) {
-                        stringstream msg;
-                        msg << "Improper begin/end index pair in do_back_off_undefined: "
-                                << "begin_word_idx (" << SSTR(begin_word_idx)
-                                << ") >= end_word_idx (" << SSTR(end_word_idx) << ")!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Define the index of the end word for the back-off n-gram
-                    const TModelLevel bo_end_word_idx = end_word_idx - 1;
-
-                    //Add the back-off weight from the previous sub-m-gram column. That should 
-                    //exist, as the undefined case means we have "begin_word_idx < end_word_idx"
-                    if (IS_CUM_QUERY) {
-                        //If we are computing the cumulative query then the data must have been there
-                        LOG_DEBUG1 << "Adding the back-off data from [" << SSTR(begin_word_idx)
-                                << ", " << SSTR(bo_end_word_idx) << "] = "
-                                << m_payload[begin_word_idx][bo_end_word_idx].back << END_LOG;
-
-                        //Get the stored back-off from the previous level
-                        m_prob[end_word_idx] += m_payload[begin_word_idx][bo_end_word_idx].back;
-                    } else {
-                        //If this is single query then we need to get the back-off get the data from the model
-                        //-------------------------------------------------------------------------------------
-                        //ToDo: If the back-off m-gram contains an unknown word then we do 
-                        //      not need to search for the data as it will not be found any way!
-                        //      The unknown word can only be present in case we compute single probability.
-                        //-------------------------------------------------------------------------------------
-                        m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
-                    }
-
-                    LOG_DEBUG1 << "Continue by going down the column, retrieve payload for ["
-                            << SSTR(begin_word_idx + 1) << ", " << SSTR(end_word_idx) << "]" << END_LOG;
-
-                    //Now continue the back-off process: going down the column
-                    while (m_add_prob_get_back_off[++begin_word_idx][end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx])) {
-                        LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
-                                << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
-
-                        //Get the back-off weight of the previous level
-                        //-------------------------------------------------------------------------------------
-                        //ToDo: If the back-off m-gram contains an unknown word then we do 
-                        //      not need to search for the data as it will not be found any way!
-                        //      The unknown word can only be present in case we compute single probability.
-                        //-------------------------------------------------------------------------------------
-                        m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
-                    };
-                }
-
-                /**
-                 * This back-off function is used in case that the sub-m-gram's end word
-                 * is unknown. Then the sub-m-gram is not to be found and this includes
-                 * the case of a unigram consisting of an unknown word.
-                 * @param begin_word_idx the index of the begin word defining this sub-m-gram
-                 * @param end_word_idx the index of the end word defining this sub-m-gram
-                 */
-                inline void do_back_off_unknown(TModelLevel & begin_word_idx, const TModelLevel end_word_idx) {
-                    //Define the index of the end word for the back-off n-gram
-                    const TModelLevel bo_end_word_idx = end_word_idx - 1;
-
-                    //If the begin and end index are different then we first need to go down the column
-                    if (begin_word_idx != end_word_idx) {
-                        LOG_DEBUG1 << "The last word (index: " << SSTR(end_word_idx)
-                                << ") is unknown, going down from the word index: "
-                                << SSTR(begin_word_idx) << " retrieving the back-off!" << END_LOG;
-
-                        LOG_DEBUG1 << "Adding the back-off data from [" << SSTR(begin_word_idx)
-                                << ", " << SSTR(bo_end_word_idx) << "] = "
-                                << m_payload[begin_word_idx][bo_end_word_idx].back << END_LOG;
-
-                        //Get the pre-fetched back-off weight from the previous level
-                        m_prob[end_word_idx] += m_payload[begin_word_idx][bo_end_word_idx].back;
-
-                        //Iterate down to the unigram, adding the back-offs on the way
-                        while (++begin_word_idx != end_word_idx) {
-                            //Get the back-off weight of the previous level
-                            m_add_back_off[begin_word_idx][bo_end_word_idx](m_trie, m_gram, m_payload, m_prob[end_word_idx]);
-                        }
-                    }
-
-                    //We are down to the last m-gram word that is unknown, use the <unk> payload
-                    do_last_word_unknown(begin_word_idx, end_word_idx);
-
-                    //For the efficiency reasons, if there is more sub-m-grams we need to go diagonal
-                    if (end_word_idx != m_gram.get_actual_end_word_idx()) {
-
-                        LOG_DEBUG1 << "The last word (index: " << SSTR(end_word_idx)
-                                << ") is unknown, but is not the actual end word: "
-                                << SSTR(m_gram.get_actual_end_word_idx())
-                                << " so going diagonal!" << END_LOG;
-
-                        LOG_DEBUG1 << "Adding the back-off data from [" << SSTR(begin_word_idx) << ", " << SSTR(end_word_idx)
-                                << "] = " << m_payload[begin_word_idx][end_word_idx].back << END_LOG;
-
-                        //Add the back-off weight from this row's unknown word
-                        m_prob[end_word_idx + 1] += m_payload[begin_word_idx][end_word_idx].back;
-                        //Shift to the next row as this row is from <unk>
-                        begin_word_idx++;
-                    }
-                }
 
                 /**
                  * Retrieves the payload of the sub-m-gram defined by the begin
@@ -438,8 +194,8 @@ namespace uva {
                 }
             };
 
-            template<typename TrieType, bool IS_CUMULATIVE_PROB>
-            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TAddProbGetBackFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_add_prob_get_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+            template<typename TrieType>
+            const typename T_M_Gram_Query<TrieType>::TAddProbGetBackFunc T_M_Gram_Query<TrieType>::m_add_prob_get_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
                 {&add_prob_get_back_off<0, 0>, &add_prob_get_back_off<0, 1>, &add_prob_get_back_off<0, 2>, &add_prob_get_back_off<0, 3>, &add_prob_get_back_off<0, 4>, &add_prob_get_back_off<0, 5>, &add_prob_get_back_off<0, 6>},
                 {NULL, &add_prob_get_back_off<1, 1>, &add_prob_get_back_off<1, 2>, &add_prob_get_back_off<1, 3>, &add_prob_get_back_off<1, 4>, &add_prob_get_back_off<1, 5>, &add_prob_get_back_off<1, 6>},
                 {NULL, NULL, &add_prob_get_back_off<2, 2>, &add_prob_get_back_off<2, 3>, &add_prob_get_back_off<2, 4>, &add_prob_get_back_off<2, 5>, &add_prob_get_back_off<2, 6>},
@@ -449,8 +205,8 @@ namespace uva {
                 {NULL, NULL, NULL, NULL, NULL, NULL, &add_prob_get_back_off<6, 6>}
             };
 
-            template<typename TrieType, bool IS_CUMULATIVE_PROB>
-            const typename T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::TAddBackOffFunc T_M_Gram_Query<TrieType, IS_CUMULATIVE_PROB>::m_add_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+            template<typename TrieType>
+            const typename T_M_Gram_Query<TrieType>::TAddBackOffFunc T_M_Gram_Query<TrieType>::m_add_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
                 {&add_back_off<0, 0>, &add_back_off<0, 1>, &add_back_off<0, 2>, &add_back_off<0, 3>, &add_back_off<0, 4>, &add_back_off<0, 5>, &add_back_off<0, 6>},
                 {NULL, &add_back_off<1, 1>, &add_back_off<1, 2>, &add_back_off<1, 3>, &add_back_off<1, 4>, &add_back_off<1, 5>, &add_back_off<1, 6>},
                 {NULL, NULL, &add_back_off<2, 2>, &add_back_off<2, 3>, &add_back_off<2, 4>, &add_back_off<2, 5>, &add_back_off<2, 6>},
@@ -459,25 +215,6 @@ namespace uva {
                 {NULL, NULL, NULL, NULL, NULL, &add_back_off<5, 5>, &add_back_off<5, 6>},
                 {NULL, NULL, NULL, NULL, NULL, NULL, &add_back_off<6, 6>}
             };
-
-            //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, WORD_INDEX_TYPE, IS_CUM_PROB); \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
-            template class T_M_Gram_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>, IS_CUM_PROB>; \
-            template class T_M_Gram_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>, IS_CUM_PROB>;
-
-#define INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL, IS_CUM_PROB); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, BasicWordIndex, IS_CUM_PROB); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, CountingWordIndex, IS_CUM_PROB); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, TOptBasicWordIndex, IS_CUM_PROB); \
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_WORD_IDX_IS_CUM_PROB(M_GRAM_LEVEL, TOptCountWordIndex, IS_CUM_PROB);
-
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, true);
-            INSTANTIATE_TYPEDEF_M_GRAM_QUERIES_LEVEL_IS_CUM_PROB(M_GRAM_LEVEL_MAX, false);
-            
         }
     }
 }

@@ -79,66 +79,25 @@ namespace uva {
                      * from the last word and go backwards. Then we shall stop
                      * as soon as we reach the first unknown word!
                      */
-                    template<bool IS_CUM_QUERY>
+                    template<bool IS_UNK_WORD_FLAGS>
                     inline void prepare_for_querying() {
-                        LOG_DEBUG1 << "Preparing for the " << (IS_CUM_QUERY ? "CUMULATIVE" : "SINGLE") << " query execution!" << END_LOG;
+                        LOG_DEBUG1 << "Preparing for the " << (IS_UNK_WORD_FLAGS ? "CUMULATIVE" : "SINGLE") << " query execution!" << END_LOG;
 
                         //Set all the "computed hash level" flags to "undefined"
                         memset(computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL_CAPACITY * sizeof (TModelLevel));
 
-                        if (IS_CUM_QUERY) {
-                            LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
-                            //Retrieve all the word ids unconditionally, as we will need all of them
-                            for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
-                                BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
-                                LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
-                                        << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
+                        LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
+                        //Retrieve all the word ids unconditionally, as we will need all of them
+                        for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
+                            BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
+                            LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
+                                    << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
+                            if (IS_UNK_WORD_FLAGS) {
+                                //ToDo: Implement getting and setting the unknown word flags
+                                THROW_NOT_IMPLEMENTED();
                             }
-                        } else {
-                            LOG_DEBUG1 << "Start retrieving the word ids: backwards" << END_LOG;
-                            //Start retrieving the word ids backwards and stop as soon as we reach the first <unk>
-                            //WARNING: Use the signed integer as in the loop we can get a negative index
-                            int8_t curr_word_idx = BASE::m_actual_end_word_idx;
-                            for (; curr_word_idx >= BASE::m_actual_begin_word_idx; curr_word_idx--) {
-                                LOG_DEBUG1 << "Getting the id for the word @ index: " << SSTR(curr_word_idx) << END_LOG;
-                                BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
-                                if (BASE::m_word_ids[curr_word_idx] == WordIndexType::UNKNOWN_WORD_ID) {
-                                    LOG_DEBUG1 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' @ index: "
-                                            << SSTR(curr_word_idx) << " is UNKNOWN!" << END_LOG;
-                                    break;
-                                }
-                                LOG_DEBUG1 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' @ index: " << SSTR(curr_word_idx)
-                                        << " has id: " << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
-                            }
-                            //The first last known word index will be then the current word index + 1
-                            //If there were no unknown words the value will be equal to the actual begin
-                            //index. If the was an unknown word then it will point to the first known
-                            //word after it. In case the last m-gram word was unknown we will simply point
-                            //to outside the last m-gram word, which is also easy to check.
-                            m_flk_word_idx = curr_word_idx + 1;
                         }
                         LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
-                    }
-
-                    /**
-                     * Allows to retrieve the first last known word index.
-                     * If the unknown word is not present in the m-gram then
-                     * the the value is larger than the index of the actual last word.
-                     * This method is only relevant for the template parameter:
-                     *     IS_CUM_QUERY == false.
-                     * Otherwise it will throw. Also, it should be called after
-                     * the prepare_for_querying method.
-                     * @param IS_CUM_QUERY true if this is the cumulative query computation
-                     * @return  the index of the first last known
-                     */
-                    template<bool IS_CUM_QUERY>
-                    inline TModelLevel get_flk_word_idx() {
-                        if (IS_CUM_QUERY) {
-                            THROW_MUST_NOT_CALL();
-                        } else {
-                            LOG_DEBUG2 << "The first last known word index is: " << SSTR(m_flk_word_idx) << END_LOG;
-                            return m_flk_word_idx;
-                        }
                     }
 
                     /**

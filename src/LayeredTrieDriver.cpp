@@ -160,7 +160,7 @@ namespace uva {
                     TLongId ctx_id;
 
                     //Compute the context id based on what is stored in m_GramWordIds and context length
-                    if (get_m_gram_ctx_id(gram.template ptr<BEGIN_WORD_IDX>(), gram.template ptr<END_WORD_IDX>(), ctx_id)) {
+                    if (get_m_gram_ctx_id(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), gram.template get_word_id_ptr<END_WORD_IDX>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
                         if (CURR_LEVEL == MAX_LEVEL) {
                             return m_trie.get_n_gram_payload(end_word_id, ctx_id, payload);

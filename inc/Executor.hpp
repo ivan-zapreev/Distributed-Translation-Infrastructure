@@ -51,7 +51,8 @@
 #include "G2DHashMapTrie.hpp"
 
 #include "QueryMGram.hpp"
-#include "MGramQuery.hpp"
+#include "MGramCumulativeQuery.hpp"
+#include "MGramSingleQuery.hpp"
 
 using namespace std;
 using namespace uva::smt::file;
@@ -79,11 +80,11 @@ namespace uva {
                  * Returns the default trie type name string
                  * @return the default trie type name string
                  */
-                static inline string get_default_trie_type_str (){
+                static inline string get_default_trie_type_str() {
                     //ToDo: Make configurable via the Configuration.h or Globals.h
                     return TC2WArrayTrie_STR;
                 }
-                
+
                 /**
                  * Allows to get a string with all available (known to the factory) trie types
                  * @param p_supported_tries the pointer to the vector to be filled in with supported tries
@@ -187,14 +188,14 @@ namespace uva {
                  * @param testFile the file containing the N-Gram (5-Gram queries)
                  * @return the CPU seconds used to run the queries, without time needed to read the test file
                  */
-                template<typename TrieType, bool IS_CUM_QUERY>
+                template<typename TrieType, typename TrieQueryType>
                 static void read_and_execute_queries(TrieType & trie, AFileReader &testFile) {
                     //Declare time variables for CPU times in seconds
                     double startTime = 0.0, endTime = 0.0;
                     //Will store the read line (word1 word2 word3 word4 word5)
                     TextPieceReader line;
                     //Will store the M-gram query and its internal state
-                    T_M_Gram_Query <TrieType, IS_CUM_QUERY> query(trie);
+                    TrieQueryType query(trie);
 
                     //Start the timer
                     startTime = StatisticsMonitor::getCPUTime();
@@ -257,7 +258,11 @@ namespace uva {
                     //report_memory_usage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
                     LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-                    read_and_execute_queries<TrieType, IS_CUM_QUERY>(trie, testFile);
+                    if (IS_CUM_QUERY) {
+                        read_and_execute_queries<TrieType, T_M_Gram_Cumulative_Query < TrieType >> (trie, testFile);
+                    } else {
+                        read_and_execute_queries<TrieType, T_M_Gram_Single_Query < TrieType >> (trie, testFile);
+                    }
                     testFile.close();
 
                     //Deallocate the trie
@@ -368,9 +373,9 @@ namespace uva {
                             }
                         }
                     }
-                    
+
                     //Choose the word index and trie types and do all the actions
-                    if(params.is_cumulative_prob) {
+                    if (params.is_cumulative_prob) {
                         choose_word_index_and_execute<true>(params, modelFile, testFile);
                     } else {
                         choose_word_index_and_execute<false>(params, modelFile, testFile);

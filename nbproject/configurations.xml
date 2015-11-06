@@ -33,7 +33,9 @@
       <itemPath>inc/LayeredTrieBase.hpp</itemPath>
       <itemPath>inc/LayeredTrieDriver.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
+      <itemPath>inc/MGramCumulativeQuery.hpp</itemPath>
       <itemPath>inc/MGramQuery.hpp</itemPath>
+      <itemPath>inc/MGramSingleQuery.hpp</itemPath>
       <itemPath>inc/MGrams.hpp</itemPath>
       <itemPath>inc/MathUtils.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
@@ -795,7 +797,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -942,7 +948,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1097,7 +1107,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1244,7 +1258,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1391,7 +1409,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1538,7 +1560,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1685,7 +1711,11 @@
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/MGramCumulativeQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>

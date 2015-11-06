@@ -279,7 +279,7 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id
-                        if (!get_m_gram_ctx_id<LOG_LEVEL>(gram.first(), gram.last(), ctx_id)) {
+                        if (!get_m_gram_ctx_id<LOG_LEVEL>(gram.first_word_id(), gram.last_word_id(), ctx_id)) {
                             //The next context id could not be computed
                             stringstream msg;
                             msg << "The m-gram:" << (string) gram << " context could not be computed!";
