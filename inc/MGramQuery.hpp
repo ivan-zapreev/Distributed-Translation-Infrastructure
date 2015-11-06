@@ -142,7 +142,7 @@ namespace uva {
                         const T_Query_M_Gram<WordIndexType> & gram,
                         T_M_Gram_Payload payload[MAX_LEVEL][MAX_LEVEL],
                         TLogProbBackOff & prob) {
-                    //Store the reference to the paylod data
+                    //Store the reference to the payload data
                     T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
 
                     //Retrieve the payload from the trie
@@ -177,7 +177,7 @@ namespace uva {
                         const T_Query_M_Gram<WordIndexType> & gram,
                         T_M_Gram_Payload payload[MAX_LEVEL][MAX_LEVEL],
                         TLogProbBackOff & prob) {
-                    //Store the reference to the paylod data
+                    //Store the reference to the payload data
                     T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
 
                     //Retrieve the payload from the trie
