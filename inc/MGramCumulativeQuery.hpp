@@ -109,8 +109,8 @@ namespace uva {
                         if (m_prob[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
                             cumulative_prob += m_prob[curr_idx];
                         }
-                        LOG_RESULT << "---" << END_LOG;
                     }
+                    LOG_RESULT << "---" << END_LOG;
 
                     //Print the total cumulative probability if needed
                     const string gram_str = BASE::m_gram.get_mgram_prob_str();
