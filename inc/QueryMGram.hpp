@@ -138,6 +138,17 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to check if the word with the given word index is an unknown word.
+                     * The word flags are properly initialized iff the prepare_for_querying method
+                     * was called with the IS_UNK_WORD_FLAGS template parameter set to true.
+                     * @param word_idx the index of the word to be checked
+                     * @return true if the word under the given index is an <unk> word
+                     */
+                    inline bool is_unk_word(const TModelLevel word_idx) const {
+                        return m_unk_word_flags & SMG_UNK_WORD_MASKS[word_idx][word_idx];
+                    }
+
+                    /**
                      * Allows to check if the sub-m-gram defined by the method arguments has unknown words in it.
                      * The word flags are properly initialized iff the prepare_for_querying method was called with
                      * the IS_UNK_WORD_FLAGS template parameter set to true.

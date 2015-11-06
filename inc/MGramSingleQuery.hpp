@@ -127,10 +127,68 @@ namespace uva {
                     //Define the index of the end word for the back-off n-gram
                     const TModelLevel bo_end_word_idx = end_word_idx - 1;
 
-                    //Check if there is unknown words in the m-gram
+                    //Check if there are unknown words in the m-gram
                     if (BASE::m_gram.has_unk_words(begin_word_idx, end_word_idx)) {
-                        //There are unknown words in the given m-gram
-                        THROW_NOT_IMPLEMENTED();
+                        //There are unknown words in this m-gram, check if this a unigram query
+                        if (begin_word_idx == end_word_idx) {
+                            //This is a unigram query consisting of an unknown word
+                            m_prob = BASE::m_unk_word_data.prob;
+                        } else {
+                            //This is not a unigram and it has unknown words, check if the last word is unknown
+                            if (BASE::m_gram.is_unk_word(end_word_idx)) {
+                                //The last word is unknown, check if the previous word is unknown
+                                if (BASE::m_gram.is_unk_word(bo_end_word_idx)) {
+                                    //The two last words are: <unk><unk>, thus the result is
+                                    //just the sum of unknown word prob and back-off weight
+                                    m_prob = BASE::m_unk_word_data.back + BASE::m_unk_word_data.prob;
+                                } else {
+                                    //The two last words are: <word><unk>, thus the result
+                                    //is the back-off weights plus the unknown word prob
+                                    m_prob = BASE::m_unk_word_data.prob;
+                                    //Stores the flag indicating the presence of an unknown word in the back-off sub-m-gram
+                                    bool has_no_unk_words = false;
+                                    //Iterate through the back-off m-grams
+                                    while (begin_word_idx <= bo_end_word_idx) {
+                                        //Check if there are no unknown words in the back-off m-gram
+                                        has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
+                                        if (has_no_unk_words) {
+                                            BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+                                        }
+                                        //Move on to the next iteration
+                                        begin_word_idx++;
+                                    }
+                                }
+                            } else {
+                                //The last word is known, check if the previous word is unknown
+                                if (BASE::m_gram.is_unk_word(bo_end_word_idx)) {
+                                    //The two last words are: <unk><word>, thus the result
+                                    //is the last word probability plus the <unk> back off
+                                    BASE::m_add_prob_get_back_off[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+                                    m_prob += BASE::m_unk_word_data.back;
+                                } else {
+                                    //The two last words are: <word><word>, so just compute that we can
+                                    
+                                    //Stores the flag indicating the presence of an unknown word in the back-off sub-m-gram
+                                    bool has_no_unk_words = false;
+                                    //Iterate through the back-off m-grams
+                                    while (begin_word_idx <= end_word_idx) {
+                                        //Check if there are no unknown words in the back-off m-gram
+                                        has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
+                                        if (has_no_unk_words) {
+                                            if (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
+                                                //Retrieve the back-off weight
+                                                BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+                                            } else {
+                                                //We have retrieved the probability, it is time to stop
+                                                break;
+                                            }
+                                        }
+                                        //Move on to the next iteration
+                                        begin_word_idx++;
+                                    }
+                                }
+                            }
+                        }
                     } else {
                         //There is no unknown words in the given m-gram, try to retrieve the probability, if not present then back off
                         while (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
