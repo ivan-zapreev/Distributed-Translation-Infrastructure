@@ -118,6 +118,9 @@ namespace uva {
                 typedef std::function<bool (const TrieType&, const T_Query_M_Gram<WordIndexType> &,
                         T_M_Gram_Payload[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff &) > TAddProbGetBackFunc;
 
+                //Stores the get-payload function pointers for getting probabilities
+                static const TAddProbGetBackFunc m_add_prob[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
+
                 //Stores the get-payload function pointers for getting probabilities and back offs
                 static const TAddProbGetBackFunc m_add_prob_or_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
 
@@ -139,6 +142,42 @@ namespace uva {
                  * @return true if the payload was not found, otherwise false
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                static inline bool add_prob(const TrieType& trie,
+                        const T_Query_M_Gram<WordIndexType> & gram,
+                        T_M_Gram_Payload payload[MAX_LEVEL][MAX_LEVEL],
+                        TLogProbBackOff & prob) {
+                    //Store the reference to the payload data
+                    T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
+
+                    //Retrieve the payload from the trie
+                    if (trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, false>(gram, data, data) == GPR_Enum::PAYLOAD_GPR) {
+                        LOG_DEBUG1 << "Adding the probability from [" << SSTR(BEGIN_WORD_IDX) << ", "
+                                << SSTR(END_WORD_IDX) << "] = " << data.prob << END_LOG;
+
+                        //If the payload was found then add add it to the probability
+                        prob += data.prob;
+                        //False indicates that the payload was found
+                        return false;
+                    } else {
+                        LOG_DEBUG1 << "Payload for [" << SSTR(BEGIN_WORD_IDX) << ", "
+                                << SSTR(END_WORD_IDX) << "] = ZERO" << END_LOG;
+
+                        //True indicates that we need to back-off
+                        return true;
+                    }
+                };
+
+                /**
+                 * Retrieves the payload of the sub-m-gram defined by the begin
+                 * and end word indexes and increments with provided probability
+                 * variable, via reference, with the obtained probability payload.
+                 * @param trie the trie to work with
+                 * @param gram the complete m-gram 
+                 * @param payload the payload structures for storing retrieved playload
+                 * @param prob the reference to the probability variable to be incremented
+                 * @return true if the payload was not found, otherwise false
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                 static inline bool add_prob_or_back_off(const TrieType& trie,
                         const T_Query_M_Gram<WordIndexType> & gram,
                         T_M_Gram_Payload payload[MAX_LEVEL][MAX_LEVEL],
@@ -146,7 +185,7 @@ namespace uva {
                     //Store the reference to the payload data
                     T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
                     //Store the reference to the back-off payload data
-                    T_M_Gram_Payload & bo_data = payload[BEGIN_WORD_IDX - 1][END_WORD_IDX];
+                    T_M_Gram_Payload & bo_data = payload[BEGIN_WORD_IDX][END_WORD_IDX - 1];
 
                     //Retrieve the payload from the trie, the back-off is only needed when it is not a unigram
                     constexpr bool DO_BACK_OFF = (BEGIN_WORD_IDX != END_WORD_IDX);
@@ -165,8 +204,8 @@ namespace uva {
                         case GPR_Enum::BACK_OFF_GPR:
                             LOG_DEBUG1 << "Payload for [" << SSTR(BEGIN_WORD_IDX) << ", "
                                     << SSTR(END_WORD_IDX) << "] = ZERO" << END_LOG;
-                            LOG_DEBUG1 << "Adding the back-off from [" << SSTR(BEGIN_WORD_IDX - 1) << ", "
-                                    << SSTR(END_WORD_IDX) << "] = " << data.back << END_LOG;
+                            LOG_DEBUG1 << "Adding the back-off from [" << SSTR(BEGIN_WORD_IDX) << ", "
+                                    << SSTR(END_WORD_IDX - 1) << "] = " << data.back << END_LOG;
 
                             //If the payload was found then add add it to the probability
                             prob += bo_data.back;
@@ -176,8 +215,8 @@ namespace uva {
                         default:
                             LOG_DEBUG1 << "Payload for [" << SSTR(BEGIN_WORD_IDX) << ", "
                                     << SSTR(END_WORD_IDX) << "] = ZERO" << END_LOG;
-                            LOG_DEBUG1 << "Back-off payload for [" << SSTR(BEGIN_WORD_IDX - 1) << ", "
-                                    << SSTR(END_WORD_IDX) << "] = ZERO" << END_LOG;
+                            LOG_DEBUG1 << "Back-off payload for [" << SSTR(BEGIN_WORD_IDX) << ", "
+                                    << SSTR(END_WORD_IDX - 1) << "] = ZERO" << END_LOG;
 
                             //True indicates that we need to back-off
                             return true;
@@ -213,6 +252,17 @@ namespace uva {
                                 << SSTR(END_WORD_IDX) << "] = ZERO" << END_LOG;
                     }
                 }
+            };
+
+            template<typename TrieType>
+            const typename T_M_Gram_Query<TrieType>::TAddProbGetBackFunc T_M_Gram_Query<TrieType>::m_add_prob[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                {&add_prob<0, 0>, &add_prob<0, 1>, &add_prob<0, 2>, &add_prob<0, 3>, &add_prob<0, 4>, &add_prob<0, 5>, &add_prob<0, 6>},
+                {NULL, &add_prob<1, 1>, &add_prob<1, 2>, &add_prob<1, 3>, &add_prob<1, 4>, &add_prob<1, 5>, &add_prob<1, 6>},
+                {NULL, NULL, &add_prob<2, 2>, &add_prob<2, 3>, &add_prob<2, 4>, &add_prob<2, 5>, &add_prob<2, 6>},
+                {NULL, NULL, NULL, &add_prob<3, 3>, &add_prob<3, 4>, &add_prob<3, 5>, &add_prob<3, 6>},
+                {NULL, NULL, NULL, NULL, &add_prob<4, 4>, &add_prob<4, 5>, &add_prob<4, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &add_prob<5, 5>, &add_prob<5, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &add_prob<6, 6>}
             };
 
             template<typename TrieType>

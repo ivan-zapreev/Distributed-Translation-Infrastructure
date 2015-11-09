@@ -241,10 +241,7 @@ namespace uva {
                         //Check if there are no unknown words in the back-off m-gram
                         has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
                         if (has_no_unk_words) {
-                            if (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
-                                //Retrieve the back-off weight
-                                BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
-                            } else {
+                            if (!BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
                                 //We have retrieved the probability, it is time to stop
                                 break;
                             }
@@ -267,9 +264,6 @@ namespace uva {
                     while (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
                         LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
                                 << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
-
-                        //Retrieve the back-off weight
-                        BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
 
                         //Move to the next sub-m-gram probability retrieval
                         begin_word_idx++;

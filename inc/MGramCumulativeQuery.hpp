@@ -146,8 +146,9 @@ namespace uva {
                             //If the sub-m-gram's end word is unknown back-off
                             do_back_off_unknown(begin_word_idx, end_word_idx);
                         } else {
-                            //If the sub-m-gram's word is known try to retrieve the payload
-                            if (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
+                            //If the sub-m-gram's word is known try to retrieve the payload, the
+                            //back-off is not needed as has been retrieved on the previous iteration
+                            if (BASE::m_add_prob[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
                                 //If the sub-m-gram payload is not defined then back-off
                                 do_back_off_undefined(begin_word_idx, end_word_idx);
                             }
@@ -222,7 +223,6 @@ namespace uva {
                     while (BASE::m_add_prob_or_back_off[++begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
                         LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
                                 << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
-                        BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx]);
                     };
                 }
 
