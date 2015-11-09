@@ -335,12 +335,12 @@ namespace uva {
                  * @param CURR_LEVEL the currently considered level of the m-gram
                  * @param query the query M-gram state 
                  * @param ref the bucket to search in
-                 * @param payload_ptr [out] the reference to the pointer of the payload, to be set within this method
+                 * @param payload [out] the reference to the payload storage, to be set within this method
                  * @return true if the M-gram was found and otherwise false.
                  */
                 template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
                 bool get_payload_from_gram_level(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
-                        const typename BUCKET_TYPE::TElemType::TPayloadType * & payload_ptr) const;
+                        typename BUCKET_TYPE::TElemType::TPayloadType & payload) const;
 
             };
 

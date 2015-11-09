@@ -222,7 +222,7 @@ namespace uva {
                  */
                 inline void compute_prob_smth_unk_word(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
                     //is the last word probability plus the <unk> back off
-                    BASE::m_add_prob_or_back_off[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+                    BASE::m_add_prob[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
                     m_prob += BASE::m_unk_word_data.back;
                 }
 

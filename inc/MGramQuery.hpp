@@ -156,6 +156,7 @@ namespace uva {
 
                         //If the payload was found then add add it to the probability
                         prob += data.prob;
+                        
                         //False indicates that the payload was found
                         return false;
                     } else {
@@ -188,8 +189,7 @@ namespace uva {
                     T_M_Gram_Payload & bo_data = payload[BEGIN_WORD_IDX][END_WORD_IDX - 1];
 
                     //Retrieve the payload from the trie, the back-off is only needed when it is not a unigram
-                    constexpr bool DO_BACK_OFF = (BEGIN_WORD_IDX != END_WORD_IDX);
-                    GPR_Enum result = trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, DO_BACK_OFF>(gram, data, bo_data);
+                    GPR_Enum result = trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, true>(gram, data, bo_data);
 
                     //Depending on the result of the payload retrieval we have 3 different options
                     switch (result) {
@@ -199,6 +199,7 @@ namespace uva {
 
                             //If the payload was found then add add it to the probability
                             prob += data.prob;
+                            
                             //False indicates that the payload was found
                             return false;
                         case GPR_Enum::BACK_OFF_GPR:

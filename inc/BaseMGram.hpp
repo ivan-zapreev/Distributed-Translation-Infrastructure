@@ -202,7 +202,7 @@ namespace uva {
                     template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
                     inline void create_m_gram_id(T_Gram_Id_Data_Ptr & p_m_gram_id) const {
                         //Compute the number of words based on the input template parameters
-                        constexpr TModelLevel NUMBER_OF_WORDS = END_WORD_IDX - BEGIN_WORD_IDX + 1;
+                        constexpr TModelLevel NUMBER_OF_WORDS = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
                         LOG_DEBUG << "Computing sub " << SSTR(NUMBER_OF_WORDS) << "-gram id for the gram "
                                 << "defined by the first, and the last word indexes: ["

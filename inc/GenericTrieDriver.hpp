@@ -171,10 +171,10 @@ namespace uva {
                     //Check if the caching is enabled
                     if (TrieType::needs_bitmap_hash_cache()) {
                         //If the caching is enabled
-                        
+
                         //Compute the model level
                         constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
-                        
+
                         //Check on which sub-m-gram level it is
                         if (CURR_LEVEL > M_GRAM_LEVEL_1) {
                             //The higher sub-m-gram levels always require checking
@@ -204,15 +204,41 @@ namespace uva {
                  * @return true if the payload has been found, otherwise false
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
-                inline  GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
-                    //Check if the sub-m-gram hash has been cached
-                    if( is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram) ) {
-                        //Check the trie for this m-gram's payload
-                        return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, DO_BACK_OFF>(gram, payload, bo_payload);
+                inline GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
+                    if (DO_BACK_OFF) {
+                        LOG_DEBUG << "DO_BACK_OFF == true" << END_LOG;
+                        //Compute the back-off end word index
+                        constexpr TModelLevel BO_END_WORD_IDX = (BEGIN_WORD_IDX < END_WORD_IDX) ? (END_WORD_IDX - 1) : END_WORD_IDX;
+                        //Check if the back-off sub-m-gram has been cached
+                        if (is_m_gram_hash_cached < BEGIN_WORD_IDX, BO_END_WORD_IDX > (gram)) {
+                            LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(BO_END_WORD_IDX) << ">(gram) == true" << END_LOG;
+                            //Check if the sub-m-gram hash has been cached
+                            if (is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram)) {
+                                LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == true" << END_LOG;
+                                //Check the trie for this m-gram's payload
+                                return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, true>(gram, payload, bo_payload);
+                            } else {
+                                LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == false" << END_LOG;
+                                //There is definitely no sub-m-gram present, so try to get the back-off sub-m-gram right away
+                                if (m_trie.template get_payload<BEGIN_WORD_IDX, BO_END_WORD_IDX, false>(gram, bo_payload, bo_payload) == GPR_Enum::PAYLOAD_GPR) {
+                                    return GPR_Enum::BACK_OFF_GPR;
+                                }
+                            }
+                        }
+                        LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(BO_END_WORD_IDX) << ">(gram) == false" << END_LOG;
                     } else {
-                        //There is no data cached for this sub-m-gram so it is definitely not present in the trie.
-                        return GPR_Enum::FAILED_GPR;
+                        LOG_DEBUG << "DO_BACK_OFF == false" << END_LOG;
+                        //Check if the sub-m-gram hash has been cached
+                        if (is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram)) {
+                            LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == true" << END_LOG;
+                            //Check the trie for this m-gram's payload
+                            return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, false>(gram, payload, payload);
+                        }
+                        LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == false" << END_LOG;
                     }
+
+                    //There is no data available: not cached or not found in the trie.
+                    return GPR_Enum::FAILED_GPR;
                 };
 
                 /**
