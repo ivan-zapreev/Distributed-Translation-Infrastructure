@@ -228,23 +228,23 @@ namespace uva {
                     }
 
                     //Compute the subsequent context ids
-                    TModelLevel idx = 1; //This is the "second word index"
+                    TModelLevel index = 0;
                     for (; curr_wid_iter != end_wid_iter;) {
-                        LOGGER(LOG_LEVEL) << "Start searching ctx_id for m_word_ids[" << SSTR(idx) << "]: "
+                        LOGGER(LOG_LEVEL) << "Start searching ctx_id for m_word_ids[" << SSTR(index) << "]: "
                                 << SSTR(*curr_wid_iter) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
 
                         //The word has to be known, otherwise it is an error situation
                         if (DO_SANITY_CHECKS && (*curr_wid_iter == WordIndexType::UNKNOWN_WORD_ID)) {
                             stringstream msg;
-                            msg << "The " << SSTR(idx) << "'th word of the m-gram is unknown!";
+                            msg << "The " << SSTR(index) << "'th word of the m-gram is unknown!";
                             throw Exception(msg.str());
                         }
 
-                        if (get_ctx_id_func[idx](m_trie, *curr_wid_iter, ctx_id)) {
+                        if (get_ctx_id_func[index](m_trie, *curr_wid_iter, ctx_id)) {
                             LOGGER(LOG_LEVEL) << "get_context_id(" << SSTR(*curr_wid_iter)
                                     << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
                             curr_wid_iter++;
-                            idx++;
+                            index++;
                         } else {
                             //The next context id could not be retrieved
                             return false;
@@ -354,7 +354,6 @@ namespace uva {
 
             template<typename TrieType>
             const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_1>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,

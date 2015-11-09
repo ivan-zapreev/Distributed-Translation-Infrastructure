@@ -176,14 +176,14 @@ namespace uva {
                         constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
                         //Check on which sub-m-gram level it is
-                        if (CURR_LEVEL > M_GRAM_LEVEL_1) {
-                            //The higher sub-m-gram levels always require checking
-                            const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                            return ref.is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
-                        } else {
+                        if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                             //If this is a unigram then we always check the trie
                             //as retrieving the word probability costs nothing.
                             return true;
+                        } else {
+                            //The higher sub-m-gram levels always require checking
+                            const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                            return ref.is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
                         }
                     } else {
                         //If caching is not enabled then we always check the trie

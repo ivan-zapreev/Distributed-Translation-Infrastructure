@@ -155,10 +155,19 @@ namespace uva {
                         << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
 
                 //Consider different variants based no the length of the context
-                if (CURR_LEVEL > M_GRAM_LEVEL_1) {
+                if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                    //If we are looking for a 1-Gram probability, no need to compute the context
+                    m_trie.get_1_gram_payload(end_word_id, payload);
+                    return GPR_Enum::PAYLOAD_GPR;
+                } else {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
                     TLongId ctx_id;
 
+                    //ToDo: This code is not complete, the payload is not retrieved in case DO_BACK_OFF==true
+                    if( DO_BACK_OFF ) {
+                        throw Exception("GPR_Enum LayeredTrieDriver<TrieType>::get_payload(...): Incomplete implementation!");
+                    }
+                    
                     //Compute the context id based on what is stored in m_GramWordIds and context length
                     if (get_m_gram_ctx_id(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), gram.template get_word_id_ptr<END_WORD_IDX>(), ctx_id)) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
@@ -170,14 +179,10 @@ namespace uva {
                             return m_trie.template get_m_gram_payload<CURR_LEVEL>(end_word_id, ctx_id, payload);
                         }
                     } else {
-                        //Could not compute the context id for the given level, so backing off (recursive)!
+                        //Could not compute the context id for the given level, so backing off!
                         LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-Gram context id, need to back off!" << END_LOG;
                         return GPR_Enum::FAILED_GPR;
                     }
-                } else {
-                    //If we are looking for a 1-Gram probability, no need to compute the context
-                    m_trie.get_1_gram_payload(end_word_id, payload);
-                    return GPR_Enum::PAYLOAD_GPR;
                 }
             };
 
