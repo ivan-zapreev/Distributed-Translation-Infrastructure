@@ -55,6 +55,13 @@ namespace uva {
         namespace tries {
 
             /**
+             * Stores the possible result value for the method that retrieves the m-gram payload
+             */
+            enum GPR_Enum {
+                FAILED_GPR = 0, PAYLOAD_GPR = FAILED_GPR + 1, BACK_OFF_GPR = PAYLOAD_GPR + 1
+            };
+
+            /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -77,12 +84,12 @@ namespace uva {
 
                 // Stores the undefined index array value
                 static const TShortId FIRST_VALID_CTX_ID = UNDEFINED_ARR_IDX + 1;
-                
+
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
-                explicit GenericTrieBase(WordIndexType & word_index) :WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index){
+                explicit GenericTrieBase(WordIndexType & word_index) : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
                 }
 
                 /**
@@ -125,12 +132,19 @@ namespace uva {
                  * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
                  * @param BEGIN_WORD_IDX the begin word index in the given m-gram
                  * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param DO_BACK_OFF true if we should try to return the back-off m-gram payload
+                 *                    in case the regular payload could not be retrieved
                  * @param gram the m-gram to work with
                  * @param payload the payload structure to put the values in
-                 * @return true if the payload has been found, otherwise false
+                 * @param bo_payload the reference to the back-off m-gram payload data structure
+                 * @return GPR_Enum::PAYLOAD_GPR  if the payload has been found
+                 *         GPR_Enum::BACK_OFF_GPR if the payload could not be found
+                 *                                but the back-off payload was found
+                 *         GPR_Enum::FAILED_GPR   if neither payload not the back-off
+                 *                                payload was found
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
+                inline GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -141,7 +155,7 @@ namespace uva {
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
-                
+
                 /**
                  * Allows to check if the bitmap hash cache is to be used.
                  * By default returns false, needs to be re-implemented in the sub-class.
@@ -150,7 +164,7 @@ namespace uva {
                 constexpr static inline bool needs_bitmap_hash_cache() {
                     return false;
                 };
-               
+
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
