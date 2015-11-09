@@ -147,7 +147,7 @@ namespace uva {
                             do_back_off_unknown(begin_word_idx, end_word_idx);
                         } else {
                             //If the sub-m-gram's word is known try to retrieve the payload
-                            if (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
+                            if (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
                                 //If the sub-m-gram payload is not defined then back-off
                                 do_back_off_undefined(begin_word_idx, end_word_idx);
                             }
@@ -219,7 +219,7 @@ namespace uva {
                             << SSTR(begin_word_idx + 1) << ", " << SSTR(end_word_idx) << "]" << END_LOG;
 
                     //Now continue the back-off process: going down the column
-                    while (BASE::m_add_prob_get_back_off[++begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
+                    while (BASE::m_add_prob_or_back_off[++begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx])) {
                         LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
                                 << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
                         BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob[end_word_idx]);

@@ -222,7 +222,7 @@ namespace uva {
                  */
                 inline void compute_prob_smth_unk_word(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
                     //is the last word probability plus the <unk> back off
-                    BASE::m_add_prob_get_back_off[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
+                    BASE::m_add_prob_or_back_off[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
                     m_prob += BASE::m_unk_word_data.back;
                 }
 
@@ -241,7 +241,7 @@ namespace uva {
                         //Check if there are no unknown words in the back-off m-gram
                         has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
                         if (has_no_unk_words) {
-                            if (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
+                            if (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
                                 //Retrieve the back-off weight
                                 BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
                             } else {
@@ -264,7 +264,7 @@ namespace uva {
                  */
                 inline void compute_prob_all_words_known(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
                     //Iterate through trying to retrieve the probability or backing off if we fail to.
-                    while (BASE::m_add_prob_get_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
+                    while (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
                         LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
                                 << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
 
