@@ -164,10 +164,9 @@ namespace uva {
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
-                inline bool get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
                     //The data is always present.
                     payload = m_1_gram_data[word_id];
-                    return true;
                 };
 
                 /**
@@ -184,7 +183,7 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline bool get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the next context id
                     if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
@@ -193,15 +192,15 @@ namespace uva {
                         TMGramsMap::const_iterator result = pMGramMap[LEVEL_IDX]->find(ctx_id);
                         if (result == pMGramMap[LEVEL_IDX]->end()) {
                             //There is no data found under this context
-                            return false;
+                            return GPR_Enum::FAILED_GPR;
                         } else {
                             //There is data found under this context
                             payload = result->second;
-                            return true;
+                            return GPR_Enum::PAYLOAD_GPR;
                         }
                     } else {
                         //The context id could not be found
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 }
 
@@ -217,7 +216,7 @@ namespace uva {
                  * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                inline bool get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the next context id
                     if (get_ctx_id<MAX_LEVEL>(word_id, ctx_id)) {
@@ -225,15 +224,15 @@ namespace uva {
                         TNGramsMap::const_iterator result = pNGramMap->find(ctx_id);
                         if (result == pNGramMap->end()) {
                             //There is no data found under this context
-                            return false;
+                            return GPR_Enum::FAILED_GPR;
                         } else {
                             //There is data found under this context
                             payload.prob = result->second;
-                            return true;
+                            return GPR_Enum::PAYLOAD_GPR;
                         }
                     } else {
                         //The context id could not be found
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 }
 

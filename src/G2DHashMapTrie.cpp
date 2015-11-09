@@ -184,8 +184,8 @@ namespace uva {
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-            bool G2DMapTrie<MAX_LEVEL, WordIndexType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+            template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
+            GPR_Enum G2DMapTrie<MAX_LEVEL, WordIndexType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
                 //Compute the current level of the sub-m-gram
                 constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
@@ -214,11 +214,11 @@ namespace uva {
                             //1.1.4.1.1 The probability is nicely found
                             payload.prob = *payload_ptr;
                             LOG_DEBUG << "The N-gram is found, payload: " << (string) payload << END_LOG;
-                            return true;
+                            return GPR_Enum::PAYLOAD_GPR;
                         } else {
                             LOG_DEBUG << "The N-gram is not found!" << END_LOG;
                             //1.1.4.1.2 Could not compute the probability for the given level, so backing off (recursive)!
-                            return false;
+                            return GPR_Enum::FAILED_GPR;
                         }
                     } else {
                         const TModelLevel mgram_indx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
@@ -231,18 +231,18 @@ namespace uva {
                             //1.1.4.2.1 The probability is nicely found
                             payload = *payload_ptr;
                             LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is found, payload: " << (string) payload << END_LOG;
-                            return true;
+                            return GPR_Enum::PAYLOAD_GPR;
                         } else {
                             LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram is not found!" << END_LOG;
                             //1.1.4.2.2 Could not compute the probability for the given level, so backing off (recursive)!
-                            return false;
+                            return GPR_Enum::FAILED_GPR;
                         }
                     }
                 } else {
                     //1.2. This is the case of a 1-Gram, just get its probability.
                     payload = m_1_gram_data[gram[END_WORD_IDX]];
                     LOG_DEBUG << "Getting the " << SSTR(CURR_LEVEL) << "-gram payload: " << (string) payload << END_LOG;
-                    return true;
+                    return GPR_Enum::PAYLOAD_GPR;
                 }
             }
 

@@ -196,19 +196,22 @@ namespace uva {
                  * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
                  * @param BEGIN_WORD_IDX the begin word index in the given m-gram
                  * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param DO_BACK_OFF true if the back-off payload is to be retrieved
+                 * in case the regular payload is not available.
                  * @param gram the m-gram to work with
                  * @param payload the payload structure to put the values in
+                 * @param bo_payload the reference to the back-off data container
                  * @return true if the payload has been found, otherwise false
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
+                inline  GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
                     //Check if the sub-m-gram hash has been cached
                     if( is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram) ) {
                         //Check the trie for this m-gram's payload
-                        return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, payload);
+                        return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, DO_BACK_OFF>(gram, payload, bo_payload);
                     } else {
                         //There is no data cached for this sub-m-gram so it is definitely not present in the trie.
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 };
 

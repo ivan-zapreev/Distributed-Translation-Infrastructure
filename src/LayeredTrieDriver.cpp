@@ -143,8 +143,8 @@ namespace uva {
             };
 
             template<typename TrieType >
-            template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-            bool LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const {
+            template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
+            GPR_Enum LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
                 //Compute the current level from the begin and end word indexes
                 constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
@@ -172,11 +172,12 @@ namespace uva {
                     } else {
                         //Could not compute the context id for the given level, so backing off (recursive)!
                         LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-Gram context id, need to back off!" << END_LOG;
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 } else {
                     //If we are looking for a 1-Gram probability, no need to compute the context
-                    return m_trie.get_1_gram_payload(end_word_id, payload);
+                    m_trie.get_1_gram_payload(end_word_id, payload);
+                    return GPR_Enum::PAYLOAD_GPR;
                 }
             };
 

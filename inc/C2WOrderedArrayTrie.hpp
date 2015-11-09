@@ -229,10 +229,9 @@ namespace uva {
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
-                inline bool get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                inline void get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
                     //The data is always present.
                     payload = m_1_gram_data[wordId];
-                    return true;
                 };
 
                 /**
@@ -249,7 +248,7 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
                         T_M_Gram_Payload &payload) const {
                     //Compute the m-gram index
                     constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
@@ -261,10 +260,10 @@ namespace uva {
                     if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
                         //Return the data
                         payload = m_M_gram_data[LEVEL_IDX][ctxId].data;
-                        return true;
+                        return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         //The data could not be found
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 }
 
@@ -280,7 +279,7 @@ namespace uva {
                  * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
                  * For more details @see LayeredTrieBase
                  */
-                inline bool get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_n_gram_payload(const TShortId wordId, TLongId ctxId,
                         T_M_Gram_Payload &payload) const {
                     LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
                             << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
@@ -296,11 +295,11 @@ namespace uva {
                             m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, wordId, ctxId, idx)) {
                         //Return the data
                         payload.prob = m_N_gram_data[idx].prob;
-                        return true;
+                        return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctxId: " << SSTR(ctxId)
                                 << ", wordId: " << SSTR(wordId) << ", key " << SSTR(key) << END_LOG;
-                        return false;
+                        return GPR_Enum::FAILED_GPR;
                     }
                 }
 

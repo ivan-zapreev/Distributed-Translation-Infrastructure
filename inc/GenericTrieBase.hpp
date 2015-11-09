@@ -175,7 +175,8 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(BEGIN_IDX, END_IDX, TRIE_TYPE_NAME, ...) \
-            template bool TRIE_TYPE_NAME<__VA_ARGS__>::get_payload<BEGIN_IDX, END_IDX>(const T_Query_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, T_M_Gram_Payload & payload) const; \
+            template GPR_Enum TRIE_TYPE_NAME<__VA_ARGS__>::get_payload<BEGIN_IDX, END_IDX, true>(const T_Query_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const; \
+            template GPR_Enum TRIE_TYPE_NAME<__VA_ARGS__>::get_payload<BEGIN_IDX, END_IDX, false>(const T_Query_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
 
 #define INSTANTIATE_TRIE_GET_PAYLOAD(TRIE_TYPE_NAME, ...) \
             INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 6, TRIE_TYPE_NAME, __VA_ARGS__); \

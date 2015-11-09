@@ -81,10 +81,9 @@ namespace uva {
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @param wordId the One-gram id
                  * @param payload[out] the reference to the data that is to be set with the stored one.
-                 * @return true if the element was found, otherwise false
                  * @throw nothing
                  */
-                inline bool get_1_gram_payload(const TShortId wordId,
+                inline void get_1_gram_payload(const TShortId wordId,
                         T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -113,7 +112,7 @@ namespace uva {
                  * @throw nothing
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline bool get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
                         T_M_Gram_Payload &payload) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -138,7 +137,7 @@ namespace uva {
                  * @return true if the probability was found, otherwise false
                  * @throw nothing
                  */
-                inline bool get_n_gram_payload(const TShortId wordId, const TLongId ctxId,
+                inline GPR_Enum get_n_gram_payload(const TShortId wordId, const TLongId ctxId,
                         T_M_Gram_Payload &payload) const {
                     THROW_MUST_OVERRIDE();
                 };

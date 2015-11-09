@@ -35,6 +35,7 @@
 
 #include "QueryMGram.hpp"
 #include "TextPieceReader.hpp"
+#include "GenericTrieBase.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -146,7 +147,7 @@ namespace uva {
                     T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
 
                     //Retrieve the payload from the trie
-                    if (trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, data)) {
+                    if (trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, false>(gram, data, data) == GPR_Enum::PAYLOAD_GPR) {
                         LOG_DEBUG1 << "Adding the probability from [" << SSTR(BEGIN_WORD_IDX) << ", "
                                 << SSTR(END_WORD_IDX) << "] = " << data.prob << END_LOG;
 
@@ -181,7 +182,7 @@ namespace uva {
                     T_M_Gram_Payload & data = payload[BEGIN_WORD_IDX][END_WORD_IDX];
 
                     //Retrieve the payload from the trie
-                    if (trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX>(gram, data)) {
+                    if (trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, false>(gram, data, data) == GPR_Enum::PAYLOAD_GPR) {
                         LOG_DEBUG1 << "Adding the back-off from [" << SSTR(BEGIN_WORD_IDX) << ", "
                                 << SSTR(END_WORD_IDX) << "] = " << data.back << END_LOG;
 

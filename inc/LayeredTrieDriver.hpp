@@ -129,8 +129,8 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                bool get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload) const;
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
+                GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
 
                 /**
                  * @see GenericTrieBase
@@ -175,7 +175,7 @@ namespace uva {
                  * The copy constructor, is made private as we do not intend to copy this class objects
                  * @param orig the object to copy from
                  */
-                LayeredTrieDriver(const LayeredTrieDriver& orig)
+                LayeredTrieDriver(const LayeredTrieDriver & orig)
                 : GenericTrieBase<MAX_LEVEL, WordIndexType>(orig.get_word_index()),
                 m_trie(orig.get_word_index()),
                 m_chached_ctx(), m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
@@ -267,7 +267,7 @@ namespace uva {
                  * @return true if the context was found otherwise false
                  */
                 template<TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
-                inline void get_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId &ctx_id) {
+                inline void get_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & ctx_id) {
                     //Perform sanity check for the level values they should be the same!
                     if (DO_SANITY_CHECKS && (CURR_LEVEL != gram.get_m_gram_level())) {
                         stringstream msg;
