@@ -125,58 +125,6 @@ namespace uva {
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            T_M_Gram_Payload & C2DMapTrie<MAX_LEVEL, WordIndexType>::make_1_gram_data_ref(const TShortId word_id) {
-                if (DO_SANITY_CHECKS) {
-                    //Add hash key statistics
-                    if (Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                        hashSizes[0].first = min<TLongId>(word_id, hashSizes[0].first);
-                        hashSizes[0].second = max<TLongId>(word_id, hashSizes[0].second);
-                    }
-                }
-
-                //Get the word probability and back-off data reference
-                return m_1_gram_data[word_id];
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            template<TModelLevel CURR_LEVEL>
-            T_M_Gram_Payload & C2DMapTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId word_id, TLongId ctx_id) {
-                //Store the N-tires from length 2 on and indexing starts
-                //with 0, therefore "level-2". Get/Create the mapping for this
-                //word in the Trie level of the N-gram
-
-                //Note: there is no need to check on the result of the function
-                //as in this Trie the context can always be computed!
-                (void) get_ctx_id<CURR_LEVEL>(word_id, ctx_id);
-
-                //Add hash key statistics
-                if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                    hashSizes[CURR_LEVEL - 1].first = min<TLongId>(ctx_id, hashSizes[CURR_LEVEL - 1].first);
-                    hashSizes[CURR_LEVEL - 1].second = max<TLongId>(ctx_id, hashSizes[CURR_LEVEL - 1].second);
-                }
-
-                return pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id);
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            TLogProbBackOff & C2DMapTrie<MAX_LEVEL, WordIndexType>::make_n_gram_data_ref(const TShortId word_id, TLongId ctx_id) {
-                //Data stores the N-tires from length 2 on, therefore "idx-1"
-                //Get/Create the mapping for this word in the Trie level of the N-gram
-
-                //Note: there is no need to check on the result of the function
-                //as in this Trie the context can always be computed!
-                (void) get_ctx_id<MAX_LEVEL>(word_id, ctx_id);
-
-                //Add hash key statistics
-                if (DO_SANITY_CHECKS && Logger::isRelevantLevel(DebugLevelsEnum::INFO3)) {
-                    hashSizes[MAX_LEVEL - 1].first = min<TLongId>(ctx_id, hashSizes[MAX_LEVEL - 1].first);
-                    hashSizes[MAX_LEVEL - 1].second = max<TLongId>(ctx_id, hashSizes[MAX_LEVEL - 1].second);
-                }
-
-                return pNGramMap->operator[](ctx_id);
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             C2DMapTrie<MAX_LEVEL, WordIndexType>::~C2DMapTrie() {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics

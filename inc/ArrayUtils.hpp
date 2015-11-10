@@ -190,7 +190,7 @@ namespace uva {
 
                 /**
                  * This is a binary search algorithm for some ordered array for two keys
-                 * @param ARR_ELEM_TYPE the array element structure, must have wordId field as this method will specifically use it to compare elements.
+                 * @param ARR_ELEM_TYPE the array element structure, must have word_id field as this method will specifically use it to compare elements.
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -201,12 +201,12 @@ namespace uva {
                  */
                 template<typename ARR_ELEM_TYPE>
                 inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
-                    BSEARCH_TWO_FIELDS(wordId, ctxId);
+                    BSEARCH_TWO_FIELDS(word_id, ctx_id);
                 }
 
                 /**
                  * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
@@ -225,7 +225,7 @@ namespace uva {
                 /**
                  * This is an interpolated search algorithm for some ordered array
                  * WARNING: IS ACTUALLY VERT SLOW at least in the current implementation and for the current application!
-                 * @param ARR_ELEM_TYPE the array element structure, must have ctxId field as this method will specifically use it to compare elements.
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
                  * @param IDX_TYPE the index type 
                  * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element

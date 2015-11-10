@@ -40,9 +40,9 @@ namespace uva {
     namespace smt {
         namespace tries {
 
-            template<TModelLevel N, typename WordIndexType>
-            C2WArrayTrie<N, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<N, WordIndexType>(word_index),
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            C2WArrayTrie<MAX_LEVEL, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
             m_1_gram_data(NULL), m_N_gram_data(NULL), m_one_gram_arr_size(0) {
 
                 //Memset the M grams reference and data arrays
@@ -54,8 +54,8 @@ namespace uva {
                 memset(m_M_N_gram_next_ctx_id, 0, BASE::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
             }
 
-            template<TModelLevel N, typename WordIndexType>
-            void C2WArrayTrie<N, WordIndexType>::pre_allocate(const size_t counts[N]) {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            void C2WArrayTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
                 //01) Pre-allocate the word index super class call
                 BASE::pre_allocate(counts);
 
@@ -107,34 +107,34 @@ namespace uva {
                     memset(m_M_gram_data[i], 0, m_M_N_gram_num_ctx_ids[i] * sizeof (TWordIdPBEntry));
                 }
 
-                //06) Allocate the data for the N-Grams.
+                //06) Allocate the data for the M-Grams.
                 m_N_gram_data = new TCtxIdProbEntry[m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR]];
                 memset(m_N_gram_data, 0, m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
             }
 
-            template<TModelLevel N, typename WordIndexType>
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
                 template<TModelLevel level>
-            bool C2WArrayTrie<N, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
+            bool C2WArrayTrie<MAX_LEVEL, WordIndexType>::get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
 
-                if (DO_SANITY_CHECKS && ((level == N) || (mgram_idx < 0))) {
+                if (DO_SANITY_CHECKS && ((level == MAX_LEVEL) || (mgram_idx < 0))) {
                     stringstream msg;
                     msg << "Unsupported level id: " << level;
                     throw Exception(msg.str());
                 }
 
-                LOG_DEBUG2 << "Searching for the next ctxId of " << SSTR(level)
-                        << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
-                        << SSTR(ctxId) << END_LOG;
+                LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(level)
+                        << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
+                        << SSTR(ctx_id) << END_LOG;
 
                 //First get the sub-array reference. Note that, even if it is the 2-Gram
-                //case and the previous word is unknown (ctxId == 0) we still can use
-                //the ctxId to get the data entry. The reason is that we allocated memory
+                //case and the previous word is unknown (ctx_id == 0) we still can use
+                //the ctx_id to get the data entry. The reason is that we allocated memory
                 //for it but being for an unknown word context it should have no data!
-                TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+                TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
 
-                LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
+                LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
                         << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
                         << SSTR(ref.endIdx) << END_LOG;
 
@@ -143,22 +143,22 @@ namespace uva {
                     TShortId nextCtxId = BASE::UNDEFINED_ARR_IDX;
                     //The data is available search for the word index in the array
                     //WARNING: The linear search here is much slower!!!
-                    if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, wordId, nextCtxId)) {
-                        LOG_DEBUG2 << "The next ctxId for wordId: " << SSTR(wordId) << ", ctxId: "
-                                << SSTR(ctxId) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
-                        ctxId = nextCtxId;
+                    if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, word_id, nextCtxId)) {
+                        LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", ctx_id: "
+                                << SSTR(ctx_id) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
+                        ctx_id = nextCtxId;
                         return true;
                     } else {
-                        LOG_DEBUG2 << "Unable to find M-gram ctxId for level: "
-                                << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
-                                << ", wordId: " << SSTR(wordId) << ", is not in the available range: ["
+                        LOG_DEBUG2 << "Unable to find M-gram ctx_id for level: "
+                                << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
+                                << ", word_id: " << SSTR(word_id) << ", is not in the available range: ["
                                 << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].id) << " ... "
                                 << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].id) << "]" << END_LOG;
                         return false;
                     }
                 } else {
                     LOG_DEBUG2 << "Unable to find M-gram context id for level: "
-                            << SSTR(level) << ", prev ctxId: " << SSTR(ctxId)
+                            << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
                             << ", nothing present in that context!" << END_LOG;
                     return false;
                 }
@@ -176,89 +176,6 @@ namespace uva {
                     delete[] m_N_gram_data;
                 }
             }
-
-            template<TModelLevel N, typename WordIndexType>
-            T_M_Gram_Payload & C2WArrayTrie<N, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
-                LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-                return m_1_gram_data[wordId];
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            template<TModelLevel level>
-            T_M_Gram_Payload& C2WArrayTrie<N, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                //Compute the m-gram index
-                const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
-
-                LOG_DEBUG2 << "Adding " << SSTR(level) << "-gram with ctxId: "
-                        << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
-
-                //First get the sub-array reference. 
-                TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctxId];
-
-                //Check that the array is continuous in indexes, so that we add
-                //context after context and not switching between different contexts!
-                if (DO_SANITY_CHECKS && (ref.endIdx != BASE::UNDEFINED_ARR_IDX)
-                        && (ref.endIdx + 1 != m_M_N_gram_next_ctx_id[mgram_idx])) {
-                    stringstream msg;
-                    msg << "The " << SSTR(level) << " -gram ctxId: " << SSTR(ctxId)
-                            << " array is not ordered ref.endIdx = " << SSTR(ref.endIdx)
-                            << ", next ref.endIdx = " << SSTR(m_M_N_gram_next_ctx_id[mgram_idx] + 1) << "!";
-                    throw Exception(msg.str());
-                }
-
-                //Get the new index and increment - this will be the new end index
-                ref.endIdx = m_M_N_gram_next_ctx_id[mgram_idx]++;
-
-                //Check if we exceeded the maximum allowed number of M-grams
-                if (DO_SANITY_CHECKS && (ref.endIdx >= m_M_N_gram_num_ctx_ids[mgram_idx])) {
-                    stringstream msg;
-                    msg << "The maximum allowed number of " << SSTR(level) << "-grams: "
-                            << SSTR(m_M_N_gram_num_ctx_ids[mgram_idx]) << " is exceeded )!";
-                    throw Exception(msg.str());
-                }
-
-                //Check if there are yet no elements for this context
-                if (ref.beginIdx == BASE::UNDEFINED_ARR_IDX) {
-                    //There was no elements put into this context, the begin index is then equal to the end index
-                    ref.beginIdx = ref.endIdx;
-                }
-
-                //Store the word id
-                m_M_gram_data[mgram_idx][ref.endIdx].id = wordId;
-
-                //Return the reference to the newly allocated element
-                return m_M_gram_data[mgram_idx][ref.endIdx].data;
-            };
-
-            template<TModelLevel N, typename WordIndexType>
-            TLogProbBackOff& C2WArrayTrie<N, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                //Get the new n-gram index
-                const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
-
-                LOG_DEBUG2 << "Adding " << SSTR(N) << "-gram with ctxId: " << SSTR(ctxId)
-                        << ", wordId: " << SSTR(wordId) << " @ index: " << SSTR(n_gram_idx) << END_LOG;
-
-                //Check if we exceeded the maximum allowed number of M-grams
-                if (DO_SANITY_CHECKS && (n_gram_idx >= m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR])) {
-                    stringstream msg;
-                    const TShortId max_num = m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR];
-                    msg << "The maximum allowed number of " << SSTR(N) << "-grams: "
-                            << SSTR(max_num) << " is exceeded )!";
-                    throw Exception(msg.str());
-                }
-
-                //Store the context and word ids
-                m_N_gram_data[n_gram_idx].ctxId = ctxId;
-                m_N_gram_data[n_gram_idx].wordId = wordId;
-
-                //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
-                LOG_DEBUG4 << "Storing N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
-                        << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
-
-                //return the reference to the probability
-                return m_N_gram_data[n_gram_idx].prob;
-            };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
             INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, BasicWordIndex);

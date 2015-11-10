@@ -468,7 +468,7 @@ namespace uva {
                                 && (new_capacity > 0) && (m_ptr == NULL)) {
                             stringstream msg;
                             msg << "Ran out of memory when trying to allocate "
-                                    << new_capacity << " data elements for a wordId";
+                                    << new_capacity << " data elements for a word_id";
                             throw Exception(msg.str());
                         }
                     }

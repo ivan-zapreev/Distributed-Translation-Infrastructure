@@ -154,13 +154,6 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see LayeredTrieBase
-                 */
-                T_M_Gram_Payload & make_1_gram_data_ref(const TShortId word_id);
-
-                /**
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
@@ -176,7 +169,22 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                T_M_Gram_Payload & make_m_gram_data_ref(const TShortId word_id, TLongId ctx_id);
+                inline void add_m_gram_payload(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                    if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                        //Store the payload
+                        m_1_gram_data[word_id] = payload;
+                    } else {
+                        //Obtain this m-gram id
+                        (void) get_ctx_id<CURR_LEVEL>(word_id, ctx_id);
+
+                        //Store the payload
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            pNGramMap->operator[](ctx_id) = payload.prob;
+                        } else {
+                            pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = payload;
+                        }
+                    }
+                }
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
@@ -203,14 +211,6 @@ namespace uva {
                         return GPR_Enum::FAILED_GPR;
                     }
                 }
-
-                /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see LayeredTrieBase
-                 */
-                TLogProbBackOff & make_n_gram_data_ref(const TShortId word_id, TLongId ctx_id);
 
                 /**
                  * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.

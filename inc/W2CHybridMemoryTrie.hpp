@@ -73,14 +73,14 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level 1 < M <= N!
                  * @see LayeredTrieBase
                  * 
-                 * @param wordId the current word id
-                 * @param ctxId [in] - the previous context id, [out] - the next context id
+                 * @param word_id the current word id
+                 * @param ctx_id [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
                  * @throw nothing
                  */
                 template<TModelLevel level>
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
+                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -97,19 +97,12 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see LayeredTrieBase
-                 */
-                T_M_Gram_Payload & make_1_gram_data_ref(const TShortId wordId);
-
-                /**
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
                     //The data is always present.
-                    payload = m_mgram_data[0][wordId];
+                    payload = m_mgram_data[0][word_id];
                 };
 
                 /**
@@ -118,32 +111,62 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel level>
-                T_M_Gram_Payload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+                template<TModelLevel CURR_LEVEL>
+                inline void add_m_gram_payload(const TShortId word_id, const TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                    if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                        //Store the payload
+                        m_mgram_data[0][word_id] = payload;
+                    } else {
+                        //Store the payload
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
+                            if (ctx_mapping == NULL) {
+                                ctx_mapping = m_storage_factory->create(MAX_LEVEL);
+                                LOG_DEBUG3 << "Allocating storage for level " << SSTR(MAX_LEVEL) << ", word_id " << SSTR(word_id) << END_LOG;
+                            }
+
+                            LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(MAX_LEVEL) << ", word_id "
+                                    << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
+                            //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
+                            reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = payload.prob;
+                        } else {
+                            const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+
+                            //Get the word mapping first
+                            StorageContainer*& ctx_mapping = m_mgram_mapping[idx][word_id];
+
+                            //If the mappings is not there yet for the contexts then create it
+                            if (ctx_mapping == NULL) {
+                                ctx_mapping = m_storage_factory->create(CURR_LEVEL);
+                                LOG_DEBUG3 << "A new ACtxToPBStorage container is allocated for level " << SSTR(CURR_LEVEL) << END_LOG;
+                            }
+
+                            //Add the new element to the context mapping
+                            TShortId & nextCtxId = ctx_mapping->operator[](ctx_id);
+                            nextCtxId = next_ctx_id[idx]++;
+
+                            //Return the reference to it
+                            m_mgram_data[CURR_LEVEL - 1][nextCtxId] = payload;
+                        }
+                    }
+                }
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the context id, note we use short ids here!
-                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
                         //Return the data by the context
-                        payload = m_mgram_data[CURR_LEVEL - 1][ctxId];
+                        payload = m_mgram_data[CURR_LEVEL - 1][ctx_id];
                         return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         return GPR_Enum::FAILED_GPR;
                     }
                 }
-
-                /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * For more details @see LayeredTrieBase
-                 */
-                TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId);
 
                 /**
                  * Allows to retrieve the payload for the N gram defined by the
@@ -165,13 +188,13 @@ namespace uva {
                             //The data could be found
                             LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
                                     << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-                            //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
-                            payload.prob = (TLogProbBackOff &) result->second;
+                            //WARNING: We cast to (TShortId &) as we misuse the mapping by storing the probability value there!
+                            reinterpret_cast<TShortId&> (payload.prob) = result->second;
                             return GPR_Enum::PAYLOAD_GPR;
                         }
                     } else {
                         LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
-                                << " for wordId: " << SSTR(end_word_id) << "!" << END_LOG;
+                                << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
                         return GPR_Enum::FAILED_GPR;
                     }
                 }

@@ -340,10 +340,10 @@ namespace uva {
                         set_cache_context_id(gram, ctx_id);
 
                         //The context Id was found in the Trie
-                        LOGGER(LOG_LEVEL) << "The ctxId could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
+                        LOGGER(LOG_LEVEL) << "The ctx_id could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
                     } else {
                         //The context Id was found in the cache
-                        LOGGER(LOG_LEVEL) << "The ctxId was found in cache, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
+                        LOGGER(LOG_LEVEL) << "The ctx_id was found in cache, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
                     }
                 }
 
@@ -358,12 +358,12 @@ namespace uva {
                         result = m_chached_ctx_id;
                         LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << gram.m_context
                                 << "], for m-gram: " << (string) gram
-                                << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
+                                << ", cached ctx_id: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return false;
                     } else {
                         LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << gram.m_context
                                 << "], for m-gram: " << (string) gram
-                                << ", cached ctxId: " << SSTR(m_chached_ctx_id) << END_LOG;
+                                << ", cached ctx_id: " << SSTR(m_chached_ctx_id) << END_LOG;
                         return true;
                     }
                 }

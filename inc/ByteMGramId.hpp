@@ -147,7 +147,7 @@ namespace uva {
 #define DECLARE_STACK_GRAM_ID(type, name, level) T_Gram_Id_Data_Elem name[type::M_GRAM_MAX_ID_LEN_BYTES[(level)]];
 
                         //Stores the maximum number of bits up to and including M-grams
-                        //of level 5.  We use sizeof (TShortId) as each wordId is of type
+                        //of level 5.  We use sizeof (TShortId) as each word_id is of type
                         //TShortId, and the maximum number of bits is thus defined by the
                         //number of word_ids in the M-gram and their max size in bytes.
                         static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {

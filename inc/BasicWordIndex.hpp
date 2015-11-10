@@ -88,8 +88,8 @@ namespace uva {
                                 numWords, "WordIndex", _wordIndexMemFactor);
 
                         //Register the unknown word with the first available hash value
-                        TWordIdType& wordId = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
-                        wordId = UNKNOWN_WORD_ID;
+                        TWordIdType& word_id = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
+                        word_id = UNKNOWN_WORD_ID;
                     };
 
                     /**

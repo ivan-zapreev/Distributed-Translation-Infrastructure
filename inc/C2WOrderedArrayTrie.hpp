@@ -71,13 +71,13 @@ namespace uva {
                  * Stores the information about the context id, word id and corresponding probability
                  * This data structure is to be used for the N-Gram data, as there are no back-offs
                  * It is used to store the N-gram data for the last Trie level N.
-                 * @param ctxId the context id
-                 * @param wordId the word id
+                 * @param ctx_id the context id
+                 * @param word_id the word id
                  * @param prob the probability data
                  */
                 typedef struct {
-                    TShortId wordId;
-                    TShortId ctxId;
+                    TShortId word_id;
+                    TShortId ctx_id;
                     TLogProbBackOff prob;
                 } TCtxIdProbData;
 
@@ -85,19 +85,19 @@ namespace uva {
                  * This is the compare operator implementation
                  * @param one the first object to compare
                  * @param two the second object to compare
-                 * @return -1 if (wordId,ctxId) < (wordId,ctxId)
-                 *          0 if (wordId,ctxId) == (wordId,ctxId)
-                 *         +1 if (wordId,ctxId) > (wordId,ctxId)
+                 * @return -1 if (word_id,ctx_id) < (word_id,ctx_id)
+                 *          0 if (word_id,ctx_id) == (word_id,ctx_id)
+                 *         +1 if (word_id,ctx_id) > (word_id,ctx_id)
                  */
                 inline int8_t compare(const TCtxIdProbData & one, const TCtxIdProbData & two) {
-                    if (one.wordId < two.wordId) {
+                    if (one.word_id < two.word_id) {
                         return -1;
                     } else {
-                        if (one.wordId == two.wordId) {
-                            if (one.ctxId < two.ctxId) {
+                        if (one.word_id == two.word_id) {
+                            if (one.ctx_id < two.ctx_id) {
                                 return -1;
                             } else {
-                                if (one.ctxId == two.ctxId) {
+                                if (one.ctx_id == two.ctx_id) {
                                     return 0;
                                 } else {
                                     return +1;
@@ -110,8 +110,8 @@ namespace uva {
                 };
 
                 //An alternative check: Is a tiny biut slower
-                //const TLongId key1 = TShortId_TShortId_2_TLongId(one.wordId, one.ctxId);
-                //const TLongId key2 = TShortId_TShortId_2_TLongId(two.wordId, two.ctxId);
+                //const TLongId key1 = TShortId_TShortId_2_TLongId(one.word_id, one.ctx_id);
+                //const TLongId key2 = TShortId_TShortId_2_TLongId(two.word_id, two.ctx_id);
                 //return (key1 < key2);
 
                 inline bool operator<(const TCtxIdProbData & one, const TCtxIdProbData & two) {
@@ -161,14 +161,14 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * @see LayeredTrieBase
                  * 
-                 * @param wordId the current word id
-                 * @param ctxId [in] - the previous context id, [out] - the next context id
+                 * @param word_id the current word id
+                 * @param ctx_id [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M
                  * @return the resulting context
                  * @throw nothing
                  */
                 template<TModelLevel level>
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
+                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -219,19 +219,12 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see LayeredTrieBase
-                 */
-                T_M_Gram_Payload & make_1_gram_data_ref(const TShortId wordId);
-
-                /**
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
                     //The data is always present.
-                    payload = m_1_gram_data[wordId];
+                    payload = m_1_gram_data[word_id];
                 };
 
                 /**
@@ -240,26 +233,64 @@ namespace uva {
                  * If the storage structure does not exist, return a new one.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel level>
-                T_M_Gram_Payload& make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId);
+                template<TModelLevel CURR_LEVEL>
+                inline void add_m_gram_payload(const TShortId word_id, const TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                    if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                        //Store the payload
+                        m_1_gram_data[word_id] = payload;
+                    } else {
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            //Get the new n-gram index
+                            const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
+
+                            //Store the context and word ids
+                            m_N_gram_data[n_gram_idx].ctx_id = ctx_id;
+                            m_N_gram_data[n_gram_idx].word_id = word_id;
+
+                            //Store the payload
+                            m_N_gram_data[n_gram_idx].prob = payload.prob;
+                        } else {
+                            //Compute the m-gram index
+                            const TModelLevel m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+
+                            //First get the sub-array reference. 
+                            TSubArrReference & ref = m_M_gram_ctx_2_data[m_gram_idx][ctx_id];
+
+                            //Get the new index and increment - this will be the new end index
+                            ref.endIdx = m_M_N_gram_next_ctx_id[m_gram_idx]++;
+
+                            //Check if there are yet no elements for this context
+                            if (ref.beginIdx == BASE::UNDEFINED_ARR_IDX) {
+                                //There was no elements put into this context, the begin index is then equal to the end index
+                                ref.beginIdx = ref.endIdx;
+                            }
+
+                            //Store the word id
+                            m_M_gram_data[m_gram_idx][ref.endIdx].id = word_id;
+
+                            //Store the payload
+                            m_M_gram_data[m_gram_idx][ref.endIdx].data = payload;
+                        }
+                    }
+                }
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Compute the m-gram index
                     constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
-                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with wordId: "
-                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                     //Get the context id, note we use short ids here!
-                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
                         //Return the data
-                        payload = m_M_gram_data[LEVEL_IDX][ctxId].data;
+                        payload = m_M_gram_data[LEVEL_IDX][ctx_id].data;
                         return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         //The data could not be found
@@ -268,37 +299,29 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
+                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId);
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
-                 * For more details @see LayeredTrieBase
-                 */
-                inline GPR_Enum get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
-                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with wordId: "
-                            << SSTR(wordId) << ", ctxId: " << SSTR(ctxId) << END_LOG;
+                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                     //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                    const TLongId key = TShortId_TShortId_2_TLongId(wordId, ctxId);
-                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(wordId = " << SSTR(wordId)
-                            << ", ctxId = " << SSTR(ctxId) << ") = " << SSTR(key) << END_LOG;
+                    const TLongId key = TShortId_TShortId_2_TLongId(word_id, ctx_id);
+                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(word_id = " << SSTR(word_id)
+                            << ", ctx_id = " << SSTR(ctx_id) << ") = " << SSTR(key) << END_LOG;
 
                     //Search for the index using binary search
                     TShortId idx = BASE::UNDEFINED_ARR_IDX;
                     if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, wordId, ctxId, idx)) {
+                            m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
                         //Return the data
                         payload.prob = m_N_gram_data[idx].prob;
                         return GPR_Enum::PAYLOAD_GPR;
                     } else {
-                        LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctxId: " << SSTR(ctxId)
-                                << ", wordId: " << SSTR(wordId) << ", key " << SSTR(key) << END_LOG;
+                        LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
+                                << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
                         return GPR_Enum::FAILED_GPR;
                     }
                 }
@@ -348,10 +371,10 @@ namespace uva {
                     //the order could be arbitrary if a non-basic word index is used!
                     const size_t num_prev_ctx = (CURR_LEVEL == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
                     LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
-                    for (size_t ctxId = 0; ctxId < num_prev_ctx; ++ctxId) {
-                        const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctxId];
+                    for (size_t ctx_id = 0; ctx_id < num_prev_ctx; ++ctx_id) {
+                        const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
                         if (info.beginIdx != BASE::UNDEFINED_ARR_IDX) {
-                            LOG_DEBUG3 << "Sorting for context id: " << ctxId << ", info.beginIdx: "
+                            LOG_DEBUG3 << "Sorting for context id: " << ctx_id << ", info.beginIdx: "
                                     << info.beginIdx << ", info.endIdx: " << info.endIdx << END_LOG;
                             my_sort<TWordIdPBEntry>(&m_M_gram_data[mgram_idx][info.beginIdx], (info.endIdx - info.beginIdx) + 1);
                         }

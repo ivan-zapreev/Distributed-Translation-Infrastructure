@@ -67,22 +67,12 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * @param wordId the One-gram id
-                 * @return the reference to the storage structure
-                 */
-                inline T_M_Gram_Payload & make_1_gram_data_ref(const TShortId wordId) {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
                  * Allows to retrieve the payload for the One gram with the given Id.
-                 * @param wordId the One-gram id
+                 * @param word_id the One-gram id
                  * @param payload[out] the reference to the data that is to be set with the stored one.
                  * @throw nothing
                  */
-                inline void get_1_gram_payload(const TShortId wordId,
+                inline void get_1_gram_payload(const TShortId word_id,
                         T_M_Gram_Payload & payload) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -92,51 +82,39 @@ namespace uva {
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
                  * @param CURR_LEVEL the currently considered m-gram level
-                 * @param wordId the id of the M-gram's last word
-                 * @param ctxId the M-gram context (the M-gram's prefix) id
-                 * @return the reference to the storage structure
+                 * @param word_id the id of the M-gram's last word
+                 * @param ctx_id the M-gram context (the M-gram's prefix) id
+                 * @param payload the payload to be stored
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline T_M_Gram_Payload& make_m_gram_data_ref(const TShortId wordId, TLongId ctxId) {
+                inline void add_m_gram_payload(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload) {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * @param CURR_LEVEL the currently considered m-gram level
-                 * @param wordId the id of the M-gram's last word
-                 * @param ctxId the M-gram context (the M-gram's prefix) id
+                 * @param word_id the id of the M-gram's last word
+                 * @param ctx_id the M-gram context (the M-gram's prefix) id
                  * @param payload[out] the reference to the data that is to be set with the stored one.
                  * @return true if the element was found, otherwise false
                  * @throw nothing
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     THROW_MUST_OVERRIDE();
                 };
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
-                 * @param wordId the id of the N-gram's last word
-                 * @param ctxId the N-gram context (the N-gram's prefix) id
-                 * @return the reference to the storage structure
-                 */
-                inline TLogProbBackOff& make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
-                 * @param wordId the id of the N-gram's last word
-                 * @param ctxId the N-gram context (the N-gram's prefix) id
+                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
+                 * @param word_id the id of the N-gram's last word
+                 * @param ctx_id the N-gram context (the N-gram's prefix) id
                  * @param payload[out] the reference to the data that is to be set with the stored one.
                  * @return true if the probability was found, otherwise false
                  * @throw nothing
                  */
-                inline GPR_Enum get_n_gram_payload(const TShortId wordId, const TLongId ctxId,
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, const TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     THROW_MUST_OVERRIDE();
                 };
@@ -144,12 +122,12 @@ namespace uva {
                 /**
                  * Allows to get the the new context id for the word and previous context id given the level
                  * @param CURR_LEVEL the currently considered m-gram level
-                 * @param wordId the word id on this level
-                 * @param ctxId the previous level context id
+                 * @param word_id the word id on this level
+                 * @param ctx_id the previous level context id
                  * @return true if computation of the next context is succeeded
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
                     THROW_MUST_OVERRIDE();
                 }
             };
@@ -162,20 +140,20 @@ namespace uva {
 
 #define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
             template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >; \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_1>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_2>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_3>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_4>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_5>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_6>(const TShortId wordId, const TLongId ctxId); \
-            template T_M_Gram_Payload& CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::make_m_gram_data_ref<M_GRAM_LEVEL_7>(const TShortId wordId, const TLongId ctxId); \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_1>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_2>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_3>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_4>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_5>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_6>(const TShortId wordId, TLongId & ctxId) const; \
-            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_7>(const TShortId wordId, TLongId & ctxId) const;
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_1>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_2>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_3>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_4>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_5>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_6>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template void CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::add_m_gram_payload<M_GRAM_LEVEL_7>(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload); \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_1>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_2>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_3>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_4>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_5>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_6>(const TShortId word_id, TLongId & ctx_id) const; \
+            template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_7>(const TShortId word_id, TLongId & ctx_id) const;
 
         }
     }

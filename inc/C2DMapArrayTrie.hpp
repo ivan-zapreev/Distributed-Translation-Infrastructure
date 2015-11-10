@@ -57,7 +57,7 @@ namespace uva {
              * specifically we store as much data as possible in an array form in
              * order to get optimal memory consumption and having short and easily
              * definable context index. Yet, we use unordered maps for the sake of
-             * speeding up queries, as they allow us to realize (wordId, ctxId) to ctxId
+             * speeding up queries, as they allow us to realize (word_id, ctx_id) to ctx_id
              * in the most efficient manner. The lookup should be just O(1) whereas in
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
@@ -110,14 +110,14 @@ namespace uva {
                  * WARNING: Must only be called for the M-gram level 1 < M < N!
                  * @see LayeredTrieBase
                  * 
-                 * @param wordId the current word id
-                 * @param ctxId [in] - the previous context id, [out] - the next context id
+                 * @param word_id the current word id
+                 * @param ctx_id [in] - the previous context id, [out] - the next context id
                  * @param level the M-gram level we are working with M, default UNDEF_NGRAM_LEVEL
                  * @return the resulting context
                  * @throw nothing
                  */
                 template<TModelLevel level>
-                bool get_ctx_id(const TShortId wordId, TLongId & ctxId) const;
+                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -134,19 +134,12 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the data storage structure for the One gram with the given Id.
-                 * If the storage structure does not exist, return a new one.
-                 * For more details @see LayeredTrieBase
-                 */
-                T_M_Gram_Payload & make_1_gram_data_ref(const TShortId wordId);
-
-                /**
                  * Allows to retrieve the payload for the One gram with the given Id.
                  * @see LayeredTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId wordId, T_M_Gram_Payload &payload) const {
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
                     //The data is always present.
-                    payload = m_1_gram_data[wordId];
+                    payload = m_1_gram_data[word_id];
                 };
 
                 /**
@@ -156,19 +149,42 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                T_M_Gram_Payload & make_m_gram_data_ref(const TShortId wordId, TLongId ctxId);
+                inline void add_m_gram_payload(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                    if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                        //Store the payload
+                        m_1_gram_data[word_id] = payload;
+                    } else {
+                        //Obtain the context key and then create a new mapping
+                        const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+
+                        //Store the payload
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            pNGramMap->operator[](key) = payload.prob;
+                        } else {
+                            //Get the next context id
+                            const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                            TShortId next_ctx_id = m_M_gram_next_ctx_id[idx]++;
+
+                            //Store the context mapping inside the map
+                            pMGramMap[idx]->operator[](key) = next_ctx_id;
+
+                            //Return the reference to the piece of memory
+                            m_M_gram_data[idx][next_ctx_id] = payload;
+                        }
+                    }
+                }
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end wordId and ctxId.
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the next context id
-                    if (get_ctx_id<CURR_LEVEL>(wordId, ctxId)) {
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
                         //There is data found under this context
-                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctxId];
+                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
                         return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         //The context id could not be found
@@ -177,20 +193,12 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the data storage structure for the N gram.
-                 * Given the N-gram context and last word Id.
-                 * If the storage structure does not exist, return a new one.
+                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                TLogProbBackOff & make_n_gram_data_ref(const TShortId wordId, TLongId ctxId);
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end wordId and ctxId.
-                 * For more details @see LayeredTrieBase
-                 */
-                inline GPR_Enum get_n_gram_payload(const TShortId wordId, TLongId ctxId,
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctxId, wordId);
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
 
                     //Search for the map for that context id
                     TNGramsMap::const_iterator result = pNGramMap->find(key);

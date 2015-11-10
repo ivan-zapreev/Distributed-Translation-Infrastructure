@@ -50,12 +50,9 @@ namespace uva {
                 if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                     //Get the word id of this unigram, so there is just one word in it and its the end one
                     const TShortId word_id = gram.get_end_word_id();
-                    //Get the word probability and back-off data reference
-                    T_M_Gram_Payload & pbData = m_trie.make_1_gram_data_ref(word_id);
-                    //Set/Update the probability and back-off values for the word
-                    pbData = gram.m_payload;
-                    LOG_DEBUG1 << "Inserted the (prob,back-off) data (" << pbData.prob << "," << pbData.back
-                            << ") for " << (string) gram << " wordHash = " << word_id << END_LOG;
+                    
+                    //Add the m-gram payload
+                    m_trie.template add_m_gram_payload<CURR_LEVEL>(word_id, WordIndexType::UNKNOWN_WORD_ID, gram.m_payload);
                 } else {
                     // 1. Compute the context hash defined by w1 w2 w3
                     TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
@@ -63,19 +60,8 @@ namespace uva {
                     // 2. Insert the probability data into the trie
                     TShortId end_word_id = gram.get_end_word_id();
 
-                    if (CURR_LEVEL == MAX_LEVEL) {
-                        TLogProbBackOff& prob_ref = m_trie.make_n_gram_data_ref(end_word_id, ctx_id);
-                        //Set/Update the probability
-                        prob_ref = gram.m_payload.prob;
-                        LOG_DEBUG1 << "Inserted the prob. data (" << prob_ref << ") for " << (string) gram
-                                << " contextHash = " << ctx_id << ", wordHash = " << end_word_id << END_LOG;
-                    } else {
-                        T_M_Gram_Payload& pbData = m_trie.template make_m_gram_data_ref<CURR_LEVEL>(end_word_id, ctx_id);
-                        //Set/Update the probability and back-off values for the word
-                        pbData = gram.m_payload;
-                        LOG_DEBUG1 << "Inserted the (prob,back-off) data (" << pbData.prob << "," << pbData.back << ") for "
-                                << (string) gram << " contextHash = " << ctx_id << ", wordHash = " << end_word_id << END_LOG;
-                    }
+                    //Add the m-gram payload
+                    m_trie.template add_m_gram_payload<CURR_LEVEL>(end_word_id, ctx_id, gram.m_payload);
                 }
             };
 

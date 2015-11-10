@@ -78,7 +78,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
-            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_ctx_id(const TShortId wordId, TLongId & ctxId) const {
+            bool W2CArrayTrie<MAX_LEVEL, WordIndexType>::get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
                 //Compute the m-gram index
                 const TModelLevel mgram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
@@ -88,85 +88,46 @@ namespace uva {
                     throw Exception(msg.str());
                 }
 
-                LOG_DEBUG2 << "Searching next ctxId for " << SSTR(CURR_LEVEL)
-                        << "-gram with wordId: " << SSTR(wordId) << ", ctxId: "
-                        << SSTR(ctxId) << END_LOG;
+                LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(CURR_LEVEL)
+                        << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
+                        << SSTR(ctx_id) << END_LOG;
 
                 //First get the sub-array reference. 
-                const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][wordId];
+                const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][word_id];
 
                 if (DO_SANITY_CHECKS && ref.has_data()) {
                     LOG_DEBUG3 << "ref.size: " << SSTR(ref.size()) << ", ref.cio: "
-                            << SSTR(ref.cio) << ", ctxId range: [" << SSTR(ref[0].id) << ", "
+                            << SSTR(ref.cio) << ", ctx_id range: [" << SSTR(ref[0].id) << ", "
                             << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
                 }
 
                 //Check that if this is the 2-Gram case and the previous context
                 //id is 0 then it is the unknown word id, at least this is how it
                 //is now in ATrie implementation, so we need to do a warning!
-                if (DO_SANITY_CHECKS && (CURR_LEVEL == M_GRAM_LEVEL_2) && (ctxId < WordIndexType::MIN_KNOWN_WORD_ID)) {
+                if (DO_SANITY_CHECKS && (CURR_LEVEL == M_GRAM_LEVEL_2) && (ctx_id < WordIndexType::MIN_KNOWN_WORD_ID)) {
                     LOG_WARNING << "Perhaps we are being paranoid but there "
-                            << "seems to be a problem! The " << SSTR(CURR_LEVEL) << "-gram ctxId: "
-                            << SSTR(ctxId) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
+                            << "seems to be a problem! The " << SSTR(CURR_LEVEL) << "-gram ctx_id: "
+                            << SSTR(ctx_id) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
                             << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                 }
 
                 //Get the local entry index and then use it to compute the next context id
                 typename T_M_GramWordEntry::TIndexType localIdx;
-                //If the local entry index could be found then compute the next ctxId
-                if (get_M_N_GramLocalEntryIdx(ref, ctxId, localIdx)) {
-                    LOG_DEBUG2 << "Got context mapping for ctxId: " << SSTR(ctxId)
+                //If the local entry index could be found then compute the next ctx_id
+                if (get_M_N_GramLocalEntryIdx(ref, ctx_id, localIdx)) {
+                    LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
                             << ", size = " << SSTR(ref.size()) << ", localIdx = "
-                            << SSTR(localIdx) << ", resulting ctxId = "
+                            << SSTR(localIdx) << ", resulting ctx_id = "
                             << SSTR(ref.cio + localIdx) << END_LOG;
 
-                    //The next ctxId is the sum of the local index and the context index offset
-                    ctxId = ref.cio + localIdx;
+                    //The next ctx_id is the sum of the local index and the context index offset
+                    ctx_id = ref.cio + localIdx;
                     return true;
                 } else {
                     //The local index could not be found
                     return false;
                 }
             }
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            T_M_Gram_Payload & W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_1_gram_data_ref(const TShortId wordId) {
-                LOG_DEBUG2 << "Adding 1-gram with wordId: " << SSTR(wordId) << END_LOG;
-
-                return m_1_gram_data[wordId];
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            template<TModelLevel CURR_LEVEL>
-            T_M_Gram_Payload& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_m_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                LOG_DEBUG2 << "Adding\t" << SSTR(CURR_LEVEL) << "-gram with ctxId:\t"
-                        << SSTR(ctxId) << ", wordId:\t" << SSTR(wordId) << END_LOG;
-
-                //Get the sub-array reference. 
-                typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET], wordId);
-
-                //Store the context and word ids
-                ref.id = ctxId;
-
-                //Return the reference to the newly allocated element
-
-                return ref.payload;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            TLogProbBackOff& W2CArrayTrie<MAX_LEVEL, WordIndexType>::make_n_gram_data_ref(const TShortId wordId, const TLongId ctxId) {
-                LOG_DEBUG2 << "Adding " << SSTR(MAX_LEVEL) << "-gram with ctxId: "
-                        << SSTR(ctxId) << ", wordId: " << SSTR(wordId) << END_LOG;
-
-                //Get the sub-array reference. 
-                typename T_N_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, wordId);
-
-                //Store the context and word ids
-                ref.id = ctxId;
-
-                //Return the reference to the probability
-                return ref.payload;
-            };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             W2CArrayTrie<MAX_LEVEL, WordIndexType>::~W2CArrayTrie() {
