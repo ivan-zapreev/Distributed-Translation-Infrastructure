@@ -230,80 +230,6 @@ namespace uva {
                 }
 
                 /**
-                 * Compute the context hash for the M-Gram prefix, example:
-                 * 
-                 *  N = 5
-                 * 
-                 *   0  1  2  3  4
-                 *  w1 w2 w3 w4 w5
-                 * 
-                 *  contextLength = 2
-                 * 
-                 *    0  1  2  3  4
-                 *   w1 w2 w3 w4 w5
-                 *          ^  ^
-                 * Hash will be computed for the 3-gram prefix w3 w4.
-                 * @param IS_BACK_OFF is the boolean flag that determines whether
-                 *                  we compute the context for the entire M-Gram
-                 *                  or for the back-off sub-M-gram. For the latter
-                 *                  we consider w1 w2 w3 w4 only
-                 * @param CURR_LEVEL the current level of the m-gram that we are considering
-                 * @param LOG_LEVEL the debug level to be used in this function, the default is DebugLevelsEnum::DEBUG1
-                 * @param gram the m-gram to compute the context id for
-                 * @param ctx_id [out] the context id to be computed
-                 * @return the true if the context could be computed, otherwise false
-                 * @throws nothing
-                 */
-                template<DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
-                inline TModelLevel get_m_gram_ctx_id(const TWordIdType * const begin_wid_iter,
-                        const TWordIdType * const end_wid_iter, TLongId & ctx_id) const {
-                    //Initialize the current word iterator
-                    const TWordIdType * curr_wid_iter = begin_wid_iter;
-
-                    LOGGER(LOG_LEVEL) << "Computing id of the m-gram context" << END_LOG;
-
-                    //Compute the first words' hash
-                    ctx_id = *curr_wid_iter;
-                    LOGGER(LOG_LEVEL) << "m_word_ids[0]: " << SSTR(ctx_id) << END_LOG;
-                    curr_wid_iter++;
-
-                    //The word has to be known, otherwise it is an error situation
-                    if (DO_SANITY_CHECKS && (ctx_id == WordIndexType::UNKNOWN_WORD_ID)) {
-                        stringstream msg;
-                        msg << "The first word of the m-gram is unknown!";
-                        throw Exception(msg.str());
-                    }
-
-                    //Compute the subsequent context ids
-                    TModelLevel level = M_GRAM_LEVEL_1;
-                    for (; curr_wid_iter != end_wid_iter;) {
-                        LOGGER(LOG_LEVEL) << "Start searching ctx_id for m_word_ids[" << SSTR(level) << "]: "
-                                << SSTR(*curr_wid_iter) << " prevCtxId: " << SSTR(ctx_id) << END_LOG;
-
-                        //The word has to be known, otherwise it is an error situation
-                        if (DO_SANITY_CHECKS && (*curr_wid_iter == WordIndexType::UNKNOWN_WORD_ID)) {
-                            stringstream msg;
-                            msg << "The " << SSTR(level) << "'th word of the m-gram is unknown!";
-                            throw Exception(msg.str());
-                        }
-
-                        if (get_ctx_id_func[level](m_trie, *curr_wid_iter, ctx_id)) {
-                            LOGGER(LOG_LEVEL) << "get_context_id(" << SSTR(*curr_wid_iter)
-                                    << ", prevCtxId) = " << SSTR(ctx_id) << END_LOG;
-                            curr_wid_iter++;
-                            level++;
-                        } else {
-                            //The next context id could not be retrieved
-                            return level;
-                        }
-                    }
-
-                    LOGGER(LOG_LEVEL) << "Resulting m-gram context id: " << SSTR(ctx_id) << END_LOG;
-
-                    return level;
-                }
-
-                /**
                  * This function computes the context id of the N-gram given by the tokens, e.g. [w1 w2 w3 w4]
                  * 
                  * WARNING: Must be called on M-grams with M > 1!
@@ -326,7 +252,7 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id, check on the level
-                        const TModelLevel ctx_level = get_m_gram_ctx_id<LOG_LEVEL>(gram.first_word_id(), gram.last_word_id(), ctx_id);
+                        const TModelLevel ctx_level = search_m_gram_ctx_id<CURR_LEVEL, LOG_LEVEL>(gram.first_word_id(), ctx_id, ctx_id);
 
                         //Do sanity check if needed
                         if (DO_SANITY_CHECKS && ((CURR_LEVEL - 1) != ctx_level)) {
@@ -394,24 +320,10 @@ namespace uva {
                 TextPieceReader m_chached_ctx;
                 //Stores the cached M-gram context value (for 1 < M <= N )
                 TLongId m_chached_ctx_id;
-
-                //Stores the pointers to instances of th get_ctx_id function templates
-                static const TGetCtxIdFunct get_ctx_id_func[];
             };
 
             template<typename TrieType>
             constexpr TModelLevel LayeredTrieDriver<TrieType>::MAX_LEVEL;
-
-            template<typename TrieType>
-            const typename LayeredTrieDriver<TrieType>::TGetCtxIdFunct LayeredTrieDriver<TrieType>::get_ctx_id_func[] = {
-                NULL,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_5>,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_6>,
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_7>
-            };
 
 #define TYPEDEF_LAYERED_DRIVER_TEMPLATES_NAME_TYPE(TRIE_NAME, TYPE) \
             typedef LayeredTrieDriver< T##TRIE_NAME##TYPE > TLayeredTrieDriver##TRIE_NAME##TYPE;
