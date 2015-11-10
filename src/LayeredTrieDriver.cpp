@@ -161,13 +161,11 @@ namespace uva {
                     return GPR_Enum::PAYLOAD_GPR;
                 } else {
                     //If we are looking for a M-Gram probability with M > 0, so not for a 1-Gram
-                    TLongId ctx_id;
+                    TLongId bo_ctx_id, ctx_id;
 
-                    //Compute the context id, and search for the m-grams
-                    TModelLevel level = get_m_gram_ctx_id(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), gram.template get_word_id_ptr<END_WORD_IDX>(), ctx_id);
-                    //Check if the context could be computed
-                    if ((CURR_LEVEL - 1) == level) {
-                        LOG_DEBUG << "Got query context id: " << ctx_id << END_LOG;
+                    //Obtain the context id
+                    if (search_m_gram_ctx_id<CURR_LEVEL>(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), bo_ctx_id, ctx_id) == CURR_LEVEL) {
+                        LOG_DEBUG << "Got query context id: " << ctx_id << ", back-off query context id: " << bo_ctx_id << END_LOG;
                         GPR_Enum result;
                         if (CURR_LEVEL == MAX_LEVEL) {
                             result = m_trie.get_n_gram_payload(end_word_id, ctx_id, payload);
@@ -180,12 +178,19 @@ namespace uva {
                         //Check if we need to back-off and if the payload could
                         //not be obtained then try to get the back-off payload 
                         if (DO_BACK_OFF && (result == GPR_Enum::FAILED_GPR)) {
-                            LOG_DEBUG << "Asked to retrieve the back-off payload!" << END_LOG;
+                            //Compute the back-off m-gram level
                             constexpr TModelLevel BO_CURR_LEVEL = CURR_LEVEL - 1;
-                            constexpr TModelLevel BO_END_WORD_IDX = ((BEGIN_WORD_IDX < END_WORD_IDX) ? (END_WORD_IDX - 1) : END_WORD_IDX);
-                            if (get_payload<BEGIN_WORD_IDX, BO_END_WORD_IDX, false > (gram, bo_payload, bo_payload) == GPR_Enum::PAYLOAD_GPR) {
-                                LOG_DEBUG << "The " << SSTR(BO_CURR_LEVEL) << "-gram is found, back-off payload: " << (string) bo_payload << END_LOG;
+                            LOG_DEBUG << "Asked to retrieve the back-off payload!" << END_LOG;
+                            //Get the last word in the N-gram
+                            const TShortId & bo_end_word_id = gram[END_WORD_IDX - 1];
+                            if (BO_CURR_LEVEL == M_GRAM_LEVEL_1) {
+                                //If we are looking for a 1-Gram probability, no need to compute the context
+                                m_trie.get_1_gram_payload(bo_end_word_id, bo_payload);
                                 return GPR_Enum::BACK_OFF_GPR;
+                            } else {
+                                if (m_trie.template get_m_gram_payload<BO_CURR_LEVEL>(bo_end_word_id, bo_ctx_id, bo_payload) == GPR_Enum::PAYLOAD_GPR) {
+                                    return GPR_Enum::BACK_OFF_GPR;
+                                }
                             }
                         }
                         return result;

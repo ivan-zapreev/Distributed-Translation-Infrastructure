@@ -183,6 +183,63 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to obtain the context and previous context id for the sub-m-gram defined by the given template parameters.
+                 * @param CURR_LEVEL the level of the sub-m-gram for which the context id is to be computed
+                 * @param DO_PREV_CONTEXT true if the previous context id is to be computed, otherwise false
+                 * @param LOG_LEVEL the desired debug level
+                 * @param word_ids the array of word ids to consider for computing the context id
+                 * @param prev_ctx_id the computed previous context id, if computed
+                 * @param ctx_id the context id, if computed
+                 * @return the level of the m-gram for which the last context id could be computed
+                 */
+                template<TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
+                inline TModelLevel search_m_gram_ctx_id(const TWordIdType * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) const {
+                    switch (CURR_LEVEL) {
+                        case M_GRAM_LEVEL_2:
+                            ctx_id = word_ids[0];
+                            return M_GRAM_LEVEL_2;
+                        case M_GRAM_LEVEL_3:
+                            prev_ctx_id = word_ids[0];
+                            ctx_id = prev_ctx_id;
+                            if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
+                                return M_GRAM_LEVEL_3;
+                            } else {
+                                return M_GRAM_LEVEL_2;
+                            }
+                        case M_GRAM_LEVEL_4:
+                            ctx_id = word_ids[0];
+                            if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
+                                prev_ctx_id = ctx_id;
+                                if (m_trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
+                                    return M_GRAM_LEVEL_4;
+                                } else {
+                                    return M_GRAM_LEVEL_3;
+                                }
+                            } else {
+                                return M_GRAM_LEVEL_2;
+                            }
+                        case M_GRAM_LEVEL_5:
+                            ctx_id = word_ids[0];
+                            if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
+                                if (m_trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
+                                    prev_ctx_id = ctx_id;
+                                    if (m_trie. template get_ctx_id<M_GRAM_LEVEL_4>(word_ids[3], ctx_id)) {
+                                        return M_GRAM_LEVEL_5;
+                                    } else {
+                                        return M_GRAM_LEVEL_4;
+                                    }
+                                } else {
+                                    return M_GRAM_LEVEL_3;
+                                }
+                            } else {
+                                return M_GRAM_LEVEL_2;
+                            }
+                        default:
+                            THROW_EXCEPTION(string("The sub-m-gram level is not supported, CURR_LEVEL: ").append(std::to_string(CURR_LEVEL)));
+                    }
+                }
+
+                /**
                  * Compute the context hash for the M-Gram prefix, example:
                  * 
                  *  N = 5
@@ -280,9 +337,9 @@ namespace uva {
                     if (get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id, check on the level
                         const TModelLevel ctx_level = get_m_gram_ctx_id<LOG_LEVEL>(gram.first_word_id(), gram.last_word_id(), ctx_id);
-                        
+
                         //Do sanity check if needed
-                        if (DO_SANITY_CHECKS && ( (CURR_LEVEL - 1) != ctx_level )) {
+                        if (DO_SANITY_CHECKS && ((CURR_LEVEL - 1) != ctx_level)) {
                             //The next context id could not be computed
                             stringstream msg;
                             msg << "The m-gram:" << (string) gram << " context could not be computed!";

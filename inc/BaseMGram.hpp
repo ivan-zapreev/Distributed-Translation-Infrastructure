@@ -64,7 +64,7 @@ namespace uva {
                 /**
                  * This class is the base class for all the M-gram classes used
                  */
-                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
+                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
                 class T_Base_M_Gram {
                 public:
                     //The type of the word id
