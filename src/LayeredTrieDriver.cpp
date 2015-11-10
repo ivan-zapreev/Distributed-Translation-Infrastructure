@@ -50,7 +50,7 @@ namespace uva {
                 if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                     //Get the word id of this unigram, so there is just one word in it and its the end one
                     const TShortId word_id = gram.get_end_word_id();
-                    
+
                     //Add the m-gram payload
                     m_trie.template add_m_gram_payload<CURR_LEVEL>(word_id, WordIndexType::UNKNOWN_WORD_ID, gram.m_payload);
                 } else {
@@ -87,7 +87,7 @@ namespace uva {
                     TLongId bo_ctx_id, ctx_id;
 
                     //Obtain the context id
-                    if (search_m_gram_ctx_id<CURR_LEVEL>(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), bo_ctx_id, ctx_id) == CURR_LEVEL) {
+                    if (search_m_gram_ctx_id<CURR_LEVEL, DO_BACK_OFF>(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), bo_ctx_id, ctx_id) == CURR_LEVEL) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << ", back-off query context id: " << bo_ctx_id << END_LOG;
                         GPR_Enum result;
                         if (CURR_LEVEL == MAX_LEVEL) {

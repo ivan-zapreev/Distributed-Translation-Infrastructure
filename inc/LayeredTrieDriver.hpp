@@ -182,15 +182,15 @@ namespace uva {
                  * @param ctx_id the context id, if computed
                  * @return the level of the m-gram for which the last context id could be computed
                  */
-                template<TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
+                template<TModelLevel CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
                 inline TModelLevel search_m_gram_ctx_id(const TWordIdType * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) const {
                     switch (CURR_LEVEL) {
                         case M_GRAM_LEVEL_2:
                             ctx_id = word_ids[0];
                             return M_GRAM_LEVEL_2;
                         case M_GRAM_LEVEL_3:
-                            prev_ctx_id = word_ids[0];
-                            ctx_id = prev_ctx_id;
+                            if (GET_BACK_OFF_CTX_ID) prev_ctx_id = word_ids[0];
+                            ctx_id = word_ids[0];
                             if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
                                 return M_GRAM_LEVEL_3;
                             } else {
@@ -199,7 +199,7 @@ namespace uva {
                         case M_GRAM_LEVEL_4:
                             ctx_id = word_ids[0];
                             if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
-                                prev_ctx_id = ctx_id;
+                                if (GET_BACK_OFF_CTX_ID) prev_ctx_id = ctx_id;
                                 if (m_trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
                                     return M_GRAM_LEVEL_4;
                                 } else {
@@ -212,7 +212,7 @@ namespace uva {
                             ctx_id = word_ids[0];
                             if (m_trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
                                 if (m_trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
-                                    prev_ctx_id = ctx_id;
+                                    if (GET_BACK_OFF_CTX_ID) prev_ctx_id = ctx_id;
                                     if (m_trie. template get_ctx_id<M_GRAM_LEVEL_4>(word_ids[3], ctx_id)) {
                                         return M_GRAM_LEVEL_5;
                                     } else {
@@ -252,7 +252,7 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id, check on the level
-                        const TModelLevel ctx_level = search_m_gram_ctx_id<CURR_LEVEL, LOG_LEVEL>(gram.first_word_id(), ctx_id, ctx_id);
+                        const TModelLevel ctx_level = search_m_gram_ctx_id<CURR_LEVEL, false, LOG_LEVEL>(gram.first_word_id(), ctx_id, ctx_id);
 
                         //Do sanity check if needed
                         if (DO_SANITY_CHECKS && ((CURR_LEVEL - 1) != ctx_level)) {
