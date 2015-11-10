@@ -167,18 +167,19 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                template<TModelLevel level>
+                template<TModelLevel CURR_LEVEL>
                 inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
+                    constexpr TModelLevel M_GRAM_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
-                    if (DO_SANITY_CHECKS && ((level == MAX_LEVEL) || (mgram_idx < 0))) {
+                    //Perform sanity checks if needed
+                    if (DO_SANITY_CHECKS && ((CURR_LEVEL == MAX_LEVEL) || (M_GRAM_IDX < 0))) {
                         stringstream msg;
-                        msg << "Unsupported level id: " << level;
+                        msg << "Unsupported level id: " << CURR_LEVEL;
                         throw Exception(msg.str());
                     }
 
-                    LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(level)
+                    LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(CURR_LEVEL)
                             << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
                             << SSTR(ctx_id) << END_LOG;
 
@@ -186,36 +187,22 @@ namespace uva {
                     //case and the previous word is unknown (ctx_id == 0) we still can use
                     //the ctx_id to get the data entry. The reason is that we allocated memory
                     //for it but being for an unknown word context it should have no data!
-                    TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
+                    TSubArrReference & ref = m_M_gram_ctx_2_data[M_GRAM_IDX][ctx_id];
 
                     LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
-                            << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
-                            << SSTR(ref.endIdx) << END_LOG;
+                            << ", with beginIdx: " << SSTR(ref.begin_idx) << ", endIdx: "
+                            << SSTR(ref.end_idx) << END_LOG;
 
                     //Check that there is data for the given context available
-                    if (ref.beginIdx != BASE::UNDEFINED_ARR_IDX) {
-                        TShortId nextCtxId = BASE::UNDEFINED_ARR_IDX;
+                    if (ref.begin_idx != BASE::UNDEFINED_ARR_IDX) {
                         //The data is available search for the word index in the array
                         //WARNING: The linear search here is much slower!!!
-                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, word_id, nextCtxId)) {
-                            LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", ctx_id: "
-                                    << SSTR(ctx_id) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
-                            ctx_id = nextCtxId;
+                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[M_GRAM_IDX], ref.begin_idx, ref.end_idx, word_id, ctx_id)) {
+                            LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", is: " << SSTR(ctx_id) << END_LOG;
                             return true;
-                        } else {
-                            LOG_DEBUG2 << "Unable to find M-gram ctx_id for level: "
-                                    << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
-                                    << ", word_id: " << SSTR(word_id) << ", is not in the available range: ["
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].id) << " ... "
-                                    << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].id) << "]" << END_LOG;
-                            return false;
                         }
-                    } else {
-                        LOG_DEBUG2 << "Unable to find M-gram context id for level: "
-                                << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
-                                << ", nothing present in that context!" << END_LOG;
-                        return false;
                     }
+                    return false;
                 }
 
                 /**
@@ -305,19 +292,19 @@ namespace uva {
                             TSubArrReference & ref = m_M_gram_ctx_2_data[m_gram_idx][ctx_id];
 
                             //Get the new index and increment - this will be the new end index
-                            ref.endIdx = m_M_N_gram_next_ctx_id[m_gram_idx]++;
+                            ref.end_idx = m_M_N_gram_next_ctx_id[m_gram_idx]++;
 
                             //Check if there are yet no elements for this context
-                            if (ref.beginIdx == BASE::UNDEFINED_ARR_IDX) {
+                            if (ref.begin_idx == BASE::UNDEFINED_ARR_IDX) {
                                 //There was no elements put into this context, the begin index is then equal to the end index
-                                ref.beginIdx = ref.endIdx;
+                                ref.begin_idx = ref.end_idx;
                             }
 
                             //Store the word id
-                            m_M_gram_data[m_gram_idx][ref.endIdx].id = word_id;
+                            m_M_gram_data[m_gram_idx][ref.end_idx].id = word_id;
 
                             //Store the payload
-                            m_M_gram_data[m_gram_idx][ref.endIdx].data = payload;
+                            m_M_gram_data[m_gram_idx][ref.end_idx].data = payload;
                         }
                     }
                 }
@@ -401,8 +388,8 @@ namespace uva {
                  * @param endIdx the end index
                  */
                 typedef struct {
-                    TShortId beginIdx;
-                    TShortId endIdx;
+                    TShortId begin_idx;
+                    TShortId end_idx;
                 } TSubArrReference;
 
                 typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
@@ -421,10 +408,10 @@ namespace uva {
                     LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
                     for (size_t ctx_id = 0; ctx_id < num_prev_ctx; ++ctx_id) {
                         const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
-                        if (info.beginIdx != BASE::UNDEFINED_ARR_IDX) {
+                        if (info.begin_idx != BASE::UNDEFINED_ARR_IDX) {
                             LOG_DEBUG3 << "Sorting for context id: " << ctx_id << ", info.beginIdx: "
-                                    << info.beginIdx << ", info.endIdx: " << info.endIdx << END_LOG;
-                            my_sort<TWordIdPBEntry>(&m_M_gram_data[mgram_idx][info.beginIdx], (info.endIdx - info.beginIdx) + 1);
+                                    << info.begin_idx << ", info.endIdx: " << info.end_idx << END_LOG;
+                            my_sort<TWordIdPBEntry>(&m_M_gram_data[mgram_idx][info.begin_idx], (info.end_idx - info.begin_idx) + 1);
                         }
                     }
                 }
