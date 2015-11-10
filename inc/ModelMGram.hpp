@@ -60,6 +60,9 @@ namespace uva {
                     //Define the base class type
                     typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
 
+                    //Stores the m-gram payload i.e. its probability and back-off weight
+                    T_M_Gram_Payload m_payload;
+                    
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff m_prob;
 

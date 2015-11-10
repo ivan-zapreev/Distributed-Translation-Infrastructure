@@ -113,18 +113,8 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram);
-
-                /**
-                 * @see GenericTrieBase
-                 */
                 template<TModelLevel CURR_LEVEL>
                 void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * @see GenericTrieBase

@@ -90,36 +90,14 @@ namespace uva {
                                     << ", " << MAX_LEVEL << "]!";
                             throw Exception(msg.str());
                         } else {
-                            //The N-gram level values are correct, so instantiate an appropriate builder
-
-                            if (CURR_LEVEL == M_GRAM_LEVEL_1) {
-                                //If the level is at minimum it means we are filling in the dictionary
-                                LOG_DEBUG1 << "Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder..." << END_LOG;
-                                //Create a builder with the proper lambda as an argument
-                                *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                        [&] (const T_Model_M_Gram<WordIndexType> & gram) {
-                                            trie.add_1_gram(gram); });
-                                LOG_DEBUG2 << "DONE Instantiating the " << M_GRAM_LEVEL_1 << "-Gram builder!" << END_LOG;
-                            } else {
-                                if (CURR_LEVEL == MAX_LEVEL) {
-                                    //If the minimum is at maximum it means we are filling in the top N-gram level
-                                    LOG_DEBUG1 << "Instantiating the " << MAX_LEVEL << "-Gram builder..." << END_LOG;
-                                    //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                            [&] (const T_Model_M_Gram<WordIndexType> & gram) {
-                                                trie.add_n_gram(gram); });
-                                    LOG_DEBUG2 << "DONE Instantiating the " << MAX_LEVEL << "-Gram builder!" << END_LOG;
-                                } else {
-                                    //Here we are to get the builder for the intermediate N-gram levels
-                                    LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
-                                    //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
-                                            [&] (const T_Model_M_Gram<WordIndexType> & gram) {
-                                                trie.template add_m_gram<CURR_LEVEL>(gram);
-                                            });
-                                    LOG_DEBUG2 << "DONE Instantiating the " << CURR_LEVEL << "-Gram builder!" << END_LOG;
-                                }
-                            }
+                            //Here we are to get the builder instance
+                            LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
+                            //Create a builder with the proper lambda as an argument
+                            *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
+                                    [&] (const T_Model_M_Gram<WordIndexType> & gram) {
+                                        trie.template add_m_gram<CURR_LEVEL>(gram);
+                                    });
+                            LOG_DEBUG2 << "DONE Instantiating the " << CURR_LEVEL << "-Gram builder!" << END_LOG;
                         }
                         LOG_DEBUG << "The " << CURR_LEVEL << "-Gram builder (" << hex << long(*ppBuilder) << ") is produced!" << END_LOG;
                     }
@@ -127,7 +105,7 @@ namespace uva {
                     virtual ~ARPAGramBuilderFactory() {
                     }
                 private:
- 
+
                     ARPAGramBuilderFactory() {
                     }
 
@@ -137,7 +115,7 @@ namespace uva {
 
                 template<typename TrieType>
                 const TModelLevel ARPAGramBuilderFactory<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
-           }
+            }
         }
     }
 }

@@ -105,33 +105,14 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                inline void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
-                    m_trie.add_1_gram(gram);
-                };
-
-                /**
-                 * @see GenericTrieBase
-                 */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    if (TrieType::needs_bitmap_hash_cache()) {
+                    if ((CURR_LEVEL != M_GRAM_LEVEL_1) && TrieType::needs_bitmap_hash_cache()) {
                         //Call the super class first, is needed for caching
                         register_m_gram_cache<CURR_LEVEL>(gram);
                     }
 
                     m_trie.template add_m_gram<CURR_LEVEL>(gram);
-                };
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                inline void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    if (TrieType::needs_bitmap_hash_cache()) {
-                        //Call the super class first, is needed for caching
-                        register_m_gram_cache<MAX_LEVEL>(gram);
-                    }
-
-                    m_trie.add_n_gram(gram);
                 };
 
                 /**

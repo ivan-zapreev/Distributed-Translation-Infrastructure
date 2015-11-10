@@ -92,30 +92,12 @@ namespace uva {
                 }
 
                 /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @param gram the 1-Gram data
-                 */
-                inline void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @param gram the M-Gram data
                  * @throws Exception if the level of this M-gram is not such that  1 < M < N
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * It it snot guaranteed that the parameter will be checked to be a N-Gram!
-                 * @param gram the N-Gram data
-                 */
-                inline void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                     THROW_MUST_OVERRIDE();
                 };
 

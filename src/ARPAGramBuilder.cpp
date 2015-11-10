@@ -67,8 +67,8 @@ namespace uva {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.get_first_tab(m_token)) {
                         //Try to parse it float
-                        if (fast_stoT<float>(m_ngram.m_prob, m_token.get_rest_c_str())) {
-                            LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.m_prob << END_LOG;
+                        if (fast_stoT<float>(m_ngram.m_payload.prob, m_token.get_rest_c_str())) {
+                            LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.m_payload.prob << END_LOG;
 
                             //Read the all the N-Gram tokes, read until the tab as after the 
                             //tab there is a back-off weight or there is no tab in the line
@@ -105,18 +105,18 @@ namespace uva {
                             //Now if there is something left it should be the back-off weight, otherwise we are done
                             if (line.has_more()) {
                                 //Take the remainder of the line and try to parse it!
-                                if (!fast_stoT<float>(m_ngram.m_back_off, line.get_rest_c_str())) {
+                                if (!fast_stoT<float>(m_ngram.m_payload.back, line.get_rest_c_str())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
                                             << "' as a back-off weight!" << END_LOG;
                                     //The first token was not a float, need to skip to another N-Gram section(?)
                                     return false;
                                 }
-                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.m_back_off << END_LOG;
+                                LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_ngram.m_payload.back << END_LOG;
                             } else {
                                 //There is no back-off so set it to zero
-                                m_ngram.m_back_off = ZERO_BACK_OFF_WEIGHT;
+                                m_ngram.m_payload.back = ZERO_BACK_OFF_WEIGHT;
                                 LOG_DEBUG2 << "The parsed N-gram '" << line.str()
-                                        << "' does not have back-off using: " << m_ngram.m_back_off << END_LOG;
+                                        << "' does not have back-off using: " << m_ngram.m_payload.back << END_LOG;
                             }
                             return true;
                         } else {

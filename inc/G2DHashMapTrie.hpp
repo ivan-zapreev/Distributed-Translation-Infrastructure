@@ -138,25 +138,11 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * This method adds a 1-Gram (word) to the trie.
-                 * It it snot guaranteed that the parameter will be checked to be a 1-Gram!
-                 * @see GenericTrieBase
-                 */
-                void add_1_gram(const T_Model_M_Gram<WordIndexType> &gram);
-
-                /**
                  * This method adds a M-Gram (word) to the trie where 1 < M < N
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
                 void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
-
-                /**
-                 * This method adds a N-Gram (word) to the trie where
-                 * It it not guaranteed that the parameter will be checked to be a N-Gram!
-                 * @see GenericTrieBase
-                 */
-                void add_n_gram(const T_Model_M_Gram<WordIndexType> & gram);
 
                 /**
                  * This method allows to get the probability and/or back off weight for the

@@ -103,50 +103,36 @@ namespace uva {
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_1_gram(const T_Model_M_Gram<WordIndexType> &gram) {
-                //Get the word id of this unigram, so there is just one word in it and its the end one
-                const TShortId word_id = gram.get_end_word_id();
-
-                //Store the probability data in the one gram data storage, under its id
-                m_1_gram_data[word_id].prob = gram.m_prob;
-                m_1_gram_data[word_id].back = gram.m_back_off;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
             template<TModelLevel CURR_LEVEL>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                //Get the bucket index
-                LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
-                TShortId bucket_idx = get_bucket_id<CURR_LEVEL>(gram.get_hash());
+                if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                    //Get the word id of this unigram, so there is just one word in it and its the end one
+                    const TShortId word_id = gram.get_end_word_id();
+                    //Store the probability data in the one gram data storage, under its id
+                    m_1_gram_data[word_id] = gram.m_payload;
+                } else {
+                    //Get the bucket index
+                    LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
+                    TShortId bucket_idx = get_bucket_id<CURR_LEVEL>(gram.get_hash());
 
-                //Compute the M-gram level index
-                constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
-
-                //Create a new M-Gram data entry
-                T_M_Gram_PB_Entry & data = m_M_gram_data[LEVEL_IDX][bucket_idx].allocate();
-
-                //Create the M-gram id from the word ids.
-                gram.template create_m_gram_id<CURR_LEVEL>(data.id);
-
-                //Set the probability and back-off data
-                data.payload.prob = gram.m_prob;
-                data.payload.back = gram.m_back_off;
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            void G2DMapTrie<MAX_LEVEL, WordIndexType>::add_n_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                //Get the bucket index
-                LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
-                TShortId bucket_idx = get_bucket_id<MAX_LEVEL>(gram.get_hash());
-
-                //Create a new M-Gram data entry
-                T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
-
-                //Create the N-gram id from the word ids
-                gram.template create_m_gram_id<MAX_LEVEL>(data.id);
-
-                //Set the probability data
-                data.payload = gram.m_prob;
+                    if (CURR_LEVEL == MAX_LEVEL) {
+                        //Create a new M-Gram data entry
+                        T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
+                        //Create the N-gram id from the word ids
+                        gram.template create_m_gram_id<CURR_LEVEL>(data.id);
+                        //Set the probability data
+                        data.payload = gram.m_payload.prob;
+                    } else {
+                        //Compute the M-gram level index
+                        constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                        //Create a new M-Gram data entry
+                        T_M_Gram_PB_Entry & data = m_M_gram_data[LEVEL_IDX][bucket_idx].allocate();
+                        //Create the M-gram id from the word ids.
+                        gram.template create_m_gram_id<CURR_LEVEL>(data.id);
+                        //Set the probability and back-off data
+                        data.payload = gram.m_payload;
+                    }
+                }
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
