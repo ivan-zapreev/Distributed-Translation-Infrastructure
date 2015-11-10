@@ -79,8 +79,34 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                template<TModelLevel level>
-                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    LOG_DEBUG3 << "Retrieving context level: " << CURR_LEVEL << ", word_id: "
+                            << word_id << ", ctx_id: " << ctx_id << END_LOG;
+                    //Retrieve the context data for the given word
+                    StorageContainer* ctx_mapping = m_mgram_mapping[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][word_id];
+
+                    //Check that the context data is available
+                    if (ctx_mapping != NULL) {
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
+                        if (result == ctx_mapping->end()) {
+                            LOG_DEBUG2 << "Can not find ctx_id: " << SSTR(ctx_id) << " for level: "
+                                    << SSTR(CURR_LEVEL) << ", word_id: " << SSTR(word_id) << END_LOG;
+                            return false;
+                        } else {
+                            LOG_DEBUG2 << "Found next ctx_id: " << SSTR(result->second)
+                                    << " for level: " << SSTR(CURR_LEVEL) << ", word_id: "
+                                    << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                            ctx_id = result->second;
+                            return true;
+                        }
+                    } else {
+                        LOG_DEBUG2 << "No context data for: " << SSTR(CURR_LEVEL)
+                                << ", word_id: " << SSTR(word_id) << END_LOG;
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to log the information about the instantiated trie type

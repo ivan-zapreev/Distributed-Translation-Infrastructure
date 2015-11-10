@@ -102,36 +102,6 @@ namespace uva {
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-            template<TModelLevel level>
-            bool W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
-                LOG_DEBUG3 << "Retrieving context level: " << level << ", word_id: "
-                        << word_id << ", ctx_id: " << ctx_id << END_LOG;
-                //Retrieve the context data for the given word
-                StorageContainer* ctx_mapping = m_mgram_mapping[level - BASE::MGRAM_IDX_OFFSET][word_id];
-
-                //Check that the context data is available
-                if (ctx_mapping != NULL) {
-                    typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
-                    if (result == ctx_mapping->end()) {
-                        LOG_DEBUG2 << "Can not find ctx_id: " << SSTR(ctx_id) << " for level: "
-                                << SSTR(level) << ", word_id: " << SSTR(word_id) << END_LOG;
-                        return false;
-                    } else {
-                        LOG_DEBUG2 << "Found next ctx_id: " << SSTR(result->second)
-                                << " for level: " << SSTR(level) << ", word_id: "
-                                << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-
-                        ctx_id = result->second;
-                        return true;
-                    }
-                } else {
-                    LOG_DEBUG2 << "No context data for: " << SSTR(level)
-                            << ", word_id: " << SSTR(word_id) << END_LOG;
-                    return false;
-                }
-            }
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                 //Delete the probability and back-off data
                 for (TModelLevel idx = 0; idx < (MAX_LEVEL - 1); idx++) {

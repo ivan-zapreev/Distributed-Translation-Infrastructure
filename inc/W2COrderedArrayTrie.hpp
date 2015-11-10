@@ -130,7 +130,56 @@ namespace uva {
                  * @throw nothing.
                  */
                 template<TModelLevel CURR_LEVEL>
-                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+
+                    if (DO_SANITY_CHECKS && ((CURR_LEVEL == MAX_LEVEL) || (mgram_idx < 0))) {
+                        stringstream msg;
+                        msg << "Unsupported level id: " << CURR_LEVEL;
+                        throw Exception(msg.str());
+                    }
+
+                    LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(CURR_LEVEL)
+                            << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
+                            << SSTR(ctx_id) << END_LOG;
+
+                    //First get the sub-array reference. 
+                    const T_M_GramWordEntry & ref = m_M_gram_word_2_data[mgram_idx][word_id];
+
+                    if (DO_SANITY_CHECKS && ref.has_data()) {
+                        LOG_DEBUG3 << "ref.size: " << SSTR(ref.size()) << ", ref.cio: "
+                                << SSTR(ref.cio) << ", ctx_id range: [" << SSTR(ref[0].id) << ", "
+                                << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
+                    }
+
+                    //Check that if this is the 2-Gram case and the previous context
+                    //id is 0 then it is the unknown word id, at least this is how it
+                    //is now in ATrie implementation, so we need to do a warning!
+                    if (DO_SANITY_CHECKS && (CURR_LEVEL == M_GRAM_LEVEL_2) && (ctx_id < WordIndexType::MIN_KNOWN_WORD_ID)) {
+                        LOG_WARNING << "Perhaps we are being paranoid but there "
+                                << "seems to be a problem! The " << SSTR(CURR_LEVEL) << "-gram ctx_id: "
+                                << SSTR(ctx_id) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
+                                << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                    }
+
+                    //Get the local entry index and then use it to compute the next context id
+                    typename T_M_GramWordEntry::TIndexType localIdx;
+                    //If the local entry index could be found then compute the next ctx_id
+                    if (get_M_N_GramLocalEntryIdx(ref, ctx_id, localIdx)) {
+                        LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
+                                << ", size = " << SSTR(ref.size()) << ", localIdx = "
+                                << SSTR(localIdx) << ", resulting ctx_id = "
+                                << SSTR(ref.cio + localIdx) << END_LOG;
+
+                        //The next ctx_id is the sum of the local index and the context index offset
+                        ctx_id = ref.cio + localIdx;
+                        return true;
+                    } else {
+                        //The local index could not be found
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to log the information about the instantiated trie type

@@ -289,7 +289,7 @@ namespace uva {
                     //Perform the post actions if needed
                     if (m_trie.get_word_index().is_post_actions_needed()) {
                         //Do the progress bard indicator
-                        Logger::startProgressBar(string("Word Index post actions"));
+                        Logger::startProgressBar(string("Word Index actions"));
 
                         LOG_DEBUG << "Starting to perform the Word Index post actions" << END_LOG;
 

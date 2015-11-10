@@ -168,7 +168,55 @@ namespace uva {
                  * @throw nothing
                  */
                 template<TModelLevel level>
-                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    //Compute the m-gram index
+                    const TModelLevel mgram_idx = level - BASE::MGRAM_IDX_OFFSET;
+
+                    if (DO_SANITY_CHECKS && ((level == MAX_LEVEL) || (mgram_idx < 0))) {
+                        stringstream msg;
+                        msg << "Unsupported level id: " << level;
+                        throw Exception(msg.str());
+                    }
+
+                    LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(level)
+                            << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
+                            << SSTR(ctx_id) << END_LOG;
+
+                    //First get the sub-array reference. Note that, even if it is the 2-Gram
+                    //case and the previous word is unknown (ctx_id == 0) we still can use
+                    //the ctx_id to get the data entry. The reason is that we allocated memory
+                    //for it but being for an unknown word context it should have no data!
+                    TSubArrReference & ref = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
+
+                    LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
+                            << ", with beginIdx: " << SSTR(ref.beginIdx) << ", endIdx: "
+                            << SSTR(ref.endIdx) << END_LOG;
+
+                    //Check that there is data for the given context available
+                    if (ref.beginIdx != BASE::UNDEFINED_ARR_IDX) {
+                        TShortId nextCtxId = BASE::UNDEFINED_ARR_IDX;
+                        //The data is available search for the word index in the array
+                        //WARNING: The linear search here is much slower!!!
+                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[mgram_idx], ref.beginIdx, ref.endIdx, word_id, nextCtxId)) {
+                            LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", ctx_id: "
+                                    << SSTR(ctx_id) << " is nextCtxId: " << SSTR(nextCtxId) << END_LOG;
+                            ctx_id = nextCtxId;
+                            return true;
+                        } else {
+                            LOG_DEBUG2 << "Unable to find M-gram ctx_id for level: "
+                                    << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
+                                    << ", word_id: " << SSTR(word_id) << ", is not in the available range: ["
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.beginIdx].id) << " ... "
+                                    << SSTR(m_M_gram_data[mgram_idx][ref.endIdx].id) << "]" << END_LOG;
+                            return false;
+                        }
+                    } else {
+                        LOG_DEBUG2 << "Unable to find M-gram context id for level: "
+                                << SSTR(level) << ", prev ctx_id: " << SSTR(ctx_id)
+                                << ", nothing present in that context!" << END_LOG;
+                        return false;
+                    }
+                }
 
                 /**
                  * Allows to log the information about the instantiated trie type

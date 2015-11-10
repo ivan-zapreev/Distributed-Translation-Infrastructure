@@ -116,8 +116,23 @@ namespace uva {
                  * @return the resulting context
                  * @throw nothing
                  */
-                template<TModelLevel level>
-                bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const;
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+
+                    //Search for the map for that context id
+                    const TModelLevel idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
+                    if (result == pMGramMap[idx]->end()) {
+                        //There is no data found under this context
+                        return false;
+                    } else {
+                        //Update the context with the found value uf the next context
+                        ctx_id = result->second;
+                        //The context can always be computed
+                        return true;
+                    }
+                }
 
                 /**
                  * Allows to log the information about the instantiated trie type
