@@ -204,6 +204,14 @@ namespace uva {
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
                 inline GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
+                    //Perform sanity checks if needed
+                    if (DO_SANITY_CHECKS && (DO_BACK_OFF && (BEGIN_WORD_IDX == END_WORD_IDX))) {
+                        stringstream msg;
+                        msg << "Requested back-off option for a unigram! " << (string) gram << " @ position: " << SSTR(BEGIN_WORD_IDX);
+                        throw Exception(msg.str());
+                    }
+
+                    //Check if we need back-off m-gram payload in case the regular is not found
                     if (DO_BACK_OFF) {
                         LOG_DEBUG << "DO_BACK_OFF == true" << END_LOG;
                         //Compute the back-off end word index

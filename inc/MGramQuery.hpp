@@ -156,7 +156,7 @@ namespace uva {
 
                         //If the payload was found then add add it to the probability
                         prob += data.prob;
-                        
+
                         //False indicates that the payload was found
                         return false;
                     } else {
@@ -189,7 +189,7 @@ namespace uva {
                     T_M_Gram_Payload & bo_data = payload[BEGIN_WORD_IDX][END_WORD_IDX - 1];
 
                     //Retrieve the payload from the trie, the back-off is only needed when it is not a unigram
-                    GPR_Enum result = trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, true>(gram, data, bo_data);
+                    GPR_Enum result = trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, (BEGIN_WORD_IDX != END_WORD_IDX)>(gram, data, bo_data);
 
                     //Depending on the result of the payload retrieval we have 3 different options
                     switch (result) {
@@ -199,7 +199,7 @@ namespace uva {
 
                             //If the payload was found then add add it to the probability
                             prob += data.prob;
-                            
+
                             //False indicates that the payload was found
                             return false;
                         case GPR_Enum::BACK_OFF_GPR:
@@ -268,13 +268,13 @@ namespace uva {
 
             template<typename TrieType>
             const typename T_M_Gram_Query<TrieType>::TAddProbGetBackFunc T_M_Gram_Query<TrieType>::m_add_prob_or_back_off[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
-                {&add_prob_or_back_off<0, 0>, &add_prob_or_back_off<0, 1>, &add_prob_or_back_off<0, 2>, &add_prob_or_back_off<0, 3>, &add_prob_or_back_off<0, 4>, &add_prob_or_back_off<0, 5>, &add_prob_or_back_off<0, 6>},
-                {NULL, &add_prob_or_back_off<1, 1>, &add_prob_or_back_off<1, 2>, &add_prob_or_back_off<1, 3>, &add_prob_or_back_off<1, 4>, &add_prob_or_back_off<1, 5>, &add_prob_or_back_off<1, 6>},
-                {NULL, NULL, &add_prob_or_back_off<2, 2>, &add_prob_or_back_off<2, 3>, &add_prob_or_back_off<2, 4>, &add_prob_or_back_off<2, 5>, &add_prob_or_back_off<2, 6>},
-                {NULL, NULL, NULL, &add_prob_or_back_off<3, 3>, &add_prob_or_back_off<3, 4>, &add_prob_or_back_off<3, 5>, &add_prob_or_back_off<3, 6>},
-                {NULL, NULL, NULL, NULL, &add_prob_or_back_off<4, 4>, &add_prob_or_back_off<4, 5>, &add_prob_or_back_off<4, 6>},
-                {NULL, NULL, NULL, NULL, NULL, &add_prob_or_back_off<5, 5>, &add_prob_or_back_off<5, 6>},
-                {NULL, NULL, NULL, NULL, NULL, NULL, &add_prob_or_back_off<6, 6>}
+                {&add_prob<0, 0>, &add_prob_or_back_off<0, 1>, &add_prob_or_back_off<0, 2>, &add_prob_or_back_off<0, 3>, &add_prob_or_back_off<0, 4>, &add_prob_or_back_off<0, 5>, &add_prob_or_back_off<0, 6>},
+                {NULL, &add_prob<1, 1>, &add_prob_or_back_off<1, 2>, &add_prob_or_back_off<1, 3>, &add_prob_or_back_off<1, 4>, &add_prob_or_back_off<1, 5>, &add_prob_or_back_off<1, 6>},
+                {NULL, NULL, &add_prob<2, 2>, &add_prob_or_back_off<2, 3>, &add_prob_or_back_off<2, 4>, &add_prob_or_back_off<2, 5>, &add_prob_or_back_off<2, 6>},
+                {NULL, NULL, NULL, &add_prob<3, 3>, &add_prob_or_back_off<3, 4>, &add_prob_or_back_off<3, 5>, &add_prob_or_back_off<3, 6>},
+                {NULL, NULL, NULL, NULL, &add_prob<4, 4>, &add_prob_or_back_off<4, 5>, &add_prob_or_back_off<4, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &add_prob<5, 5>, &add_prob_or_back_off<5, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &add_prob<6, 6>}
             };
 
             template<typename TrieType>
