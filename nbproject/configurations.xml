@@ -36,7 +36,6 @@
       <itemPath>inc/MGramCumulativeQuery.hpp</itemPath>
       <itemPath>inc/MGramQuery.hpp</itemPath>
       <itemPath>inc/MGramSingleQuery.hpp</itemPath>
-      <itemPath>inc/MGrams.hpp</itemPath>
       <itemPath>inc/MathUtils.hpp</itemPath>
       <itemPath>inc/MemoryMappedFileReader.hpp</itemPath>
       <itemPath>inc/ModelMGram.hpp</itemPath>
@@ -803,8 +802,6 @@
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -953,8 +950,6 @@
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1113,8 +1108,6 @@
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -1263,8 +1256,6 @@
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1415,8 +1406,6 @@
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -1566,8 +1555,6 @@
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MemoryMappedFileReader.hpp" ex="false" tool="3" flavor2="0">
@@ -1716,8 +1703,6 @@
       <item path="inc/MGramQuery.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MGramSingleQuery.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/MGrams.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/MathUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>

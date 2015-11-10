@@ -1,0 +1,120 @@
+DEBUG 	<src/StatisticsMonitor.cpp::getMemoryStatistics(...):62>:	Unable to obtain memory usage statistics on Mac OS yet!
+USAGE:	Start reading and executing the test queries ...
+DEBUG3 	<inc/CStyleFileReader.hpp::get_first_line(...):108>:	Searching for a new line, m_file_ptr = 0x7fff7e9660e8
+DEBUG2 	<inc/CStyleFileReader.hpp::get_first_line(...):119>:	Read 17 symbols: 'this will require
+' !
+DEBUG3 	<inc/TextPieceReader.hpp::set(...):125>:	Setting the data to BasicTextPiece: m_beginPtr = 0x7f8482003200, m_cursorPtr = 0x7f8482003200, m_is_gen_str = 1, m_len = 17, m_restLen = 17
+DEBUG 	<inc/Executor.hpp::read_and_execute_queries(...):205>:	Got query line [ this will require ]
+DEBUG3 	<inc/TextPieceReader.hpp::get_first(...):204>:	0x7f8482003200
+DEBUG3 	<inc/TextPieceReader.hpp::set(...):125>:	Setting the data to BasicTextPiece: m_beginPtr = 0x7f8482003200, m_cursorPtr = 0x7f8482003200, m_is_gen_str = 1, m_len = 4, m_restLen = 4
+DEBUG3 	<inc/TextPieceReader.hpp::get_first(...):204>:	0x7f8482003205
+DEBUG3 	<inc/TextPieceReader.hpp::set(...):125>:	Setting the data to BasicTextPiece: m_beginPtr = 0x7f8482003205, m_cursorPtr = 0x7f8482003205, m_is_gen_str = 1, m_len = 4, m_restLen = 4
+DEBUG3 	<inc/TextPieceReader.hpp::get_first(...):204>:	0x7f848200320a
+DEBUG3 	<inc/TextPieceReader.hpp::set(...):125>:	Setting the data to BasicTextPiece: m_beginPtr = 0x7f848200320a, m_cursorPtr = 0x7f848200320a, m_is_gen_str = 1, m_len = 7, m_restLen = 7
+DEBUG3 	<inc/TextPieceReader.hpp::get_first(...):204>:	0x7f848200320a
+DEBUG 	<inc/MGramCumulativeQuery.hpp::execute(...):129>:	Starting to execute:[ this will require ]
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):116>:	Preparing for the query execution, create <unk> word flags = false
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):127>:	Start retrieving the word ids: forward
+DEBUG3 	<inc/OptimizingWordIndex.hpp::get_word_id(...):147>:	Number of words in bucket: 33178 is: 1
+DEBUG2 	<inc/QueryMGram.hpp::prepare_for_querying(...):131>:	The word: 'this' is: 60!
+DEBUG3 	<inc/OptimizingWordIndex.hpp::get_word_id(...):147>:	Number of words in bucket: 5242 is: 1
+DEBUG2 	<inc/QueryMGram.hpp::prepare_for_querying(...):131>:	The word: 'will' is: 35!
+DEBUG3 	<inc/OptimizingWordIndex.hpp::get_word_id(...):147>:	Number of words in bucket: 27772 is: 1
+DEBUG2 	<inc/QueryMGram.hpp::prepare_for_querying(...):131>:	The word: 'require' is: 3794!
+DEBUG1 	<inc/QueryMGram.hpp::prepare_for_querying(...):137>:	Done preparing for the query execution!
+DEBUG 	<inc/MGramCumulativeQuery.hpp::execute(...):143>:	-----> Considering cumulative sub-m-gram [0, 0]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):192>:	Retrieving payload for a sub-1-gram [0, 0]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):244>:	Getting the 1-gram payload: [ prob: -2.73007, back: -0.212952 ]
+DEBUG1 	<inc/MGramQuery.hpp::add_prob_get_back_off(...):150>:	Adding the probability from [0, 0] = -2.73007
+DEBUG 	<inc/MGramCumulativeQuery.hpp::execute(...):143>:	-----> Considering cumulative sub-m-gram [0, 1]
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):170>:	Getting hash values for begin/end index: 0/1, the previous computed begin level is: 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):187>:	hash[1] = 35
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):197>:	word[0] = 60, hash[0] = 944790855
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):206>:	compute_hash_level[1] = 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):219>:	Resulting hash value: 944790855
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):162>:	The hash value is: 944790855, the number of elements is: 292100
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):172>:	The M-gram hash: 944790855, byte_idx: 17431, bit_offset_idx: 7
+DEBUG2 	<inc/BitmapHashCache.hpp::is_m_gram_hash_cached(...):142>:	Returning: 00010001 & 00000001
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):192>:	Retrieving payload for a sub-2-gram [0, 1]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):198>:	The level 2-gram max level is: 5
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):201>:	Getting the bucket id for the sub-2-gram [0,1] of: [ this will require ]
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):170>:	Getting hash values for begin/end index: 0/1, the previous computed begin level is: 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):187>:	hash[1] = 35
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):197>:	word[0] = 60, hash[0] = 944790855
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):206>:	compute_hash_level[1] = 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):219>:	Resulting hash value: 944790855
+DEBUG1 	<inc/G2DHashMapTrie.hpp::get_bucket_id(...):257>:	The 2-gram hash is: 944790855
+DEBUG1 	<inc/G2DHashMapTrie.hpp::get_bucket_id(...):259>:	The 2-gram bucket_idx: 139455
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):204>:	The 2-gram hash bucket idx is: 139455
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):225>:	Searching in 2-grams, array index: 0
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):229>:	Calling: get_payload_from_gram_level<TProbBackOffBucket, 0, 1>
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload_from_gram_level(...):159>:	Retrieving payload for a sub-2-gram [0, 1]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload_from_gram_level(...):164>:	The bucket contains 2 elements!
+DEBUG 	<inc/BaseMGram.hpp::create_m_gram_id(...):207>:	Computing sub 2-gram id for the gram defined by the first, and the last word indexes: [0, 1]
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):214>:	Creating the 2-gram id with id type length: 1
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):224>:	Word id: 60 len. in bytes: 1
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):224>:	Word id: 35 len. in bytes: 1
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):231>:	Total len. in bytes: 3
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_byte_len_2_type(...):138>:	Computing the 2-gram id type
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_byte_len_2_type(...):142>:	0 * 1 =  0
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_byte_len_2_type(...):142>:	0 * 4 =  0
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_byte_len_2_type(...):147>:	Resulting id_type = 0
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):245>:	ID_TYPE_LEN_BYTES: 1, id_type_value: 0
+DEBUG3 	<src/ByteMGramId.cpp::create_gram_id(...):259>:	Finished making the 2-gram id with id type length: 1, bits: (00000000,00100011,00111100)
+DEBUG 	<inc/BaseMGram.hpp::create_m_gram_id(...):215>:	Allocated 2-gram id is: 0x7fff565ae66f for [ this will ]
+DEBUG2 	<inc/G2DHashMapTrie.hpp::search_gram(...):327>:	# words in the bucket: 2
+DEBUG3 	<inc/ArrayUtils.hpp::my_bsearch_id(...):160>:	Searching between indexes 0 and 1
+DEBUG3 	<src/ByteMGramId.cpp::compare(...):306>:	M_GRAM_LEVEL: 2, type_one: 0, type_two: 0
+DEBUG3 	<src/ByteMGramId.cpp::compare(...):319>:	0x7fff565ae66f =(type)= 0x7f8481f02ce0
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_type_2_byte_len(...):165>:	0 / 4 =  0
+DEBUG3 	<src/ByteMGramId.cpp::gram_id_type_2_byte_len(...):165>:	0 / 1 =  0
+DEBUG3 	<src/ByteMGramId.cpp::compare(...):330>:	ID_TYPE_LEN_BYTES: 1, start comparing id key from idx: 1, Total id_len_bytes: 2
+DEBUG3 	<src/ByteMGramId.cpp::compare(...):334>:	0x7fff565ae66f = (00100011,00111100)
+DEBUG3 	<src/ByteMGramId.cpp::compare(...):335>:	0x7f8481f02ce0 = (00100011,00111100)
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):233>:	The 2-gram is found, payload: [ prob: -1.68963, back: -0.031265 ]
+DEBUG1 	<inc/MGramQuery.hpp::add_prob_get_back_off(...):150>:	Adding the probability from [0, 1] = -1.68963
+DEBUG 	<inc/MGramCumulativeQuery.hpp::execute(...):143>:	-----> Considering cumulative sub-m-gram [0, 2]
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):170>:	Getting hash values for begin/end index: 0/2, the previous computed begin level is: 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):187>:	hash[2] = 3794
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):197>:	word[1] = 35, hash[1] = 1131026807
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):197>:	word[0] = 60, hash[0] = 132297971
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):206>:	compute_hash_level[2] = 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):219>:	Resulting hash value: 132297971
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):162>:	The hash value is: 132297971, the number of elements is: 384440
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):172>:	The M-gram hash: 132297971, byte_idx: 6326, bit_offset_idx: 3
+DEBUG2 	<inc/BitmapHashCache.hpp::is_m_gram_hash_cached(...):142>:	Returning: 00001000 & 00010000
+DEBUG1 	<inc/MGramQuery.hpp::add_prob_get_back_off(...):158>:	Adding the probability from [0, 2] = ZERO
+DEBUG1 	<inc/MGramCumulativeQuery.hpp::do_back_off_undefined(...):193>:	The sub-m-gram [0, 2] was not found, need to back off!
+DEBUG1 	<inc/MGramCumulativeQuery.hpp::do_back_off_undefined(...):211>:	Adding the back-off data from [0, 1] = -0.031265
+DEBUG1 	<inc/MGramCumulativeQuery.hpp::do_back_off_undefined(...):218>:	Continue by going down the column, retrieve payload for [1, 2]
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):170>:	Getting hash values for begin/end index: 1/2, the previous computed begin level is: 0
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):187>:	hash[2] = 3794
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):197>:	word[1] = 35, hash[1] = 1131026807
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):206>:	compute_hash_level[2] = 1
+DEBUG1 	<inc/QueryMGram.hpp::get_hash(...):219>:	Resulting hash value: 1131026807
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):162>:	The hash value is: 1131026807, the number of elements is: 292100
+DEBUG2 	<inc/BitmapHashCache.hpp::get_bit_pos(...):172>:	The M-gram hash: 1131026807, byte_idx: 1950, bit_offset_idx: 7
+DEBUG2 	<inc/BitmapHashCache.hpp::is_m_gram_hash_cached(...):142>:	Returning: 00000000 & 00000001
+DEBUG1 	<inc/MGramQuery.hpp::add_prob_get_back_off(...):158>:	Adding the probability from [1, 2] = ZERO
+DEBUG1 	<inc/MGramCumulativeQuery.hpp::do_back_off_undefined(...):223>:	The payload probability for [1, 2] was not found, doing back-off!
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):192>:	Retrieving payload for a sub-1-gram [1, 1]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):244>:	Getting the 1-gram payload: [ prob: -2.50944, back: -0.215361 ]
+DEBUG1 	<inc/MGramQuery.hpp::add_back_off(...):185>:	Adding the back-off from [1, 1] = -0.215361
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):192>:	Retrieving payload for a sub-1-gram [2, 2]
+DEBUG 	<src/G2DHashMapTrie.cpp::get_payload(...):244>:	Getting the 1-gram payload: [ prob: -4.03138, back: -0.0801424 ]
+DEBUG1 	<inc/MGramQuery.hpp::add_prob_get_back_off(...):150>:	Adding the probability from [2, 2] = -4.03138
+RESULT:	  log_10( Prob( this ) ) = -2.73007
+INFO:	  Prob( this ) = 0.0018618
+RESULT:	  log_10( Prob( will | this ) ) = -1.68963
+INFO:	  Prob( will | this ) = 0.020435
+RESULT:	  log_10( Prob( require | this will ) ) = -4.27801
+INFO:	  Prob( require | this will ) = 5.27221e-05
+RESULT:	---
+RESULT:	  log_10( Prob( this will require ) ) = -8.6977
+INFO:	  Prob( this will require ) = 2.00586e-09
+RESULT:	-------------------------------------------
+DEBUG3 	<inc/CStyleFileReader.hpp::get_first_line(...):108>:	Searching for a new line, m_file_ptr = 0x7fff7e9660e8
+DEBUG2 	<inc/CStyleFileReader.hpp::get_first_line(...):124>:	The end of file is reached or an error has occurred!
+USAGE:	Total query execution time is 0.000961 CPU seconds.
+USAGE:	Cleaning up memory ...
+INFO:	Done

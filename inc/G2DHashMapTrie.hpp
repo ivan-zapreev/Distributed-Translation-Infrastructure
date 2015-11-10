@@ -32,7 +32,6 @@
 #include "Exceptions.hpp"
 
 #include "AWordIndex.hpp"
-#include "MGrams.hpp"
 #include "ModelMGram.hpp"
 #include "ByteMGramId.hpp"
 

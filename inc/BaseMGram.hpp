@@ -40,6 +40,8 @@
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 
+using namespace uva::smt::tries::m_grams::m_gram_id;
+
 namespace uva {
     namespace smt {
         namespace tries {

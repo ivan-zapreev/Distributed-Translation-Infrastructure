@@ -32,7 +32,6 @@
 #include "Exceptions.hpp"
 #include "Logger.hpp"
 
-#include "MGrams.hpp"
 #include "TextPieceReader.hpp"
 
 #include "BasicWordIndex.hpp"

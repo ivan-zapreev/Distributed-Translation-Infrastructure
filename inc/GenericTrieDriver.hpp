@@ -35,7 +35,6 @@
 
 #include "MathUtils.hpp"
 
-#include "MGrams.hpp"
 #include "ModelMGram.hpp"
 #include "TextPieceReader.hpp"
 
