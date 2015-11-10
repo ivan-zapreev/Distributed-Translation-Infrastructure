@@ -105,7 +105,7 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
                     //Do the pre-allocation in the trie
                     m_trie.pre_allocate(counts);
                 };
@@ -114,7 +114,20 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
+                inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                    //Define the context id variabe
+                    TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                    //Get the word id of this unigram, so there is just one word in it and its the end one
+                    const TShortId end_word_id = gram.get_end_word_id();
+
+                    //Obtain the context id for non-unigram case
+                    if (CURR_LEVEL != M_GRAM_LEVEL_1) {
+                        get_context_id<CURR_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctx_id);
+                    }
+
+                    //Add the m-gram payload
+                    m_trie.template add_m_gram_payload<CURR_LEVEL>(end_word_id, ctx_id, gram.m_payload);
+                }
 
                 /**
                  * @see GenericTrieBase

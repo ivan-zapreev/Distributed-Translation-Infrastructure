@@ -45,27 +45,6 @@ namespace uva {
         namespace tries {
 
             template<typename TrieType >
-            template<TModelLevel CURR_LEVEL>
-            void LayeredTrieDriver<TrieType>::add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                if (CURR_LEVEL == M_GRAM_LEVEL_1) {
-                    //Get the word id of this unigram, so there is just one word in it and its the end one
-                    const TShortId word_id = gram.get_end_word_id();
-
-                    //Add the m-gram payload
-                    m_trie.template add_m_gram_payload<CURR_LEVEL>(word_id, WordIndexType::UNKNOWN_WORD_ID, gram.m_payload);
-                } else {
-                    // 1. Compute the context hash defined by w1 w2 w3
-                    TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
-                    get_context_id<CURR_LEVEL, DebugLevelsEnum::DEBUG2>(gram, ctx_id);
-                    // 2. Insert the probability data into the trie
-                    TShortId end_word_id = gram.get_end_word_id();
-
-                    //Add the m-gram payload
-                    m_trie.template add_m_gram_payload<CURR_LEVEL>(end_word_id, ctx_id, gram.m_payload);
-                }
-            };
-
-            template<typename TrieType >
             template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
             GPR_Enum LayeredTrieDriver<TrieType>::get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
                 //Compute the current level from the begin and end word indexes

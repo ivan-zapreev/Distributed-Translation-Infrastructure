@@ -50,11 +50,11 @@ namespace uva {
                  * and the corresponding probability/back-off data.
                  * It is used to store the M-gram data for levels 1 < M < N.
                  * @param id the word id
-                 * @param data the back-off and probability data
+                 * @param payload the back-off and probability data
                  */
                 typedef struct {
                     TShortId id;
-                    T_M_Gram_Payload data;
+                    T_M_Gram_Payload payload;
                 } TWordIdPBData;
 
                 /**
@@ -304,7 +304,7 @@ namespace uva {
                             m_M_gram_data[m_gram_idx][ref.end_idx].id = word_id;
 
                             //Store the payload
-                            m_M_gram_data[m_gram_idx][ref.end_idx].data = payload;
+                            m_M_gram_data[m_gram_idx][ref.end_idx].payload = payload;
                         }
                     }
                 }
@@ -325,7 +325,7 @@ namespace uva {
                     //Get the context id, note we use short ids here!
                     if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
                         //Return the data
-                        payload = m_M_gram_data[LEVEL_IDX][ctx_id].data;
+                        payload = m_M_gram_data[LEVEL_IDX][ctx_id].payload;
                         return GPR_Enum::PAYLOAD_GPR;
                     } else {
                         //The data could not be found
