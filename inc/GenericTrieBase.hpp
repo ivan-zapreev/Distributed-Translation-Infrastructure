@@ -53,6 +53,15 @@ namespace uva {
     namespace smt {
         namespace tries {
 
+            //This macro is needed to report the collision detection warnings!
+#define REPORT_COLLISION_WARNING(gram, word_id, contextId, prevProb, prevBackOff, newProb, newBackOff)   \
+            LOG_WARNING << "The " << gram.get_m_gram_level() << "-Gram : " << (string) gram              \
+                        << " has been already seen! Word Id: " << SSTR(word_id)                          \
+                        << ", context Id: " << SSTR(contextId) << ". "                                   \
+                        << "Changing the (prob,back-off) data from ("                                    \
+                        << prevProb << "," << prevBackOff << ") to ("                                    \
+                        << newProb << "," << newBackOff << ")" << END_LOG;
+
             /**
              * Stores the possible result value for the method that retrieves the m-gram payload
              */

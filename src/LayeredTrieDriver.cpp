@@ -66,7 +66,7 @@ namespace uva {
                     TLongId bo_ctx_id, ctx_id;
 
                     //Obtain the context id
-                    if (search_m_gram_ctx_id<CURR_LEVEL, DO_BACK_OFF>(gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), bo_ctx_id, ctx_id) == CURR_LEVEL) {
+                    if (__LayeredTrieBase::search_m_gram_ctx_id<TrieType, CURR_LEVEL, DO_BACK_OFF>(m_trie, gram.template get_word_id_ptr<BEGIN_WORD_IDX>(), bo_ctx_id, ctx_id) == CURR_LEVEL) {
                         LOG_DEBUG << "Got query context id: " << ctx_id << ", back-off query context id: " << bo_ctx_id << END_LOG;
                         GPR_Enum result;
                         if (CURR_LEVEL == MAX_LEVEL) {

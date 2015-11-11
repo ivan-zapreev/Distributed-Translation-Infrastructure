@@ -269,12 +269,17 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_m_gram_to_ctx(const T_Model_M_Gram<WordIndexType> & gram, TLongId ctx_id) {
+                inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
                         m_1_gram_data[word_id] = gram.m_payload;
                     } else {
+                        //Define the context id variable
+                        TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                        //Obtain the m-gram context id
+                        __LayeredTrieBase::get_context_id<C2WArrayTrie<MAX_LEVEL, WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Get the new n-gram index
                             const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
