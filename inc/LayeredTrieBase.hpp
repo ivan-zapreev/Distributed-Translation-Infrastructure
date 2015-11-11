@@ -129,7 +129,7 @@ namespace uva {
                             string(" but the m-gram level value is: ") + std::to_string(gram.get_m_gram_level()));
 
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if (trie.get_cached_context_id(gram, ctx_id)) {
+                    if ((CURR_LEVEL == TrieType::MAX_LEVEL) || trie.get_cached_context_id(gram, ctx_id)) {
                         //Compute the context id, check on the level
                         const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.first_word_id(), ctx_id, ctx_id);
 
@@ -138,7 +138,7 @@ namespace uva {
                                 ((string) gram) + string(" context could not be computed!"));
 
                         //Cache the newly computed context id for the given n-gram context
-                        trie.set_cache_context_id(gram, ctx_id);
+                        if (CURR_LEVEL != TrieType::MAX_LEVEL) trie.set_cache_context_id(gram, ctx_id);
 
                         //The context Id was found in the Trie
                         LOGGER(LOG_LEVEL) << "The ctx_id could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
