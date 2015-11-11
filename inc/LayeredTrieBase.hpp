@@ -66,49 +66,34 @@ namespace uva {
                  */
                 template<typename TrieType, TModelLevel CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
                 inline TModelLevel search_m_gram_ctx_id(const TrieType & trie, const typename TrieType::WordIndexType::TWordIdType * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) {
-                    switch (CURR_LEVEL) {
-                        case M_GRAM_LEVEL_2:
-                            ctx_id = word_ids[0];
-                            return M_GRAM_LEVEL_2;
-                        case M_GRAM_LEVEL_3:
-                            if (GET_BACK_OFF_CTX_ID) prev_ctx_id = word_ids[0];
-                            ctx_id = word_ids[0];
-                            if (trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
-                                return M_GRAM_LEVEL_3;
-                            } else {
-                                return M_GRAM_LEVEL_2;
-                            }
-                        case M_GRAM_LEVEL_4:
-                            ctx_id = word_ids[0];
-                            if (trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
-                                if (GET_BACK_OFF_CTX_ID) prev_ctx_id = ctx_id;
+                    //Assert that this method is called for proper m-gram levels
+                    ASSERT_SANITY_THROW(((CURR_LEVEL < M_GRAM_LEVEL_2) || (CURR_LEVEL > M_GRAM_LEVEL_5)), string("The level: ") + std::to_string(CURR_LEVEL) + string(" is not supported yet!"));
+
+                    //The initial context for anything larger than a unigram is the first word id
+                    ctx_id = word_ids[0];
+
+                    //If we are at least at a level 3 m-gram
+                    if (CURR_LEVEL >= M_GRAM_LEVEL_3) {
+                        if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_3)) prev_ctx_id = ctx_id;
+                        if (trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
+                            //If we are at least at a level 4 m-gram
+                            if (CURR_LEVEL >= M_GRAM_LEVEL_4) {
+                                if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_4)) prev_ctx_id = ctx_id;
                                 if (trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
-                                    return M_GRAM_LEVEL_4;
-                                } else {
-                                    return M_GRAM_LEVEL_3;
-                                }
-                            } else {
-                                return M_GRAM_LEVEL_2;
-                            }
-                        case M_GRAM_LEVEL_5:
-                            ctx_id = word_ids[0];
-                            if (trie. template get_ctx_id<M_GRAM_LEVEL_2>(word_ids[1], ctx_id)) {
-                                if (trie. template get_ctx_id<M_GRAM_LEVEL_3>(word_ids[2], ctx_id)) {
-                                    if (GET_BACK_OFF_CTX_ID) prev_ctx_id = ctx_id;
-                                    if (trie. template get_ctx_id<M_GRAM_LEVEL_4>(word_ids[3], ctx_id)) {
-                                        return M_GRAM_LEVEL_5;
-                                    } else {
-                                        return M_GRAM_LEVEL_4;
+                                    //If we are at least at a level 5 m-gram
+                                    if (CURR_LEVEL >= M_GRAM_LEVEL_5) {
+                                        if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_5)) prev_ctx_id = ctx_id;
+                                        if (trie. template get_ctx_id<M_GRAM_LEVEL_4>(word_ids[3], ctx_id)) {
+                                            return M_GRAM_LEVEL_5;
+                                        }
                                     }
-                                } else {
-                                    return M_GRAM_LEVEL_3;
+                                    return M_GRAM_LEVEL_4;
                                 }
-                            } else {
-                                return M_GRAM_LEVEL_2;
                             }
-                        default:
-                            THROW_EXCEPTION(string("The sub-m-gram level is not supported, CURR_LEVEL: ").append(std::to_string(CURR_LEVEL)));
+                            return M_GRAM_LEVEL_3;
+                        }
                     }
+                    return M_GRAM_LEVEL_2;
                 }
 
                 /**
