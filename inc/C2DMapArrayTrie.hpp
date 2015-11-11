@@ -62,9 +62,9 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class C2DHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType> {
+            class C2DHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -96,13 +96,6 @@ namespace uva {
                 explicit C2DHybridTrie(WordIndexType & word_index,
                         const float mram_mem_factor = __C2DHybridTrie::UM_M_GRAM_MEMORY_FACTOR,
                         const float ngram_mem_factor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                constexpr static inline bool needs_bitmap_hash_cache() {
-                    return __C2DHybridTrie::DO_BITMAP_HASH_CACHE;
-                }
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -165,6 +158,9 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                    //Register the m-gram in the hash cache
+                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
+                    
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
@@ -291,7 +287,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 C2DHybridTrie(const C2DHybridTrie & orig)
-                : LayeredTrieBase<MAX_LEVEL, WordIndexType>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
+                : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 

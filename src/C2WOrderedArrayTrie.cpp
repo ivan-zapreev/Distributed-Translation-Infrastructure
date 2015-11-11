@@ -42,7 +42,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             C2WArrayTrie<MAX_LEVEL, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2WArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_1_gram_data(NULL), m_N_gram_data(NULL), m_one_gram_arr_size(0) {
 
                 //Memset the M grams reference and data arrays

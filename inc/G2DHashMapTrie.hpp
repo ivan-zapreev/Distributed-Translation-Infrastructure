@@ -98,9 +98,9 @@ namespace uva {
              * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class G2DMapTrie : public GenericTrieBase<MAX_LEVEL, WordIndexType> {
+            class G2DMapTrie : public GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
                 typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
 
                 //The typedef for the retrieving function
@@ -111,13 +111,6 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit G2DMapTrie(WordIndexType & word_index);
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                constexpr static inline bool needs_bitmap_hash_cache() {
-                    return __G2DMapTrie::DO_BITMAP_HASH_CACHE;
-                }
 
                 /**
                  * Allows to log the information about the instantiated trie type
@@ -142,7 +135,39 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram);
+                inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                    //Register the m-gram in the hash cache
+                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
+
+                    if (CURR_LEVEL == M_GRAM_LEVEL_1) {
+                        //Get the word id of this unigram, so there is just one word in it and its the end one
+                        const TShortId word_id = gram.get_end_word_id();
+                        //Store the probability data in the one gram data storage, under its id
+                        m_1_gram_data[word_id] = gram.m_payload;
+                    } else {
+                        //Get the bucket index
+                        LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
+                        TShortId bucket_idx = get_bucket_id<CURR_LEVEL>(gram.get_hash());
+
+                        if (CURR_LEVEL == MAX_LEVEL) {
+                            //Create a new M-Gram data entry
+                            T_M_Gram_Prob_Entry & data = m_N_gram_data[bucket_idx].allocate();
+                            //Create the N-gram id from the word ids
+                            gram.template create_m_gram_id<CURR_LEVEL>(data.id);
+                            //Set the probability data
+                            data.payload = gram.m_payload.prob;
+                        } else {
+                            //Compute the M-gram level index
+                            constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                            //Create a new M-Gram data entry
+                            T_M_Gram_PB_Entry & data = m_M_gram_data[LEVEL_IDX][bucket_idx].allocate();
+                            //Create the M-gram id from the word ids.
+                            gram.template create_m_gram_id<CURR_LEVEL>(data.id);
+                            //Set the probability and back-off data
+                            data.payload = gram.m_payload;
+                        }
+                    }
+                }
 
                 /**
                  * This method allows to get the probability and/or back off weight for the

@@ -100,22 +100,15 @@ namespace uva {
              * @param MAX_LEVEL the maximum number of levels in the trie.
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class W2CArrayTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType> {
+            class W2CArrayTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> BASE;
 
                 /**
                  * The basic constructor
                  * @param p_word_index the word index (dictionary) container
                  */
                 explicit W2CArrayTrie(WordIndexType & word_index);
-
-                /**
-                 * @see GenericTrieBase
-                 */
-                constexpr static inline bool needs_bitmap_hash_cache() {
-                    return __W2CArrayTrie::DO_BITMAP_HASH_CACHE;
-                }
 
                 /**
                  * Computes the N-Gram context using the previous context and the current word id
@@ -250,6 +243,9 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                    //Register the m-gram in the hash cache
+                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
+                    
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload

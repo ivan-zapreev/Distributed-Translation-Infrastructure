@@ -42,12 +42,15 @@
 
 #include "WordIndexTrieBase.hpp"
 
+#include "BitmapHashCache.hpp"
+
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::m_grams;
 using namespace uva::utils::math::bits;
+using namespace uva::smt::tries::caching;
 
 namespace uva {
     namespace smt {
@@ -72,9 +75,12 @@ namespace uva {
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            template<TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
             class GenericTrieBase : public WordIndexTrieBase<MAX_LEVEL, WordIndexType> {
             public:
+                //Typedef the base class
+                typedef WordIndexTrieBase<MAX_LEVEL, WordIndexType> BASE;
+
                 //The offset, relative to the M-gram level M for the m-gram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
@@ -98,6 +104,21 @@ namespace uva {
                  * @param word_index the word index to be used
                  */
                 explicit GenericTrieBase(WordIndexType & word_index) : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
+                }
+
+                /**
+                 * @see WordIndexTrieBase
+                 */
+                inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    BASE::pre_allocate(counts);
+
+                    //Pre-allocate the bitmap cache for hashes if needed
+                    if (NEEDS_BITMAP_HASH_CACHE) {
+                        for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
+                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
+                            Logger::updateProgressBar();
+                        }
+                    }
                 }
 
                 /**
@@ -139,6 +160,20 @@ namespace uva {
                 };
 
                 /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @param DO_CUMULATIVE_PROBS true if we want cumulative probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
+                 * @param DO_BACK_OFF true if we should try to return the back-off m-gram payload
+                 *                    in case the regular payload could not be retrieved
+                 * @param gram the m-gram to work with
+                 * @param payloads the matrix of pointers to payloads
+                 * @param probs the computed probabilities
+                 */
+                template<bool DO_CUMULATIVE_PROBS, bool DO_BACK_OFF>
+                inline void get_probabilities(const T_Query_M_Gram<WordIndexType> & gram, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_MUST_OVERRIDE();
+                };
+
+                /**
                  * Allows to retrieve the probability and back-off weight of the unknown word
                  * @param payload the unknown word payload data
                  */
@@ -147,21 +182,59 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to check if the bitmap hash cache is to be used.
-                 * By default returns false, needs to be re-implemented in the sub-class.
-                 * @return true if the bitmap hash cache is to be used, otherwise false
+                 * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
+                 * and END_WORD_IDX template parameters, is potentially present in the trie.
+                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
+                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * @param gram the m-gram to work with
+                 * @return true if the sub-m-gram is potentially present, otherwise false
                  */
-                constexpr static inline bool needs_bitmap_hash_cache() {
-                    return false;
-                };
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
+                    //Compute the model level
+                    constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
+                    //Check if the caching is enabled
+                    if (NEEDS_BITMAP_HASH_CACHE && (CURR_LEVEL > M_GRAM_LEVEL_1)) {
+                        //If the caching is enabled, the higher sub-m-gram levels always require checking
+                        const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET];
+                        return ref.is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
+                    }
+                    
+                    //If caching is not enabled then we always check the trie
+                    return true;
+                }
+
+            protected:
+
+                /**
+                 * Is to be used from the sub-classes from the add_X_gram methods.
+                 * This method allows to register the given M-gram in internal high
+                 * level caches if present.
+                 * @param gram the M-gram to cache
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline void register_m_gram_cache(const T_Model_M_Gram<WordIndexType> &gram) {
+                    if (NEEDS_BITMAP_HASH_CACHE && (CURR_LEVEL > M_GRAM_LEVEL_1)) {
+                        m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
+                    }
+                }
+
+            private:
+
+                //Stores the bitmap hash caches per M-gram level for 1 < M <= N
+                BitmapHashCache m_bitmap_hash_cach[NUM_M_N_GRAM_LEVELS];
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class GenericTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class GenericTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex, true >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex, true >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex>, true >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>, true >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex, false >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex, false >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex>, false >;
+            template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>, false >;
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(BEGIN_IDX, END_IDX, TRIE_TYPE_NAME, ...) \

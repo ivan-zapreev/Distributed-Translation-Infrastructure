@@ -42,7 +42,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_storage_factory(NULL) {
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description

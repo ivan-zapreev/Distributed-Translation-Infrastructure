@@ -62,12 +62,12 @@ namespace uva {
              * @param TrieType the type of word index to be used
              */
             template<typename TrieType >
-            class LayeredTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType> {
+            class LayeredTrieDriver : public GenericTrieBase<TrieType::MAX_LEVEL, typename TrieType::WordIndexType, false> {
             public:
                 static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                 typedef typename TrieType::WordIndexType WordIndexType;
                 typedef typename WordIndexType::TWordIdType TWordIdType;
-                typedef GenericTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType, false> BASE;
                 //This is the function pointer type for the function that computes the m-gram context id
                 typedef function<bool (const TrieType&, const TShortId, TLongId &) > TGetCtxIdFunct;
 
@@ -76,21 +76,13 @@ namespace uva {
                  * @param _wordIndex the word index to be used
                  */
                 explicit LayeredTrieDriver(WordIndexType & word_index)
-                : GenericTrieBase<MAX_LEVEL, WordIndexType>(word_index), m_trie(word_index) {
+                : GenericTrieBase<MAX_LEVEL, WordIndexType, false>(word_index), m_trie(word_index) {
                 };
 
                 /**
                  * @see GenericTrieBase
                  */
-                constexpr static inline bool needs_bitmap_hash_cache() {
-                    return TrieType::needs_bitmap_hash_cache();
-                }
-
-                /**
-                 * @see GenericTrieBase
-                 */
                 inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
-                    //Do the pre-allocation in the trie
                     m_trie.pre_allocate(counts);
                 };
 
@@ -99,7 +91,6 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    //Add the m-gram payload
                     m_trie.template add_m_gram<CURR_LEVEL>(gram);
                 }
 
@@ -123,7 +114,15 @@ namespace uva {
                 bool is_post_grams() const {
                     return m_trie.template is_post_grams<CURR_LEVEL>();
                 };
-
+                
+                /**
+                 * @see GenericTrieBase
+                 */
+                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
+                    return m_trie.template is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
+                }
+                
                 /**
                  * @see GenericTrieBase
                  */
@@ -153,7 +152,7 @@ namespace uva {
                  * @param orig the object to copy from
                  */
                 LayeredTrieDriver(const LayeredTrieDriver & orig)
-                : GenericTrieBase<MAX_LEVEL, WordIndexType>(orig.get_word_index()),
+                : GenericTrieBase<MAX_LEVEL, WordIndexType, false>(orig.get_word_index()),
                 m_trie(orig.get_word_index()) {
                     throw Exception("ATrie copy constructor is not to be used, unless implemented!");
                 };

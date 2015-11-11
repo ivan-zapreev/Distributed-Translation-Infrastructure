@@ -115,7 +115,7 @@ namespace uva {
                             string(" but the m-gram level value is: ") + std::to_string(gram.get_m_gram_level()));
 
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if ((CURR_LEVEL == TrieType::MAX_LEVEL) || trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
+                    if (trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
                         //Compute the context id, check on the level
                         const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.first_word_id(), ctx_id, ctx_id);
 
@@ -124,7 +124,7 @@ namespace uva {
                                 ((string) gram) + string(" context could not be computed!"));
 
                         //Cache the newly computed context id for the given n-gram context
-                        if (CURR_LEVEL != TrieType::MAX_LEVEL) trie.template set_cache_context_id<CURR_LEVEL>(gram, ctx_id);
+                        trie.template set_cache_context_id<CURR_LEVEL>(gram, ctx_id);
 
                         //The context Id was found in the Trie
                         LOGGER(LOG_LEVEL) << "The ctx_id could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
@@ -138,18 +138,27 @@ namespace uva {
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class LayeredTrieBase : public GenericTrieBase<MAX_LEVEL, WordIndexType> {
+            template<TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
+            class LayeredTrieBase : public GenericTrieBase<MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> {
             public:
+                //Typedef the base class
+                typedef GenericTrieBase<MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
 
                 /**
                  * The basic constructor
                  * @param word_index the word index to be used
                  */
                 explicit LayeredTrieBase(WordIndexType & word_index)
-                : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
+                : GenericTrieBase<MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> (word_index) {
                     //Clean the cache memory
                     memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
+                }
+
+                /**
+                 * @see GenericTrieBase
+                 */
+                inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    BASE::pre_allocate(counts);
                 }
 
                 /**
@@ -255,10 +264,14 @@ namespace uva {
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex >;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptBasicWordIndex >;
-            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptCountWordIndex >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex, true >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex, true >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptBasicWordIndex, true >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptCountWordIndex, true >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex, false >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex, false >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptBasicWordIndex, false >;
+            template class LayeredTrieBase<M_GRAM_LEVEL_MAX, TOptCountWordIndex, false >;
 
 #define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
             template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >; \

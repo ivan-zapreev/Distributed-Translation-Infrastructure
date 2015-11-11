@@ -125,7 +125,7 @@ namespace uva {
                 /**
                  * Allows to execute m-gram the query
                  */
-                void execute() {
+                inline void execute() {
                     LOG_DEBUG << "Starting to execute:" << (string) BASE::m_gram << END_LOG;
 
                     //Prepare the m-gram for querying

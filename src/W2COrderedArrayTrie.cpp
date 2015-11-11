@@ -44,7 +44,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             W2CArrayTrie<MAX_LEVEL, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
 
                 //Memset the M/N grams reference and data arrays

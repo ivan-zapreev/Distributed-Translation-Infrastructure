@@ -47,7 +47,7 @@ namespace uva {
                     WordIndexType & word_index,
                     const float mgram_mem_factor,
                     const float ngram_mem_factor)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType>(word_index),
+            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_mgram_mem_factor(mgram_mem_factor),
             m_ngram_mem_factor(ngram_mem_factor),
             m_1_gram_data(NULL) {
