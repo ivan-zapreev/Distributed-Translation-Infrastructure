@@ -28,6 +28,7 @@
 
 
 #include <string>       // std::string
+#include <cstring>      // std::memcmp std::memcpy
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -101,7 +102,7 @@ namespace uva {
                  * 
                  * WARNING: Must be called on M-grams with M > 1!
                  * 
-                 * @param gram the m-gram we need to compute the contex tfor. 
+                 * @param gram the m-gram we need to compute the context for. 
                  * @param mgram_word_ids the m-gram word ids aligned to the end of the array
                  * @param the resulting hash of the context(w1 w2 w3)
                  * @return true if the context was found otherwise false
@@ -114,7 +115,7 @@ namespace uva {
                             string(" but the m-gram level value is: ") + std::to_string(gram.get_m_gram_level()));
 
                     //Try to retrieve the context from the cache, if not present then compute it
-                    if ((CURR_LEVEL == TrieType::MAX_LEVEL) || trie.get_cached_context_id(gram, ctx_id)) {
+                    if ((CURR_LEVEL == TrieType::MAX_LEVEL) || trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
                         //Compute the context id, check on the level
                         const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.first_word_id(), ctx_id, ctx_id);
 
@@ -123,7 +124,7 @@ namespace uva {
                                 ((string) gram) + string(" context could not be computed!"));
 
                         //Cache the newly computed context id for the given n-gram context
-                        if (CURR_LEVEL != TrieType::MAX_LEVEL) trie.set_cache_context_id(gram, ctx_id);
+                        if (CURR_LEVEL != TrieType::MAX_LEVEL) trie.template set_cache_context_id<CURR_LEVEL>(gram, ctx_id);
 
                         //The context Id was found in the Trie
                         LOGGER(LOG_LEVEL) << "The ctx_id could be computed, " << "it's value is: " << SSTR(ctx_id) << END_LOG;
@@ -146,15 +147,9 @@ namespace uva {
                  * @param word_index the word index to be used
                  */
                 explicit LayeredTrieBase(WordIndexType & word_index)
-                : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index),
-                m_chached_ctx_id(WordIndexType::UNDEFINED_WORD_ID) {
-
-                    //Clear the memory for the buffer and initialize it
-                    memset(m_context_c_str, 0, MAX_N_GRAM_STRING_LENGTH * sizeof (char));
-                    m_context_c_str[0] = '\0';
-
-                    LOG_DEBUG3 << "Creating the TextPieceReader with a data ptr" << END_LOG;
-                    m_chached_ctx.set(m_context_c_str, MAX_N_GRAM_STRING_LENGTH);
+                : GenericTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
+                    //Clean the cache memory
+                    memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
                 }
 
                 /**
@@ -214,44 +209,49 @@ namespace uva {
                  * @param result the output parameter, will store the cached id, if any
                  * @return true if there was nothing cached, otherwise false
                  */
+                template<TModelLevel CURR_LEVEL>
                 inline bool get_cached_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & result) const {
-                    if (m_chached_ctx == gram.m_context) {
-                        result = m_chached_ctx_id;
-                        LOG_DEBUG2 << "Cache MATCH! [" << m_chached_ctx << "] == [" << gram.m_context
-                                << "], for m-gram: " << (string) gram
-                                << ", cached ctx_id: " << SSTR(m_chached_ctx_id) << END_LOG;
+                    //Compute the context level
+                    constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                    //Check if this is the same m-gram
+                    if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
+                        result = m_cached_ctx[CONTEXT_LEVEL].m_ctx_id;
+                        //There was something cached, so no need to search further!
                         return false;
-                    } else {
-                        LOG_DEBUG2 << "Cache MISS! [" << m_chached_ctx << "] != [" << gram.m_context
-                                << "], for m-gram: " << (string) gram
-                                << ", cached ctx_id: " << SSTR(m_chached_ctx_id) << END_LOG;
-                        return true;
                     }
+                    //There was nothing cached, so return keep searching!
+                    return true;
                 }
 
                 /**
                  * Allows to cache the context id of the given m-grams context
-                 * @param mGram
-                 * @param result
+                 * @param gram the m-gram to cache
+                 * @param ctx_id the m-gram context id to cache.
                  */
-                inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & stx_id) {
-                    LOG_DEBUG2 << "Caching context = [ " << gram.m_context << " ], id = " << stx_id
-                            << ", for m-gram: " << (string) gram << END_LOG;
-
-                    m_chached_ctx.copy_string<MAX_N_GRAM_STRING_LENGTH>(gram.m_context);
-                    m_chached_ctx_id = stx_id;
-
-                    LOG_DEBUG2 << "Cached context = [ " << m_chached_ctx
-                            << " ], id = " << SSTR(m_chached_ctx_id) << END_LOG;
+                template<TModelLevel CURR_LEVEL>
+                inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & ctx_id) {
+                    //Compute the context level
+                    constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                    //Copy the context word ids
+                    memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId));
+                    //Store the cache value
+                    m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
                 }
 
             private:
-                //The actual storage for the cached context c string
-                char m_context_c_str[MAX_N_GRAM_STRING_LENGTH];
-                //Stores the cached M-gram context (for 1 < M <= N )
-                TextPieceReader m_chached_ctx;
-                //Stores the cached M-gram context value (for 1 < M <= N )
-                TLongId m_chached_ctx_id;
+
+                /**
+                 * This structure is to store the cached word ids and context ids
+                 * @param m_word_ids the word ids identifier of the m-gram 
+                 * @param m_ctx_id the cached context id for the m-gram
+                 */
+                typedef struct {
+                    TShortId m_word_ids[MAX_LEVEL];
+                    TLongId m_ctx_id;
+                } TContextCacheEntry;
+
+                //Stores the cached contexts data 
+                TContextCacheEntry m_cached_ctx[MAX_LEVEL];
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
