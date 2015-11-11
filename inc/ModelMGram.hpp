@@ -69,9 +69,6 @@ namespace uva {
                     //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
                     TLogProbBackOff m_back_off;
 
-                    //Stores, if needed, the m-gram's context i.e. for "w1 w2 w3" -> "w1 w2"
-                    TextPieceReader m_context;
-
                     /**
                      * The basic constructor, is to be used when the M-gram level
                      * is known beforehand. Allows to set the actual M-gram level
@@ -143,19 +140,6 @@ namespace uva {
                         //The hash value is computed incrementally and backwards and therefore
                         //the full hash is stored under the index of the first n-gram's word
                         return m_hash_values[BASE::m_actual_begin_word_idx];
-                    }
-
-                    /**
-                     * If the context is set to be all the m-gram tokens, then this method
-                     * allows to exclude the last token from it. It also takes care of the
-                     * space in between. Note that, this method must only be called if the
-                     * context is initialized and it he m-gram level m is greater than one. 
-                     */
-                    inline void exclude_last_token_from_context() {
-                        //The reduction factor for length is the length of the last m-gram's token plus
-                        //one character which is the space symbol located between m-gram tokens.
-                        const size_t reduction = (BASE::m_tokens[BASE::m_actual_end_word_idx].length() + 1);
-                        m_context.set(m_context.get_begin_ptr(), m_context.length() - reduction);
                     }
 
                     /**

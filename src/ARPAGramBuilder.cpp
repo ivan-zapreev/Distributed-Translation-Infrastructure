@@ -70,36 +70,27 @@ namespace uva {
                         if (fast_stoT<float>(m_ngram.m_payload.prob, m_token.get_rest_c_str())) {
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << m_ngram.m_payload.prob << END_LOG;
 
-                            //Read the all the N-Gram tokes, read until the tab as after the 
-                            //tab there is a back-off weight or there is no tab in the line
-                            //The context will contain all the N-gram tokens now. No worries
-                            //though! The last one will be removed somewhat later! See below.
-                            if (!line.get_first_tab(m_ngram.m_context)) {
-                                LOG_WARNING << "An unexpected end of line '" << line.str()
-                                        << "' when reading the " << CURR_LEVEL << "'th "
-                                        << CURR_LEVEL << "-gram token!" << END_LOG;
-                                //The unexpected end of line, broken file format (?)
-                                return false;
-                            }
-
                             //Start the new m-gram
                             m_ngram.start_new_m_gram();
 
-                            //Read the N tokens of the N-gram - space separated
-                            for (int i = 0; i < CURR_LEVEL; i++) {
-                                if (!m_ngram.m_context.get_first_space(m_ngram.get_next_new_token())) {
+                            //Read the first N-1 tokens of the N-gram - space separated
+                            for (int i = 0; i < (CURR_LEVEL - 1); i++) {
+                                if (!line.get_first_space(m_ngram.get_next_new_token())) {
                                     LOG_WARNING << "An unexpected end of line '" << line.str()
                                             << "' when reading the " << (i + 1)
                                             << "'th " << CURR_LEVEL << "-gram token!" << END_LOG;
-                                    //The unexpected end of line, broken file format (?)
+                                    //The unexpected end of file, broken file format (?)
                                     return false;
                                 }
                             }
 
-                            //Remove the last token from the context string
-                            if (CURR_LEVEL > M_GRAM_LEVEL_1) {
-                                //Up until now the context was the entire list of m-gram tokens, now exclude the last one
-                                m_ngram.exclude_last_token_from_context();
+                            //Read the last token of the N-gram, which is followed by the new line or a tab
+                            if (!line.get_first_tab(m_ngram.get_next_new_token())) {
+                                LOG_WARNING << "An unexpected end of line '" << line.str()
+                                        << "' when reading the " << CURR_LEVEL << "'th "
+                                        << CURR_LEVEL << "-gram token!" << END_LOG;
+                                //The unexpected end of file, broken file format (?)
+                                return false;
                             }
 
                             //Now if there is something left it should be the back-off weight, otherwise we are done
@@ -169,7 +160,7 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                
+
 #define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(LEVEL) \
                 template class ARPAGramBuilder<BasicWordIndex, LEVEL>; \
                 template class ARPAGramBuilder<CountingWordIndex, LEVEL>; \

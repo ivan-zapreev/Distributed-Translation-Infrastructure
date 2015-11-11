@@ -150,6 +150,7 @@ namespace uva {
                     /**
                      * Parse the given text into a N-Gram entry from the ARPA file
                      * @param line the piece of text to parse into the M-gram
+                     * @return true if the line has been successfully parsed
                      */
                     bool parse_to_gram(TextPieceReader & line);
 
