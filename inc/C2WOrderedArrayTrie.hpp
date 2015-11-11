@@ -269,10 +269,11 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_m_gram_payload(const TShortId word_id, const TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                inline void add_m_gram_to_ctx(const T_Model_M_Gram<WordIndexType> & gram, TLongId ctx_id) {
+                    const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
-                        m_1_gram_data[word_id] = payload;
+                        m_1_gram_data[word_id] = gram.m_payload;
                     } else {
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Get the new n-gram index
@@ -283,7 +284,7 @@ namespace uva {
                             m_N_gram_data[n_gram_idx].word_id = word_id;
 
                             //Store the payload
-                            m_N_gram_data[n_gram_idx].prob = payload.prob;
+                            m_N_gram_data[n_gram_idx].prob = gram.m_payload.prob;
                         } else {
                             //Compute the m-gram index
                             const TModelLevel m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
@@ -304,7 +305,7 @@ namespace uva {
                             m_M_gram_data[m_gram_idx][ref.end_idx].id = word_id;
 
                             //Store the payload
-                            m_M_gram_data[m_gram_idx][ref.end_idx].payload = payload;
+                            m_M_gram_data[m_gram_idx][ref.end_idx].payload = gram.m_payload;
                         }
                     }
                 }

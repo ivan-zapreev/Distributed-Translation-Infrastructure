@@ -138,10 +138,11 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_m_gram_payload(const TShortId word_id, const TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                inline void add_m_gram_to_ctx(const T_Model_M_Gram<WordIndexType> & gram, TLongId ctx_id) {
+                    const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
-                        m_mgram_data[0][word_id] = payload;
+                        m_mgram_data[0][word_id] = gram.m_payload;
                     } else {
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
@@ -154,7 +155,7 @@ namespace uva {
                             LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(MAX_LEVEL) << ", word_id "
                                     << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                             //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
-                            reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = payload.prob;
+                            reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.prob;
                         } else {
                             const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 
@@ -172,7 +173,7 @@ namespace uva {
                             nextCtxId = next_ctx_id[idx]++;
 
                             //Return the reference to it
-                            m_mgram_data[CURR_LEVEL - 1][nextCtxId] = payload;
+                            m_mgram_data[CURR_LEVEL - 1][nextCtxId] = gram.m_payload;
                         }
                     }
                 }

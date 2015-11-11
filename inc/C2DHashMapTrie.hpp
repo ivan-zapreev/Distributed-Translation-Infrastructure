@@ -169,19 +169,20 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 template<TModelLevel CURR_LEVEL>
-                inline void add_m_gram_payload(const TShortId word_id, TLongId ctx_id, const T_M_Gram_Payload & payload) {
+                inline void add_m_gram_to_ctx(const T_Model_M_Gram<WordIndexType> & gram, TLongId ctx_id) {
+                    const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
-                        m_1_gram_data[word_id] = payload;
+                        m_1_gram_data[word_id] = gram.m_payload;
                     } else {
                         //Obtain this m-gram id
                         (void) get_ctx_id<CURR_LEVEL>(word_id, ctx_id);
 
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            pNGramMap->operator[](ctx_id) = payload.prob;
+                            pNGramMap->operator[](ctx_id) = gram.m_payload.prob;
                         } else {
-                            pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = payload;
+                            pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
                         }
                     }
                 }
