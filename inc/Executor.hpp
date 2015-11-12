@@ -40,9 +40,6 @@
 #include "ARPATrieBuilder.hpp"
 #include "ARPAGramBuilder.hpp"
 
-#include "GenericTrieDriver.hpp"
-#include "LayeredTrieDriver.hpp"
-
 #include "C2DHashMapTrie.hpp"
 #include "W2CHybridMemoryTrie.hpp"
 #include "C2WOrderedArrayTrie.hpp"
@@ -274,22 +271,22 @@ namespace uva {
                         AFileReader &modelFile, AFileReader &testFile) {
                     switch (params.m_trie_type) {
                         case TrieTypesEnum::C2DH_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2DM_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            execute < C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::C2WA_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
-                            break;
-                        case TrieTypesEnum::G2DM_TRIE:
-                            execute < GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            execute < C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CA_TRIE:
-                            execute < GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            execute < W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         case TrieTypesEnum::W2CH_TRIE:
-                            execute < GenericTrieDriver < LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>>>, IS_CUM_QUERY> (params, modelFile, testFile);
+                            execute < W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY> (params, modelFile, testFile);
+                            break;
+                        case TrieTypesEnum::G2DM_TRIE:
+                            execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;

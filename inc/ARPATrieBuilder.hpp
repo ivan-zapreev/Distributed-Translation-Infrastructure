@@ -29,8 +29,6 @@
 #include <fstream>      // std::ifstream
 #include <regex>        // std::regex, std::regex_match
 
-#include "GenericTrieDriver.hpp"
-
 #include "TextPieceReader.hpp"
 #include "AFileReader.hpp"
 

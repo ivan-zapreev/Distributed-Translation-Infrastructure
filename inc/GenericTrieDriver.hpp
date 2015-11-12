@@ -49,7 +49,6 @@
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
 #include "C2DMapArrayTrie.hpp"
-#include "LayeredTrieDriver.hpp"
 #include "G2DHashMapTrie.hpp"
 
 using namespace std;

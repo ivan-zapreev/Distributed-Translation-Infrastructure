@@ -472,35 +472,35 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder<TTrieDriverC2DMapTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2DMapTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverC2DMapTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2DMapTrieOptCount>;
+                template class ARPATrieBuilder<TC2DMapTrieBasic>;
+                template class ARPATrieBuilder<TC2DMapTrieCount>;
+                template class ARPATrieBuilder<TC2DMapTrieOptBasic>;
+                template class ARPATrieBuilder<TC2DMapTrieOptCount>;
 
-                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverW2CHybridTrieOptCount>;
+                template class ARPATrieBuilder<TW2CHybridTrieBasic>;
+                template class ARPATrieBuilder<TW2CHybridTrieCount>;
+                template class ARPATrieBuilder<TW2CHybridTrieOptBasic>;
+                template class ARPATrieBuilder<TW2CHybridTrieOptCount>;
 
-                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2WArrayTrieOptCount>;
+                template class ARPATrieBuilder<TC2WArrayTrieBasic>;
+                template class ARPATrieBuilder<TC2WArrayTrieCount>;
+                template class ARPATrieBuilder<TC2WArrayTrieOptBasic>;
+                template class ARPATrieBuilder<TC2WArrayTrieOptCount>;
 
-                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverW2CArrayTrieOptCount>;
+                template class ARPATrieBuilder<TW2CArrayTrieBasic>;
+                template class ARPATrieBuilder<TW2CArrayTrieCount>;
+                template class ARPATrieBuilder<TW2CArrayTrieOptBasic>;
+                template class ARPATrieBuilder<TW2CArrayTrieOptCount>;
 
-                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverC2DHybridTrieOptCount>;
+                template class ARPATrieBuilder<TC2DHybridTrieBasic>;
+                template class ARPATrieBuilder<TC2DHybridTrieCount>;
+                template class ARPATrieBuilder<TC2DHybridTrieOptBasic>;
+                template class ARPATrieBuilder<TC2DHybridTrieOptCount>;
 
-                template class ARPATrieBuilder<TTrieDriverG2DMapTrieBasic>;
-                template class ARPATrieBuilder<TTrieDriverG2DMapTrieCount>;
-                template class ARPATrieBuilder<TTrieDriverG2DMapTrieOptBasic>;
-                template class ARPATrieBuilder<TTrieDriverG2DMapTrieOptCount>;
+                template class ARPATrieBuilder<TG2DMapTrieBasic>;
+                template class ARPATrieBuilder<TG2DMapTrieCount>;
+                template class ARPATrieBuilder<TG2DMapTrieOptBasic>;
+                template class ARPATrieBuilder<TG2DMapTrieOptCount>;
             }
         }
     }

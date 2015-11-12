@@ -46,9 +46,7 @@
 #include "C2WOrderedArrayTrie.hpp"
 #include "W2COrderedArrayTrie.hpp"
 #include "C2DMapArrayTrie.hpp"
-#include "LayeredTrieDriver.hpp"
 #include "G2DHashMapTrie.hpp"
-#include "GenericTrieDriver.hpp"
 
 using namespace std;
 using namespace uva::smt::logging;
@@ -145,12 +143,12 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TYPEDEF_M_GRAM_CUMULATIVE_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<LayeredTrieDriver<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<LayeredTrieDriver<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<LayeredTrieDriver<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<LayeredTrieDriver<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<LayeredTrieDriver<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>>; \
-            template class T_M_Gram_Cumulative_Query<GenericTrieDriver<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>>;
+            template class T_M_Gram_Cumulative_Query<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
 
 #define INSTANTIATE_TYPEDEF_M_GRAM_CUMULATIVE_QUERY_LEVEL(M_GRAM_LEVEL); \
             INSTANTIATE_TYPEDEF_M_GRAM_CUMULATIVE_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
