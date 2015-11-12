@@ -289,7 +289,12 @@ namespace uva {
                         MGramStatusEnum &status) const {
                     //Check if this is a unigram case or not
                     if (begin_word_idx == end_word_idx) {
-                        THROW_NOT_IMPLEMENTED();
+                        //Store the unigram payload pointer and add the probability to the total conditional probability 
+                        reinterpret_cast<T_M_Gram_Payload *> (payloads[end_word_idx]) = &m_1_gram_data[begin_word_idx];
+                        probs[end_word_idx] += m_1_gram_data[begin_word_idx].prob;
+
+                        //The resulting status is always a success
+                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
                     } else {
                         THROW_NOT_IMPLEMENTED();
                     }
