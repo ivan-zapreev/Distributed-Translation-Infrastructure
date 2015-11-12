@@ -117,7 +117,7 @@ namespace uva {
                                 << "word flags = " << (IS_UNK_WORD_FLAGS ? "true" : "false") << END_LOG;
 
                         //Set all the "computed hash level" flags to "undefined"
-                        memset(computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL_CAPACITY * sizeof (TModelLevel));
+                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL_CAPACITY * sizeof (TModelLevel));
 
                         //Re-set the unknown word flags, if needed
                         if (IS_UNK_WORD_FLAGS) {
@@ -178,7 +178,7 @@ namespace uva {
                     inline uint64_t get_hash() const {
                         LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
                                 << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
-                                << "is: " << SSTR(computed_hash_level[END_WORD_IDX]) << END_LOG;
+                                << "is: " << SSTR(m_computed_hash_level[END_WORD_IDX]) << END_LOG;
 
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
                         uint64_t(& hash_column)[MAX_LEVEL_CAPACITY] = const_cast<uint64_t(&)[MAX_LEVEL_CAPACITY]> (m_hash_matrix[END_WORD_IDX]);
@@ -187,7 +187,7 @@ namespace uva {
                         //This is not an exact check, as not all the rows of the
                         //column could have been assigned with hashes. However, in
                         //case of proper use of the class this is the only check we need.
-                        if (computed_hash_level[END_WORD_IDX] == M_GRAM_LEVEL_UNDEF) {
+                        if (m_computed_hash_level[END_WORD_IDX] == M_GRAM_LEVEL_UNDEF) {
                             //Start iterating from the end of the sub-m-gram
                             TModelLevel curr_idx = END_WORD_IDX;
                             //If the word is not unknown then the first hash, the word's hash is its id
@@ -210,18 +210,18 @@ namespace uva {
                             } while (curr_idx != BEGIN_WORD_IDX);
 
                             //Cast the const modifier away to set the internal flag
-                            const_cast<TModelLevel&> (computed_hash_level[END_WORD_IDX]) = BEGIN_WORD_IDX;
+                            const_cast<TModelLevel&> (m_computed_hash_level[END_WORD_IDX]) = BEGIN_WORD_IDX;
 
                             LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
-                                    << computed_hash_level[END_WORD_IDX] << END_LOG;
+                                    << m_computed_hash_level[END_WORD_IDX] << END_LOG;
                         }
 
                         //Perform the sanity check if needed
-                        if (DO_SANITY_CHECKS && (BEGIN_WORD_IDX < computed_hash_level[END_WORD_IDX])) {
+                        if (DO_SANITY_CHECKS && (BEGIN_WORD_IDX < m_computed_hash_level[END_WORD_IDX])) {
                             stringstream msg;
                             msg << "The sub-m-gram [" << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]: "
                                     << (string) * this << ", hash has not been computed! The hash is only there for "
-                                    << "[" << SSTR(computed_hash_level[END_WORD_IDX]) << ", " << SSTR(END_WORD_IDX) << "]";
+                                    << "[" << SSTR(m_computed_hash_level[END_WORD_IDX]) << ", " << SSTR(END_WORD_IDX) << "]";
                             throw Exception(msg.str());
                         }
 
@@ -318,7 +318,7 @@ namespace uva {
                     //Stores the first known word index following the last unknown word. For non cumulative queries.
                     TModelLevel m_flk_word_idx;
                     //Stores the hash computed flags
-                    TModelLevel computed_hash_level[MAX_LEVEL_CAPACITY];
+                    TModelLevel m_computed_hash_level[MAX_LEVEL_CAPACITY];
                     //Stores the computed hash values
                     uint64_t m_hash_matrix[MAX_LEVEL_CAPACITY][MAX_LEVEL_CAPACITY];
                     //Unknown word bit flags

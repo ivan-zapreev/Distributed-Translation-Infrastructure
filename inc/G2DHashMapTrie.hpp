@@ -147,7 +147,7 @@ namespace uva {
                     } else {
                         //Get the bucket index
                         LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
-                        TShortId bucket_idx = get_bucket_id<CURR_LEVEL>(gram.get_hash());
+                        TShortId bucket_idx = get_bucket_id(gram.get_hash(), m_num_buckets[CURR_LEVEL - 1]);
 
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Create a new M-Gram data entry
@@ -273,7 +273,21 @@ namespace uva {
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
-                TShortId num_buckets[MAX_LEVEL];
+                TShortId m_num_buckets[MAX_LEVEL];
+
+                //The typedef for the function that gets the payload from the trie
+                typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const T_Query_M_Gram<WordIndexType> & gram, const TProbBucket * buckets,
+                        const void ** payload_ptr_ptr, MGramStatusEnum &status) > TGetPayloadProbFunc;
+
+                //Stores the get-payload function pointers for getting back-offs
+                static const TGetPayloadProbFunc m_get_prob[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
+
+                //The typedef for the function that gets the payload from the trie
+                typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const T_Query_M_Gram<WordIndexType> & gram, const TProbBackOffBucket * buckets,
+                        const void ** payload_ptr_ptr, MGramStatusEnum &status) > TGetPayloadProbBackFunc;
+
+                //Stores the get-payload function pointers for getting back-offs
+                static const TGetPayloadProbBackFunc m_get_prob_back[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
 
                 /**
                  * This method does stream compute of the m-gram probabilities in one row, until it can not go further.
@@ -306,9 +320,8 @@ namespace uva {
                                 //We are at the last trie level
                                 LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
-                                //this->template get_payload<TProbBucket, 1, 1>(gram, m_N_gram_data,
-                                //        &payloads[end_word_idx], status);
-                                THROW_NOT_IMPLEMENTED();
+                                //Call the templated part via function pointer
+                                m_get_prob[begin_word_idx][end_word_idx](m_num_buckets, gram, m_N_gram_data, &payloads[end_word_idx], status);
 
                                 if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                     LOG_DEBUG << "The " << SSTR(curr_level) << "-gram is found, probability: "
@@ -320,9 +333,8 @@ namespace uva {
                                 const TModelLevel m_gram_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
                                 LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << m_gram_idx << END_LOG;
 
-                                //this->template get_payload<TProbBackOffBucket, 1, 1>(gram, m_M_gram_data[m_gram_idx],
-                                //        &payloads[end_word_idx], status);
-                                THROW_NOT_IMPLEMENTED();
+                                //Call the templated part via function pointer
+                                m_get_prob_back[begin_word_idx][end_word_idx](m_num_buckets, gram, m_M_gram_data[m_gram_idx], &payloads[end_word_idx], status);
 
                                 if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                     LOG_DEBUG << "The " << SSTR(curr_level) << "-gram is found, payload: "
@@ -346,19 +358,19 @@ namespace uva {
                  * Allows to get the bucket index for the given M-gram hash
                  * @param curr_level the m-gram level we need the bucked id for
                  * @param gram_hash the M-gram hash to compute the bucked index for
+                 * @param num_buckets the number of buckers
                  * @param return the resulting bucket index
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline TShortId get_bucket_id(const uint64_t gram_hash) const {
-                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram hash is: " << gram_hash << END_LOG;
-                    TShortId bucket_idx = gram_hash % num_buckets[CURR_LEVEL - 1];
-                    LOG_DEBUG1 << "The " << SSTR(CURR_LEVEL) << "-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                static inline TShortId get_bucket_id(const uint64_t gram_hash, const TShortId num_buckets) {
+                    LOG_DEBUG1 << "The m-gram hash is: " << gram_hash << END_LOG;
+                    TShortId bucket_idx = gram_hash % num_buckets;
+                    LOG_DEBUG1 << "The m-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets[CURR_LEVEL - 1]))) {
+                    if (DO_SANITY_CHECKS && ((bucket_idx < 0) || (bucket_idx >= num_buckets))) {
                         stringstream msg;
-                        msg << "The " << SSTR(CURR_LEVEL) << "-gram has a bad bucket index: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets[CURR_LEVEL - 1]) << "]";
+                        msg << "The m-gram has a bad bucket index: " << SSTR(bucket_idx)
+                                << ", must be within [0, " << SSTR(num_buckets) << "]";
                         throw Exception(msg.str());
                     }
 
@@ -373,7 +385,7 @@ namespace uva {
                  * @return true if the M-gram id was found and otherwise false
                  */
                 template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL>
-                inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
+                static inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) {
                     LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
@@ -393,15 +405,15 @@ namespace uva {
                  * @param status [out] the resulting status of the operation
                  */
                 template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE * buckets,
-                        const void ** payload_ptr_ptr, MGramStatusEnum &status) const {
+                static inline void get_payload(const TShortId num_buckets[MAX_LEVEL], const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE * buckets,
+                        const void ** payload_ptr_ptr, MGramStatusEnum &status) {
                     //Compute the current level of the sub-m-gram
                     constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
                     LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(CURR_LEVEL) << "-gram ["
                             << BEGIN_WORD_IDX << "," << END_WORD_IDX << "] of: " << (string) gram << END_LOG;
 
-                    const uint32_t bucket_idx = this->template get_bucket_id<CURR_LEVEL>(gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>());
+                    const uint32_t bucket_idx = get_bucket_id(gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>(), num_buckets[CURR_LEVEL - 1]);
                     LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
@@ -450,7 +462,7 @@ namespace uva {
                 template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL >
                 void post_M_N_Grams(BUCKET_TYPE * buckets) {
                     //Iterate through all buckets and shrink/sort sub arrays
-                    for (TShortId bucket_idx = 0; bucket_idx < num_buckets[CURR_LEVEL - 1]; ++bucket_idx) {
+                    for (TShortId bucket_idx = 0; bucket_idx < m_num_buckets[CURR_LEVEL - 1]; ++bucket_idx) {
                         //First get the sub-array reference. 
                         BUCKET_TYPE & ref = buckets[bucket_idx];
 
@@ -472,6 +484,29 @@ namespace uva {
                     }
                 }
             };
+
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            const typename G2DMapTrie<MAX_LEVEL, WordIndexType>::TGetPayloadProbFunc G2DMapTrie<MAX_LEVEL, WordIndexType>::m_get_prob[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                {NULL, &get_payload<TProbBucket, 0, 1>, &get_payload<TProbBucket, 0, 2>, &get_payload<TProbBucket, 0, 3>, &get_payload<TProbBucket, 0, 4>, &get_payload<TProbBucket, 0, 5>, &get_payload<TProbBucket, 0, 6>},
+                {NULL, NULL, &get_payload<TProbBucket, 1, 2>, &get_payload<TProbBucket, 1, 3>, &get_payload<TProbBucket, 1, 4>, &get_payload<TProbBucket, 1, 5>, &get_payload<TProbBucket, 1, 6>},
+                {NULL, NULL, NULL, &get_payload<TProbBucket, 2, 3>, &get_payload<TProbBucket, 2, 4>, &get_payload<TProbBucket, 2, 5>, &get_payload<TProbBucket, 2, 6>},
+                {NULL, NULL, NULL, NULL, &get_payload<TProbBucket, 3, 4>, &get_payload<TProbBucket, 3, 5>, &get_payload<TProbBucket, 3, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &get_payload<TProbBucket, 4, 5>, &get_payload<TProbBucket, 4, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &get_payload<TProbBucket, 5, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
+            };
+
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            const typename G2DMapTrie<MAX_LEVEL, WordIndexType>::TGetPayloadProbBackFunc G2DMapTrie<MAX_LEVEL, WordIndexType>::m_get_prob_back[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                {NULL, &get_payload<TProbBackOffBucket, 0, 1>, &get_payload<TProbBackOffBucket, 0, 2>, &get_payload<TProbBackOffBucket, 0, 3>, &get_payload<TProbBackOffBucket, 0, 4>, &get_payload<TProbBackOffBucket, 0, 5>, &get_payload<TProbBackOffBucket, 0, 6>},
+                {NULL, NULL, &get_payload<TProbBackOffBucket, 1, 2>, &get_payload<TProbBackOffBucket, 1, 3>, &get_payload<TProbBackOffBucket, 1, 4>, &get_payload<TProbBackOffBucket, 1, 5>, &get_payload<TProbBackOffBucket, 1, 6>},
+                {NULL, NULL, NULL, &get_payload<TProbBackOffBucket, 2, 3>, &get_payload<TProbBackOffBucket, 2, 4>, &get_payload<TProbBackOffBucket, 2, 5>, &get_payload<TProbBackOffBucket, 2, 6>},
+                {NULL, NULL, NULL, NULL, &get_payload<TProbBackOffBucket, 3, 4>, &get_payload<TProbBackOffBucket, 3, 5>, &get_payload<TProbBackOffBucket, 3, 6>},
+                {NULL, NULL, NULL, NULL, NULL, &get_payload<TProbBackOffBucket, 4, 5>, &get_payload<TProbBackOffBucket, 4, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, &get_payload<TProbBackOffBucket, 5, 6>},
+                {NULL, NULL, NULL, NULL, NULL, NULL, NULL}
+            };
+
 
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TG2DMapTrieBasic;
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TG2DMapTrieCount;

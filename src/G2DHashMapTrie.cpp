@@ -46,8 +46,17 @@ namespace uva {
             G2DMapTrie<MAX_LEVEL, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
             : GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_1_gram_data(NULL), m_N_gram_data(NULL) {
+                //Check that the level is supported
+                if (MAX_LEVEL > M_GRAM_LEVEL_7) {
+                    stringstream msg;
+                    msg << "The G2DMapTrie class in " << __FILE__ << " does not support "
+                            << "trie level: " << SSTR(MAX_LEVEL) << ", the maximum supported "
+                            << "level is: " << SSTR(M_GRAM_LEVEL_7) << ", please extend!";
+                    throw Exception(msg.str());
+                }
+
                 //Initialize the array of number of gram ids per level
-                memset(num_buckets, 0, MAX_LEVEL * sizeof (TShortId));
+                memset(m_num_buckets, 0, MAX_LEVEL * sizeof (TShortId));
 
                 //Clear the M-Gram bucket arrays
                 memset(m_M_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
@@ -64,9 +73,9 @@ namespace uva {
                 BASE::pre_allocate(counts);
 
                 //02) Pre-allocate the 1-Gram data
-                num_buckets[0] = BASE::get_word_index().get_number_of_words(counts[0]);
-                m_1_gram_data = new T_M_Gram_Payload[num_buckets[0]];
-                memset(m_1_gram_data, 0, num_buckets[0] * sizeof (T_M_Gram_Payload));
+                m_num_buckets[0] = BASE::get_word_index().get_number_of_words(counts[0]);
+                m_1_gram_data = new T_M_Gram_Payload[m_num_buckets[0]];
+                memset(m_1_gram_data, 0, m_num_buckets[0] * sizeof (T_M_Gram_Payload));
 
                 //03) Insert the unknown word data into the allocated array
                 T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
@@ -75,15 +84,15 @@ namespace uva {
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
-                    num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
+                    m_num_buckets[idx + 1] = max(counts[idx + 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
                             __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
-                    m_M_gram_data[idx] = new TProbBackOffBucket[num_buckets[idx + 1]];
+                    m_M_gram_data[idx] = new TProbBackOffBucket[m_num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
-                num_buckets[MAX_LEVEL - 1] = max(counts[MAX_LEVEL - 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
+                m_num_buckets[MAX_LEVEL - 1] = max(counts[MAX_LEVEL - 1] / __G2DMapTrie::WORDS_PER_BUCKET_FACTOR,
                         __G2DMapTrie::WORDS_PER_BUCKET_FACTOR);
-                m_N_gram_data = new TProbBucket[num_buckets[MAX_LEVEL - 1]];
+                m_N_gram_data = new TProbBucket[m_num_buckets[MAX_LEVEL - 1]];
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
