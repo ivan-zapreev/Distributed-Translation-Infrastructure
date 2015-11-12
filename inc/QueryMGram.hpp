@@ -50,15 +50,15 @@ namespace uva {
                 /**
                  * This class is used to represent the N-Gram that will be queried against the language model.
                  */
-                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
-                class T_Query_M_Gram : public T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> {
+                template<typename WordIndexType, TModelLevel MAX_LEVEL = M_GRAM_LEVEL_MAX>
+                class T_Query_M_Gram : public T_Base_M_Gram<WordIndexType, MAX_LEVEL> {
                 public:
                     //The type of the word id
                     typedef typename WordIndexType::TWordIdType TWordIdType;
                     //Define the corresponding M-gram id type
                     typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
                     //Define the base class type
-                    typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
+                    typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL> BASE;
 
                     //Stores the unknown word masks for the probability computations,
                     //up to and including 8-grams. Are used to mark <unk> word bits:
@@ -97,7 +97,15 @@ namespace uva {
                      * @param word_index the used word index
                      */
                     T_Query_M_Gram(WordIndexType & word_index)
-                    : T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>(word_index) {
+                    : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index) {
+                        //Check that the level is supported
+                        if (MAX_LEVEL > M_GRAM_LEVEL_7) {
+                            stringstream msg;
+                            msg << "The T_Query_M_Gram class in " << __FILE__ << " does not support "
+                                    << "trie level: " << SSTR(MAX_LEVEL) << ", the maximum supported "
+                                    << "level is: " << SSTR(M_GRAM_LEVEL_7) << ", please extend!";
+                            throw Exception(msg.str());
+                        }
                     }
 
                     /**
@@ -117,7 +125,7 @@ namespace uva {
                                 << "word flags = " << (IS_UNK_WORD_FLAGS ? "true" : "false") << END_LOG;
 
                         //Set all the "computed hash level" flags to "undefined"
-                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL_CAPACITY * sizeof (TModelLevel));
+                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
                         //Re-set the unknown word flags, if needed
                         if (IS_UNK_WORD_FLAGS) {
@@ -165,15 +173,6 @@ namespace uva {
                      * defined by the template parameters
                      * @return the hash value for the given sub-m-gram
                      */
-                    inline uint64_t get_hash(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
-                        THROW_NOT_IMPLEMENTED();
-                    }
-
-                    /**
-                     * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the template parameters
-                     * @return the hash value for the given sub-m-gram
-                     */
                     template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                     inline uint64_t get_hash() const {
                         LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
@@ -181,7 +180,7 @@ namespace uva {
                                 << "is: " << SSTR(m_computed_hash_level[END_WORD_IDX]) << END_LOG;
 
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
-                        uint64_t(& hash_column)[MAX_LEVEL_CAPACITY] = const_cast<uint64_t(&)[MAX_LEVEL_CAPACITY]> (m_hash_matrix[END_WORD_IDX]);
+                        uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[END_WORD_IDX]);
 
                         //Check if the given column has already been processed.
                         //This is not an exact check, as not all the rows of the
@@ -229,6 +228,30 @@ namespace uva {
 
                         //Return the hash value that must have been pre-computed
                         return hash_column[BEGIN_WORD_IDX];
+                    }
+
+                    /**
+                     * Allows to retrieve the hash value for the sub-m-gram 
+                     * defined by the parameters
+                     * @param begin_word_idx the begin word index of the sub-m-gram
+                     * @param end_word_idx the end word index of the sub-m-gram
+                     * @return the hash value for the given sub-m-gram
+                     */
+                    inline uint64_t get_hash(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                        return m_get_hash[begin_word_idx][end_word_idx](this);
+                    }
+
+                    /**
+                     * Allows to retrieve the hash value for the sub-m-gram 
+                     * defined by the parameters
+                     * @param BEGIN_WORD_IDX the begin word index of the sub-m-gram
+                     * @param END_WORD_IDX the end word index of the sub-m-gram
+                     * @param gram_ptr the pointer to the m-gram to work with
+                     * @return the hash value for the given sub-m-gram
+                     */
+                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                    static inline uint64_t get_hash_static(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *gram_ptr) {
+                        gram_ptr->get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
                     }
 
                     /**
@@ -306,7 +329,7 @@ namespace uva {
                         //Do the sanity check if needed!
                         if (DO_SANITY_CHECKS && (
                                 (BASE::m_actual_level < M_GRAM_LEVEL_1) ||
-                                (BASE::m_actual_level > MAX_LEVEL_CAPACITY))) {
+                                (BASE::m_actual_level > MAX_LEVEL))) {
                             stringstream msg;
                             msg << "A broken N-gram query: " << (string) * this
                                     << ", level: " << SSTR(BASE::m_actual_level);
@@ -318,25 +341,42 @@ namespace uva {
                     //Stores the first known word index following the last unknown word. For non cumulative queries.
                     TModelLevel m_flk_word_idx;
                     //Stores the hash computed flags
-                    TModelLevel m_computed_hash_level[MAX_LEVEL_CAPACITY];
+                    TModelLevel m_computed_hash_level[MAX_LEVEL];
                     //Stores the computed hash values
-                    uint64_t m_hash_matrix[MAX_LEVEL_CAPACITY][MAX_LEVEL_CAPACITY];
+                    uint64_t m_hash_matrix[MAX_LEVEL][MAX_LEVEL];
                     //Unknown word bit flags
                     uint8_t m_unk_word_flags = 0;
+
+                    //The typedef for the function that gets the payload from the trie
+                    typedef std::function<uint64_t (const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *) > TGetHashFunc;
+
+                    //Stores the get-hash function pointers for hash values
+                    static const TGetHashFunc m_get_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
 
                     /**
                      * This constructor is made private as it is not to be used
                      */
                     T_Query_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
-                    : T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>(word_index, actual_level) {
+                    : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index, actual_level) {
                     }
                 };
 
-                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
-                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>::UNK_WORD_MASKS[M_GRAM_LEVEL_8];
+                template<typename WordIndexType, TModelLevel MAX_LEVEL>
+                const typename T_Query_M_Gram<WordIndexType, MAX_LEVEL>::TGetHashFunc T_Query_M_Gram<WordIndexType, MAX_LEVEL>::m_get_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
+                    {&get_hash_static<0, 0>, &get_hash_static<0, 1>, &get_hash_static<0, 2>, &get_hash_static<0, 3>, &get_hash_static<0, 4>, &get_hash_static<0, 5>, &get_hash_static<0, 6>},
+                    {NULL, &get_hash_static<1, 1>, &get_hash_static<1, 2>, &get_hash_static<1, 3>, &get_hash_static<1, 4>, &get_hash_static<1, 5>, &get_hash_static<1, 6>},
+                    {NULL, NULL, &get_hash_static<2, 2>, &get_hash_static<2, 3>, &get_hash_static<2, 4>, &get_hash_static<2, 5>, &get_hash_static<2, 6>},
+                    {NULL, NULL, NULL, &get_hash_static<3, 3>, &get_hash_static<3, 4>, &get_hash_static<3, 5>, &get_hash_static<3, 6>},
+                    {NULL, NULL, NULL, NULL, &get_hash_static<4, 4>, &get_hash_static<4, 5>, &get_hash_static<4, 6>},
+                    {NULL, NULL, NULL, NULL, NULL, &get_hash_static<5, 5>, &get_hash_static<5, 6>},
+                    {NULL, NULL, NULL, NULL, NULL, NULL, &get_hash_static<6, 6>}
+                };
 
-                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
-                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>::SMG_UNK_WORD_MASKS[M_GRAM_LEVEL_8][M_GRAM_LEVEL_8];
+                template<typename WordIndexType, TModelLevel MAX_LEVEL>
+                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL>::UNK_WORD_MASKS[M_GRAM_LEVEL_8];
+
+                template<typename WordIndexType, TModelLevel MAX_LEVEL>
+                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL>::SMG_UNK_WORD_MASKS[M_GRAM_LEVEL_8][M_GRAM_LEVEL_8];
 
             }
         }
