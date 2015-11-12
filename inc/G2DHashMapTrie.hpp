@@ -195,11 +195,14 @@ namespace uva {
                             //Check the resulting status and take actions if needed
                             switch (status) {
                                 case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
-                                    //The end word is not known back-off down and then do diagonal, if available
+                                    //The end word is not known back-off down and then do 
+                                    //diagonal, if end_word_idx < query.get_end_word_idx()
                                     THROW_NOT_IMPLEMENTED();
                                     break;
                                 case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
-                                    //The end word is not known back-off one level down
+                                    //The payload of the m-gram defined by the current
+                                    //values of begin_word_idx, end_word_idx could not be
+                                    //found in the trie, therefore we need to back-off
                                     THROW_NOT_IMPLEMENTED();
                                     break;
                                 case MGramStatusEnum::GOOD_PRESENT_MGS:
@@ -308,8 +311,9 @@ namespace uva {
                     LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
                     probs[begin_word_idx] += m_1_gram_data[word_id].prob;
 
-                    //If this is at least a bi-gram, continue iterations
+                    //If this is at least a bi-gram, continue iterations, otherwise we are done!
                     for (TModelLevel curr_end_word_idx = begin_word_idx + 1; curr_end_word_idx <= end_word_idx; ++curr_end_word_idx) {
+                        //First check if it makes sense to look into  the trie
                         BASE::is_m_gram_potentially_present(begin_word_idx, end_word_idx, gram, status);
                         if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                             //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
@@ -343,14 +347,13 @@ namespace uva {
                                 }
                             }
                         } else {
-                            //The next m-gram probability data could not be retrieved,
-                            //so set the last considered m-gram index and return back
+                            //The m-gram is definitely not present in the trie, so we need to stop executing this row and return
                             end_word_idx = curr_end_word_idx;
                             return;
                         }
                     }
 
-                    //The resulting status at this point is always a success
+                    //The resulting status at this point is always a success, if we went this far then life is good :-D
                     status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 }
 
