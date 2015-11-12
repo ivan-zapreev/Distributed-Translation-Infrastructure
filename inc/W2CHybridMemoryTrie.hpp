@@ -116,15 +116,6 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
-                 */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
-                    //The data is always present.
-                    payload = m_mgram_data[0][word_id];
-                };
-
-                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -178,6 +169,70 @@ namespace uva {
                         }
                     }
                 }
+
+                /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
+                 */
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
+                };
+
+                /**
+                 * The basic destructor
+                 */
+                virtual ~W2CHybridTrie();
+
+            private:
+
+                //Stores the number of words
+                size_t m_word_arr_size;
+
+                //The factory to produce the storage containers
+                StorageFactory<MAX_LEVEL> * m_storage_factory;
+
+                //M-Gram data for 1 <= M < N. This is a 2D array storing
+                //For each M-Gram level M an array of prob-back_off values
+                // m_mgram_data[M][0] - probability/back-off pair for the given M-gram
+                // m_mgram_data[M][1] --//--
+                // ...
+                // m_mgram_data[M][#M-Grams - 1] --//--
+                // m_mgram_data[M][#M-Grams] --//--
+                T_M_Gram_Payload * m_mgram_data[MAX_LEVEL - 1];
+
+                //M-Gram data for 1 < M <= N. This is a 2D array storing
+                //For each M-Gram level M an array of #words elements of
+                //pointers to C template parameter type:
+                // m_mgram_mapping[M][0] -> NULL (if there is no M-gram ending with word 0 in the level)
+                // m_mgram_mappin[M]g[1] -> C instance
+                // ...
+                // m_mgram_mapping[M][#words - 1] -> NULL
+                // m_mgram_mapping[M][#words] -> C instance
+                //
+                //For all 1 < M < N instances of C contain mappings from the
+                //context index to the index in the m_mgram_data[M] array -
+                //the array storing probability/back-off values.
+                //For M = N the pair value stored in the instance of C is the
+                //probability itself! Note that that the probabilities are
+                //stored as floats - 4 bytes and m_mgram_data[M] array is also a
+                //4 byte integer, so we minimize memory usage by storing float
+                //probability in place of the index.
+                StorageContainer** m_mgram_mapping[MAX_LEVEL - 1];
+
+                //Will store the next context index counters per M-gram level
+                //for 1 < M < N.
+                const static TModelLevel NUM_IDX_COUNTERS = MAX_LEVEL - 2;
+                TShortId next_ctx_id[NUM_IDX_COUNTERS];
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_mgram_data[0][word_id];
+                };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
@@ -234,52 +289,6 @@ namespace uva {
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     payload = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
                 };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~W2CHybridTrie();
-
-            private:
-
-                //Stores the number of words
-                size_t m_word_arr_size;
-
-                //The factory to produce the storage containers
-                StorageFactory<MAX_LEVEL> * m_storage_factory;
-
-                //M-Gram data for 1 <= M < N. This is a 2D array storing
-                //For each M-Gram level M an array of prob-back_off values
-                // m_mgram_data[M][0] - probability/back-off pair for the given M-gram
-                // m_mgram_data[M][1] --//--
-                // ...
-                // m_mgram_data[M][#M-Grams - 1] --//--
-                // m_mgram_data[M][#M-Grams] --//--
-                T_M_Gram_Payload * m_mgram_data[MAX_LEVEL - 1];
-
-                //M-Gram data for 1 < M <= N. This is a 2D array storing
-                //For each M-Gram level M an array of #words elements of
-                //pointers to C template parameter type:
-                // m_mgram_mapping[M][0] -> NULL (if there is no M-gram ending with word 0 in the level)
-                // m_mgram_mappin[M]g[1] -> C instance
-                // ...
-                // m_mgram_mapping[M][#words - 1] -> NULL
-                // m_mgram_mapping[M][#words] -> C instance
-                //
-                //For all 1 < M < N instances of C contain mappings from the
-                //context index to the index in the m_mgram_data[M] array -
-                //the array storing probability/back-off values.
-                //For M = N the pair value stored in the instance of C is the
-                //probability itself! Note that that the probabilities are
-                //stored as floats - 4 bytes and m_mgram_data[M] array is also a
-                //4 byte integer, so we minimize memory usage by storing float
-                //probability in place of the index.
-                StorageContainer** m_mgram_mapping[MAX_LEVEL - 1];
-
-                //Will store the next context index counters per M-gram level
-                //for 1 < M < N.
-                const static TModelLevel NUM_IDX_COUNTERS = MAX_LEVEL - 2;
-                TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
             };
 

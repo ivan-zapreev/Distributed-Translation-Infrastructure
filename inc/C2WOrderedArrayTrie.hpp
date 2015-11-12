@@ -247,15 +247,6 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
-                 */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
-                    //The data is always present.
-                    payload = m_1_gram_data[word_id];
-                };
-
-                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -310,6 +301,50 @@ namespace uva {
                         }
                     }
                 }
+
+                /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
+                 */
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
+                };
+
+                /**
+                 * The basic destructor
+                 */
+                virtual ~C2WArrayTrie();
+
+            protected:
+
+                /**
+                 * This structure is needed to store begin and end index to reference pieces of an array
+                 * It is used to reference sub-array ranges for the M-gram data for levels 1 < M < N.
+                 * 
+                 * WARNING: It is not possible to get rid of this structure as the contexts are not ordered.
+                 * It is only true that the contexts will be filled one after another, but the context id 
+                 * will not be increased all the time.
+                 * 
+                 * @param beginIdx the begin index
+                 * @param endIdx the end index
+                 */
+                typedef struct {
+                    TShortId begin_idx;
+                    TShortId end_idx;
+                } TSubArrReference;
+
+                typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
+                typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[word_id];
+                };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
@@ -370,32 +405,6 @@ namespace uva {
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~C2WArrayTrie();
-
-            protected:
-
-                /**
-                 * This structure is needed to store begin and end index to reference pieces of an array
-                 * It is used to reference sub-array ranges for the M-gram data for levels 1 < M < N.
-                 * 
-                 * WARNING: It is not possible to get rid of this structure as the contexts are not ordered.
-                 * It is only true that the contexts will be filled one after another, but the context id 
-                 * will not be increased all the time.
-                 * 
-                 * @param beginIdx the begin index
-                 * @param endIdx the end index
-                 */
-                typedef struct {
-                    TShortId begin_idx;
-                    TShortId end_idx;
-                } TSubArrReference;
-
-                typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
-                typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
                 template<TModelLevel CURR_LEVEL>
                 inline void post_m_grams() {

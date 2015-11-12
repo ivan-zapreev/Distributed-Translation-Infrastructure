@@ -170,20 +170,21 @@ namespace uva {
                 }
 
                 /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
+                 */
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
+                };
+
+                /**
                  * This method allows to get the probability and/or back off weight for the
                  * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
                  * @see GenericTrieBase
                  */
                 template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
                 GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @see GenericTrieBase
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                };
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -227,6 +228,14 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             protected:
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @see GenericTrieBase
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                };
 
                 /**
                  * This method will be called after all the M-grams are read.

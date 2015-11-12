@@ -139,45 +139,14 @@ namespace uva {
                 };
 
                 /**
-                 * This method allows to get the probability and/or back off weight for the
-                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
-                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
-                 * @param END_WORD_IDX the end word index in the given m-gram
-                 * @param DO_BACK_OFF true if we should try to return the back-off m-gram payload
-                 *                    in case the regular payload could not be retrieved
-                 * @param gram the m-gram to work with
-                 * @param payload the payload structure to put the values in
-                 * @param bo_payload the reference to the back-off m-gram payload data structure
-                 * @return GPR_Enum::PAYLOAD_GPR  if the payload has been found
-                 *         GPR_Enum::BACK_OFF_GPR if the payload could not be found
-                 *                                but the back-off payload was found
-                 *         GPR_Enum::FAILED_GPR   if neither payload not the back-off
-                 *                                payload was found
-                 */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
-                inline GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
                  * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
                  * @param DO_CUMULATIVE_PROBS true if we want cumulative probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
-                 * @param DO_BACK_OFF true if we should try to return the back-off m-gram payload
-                 *                    in case the regular payload could not be retrieved
                  * @param gram the m-gram to work with
-                 * @param payloads the matrix of pointers to payloads
-                 * @param probs the computed probabilities
+                 * @param payloads the matrix of pointers to payloads, has to contain NULL pointers in the first place
+                 * @param probs the computed probabilities, should be initialized with zeros.
                  */
-                template<bool DO_CUMULATIVE_PROBS, bool DO_BACK_OFF>
-                inline void get_probabilities(const T_Query_M_Gram<WordIndexType> & gram, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -237,46 +206,16 @@ namespace uva {
             template class GenericTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>, false >;
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(BEGIN_IDX, END_IDX, TRIE_TYPE_NAME, ...) \
-            template GPR_Enum TRIE_TYPE_NAME<__VA_ARGS__>::get_payload<BEGIN_IDX, END_IDX, true>(const T_Query_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const; \
-            template GPR_Enum TRIE_TYPE_NAME<__VA_ARGS__>::get_payload<BEGIN_IDX, END_IDX, false>(const T_Query_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
-
-#define INSTANTIATE_TRIE_GET_PAYLOAD(TRIE_TYPE_NAME, ...) \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(2, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(3, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(4, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(5, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(6, 6, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(2, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(3, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(4, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(5, 5, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 4, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 4, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(2, 4, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(3, 4, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(4, 4, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 3, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 3, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(2, 3, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(3, 3, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 2, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 2, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(2, 2, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 1, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(1, 1, TRIE_TYPE_NAME, __VA_ARGS__); \
-            INSTANTIATE_TRIE_GET_PAYLOAD_BEGIN_END_INDEX(0, 0, TRIE_TYPE_NAME, __VA_ARGS__);
+#define INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, ...) \
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<true>(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;\
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<false>(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;
 
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
 
 #define INSTANTIATE_TRIE_TEMPLATE_TYPE(TRIE_TYPE_NAME, ...) \
             template class TRIE_TYPE_NAME<__VA_ARGS__>; \
-            INSTANTIATE_TRIE_GET_PAYLOAD(TRIE_TYPE_NAME, __VA_ARGS__) \
+            INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, __VA_ARGS__) \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_1, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_2, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_3, TRIE_TYPE_NAME, __VA_ARGS__); \

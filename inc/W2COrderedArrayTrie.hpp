@@ -227,15 +227,6 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
-                 */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
-                    //The data is always present.
-                    payload = m_1_gram_data[word_id];
-                };
-
-                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -276,55 +267,12 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-
-                    //Get the entry
-                    const typename T_M_GramWordEntry::TElemType * pEntry;
-                    const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                    if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, word_id, ctx_id, &pEntry)) {
-                        //Return the data
-                        payload = pEntry->payload;
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The data could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
-                 */
-                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-
-                    //Get the entry
-                    const typename T_N_GramWordEntry::TElemType * pEntry;
-                    if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, word_id, ctx_id, &pEntry)) {
-                        //Return the data
-                        payload.prob = pEntry->payload;
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The data could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
                 };
 
                 /**
@@ -415,6 +363,67 @@ namespace uva {
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
                 T_N_GramWordEntry * m_N_gram_word_2_data;
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[word_id];
+                };
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
+                        T_M_Gram_Payload &payload) const {
+                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                    //Get the entry
+                    const typename T_M_GramWordEntry::TElemType * pEntry;
+                    const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                    if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, word_id, ctx_id, &pEntry)) {
+                        //Return the data
+                        payload = pEntry->payload;
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        //The data could not be found
+                        return GPR_Enum::FAILED_GPR;
+                    }
+                }
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
+                        T_M_Gram_Payload &payload) const {
+                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                    //Get the entry
+                    const typename T_N_GramWordEntry::TElemType * pEntry;
+                    if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, word_id, ctx_id, &pEntry)) {
+                        //Return the data
+                        payload.prob = pEntry->payload;
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        //The data could not be found
+                        return GPR_Enum::FAILED_GPR;
+                    }
+                }
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                };
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.

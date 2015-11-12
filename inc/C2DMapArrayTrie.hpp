@@ -142,15 +142,6 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
-                 */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
-                    //The data is always present.
-                    payload = m_1_gram_data[word_id];
-                };
-
-                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -192,49 +183,12 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    //Get the next context id
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //There is data found under this context
-                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The context id could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
-                 */
-                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
-
-                    //Search for the map for that context id
-                    TNGramsMap::const_iterator result = pNGramMap->find(key);
-                    if (result == pNGramMap->end()) {
-                        //There is no data found under this context
-                        return GPR_Enum::FAILED_GPR;
-                    } else {
-                        //There is data found under this context
-                        payload.prob = result->second;
-                        return GPR_Enum::PAYLOAD_GPR;
-                    }
-                }
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
                 };
 
                 /**
@@ -289,6 +243,61 @@ namespace uva {
                 C2DHybridTrie(const C2DHybridTrie & orig)
                 : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
+                };
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[word_id];
+                };
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
+                        T_M_Gram_Payload &payload) const {
+                    //Get the next context id
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
+                        //There is data found under this context
+                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        //The context id could not be found
+                        return GPR_Enum::FAILED_GPR;
+                    }
+                }
+
+                /**
+                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
+                        T_M_Gram_Payload &payload) const {
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+
+                    //Search for the map for that context id
+                    TNGramsMap::const_iterator result = pNGramMap->find(key);
+                    if (result == pNGramMap->end()) {
+                        //There is no data found under this context
+                        return GPR_Enum::FAILED_GPR;
+                    } else {
+                        //There is data found under this context
+                        payload.prob = result->second;
+                        return GPR_Enum::PAYLOAD_GPR;
+                    }
+                }
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @param payload the unknown word payload data
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
                 };
 
                 /**

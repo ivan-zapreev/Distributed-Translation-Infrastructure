@@ -98,9 +98,9 @@ namespace uva {
                     const string gram_str = BASE::m_gram.get_mgram_prob_str(BASE::m_gram.get_m_gram_level());
 
                     LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                            << " ) ) = " << SSTR(m_prob) << END_LOG;
+                            << " ) ) = " << SSTR(BASE::m_probs[BASE::m_gram.get_end_word_idx()]) << END_LOG;
                     LOG_INFO << "  Prob( " << gram_str << " ) = "
-                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_prob)) << END_LOG;
+                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_probs[BASE::m_gram.get_end_word_idx()])) << END_LOG;
 
                     LOG_RESULT << "-------------------------------------------" << END_LOG;
                 }
@@ -114,160 +114,15 @@ namespace uva {
                     //Prepare the m-gram for querying
                     BASE::m_gram.template prepare_for_querying<true>();
 
-                    //Initialize the begin and end index variables
-                    TModelLevel begin_word_idx = BASE::m_gram.get_begin_word_idx();
-                    TModelLevel end_word_idx = BASE::m_gram.get_end_word_idx();
+                    //Clean the relevant probability entry
+                    BASE::m_probs[ BASE::m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
+                    //Clean the payload pointer entries
+                    memset(BASE::m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
-                    //Clean the sub-m-gram probability array
-                    m_prob = ZERO_PROB_WEIGHT;
+                    //Execute the query
+                    BASE::m_trie.template execute<false>(BASE::m_gram, BASE::m_payloads, BASE::m_probs);
 
-                    LOG_DEBUG << "-----> Considering cumulative sub-m-gram [" << SSTR(begin_word_idx)
-                            << ", " << SSTR(end_word_idx) << "]" << END_LOG;
-
-                    //Define the index of the end word for the back-off n-gram
-                    const TModelLevel bo_end_word_idx = end_word_idx - 1;
-
-                    //Check if there are unknown words in the m-gram
-                    if (BASE::m_gram.has_unk_words(begin_word_idx, end_word_idx)) {
-                        //There are unknown words in this m-gram, check if this a unigram query
-                        if (begin_word_idx == end_word_idx) {
-                            //This is a unigram query consisting of an unknown word
-                            compute_prob_unk(begin_word_idx, end_word_idx, bo_end_word_idx);
-                        } else {
-                            //This is not a unigram and it has unknown words, check if the last word is unknown
-                            if (BASE::m_gram.is_unk_word(end_word_idx)) {
-                                //The last word is unknown, check if the previous word is unknown
-                                if (BASE::m_gram.is_unk_word(bo_end_word_idx)) {
-                                    //The two last words are: <unk><unk>, thus the result is
-                                    compute_prob_smth_unk_unk(begin_word_idx, end_word_idx, bo_end_word_idx);
-                                } else {
-                                    //The two last words are: <word><unk>, thus the result
-                                    compute_prob_smth_word_unk(begin_word_idx, end_word_idx, bo_end_word_idx);
-                                }
-                            } else {
-                                //The last word is known, check if the previous word is unknown
-                                if (BASE::m_gram.is_unk_word(bo_end_word_idx)) {
-                                    //The two last words are: <unk><word>, thus the result
-                                    compute_prob_smth_unk_word(begin_word_idx, end_word_idx, bo_end_word_idx);
-                                } else {
-                                    //The two last words are: <word><word>, so just compute that we can
-                                    compute_prob_smth_word_word(begin_word_idx, end_word_idx, bo_end_word_idx);
-                                }
-                            }
-                        }
-                    } else {
-                        //There is no unknown words in the given m-gram, try to 
-                        //retrieve the probability, if not present then back off
-                        compute_prob_all_words_known(begin_word_idx, end_word_idx, bo_end_word_idx);
-                    }
-                }
-
-            private:
-                //Stores the probability result for the m-grams
-                TLogProbBackOff m_prob;
-
-                /**
-                 * Compute the probability of the unigram consisting of an unknown word
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_unk(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    m_prob = BASE::m_unk_word_data.prob;
-                }
-
-                /**
-                 * Compute the probability for the m-gram that ends with two unknown words
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_smth_unk_unk(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    //just the sum of unknown word prob and back-off weight
-                    m_prob = BASE::m_unk_word_data.back + BASE::m_unk_word_data.prob;
-                }
-
-                /**
-                 * Compute the probability for the m-gram that ends with the known and then unknown word
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_smth_word_unk(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    //is the back-off weights plus the unknown word prob
-                    m_prob = BASE::m_unk_word_data.prob;
-                    //Stores the flag indicating the presence of an unknown word in the back-off sub-m-gram
-                    bool has_no_unk_words = false;
-                    //Iterate through the back-off m-grams
-                    while (begin_word_idx <= bo_end_word_idx) {
-                        //Check if there are no unknown words in the back-off m-gram
-                        has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
-                        if (has_no_unk_words) {
-                            BASE::m_add_back_off[begin_word_idx][bo_end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
-                        }
-                        //Move on to the next iteration
-                        begin_word_idx++;
-                    }
-                }
-
-                /**
-                 * Compute the probability for the m-gram that ends with the unknown and then known word
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_smth_unk_word(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    //is the last word probability plus the <unk> back off
-                    BASE::m_add_prob[end_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob);
-                    m_prob += BASE::m_unk_word_data.back;
-                }
-
-                /**
-                 * 
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_smth_word_word(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    //Stores the flag indicating the presence of an unknown word in the back-off sub-m-gram
-                    bool has_no_unk_words = false;
-                    //Iterate through trying to retrieve the probability or backing off if we fail to.
-                    while (begin_word_idx <= end_word_idx) {
-                        //Check if there are no unknown words in the back-off m-gram
-                        has_no_unk_words = has_no_unk_words || !BASE::m_gram.has_unk_words(begin_word_idx, bo_end_word_idx);
-                        if (has_no_unk_words) {
-                            if (!BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
-                                //We have retrieved the probability, it is time to stop
-                                break;
-                            }
-                        }
-                        //Move on to the next iteration
-                        begin_word_idx++;
-                    }
-                }
-
-                /**
-                 * Computes the single m-gram conditional probability for the
-                 * case when all the m-gram words are known.
-                 * @param begin_word_idx the m-gram begin word index
-                 * @param end_word_idx the m-gram end word index
-                 * @param bo_end_word_idx the back-off m-gram end word index
-                 * which should be equal to (end_word_idx-1)
-                 */
-                inline void compute_prob_all_words_known(TModelLevel begin_word_idx, const TModelLevel end_word_idx, const TModelLevel bo_end_word_idx) {
-                    //Iterate through trying to retrieve the probability or backing off if we fail to.
-                    while (BASE::m_add_prob_or_back_off[begin_word_idx][end_word_idx](BASE::m_trie, BASE::m_gram, BASE::m_payload, m_prob)) {
-                        LOG_DEBUG1 << "The payload probability for [" << SSTR(begin_word_idx) << ", "
-                                << SSTR(end_word_idx) << "] was not found, doing back-off!" << END_LOG;
-
-                        //Move to the next sub-m-gram probability retrieval
-                        begin_word_idx++;
-                    };
+                    LOG_DEBUG << "Finished executing:" << (string) BASE::m_gram << END_LOG;
                 }
             };
 

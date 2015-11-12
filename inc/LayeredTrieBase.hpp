@@ -162,45 +162,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @param word_id the One-gram id
-                 * @param payload[out] the reference to the data that is to be set with the stored one.
-                 * @throw nothing
-                 */
-                inline void get_1_gram_payload(const TShortId word_id,
-                        T_M_Gram_Payload & payload) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * @param CURR_LEVEL the currently considered m-gram level
-                 * @param word_id the id of the M-gram's last word
-                 * @param ctx_id the M-gram context (the M-gram's prefix) id
-                 * @param payload[out] the reference to the data that is to be set with the stored one.
-                 * @return true if the element was found, otherwise false
-                 * @throw nothing
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
-                 * @param word_id the id of the N-gram's last word
-                 * @param ctx_id the N-gram context (the N-gram's prefix) id
-                 * @param payload[out] the reference to the data that is to be set with the stored one.
-                 * @return true if the probability was found, otherwise false
-                 * @throw nothing
-                 */
-                inline GPR_Enum get_n_gram_payload(const TShortId word_id, const TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
                  * Allows to get the the new context id for the word and previous context id given the level
                  * @param CURR_LEVEL the currently considered m-gram level
                  * @param word_id the word id on this level

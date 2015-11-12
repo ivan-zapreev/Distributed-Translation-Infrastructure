@@ -124,69 +124,11 @@ namespace uva {
                 };
 
                 /**
-                 * This method allows to get the probability and/or back off weight for the
-                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
-                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
-                 * @param END_WORD_IDX the end word index in the given m-gram
-                 * @param DO_BACK_OFF true if the back-off payload is to be retrieved
-                 * in case the regular payload is not available.
-                 * @param gram the m-gram to work with
-                 * @param payload the payload structure to put the values in
-                 * @param bo_payload the reference to the back-off data container
-                 * @return true if the payload has been found, otherwise false
+                 * @see GenericTrieBase
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
-                inline GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const {
-                    //Perform sanity checks if needed
-                    if (DO_SANITY_CHECKS && (DO_BACK_OFF && (BEGIN_WORD_IDX == END_WORD_IDX))) {
-                        stringstream msg;
-                        msg << "Requested back-off option for a unigram! " << (string) gram << " @ position: " << SSTR(BEGIN_WORD_IDX);
-                        throw Exception(msg.str());
-                    }
-
-                    //Check if we need back-off m-gram payload in case the regular is not found
-                    if (DO_BACK_OFF) {
-                        LOG_DEBUG << "DO_BACK_OFF == true" << END_LOG;
-                        //Compute the back-off end word index
-                        constexpr TModelLevel BO_END_WORD_IDX = (BEGIN_WORD_IDX < END_WORD_IDX) ? (END_WORD_IDX - 1) : END_WORD_IDX;
-                        //Check if the back-off sub-m-gram has been cached
-                        if (m_trie.template is_m_gram_hash_cached < BEGIN_WORD_IDX, BO_END_WORD_IDX > (gram)) {
-                            LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(BO_END_WORD_IDX) << ">(gram) == true" << END_LOG;
-                            //Check if the sub-m-gram hash has been cached
-                            if (m_trie.template is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram)) {
-                                LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == true" << END_LOG;
-                                //Check the trie for this m-gram's payload
-                                return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, true>(gram, payload, bo_payload);
-                            } else {
-                                LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == false" << END_LOG;
-                                //There is definitely no sub-m-gram present, so try to get the back-off sub-m-gram right away
-                                if (m_trie.template get_payload<BEGIN_WORD_IDX, BO_END_WORD_IDX, false>(gram, bo_payload, bo_payload) == GPR_Enum::PAYLOAD_GPR) {
-                                    return GPR_Enum::BACK_OFF_GPR;
-                                }
-                            }
-                        }
-                        LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(BO_END_WORD_IDX) << ">(gram) == false" << END_LOG;
-                    } else {
-                        LOG_DEBUG << "DO_BACK_OFF == false" << END_LOG;
-                        //Check if the sub-m-gram hash has been cached
-                        if (m_trie.template is_m_gram_hash_cached< BEGIN_WORD_IDX, END_WORD_IDX>(gram)) {
-                            LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == true" << END_LOG;
-                            //Check the trie for this m-gram's payload
-                            return m_trie.template get_payload<BEGIN_WORD_IDX, END_WORD_IDX, false>(gram, payload, payload);
-                        }
-                        LOG_DEBUG << "is_m_gram_hash_cached< " << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << ">(gram) == false" << END_LOG;
-                    }
-
-                    //There is no data available: not cached or not found in the trie.
-                    return GPR_Enum::FAILED_GPR;
-                };
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    m_trie.get_unk_word_payload(payload);
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    m_trie.template execute<DO_CUMULATIVE_PROBS>(query, payloads, probs);
                 };
 
                 /**

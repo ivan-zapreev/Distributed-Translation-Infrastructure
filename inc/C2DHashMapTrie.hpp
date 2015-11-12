@@ -147,15 +147,6 @@ namespace uva {
                 virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
-                 */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
-                    //The data is always present.
-                    payload = m_1_gram_data[word_id];
-                };
-
-                /**
                  * Allows to retrieve the data storage structure for the M gram
                  * with the given M-gram level Id. M-gram context and last word Id.
                  * If the storage structure does not exist, return a new one.
@@ -187,6 +178,72 @@ namespace uva {
                         }
                     }
                 }
+
+                /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
+                 */
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    THROW_NOT_IMPLEMENTED();
+                };
+
+                /**
+                 * The basic destructor
+                 */
+                virtual ~C2DMapTrie();
+
+            private:
+                //The M-Gram memory factor needed for the greedy allocator for the unordered_map
+                const float m_mgram_mem_factor;
+                //The N-Gram memory factor needed for the greedy allocator for the unordered_map
+                const float m_ngram_mem_factor;
+
+                //Stores the 1-gram data
+                T_M_Gram_Payload * m_1_gram_data;
+
+                //The type of key,value pairs to be stored in the M Grams map
+                typedef pair< const TLongId, T_M_Gram_Payload> TMGramEntry;
+                //The typedef for the M Grams map allocator
+                typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
+                //The N Grams map type
+                typedef unordered_map<TLongId, T_M_Gram_Payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
+                //The actual data storage for the M Grams for 1 < M < N
+                TMGramAllocator * pMGramAlloc[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                //The array of maps map storing M-grams for 1 < M < N
+                TMGramsMap * pMGramMap[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+
+                //The type of key,value pairs to be stored in the N Grams map
+                typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
+                //The typedef for the N Grams map allocator
+                typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
+                //The N Grams map type
+                typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
+                //The actual data storage for the N Grams
+                TNGramAllocator * pNGramAlloc;
+                //The map storing the N-Grams, they do not have back-off values
+                TNGramsMap * pNGramMap;
+
+                //The structure for storing the hash key values statistics
+                pair<TLongId, TLongId> hashSizes[MAX_LEVEL];
+
+                /**
+                 * The copy constructor, is made private as we do not intend to copy this class objects
+                 * @param orig the object to copy from
+                 */
+                C2DMapTrie(const C2DMapTrie & orig)
+                : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
+                    throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
+                };
+
+                /**
+                 * Allows to retrieve the payload for the One gram with the given Id.
+                 * @see LayeredTrieBase
+                 */
+                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                    //The data is always present.
+                    payload = m_1_gram_data[word_id];
+                };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
@@ -244,54 +301,6 @@ namespace uva {
                  */
                 inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
                     payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                };
-
-                /**
-                 * The basic destructor
-                 */
-                virtual ~C2DMapTrie();
-
-            private:
-                //The M-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float m_mgram_mem_factor;
-                //The N-Gram memory factor needed for the greedy allocator for the unordered_map
-                const float m_ngram_mem_factor;
-
-                //Stores the 1-gram data
-                T_M_Gram_Payload * m_1_gram_data;
-
-                //The type of key,value pairs to be stored in the M Grams map
-                typedef pair< const TLongId, T_M_Gram_Payload> TMGramEntry;
-                //The typedef for the M Grams map allocator
-                typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
-                //The N Grams map type
-                typedef unordered_map<TLongId, T_M_Gram_Payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
-                //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
-
-                //The type of key,value pairs to be stored in the N Grams map
-                typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
-                //The typedef for the N Grams map allocator
-                typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
-                //The N Grams map type
-                typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
-                //The actual data storage for the N Grams
-                TNGramAllocator * pNGramAlloc;
-                //The map storing the N-Grams, they do not have back-off values
-                TNGramsMap * pNGramMap;
-
-                //The structure for storing the hash key values statistics
-                pair<TLongId, TLongId> hashSizes[MAX_LEVEL];
-
-                /**
-                 * The copy constructor, is made private as we do not intend to copy this class objects
-                 * @param orig the object to copy from
-                 */
-                C2DMapTrie(const C2DMapTrie & orig)
-                : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
-                    throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
 
                 /**

@@ -97,8 +97,10 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
-                GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
+                template<bool DO_CUMULATIVE_PROBS>
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    m_trie.template execute<DO_CUMULATIVE_PROBS>(query, payloads, probs);
+                };
 
                 /**
                  * @see GenericTrieBase
@@ -118,25 +120,9 @@ namespace uva {
                 /**
                  * @see GenericTrieBase
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
-                    return m_trie.template is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
-                }
-                
-                /**
-                 * @see GenericTrieBase
-                 */
                 template<TModelLevel CURR_LEVEL>
                 inline void post_grams() {
                     m_trie.template post_grams<CURR_LEVEL>();
-                };
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    m_trie.get_unk_word_payload(payload);
                 };
 
                 /**
