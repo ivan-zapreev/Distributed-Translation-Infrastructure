@@ -73,6 +73,19 @@ namespace uva {
             };
 
             /**
+             * Contains the m-gram status values:
+             * 0. UNDEFINED_MGS - the status is undefined
+             * 1. BAD_END_WORD_UNKNOWN_MGS - the m-gram is definitely not present the end word is unknown
+             * 2. BAD_NO_PAYLOAD_MGS - the m-gram is definitely not present, the m-gram hash is not cached,
+             *                         or it is not found in the trie (the meaning depends on the context)
+             * 3. GOOD_PRESENT_MGS   - the m-gram is potentially present, its hash is cached, or it is
+             *                         found in the trie (the meaning depends on the context)
+             */
+            enum MGramStatusEnum {
+                UNDEFINED_MGS = 0, BAD_END_WORD_UNKNOWN_MGS = 1, BAD_NO_PAYLOAD_MGS = 2, GOOD_PRESENT_MGS = 3
+            };
+
+            /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
@@ -151,27 +164,39 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
-                 * and END_WORD_IDX template parameters, is potentially present in the trie.
-                 * @param BEGIN_WORD_IDX the begin word index in the given m-gram
-                 * @param END_WORD_IDX the end word index in the given m-gram
+                 * Allows to check if the given sub-m-gram, defined by the begin_word_idx
+                 * and end_word_idx parameters, is potentially present in the trie.
+                 * @param begin_word_idx the begin word index in the given m-gram
+                 * @param end_word_idx the end word index in the given m-gram
                  * @param gram the m-gram to work with
-                 * @return true if the sub-m-gram is potentially present, otherwise false
+                 * @param status [out] the resulting status of the operation
                  */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
-                    //Compute the model level
-                    constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
-
-                    //Check if the caching is enabled
-                    if (NEEDS_BITMAP_HASH_CACHE && (CURR_LEVEL > M_GRAM_LEVEL_1)) {
-                        //If the caching is enabled, the higher sub-m-gram levels always require checking
-                        const BitmapHashCache & ref = m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET];
-                        return ref.is_m_gram_hash_cached<BEGIN_WORD_IDX, END_WORD_IDX>(gram);
+                inline void is_m_gram_potentially_present(const TModelLevel begin_word_idx,
+                        const TModelLevel end_word_idx, const T_Query_M_Gram<WordIndexType> & gram,
+                        MGramStatusEnum &status) const {
+                    //Check if the end word is unknown
+                    if (gram.get_end_word_id() != WordIndexType::UNKNOWN_WORD_ID) {
+                        //Compute the model level
+                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
+                        //Check if the caching is enabled
+                        if (NEEDS_BITMAP_HASH_CACHE && (curr_level > M_GRAM_LEVEL_1)) {
+                            //If the caching is enabled, the higher sub-m-gram levels always require checking
+                            const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
+                            if (ref.is_m_gram_hash_cached(begin_word_idx, end_word_idx, gram)) {
+                                //The m-gram hash is cached, so potentially a payload data
+                                status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                            } else {
+                                //The m-gram hash is not in cache, so definitely no data
+                                status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                            }
+                        } else {
+                            //If caching is not enabled then we always check the trie
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                        }
+                    } else {
+                        //The end word is unknown, so definitely no m-gram data
+                        status = MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS;
                     }
-                    
-                    //If caching is not enabled then we always check the trie
-                    return true;
                 }
 
             protected:

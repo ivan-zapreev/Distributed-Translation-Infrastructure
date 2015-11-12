@@ -121,17 +121,18 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to check if the given sub-m-gram, defined by the BEGIN_WORD_IDX
-                     * and END_WORD_IDX template parameters, is potentially present in the trie.
-                     * @param BEGIN_WORD_IDX the begin word index in the given m-gram
-                     * @param END_WORD_IDX the end word index in the given m-gram
+                     * Allows to check if the given sub-m-gram, defined by the begin_word_idx
+                     * and end_word_idx parameters, is potentially present in the trie.
+                     * @param begin_word_idx the begin word index in the given m-gram
+                     * @param end_word_idx the end word index in the given m-gram
                      * @param gram the m-gram to work with
                      * @return true if the sub-m-gram is potentially present, otherwise false
                      */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, typename WordIndexType>
-                    inline bool is_m_gram_hash_cached(const T_Query_M_Gram<WordIndexType> & gram) const {
+                    template<typename WordIndexType>
+                    inline bool is_m_gram_hash_cached(const TModelLevel begin_word_idx,
+                            const TModelLevel end_word_idx, const T_Query_M_Gram<WordIndexType> & gram) const {
                         //Get the m-gram's hash level
-                        uint64_t hash = gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
+                        const uint64_t hash = gram.template get_hash(begin_word_idx, end_word_idx);
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;

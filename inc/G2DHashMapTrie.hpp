@@ -175,16 +175,44 @@ namespace uva {
                  */
                 template<bool DO_CUMULATIVE_PROBS>
                 inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
-                    THROW_NOT_IMPLEMENTED();
-                };
+                    //Check if we need cumulative or single conditional m-gram probability
+                    if (DO_CUMULATIVE_PROBS) {
+                        //Initialize the begin and end index variables
+                        TModelLevel begin_word_idx = query.get_begin_word_idx();
+                        TModelLevel end_word_idx = query.get_begin_word_idx();
 
-                /**
-                 * This method allows to get the probability and/or back off weight for the
-                 * sub-m-gram defined by the BEGIN_WORD_IDX and END_WORD_IDX template parameters.
-                 * @see GenericTrieBase
-                 */
-                template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX, bool DO_BACK_OFF>
-                GPR_Enum get_payload(const T_Query_M_Gram<WordIndexType> & gram, T_M_Gram_Payload & payload, T_M_Gram_Payload & bo_payload) const;
+                        //Declare the stream-compute result status variable
+                        MGramStatusEnum status;
+
+                        //Do the iterations until the status is successful, the return is done within the loop
+                        while (true) {
+                            LOG_DEBUG << "-----> Streaming cumulative sub-m-gram [" << SSTR(begin_word_idx)
+                                    << ", " << SSTR(end_word_idx) << "]" << END_LOG;
+
+                            //Stream the probability computations
+                            stream_compute(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx, status);
+
+                            //Check the resulting status and take actions if needed
+                            switch (status) {
+                                case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
+                                    //The end word is not known back-off down and then do diagonal, if available
+                                    THROW_NOT_IMPLEMENTED();
+                                    break;
+                                case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
+                                    //The end word is not known back-off one level down
+                                    THROW_NOT_IMPLEMENTED();
+                                    break;
+                                case MGramStatusEnum::GOOD_PRESENT_MGS:
+                                    //The m-gram probabilities have been computed, we can return
+                                    return;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported status: ").append(std::to_string(status)));
+                            }
+                        }
+                    } else {
+                        THROW_NOT_IMPLEMENTED();
+                    }
+                };
 
                 /**
                  * This method allows to check if post processing should be called after
@@ -214,10 +242,15 @@ namespace uva {
 
                     //Do the post actions here
                     if (CURR_LEVEL == MAX_LEVEL) {
-                        post_n_grams();
+                        //Sort the level's data
+                        post_M_N_Grams<TProbBucket, MAX_LEVEL>(m_N_gram_data);
                     } else {
                         if (CURR_LEVEL > M_GRAM_LEVEL_1) {
-                            post_m_grams<CURR_LEVEL>();
+                            //Compute the M-gram level index
+                            constexpr TModelLevel CURR_LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+
+                            //Sort the level's data
+                            post_M_N_Grams<TProbBackOffBucket, CURR_LEVEL>(m_M_gram_data[CURR_LEVEL_IDX]);
                         }
                     }
                 };
@@ -227,39 +260,40 @@ namespace uva {
                  */
                 virtual ~G2DMapTrie();
 
-            protected:
+            private:
+                //Stores the 1-gram data
+                T_M_Gram_Payload * m_1_gram_data;
+
+                //These are arrays of buckets for M-Gram levels with 1 < M < N
+                typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
+                TProbBackOffBucket * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
+
+                //This is an array of buckets for the N-Gram level
+                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
+                TProbBucket * m_N_gram_data;
+
+                //Stores the number of gram ids/buckets per level
+                TShortId num_buckets[MAX_LEVEL];
 
                 /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @see GenericTrieBase
+                 * This method does stream compute of the m-gram probabilities in one row, until it can not go further.
+                 * @param query the m-gram query to be executed
+                 * @param payloads the payload for the given m-gram row
+                 * @param probs the array of probabilities for each sub-m-gram
+                 * @param begin_word_idx the begin word index for the sub-m-gram
+                 * @param end_word_idx the end word index for the sub-m-gram
+                 * @param status the resulting status of computations
                  */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                };
-
-                /**
-                 * This method will be called after all the M-grams are read.
-                 * The default implementation of this method is present.
-                 * If overridden must be called from the child method.
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void post_m_grams() {
-                    //Compute the M-gram level index
-                    constexpr TModelLevel CURR_LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
-
-                    //Sort the level's data
-                    post_M_N_Grams<TProbBackOffBucket, CURR_LEVEL>(m_M_gram_data[CURR_LEVEL_IDX]);
+                inline void stream_compute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL],
+                        TLogProbBackOff probs[MAX_LEVEL], const TModelLevel begin_word_idx, TModelLevel & end_word_idx,
+                        MGramStatusEnum &status) const {
+                    //Check if this is a unigram case or not
+                    if (begin_word_idx == end_word_idx) {
+                        THROW_NOT_IMPLEMENTED();
+                    } else {
+                        THROW_NOT_IMPLEMENTED();
+                    }
                 }
-
-                /**
-                 * This method will be called after all the N-grams are read.
-                 * The default implementation of this method is present.
-                 * If overridden must be called from the child method.
-                 */
-                inline void post_n_grams() {
-                    //Sort the level's data
-                    post_M_N_Grams<TProbBucket, MAX_LEVEL>(m_N_gram_data);
-                };
 
                 /**
                  * Allows to get the bucket index for the given M-gram hash
@@ -283,6 +317,74 @@ namespace uva {
 
                     return bucket_idx;
                 }
+
+                /**
+                 * Allows to perform search in the bucket for the given M-gram id
+                 * @param mgram_id_key the m-gram id to look for.
+                 * @param ref the reference to the bucket
+                 * @param found_idx the found index
+                 * @return true if the M-gram id was found and otherwise false
+                 */
+                template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
+                inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
+                    LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
+                    return my_bsearch_id< typename BUCKET_TYPE::TElemType,
+                            typename BUCKET_TYPE::TIndexType,
+                            typename BUCKET_TYPE::TElemType::TMGramIdType,
+                            TM_Gram_Id::template compare<M_GRAM_LEVEL> >
+                            (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
+                }
+
+                /**
+                 * Gets the probability for the given level M-gram, searches on specific level
+                 * @param BUCKET_TYPE the level bucket type
+                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
+                 * @param CURR_LEVEL the currently considered level of the m-gram
+                 * @param query the query M-gram state 
+                 * @param ref the bucket to search in
+                 * @param payload [out] the reference to the payload storage, to be set within this method
+                 * @param status [out] the resulting status of the operation
+                 */
+                template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
+                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
+                        typename BUCKET_TYPE::TElemType::TPayloadType & payload, MGramStatusEnum &status) const {
+                    //Compute the current level of the sub-m-gram
+                    constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
+
+                    LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                            << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
+
+                    //1. Check that the bucket with the given index is not empty
+                    if (ref.has_data()) {
+                        LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
+                        //2. Compute the query id
+                        DECLARE_STACK_GRAM_ID(TM_Gram_Id, mgram_id, CURR_LEVEL);
+                        T_Gram_Id_Data_Ptr mgram_id_ptr = &mgram_id[0];
+
+                        //Create the M-gram id from the word ids.
+                        gram.template create_m_gram_id<BEGIN_WORD_IDX, END_WORD_IDX>(mgram_id_ptr);
+
+                        //3. Search for the query id in the bucket
+                        //The data is available search for the word index in the array
+                        typename BUCKET_TYPE::TIndexType found_idx;
+                        if (search_gram<BUCKET_TYPE, CURR_LEVEL>(mgram_id_ptr, ref, found_idx)) {
+                            payload = ref[found_idx].payload;
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                        }
+                    }
+
+                    //Could not compute the probability for the given level, so backing off (recursive)!
+                    LOG_DEBUG << "Unable to find the " << SSTR(CURR_LEVEL) << "-gram, need to back off!" << END_LOG;
+                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                }
+
+                /**
+                 * Allows to retrieve the probability and back-off weight of the unknown word
+                 * @see GenericTrieBase
+                 */
+                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
+                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                };
 
                 /**
                  * Performs the post-processing actions on the buckets in the given M-gram level
@@ -314,53 +416,6 @@ namespace uva {
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
                 }
-
-            private:
-                //Stores the 1-gram data
-                T_M_Gram_Payload * m_1_gram_data;
-
-                //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef ADynamicStackArray<T_M_Gram_PB_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_PB_Entry> > TProbBackOffBucket;
-                TProbBackOffBucket * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
-
-                //This is an array of buckets for the N-Gram level
-                typedef ADynamicStackArray<T_M_Gram_Prob_Entry, uint8_t, &__G2DMapTrie::destroy_Comp_M_Gram_Id<T_M_Gram_Prob_Entry> > TProbBucket;
-                TProbBucket * m_N_gram_data;
-
-                //Stores the number of gram ids/buckets per level
-                TShortId num_buckets[MAX_LEVEL];
-
-                /**
-                 * Allows to perform search in the bucket for the given M-gram id
-                 * @param mgram_id_key the m-gram id to look for.
-                 * @param ref the reference to the bucket
-                 * @param found_idx the found index
-                 * @return true if the M-gram id was found and otherwise false
-                 */
-                template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
-                inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
-                    LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
-                    return my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                            typename BUCKET_TYPE::TIndexType,
-                            typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            TM_Gram_Id::template compare<M_GRAM_LEVEL> >
-                            (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
-                }
-
-                /**
-                 * Gets the probability for the given level M-gram, searches on specific level
-                 * @param BUCKET_TYPE the level bucket type
-                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
-                 * @param CURR_LEVEL the currently considered level of the m-gram
-                 * @param query the query M-gram state 
-                 * @param ref the bucket to search in
-                 * @param payload [out] the reference to the payload storage, to be set within this method
-                 * @return true if the M-gram was found and otherwise false.
-                 */
-                template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
-                bool get_payload_from_gram_level(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
-                        typename BUCKET_TYPE::TElemType::TPayloadType & payload) const;
-
             };
 
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TG2DMapTrieBasic;
