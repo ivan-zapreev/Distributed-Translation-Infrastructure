@@ -159,7 +159,7 @@ namespace uva {
                  * @param probs the computed probabilities, should be initialized with zeros.
                  */
                 template<bool DO_CUMULATIVE_PROBS>
-                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -182,7 +182,11 @@ namespace uva {
                         if (NEEDS_BITMAP_HASH_CACHE && (curr_level > M_GRAM_LEVEL_1)) {
                             //If the caching is enabled, the higher sub-m-gram levels always require checking
                             const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
-                            if (ref.is_m_gram_hash_cached(begin_word_idx, end_word_idx, gram)) {
+
+                            //Get the m-gram's hash
+                            const uint64_t hash = gram.template get_hash(begin_word_idx, end_word_idx);
+
+                            if (ref.is_hash_cached(hash)) {
                                 //The m-gram hash is cached, so potentially a payload data
                                 status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             } else {
@@ -210,7 +214,7 @@ namespace uva {
                 template<TModelLevel CURR_LEVEL>
                 inline void register_m_gram_cache(const T_Model_M_Gram<WordIndexType> &gram) {
                     if (NEEDS_BITMAP_HASH_CACHE && (CURR_LEVEL > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET].template add_m_gram<WordIndexType, CURR_LEVEL>(gram);
+                        m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET].template cache_m_gram_hash<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }
 
@@ -232,8 +236,8 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, ...) \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<true>(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;\
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<false>(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<true>(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;\
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<false>(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;
 
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);

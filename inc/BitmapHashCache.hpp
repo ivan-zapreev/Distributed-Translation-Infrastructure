@@ -105,7 +105,7 @@ namespace uva {
                      * @param gram the M-gram to cache
                      */
                     template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                    inline void add_m_gram(const T_Model_M_Gram<WordIndexType> gram) {
+                    inline void cache_m_gram_hash(const T_Model_M_Gram<WordIndexType> gram) {
                         LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
 
                         //Get the bit position
@@ -128,11 +128,7 @@ namespace uva {
                      * @param gram the m-gram to work with
                      * @return true if the sub-m-gram is potentially present, otherwise false
                      */
-                    template<typename WordIndexType>
-                    inline bool is_m_gram_hash_cached(const TModelLevel begin_word_idx,
-                            const TModelLevel end_word_idx, const T_Query_M_Gram<WordIndexType> & gram) const {
-                        //Get the m-gram's hash level
-                        const uint64_t hash = gram.template get_hash(begin_word_idx, end_word_idx);
+                    inline bool is_hash_cached(const uint64_t hash) const {
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;

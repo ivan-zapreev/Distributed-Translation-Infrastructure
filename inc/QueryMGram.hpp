@@ -162,27 +162,34 @@ namespace uva {
 
                     /**
                      * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the template parameters.
-                     * @param begin_word_idx the begin word index in the given m-gram
-                     * @param end_word_idx the end word index in the given m-gram
+                     * defined by the template parameters
                      * @return the hash value for the given sub-m-gram
                      */
-                    inline uint64_t get_hash(const TModelLevel begin_word_idx,
-                            const TModelLevel end_word_idx) const {
-                        LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(begin_word_idx)
-                                << "/" << SSTR(end_word_idx) << ", the previous computed begin level "
-                                << "is: " << SSTR(computed_hash_level[end_word_idx]) << END_LOG;
+                    inline uint64_t get_hash(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to retrieve the hash value for the sub-m-gram 
+                     * defined by the template parameters
+                     * @return the hash value for the given sub-m-gram
+                     */
+                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                    inline uint64_t get_hash() const {
+                        LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
+                                << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
+                                << "is: " << SSTR(computed_hash_level[END_WORD_IDX]) << END_LOG;
 
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
-                        uint64_t(& hash_column)[MAX_LEVEL_CAPACITY] = const_cast<uint64_t(&)[MAX_LEVEL_CAPACITY]> (m_hash_matrix[end_word_idx]);
+                        uint64_t(& hash_column)[MAX_LEVEL_CAPACITY] = const_cast<uint64_t(&)[MAX_LEVEL_CAPACITY]> (m_hash_matrix[END_WORD_IDX]);
 
                         //Check if the given column has already been processed.
                         //This is not an exact check, as not all the rows of the
                         //column could have been assigned with hashes. However, in
                         //case of proper use of the class this is the only check we need.
-                        if (computed_hash_level[end_word_idx] == M_GRAM_LEVEL_UNDEF) {
+                        if (computed_hash_level[END_WORD_IDX] == M_GRAM_LEVEL_UNDEF) {
                             //Start iterating from the end of the sub-m-gram
-                            TModelLevel curr_idx = end_word_idx;
+                            TModelLevel curr_idx = END_WORD_IDX;
                             //If the word is not unknown then the first hash, the word's hash is its id
                             hash_column[curr_idx] = BASE::m_word_ids[curr_idx];
 
@@ -200,28 +207,28 @@ namespace uva {
                                         << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
 
                                 //Stop iterating if the reached the beginning of the m-gram
-                            } while (curr_idx != begin_word_idx);
+                            } while (curr_idx != BEGIN_WORD_IDX);
 
                             //Cast the const modifier away to set the internal flag
-                            const_cast<TModelLevel&> (computed_hash_level[end_word_idx]) = begin_word_idx;
+                            const_cast<TModelLevel&> (computed_hash_level[END_WORD_IDX]) = BEGIN_WORD_IDX;
 
-                            LOG_DEBUG1 << "compute_hash_level[" << SSTR(end_word_idx) << "] = "
-                                    << computed_hash_level[end_word_idx] << END_LOG;
+                            LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
+                                    << computed_hash_level[END_WORD_IDX] << END_LOG;
                         }
 
                         //Perform the sanity check if needed
-                        if (DO_SANITY_CHECKS && (begin_word_idx < computed_hash_level[end_word_idx])) {
+                        if (DO_SANITY_CHECKS && (BEGIN_WORD_IDX < computed_hash_level[END_WORD_IDX])) {
                             stringstream msg;
-                            msg << "The sub-m-gram [" << SSTR(begin_word_idx) << ", " << SSTR(end_word_idx) << "]: "
+                            msg << "The sub-m-gram [" << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]: "
                                     << (string) * this << ", hash has not been computed! The hash is only there for "
-                                    << "[" << SSTR(computed_hash_level[end_word_idx]) << ", " << SSTR(end_word_idx) << "]";
+                                    << "[" << SSTR(computed_hash_level[END_WORD_IDX]) << ", " << SSTR(END_WORD_IDX) << "]";
                             throw Exception(msg.str());
                         }
 
-                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[begin_word_idx] << END_LOG;
+                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[BEGIN_WORD_IDX] << END_LOG;
 
                         //Return the hash value that must have been pre-computed
-                        return hash_column[begin_word_idx];
+                        return hash_column[BEGIN_WORD_IDX];
                     }
 
                     /**

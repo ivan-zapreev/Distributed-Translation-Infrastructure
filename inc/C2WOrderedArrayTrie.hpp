@@ -307,7 +307,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<bool DO_CUMULATIVE_PROBS>
-                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
                     THROW_NOT_IMPLEMENTED();
                 };
 

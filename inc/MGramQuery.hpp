@@ -99,7 +99,7 @@ namespace uva {
                 T_Query_M_Gram<WordIndexType, MAX_LEVEL> m_gram;
 
                 //Stores pointers to the retrieved payloads
-                void * m_payloads[MAX_LEVEL][MAX_LEVEL];
+                const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
 
                 //Stores the computed conditional probabilities per sub-m-gram
                 TLogProbBackOff m_probs[MAX_LEVEL];

@@ -174,7 +174,7 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 template<bool DO_CUMULATIVE_PROBS>
-                inline void execute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
                     //Check if we need cumulative or single conditional m-gram probability
                     if (DO_CUMULATIVE_PROBS) {
                         //Initialize the begin and end index variables
@@ -277,27 +277,69 @@ namespace uva {
 
                 /**
                  * This method does stream compute of the m-gram probabilities in one row, until it can not go further.
-                 * @param query the m-gram query to be executed
+                 * @param gram the m-gram query to be executed
                  * @param payloads the payload for the given m-gram row
                  * @param probs the array of probabilities for each sub-m-gram
                  * @param begin_word_idx the begin word index for the sub-m-gram
                  * @param end_word_idx the end word index for the sub-m-gram
                  * @param status the resulting status of computations
                  */
-                inline void stream_compute(const T_Query_M_Gram<WordIndexType> & query, void * payloads[MAX_LEVEL],
+                inline void stream_compute(const T_Query_M_Gram<WordIndexType> & gram, const void * payloads[MAX_LEVEL],
                         TLogProbBackOff probs[MAX_LEVEL], const TModelLevel begin_word_idx, TModelLevel & end_word_idx,
                         MGramStatusEnum &status) const {
-                    //Check if this is a unigram case or not
-                    if (begin_word_idx == end_word_idx) {
-                        //Store the unigram payload pointer and add the probability to the total conditional probability 
-                        reinterpret_cast<T_M_Gram_Payload *> (payloads[end_word_idx]) = &m_1_gram_data[begin_word_idx];
-                        probs[end_word_idx] += m_1_gram_data[begin_word_idx].prob;
+                    //This is at least a uni-gram we have, therefore first process the it in a special way
+                    const TShortId word_id = gram[begin_word_idx];
+                    //Store the uni-gram payload pointer and add the probability to the total conditional probability 
+                    payloads[begin_word_idx] = reinterpret_cast<const void *> (&m_1_gram_data[word_id]);
+                    LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
+                    probs[begin_word_idx] += m_1_gram_data[word_id].prob;
 
-                        //The resulting status is always a success
-                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                    } else {
-                        THROW_NOT_IMPLEMENTED();
+                    //If this is at least a bi-gram, continue iterations
+                    for (TModelLevel curr_end_word_idx = begin_word_idx + 1; curr_end_word_idx <= end_word_idx; ++curr_end_word_idx) {
+                        BASE::is_m_gram_potentially_present(begin_word_idx, end_word_idx, gram, status);
+                        if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                            //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
+                            const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
+
+                            //Obtain the payload, depending on the sub-m-gram level
+                            if (curr_end_word_idx == MAX_LEVEL) {
+                                //We are at the last trie level
+                                LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
+
+                                //this->template get_payload<TProbBucket, 1, 1>(gram, m_N_gram_data,
+                                //        &payloads[end_word_idx], status);
+                                THROW_NOT_IMPLEMENTED();
+
+                                if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                    LOG_DEBUG << "The " << SSTR(curr_level) << "-gram is found, probability: "
+                                            << *reinterpret_cast<const TLogProbBackOff *> (payloads[end_word_idx]) << END_LOG;
+                                    probs[begin_word_idx] += *reinterpret_cast<const TLogProbBackOff *> (payloads[end_word_idx]);
+                                }
+                            } else {
+                                //We are at one of the intermediate trie levels
+                                const TModelLevel m_gram_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
+                                LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << m_gram_idx << END_LOG;
+
+                                //this->template get_payload<TProbBackOffBucket, 1, 1>(gram, m_M_gram_data[m_gram_idx],
+                                //        &payloads[end_word_idx], status);
+                                THROW_NOT_IMPLEMENTED();
+
+                                if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                    LOG_DEBUG << "The " << SSTR(curr_level) << "-gram is found, payload: "
+                                            << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payloads[end_word_idx]) << END_LOG;
+                                    probs[begin_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payloads[end_word_idx])->prob;
+                                }
+                            }
+                        } else {
+                            //The next m-gram probability data could not be retrieved,
+                            //so set the last considered m-gram index and return back
+                            end_word_idx = curr_end_word_idx;
+                            return;
+                        }
                     }
+
+                    //The resulting status at this point is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 }
 
                 /**
@@ -330,34 +372,42 @@ namespace uva {
                  * @param found_idx the found index
                  * @return true if the M-gram id was found and otherwise false
                  */
-                template<typename BUCKET_TYPE, TModelLevel M_GRAM_LEVEL>
+                template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL>
                 inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType &found_idx) const {
                     LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
                     return my_bsearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType,
                             typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            TM_Gram_Id::template compare<M_GRAM_LEVEL> >
+                            TM_Gram_Id::template compare<CURR_LEVEL> >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
                 }
 
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
-                 * @param back_off true if this is the back-off data we are retrieving, otherwise false, default is false
-                 * @param CURR_LEVEL the currently considered level of the m-gram
+                 * @param BEGIN_WORD_IDX the begin word index for the sub-m-gram
+                 * @param END_WORD_IDX the end word index for the sub-m-gram
                  * @param query the query M-gram state 
-                 * @param ref the bucket to search in
-                 * @param payload [out] the reference to the payload storage, to be set within this method
+                 * @param buckets the array of buckets to work with
+                 * @param payload_ptr_ptr [out] the pointer to the payload pointer
                  * @param status [out] the resulting status of the operation
                  */
-                template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
-                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE & ref,
-                        typename BUCKET_TYPE::TElemType::TPayloadType & payload, MGramStatusEnum &status) const {
+                template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
+                inline void get_payload(const T_Query_M_Gram<WordIndexType> & gram, const BUCKET_TYPE * buckets,
+                        const void ** payload_ptr_ptr, MGramStatusEnum &status) const {
                     //Compute the current level of the sub-m-gram
                     constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
+                    LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(CURR_LEVEL) << "-gram ["
+                            << BEGIN_WORD_IDX << "," << END_WORD_IDX << "] of: " << (string) gram << END_LOG;
+
+                    const uint32_t bucket_idx = this->template get_bucket_id<CURR_LEVEL>(gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>());
+                    LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
+
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
                             << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
+                    //Get the bucket to look into
+                    const BUCKET_TYPE & ref = buckets[bucket_idx];
 
                     //1. Check that the bucket with the given index is not empty
                     if (ref.has_data()) {
@@ -373,7 +423,7 @@ namespace uva {
                         //The data is available search for the word index in the array
                         typename BUCKET_TYPE::TIndexType found_idx;
                         if (search_gram<BUCKET_TYPE, CURR_LEVEL>(mgram_id_ptr, ref, found_idx)) {
-                            payload = ref[found_idx].payload;
+                            *payload_ptr_ptr = reinterpret_cast<const void*> (&ref[found_idx].payload);
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         }
                     }
