@@ -84,6 +84,16 @@ namespace uva {
             enum MGramStatusEnum {
                 UNDEFINED_MGS = 0, BAD_END_WORD_UNKNOWN_MGS = 1, BAD_NO_PAYLOAD_MGS = 2, GOOD_PRESENT_MGS = 3
             };
+            static const char* MGramStatusEnumStrings[] = {"UNDEFINED_MGS", "BAD_END_WORD_UNKNOWN_MGS", "BAD_NO_PAYLOAD_MGS", "GOOD_PRESENT_MGS"};
+
+            /**
+             * Allows to convert the status enumeration value to its literal representation
+             * @param value the status value
+             * @return the constant string representation of the value
+             */
+            static inline const char * status_to_string(const MGramStatusEnum value) {
+                return MGramStatusEnumStrings[value];
+            }
 
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
@@ -129,7 +139,7 @@ namespace uva {
                     if (NEEDS_BITMAP_HASH_CACHE) {
                         for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
                             m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
-                            Logger::updateProgressBar();
+                            Logger::update_progress_bar();
                         }
                     }
                 }
@@ -175,7 +185,7 @@ namespace uva {
                         const TModelLevel end_word_idx, const T_Query_M_Gram<WordIndexType> & gram,
                         MGramStatusEnum &status) const {
                     //Check if the end word is unknown
-                    if (gram.get_end_word_id() != WordIndexType::UNKNOWN_WORD_ID) {
+                    if (gram[end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
                         //Compute the model level
                         const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
                         //Check if the caching is enabled

@@ -88,7 +88,7 @@ namespace uva {
                         }
 
                         //Update the progress bar status
-                        Logger::updateProgressBar();
+                        Logger::update_progress_bar();
 
                         //Read the next line from the file if it is there
                         if (!m_file.get_first_line(m_line)) {
@@ -105,16 +105,16 @@ namespace uva {
                             << arrayToString<size_t, MAX_LEVEL>(counts) << END_LOG;
 
                     //Do the progress bard indicator
-                    Logger::startProgressBar(string("Pre-allocating memory"));
+                    Logger::start_progress_bar(string("Pre-allocating memory"));
 
                     //Provide the N-Gram counts data to the Trie
                     m_trie.pre_allocate(counts);
 
-                    Logger::updateProgressBar();
+                    Logger::update_progress_bar();
 
                     LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
                     //Stop the progress bar in case of no exception
-                    Logger::stopProgressBar();
+                    Logger::stop_progress_bar();
                 }
 
                 template<typename TrieType>
@@ -131,7 +131,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Read data (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                 //Update the progress bar status
-                                Logger::updateProgressBar();
+                                Logger::update_progress_bar();
 
                                 //If the line is empty then we keep reading
                                 if (m_line.has_more()) {
@@ -217,7 +217,7 @@ namespace uva {
                                 }
 
                                 //Update the progress bar status
-                                Logger::updateProgressBar();
+                                Logger::update_progress_bar();
                             } else {
                                 //If the next line does not exist then it an error as we expect the end of data section any way
                                 stringstream msg;
@@ -237,7 +237,7 @@ namespace uva {
 
                     LOG_DEBUG << "Finished reading ARPA " << CURR_LEVEL << "-Grams." << END_LOG;
                     //Stop the progress bar in case of no exception
-                    Logger::stopProgressBar();
+                    Logger::stop_progress_bar();
                 }
 
                 template<typename TrieType>
@@ -248,13 +248,13 @@ namespace uva {
                         //Do the progress bard indicator
                         stringstream msg;
                         msg << "Cultivating " << CURR_LEVEL << "-Grams";
-                        Logger::startProgressBar(msg.str());
+                        Logger::start_progress_bar(msg.str());
 
                         //Do the post level actions
                         m_trie.template post_grams<CURR_LEVEL>();
 
                         //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
+                        Logger::stop_progress_bar();
                         LOG_DEBUG << "Finished post actions of " << CURR_LEVEL << "-Grams." << END_LOG;
                     } else {
                         LOG_INFO3 << "Cultivating " << CURR_LEVEL << "-Grams:\t Not needed!" << END_LOG;
@@ -266,7 +266,7 @@ namespace uva {
                     //Check if we need another pass for words counting.
                     if (m_trie.get_word_index().is_word_counts_needed()) {
                         //Do the progress bard indicator
-                        Logger::startProgressBar(string("Counting all words"));
+                        Logger::start_progress_bar(string("Counting all words"));
 
                         //Start recursive counting of words
                         get_level_word_counts<M_GRAM_LEVEL_1>();
@@ -277,7 +277,7 @@ namespace uva {
 
                         LOG_DEBUG << "Finished counting all words" << END_LOG;
                         //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
+                        Logger::stop_progress_bar();
 
                         //Rewind to the beginning of the 1-grams section
                         return_to_grams();
@@ -289,7 +289,7 @@ namespace uva {
                     //Perform the post actions if needed
                     if (m_trie.get_word_index().is_post_actions_needed()) {
                         //Do the progress bard indicator
-                        Logger::startProgressBar(string("Word Index actions"));
+                        Logger::start_progress_bar(string("Word Index actions"));
 
                         LOG_DEBUG << "Starting to perform the Word Index post actions" << END_LOG;
 
@@ -299,7 +299,7 @@ namespace uva {
                         LOG_DEBUG << "Finished performing the Word Index post actions" << END_LOG;
 
                         //Stop the progress bar in case of no exception
-                        Logger::stopProgressBar();
+                        Logger::stop_progress_bar();
                     }
                 }
 
@@ -309,7 +309,7 @@ namespace uva {
                     stringstream msg;
                     //Do the progress bard indicator
                     msg << "Reading ARPA " << CURR_LEVEL << "-Grams";
-                    Logger::startProgressBar(msg.str());
+                    Logger::start_progress_bar(msg.str());
 
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
@@ -382,7 +382,7 @@ namespace uva {
                                         LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;
                                         word_index.count_word(tokens[idx]);
                                         //Update the progress bar status
-                                        Logger::updateProgressBar();
+                                        Logger::update_progress_bar();
                                     }
                                 } else {
                                     //This is not an expected M-gram
@@ -401,7 +401,7 @@ namespace uva {
                     }
 
                     //Update the progress bar status
-                    Logger::updateProgressBar();
+                    Logger::update_progress_bar();
                 }
 
                 /**
@@ -464,7 +464,7 @@ namespace uva {
                         read_grams<M_GRAM_LEVEL_1>();
                     } catch (...) {
                         //Stop the progress bar in case of an exception
-                        Logger::stopProgressBar();
+                        Logger::stop_progress_bar();
                         throw;
                     }
 

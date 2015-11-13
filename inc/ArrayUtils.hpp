@@ -429,7 +429,7 @@ namespace uva {
                 inline bool is_less(const ELEM_TYPE & first, const ELEM_TYPE & second) {
                     if (IS_PROGRESS) {
                         //Update the progress bar status
-                        Logger::updateProgressBar();
+                        Logger::update_progress_bar();
                     }
                     //Return the result
                     return (first < second);

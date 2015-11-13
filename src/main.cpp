@@ -166,7 +166,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_trie_type_name = p_trie_type_arg->getValue();
 
     //Set the logging level right away
-    Logger::setReportingLevel(p_debug_level_arg->getValue());
+    Logger::set_reporting_level(p_debug_level_arg->getValue());
 }
 
 /**

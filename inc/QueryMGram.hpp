@@ -179,6 +179,9 @@ namespace uva {
                                 << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
                                 << "is: " << SSTR(m_computed_hash_level[END_WORD_IDX]) << END_LOG;
 
+                        //Compute the current m-gram level
+                        constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
+
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
                         uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[END_WORD_IDX]);
 
@@ -209,18 +212,18 @@ namespace uva {
                             } while (curr_idx != BEGIN_WORD_IDX);
 
                             //Cast the const modifier away to set the internal flag
-                            const_cast<TModelLevel&> (m_computed_hash_level[END_WORD_IDX]) = BEGIN_WORD_IDX;
+                            const_cast<TModelLevel&> (m_computed_hash_level[END_WORD_IDX]) = CURR_LEVEL;
 
                             LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
                                     << m_computed_hash_level[END_WORD_IDX] << END_LOG;
                         }
 
                         //Perform the sanity check if needed
-                        if (DO_SANITY_CHECKS && (BEGIN_WORD_IDX < m_computed_hash_level[END_WORD_IDX])) {
+                        if (DO_SANITY_CHECKS && (CURR_LEVEL > m_computed_hash_level[END_WORD_IDX])) {
                             stringstream msg;
                             msg << "The sub-m-gram [" << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]: "
                                     << (string) * this << ", hash has not been computed! The hash is only there for "
-                                    << "[" << SSTR(m_computed_hash_level[END_WORD_IDX]) << ", " << SSTR(END_WORD_IDX) << "]";
+                                    << " up and including level: " << SSTR(m_computed_hash_level[END_WORD_IDX]);
                             throw Exception(msg.str());
                         }
 
@@ -348,7 +351,7 @@ namespace uva {
                     uint8_t m_unk_word_flags = 0;
 
                     //The typedef for the function that gets the payload from the trie
-                    typedef std::function<uint64_t (const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *) > TGetHashFunc;
+                    typedef std::function<uint64_t(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *) > TGetHashFunc;
 
                     //Stores the get-hash function pointers for hash values
                     static const TGetHashFunc m_get_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];

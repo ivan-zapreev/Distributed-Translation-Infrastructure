@@ -45,9 +45,9 @@ namespace uva {
                 return stream << ((int32_t) value);
             }
 
-            DebugLevelsEnum Logger::currLEvel = DebugLevelsEnum::RESULT;
+            DebugLevelsEnum Logger::m_curr_level = DebugLevelsEnum::RESULT;
 
-            const char * Logger::_debugLevelStr[DebugLevelsEnum::size] = {
+            const char * Logger::m_debug_level_str[DebugLevelsEnum::size] = {
                 ERROR_PARAM_VALUE, WARNING_PARAM_VALUE, USAGE_PARAM_VALUE, RESULT_PARAM_VALUE,
                 INFO_PARAM_VALUE, INFO1_PARAM_VALUE, INFO2_PARAM_VALUE, INFO3_PARAM_VALUE,
                 DEBUG_PARAM_VALUE, DEBUG1_PARAM_VALUE, DEBUG2_PARAM_VALUE, DEBUG3_PARAM_VALUE,
@@ -55,27 +55,27 @@ namespace uva {
             };
 
             //Initialize the progress bar chars array
-            const vector<string> Logger::progressChars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
+            const vector<string> Logger::m_progress_chars({"///", "---", "\\\\\\", "|||", "\r\r\r"});
 
             //It is the number of characters minus one as the last one is backspace
-            const unsigned short int Logger::numProgChars = progressChars.size() - 1;
+            const unsigned short int Logger::m_num_prog_chars = m_progress_chars.size() - 1;
 
             //Set the initial index to zerro
-            unsigned short int Logger::currProgCharIdx = 0;
+            unsigned short int Logger::m_curr_prog_char_idx = 0;
 
             //Set the initial update time to zero
-            unsigned int Logger::updateCounter = 0.0;
+            unsigned int Logger::m_update_counter = 0.0;
 
             //The progress bar is not running first
-            bool Logger::isPBOn = false;
+            bool Logger::m_is_pb_on = false;
 
             //The action message to display
-            string Logger::prefix = "";
+            string Logger::m_prefix = "";
 
             //Initialize the progress bar begin time
-            clock_t Logger::beginTime = 0;
+            clock_t Logger::m_begin_time = 0;
             //Initialize the previous output time string length
-            size_t Logger::timeStrLen = 0;
+            size_t Logger::m_time_str_len = 0;
 
             /**
              * Allows to retrieve the list of supporter logging levels
@@ -83,13 +83,13 @@ namespace uva {
              */
             void Logger::get_reporting_levels(vector<string> * p_reporting_levels) {
                 for (size_t level_id = DebugLevelsEnum::ERROR; level_id <= LOGER_MAX_LEVEL; ++level_id) {
-                    string level = _debugLevelStr[level_id];
+                    string level = m_debug_level_str[level_id];
                     transform(level.begin(), level.end(), level.begin(), ::tolower);
                     p_reporting_levels->push_back(level);
                 }
             }
 
-            void Logger::setReportingLevel(string level) {
+            void Logger::set_reporting_level(string level) {
                 //ToDo: This function is ugly improve it by using a map, or a
                 //      similar so that we could just get an appropriate level
                 //      for the string.
@@ -97,40 +97,40 @@ namespace uva {
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
                 if (!level.compare(USAGE_PARAM_VALUE)) {
-                    Logger::getReportingLevel() = DebugLevelsEnum::USAGE;
+                    Logger::get_reporting_level() = DebugLevelsEnum::USAGE;
                 } else {
                     if (!level.compare(RESULT_PARAM_VALUE)) {
-                        Logger::getReportingLevel() = DebugLevelsEnum::RESULT;
+                        Logger::get_reporting_level() = DebugLevelsEnum::RESULT;
                     } else {
                         if (!level.compare(WARNING_PARAM_VALUE)) {
-                            Logger::getReportingLevel() = DebugLevelsEnum::WARNING;
+                            Logger::get_reporting_level() = DebugLevelsEnum::WARNING;
                         } else {
                             if (!level.compare(INFO_PARAM_VALUE)) {
-                                Logger::getReportingLevel() = DebugLevelsEnum::INFO;
+                                Logger::get_reporting_level() = DebugLevelsEnum::INFO;
                             } else {
                                 if (!level.compare(INFO1_PARAM_VALUE)) {
-                                    Logger::getReportingLevel() = DebugLevelsEnum::INFO1;
+                                    Logger::get_reporting_level() = DebugLevelsEnum::INFO1;
                                 } else {
                                     if (!level.compare(INFO2_PARAM_VALUE)) {
-                                        Logger::getReportingLevel() = DebugLevelsEnum::INFO2;
+                                        Logger::get_reporting_level() = DebugLevelsEnum::INFO2;
                                     } else {
                                         if (!level.compare(INFO3_PARAM_VALUE)) {
-                                            Logger::getReportingLevel() = DebugLevelsEnum::INFO3;
+                                            Logger::get_reporting_level() = DebugLevelsEnum::INFO3;
                                         } else {
                                             if (!level.compare(DEBUG_PARAM_VALUE)) {
-                                                Logger::getReportingLevel() = DebugLevelsEnum::DEBUG;
+                                                Logger::get_reporting_level() = DebugLevelsEnum::DEBUG;
                                             } else {
                                                 if (!level.compare(DEBUG1_PARAM_VALUE)) {
-                                                    Logger::getReportingLevel() = DebugLevelsEnum::DEBUG1;
+                                                    Logger::get_reporting_level() = DebugLevelsEnum::DEBUG1;
                                                 } else {
                                                     if (!level.compare(DEBUG2_PARAM_VALUE)) {
-                                                        Logger::getReportingLevel() = DebugLevelsEnum::DEBUG2;
+                                                        Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
                                                     } else {
                                                         if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                            Logger::getReportingLevel() = DebugLevelsEnum::DEBUG3;
+                                                            Logger::get_reporting_level() = DebugLevelsEnum::DEBUG3;
                                                         } else {
                                                             if (!level.compare(DEBUG4_PARAM_VALUE)) {
-                                                                Logger::getReportingLevel() = DebugLevelsEnum::DEBUG4;
+                                                                Logger::get_reporting_level() = DebugLevelsEnum::DEBUG4;
                                                             } else {
                                                                 isGoodLevel = false;
                                                             }
@@ -148,27 +148,27 @@ namespace uva {
                 if (isGoodLevel) {
                     LOG_USAGE << "The requested debug level is: \'" << level
                             << "\', the maximum build level is '"
-                            << _debugLevelStr[LOGER_MAX_LEVEL] << "'"
-                            << " the set level is '" << _debugLevelStr[currLEvel]
+                            << m_debug_level_str[LOGER_MAX_LEVEL] << "'"
+                            << " the set level is '" << m_debug_level_str[m_curr_level]
                             << "'" << END_LOG;
                 } else {
                     LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << level << "'" << END_LOG;
                 }
             }
 
-            string Logger::computeTimeString(const clock_t elapsedClockTime, size_t & timeStrLen) {
+            string Logger::compute_time_string(const clock_t elapsedClockTime, size_t & timeStrLen) {
                 const float timeSec = (((float) elapsedClockTime) / CLOCKS_PER_SEC);
                 const uint minute = (((uint) timeSec) % 3600) / 60;
                 const uint hour = ((uint) timeSec) / 3600;
                 const float second = (float) (((uint) ((timeSec - minute * 60 - hour * 3600)* 100)) / 100);
                 stringstream msg;
                 msg << " " << SSTR(hour) << " hour(s) " << SSTR(minute) << " minute(s) " << SSTR(second) << " second(s) ";
-                string result = prefix + msg.str();
+                string result = m_prefix + msg.str();
                 timeStrLen = result.size();
                 return result;
             }
 
-            string Logger::computeTimeClearString(const size_t length) {
+            string Logger::compute_time_clear_string(const size_t length) {
                 string result = "";
                 for (size_t i = 0; i < length; i++) {
                     result += "\r";
@@ -179,58 +179,58 @@ namespace uva {
             //This macro is used to check if we need to do the progress indications
 #define IS_ENOUGH_LOGGING_LEVEL(level) (( PROGRESS_ACTIVE_LEVEL <= LOGER_MAX_LEVEL ) && ( PROGRESS_ACTIVE_LEVEL <= level ))
 
-            void Logger::startProgressBar(const string & msg) {
-                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel)) {
-                    if (!isPBOn) {
+            void Logger::start_progress_bar(const string & msg) {
+                if (IS_ENOUGH_LOGGING_LEVEL(m_curr_level)) {
+                    if (!m_is_pb_on) {
                         stringstream pref;
-                        pref << _debugLevelStr[PROGRESS_ACTIVE_LEVEL] << ":\t" << msg << ":\t";
-                        prefix = pref.str();
+                        pref << m_debug_level_str[PROGRESS_ACTIVE_LEVEL] << ":\t" << msg << ":\t";
+                        m_prefix = pref.str();
 
                         //Output the time string
-                        cout << computeTimeString(beginTime, timeStrLen);
+                        cout << compute_time_string(m_begin_time, m_time_str_len);
                         cout.flush();
 
                         //Store the current time
-                        beginTime = clock();
+                        m_begin_time = clock();
 
                         //Update the update counter and set the progress bar on flag
-                        updateCounter = 0;
-                        isPBOn = true;
+                        m_update_counter = 0;
+                        m_is_pb_on = true;
                     }
                 } else {
                     LOG_INFO << msg << END_LOG;
                 }
             }
 
-            void Logger::updateProgressBar() {
-                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel)) {
+            void Logger::update_progress_bar() {
+                if (IS_ENOUGH_LOGGING_LEVEL(m_curr_level)) {
                     //Do not update each time to save on computations
-                    if (updateCounter > (CLOCKS_PER_SEC / 4)) {
+                    if (m_update_counter > (CLOCKS_PER_SEC / 4)) {
 
                         //Output the current time
-                        cout << computeTimeClearString(timeStrLen) << computeTimeString(clock() - beginTime, timeStrLen);
+                        cout << compute_time_clear_string(m_time_str_len) << compute_time_string(clock() - m_begin_time, m_time_str_len);
                         cout.flush();
 
-                        updateCounter = 0;
+                        m_update_counter = 0;
                     } else {
 
-                        updateCounter++;
+                        m_update_counter++;
                     }
                 }
             }
 
-            void Logger::stopProgressBar() {
-                if (IS_ENOUGH_LOGGING_LEVEL(currLEvel) && isPBOn) {
+            void Logger::stop_progress_bar() {
+                if (IS_ENOUGH_LOGGING_LEVEL(m_curr_level) && m_is_pb_on) {
                     //Clear the progress
-                    cout << computeTimeClearString(timeStrLen) << "\n";
+                    cout << compute_time_clear_string(m_time_str_len) << "\n";
                     cout.flush();
 
                     //Reset class variables
-                    prefix = "";
-                    beginTime = 0;
-                    timeStrLen = 0;
-                    updateCounter = 0;
-                    isPBOn = false;
+                    m_prefix = "";
+                    m_begin_time = 0;
+                    m_time_str_len = 0;
+                    m_update_counter = 0;
+                    m_is_pb_on = false;
                 }
             }
         }
