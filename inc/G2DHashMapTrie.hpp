@@ -175,52 +175,48 @@ namespace uva {
                  */
                 template<bool DO_CUMULATIVE_PROBS>
                 inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+                    //Declare the stream-compute result status variable
+                    MGramStatusEnum status = MGramStatusEnum::UNDEFINED_MGS;
+
+                    //Initialize the begin and end index variables
+                    TModelLevel begin_word_idx = query.get_begin_word_idx();
                     //Check if we need cumulative or single conditional m-gram probability
-                    if (DO_CUMULATIVE_PROBS) {
-                        //Initialize the begin and end index variables
-                        TModelLevel begin_word_idx = query.get_begin_word_idx();
-                        TModelLevel end_word_idx = begin_word_idx;
+                    TModelLevel end_word_idx = (DO_CUMULATIVE_PROBS) ? begin_word_idx : query.get_end_word_idx();
 
-                        //Declare the stream-compute result status variable
-                        MGramStatusEnum status;
+                    //Do the iterations until the status is successful, the return is done within the loop
+                    while (true) {
+                        LOG_DEBUG << "-----> Streaming cumulative sub-m-gram [" << SSTR(begin_word_idx)
+                                << ", " << SSTR(end_word_idx) << "]" << END_LOG;
 
-                        //Do the iterations until the status is successful, the return is done within the loop
-                        while (true) {
-                            LOG_DEBUG << "-----> Streaming cumulative sub-m-gram [" << SSTR(begin_word_idx)
-                                    << ", " << SSTR(end_word_idx) << "]" << END_LOG;
+                        //Stream the probability computations
+                        stream_right(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx, status);
+                        LOG_DEBUG << "The result for the sub-m-gram: [" << SSTR(begin_word_idx) << ","
+                                << SSTR(end_word_idx) << "] is : " << status_to_string(status) << END_LOG;
 
-                            //Stream the probability computations
-                            stream_right(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx, status);
-                            LOG_DEBUG << "The result for the sub-m-gram: [" << SSTR(begin_word_idx) << ","
-                                    << SSTR(end_word_idx) << "] is : " << status_to_string(status) << END_LOG;
-
-                            //Check the resulting status and take actions if needed
-                            switch (status) {
-                                case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
-                                    //The end word is not known back-off down and then do diagonal, if there is columns left
-                                    stream_down(query, payloads, probs, begin_word_idx, end_word_idx);
-                                    //If this was the last column, we are done and can just return
-                                    if (end_word_idx == query.get_end_word_idx()) {
-                                        LOG_DEBUG << "The computations are done as streaming down was done for the last column!" << END_LOG;
-                                        return;
-                                    }
-                                    //If this was not the last column then we need to go diagonal
-                                    move_diagonal(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx);
-                                    break;
-                                case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
-                                    //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
-                                    //could not be found in the trie, therefore we need to back-off and then keep streaming.
-                                    back_off_and_step_down(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx);
-                                    break;
-                                case MGramStatusEnum::GOOD_PRESENT_MGS:
-                                    //The m-gram probabilities have been computed, we can return
+                        //Check the resulting status and take actions if needed
+                        switch (status) {
+                            case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
+                                //The end word is not known back-off down and then do diagonal, if there is columns left
+                                stream_down_unknown(query, payloads, probs, begin_word_idx, end_word_idx);
+                                //If this was the last column, we are done and can just return
+                                if (end_word_idx == query.get_end_word_idx()) {
+                                    LOG_DEBUG << "The computations are done as streaming down was done for the last column!" << END_LOG;
                                     return;
-                                default:
-                                    THROW_EXCEPTION(string("Unsupported status: ").append(std::to_string(status)));
-                            }
+                                }
+                                //If this was not the last column then we need to go diagonal
+                                move_diagonal(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx);
+                                break;
+                            case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
+                                //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
+                                //could not be found in the trie, therefore we need to back-off and then keep streaming.
+                                back_off_and_step_down(query, payloads[begin_word_idx], probs, begin_word_idx, end_word_idx);
+                                break;
+                            case MGramStatusEnum::GOOD_PRESENT_MGS:
+                                //The m-gram probabilities have been computed, we can return
+                                return;
+                            default:
+                                THROW_EXCEPTION(string("Unsupported status: ").append(std::to_string(status)));
                         }
-                    } else {
-                        THROW_NOT_IMPLEMENTED();
                     }
                 };
 
@@ -308,7 +304,7 @@ namespace uva {
                  * @param begin_word_idx[out] the begin word index for the sub-m-gram
                  * @param end_word_idx the end word index for the sub-m-gram
                  */
-                inline void stream_down(const T_Query_M_Gram<WordIndexType> & gram, const void * payloads[MAX_LEVEL][MAX_LEVEL],
+                inline void stream_down_unknown(const T_Query_M_Gram<WordIndexType> & gram, const void * payloads[MAX_LEVEL][MAX_LEVEL],
                         TLogProbBackOff probs[MAX_LEVEL], TModelLevel & begin_word_idx, const TModelLevel end_word_idx) const {
                     LOG_DEBUG << "Streaming down, from : [" << SSTR(begin_word_idx) << "," << SSTR(end_word_idx) << "]" << END_LOG;
 
