@@ -251,7 +251,7 @@ namespace uva {
                      */
                     template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                     static inline uint64_t get_hash_static(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *gram_ptr) {
-                        gram_ptr->get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
+                        return gram_ptr->get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
                     }
 
                     /**

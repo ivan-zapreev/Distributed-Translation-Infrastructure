@@ -43,7 +43,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/C2DMapArrayTrie.o \
 	${OBJECTDIR}/src/C2WOrderedArrayTrie.o \
 	${OBJECTDIR}/src/G2DHashMapTrie.o \
-	${OBJECTDIR}/src/LayeredTrieDriver.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CHybridMemoryTrie.o \
@@ -115,11 +114,6 @@ ${OBJECTDIR}/src/G2DHashMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/G2DHash
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DHashMapTrie.o src/G2DHashMapTrie.cpp
-
-${OBJECTDIR}/src/LayeredTrieDriver.o: nbproject/Makefile-${CND_CONF}.mk src/LayeredTrieDriver.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LayeredTrieDriver.o src/LayeredTrieDriver.cpp
 
 ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
