@@ -127,7 +127,7 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << (string) BASE::m_gram << END_LOG;
 
                     //Prepare the m-gram for querying
-                    BASE::m_gram.template prepare_for_querying<false>();
+                    BASE::m_gram.prepare_for_querying();
 
                     //Clean the probability entries
                     memset(BASE::m_probs, ZERO_PROB_WEIGHT, sizeof (TLogProbBackOff) * MAX_LEVEL);

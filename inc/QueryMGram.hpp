@@ -60,35 +60,6 @@ namespace uva {
                     //Define the base class type
                     typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL> BASE;
 
-                    //Stores the unknown word masks for the probability computations,
-                    //up to and including 8-grams. Are used to mark <unk> word bits:
-                    // 0: 10000000, 1: 01000000, 2: 00100000, 3: 00010000,
-                    // 4: 00001000, 5: 00000100, 6: 00000010, 7: 00000001
-                    static constexpr uint8_t UNK_WORD_MASKS[M_GRAM_LEVEL_8] = {
-                        0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
-                    };
-
-                    //Stores the sub-m-gram unknown word masks for checking
-                    //on <unk> words, up to and including 8-grams:
-                    //0: { 0: 10000000 1: 11000000 2: 11100000 3: 11110000 4: 11111000 5: 11111100 6: 11111110 7: 11111111 }
-                    //1: { 0: 00000000 1: 01000000 2: 01100000 3: 01110000 4: 01111000 5: 01111100 6: 01111110 7: 01111111 }
-                    //2: { 0: 00000000 1: 00000000 2: 00100000 3: 00110000 4: 00111000 5: 00111100 6: 00111110 7: 00111111 }
-                    //3: { 0: 00000000 1: 00000000 2: 00000000 3: 00010000 4: 00011000 5: 00011100 6: 00011110 7: 00011111 }
-                    //4: { 0: 00000000 1: 00000000 2: 00000000 3: 00000000 4: 00001000 5: 00001100 6: 00001110 7: 00001111 }
-                    //5: { 0: 00000000 1: 00000000 2: 00000000 3: 00000000 4: 00000000 5: 00000100 6: 00000110 7: 00000111 }
-                    //6: { 0: 00000000 1: 00000000 2: 00000000 3: 00000000 4: 00000000 5: 00000000 6: 00000010 7: 00000011 }
-                    //7: { 0: 00000000 1: 00000000 2: 00000000 3: 00000000 4: 00000000 5: 00000000 6: 00000000 7: 00000001 }
-                    static constexpr uint8_t SMG_UNK_WORD_MASKS[M_GRAM_LEVEL_8][M_GRAM_LEVEL_8] = {
-                        { 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF},
-                        { 0x00, 0x40, 0x60, 0x70, 0x78, 0x7C, 0x7E, 0x7F},
-                        { 0x00, 0x00, 0x20, 0x30, 0x38, 0x3C, 0x3E, 0x3F},
-                        { 0x00, 0x00, 0x00, 0x10, 0x18, 0x1C, 0x1E, 0x1F},
-                        { 0x00, 0x00, 0x00, 0x00, 0x08, 0x0C, 0x0E, 0x0F},
-                        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x06, 0x07},
-                        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03},
-                        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}
-                    };
-
                     /**
                      * The basic constructor, is to be used when the M-gram will
                      * actual level is not known beforehand - used e.g. in the query
@@ -119,18 +90,11 @@ namespace uva {
                      * the <unk> word flags so that later at any time we can check
                      * whether a given sub-m-gram has <unk> words in it.
                      */
-                    template<bool IS_UNK_WORD_FLAGS>
                     inline void prepare_for_querying() {
-                        LOG_DEBUG1 << "Preparing for the query execution, create <unk> "
-                                << "word flags = " << (IS_UNK_WORD_FLAGS ? "true" : "false") << END_LOG;
+                        LOG_DEBUG1 << "Preparing for the query execution" << END_LOG;
 
                         //Set all the "computed hash level" flags to "undefined"
                         memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
-
-                        //Re-set the unknown word flags, if needed
-                        if (IS_UNK_WORD_FLAGS) {
-                            m_unk_word_flags = 0;
-                        }
 
                         LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
                         //Retrieve all the word ids unconditionally, as we will need all of them
@@ -138,34 +102,8 @@ namespace uva {
                             BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
                             LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
                                     << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
-                            if (IS_UNK_WORD_FLAGS && (BASE::m_word_ids[curr_word_idx] == WordIndexType::UNKNOWN_WORD_ID)) {
-                                m_unk_word_flags |= UNK_WORD_MASKS[curr_word_idx];
-                            }
                         }
                         LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
-                    }
-
-                    /**
-                     * Allows to check if the word with the given word index is an unknown word.
-                     * The word flags are properly initialized iff the prepare_for_querying method
-                     * was called with the IS_UNK_WORD_FLAGS template parameter set to true.
-                     * @param word_idx the index of the word to be checked
-                     * @return true if the word under the given index is an <unk> word
-                     */
-                    inline bool is_unk_word(const TModelLevel word_idx) const {
-                        return m_unk_word_flags & SMG_UNK_WORD_MASKS[word_idx][word_idx];
-                    }
-
-                    /**
-                     * Allows to check if the sub-m-gram defined by the method arguments has unknown words in it.
-                     * The word flags are properly initialized iff the prepare_for_querying method was called with
-                     * the IS_UNK_WORD_FLAGS template parameter set to true.
-                     * @param begin_word_idx the first word index of the sub-m-gram
-                     * @param end_word_idx the last word index of the sub-m-gram
-                     * @return true if the sub-m-gram contains <unk> words, otherwise false
-                     */
-                    inline bool has_unk_words(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
-                        return m_unk_word_flags & SMG_UNK_WORD_MASKS[begin_word_idx][end_word_idx];
                     }
 
                     /**
@@ -341,14 +279,10 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the first known word index following the last unknown word. For non cumulative queries.
-                    TModelLevel m_flk_word_idx;
                     //Stores the hash computed flags
                     TModelLevel m_computed_hash_level[MAX_LEVEL];
                     //Stores the computed hash values
                     uint64_t m_hash_matrix[MAX_LEVEL][MAX_LEVEL];
-                    //Unknown word bit flags
-                    uint8_t m_unk_word_flags = 0;
 
                     //The typedef for the function that gets the payload from the trie
                     typedef std::function<uint64_t(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *) > TGetHashFunc;
@@ -374,12 +308,6 @@ namespace uva {
                     {NULL, NULL, NULL, NULL, NULL, &get_hash_static<5, 5>, &get_hash_static<5, 6>},
                     {NULL, NULL, NULL, NULL, NULL, NULL, &get_hash_static<6, 6>}
                 };
-
-                template<typename WordIndexType, TModelLevel MAX_LEVEL>
-                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL>::UNK_WORD_MASKS[M_GRAM_LEVEL_8];
-
-                template<typename WordIndexType, TModelLevel MAX_LEVEL>
-                constexpr uint8_t T_Query_M_Gram<WordIndexType, MAX_LEVEL>::SMG_UNK_WORD_MASKS[M_GRAM_LEVEL_8][M_GRAM_LEVEL_8];
 
             }
         }

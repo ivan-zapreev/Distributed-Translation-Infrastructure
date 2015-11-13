@@ -110,7 +110,7 @@ namespace uva {
                     LOG_DEBUG << "Starting to execute:" << (string) BASE::m_gram << END_LOG;
 
                     //Prepare the m-gram for querying
-                    BASE::m_gram.template prepare_for_querying<true>();
+                    BASE::m_gram.prepare_for_querying();
 
                     //Clean the relevant probability entry
                     BASE::m_probs[ BASE::m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
