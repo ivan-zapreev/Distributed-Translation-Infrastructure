@@ -200,9 +200,12 @@ namespace uva {
                                     THROW_NOT_IMPLEMENTED();
                                     break;
                                 case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
-                                    //The payload of the m-gram defined by the current
-                                    //values of begin_word_idx, end_word_idx could not be
-                                    //found in the trie, therefore we need to back-off
+                                    //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx could
+                                    //not be found in the trie, therefore we need to back-off. First we add the back-off probability
+                                    probs[end_word_idx] += reinterpret_cast<T_M_Gram_Payload *> (payloads[begin_word_idx][end_word_idx - 1])->back;
+                                    //Next we shift to the next level, it is possible as it is not a uni-gram, the latter 
+                                    //always get MGramStatusEnum::GOOD_PRESENT_MGS result when their payload is retrieved
+                                    begin_word_idx++;
                                     THROW_NOT_IMPLEMENTED();
                                     break;
                                 case MGramStatusEnum::GOOD_PRESENT_MGS:
