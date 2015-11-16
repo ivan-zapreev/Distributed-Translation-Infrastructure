@@ -293,21 +293,21 @@ namespace uva {
                  * @param query the m-gram query data
                  * @param status [out] the result of the retrieval operation, for the uni-gram will always be GOOD_PRESENT_MGS
                  */
-                virtual inline void get_unigram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
+                virtual void get_unigram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
 
                 /**
                  * Allows to attempt the sub-m-gram payload retrieval for 1<m<n
                  * @param query the m-gram query data
                  * @param status [out] the result of the retrieval operation, for the uni-gram will always be GOOD_PRESENT_MGS
                  */
-                virtual inline void get_m_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
+                virtual void get_m_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
 
                 /**
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
                  * @param query the m-gram query data
                  * @param status [out] the result of the retrieval operation, for the uni-gram will always be GOOD_PRESENT_MGS
                  */
-                virtual inline void get_n_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
+                virtual void get_n_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const = 0;
 
             private:
 
