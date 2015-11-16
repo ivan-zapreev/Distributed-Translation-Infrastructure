@@ -208,6 +208,33 @@ namespace uva {
                     m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
                 }
 
+            protected:
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
+                 */
+                virtual inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for 1<m<n
+                 * @see GenericTrieBase
+                 */
+                virtual inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
+                 */
+                virtual inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
             private:
 
                 /**
