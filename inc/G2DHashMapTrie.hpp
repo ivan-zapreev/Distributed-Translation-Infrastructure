@@ -325,14 +325,15 @@ namespace uva {
                 }
 
                 /**
-                 * This method allows to perform the diagonal move in the sub-m-gram matrix in
-                 * case the end word of the sub-m-gram is unknown and this is not the last column. 
+                 * This method allows to perform the diagonal move in the sub-m-gram matrix in case the 
+                 * end word of the sub-m-gram is unknown and this is not the last column. This method 
+                 * will only be called in case it is not the last column of the sub-m-grams matrix.
                  * @param query the m-gram query data the begin and end word index will be changed
                  */
                 inline void move_diagonal(T_Query_Exec_Data & query) const {
-                    //At this moment we are down to the unknown word uni-gram payloads[end_word_idx]
-                    //This is not the last column, so we can move at least one step further, yet we need to move to
-                    //the next row as m-grams in this row contain the unk word and thus are definitely not available 
+                    //At this moment we are down to the unknown word uni-gram payloads[begin_word_idx][end_word_idx]
+                    //This is also not the last column, so we can move at least one step further, yet we need to move
+                    //to the next row as m-grams in this row contain the unk word and thus are definitely not available.
 
                     LOG_DEBUG << "Adding the back-off from sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                             << SSTR(query.m_end_word_idx) << "] to prob[" << SSTR(query.m_end_word_idx + 1) << "]!" << END_LOG;
@@ -374,7 +375,7 @@ namespace uva {
                                 << SSTR(query.m_end_word_idx) << "] is not available, needs to be retrieved!" << END_LOG;
                         //Check if the back-off sub-m-gram is potentially available
                         MGramStatusEnum status;
-                        BASE::is_m_gram_potentially_present(query.m_begin_word_idx, query.m_end_word_idx, query.m_gram, status);
+                        BASE::is_m_gram_potentially_present(query, status);
                         LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                                 << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
                         if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -489,7 +490,7 @@ namespace uva {
                     LOG_DEBUG << "Considering the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //First check if it makes sense to look into  the trie
-                    BASE::is_m_gram_potentially_present(query.m_begin_word_idx, query.m_end_word_idx, query.m_gram, status);
+                    BASE::is_m_gram_potentially_present(query, status);
                     LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                             << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {

@@ -103,7 +103,7 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef WordIndexTrieBase<MAX_LEVEL, WordIndexType> BASE;
-                
+
                 /**
                  * This structure stores the basic data required for a query execution.
                  * @param m_query the m-gram query itself 
@@ -118,8 +118,9 @@ namespace uva {
                     TLogProbBackOff m_probs[MAX_LEVEL];
                     TModelLevel m_begin_word_idx;
                     TModelLevel m_end_word_idx;
-                    
-                    explicit S_Query_Exec_Data_Base(WordIndexType & word_index) : m_gram(word_index){}
+
+                    explicit S_Query_Exec_Data_Base(WordIndexType & word_index) : m_gram(word_index) {
+                    }
                 };
                 typedef S_Query_Exec_Data_Base T_Query_Exec_Data_Base;
 
@@ -198,25 +199,22 @@ namespace uva {
                 /**
                  * Allows to check if the given sub-m-gram, defined by the begin_word_idx
                  * and end_word_idx parameters, is potentially present in the trie.
-                 * @param begin_word_idx the begin word index in the given m-gram
-                 * @param end_word_idx the end word index in the given m-gram
-                 * @param gram the m-gram to work with
+                 * @param query the m-gram query data
                  * @param status [out] the resulting status of the operation
                  */
-                inline void is_m_gram_potentially_present(const TModelLevel begin_word_idx,
-                        const TModelLevel end_word_idx, const T_Query_M_Gram<WordIndexType> & gram,
+                inline void is_m_gram_potentially_present(const T_Query_Exec_Data_Base& query,
                         MGramStatusEnum &status) const {
                     //Check if the end word is unknown
-                    if (gram[end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
+                    if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
                         //Compute the model level
-                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
+                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
                         //Check if the caching is enabled
                         if (NEEDS_BITMAP_HASH_CACHE && (curr_level > M_GRAM_LEVEL_1)) {
                             //If the caching is enabled, the higher sub-m-gram levels always require checking
                             const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
 
                             //Get the m-gram's hash
-                            const uint64_t hash = gram.template get_hash(begin_word_idx, end_word_idx);
+                            const uint64_t hash = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
 
                             if (ref.is_hash_cached(hash)) {
                                 //The m-gram hash is cached, so potentially a payload data
