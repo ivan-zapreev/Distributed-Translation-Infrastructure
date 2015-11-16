@@ -79,7 +79,7 @@ namespace uva {
                  * @param trie the reference to the trie object
                  */
                 T_M_Gram_Query(TrieType & trie)
-                : m_trie(trie), m_gram(trie.get_word_index()) {
+                : m_trie(trie), m_query(trie.get_word_index()) {
                 }
 
                 /**
@@ -88,21 +88,17 @@ namespace uva {
                  * @param gram the gram container to put data into
                  */
                 inline void set_m_gram_from_text(TextPieceReader &text) {
-                    m_gram.set_m_gram_from_text(text);
+                    m_query.m_gram.set_m_gram_from_text(text);
                 }
 
             protected:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
 
-                //Stores the query m-gram
-                T_Query_M_Gram<WordIndexType, MAX_LEVEL> m_gram;
-
-                //Stores pointers to the retrieved payloads
-                const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
-
-                //Stores the computed conditional probabilities per sub-m-gram
-                TLogProbBackOff m_probs[MAX_LEVEL];
+                //Define the query data structure that: stores the query m-gram,
+                //stores pointers to the retrieved payloads, stores the computed
+                //conditional probabilities per sub-m-gram and others
+                typename TrieType::T_Query_Exec_Data m_query;
             };
         }
     }

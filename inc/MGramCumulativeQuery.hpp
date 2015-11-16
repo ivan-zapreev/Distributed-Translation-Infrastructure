@@ -87,24 +87,24 @@ namespace uva {
                  */
                 inline void log_results() const {
                     //Initialize the current index, with the proper start value
-                    TModelLevel curr_idx = BASE::m_gram.get_begin_word_idx();
+                    TModelLevel curr_idx = BASE::m_query.m_gram.get_begin_word_idx();
                     TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
 
                     //Print the intermediate results
-                    for (; curr_idx <= BASE::m_gram.get_end_word_idx(); ++curr_idx) {
-                        const string gram_str = BASE::m_gram.get_mgram_prob_str(curr_idx + 1);
+                    for (; curr_idx <= BASE::m_query.m_gram.get_end_word_idx(); ++curr_idx) {
+                        const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str(curr_idx + 1);
                         LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                << " ) ) = " << SSTR(BASE::m_probs[curr_idx]) << END_LOG;
+                                << " ) ) = " << SSTR(BASE::m_query.m_probs[curr_idx]) << END_LOG;
                         LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_probs[curr_idx])) << END_LOG;
-                        if (BASE::m_probs[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
-                            cumulative_prob += BASE::m_probs[curr_idx];
+                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_query.m_probs[curr_idx])) << END_LOG;
+                        if (BASE::m_query.m_probs[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
+                            cumulative_prob += BASE::m_query.m_probs[curr_idx];
                         }
                     }
                     LOG_RESULT << "---" << END_LOG;
 
                     //Print the total cumulative probability if needed
-                    const string gram_str = BASE::m_gram.get_mgram_prob_str();
+                    const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str();
                     LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
                             << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
                     LOG_INFO << "  Prob( " << gram_str << " ) = "
@@ -117,20 +117,20 @@ namespace uva {
                  * Allows to execute m-gram the query
                  */
                 inline void execute() {
-                    LOG_DEBUG << "Starting to execute:" << (string) BASE::m_gram << END_LOG;
+                    LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
 
                     //Prepare the m-gram for querying
-                    BASE::m_gram.prepare_for_querying();
+                    BASE::m_query.m_gram.prepare_for_querying();
 
                     //Clean the probability entries
-                    memset(BASE::m_probs, ZERO_PROB_WEIGHT, sizeof (TLogProbBackOff) * MAX_LEVEL);
+                    memset(BASE::m_query.m_probs, ZERO_PROB_WEIGHT, sizeof (TLogProbBackOff) * MAX_LEVEL);
                     //Clean the payload pointer entries
-                    memset(BASE::m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
+                    memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
                     //Execute the query
-                    BASE::m_trie.template execute<true>(BASE::m_gram, BASE::m_payloads, BASE::m_probs);
+                    BASE::m_trie.template execute<true>(BASE::m_query);
 
-                    LOG_DEBUG << "Finished executing:" << (string) BASE::m_gram << END_LOG;
+                    LOG_DEBUG << "Finished executing:" << (string) BASE::m_query.m_gram << END_LOG;
                 }
             };
 

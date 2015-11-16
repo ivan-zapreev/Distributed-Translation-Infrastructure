@@ -53,6 +53,7 @@ namespace uva {
             class W2CHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
 
                 /**
                  * The basic constructor
@@ -169,15 +170,6 @@ namespace uva {
                         }
                     }
                 }
-
-                /**
-                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
-                 * @see GenericTrieBase
-                 */
-                template<bool DO_CUMULATIVE_PROBS>
-                inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
-                    THROW_NOT_IMPLEMENTED();
-                };
 
                 /**
                  * The basic destructor

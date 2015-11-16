@@ -85,12 +85,12 @@ namespace uva {
                  */
                 inline void log_results() const {
                     //Print the query results
-                    const string gram_str = BASE::m_gram.get_mgram_prob_str(BASE::m_gram.get_m_gram_level());
+                    const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str(BASE::m_query.m_gram.get_m_gram_level());
 
                     LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                            << " ) ) = " << SSTR(BASE::m_probs[BASE::m_gram.get_end_word_idx()]) << END_LOG;
+                            << " ) ) = " << SSTR(BASE::m_query.m_probs[BASE::m_query.m_gram.get_end_word_idx()]) << END_LOG;
                     LOG_INFO << "  Prob( " << gram_str << " ) = "
-                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_probs[BASE::m_gram.get_end_word_idx()])) << END_LOG;
+                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_query.m_probs[BASE::m_query.m_gram.get_end_word_idx()])) << END_LOG;
 
                     LOG_RESULT << "-------------------------------------------" << END_LOG;
                 }
@@ -99,20 +99,20 @@ namespace uva {
                  * Allows to execute m-gram the query
                  */
                 void execute() {
-                    LOG_DEBUG << "Starting to execute:" << (string) BASE::m_gram << END_LOG;
+                    LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
 
                     //Prepare the m-gram for querying
-                    BASE::m_gram.prepare_for_querying();
+                    BASE::m_query.m_gram.prepare_for_querying();
 
                     //Clean the relevant probability entry
-                    BASE::m_probs[ BASE::m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
+                    BASE::m_query.m_probs[ BASE::m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
                     //Clean the payload pointer entries
-                    memset(BASE::m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
+                    memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
                     //Execute the query
-                    BASE::m_trie.template execute<false>(BASE::m_gram, BASE::m_payloads, BASE::m_probs);
+                    BASE::m_trie.template execute<false>(BASE::m_query);
 
-                    LOG_DEBUG << "Finished executing:" << (string) BASE::m_gram << END_LOG;
+                    LOG_DEBUG << "Finished executing:" << (string) BASE::m_query.m_gram << END_LOG;
                 }
             };
 

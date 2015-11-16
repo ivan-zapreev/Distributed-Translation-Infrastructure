@@ -103,6 +103,25 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef WordIndexTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                
+                /**
+                 * This structure stores the basic data required for a query execution.
+                 * @param m_query the m-gram query itself 
+                 * @param m_payloads the  two dimensional array of the payloads 
+                 * @param m_probs the array f probabilities 
+                 * @param m_begin_word_idx the currently considered begin word index
+                 * @param m_end_word_idx the currently considered end word index
+                 */
+                struct S_Query_Exec_Data_Base {
+                    T_Query_M_Gram<WordIndexType> m_gram;
+                    const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
+                    TLogProbBackOff m_probs[MAX_LEVEL];
+                    TModelLevel m_begin_word_idx;
+                    TModelLevel m_end_word_idx;
+                    
+                    explicit S_Query_Exec_Data_Base(WordIndexType & word_index) : m_gram(word_index){}
+                };
+                typedef S_Query_Exec_Data_Base T_Query_Exec_Data_Base;
 
                 //The offset, relative to the M-gram level M for the m-gram mapping array index
                 const static TModelLevel MGRAM_IDX_OFFSET = 2;
@@ -163,13 +182,16 @@ namespace uva {
 
                 /**
                  * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
-                 * @param DO_CUMULATIVE_PROBS true if we want cumulative probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
-                 * @param gram the m-gram to work with
-                 * @param payloads the matrix of pointers to payloads, has to contain NULL pointers in the first place
-                 * @param probs the computed probabilities, should be initialized with zeros.
+                 * @param DO_JOINT_PROBS true if we want joint probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
+                 * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
                  */
-                template<bool DO_CUMULATIVE_PROBS>
-                inline void execute(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const {
+
+                /**
+                 * This method allows to get the payloads and compute the (cumulative) m-gram probabilities.
+                 * @see GenericTrieBase
+                 */
+                template<bool DO_JOINT_PROBS>
+                inline void execute(T_Query_Exec_Data_Base & query) const {
                     THROW_MUST_OVERRIDE();
                 };
 
@@ -246,8 +268,8 @@ namespace uva {
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, ...) \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<true>(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;\
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<false>(const T_Query_M_Gram<WordIndexType> & query, const void * payloads[MAX_LEVEL][MAX_LEVEL], TLogProbBackOff probs[MAX_LEVEL]) const;
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<true>(T_Query_Exec_Data_Base & query) const;\
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<false>(T_Query_Exec_Data_Base & query) const;
 
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
