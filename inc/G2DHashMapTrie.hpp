@@ -415,16 +415,16 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @param gram the m-gram to work with
                  * @param payloads [out] the payloads array for the given row defined by begin_word_idx
-                 * @param begin_word_idx the begin word index of the sub-m-gram
-                 * @param end_word_idx the end word index of the sub-m-gram
+                 * @param word_idx the uni-gram word index
+                 * @param status [out] the result of the retrieval operation, for the uni-gram will always be GOOD_PRESENT_MGS
                  */
                 inline void get_unigram_payload(const T_Query_M_Gram<WordIndexType> & gram, const void * payloads[MAX_LEVEL],
-                        const TModelLevel begin_word_idx, MGramStatusEnum & status) const {
+                        const TModelLevel word_idx, MGramStatusEnum & status) const {
                     //This is at least a uni-gram we have, therefore first process the it in a special way
-                    const TShortId word_id = gram[begin_word_idx];
+                    const TShortId word_id = gram[word_idx];
 
                     //Store the uni-gram payload pointer and add the probability to the total conditional probability 
-                    payloads[begin_word_idx] = reinterpret_cast<const void *> (&m_1_gram_data[word_id]);
+                    payloads[word_idx] = reinterpret_cast<const void *> (&m_1_gram_data[word_id]);
                     LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
 
                     //The resulting status is always a success

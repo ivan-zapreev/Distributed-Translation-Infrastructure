@@ -41,13 +41,6 @@
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 
-#include "C2DHashMapTrie.hpp"
-#include "W2CHybridMemoryTrie.hpp"
-#include "C2WOrderedArrayTrie.hpp"
-#include "W2COrderedArrayTrie.hpp"
-#include "C2DMapArrayTrie.hpp"
-#include "G2DHashMapTrie.hpp"
-
 using namespace std;
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
