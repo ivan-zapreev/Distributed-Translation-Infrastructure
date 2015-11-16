@@ -126,7 +126,7 @@ namespace uva {
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                     //Register the m-gram in the hash cache
                     this->template register_m_gram_cache<CURR_LEVEL>(gram);
-                    
+
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
@@ -218,19 +218,25 @@ namespace uva {
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                virtual inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
-                    payload = m_mgram_data[0][word_id];
+                    query.m_payloads[word_idx][word_idx] = &m_mgram_data[0][query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
+                /*template<TModelLevel CURR_LEVEL>
                 inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the context id, note we use short ids here!
@@ -241,15 +247,14 @@ namespace uva {
                     } else {
                         return GPR_Enum::FAILED_GPR;
                     }
-                }
+                }*/
 
                 /**
-                 * Allows to retrieve the payload for the N gram defined by the
-                 * end_word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
                  */
-                inline GPR_Enum get_n_gram_payload(const TShortId end_word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
+                virtual inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    /*
                     //Try to find the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];
 
@@ -258,20 +263,20 @@ namespace uva {
                         typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
                         if (result == ctx_mapping->end()) {
                             //The data could not be found
-                            return GPR_Enum::FAILED_GPR;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         } else {
                             //The data could be found
                             LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
                                     << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-                            //WARNING: We cast to (TShortId &) as we misuse the mapping by storing the probability value there!
-                            reinterpret_cast<TShortId&> (payload.prob) = result->second;
-                            return GPR_Enum::PAYLOAD_GPR;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         }
                     } else {
                         LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
                                 << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
-                        return GPR_Enum::FAILED_GPR;
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
+                    */
                 }
 
                 /**

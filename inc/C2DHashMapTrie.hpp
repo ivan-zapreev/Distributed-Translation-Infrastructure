@@ -229,19 +229,25 @@ namespace uva {
                 };
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                virtual inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
-                    payload = m_1_gram_data[word_id];
+                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
+                /*template<TModelLevel CURR_LEVEL>
                 inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     //Get the next context id
@@ -261,30 +267,31 @@ namespace uva {
                         //The context id could not be found
                         return GPR_Enum::FAILED_GPR;
                     }
-                }
+                }*/
 
                 /**
-                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
                  */
-                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
+                virtual inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    /*
                     //Get the next context id
                     if (get_ctx_id<MAX_LEVEL>(word_id, ctx_id)) {
                         //Search for the map for that context id
                         TNGramsMap::const_iterator result = pNGramMap->find(ctx_id);
                         if (result == pNGramMap->end()) {
                             //There is no data found under this context
-                            return GPR_Enum::FAILED_GPR;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         } else {
                             //There is data found under this context
-                            payload.prob = result->second;
-                            return GPR_Enum::PAYLOAD_GPR;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         }
                     } else {
                         //The context id could not be found
-                        return GPR_Enum::FAILED_GPR;
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
+                    */
                 }
 
                 /**

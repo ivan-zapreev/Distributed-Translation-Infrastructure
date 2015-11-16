@@ -160,7 +160,7 @@ namespace uva {
                     //Get the local entry index and then use it to compute the next context id
                     typename T_M_GramWordEntry::TIndexType localIdx;
                     //If the local entry index could be found then compute the next ctx_id
-                    if (get_M_N_GramLocalEntryIdx(ref, ctx_id, localIdx)) {
+                    if (get_m_n_gram_local_entry_idx(ref, ctx_id, localIdx)) {
                         LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
                                 << ", size = " << SSTR(ref.size()) << ", localIdx = "
                                 << SSTR(localIdx) << ", resulting ctx_id = "
@@ -237,7 +237,7 @@ namespace uva {
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
                     //Register the m-gram in the hash cache
                     this->template register_m_gram_cache<CURR_LEVEL>(gram);
-                    
+
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
@@ -251,14 +251,14 @@ namespace uva {
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Get the sub-array reference. 
-                            typename T_N_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_N_GramWordEntry>(m_N_gram_word_2_data, word_id);
+                            typename T_N_GramWordEntry::TElemType & ref = make_m_n_gram_entry<T_N_GramWordEntry>(m_N_gram_word_2_data, word_id);
                             //Store the context and word ids
                             ref.id = ctx_id;
                             //Return the reference to the probability
                             ref.payload = gram.m_payload.prob;
                         } else {
                             //Get the sub-array reference. 
-                            typename T_M_GramWordEntry::TElemType & ref = make_M_N_GramEntry<T_M_GramWordEntry>(m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET], word_id);
+                            typename T_M_GramWordEntry::TElemType & ref = make_m_n_gram_entry<T_M_GramWordEntry>(m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET], word_id);
                             //Store the context and word ids
                             ref.id = ctx_id;
                             //Return the reference to the newly allocated element
@@ -357,19 +357,25 @@ namespace uva {
                 T_N_GramWordEntry * m_N_gram_word_2_data;
 
                 /**
-                 * Allows to retrieve the payload for the One gram with the given Id.
-                 * @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
                  */
-                inline void get_1_gram_payload(const TShortId word_id, T_M_Gram_Payload &payload) const {
+                virtual inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
-                    payload = m_1_gram_data[word_id];
+                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 };
 
                 /**
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                template<TModelLevel CURR_LEVEL>
+                /*template<TModelLevel CURR_LEVEL>
                 inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
                         T_M_Gram_Payload &payload) const {
                     LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
@@ -386,27 +392,26 @@ namespace uva {
                         //The data could not be found
                         return GPR_Enum::FAILED_GPR;
                     }
-                }
+                }*/
 
                 /**
-                 * Allows to retrieve the payload for the N gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
                  */
-                inline GPR_Enum get_n_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                virtual inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    /*LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
                             << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                     //Get the entry
                     const typename T_N_GramWordEntry::TElemType * pEntry;
                     if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, word_id, ctx_id, &pEntry)) {
                         //Return the data
-                        payload.prob = pEntry->payload;
-                        return GPR_Enum::PAYLOAD_GPR;
+                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &pEntry->payload;
+                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
                     } else {
                         //The data could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    }*/
                 }
 
                 /**
@@ -425,7 +430,7 @@ namespace uva {
                  * @param word_id the word id we need the new context entry from
                  */
                 template<typename WORD_ENTRY_TYPE>
-                static inline typename WORD_ENTRY_TYPE::TElemType & make_M_N_GramEntry(WORD_ENTRY_TYPE* wordsArray, const TShortId & word_id) {
+                static inline typename WORD_ENTRY_TYPE::TElemType & make_m_n_gram_entry(WORD_ENTRY_TYPE* wordsArray, const TShortId & word_id) {
                     LOG_DEBUG2 << "Making entry for M-gram with word_id:\t" << SSTR(word_id) << END_LOG;
 
                     //Return the next new element new/free!
@@ -443,7 +448,7 @@ namespace uva {
                  * @throw nothing
                  */
                 template<typename WORD_ENTRY_TYPE>
-                bool get_M_N_GramLocalEntryIdx(const WORD_ENTRY_TYPE & ref, const TShortId ctx_id, typename WORD_ENTRY_TYPE::TIndexType & localIdx) const {
+                bool get_m_n_gram_local_entry_idx(const WORD_ENTRY_TYPE & ref, const TShortId ctx_id, typename WORD_ENTRY_TYPE::TIndexType & localIdx) const {
                     LOG_DEBUG2 << "Searching word data entry for ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                     //Check if there is data to search in
@@ -479,8 +484,8 @@ namespace uva {
                  * @throw nothing
                  */
                 template<TModelLevel level, typename WORD_ENTRY_TYPE>
-                bool get_m_n_gram_entry(const WORD_ENTRY_TYPE* wordsArray,
-                        const TShortId & word_id, const TShortId & ctx_id,
+                inline bool get_m_n_gram_entry(const WORD_ENTRY_TYPE* wordsArray,
+                        const TShortId word_id, const TShortId ctx_id,
                         const typename WORD_ENTRY_TYPE::TElemType **ppData) const {
                     LOG_DEBUG2 << "Getting sub arr data for " << SSTR(level)
                             << "-gram with word_id: " << SSTR(word_id) << END_LOG;
@@ -498,10 +503,10 @@ namespace uva {
                     }
 
                     //Get the local entry index
-                    typename WORD_ENTRY_TYPE::TIndexType localIdx;
-                    if (get_M_N_GramLocalEntryIdx<WORD_ENTRY_TYPE>(ref, ctx_id, localIdx)) {
+                    typename WORD_ENTRY_TYPE::TIndexType local_idx;
+                    if (get_m_n_gram_local_entry_idx<WORD_ENTRY_TYPE>(ref, ctx_id, local_idx)) {
                         //Return the pointer to the data located by the local index
-                        *ppData = &ref[localIdx];
+                        *ppData = &ref[local_idx];
                         return true;
                     } else {
                         LOG_DEBUG2 << "Unable to find data entry for " << SSTR(level) << "-gram ctx_id: "
