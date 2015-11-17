@@ -232,7 +232,7 @@ namespace uva {
                                 << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
-                    */
+                     */
                 }
 
                 /**

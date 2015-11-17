@@ -67,6 +67,9 @@ namespace uva {
                 typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
                 typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
 
+                //The typedef for the function that gets the payload from the m-gram
+                typedef std::function<bool (const C2DHybridTrie<MAX_LEVEL, WordIndexType>*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
+
                 /**
                  * The basic class constructor, accepts memory factors that are the
                  * coefficients used when pre-allocating memory for unordered maps.
@@ -205,17 +208,17 @@ namespace uva {
                  */
                 template<typename T_Query_Exec_Data>
                 inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                /*
-                 *     //Get the next context id
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //There is data found under this context
-                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The context id could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                 */
+                    /*
+                     *     //Get the next context id
+                        if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
+                            //There is data found under this context
+                            payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
+                            return GPR_Enum::PAYLOAD_GPR;
+                        } else {
+                            //The context id could not be found
+                            return GPR_Enum::FAILED_GPR;
+                        }
+                     */
                 }
 
                 /**
@@ -237,7 +240,7 @@ namespace uva {
                         query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
                         status = MGramStatusEnum::GOOD_PRESENT_MGS;
                     }
-                    */
+                     */
                 }
 
                 /**
@@ -246,6 +249,9 @@ namespace uva {
                 virtual ~C2DHybridTrie();
 
             private:
+
+                //Stores the get context id function template instances
+                static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
 
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float m_mgram_mem_factor;
@@ -315,6 +321,17 @@ namespace uva {
                  */
                 void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
 
+            };
+
+            template<TModelLevel MAX_LEVEL, typename WordIndexType>
+            const typename C2DHybridTrie<MAX_LEVEL, WordIndexType>::TGetCtxIdFunc C2DHybridTrie<MAX_LEVEL, WordIndexType>::m_get_ctx_id[M_GRAM_LEVEL_7] = {
+                NULL,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_1>,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_2>,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_3>,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_4>,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_5>,
+                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_6>
             };
 
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DHybridTrieBasic;

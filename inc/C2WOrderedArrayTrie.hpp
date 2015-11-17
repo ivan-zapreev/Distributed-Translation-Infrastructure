@@ -371,7 +371,7 @@ namespace uva {
                                 << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
-                    */
+                     */
                 }
 
                 /**

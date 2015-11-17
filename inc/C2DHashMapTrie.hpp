@@ -245,7 +245,7 @@ namespace uva {
                         //The context id could not be found
                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
-                    */
+                     */
                 }
 
                 /**
@@ -254,6 +254,7 @@ namespace uva {
                 virtual ~C2DMapTrie();
 
             private:
+
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float m_mgram_mem_factor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map

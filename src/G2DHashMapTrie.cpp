@@ -47,13 +47,7 @@ namespace uva {
             : GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Check that the level is supported
-                if (MAX_LEVEL > M_GRAM_LEVEL_7) {
-                    stringstream msg;
-                    msg << "The G2DMapTrie class in " << __FILE__ << " does not support "
-                            << "trie level: " << SSTR(MAX_LEVEL) << ", the maximum supported "
-                            << "level is: " << SSTR(M_GRAM_LEVEL_7) << ", please extend!";
-                    throw Exception(msg.str());
-                }
+                ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
 
                 //Initialize the array of number of gram ids per level
                 memset(m_num_buckets, 0, MAX_LEVEL * sizeof (TShortId));

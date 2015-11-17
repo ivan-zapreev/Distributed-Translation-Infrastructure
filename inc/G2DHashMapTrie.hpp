@@ -269,6 +269,7 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             private:
+               
                 //Stores the 1-gram data
                 T_M_Gram_Payload * m_1_gram_data;
 

@@ -52,13 +52,8 @@ namespace uva {
             m_1_gram_data(NULL) {
 
                 //Perform an error check! This container has a lower bound on the N level.
-                if (MAX_LEVEL < M_GRAM_LEVEL_2) {
-
-                    stringstream msg;
-                    msg << "The requested N-gram level is '" << MAX_LEVEL
-                            << "', but for '" << __FILE__ << "' it must be >= " << M_GRAM_LEVEL_2 << "!";
-                    throw Exception(msg.str());
-                }
+                ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
 
                 //Memset the M grams reference and data arrays
                 memset(pMGramAlloc, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));

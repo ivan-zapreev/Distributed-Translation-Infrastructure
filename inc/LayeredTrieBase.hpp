@@ -29,6 +29,7 @@
 
 #include <string>       // std::string
 #include <cstring>      // std::memcmp std::memcpy
+#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
