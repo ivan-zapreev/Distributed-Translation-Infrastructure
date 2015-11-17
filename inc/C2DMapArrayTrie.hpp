@@ -208,8 +208,14 @@ namespace uva {
                  */
                 template<typename T_Query_Exec_Data>
                 inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    //If the m-1 context is not known then first compute it, and immediately store the back-off payload
+                    
+                    //If the m-1 payload could not be found store a zero payload pointer and return.
+                    
+                    //If the m-1 context is found then move on to the m-gram and try to obtain its payload
+                    
                     /*
-                     *     //Get the next context id
+                        //Get the next context id
                         if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
                             //There is data found under this context
                             payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
