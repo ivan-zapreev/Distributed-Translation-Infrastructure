@@ -98,11 +98,11 @@ namespace uva {
              * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class G2DMapTrie : public GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> {
+            class G2DMapTrie : public GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef GenericTrieBase<MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
                 typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
-                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
+                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 //The typedef for the retrieving function
                 typedef function<uint32_t(const G2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
@@ -258,7 +258,7 @@ namespace uva {
                 template<typename T_Query_Exec_Data>
                 inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
-                    
+
                     //Call the templated part via function pointer
                     m_get_prob[query.m_begin_word_idx][query.m_end_word_idx](m_num_buckets, m_N_gram_data, query, status);
                 }
@@ -269,7 +269,7 @@ namespace uva {
                 virtual ~G2DMapTrie();
 
             private:
-               
+
                 //Stores the 1-gram data
                 T_M_Gram_Payload * m_1_gram_data;
 

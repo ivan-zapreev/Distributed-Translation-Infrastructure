@@ -100,10 +100,10 @@ namespace uva {
              * @param MAX_LEVEL the maximum number of levels in the trie.
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class W2CArrayTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> {
+            class W2CArrayTrie : public LayeredTrieBase<W2CArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
+                typedef LayeredTrieBase<W2CArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic constructor

@@ -79,10 +79,10 @@ namespace uva {
              * 
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class C2DMapTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> {
+            class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
+                typedef LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -287,15 +287,6 @@ namespace uva {
 
                 //The structure for storing the hash key values statistics
                 pair<TLongId, TLongId> hashSizes[MAX_LEVEL];
-
-                /**
-                 * The copy constructor, is made private as we do not intend to copy this class objects
-                 * @param orig the object to copy from
-                 */
-                C2DMapTrie(const C2DMapTrie & orig)
-                : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
-                    throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
-                };
 
                 /**
                  * This method must used to provide the N-gram count information

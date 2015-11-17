@@ -62,13 +62,10 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class C2DHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> {
+            class C2DHybridTrie : public LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
-
-                //The typedef for the function that gets the payload from the m-gram
-                typedef std::function<bool (const C2DHybridTrie<MAX_LEVEL, WordIndexType>*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
+                typedef LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -256,9 +253,6 @@ namespace uva {
 
             private:
 
-                //Stores the get context id function template instances
-                static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
-
                 //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                 const float m_mgram_mem_factor;
                 //The N-Gram memory factor needed for the greedy allocator for the unordered_map
@@ -298,15 +292,6 @@ namespace uva {
                 TNGramsMap * pNGramMap;
 
                 /**
-                 * The copy constructor, is made private as we do not intend to copy this class objects
-                 * @param orig the object to copy from
-                 */
-                C2DHybridTrie(const C2DHybridTrie & orig)
-                : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
-                    throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
-                };
-
-                /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level
@@ -327,17 +312,6 @@ namespace uva {
                  */
                 void preAllocateNGrams(const size_t counts[MAX_LEVEL]);
 
-            };
-
-            template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            const typename C2DHybridTrie<MAX_LEVEL, WordIndexType>::TGetCtxIdFunc C2DHybridTrie<MAX_LEVEL, WordIndexType>::m_get_ctx_id[M_GRAM_LEVEL_7] = {
-                NULL,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_1>,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_2>,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_3>,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_4>,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_5>,
-                &C2DHybridTrie<MAX_LEVEL, WordIndexType>::get_ctx_id<M_GRAM_LEVEL_6>
             };
 
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DHybridTrieBasic;

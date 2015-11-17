@@ -50,10 +50,10 @@ namespace uva {
              * @param StorageContainer the storage container type that is created by the factory
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
-            class W2CHybridTrie : public LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> {
+            class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
-                typedef LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
+                typedef LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic constructor

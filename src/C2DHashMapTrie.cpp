@@ -47,10 +47,11 @@ namespace uva {
                     WordIndexType & word_index,
                     const float mgram_mem_factor,
                     const float ngram_mem_factor)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_mgram_mem_factor(mgram_mem_factor),
             m_ngram_mem_factor(ngram_mem_factor),
             m_1_gram_data(NULL) {
+                //Perform sanity checks
                 if (DO_SANITY_CHECKS) {
                     //Initialize the hash statistics map
                     for (int i = 0; i < MAX_LEVEL; i++) {
@@ -59,14 +60,8 @@ namespace uva {
                     }
                 }
 
-                //Perform an error check! This container has a lower bound on the N level.
-                if (MAX_LEVEL < M_GRAM_LEVEL_2) {
-
-                    stringstream msg;
-                    msg << "The requested N-gram level is '" << MAX_LEVEL
-                            << "', but for '" << __FILE__ << "' it must be >= " << M_GRAM_LEVEL_2 << "!";
-                    throw Exception(msg.str());
-                }
+                //Perform an error check! This container has bounds on the supported trie level
+                ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>

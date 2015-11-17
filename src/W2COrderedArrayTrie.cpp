@@ -44,8 +44,10 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             W2CArrayTrie<MAX_LEVEL, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : LayeredTrieBase<W2CArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
             m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
+                //Perform an error check! This container has bounds on the supported trie level
+                ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
 
                 //Memset the M/N grams reference and data arrays
                 memset(m_M_gram_word_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
