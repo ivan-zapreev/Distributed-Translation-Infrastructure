@@ -222,7 +222,8 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
                  */
-                virtual inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
@@ -253,7 +254,8 @@ namespace uva {
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
                  * @see GenericTrieBase
                  */
-                virtual inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     //Try to find the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];

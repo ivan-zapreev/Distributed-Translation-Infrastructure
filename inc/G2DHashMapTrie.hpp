@@ -218,7 +218,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the uni-gram word index
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //This is at least a uni-gram we have, therefore first process the it in a special way
@@ -238,7 +239,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
                     const TModelLevel layer_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
@@ -253,7 +255,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
                     
                     //Call the templated part via function pointer

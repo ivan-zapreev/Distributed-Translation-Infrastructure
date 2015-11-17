@@ -221,7 +221,7 @@ namespace uva {
                  * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
                  */
                 template<typename TrieType, bool DO_JOINT_PROBS>
-                inline void execute(T_Query_Exec_Data_Base & query) const {
+                inline void execute(typename TrieType::T_Query_Exec_Data & query) const {
                     //Declare the stream-compute result status variable
                     MGramStatusEnum status = MGramStatusEnum::UNDEFINED_MGS;
 
@@ -273,7 +273,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_unigram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     THROW_MUST_NOT_CALL();
                 }
 
@@ -282,7 +283,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_m_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     THROW_MUST_NOT_CALL();
                 }
 
@@ -291,7 +293,8 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                inline void get_n_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     THROW_MUST_NOT_CALL();
                 }
 
@@ -315,14 +318,14 @@ namespace uva {
                  * @param status the resulting status of computations
                  */
                 template<typename TrieType>
-                inline void process_unigram(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                inline void process_unigram(typename TrieType::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the uni-gram word index
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //Get the reference to the payload for convenience
                     const void * & payload = query.m_payloads[word_idx][word_idx];
 
                     //Retrieve the payload
-                    ((TrieType*) this)->get_unigram_payload(query, status);
+                    ((TrieType*) this)->template get_unigram_payload<typename TrieType::T_Query_Exec_Data>(query, status);
                     LOG_DEBUG << "The 1-gram is found, payload: "
                             << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
 
@@ -340,7 +343,7 @@ namespace uva {
                  * @param status the resulting status of computations
                  */
                 template<typename TrieType>
-                inline void process_m_n_gram(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                inline void process_m_n_gram(typename TrieType::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //If this is at least a bi-gram, continue iterations, otherwise we are done!
                     LOG_DEBUG << "Considering the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
@@ -359,7 +362,7 @@ namespace uva {
                         //Obtain the payload, depending on the sub-m-gram level
                         if (curr_level == MAX_LEVEL) {
                             //We are at the last trie level, retrieve the payload
-                            ((TrieType*) this)->get_n_gram_payload(query, status);
+                            ((TrieType*) this)->template get_n_gram_payload<typename TrieType::T_Query_Exec_Data>(query, status);
 
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -371,7 +374,7 @@ namespace uva {
                             }
                         } else {
                             //We are at one of the intermediate trie level, retrieve the payload
-                            ((TrieType*) this)->get_m_gram_payload(query, status);
+                            ((TrieType*) this)->template get_m_gram_payload<typename TrieType::T_Query_Exec_Data>(query, status);
 
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -393,7 +396,7 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 template<typename TrieType>
-                inline void stream_right(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                inline void stream_right(typename TrieType::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //The uni-gram case is special
                     if (query.m_begin_word_idx == query.m_end_word_idx) {
                         //Retrieve the payload
@@ -425,7 +428,7 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 template<typename TrieType>
-                inline void stream_down_unknown(T_Query_Exec_Data_Base & query) const {
+                inline void stream_down_unknown(typename TrieType::T_Query_Exec_Data & query) const {
                     LOG_DEBUG << "Streaming down, from : [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //Iterate down the sub-m-gram matrix column
@@ -453,7 +456,7 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 template<typename TrieType>
-                inline void back_off_and_step_down(T_Query_Exec_Data_Base & query) const {
+                inline void back_off_and_step_down(typename TrieType::T_Query_Exec_Data & query) const {
                     //Store the end word index in the temporary local variable
                     const TModelLevel end_word_idx = query.m_end_word_idx;
                     //Decrease the end word index, as we need the back-off data
@@ -475,10 +478,10 @@ namespace uva {
                             //Try to retrieve the back-off sub-m-gram
                             if (query.m_begin_word_idx == query.m_end_word_idx) {
                                 //If the back-off sub-m-gram is a uni-gram then
-                                ((TrieType*) this)->get_unigram_payload(query, status);
+                                ((TrieType*) this)->template get_unigram_payload<typename TrieType::T_Query_Exec_Data>(query, status);
                             } else {
                                 //The back-off sub-m-gram has a level M: 1 < M < N
-                                ((TrieType*) this)->get_m_gram_payload(query, status);
+                                ((TrieType*) this)->template get_m_gram_payload<typename TrieType::T_Query_Exec_Data>(query, status);
                             }
 
                             //Append the back-off if the retrieval was successful
@@ -519,7 +522,7 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 template<typename TrieType>
-                inline void move_diagonal(T_Query_Exec_Data_Base & query) const {
+                inline void move_diagonal(typename TrieType::T_Query_Exec_Data & query) const {
                     //At this moment we are down to the unknown word uni-gram payloads[begin_word_idx][end_word_idx]
                     //This is also not the last column, so we can move at least one step further, yet we need to move
                     //to the next row as m-grams in this row contain the unk word and thus are definitely not available.

@@ -143,6 +143,7 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef GenericTrieBase<MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
+                typedef typename BASE::T_Query_Exec_Data_Base T_Query_Exec_Data;
 
                 /**
                  * The basic constructor
@@ -215,7 +216,7 @@ namespace uva {
                  * @param status the resulting status of computations
                  */
                 template<typename TrieType>
-                inline void stream_right(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                inline void stream_right(typename TrieType::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     THROW_NOT_IMPLEMENTED();
                 }
 
@@ -225,7 +226,7 @@ namespace uva {
                  * @param query the m-gram query data the end begin word index will be changed
                  */
                 template<typename TrieType>
-                inline void stream_down_unknown(typename BASE::T_Query_Exec_Data_Base & query) const {
+                inline void stream_down_unknown(typename TrieType::T_Query_Exec_Data & query) const {
                     THROW_NOT_IMPLEMENTED();
                 }
 
@@ -234,7 +235,7 @@ namespace uva {
                  * @param query the m-gram query data the begin word index will be changed
                  */
                 template<typename TrieType>
-                inline void back_off_and_step_down(typename BASE::T_Query_Exec_Data_Base & query) const {
+                inline void back_off_and_step_down(typename TrieType::T_Query_Exec_Data & query) const {
                     THROW_NOT_IMPLEMENTED();
                 }
 
