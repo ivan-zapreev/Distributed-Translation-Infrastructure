@@ -236,7 +236,7 @@ namespace uva {
                                 << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                         //Stream the probability computations
-                        ((TrieType*)this)->template stream_right<TrieType>(query, status);
+                        static_cast<const TrieType*>(this)->template stream_right<TrieType>(query, status);
                         LOG_DEBUG << "The result for the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ","
                                 << SSTR(query.m_end_word_idx) << "] is : " << status_to_string(status) << END_LOG;
 
@@ -244,19 +244,19 @@ namespace uva {
                         switch (status) {
                             case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
                                 //The end word is not known back-off down and then do diagonal, if there is columns left
-                                ((TrieType*)this)->template stream_down_unknown<TrieType>(query);
+                                static_cast<const TrieType*>(this)->template stream_down_unknown<TrieType>(query);
                                 //If this was the last column, we are done and can just return
                                 if (query.m_end_word_idx == query.m_gram.get_end_word_idx()) {
                                     LOG_DEBUG << "The computations are done as streaming down was done for the last column!" << END_LOG;
                                     return;
                                 }
                                 //If this was not the last column then we need to go diagonal
-                                ((TrieType*)this)->template move_diagonal<TrieType>(query);
+                                static_cast<const TrieType*>(this)->template move_diagonal<TrieType>(query);
                                 break;
                             case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
                                 //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
                                 //could not be found in the trie, therefore we need to back-off and then keep streaming.
-                                ((TrieType*)this)->template back_off_and_step_down<TrieType>(query);
+                                static_cast<const TrieType*>(this)->template back_off_and_step_down<TrieType>(query);
                                 break;
                             case MGramStatusEnum::GOOD_PRESENT_MGS:
                                 //The m-gram probabilities have been computed, we can return
