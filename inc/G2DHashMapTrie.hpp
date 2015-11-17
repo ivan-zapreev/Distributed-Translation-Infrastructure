@@ -285,14 +285,14 @@ namespace uva {
 
                 //The typedef for the function that gets the payload from the trie
                 typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const TProbBucket * buckets,
-                        typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum &status) > TGetPayloadProbFunc;
+                        T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbFunc;
 
                 //Stores the get-payload function pointers for getting probabilities
                 static const TGetPayloadProbFunc m_get_prob[M_GRAM_LEVEL_6][M_GRAM_LEVEL_7];
 
                 //The typedef for the function that gets the payload from the trie
                 typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const TProbBackOffBucket * buckets,
-                        typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum &status) > TGetPayloadProbBackFunc;
+                        T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbBackFunc;
 
                 //Stores the get-payload function pointers for getting complete payloads 
                 static const TGetPayloadProbBackFunc m_get_prob_back[M_GRAM_LEVEL_6][M_GRAM_LEVEL_7];
@@ -349,7 +349,7 @@ namespace uva {
                  */
                 template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                 static inline void get_payload(const TShortId num_buckets[MAX_LEVEL], const BUCKET_TYPE * buckets,
-                        typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) {
+                        T_Query_Exec_Data & query, MGramStatusEnum & status) {
                     //Compute the current level of the sub-m-gram
                     constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 
