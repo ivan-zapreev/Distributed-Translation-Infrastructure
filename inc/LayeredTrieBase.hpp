@@ -208,6 +208,36 @@ namespace uva {
                     m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
                 }
 
+                /**
+                 * This method does stream compute of the m-gram probabilities
+                 * in one row, until it can not go further.
+                 * @param qaery the query data to be used the end word index is changed
+                 * @param status the resulting status of computations
+                 */
+                template<typename TrieType>
+                inline void stream_right(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_MUST_OVERRIDE();
+                }
+
+                /**
+                 * This method allows to stream down the sub-m-gram matrix colum for the case when the end
+                 * word is unknown.
+                 * @param query the m-gram query data the end begin word index will be changed
+                 */
+                template<typename TrieType>
+                inline void stream_down_unknown(typename BASE::T_Query_Exec_Data_Base & query) const {
+                    THROW_MUST_OVERRIDE();
+                }
+
+                /**
+                 * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
+                 * @param query the m-gram query data the begin word index will be changed
+                 */
+                template<typename TrieType>
+                inline void back_off_and_step_down(typename BASE::T_Query_Exec_Data_Base & query) const {
+                    THROW_MUST_OVERRIDE();
+                }
+
             private:
 
                 /**

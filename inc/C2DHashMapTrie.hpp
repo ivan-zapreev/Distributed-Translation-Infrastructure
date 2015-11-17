@@ -295,14 +295,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                };
-
-                /**
                  * This method must used to provide the N-gram count information
                  * That should allow for pre-allocation of the memory
                  * @param counts the counts for the number of elements of each gram level

@@ -278,15 +278,6 @@ namespace uva {
                     }
                     */
                 }
-
-                /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
-                };
-
             };
 
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CHybridTrieBasic;

@@ -89,63 +89,6 @@ namespace uva {
                 return MGramStatusEnumStrings[value];
             }
 
-            namespace __GenericTrieBase {
-
-                /**
-                 * This method allows to get the payloads and compute the (joint) m-gram probabilities.
-                 * @param TrieType the trie type
-                 * @param DO_JOINT_PROBS true if we want joint probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
-                 * @param trie the trie instance reference
-                 * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
-                 */
-                template<typename TrieType, bool DO_JOINT_PROBS>
-                inline void execute(const TrieType & trie, typename TrieType::T_Query_Exec_Data & query) {
-                    //Declare the stream-compute result status variable
-                    MGramStatusEnum status = MGramStatusEnum::UNDEFINED_MGS;
-
-                    //Initialize the begin and end index variables
-                    query.m_begin_word_idx = query.m_gram.get_begin_word_idx();
-                    //Check if we need cumulative or single conditional m-gram probability
-                    query.m_end_word_idx = (DO_JOINT_PROBS) ? query.m_begin_word_idx : query.m_gram.get_end_word_idx();
-
-                    //Do the iterations until the status is successful, the return is done within the loop
-                    while (true) {
-                        LOG_DEBUG << "-----> Streaming cumulative sub-m-gram [" << SSTR(query.m_begin_word_idx)
-                                << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
-
-                        //Stream the probability computations
-                        trie.stream_right(query, status);
-                        LOG_DEBUG << "The result for the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ","
-                                << SSTR(query.m_end_word_idx) << "] is : " << status_to_string(status) << END_LOG;
-
-                        //Check the resulting status and take actions if needed
-                        switch (status) {
-                            case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
-                                //The end word is not known back-off down and then do diagonal, if there is columns left
-                                trie.stream_down_unknown(query);
-                                //If this was the last column, we are done and can just return
-                                if (query.m_end_word_idx == query.m_gram.get_end_word_idx()) {
-                                    LOG_DEBUG << "The computations are done as streaming down was done for the last column!" << END_LOG;
-                                    return;
-                                }
-                                //If this was not the last column then we need to go diagonal
-                                trie.move_diagonal(query);
-                                break;
-                            case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
-                                //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
-                                //could not be found in the trie, therefore we need to back-off and then keep streaming.
-                                trie.back_off_and_step_down(query);
-                                break;
-                            case MGramStatusEnum::GOOD_PRESENT_MGS:
-                                //The m-gram probabilities have been computed, we can return
-                                return;
-                            default:
-                                THROW_EXCEPTION(string("Unsupported status: ").append(std::to_string(status)));
-                        }
-                    }
-                };
-            }
-
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
@@ -271,43 +214,86 @@ namespace uva {
                 }
 
                 /**
-                 * This method does stream compute of the m-gram probabilities
-                 * in one row, until it can not go further.
-                 * @param qaery the query data to be used the end word index is changed
-                 * @param status the resulting status of computations
+                 * This method allows to get the payloads and compute the (joint) m-gram probabilities.
+                 * @param TrieType the trie type
+                 * @param DO_JOINT_PROBS true if we want joint probabilities per sum-m-gram, otherwise false (one conditional m-gram probability)
+                 * @param trie the trie instance reference
+                 * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
                  */
-                inline void stream_right(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
-                    THROW_MUST_OVERRIDE();
+                template<typename TrieType, bool DO_JOINT_PROBS>
+                inline void execute(T_Query_Exec_Data_Base & query) const {
+                    //Declare the stream-compute result status variable
+                    MGramStatusEnum status = MGramStatusEnum::UNDEFINED_MGS;
+
+                    //Initialize the begin and end index variables
+                    query.m_begin_word_idx = query.m_gram.get_begin_word_idx();
+                    //Check if we need cumulative or single conditional m-gram probability
+                    query.m_end_word_idx = (DO_JOINT_PROBS) ? query.m_begin_word_idx : query.m_gram.get_end_word_idx();
+
+                    //Do the iterations until the status is successful, the return is done within the loop
+                    while (true) {
+                        LOG_DEBUG << "-----> Streaming cumulative sub-m-gram [" << SSTR(query.m_begin_word_idx)
+                                << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
+                        //Stream the probability computations
+                        ((TrieType*)this)->template stream_right<TrieType>(query, status);
+                        LOG_DEBUG << "The result for the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ","
+                                << SSTR(query.m_end_word_idx) << "] is : " << status_to_string(status) << END_LOG;
+
+                        //Check the resulting status and take actions if needed
+                        switch (status) {
+                            case MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS:
+                                //The end word is not known back-off down and then do diagonal, if there is columns left
+                                ((TrieType*)this)->template stream_down_unknown<TrieType>(query);
+                                //If this was the last column, we are done and can just return
+                                if (query.m_end_word_idx == query.m_gram.get_end_word_idx()) {
+                                    LOG_DEBUG << "The computations are done as streaming down was done for the last column!" << END_LOG;
+                                    return;
+                                }
+                                //If this was not the last column then we need to go diagonal
+                                ((TrieType*)this)->template move_diagonal<TrieType>(query);
+                                break;
+                            case MGramStatusEnum::BAD_NO_PAYLOAD_MGS:
+                                //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
+                                //could not be found in the trie, therefore we need to back-off and then keep streaming.
+                                ((TrieType*)this)->template back_off_and_step_down<TrieType>(query);
+                                break;
+                            case MGramStatusEnum::GOOD_PRESENT_MGS:
+                                //The m-gram probabilities have been computed, we can return
+                                return;
+                            default:
+                                THROW_EXCEPTION(string("Unsupported status: ").append(std::to_string(status)));
+                        }
+                    }
+                };
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success.
+                 * @param query the query containing the actual query data
+                 * @param status the resulting status of the operation
+                 */
+                inline void get_unigram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_MUST_NOT_CALL();
                 }
 
                 /**
-                 * This method allows to stream down the sub-m-gram matrix colum for the case when the end
-                 * word is unknown.
-                 * @param query the m-gram query data the end begin word index will be changed
+                 * Allows to attempt the sub-m-gram payload retrieval for 1<m<n
+                 * @param query the query containing the actual query data
+                 * @param status the resulting status of the operation
                  */
-                inline void stream_down_unknown(T_Query_Exec_Data_Base & query) const {
-                    THROW_MUST_OVERRIDE();
+                inline void get_m_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_MUST_NOT_CALL();
                 }
 
                 /**
-                 * This method allows to perform the diagonal move in the sub-m-gram matrix in case the 
-                 * end word of the sub-m-gram is unknown and this is not the last column. This method 
-                 * will only be called in case it is not the last column of the sub-m-grams matrix.
-                 * @param query the m-gram query data the begin and end word index will be changed
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @param query the query containing the actual query data
+                 * @param status the resulting status of the operation
                  */
-                inline void move_diagonal(T_Query_Exec_Data_Base & query) const {
-                    THROW_MUST_OVERRIDE();
+                inline void get_n_gram_payload(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    THROW_MUST_NOT_CALL();
                 }
-
-                /**
-                 * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
-                 * @param query the m-gram query data the begin word index will be changed
-                 */
-                inline void back_off_and_step_down(T_Query_Exec_Data_Base & query) const {
-                    THROW_MUST_OVERRIDE();
-                }
-
-            protected:
 
                 /**
                  * Is to be used from the sub-classes from the add_X_gram methods.
@@ -322,16 +308,248 @@ namespace uva {
                     }
                 }
 
+                /**
+                 * This method allows to process the uni-gram case, retrieve payload and account for probabilities.
+                 * @param TrieType the trie type
+                 * @param query the m-gram query data
+                 * @param status the resulting status of computations
+                 */
+                template<typename TrieType>
+                inline void process_unigram(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //Get the uni-gram word index
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
+                    //Get the reference to the payload for convenience
+                    const void * & payload = query.m_payloads[word_idx][word_idx];
+
+                    //Retrieve the payload
+                    ((TrieType*) this)->get_unigram_payload(query, status);
+                    LOG_DEBUG << "The 1-gram is found, payload: "
+                            << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
+
+                    //No need to check on the status, it is always good for the uni-gram
+                    query.m_probs[word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->prob;
+                    LOG_DEBUG << "probs[" << SSTR(word_idx) << "] += "
+                            << reinterpret_cast<const T_M_Gram_Payload *> (payload)->prob << END_LOG;
+                }
+
+                /**
+                 * This method allows to process the probability for the m/n-gram defined
+                 * by the method arguments.
+                 * @param TrieType the trie type
+                 * @param query the m-gram query data
+                 * @param status the resulting status of computations
+                 */
+                template<typename TrieType>
+                inline void process_m_n_gram(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //If this is at least a bi-gram, continue iterations, otherwise we are done!
+                    LOG_DEBUG << "Considering the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
+                    //First check if it makes sense to look into  the trie
+                    ((TrieType*) this)->is_m_gram_potentially_present(query, status);
+                    LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                            << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
+
+                        //Compute the current m-gram level
+                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        //Just for convenience get the reference to the payload element
+                        const void * & payload_elem = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
+
+                        //Obtain the payload, depending on the sub-m-gram level
+                        if (curr_level == MAX_LEVEL) {
+                            //We are at the last trie level, retrieve the payload
+                            ((TrieType*) this)->get_n_gram_payload(query, status);
+
+                            //Append the probability if the retrieval was successful
+                            if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                LOG_DEBUG << "The n-gram is found, probability: "
+                                        << *reinterpret_cast<const TLogProbBackOff *> (payload_elem) << END_LOG;
+                                query.m_probs[query.m_end_word_idx] += *reinterpret_cast<const TLogProbBackOff *> (payload_elem);
+                                LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
+                                        << *reinterpret_cast<const TLogProbBackOff *> (payload_elem) << END_LOG;
+                            }
+                        } else {
+                            //We are at one of the intermediate trie level, retrieve the payload
+                            ((TrieType*) this)->get_m_gram_payload(query, status);
+
+                            //Append the probability if the retrieval was successful
+                            if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                LOG_DEBUG << "The m-gram is found, payload: "
+                                        << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload_elem) << END_LOG;
+                                query.m_probs[query.m_end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload_elem)->prob;
+                                LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
+                                        << reinterpret_cast<const T_M_Gram_Payload *> (payload_elem)->prob << END_LOG;
+                            }
+                        }
+                    }
+                }
+
+                /**
+                 * This method does stream compute of the m-gram probabilities
+                 * in one row, until it can not go further.
+                 * @param TrieType the trie type
+                 * @param query the query data to be used the end word index is changed
+                 * @param status the resulting status of the operation
+                 */
+                template<typename TrieType>
+                inline void stream_right(T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
+                    //The uni-gram case is special
+                    if (query.m_begin_word_idx == query.m_end_word_idx) {
+                        //Retrieve the payload
+                        ((TrieType*) this)->template process_unigram<TrieType>(query, status);
+
+                        //Increment the end_word_idx to move on, to the next sub-m-gram
+                        query.m_end_word_idx++;
+                    }
+
+                    //If this is at least a bi-gram, continue iterations, otherwise we are done!
+                    for (; query.m_end_word_idx <= query.m_gram.get_end_word_idx(); ++query.m_end_word_idx) {
+                        //Retrieve the payload
+                        ((TrieType*) this)->template process_m_n_gram<TrieType>(query, status);
+
+                        //Check if we need to stream further
+                        if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
+                            //If we could not retrieve the payload at some point
+                            //then it is time to stop streaming and do a back-off
+                            return;
+                        }
+                    }
+                }
+
+                /**
+                 * This method allows to stream down the sub-m-gram matrix colum 
+                 * for the case when the end word is unknown.
+                 * @param TrieType the trie type
+                 * @param query the m-gram query data the end begin word index will be changed
+                 * @param status the resulting status of the operation
+                 */
+                template<typename TrieType>
+                inline void stream_down_unknown(T_Query_Exec_Data_Base & query) const {
+                    LOG_DEBUG << "Streaming down, from : [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
+                    //Iterate down the sub-m-gram matrix column
+                    while (query.m_begin_word_idx < query.m_end_word_idx) {
+                        LOG_DEBUG << "Going to get back-off payload for sub-m-gram: [" << SSTR(query.m_begin_word_idx)
+                                << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+                        //Just do a simple back-off that will also increment begin_word_idx
+                        //We could have done here a bit better, as we know that on the first iteration
+                        //the payload for the back-off sub-m-gram is already retrieved and on the others
+                        //it is definitely not retrieved yet, but this is a minor optimization, I guess
+                        ((TrieType*) this)->template back_off_and_step_down<TrieType>(query);
+                    }
+                    LOG_DEBUG << "Done with streaming down, need to account for : [" << SSTR(query.m_begin_word_idx)
+                            << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
+                    //Once we are done with the loop above we need to retrieve and account for the unknown word uni-gram
+                    MGramStatusEnum dummy_status;
+                    ((TrieType*) this)->template process_unigram<TrieType>(query, dummy_status);
+                }
+
+                /**
+                 * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
+                 * @param TrieType the trie type
+                 * @param query the m-gram query data the begin word index will be changed
+                 * @param status the resulting status of the operation
+                 */
+                template<typename TrieType>
+                inline void back_off_and_step_down(T_Query_Exec_Data_Base & query) const {
+                    //Store the end word index in the temporary local variable
+                    const TModelLevel end_word_idx = query.m_end_word_idx;
+                    //Decrease the end word index, as we need the back-off data
+                    query.m_end_word_idx--;
+
+                    //Define the reference to the payload pointer, just for convenience
+                    const void * & payload = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
+
+                    //Check that the payload has not been retrieved yet
+                    if (payload == NULL) {
+                        LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                                << SSTR(query.m_end_word_idx) << "] is not available, needs to be retrieved!" << END_LOG;
+                        //Check if the back-off sub-m-gram is potentially available
+                        MGramStatusEnum status;
+                        ((TrieType*) this)->is_m_gram_potentially_present(query, status);
+                        LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                                << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
+                        if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                            //Try to retrieve the back-off sub-m-gram
+                            if (query.m_begin_word_idx == query.m_end_word_idx) {
+                                //If the back-off sub-m-gram is a uni-gram then
+                                ((TrieType*) this)->get_unigram_payload(query, status);
+                            } else {
+                                //The back-off sub-m-gram has a level M: 1 < M < N
+                                ((TrieType*) this)->get_m_gram_payload(query, status);
+                            }
+
+                            //Append the back-off if the retrieval was successful
+                            if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                LOG_DEBUG << "The m-gram is found, payload: "
+                                        << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
+                                query.m_probs[end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->back;
+                                LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
+                                        << reinterpret_cast<const T_M_Gram_Payload *> (payload)->back << END_LOG;
+                            }
+                        }
+                    } else {
+                        LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                                << "," << SSTR(query.m_end_word_idx) << "] is available and will be used" << END_LOG;
+                        //Add the back-off weight
+                        query.m_probs[end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->back;
+                        LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
+                                << reinterpret_cast<const T_M_Gram_Payload *> (payload)->back << END_LOG;
+                    }
+                    //Next we shift to the next row, it is possible as it is not a uni-gram case, the latter 
+                    //always get MGramStatusEnum::GOOD_PRESENT_MGS result when their payload is retrieved
+                    query.m_begin_word_idx++;
+                    //Increase the end word index as we are going back to normal
+                    query.m_end_word_idx++;
+                }
+
             private:
 
                 //Stores the bitmap hash caches per M-gram level for 1 < M <= N
                 BitmapHashCache m_bitmap_hash_cach[NUM_M_N_GRAM_LEVELS];
+
+                /**
+                 * This method allows to perform the diagonal move in the sub-m-gram matrix in case the 
+                 * end word of the sub-m-gram is unknown and this is not the last column. This method 
+                 * will only be called in case it is not the last column of the sub-m-grams matrix.
+                 * @param TrieType the trie type
+                 * @param query the m-gram query data the begin and end word index will be changed
+                 * @param status the resulting status of the operation
+                 */
+                template<typename TrieType>
+                inline void move_diagonal(T_Query_Exec_Data_Base & query) const {
+                    //At this moment we are down to the unknown word uni-gram payloads[begin_word_idx][end_word_idx]
+                    //This is also not the last column, so we can move at least one step further, yet we need to move
+                    //to the next row as m-grams in this row contain the unk word and thus are definitely not available.
+
+                    LOG_DEBUG << "Adding the back-off from sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                            << SSTR(query.m_end_word_idx) << "] to prob[" << SSTR(query.m_end_word_idx + 1) << "]!" << END_LOG;
+
+                    //Define the reference to the payload pointer, for convenience
+                    const void * & payload = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
+
+                    //Increment the end word index as we need to add the back-off to the next probability
+                    query.m_end_word_idx++;
+
+                    //Add the back-off weight of the unknown word stored in the payloads to the next sub-m-gram probability
+                    query.m_probs[query.m_end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->back;
+                    LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
+                            << reinterpret_cast<const T_M_Gram_Payload *> (payload)->back << END_LOG;
+
+                    //Match the begin word index with the end word index (moving diagonal)
+                    query.m_begin_word_idx = query.m_end_word_idx;
+
+                    LOG_DEBUG << "The next uni-gram to consider is : [" << SSTR(query.m_begin_word_idx)
+                            << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+                }
             };
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_GENERIC_TRIE(TRIE_TYPE_NAME, ...) \
             template class TRIE_TYPE_NAME<__VA_ARGS__>;
-            
+
 #define INSTANTIATE_GENERIC_TRIE_BITMAP(LEVEL, WORD_INDEX) \
             INSTANTIATE_GENERIC_TRIE(GenericTrieBase, LEVEL, WORD_INDEX, true); \
             INSTANTIATE_GENERIC_TRIE(GenericTrieBase, LEVEL, WORD_INDEX, false);
@@ -342,12 +560,16 @@ namespace uva {
             INSTANTIATE_GENERIC_TRIE_BITMAP(M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>);
 
             //Make sure that there will be templates instantiated, at least for the given parameter values
+#define INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, ...) \
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<TRIE_TYPE_NAME<__VA_ARGS__>, true>(T_Query_Exec_Data_Base & query) const;\
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<TRIE_TYPE_NAME<__VA_ARGS__>, false>(T_Query_Exec_Data_Base & query) const;
 
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
 
 #define INSTANTIATE_TRIE_TEMPLATE_TYPE(TRIE_TYPE_NAME, ...) \
             template class TRIE_TYPE_NAME<__VA_ARGS__>; \
+            INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, __VA_ARGS__) \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_1, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_2, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_3, TRIE_TYPE_NAME, __VA_ARGS__); \

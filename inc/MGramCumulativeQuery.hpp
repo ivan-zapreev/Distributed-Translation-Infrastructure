@@ -128,7 +128,7 @@ namespace uva {
                     memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
                     //Execute the query
-                    __GenericTrieBase::execute<TrieType, true>(BASE::m_trie, BASE::m_query);
+                    BASE::m_trie.template execute<TrieType, true>(BASE::m_query);
 
                     LOG_DEBUG << "Finished executing:" << (string) BASE::m_query.m_gram << END_LOG;
                 }

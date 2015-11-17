@@ -415,14 +415,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to retrieve the probability and back-off weight of the unknown word
-                 * @param payload the unknown word payload data
-                 */
-                inline void get_unk_word_payload(T_M_Gram_Payload & payload) const {
-                    payload = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                };
-
-                /**
                  * For a M-gram allows to create a new context entry for the given word id.
                  * This method words for 1 < M <= N.
                  * @param WORD_ENTRY_TYPE the word entry type
