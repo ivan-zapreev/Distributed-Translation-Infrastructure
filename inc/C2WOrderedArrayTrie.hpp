@@ -304,32 +304,6 @@ namespace uva {
                 }
 
                 /**
-                 * The basic destructor
-                 */
-                virtual ~C2WArrayTrie();
-
-            protected:
-
-                /**
-                 * This structure is needed to store begin and end index to reference pieces of an array
-                 * It is used to reference sub-array ranges for the M-gram data for levels 1 < M < N.
-                 * 
-                 * WARNING: It is not possible to get rid of this structure as the contexts are not ordered.
-                 * It is only true that the contexts will be filled one after another, but the context id 
-                 * will not be increased all the time.
-                 * 
-                 * @param beginIdx the begin index
-                 * @param endIdx the end index
-                 */
-                typedef struct {
-                    TShortId begin_idx;
-                    TShortId end_idx;
-                } TSubArrReference;
-
-                typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
-                typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
-
-                /**
                  * Allows to attempt the sub-m-gram payload retrieval for m==1.
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
@@ -349,9 +323,9 @@ namespace uva {
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                /*template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*
                     //Compute the m-gram index
                     constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
@@ -367,7 +341,8 @@ namespace uva {
                         //The data could not be found
                         return GPR_Enum::FAILED_GPR;
                     }
-                }*/
+                     * */
+                }
 
                 /**
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
@@ -398,6 +373,32 @@ namespace uva {
                     }
                     */
                 }
+
+                /**
+                 * The basic destructor
+                 */
+                virtual ~C2WArrayTrie();
+
+            protected:
+
+                /**
+                 * This structure is needed to store begin and end index to reference pieces of an array
+                 * It is used to reference sub-array ranges for the M-gram data for levels 1 < M < N.
+                 * 
+                 * WARNING: It is not possible to get rid of this structure as the contexts are not ordered.
+                 * It is only true that the contexts will be filled one after another, but the context id 
+                 * will not be increased all the time.
+                 * 
+                 * @param beginIdx the begin index
+                 * @param endIdx the end index
+                 */
+                typedef struct {
+                    TShortId begin_idx;
+                    TShortId end_idx;
+                } TSubArrReference;
+
+                typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
+                typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
                 template<TModelLevel CURR_LEVEL>
                 inline void post_m_grams() {

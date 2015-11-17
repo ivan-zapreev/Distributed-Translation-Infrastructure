@@ -172,6 +172,70 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
+                    //The data is always present.
+                    query.m_payloads[word_idx][word_idx] = &m_mgram_data[0][query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                };
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*
+                    //Get the context id, note we use short ids here!
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
+                        //Return the data by the context
+                        payload = m_mgram_data[CURR_LEVEL - 1][ctx_id];
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        return GPR_Enum::FAILED_GPR;
+                    }*/
+                }
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*
+                    //Try to find the word mapping first
+                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];
+
+                    //If the mapping is present the search further, otherwise return false
+                    if (ctx_mapping != NULL) {
+                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
+                        if (result == ctx_mapping->end()) {
+                            //The data could not be found
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        } else {
+                            //The data could be found
+                            LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
+                                    << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                        }
+                    } else {
+                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
+                                << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    }
+                    */
+                }
+
+                /**
                  * The basic destructor
                  */
                 virtual ~W2CHybridTrie();
@@ -216,70 +280,6 @@ namespace uva {
                 //for 1 < M < N.
                 const static TModelLevel NUM_IDX_COUNTERS = MAX_LEVEL - 2;
                 TShortId next_ctx_id[NUM_IDX_COUNTERS];
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
-                 * The retrieval of a uni-gram data is always a success
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    //Get the word index for convenience
-                    const TModelLevel & word_idx = query.m_begin_word_idx;
-                    //The data is always present.
-                    query.m_payloads[word_idx][word_idx] = &m_mgram_data[0][query.m_gram[word_idx]];
-
-                    //The resulting status is always a success
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                };
-
-                /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
-                 */
-                /*template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    //Get the context id, note we use short ids here!
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //Return the data by the context
-                        payload = m_mgram_data[CURR_LEVEL - 1][ctx_id];
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }*/
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==n
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];
-
-                    //If the mapping is present the search further, otherwise return false
-                    if (ctx_mapping != NULL) {
-                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
-                        if (result == ctx_mapping->end()) {
-                            //The data could not be found
-                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                        } else {
-                            //The data could be found
-                            LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
-                                    << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                        }
-                    } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
-                                << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                    }
-                    */
-                }
             };
 
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CHybridTrieBasic;

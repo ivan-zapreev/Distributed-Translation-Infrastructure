@@ -268,6 +268,65 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
+                    //The data is always present.
+                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                };
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
+                 * For more details @see LayeredTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                    //Get the entry
+                    const typename T_M_GramWordEntry::TElemType * pEntry;
+                    const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                    if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, word_id, ctx_id, &pEntry)) {
+                        //Return the data
+                        payload = pEntry->payload;
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        //The data could not be found
+                        return GPR_Enum::FAILED_GPR;
+                    }*/
+                }
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                    //Get the entry
+                    const typename T_N_GramWordEntry::TElemType * pEntry;
+                    if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, word_id, ctx_id, &pEntry)) {
+                        //Return the data
+                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &pEntry->payload;
+                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                    } else {
+                        //The data could not be found
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    }*/
+                }
+
+                /**
                  * The basic destructor
                  */
                 virtual ~W2CArrayTrie();
@@ -355,66 +414,6 @@ namespace uva {
                 //Stores the M-gram word to data mappings for: 1 < M < N
                 //This is a one dimensional array
                 T_N_GramWordEntry * m_N_gram_word_2_data;
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
-                 * The retrieval of a uni-gram data is always a success
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    //Get the word index for convenience
-                    const TModelLevel & word_idx = query.m_begin_word_idx;
-                    //The data is always present.
-                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
-
-                    //The resulting status is always a success
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                };
-
-                /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
-                 */
-                /*template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-
-                    //Get the entry
-                    const typename T_M_GramWordEntry::TElemType * pEntry;
-                    const T_M_GramWordEntry * ptr = m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET];
-                    if (get_m_n_gram_entry<CURR_LEVEL, T_M_GramWordEntry>(ptr, word_id, ctx_id, &pEntry)) {
-                        //Return the data
-                        payload = pEntry->payload;
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The data could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }*/
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==n
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-
-                    //Get the entry
-                    const typename T_N_GramWordEntry::TElemType * pEntry;
-                    if (get_m_n_gram_entry<MAX_LEVEL, T_N_GramWordEntry>(m_N_gram_word_2_data, word_id, ctx_id, &pEntry)) {
-                        //Return the data
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &pEntry->payload;
-                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                    } else {
-                        //The data could not be found
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                    }*/
-                }
 
                 /**
                  * For a M-gram allows to create a new context entry for the given word id.

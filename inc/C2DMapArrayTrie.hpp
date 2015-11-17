@@ -184,6 +184,63 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
+                 * The retrieval of a uni-gram data is always a success
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    //Get the word index for convenience
+                    const TModelLevel & word_idx = query.m_begin_word_idx;
+                    //The data is always present.
+                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+
+                    //The resulting status is always a success
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                };
+
+                /**
+                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                /*
+                 *     //Get the next context id
+                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
+                        //There is data found under this context
+                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
+                        return GPR_Enum::PAYLOAD_GPR;
+                    } else {
+                        //The context id could not be found
+                        return GPR_Enum::FAILED_GPR;
+                    }
+                 */
+                }
+
+                /**
+                 * Allows to attempt the sub-m-gram payload retrieval for m==n
+                 * @see GenericTrieBase
+                 */
+                template<typename T_Query_Exec_Data>
+                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    /*
+                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+
+                    //Search for the map for that context id
+                    TNGramsMap::const_iterator result = pNGramMap->find(key);
+                    if (result == pNGramMap->end()) {
+                        //There is no data found under this context
+                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    } else {
+                        //There is data found under this context
+                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                    }
+                    */
+                }
+
+                /**
                  * The basic destructor
                  */
                 virtual ~C2DHybridTrie();
@@ -236,62 +293,6 @@ namespace uva {
                 : LayeredTrieBase<MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE>(orig.m_word_index), m_mgram_mem_factor(0.0), m_ngram_mem_factor(0.0), m_1_gram_data(NULL) {
                     throw Exception("ContextMultiHashMapTrie copy constructor must not be used, unless implemented!");
                 };
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==1.
-                 * The retrieval of a uni-gram data is always a success
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    //Get the word index for convenience
-                    const TModelLevel & word_idx = query.m_begin_word_idx;
-                    //The data is always present.
-                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
-
-                    //The resulting status is always a success
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                };
-
-                /**
-                 * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
-                 * For more details @see LayeredTrieBase
-                 */
-                /*template<TModelLevel CURR_LEVEL>
-                inline GPR_Enum get_m_gram_payload(const TShortId word_id, TLongId ctx_id,
-                        T_M_Gram_Payload &payload) const {
-                    //Get the next context id
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //There is data found under this context
-                        payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The context id could not be found
-                        return GPR_Enum::FAILED_GPR;
-                    }
-                }*/
-
-                /**
-                 * Allows to attempt the sub-m-gram payload retrieval for m==n
-                 * @see GenericTrieBase
-                 */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
-
-                    //Search for the map for that context id
-                    TNGramsMap::const_iterator result = pNGramMap->find(key);
-                    if (result == pNGramMap->end()) {
-                        //There is no data found under this context
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                    } else {
-                        //There is data found under this context
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
-                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                    }
-                    */
-                }
 
                 /**
                  * This method must used to provide the N-gram count information
