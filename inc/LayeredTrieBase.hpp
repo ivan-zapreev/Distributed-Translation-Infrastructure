@@ -216,7 +216,7 @@ namespace uva {
                  */
                 template<typename TrieType>
                 inline void stream_right(typename BASE::T_Query_Exec_Data_Base & query, MGramStatusEnum & status) const {
-                    THROW_MUST_OVERRIDE();
+                    THROW_NOT_IMPLEMENTED();
                 }
 
                 /**
@@ -226,7 +226,7 @@ namespace uva {
                  */
                 template<typename TrieType>
                 inline void stream_down_unknown(typename BASE::T_Query_Exec_Data_Base & query) const {
-                    THROW_MUST_OVERRIDE();
+                    THROW_NOT_IMPLEMENTED();
                 }
 
                 /**
@@ -235,7 +235,7 @@ namespace uva {
                  */
                 template<typename TrieType>
                 inline void back_off_and_step_down(typename BASE::T_Query_Exec_Data_Base & query) const {
-                    THROW_MUST_OVERRIDE();
+                    THROW_NOT_IMPLEMENTED();
                 }
 
             private:
