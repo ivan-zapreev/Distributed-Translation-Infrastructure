@@ -559,17 +559,11 @@ namespace uva {
             INSTANTIATE_GENERIC_TRIE_BITMAP(M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex>);
             INSTANTIATE_GENERIC_TRIE_BITMAP(M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex>);
 
-            //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, ...) \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<TRIE_TYPE_NAME<__VA_ARGS__>, true>(T_Query_Exec_Data_Base & query) const;\
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::execute<TRIE_TYPE_NAME<__VA_ARGS__>, false>(T_Query_Exec_Data_Base & query) const;
-
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
             template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
 
 #define INSTANTIATE_TRIE_TEMPLATE_TYPE(TRIE_TYPE_NAME, ...) \
             template class TRIE_TYPE_NAME<__VA_ARGS__>; \
-            INSTANTIATE_TRIE_EXECUTE(TRIE_TYPE_NAME, __VA_ARGS__) \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_1, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_2, TRIE_TYPE_NAME, __VA_ARGS__); \
             INSTANTIATE_TRIE_FUNCS_LEVEL(M_GRAM_LEVEL_3, TRIE_TYPE_NAME, __VA_ARGS__); \
