@@ -112,7 +112,7 @@ namespace uva {
                     //If this trie needs getting context ids then clean the data as well
                     if (BASE::m_trie.is_need_getting_ctx_ids()) {
                         //Clean the payload pointer entries
-                        memset(BASE::m_query.m_ctx_ids, 0, sizeof (TLongId) * MAX_LEVEL * MAX_LEVEL);
+                        memset(BASE::m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * MAX_LEVEL);
                     }
 
                     //Execute the query

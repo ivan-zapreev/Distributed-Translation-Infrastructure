@@ -102,6 +102,7 @@ namespace uva {
                  * This structure stores the basic data required for a query execution.
                  * @param m_query the m-gram query itself 
                  * @param m_payloads the  two dimensional array of the payloads 
+                 * @param m_last_ctx_ids stores the last context id computed for the given row of the sub-m-gram matrix
                  * @param m_probs the array f probabilities 
                  * @param m_begin_word_idx the currently considered begin word index
                  * @param m_end_word_idx the currently considered end word index
@@ -109,7 +110,7 @@ namespace uva {
                 struct S_Query_Exec_Data {
                     T_Query_M_Gram<WordIndexType> m_gram;
                     const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
-                    TLongId m_ctx_ids[MAX_LEVEL][MAX_LEVEL];
+                    TLongId m_last_ctx_ids[MAX_LEVEL][;
                     TLogProbBackOff m_probs[MAX_LEVEL];
                     TModelLevel m_begin_word_idx;
                     TModelLevel m_end_word_idx;

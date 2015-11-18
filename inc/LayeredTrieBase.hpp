@@ -144,6 +144,8 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
+                //Define the word id type
+                typedef TrieType::WordIndexType::TWordIdType TWordIdType;
 
                 //The typedef for the function that gets the payload from the m-gram
                 typedef std::function<bool (const TrieType*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
@@ -159,12 +161,12 @@ namespace uva {
                     //Clean the cache memory
                     memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
                 }
-                
+
                 /**
                  * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
                  * @return returns true, by default all layered tries need context ids when searching for data
                  */
-                static constexpr bool is_need_getting_ctx_ids(){
+                static constexpr bool is_need_getting_ctx_ids() {
                     return true;
                 }
 
@@ -220,6 +222,60 @@ namespace uva {
                     memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId));
                     //Store the cache value
                     m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
+                }
+
+            protected:
+
+                /**
+                 * For the given query tries to ensure that the context is computed and stored.
+                 * Also for the context the payload is retrieved. If the back-off is also not
+                 * found sets its payload pointer to the zero payload structure.
+                 * WARNING: This method is to be only called for minimal bi-gram queries!
+                 * @param query the query to work with
+                 * @return true if the context was successfully computed, otherwise false.
+                 */
+                inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) {
+                    //Get the context id reference for convenience
+                    TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+
+                    //Check if the context id is set
+                    if (ctx_id == WordIndexType::UNDEFINED_WORD_ID) {
+                        //If the context id unknown then we will need to start from the beginning
+
+                        //The first context is the first word id
+                        ctx_id = query.m_gram[query.m_begin_word_idx];
+
+                        //Decrement the end word index to get down to the back-off level
+                        query.m_end_word_idx--;
+
+                        //Check if the back-off m-gram is a unigram or not
+                        if (query.m_begin_word_idx == query.m_end_word_idx) {
+                            //The the back-off sub-m-gram is a uni-gram obtain its payload
+                            static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                        } else {
+                            //If the back-off sub-m-gram is not a uni-gram then do the context
+                            for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
+                                if (!m_get_ctx_id[query.m_end_word_idx - word_idx](query.m_gram[word_idx], ctx_id)) {
+                                    //If the next context could not be computed, we stop
+                                    //ToDo: Set the back-off payload to zero payload!
+                                    THROW_NOT_IMPLEMENTED();
+                                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                                    //ToDo: THE CODE DOES NOT WORK, NEED TO SET THE END INDEX BACK
+                                    //AND NOT TO RETRIVE THE PAYLOAD IF THE CONTEXT IS NOT COMPUTED
+                                    break;
+                                }
+                            }
+                            //If the context of the back-off sub-m-gram could be computed then retrieve its payload
+                            //The back-off sub-m-gram is at least a bi-gram and neve r an n-gram
+                            static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                            if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                //ToDo: Set the back-off payload to zero payload!
+                                THROW_NOT_IMPLEMENTED();
+                            }
+                        }
+                    }
+                    //Increment the end word index to get back to the original sub-m-gram
+                    query.m_end_word_idx++;
                 }
 
             private:
