@@ -145,12 +145,12 @@ namespace uva {
                 explicit GenericTrieBase(WordIndexType & word_index)
                 : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
                 }
-                
+
                 /**
                  * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
                  * @return returns false, by default all generic tries need NO context ids when searching for data
                  */
-                static constexpr bool is_need_getting_ctx_ids(){
+                static constexpr bool is_need_getting_ctx_ids() {
                     return false;
                 }
 
@@ -363,13 +363,16 @@ namespace uva {
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                         //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
 
-                        //Compute the current m-gram level
+                        //Compute the current sub-m-gram level
                         const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
+
                         //Just for convenience get the reference to the payload element
                         const void * & payload_elem = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
 
                         //Obtain the payload, depending on the sub-m-gram level
                         if (curr_level == MAX_LEVEL) {
+                            LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                             //We are at the last trie level, retrieve the payload
                             static_cast<const TrieType*> (this)->get_n_gram_payload(query, status);
 
@@ -382,6 +385,7 @@ namespace uva {
                                         << *reinterpret_cast<const TLogProbBackOff *> (payload_elem) << END_LOG;
                             }
                         } else {
+                            LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                             //We are at one of the intermediate trie level, retrieve the payload
                             static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
 

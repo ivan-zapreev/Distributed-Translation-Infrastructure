@@ -202,6 +202,9 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                            << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+                    
                     //First ensure the context of the given sub-m-gram
                     BASE::ensure_context(query, status);
 

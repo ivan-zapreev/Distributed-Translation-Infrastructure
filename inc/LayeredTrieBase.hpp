@@ -120,8 +120,10 @@ namespace uva {
                         //Compute the context id, check on the level
                         const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.first_word_id(), ctx_id, ctx_id);
 
+                        LOG_DEBUG4 << "The context level is: " << SSTR(ctx_level) << ", the current level is " << SSTR(CURR_LEVEL) << END_LOG;
+
                         //Do sanity check if needed
-                        ASSERT_SANITY_THROW((CURR_LEVEL - 1) != ctx_level, string("The m-gram:") +
+                        ASSERT_SANITY_THROW(CURR_LEVEL != ctx_level, string("The m-gram:") +
                                 ((string) gram) + string(" context could not be computed!"));
 
                         //Cache the newly computed context id for the given n-gram context
@@ -243,12 +245,16 @@ namespace uva {
                     //Get the context id reference for convenience
                     TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
 
+                    LOG_DEBUG << "The last computed context value is: " << ctx_id << END_LOG;
+
                     //Check if the context id is set
                     if (ctx_id == WordIndexType::UNDEFINED_WORD_ID) {
                         //If the context id unknown then we will need to start from the beginning
 
                         //The first context is the first word id
-                        ctx_id = query.m_gram[query.m_begin_word_idx];
+                        ctx_id = *query.m_gram.first_word_id();
+
+                        LOG_DEBUG << "Setting the first context value to the first word id: " << ctx_id << END_LOG;
 
                         //Decrement the end word index to get down to the back-off level
                         query.m_end_word_idx--;
@@ -261,7 +267,7 @@ namespace uva {
                             //set the result status to true
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //If the back-off sub-m-gram is not a uni-gram then do the context
-                            for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
+                            for (TModelLevel word_idx = query.m_gram.get_begin_word_idx() + 1; word_idx < query.m_end_word_idx; ++word_idx) {
                                 if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
                                     //If the next context could not be computed, we stop with a bad status
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;

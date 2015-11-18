@@ -37,7 +37,7 @@ namespace uva {
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
     msg << __FILE__ << "::" << __FUNCTION__ \
-        << "(...)" << ": " << (text); \
+        << "(...) " << __LINE__ << " : " << (text); \
     throw Exception(msg.str()); \
     }
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
