@@ -205,6 +205,9 @@ namespace uva {
                     LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                             << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
+                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    return;
+                    
                     //First ensure the context of the given sub-m-gram
                     BASE::ensure_context(query, status);
 

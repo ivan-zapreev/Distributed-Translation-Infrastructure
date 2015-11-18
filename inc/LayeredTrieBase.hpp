@@ -311,7 +311,7 @@ namespace uva {
             template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
             const typename LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::TGetCtxIdFunc
             LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::m_get_ctx_id[M_GRAM_LEVEL_7] = {
-                &TrieType::template get_ctx_id<M_GRAM_LEVEL_1>,
+                NULL,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
                 &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,
