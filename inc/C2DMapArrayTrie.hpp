@@ -209,6 +209,7 @@ namespace uva {
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                         //Store the shorthand for the context id
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        //Compute the distance between words
                         const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
                         //Get the next context id
                         if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
@@ -216,7 +217,7 @@ namespace uva {
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
                         } else {
-                            //The context id could not be found
+                            //The payload could not be found
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
                     }
@@ -228,20 +229,26 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
 
-                    //Search for the map for that context id
-                    TNGramsMap::const_iterator result = pNGramMap->find(key);
-                    if (result == pNGramMap->end()) {
-                        //There is no data found under this context
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                    } else {
-                        //There is data found under this context
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
-                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+
+                        const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, query.m_gram[query.m_end_word_idx]);
+
+                        //Search for the map for that context id
+                        TNGramsMap::const_iterator result = pNGramMap->find(key);
+                        if (result == pNGramMap->end()) {
+                            //The payload could not be found
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        } else {
+                            //There is data found under this context
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                        }
                     }
-                     */
                 }
 
                 /**
