@@ -109,6 +109,7 @@ namespace uva {
                 struct S_Query_Exec_Data {
                     T_Query_M_Gram<WordIndexType> m_gram;
                     const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
+                    TLongId m_ctx_ids[MAX_LEVEL][MAX_LEVEL];
                     TLogProbBackOff m_probs[MAX_LEVEL];
                     TModelLevel m_begin_word_idx;
                     TModelLevel m_end_word_idx;
@@ -142,6 +143,14 @@ namespace uva {
                  */
                 explicit GenericTrieBase(WordIndexType & word_index)
                 : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
+                }
+                
+                /**
+                 * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
+                 * @return returns false, by default all generic tries need NO context ids when searching for data
+                 */
+                static constexpr bool is_need_getting_ctx_ids(){
+                    return false;
                 }
 
                 /**

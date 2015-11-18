@@ -109,6 +109,12 @@ namespace uva {
                     //Clean the payload pointer entries
                     memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
+                    //If this trie needs getting context ids then clean the data as well
+                    if (BASE::m_trie.is_need_getting_ctx_ids()) {
+                        //Clean the payload pointer entries
+                        memset(BASE::m_query.m_ctx_ids, 0, sizeof (TLongId) * MAX_LEVEL * MAX_LEVEL);
+                    }
+
                     //Execute the query
                     BASE::m_trie.template execute<false>(BASE::m_query);
 

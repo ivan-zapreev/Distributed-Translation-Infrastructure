@@ -159,6 +159,14 @@ namespace uva {
                     //Clean the cache memory
                     memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
                 }
+                
+                /**
+                 * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
+                 * @return returns true, by default all layered tries need context ids when searching for data
+                 */
+                static constexpr bool is_need_getting_ctx_ids(){
+                    return true;
+                }
 
                 /**
                  * @see GenericTrieBase
