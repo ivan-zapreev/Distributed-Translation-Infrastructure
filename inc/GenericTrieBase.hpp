@@ -317,6 +317,11 @@ namespace uva {
                         m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET].template cache_m_gram_hash<WordIndexType, CURR_LEVEL>(gram);
                     }
                 }
+                
+                /**
+                 * The basic class destructor
+                 */
+                virtual ~GenericTrieBase(){}
 
             private:
 
@@ -336,7 +341,7 @@ namespace uva {
                     const void * & payload = query.m_payloads[word_idx][word_idx];
 
                     //Retrieve the payload
-                    static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                    dynamic_cast<const TrieType*> (this)->get_unigram_payload(query, status);
                     LOG_DEBUG << "The 1-gram is found, payload: "
                             << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
 
@@ -374,7 +379,7 @@ namespace uva {
                         if (curr_level == MAX_LEVEL) {
                             LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                             //We are at the last trie level, retrieve the payload
-                            static_cast<const TrieType*> (this)->get_n_gram_payload(query, status);
+                            dynamic_cast<const TrieType*> (this)->get_n_gram_payload(query, status);
 
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -387,7 +392,7 @@ namespace uva {
                         } else {
                             LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                             //We are at one of the intermediate trie level, retrieve the payload
-                            static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                            dynamic_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
 
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -488,10 +493,10 @@ namespace uva {
                             //Try to retrieve the back-off sub-m-gram
                             if (query.m_begin_word_idx == query.m_end_word_idx) {
                                 //If the back-off sub-m-gram is a uni-gram then
-                                static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                                dynamic_cast<const TrieType*> (this)->get_unigram_payload(query, status);
                             } else {
                                 //The back-off sub-m-gram has a level M: 1 < M < N
-                                static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                                dynamic_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
                             }
 
                             //Append the back-off if the retrieval was successful

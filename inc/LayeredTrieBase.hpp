@@ -262,13 +262,13 @@ namespace uva {
                         //Check if the back-off m-gram is a unigram or not
                         if (query.m_begin_word_idx == query.m_end_word_idx) {
                             //The the back-off sub-m-gram is a uni-gram obtain its payload
-                            static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                            dynamic_cast<const TrieType*> (this)->get_unigram_payload(query, status);
                         } else {
                             //set the result status to true
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //If the back-off sub-m-gram is not a uni-gram then do the context
                             for (TModelLevel word_idx = query.m_gram.get_begin_word_idx() + 1; word_idx < query.m_end_word_idx; ++word_idx) {
-                                if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
+                                if (!m_get_ctx_id[query.m_end_word_idx - word_idx](dynamic_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
                                     //If the next context could not be computed, we stop with a bad status
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     break;
@@ -278,7 +278,7 @@ namespace uva {
                             //If the context of the back-off sub-m-gram could be computed then retrieve its payload
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 //The back-off sub-m-gram is at least a bi-gram and never an n-gram
-                                static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                                dynamic_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
                             }
 
                             //If the back-off payload could not be computed, set the zero payload
