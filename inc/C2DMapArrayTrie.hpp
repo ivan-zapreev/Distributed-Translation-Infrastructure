@@ -167,7 +167,7 @@ namespace uva {
 
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            pNGramMap->operator[](key) = gram.m_payload.prob;
+                            pNGramMap->operator[](key) = gram.m_payload.m_prob;
                         } else {
                             //Get the next context id
                             const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);

@@ -172,7 +172,7 @@ namespace uva {
 
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            pNGramMap->operator[](ctx_id) = gram.m_payload.prob;
+                            pNGramMap->operator[](ctx_id) = gram.m_payload.m_prob;
                         } else {
                             pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
                         }

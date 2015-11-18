@@ -254,7 +254,7 @@ namespace uva {
                             //Store the context and word ids
                             ref.id = ctx_id;
                             //Return the reference to the probability
-                            ref.payload = gram.m_payload.prob;
+                            ref.payload = gram.m_payload.m_prob;
                         } else {
                             //Get the sub-array reference. 
                             typename T_M_GramWordEntry::TElemType & ref = make_m_n_gram_entry<T_M_GramWordEntry>(m_M_gram_word_2_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET], word_id);

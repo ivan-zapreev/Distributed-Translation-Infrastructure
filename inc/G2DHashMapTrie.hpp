@@ -155,7 +155,7 @@ namespace uva {
                             //Create the N-gram id from the word ids
                             gram.template create_m_gram_id<CURR_LEVEL>(data.id);
                             //Set the probability data
-                            data.payload = gram.m_payload.prob;
+                            data.payload = gram.m_payload.m_prob;
                         } else {
                             //Compute the M-gram level index
                             constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);

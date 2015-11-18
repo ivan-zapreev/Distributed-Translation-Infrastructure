@@ -144,8 +144,6 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
-                //Define the word id type
-                typedef TrieType::WordIndexType::TWordIdType TWordIdType;
 
                 //The typedef for the function that gets the payload from the m-gram
                 typedef std::function<bool (const TrieType*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
@@ -155,7 +153,8 @@ namespace uva {
                  * @param word_index the word index to be used
                  */
                 explicit LayeredTrieBase(WordIndexType & word_index)
-                : GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> (word_index) {
+                : GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> (word_index),
+                m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
                     //Perform an error check! This container has bounds on the supported trie level
                     ASSERT_CONDITION_THROW((MAX_LEVEL > sizeof (m_get_ctx_id)), string("The maximum supported trie level is") + std::to_string(sizeof (m_get_ctx_id)));
                     //Clean the cache memory
@@ -253,24 +252,27 @@ namespace uva {
                             //The the back-off sub-m-gram is a uni-gram obtain its payload
                             static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
                         } else {
+                            //set the result status to true
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //If the back-off sub-m-gram is not a uni-gram then do the context
                             for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
                                 if (!m_get_ctx_id[query.m_end_word_idx - word_idx](query.m_gram[word_idx], ctx_id)) {
-                                    //If the next context could not be computed, we stop
-                                    //ToDo: Set the back-off payload to zero payload!
-                                    THROW_NOT_IMPLEMENTED();
+                                    //If the next context could not be computed, we stop with a bad status
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                                    //ToDo: THE CODE DOES NOT WORK, NEED TO SET THE END INDEX BACK
-                                    //AND NOT TO RETRIVE THE PAYLOAD IF THE CONTEXT IS NOT COMPUTED
                                     break;
                                 }
                             }
+
                             //If the context of the back-off sub-m-gram could be computed then retrieve its payload
-                            //The back-off sub-m-gram is at least a bi-gram and neve r an n-gram
-                            static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                            if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                //The back-off sub-m-gram is at least a bi-gram and never an n-gram
+                                static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                            }
+
+                            //If the back-off payload could not be computed, set the zero payload
                             if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
-                                //ToDo: Set the back-off payload to zero payload!
-                                THROW_NOT_IMPLEMENTED();
+                                //Set the back-off payload to zero payload!
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
                             }
                         }
                     }
@@ -279,6 +281,9 @@ namespace uva {
                 }
 
             private:
+
+                //Stores the zero payload for begin used when no payload is found
+                const T_M_Gram_Payload m_zero_payload;
 
                 //Stores the get context id function template instances
                 static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];

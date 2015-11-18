@@ -50,16 +50,25 @@ namespace uva {
                 /**
                  * This data structure stores the probability and back off weight payload for an m-gram
                  */
-                typedef struct {
-                    TLogProbBackOff prob;
-                    TLogProbBackOff back;
+                struct S_M_Gram_Payload {
+                    TLogProbBackOff m_prob;
+                    TLogProbBackOff m_back;
+
+                    S_M_Gram_Payload() {
+                    }
+
+                    S_M_Gram_Payload(TLogProbBackOff prob, TLogProbBackOff back) {
+                        m_prob = prob;
+                        m_back = back;
+                    }
 
                     operator string() const {
                         stringstream strbf;
-                        strbf << "[ prob: " << prob << ", back: " << back << " ]" ; 
+                        strbf << "[ prob: " << m_prob << ", back: " << m_back << " ]";
                         return strbf.str();
                     }
-                } T_M_Gram_Payload;
+                };
+                typedef S_M_Gram_Payload T_M_Gram_Payload;
 
                 /**
                  * This class is the base class for all the M-gram classes used
@@ -154,7 +163,7 @@ namespace uva {
                     inline const TWordIdType * get_word_id_ptr() const {
                         return &m_word_ids[WORD_IDX];
                     }
-                    
+
                     /**
                      * Allows to work with the list of ids as with the continuous array.
                      * This function retrieves the pointer to the last word id of the m-gram.

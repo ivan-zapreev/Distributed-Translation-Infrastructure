@@ -147,7 +147,7 @@ namespace uva {
                             LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(MAX_LEVEL) << ", word_id "
                                     << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                             //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
-                            reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.prob;
+                            reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.m_prob;
                         } else {
                             const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 

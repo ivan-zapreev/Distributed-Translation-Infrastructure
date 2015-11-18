@@ -81,8 +81,8 @@ namespace uva {
 
                 //04) Insert the unknown word data into the allocated array
                 T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                pbData.prob = UNK_WORD_LOG_PROB_WEIGHT;
-                pbData.back = ZERO_BACK_OFF_WEIGHT;
+                pbData.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                pbData.m_back = ZERO_BACK_OFF_WEIGHT;
 
                 //05) Allocate data for the M-grams
 

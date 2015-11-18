@@ -276,7 +276,7 @@ namespace uva {
                             m_N_gram_data[n_gram_idx].word_id = word_id;
 
                             //Store the payload
-                            m_N_gram_data[n_gram_idx].prob = gram.m_payload.prob;
+                            m_N_gram_data[n_gram_idx].prob = gram.m_payload.m_prob;
                         } else {
                             //Compute the m-gram index
                             const TModelLevel m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
