@@ -225,6 +225,12 @@ namespace uva {
 
             protected:
 
+                //Stores the zero payload for begin used when no payload is found
+                const T_M_Gram_Payload m_zero_payload;
+
+                //Stores the get context id function template instances
+                static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
+
                 /**
                  * For the given query tries to ensure that the context is computed and stored.
                  * Also for the context the payload is retrieved. If the back-off is also not
@@ -233,7 +239,7 @@ namespace uva {
                  * @param query the query to work with
                  * @return true if the context was successfully computed, otherwise false.
                  */
-                inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) {
+                inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the context id reference for convenience
                     TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
 
@@ -256,7 +262,7 @@ namespace uva {
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //If the back-off sub-m-gram is not a uni-gram then do the context
                             for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
-                                if (!m_get_ctx_id[query.m_end_word_idx - word_idx](query.m_gram[word_idx], ctx_id)) {
+                                if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
                                     //If the next context could not be computed, we stop with a bad status
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     break;
@@ -281,12 +287,6 @@ namespace uva {
                 }
 
             private:
-
-                //Stores the zero payload for begin used when no payload is found
-                const T_M_Gram_Payload m_zero_payload;
-
-                //Stores the get context id function template instances
-                static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
 
                 /**
                  * This structure is to store the cached word ids and context ids

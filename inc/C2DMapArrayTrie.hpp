@@ -202,23 +202,25 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    //If the m-1 context is not known then first compute it, and immediately store the back-off payload
-                    
-                    //If the m-1 payload could not be found store a zero payload pointer and return.
-                    
-                    //If the m-1 context is found then move on to the m-gram and try to obtain its payload
-                    
-                    /*
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
+
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
                         //Get the next context id
-                        if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
+                        if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
+                            const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             //There is data found under this context
-                            payload = m_M_gram_data[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][ctx_id];
-                            return GPR_Enum::PAYLOAD_GPR;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
                         } else {
                             //The context id could not be found
-                            return GPR_Enum::FAILED_GPR;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
-                     */
+                    }
+
                 }
 
                 /**
