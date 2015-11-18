@@ -191,7 +191,7 @@ namespace uva {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
-                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+                    query.m_payloads[word_idx][word_idx] = reinterpret_cast<const void *> (&m_1_gram_data[query.m_gram[word_idx]]);
 
                     //The resulting status is always a success
                     status = MGramStatusEnum::GOOD_PRESENT_MGS;
@@ -221,9 +221,8 @@ namespace uva {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
-                            //query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &this->m_zero_payload;
-                            //LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = reinterpret_cast<const void *> (&m_M_gram_data[level_idx][ctx_id]);
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
@@ -254,7 +253,7 @@ namespace uva {
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         } else {
                             //There is data found under this context
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = reinterpret_cast<const void *> (&result->second);
                         }
                     }
                 }
