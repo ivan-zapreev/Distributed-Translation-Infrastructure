@@ -141,7 +141,6 @@ namespace uva {
             class C2WArrayTrie : public LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic constructor
@@ -308,8 +307,7 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
@@ -323,8 +321,7 @@ namespace uva {
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     //Compute the m-gram index
                     constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
@@ -348,8 +345,7 @@ namespace uva {
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
                             << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;

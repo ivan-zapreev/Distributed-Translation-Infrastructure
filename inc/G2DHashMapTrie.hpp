@@ -102,7 +102,6 @@ namespace uva {
             public:
                 typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
                 typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
-                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 //The typedef for the retrieving function
                 typedef function<uint32_t(const G2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
@@ -218,8 +217,7 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the uni-gram word index
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //This is at least a uni-gram we have, therefore first process the it in a special way
@@ -239,8 +237,7 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
                     const TModelLevel layer_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
@@ -255,8 +252,7 @@ namespace uva {
                  * @param query the query containing the actual query data
                  * @param status the resulting status of the operation
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                     //Call the templated part via function pointer
@@ -286,14 +282,14 @@ namespace uva {
 
                 //The typedef for the function that gets the payload from the trie
                 typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const TProbBucket * buckets,
-                        T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbFunc;
+                        typename BASE::T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbFunc;
 
                 //Stores the get-payload function pointers for getting probabilities
                 static const TGetPayloadProbFunc m_get_prob[M_GRAM_LEVEL_6][M_GRAM_LEVEL_7];
 
                 //The typedef for the function that gets the payload from the trie
                 typedef std::function<void (const TShortId num_buckets[MAX_LEVEL], const TProbBackOffBucket * buckets,
-                        T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbBackFunc;
+                        typename BASE::T_Query_Exec_Data & query, MGramStatusEnum &status) > TGetPayloadProbBackFunc;
 
                 //Stores the get-payload function pointers for getting complete payloads 
                 static const TGetPayloadProbBackFunc m_get_prob_back[M_GRAM_LEVEL_6][M_GRAM_LEVEL_7];
@@ -350,7 +346,7 @@ namespace uva {
                  */
                 template<typename BUCKET_TYPE, TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
                 static inline void get_payload(const TShortId num_buckets[MAX_LEVEL], const BUCKET_TYPE * buckets,
-                        T_Query_Exec_Data & query, MGramStatusEnum & status) {
+                        typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) {
                     //Compute the current level of the sub-m-gram
                     constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
 

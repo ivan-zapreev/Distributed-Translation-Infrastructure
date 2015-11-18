@@ -53,7 +53,6 @@ namespace uva {
             class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic constructor
@@ -176,8 +175,7 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
@@ -191,8 +189,7 @@ namespace uva {
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * For more details @see LayeredTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     //Get the context id, note we use short ids here!
                     if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
@@ -208,8 +205,7 @@ namespace uva {
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     //Try to find the word mapping first
                     StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];

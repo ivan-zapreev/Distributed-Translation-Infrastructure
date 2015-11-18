@@ -65,7 +65,6 @@ namespace uva {
             class C2DHybridTrie : public LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef typename BASE::T_Query_Exec_Data T_Query_Exec_Data;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the
@@ -188,8 +187,7 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //The data is always present.
@@ -203,8 +201,7 @@ namespace uva {
                  * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //If the m-1 context is not known then first compute it, and immediately store the back-off payload
                     
                     //If the m-1 payload could not be found store a zero payload pointer and return.
@@ -228,8 +225,7 @@ namespace uva {
                  * Allows to attempt the sub-m-gram payload retrieval for m==n
                  * @see GenericTrieBase
                  */
-                template<typename T_Query_Exec_Data>
-                inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     /*
                     const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
 
