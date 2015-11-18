@@ -202,11 +202,13 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
-                            << SSTR(query.m_end_word_idx) << "]" << END_LOG;
-                    
+                    LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                            << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
                     //First ensure the context of the given sub-m-gram
                     BASE::ensure_context(query, status);
+
+                    LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -219,12 +221,13 @@ namespace uva {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
+                        LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
                     }
-
                 }
 
                 /**
