@@ -198,7 +198,7 @@ namespace uva {
                     startTime = StatisticsMonitor::getCPUTime();
 
                     //Enable the next line for the pin-point debugging of the querying process
-                    //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG3;
+                    Logger::get_reporting_level() = DebugLevelsEnum::DEBUG3;
                     
                     //Read the test file line by line
                     while (testFile.get_first_line(line)) {
