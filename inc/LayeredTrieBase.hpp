@@ -284,7 +284,7 @@ namespace uva {
                             //If the back-off payload could not be computed, set the zero payload
                             if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 //Set the back-off payload to zero payload!
-                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = reinterpret_cast<const void *> (&m_zero_payload);
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
                             }
                         }
                     }

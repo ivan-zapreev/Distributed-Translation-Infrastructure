@@ -224,7 +224,7 @@ namespace uva {
                     const TShortId word_id = query.m_gram[word_idx];
 
                     //Store the uni-gram payload pointer and add the probability to the total conditional probability 
-                    query.m_payloads[word_idx][word_idx] = reinterpret_cast<const void *> (&m_1_gram_data[word_id]);
+                    query.m_payloads[word_idx][word_idx] = &m_1_gram_data[word_id];
                     LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
 
                     //The resulting status is always a success
@@ -375,7 +375,7 @@ namespace uva {
                         //The data is available search for the word index in the array
                         typename BUCKET_TYPE::TIndexType found_idx;
                         if (search_gram<BUCKET_TYPE, CURR_LEVEL>(mgram_id_ptr, ref, found_idx)) {
-                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = reinterpret_cast<const void*> (&ref[found_idx].payload);
+                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &ref[found_idx].payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //We are now done, the payload is found, can return!
                             return;

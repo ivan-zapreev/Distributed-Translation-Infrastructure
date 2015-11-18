@@ -343,12 +343,12 @@ namespace uva {
                     //Retrieve the payload
                     static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
                     LOG_DEBUG << "The 1-gram is found, payload: "
-                            << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
+                            << (string) (* (const T_M_Gram_Payload *) payload) << END_LOG;
 
                     //No need to check on the status, it is always good for the uni-gram
-                    query.m_probs[word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_prob;
+                    query.m_probs[word_idx] += ((const T_M_Gram_Payload *) payload)->m_prob;
                     LOG_DEBUG << "probs[" << SSTR(word_idx) << "] += "
-                            << reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_prob << END_LOG;
+                            << ((const T_M_Gram_Payload *) payload)->m_prob << END_LOG;
                 }
 
                 /**
@@ -384,10 +384,10 @@ namespace uva {
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 LOG_DEBUG << "The n-gram is found, probability: "
-                                        << *reinterpret_cast<const TLogProbBackOff *> (payload_elem) << END_LOG;
-                                query.m_probs[query.m_end_word_idx] += *reinterpret_cast<const TLogProbBackOff *> (payload_elem);
+                                        << *((const TLogProbBackOff *) payload_elem) << END_LOG;
+                                query.m_probs[query.m_end_word_idx] += *((const TLogProbBackOff *) payload_elem);
                                 LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
-                                        << *reinterpret_cast<const TLogProbBackOff *> (payload_elem) << END_LOG;
+                                        << *((const TLogProbBackOff *) payload_elem) << END_LOG;
                             }
                         } else {
                             LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
@@ -397,10 +397,10 @@ namespace uva {
                             //Append the probability if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 LOG_DEBUG << "The m-gram is found, payload: "
-                                        << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload_elem) << END_LOG;
-                                query.m_probs[query.m_end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload_elem)->m_prob;
+                                        << (string) (* ((const T_M_Gram_Payload *) payload_elem)) << END_LOG;
+                                query.m_probs[query.m_end_word_idx] += ((const T_M_Gram_Payload *) payload_elem)->m_prob;
                                 LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
-                                        << reinterpret_cast<const T_M_Gram_Payload *> (payload_elem)->m_prob << END_LOG;
+                                        << ((const T_M_Gram_Payload *) payload_elem)->m_prob << END_LOG;
                             }
                         }
                     }
@@ -502,19 +502,19 @@ namespace uva {
                             //Append the back-off if the retrieval was successful
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 LOG_DEBUG << "The m-gram is found, payload: "
-                                        << (string) * reinterpret_cast<const T_M_Gram_Payload *> (payload) << END_LOG;
-                                query.m_probs[end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back;
+                                        << (string) (* ((const T_M_Gram_Payload *) payload)) << END_LOG;
+                                query.m_probs[end_word_idx] += ((const T_M_Gram_Payload *) payload)->m_back;
                                 LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
-                                        << reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back << END_LOG;
+                                        << ((const T_M_Gram_Payload *) payload)->m_back << END_LOG;
                             }
                         }
                     } else {
                         LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                                 << "," << SSTR(query.m_end_word_idx) << "] is available and will be used" << END_LOG;
                         //Add the back-off weight
-                        query.m_probs[end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back;
+                        query.m_probs[end_word_idx] += ((const T_M_Gram_Payload *) payload)->m_back;
                         LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
-                                << reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back << END_LOG;
+                                << ((const T_M_Gram_Payload *) payload)->m_back << END_LOG;
                     }
                     //Next we shift to the next row, it is possible as it is not a uni-gram case, the latter 
                     //always get MGramStatusEnum::GOOD_PRESENT_MGS result when their payload is retrieved
@@ -546,9 +546,9 @@ namespace uva {
                     query.m_end_word_idx++;
 
                     //Add the back-off weight of the unknown word stored in the payloads to the next sub-m-gram probability
-                    query.m_probs[query.m_end_word_idx] += reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back;
+                    query.m_probs[query.m_end_word_idx] += ((const T_M_Gram_Payload *) payload)->m_back;
                     LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx) << "] += "
-                            << reinterpret_cast<const T_M_Gram_Payload *> (payload)->m_back << END_LOG;
+                            << ((const T_M_Gram_Payload *) payload)->m_back << END_LOG;
 
                     //Match the begin word index with the end word index (moving diagonal)
                     query.m_begin_word_idx = query.m_end_word_idx;
