@@ -287,9 +287,9 @@ namespace uva {
                                 query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
                             }
                         }
+                        //Increment the end word index to get back to the original sub-m-gram
+                        query.m_end_word_idx++;
                     }
-                    //Increment the end word index to get back to the original sub-m-gram
-                    query.m_end_word_idx++;
                 }
 
             private:

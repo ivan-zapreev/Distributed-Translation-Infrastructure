@@ -190,6 +190,10 @@ namespace uva {
                 inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
+
+                    LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
+                            << "," << SSTR(word_idx) << "]" << END_LOG;
+
                     //The data is always present.
                     query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
 
@@ -204,9 +208,6 @@ namespace uva {
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                             << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
-
-                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                    return;
                     
                     //First ensure the context of the given sub-m-gram
                     BASE::ensure_context(query, status);
@@ -228,6 +229,7 @@ namespace uva {
                             LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
+                            LOG_DEBUG << "The payload id could not be found!" << END_LOG;
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
                         LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
