@@ -207,8 +207,8 @@ namespace uva {
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                            << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
-                    
+                            << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
                     //First ensure the context of the given sub-m-gram
                     BASE::ensure_context(query, status);
 
@@ -220,10 +220,12 @@ namespace uva {
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                         //Compute the distance between words
                         const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
+                        LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
+                                << SSTR(query.m_end_word_idx) << ", end word id: " << query.m_gram[query.m_end_word_idx] << END_LOG;
                         //Get the next context id
                         if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
-                            LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
+                            LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
                             LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;

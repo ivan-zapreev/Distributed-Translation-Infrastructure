@@ -252,7 +252,7 @@ namespace uva {
                         //If the context id unknown then we will need to start from the beginning
 
                         //The first context is the first word id
-                        ctx_id = *query.m_gram.first_word_id();
+                        ctx_id = query.m_gram[query.m_begin_word_idx];
 
                         LOG_DEBUG << "Setting the first context value to the first word id: " << ctx_id << END_LOG;
 
@@ -267,7 +267,7 @@ namespace uva {
                             //set the result status to true
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //If the back-off sub-m-gram is not a uni-gram then do the context
-                            for (TModelLevel word_idx = query.m_gram.get_begin_word_idx() + 1; word_idx < query.m_end_word_idx; ++word_idx) {
+                            for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
                                 if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
                                     //If the next context could not be computed, we stop with a bad status
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
