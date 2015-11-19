@@ -56,16 +56,16 @@ namespace uva {
 
                 //Memset the M grams reference and data arrays
                 memset(pMGramAlloc, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
-                memset(pMGramMap, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
-                memset(m_M_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_Gram_Payload *));
+                memset(m_m_gram_map_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
+                memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_Gram_Payload *));
 
                 //Initialize the array of counters
                 memset(m_M_gram_num_ctx_ids, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TShortId));
                 memset(m_M_gram_next_ctx_id, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TShortId));
 
                 //Initialize the N-gram level data
-                pNGramAlloc = NULL;
-                pNGramMap = NULL;
+                m_n_gram_alloc_ptr = NULL;
+                m_n_gram_map_ptr = NULL;
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -94,13 +94,13 @@ namespace uva {
                     const uint num_grams = counts[idx + 1];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx], num_grams, "M-Grams", m_mgram_mem_factor);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &pMGramAlloc[idx], num_grams, "M-Grams", m_mgram_mem_factor);
 
                     //Get the number of M-gram indexes on this level
                     const uint num_ngram_idx = m_M_gram_num_ctx_ids[idx];
 
-                    m_M_gram_data[idx] = new T_M_Gram_Payload[num_ngram_idx];
-                    memset(m_M_gram_data[idx], 0, num_ngram_idx * sizeof (T_M_Gram_Payload));
+                    m_m_gram_data[idx] = new T_M_Gram_Payload[num_ngram_idx];
+                    memset(m_m_gram_data[idx], 0, num_ngram_idx * sizeof (T_M_Gram_Payload));
                 }
             }
 
@@ -111,7 +111,7 @@ namespace uva {
                 const size_t numEntries = counts[MAX_LEVEL - 1];
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", m_ngram_mem_factor);
+                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -147,12 +147,12 @@ namespace uva {
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
                 for (int idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
-                    deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
-                    delete[] m_M_gram_data[idx];
+                    deallocate_container<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &pMGramAlloc[idx]);
+                    delete[] m_m_gram_data[idx];
                 }
 
                 //Deallocate N-Grams
-                deallocate_container<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc);
+                deallocate_container<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr);
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

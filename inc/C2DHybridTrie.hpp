@@ -115,8 +115,8 @@ namespace uva {
 
                     //Search for the map for that context id
                     const TModelLevel idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
-                    TMGramsMap::const_iterator result = pMGramMap[idx]->find(key);
-                    if (result == pMGramMap[idx]->end()) {
+                    TMGramsMap::const_iterator result = m_m_gram_map_ptrs[idx]->find(key);
+                    if (result == m_m_gram_map_ptrs[idx]->end()) {
                         //There is no data found under this context
                         return false;
                     } else {
@@ -167,17 +167,17 @@ namespace uva {
 
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            pNGramMap->operator[](key) = gram.m_payload.m_prob;
+                            m_n_gram_map_ptr->operator[](key) = gram.m_payload.m_prob;
                         } else {
                             //Get the next context id
                             const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
                             TShortId next_ctx_id = m_M_gram_next_ctx_id[idx]++;
 
                             //Store the context mapping inside the map
-                            pMGramMap[idx]->operator[](key) = next_ctx_id;
+                            m_m_gram_map_ptrs[idx]->operator[](key) = next_ctx_id;
 
                             //Return the reference to the piece of memory
-                            m_M_gram_data[idx][next_ctx_id] = gram.m_payload;
+                            m_m_gram_data[idx][next_ctx_id] = gram.m_payload;
                         }
                     }
                 }
@@ -227,8 +227,8 @@ namespace uva {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id];
-                            LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id] << END_LOG;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_m_gram_data[level_idx][ctx_id];
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_m_gram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
                             LOG_DEBUG << "The payload id could not be found!" << END_LOG;
@@ -254,8 +254,8 @@ namespace uva {
                         const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, query.m_gram[query.m_end_word_idx]);
 
                         //Search for the map for that context id
-                        TNGramsMap::const_iterator result = pNGramMap->find(key);
-                        if (result == pNGramMap->end()) {
+                        TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(key);
+                        if (result == m_n_gram_map_ptr->end()) {
                             //The payload could not be found
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         } else {
@@ -292,12 +292,12 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[BASE::NUM_M_GRAM_LEVELS];
+                TMGramAllocator * m_m_gram_alloc_ptrs[BASE::NUM_M_GRAM_LEVELS];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[BASE::NUM_M_GRAM_LEVELS];
+                TMGramsMap * m_m_gram_map_ptrs[BASE::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                T_M_Gram_Payload * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
+                T_M_Gram_Payload * m_m_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -306,9 +306,9 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                 //The actual data storage for the N Grams
-                TNGramAllocator * pNGramAlloc;
+                TNGramAllocator * m_n_gram_alloc_ptr;
                 //The map storing the N-Grams, they do not have back-off values
-                TNGramsMap * pNGramMap;
+                TNGramsMap * m_n_gram_map_ptr;
 
                 /**
                  * This method must used to provide the N-gram count information

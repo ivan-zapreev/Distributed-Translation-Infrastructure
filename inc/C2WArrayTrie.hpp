@@ -180,7 +180,7 @@ namespace uva {
                     //case and the previous word is unknown (ctx_id == 0) we still can use
                     //the ctx_id to get the data entry. The reason is that we allocated memory
                     //for it but being for an unknown word context it should have no data!
-                    TSubArrReference & ref = m_M_gram_ctx_2_data[M_GRAM_IDX][ctx_id];
+                    TSubArrReference & ref = m_m_gram_ctx_2_data[M_GRAM_IDX][ctx_id];
 
                     LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
                             << ", with beginIdx: " << SSTR(ref.begin_idx) << ", endIdx: "
@@ -190,7 +190,7 @@ namespace uva {
                     if (ref.begin_idx != BASE::UNDEFINED_ARR_IDX) {
                         //The data is available search for the word index in the array
                         //WARNING: The linear search here is much slower!!!
-                        if (my_bsearch_id<TWordIdPBEntry>(m_M_gram_data[M_GRAM_IDX], ref.begin_idx, ref.end_idx, word_id, ctx_id)) {
+                        if (my_bsearch_id<TWordIdPBEntry>(m_m_gram_data[M_GRAM_IDX], ref.begin_idx, ref.end_idx, word_id, ctx_id)) {
                             LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", is: " << SSTR(ctx_id) << END_LOG;
                             return true;
                         }
@@ -269,23 +269,23 @@ namespace uva {
 
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Get the new n-gram index
-                            const TShortId n_gram_idx = m_M_N_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
+                            const TShortId n_gram_idx = m_m_n_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
 
                             //Store the context and word ids
-                            m_N_gram_data[n_gram_idx].ctx_id = ctx_id;
-                            m_N_gram_data[n_gram_idx].word_id = word_id;
+                            m_n_gram_data[n_gram_idx].ctx_id = ctx_id;
+                            m_n_gram_data[n_gram_idx].word_id = word_id;
 
                             //Store the payload
-                            m_N_gram_data[n_gram_idx].prob = gram.m_payload.m_prob;
+                            m_n_gram_data[n_gram_idx].prob = gram.m_payload.m_prob;
                         } else {
                             //Compute the m-gram index
                             const TModelLevel m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
                             //First get the sub-array reference. 
-                            TSubArrReference & ref = m_M_gram_ctx_2_data[m_gram_idx][ctx_id];
+                            TSubArrReference & ref = m_m_gram_ctx_2_data[m_gram_idx][ctx_id];
 
                             //Get the new index and increment - this will be the new end index
-                            ref.end_idx = m_M_N_gram_next_ctx_id[m_gram_idx]++;
+                            ref.end_idx = m_m_n_gram_next_ctx_id[m_gram_idx]++;
 
                             //Check if there are yet no elements for this context
                             if (ref.begin_idx == BASE::UNDEFINED_ARR_IDX) {
@@ -294,10 +294,10 @@ namespace uva {
                             }
 
                             //Store the word id
-                            m_M_gram_data[m_gram_idx][ref.end_idx].id = word_id;
+                            m_m_gram_data[m_gram_idx][ref.end_idx].id = word_id;
 
                             //Store the payload
-                            m_M_gram_data[m_gram_idx][ref.end_idx].payload = gram.m_payload;
+                            m_m_gram_data[m_gram_idx][ref.end_idx].payload = gram.m_payload;
                         }
                     }
                 }
@@ -347,8 +347,8 @@ namespace uva {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id].payload;
-                            LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id].payload << END_LOG;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_m_gram_data[level_idx][ctx_id].payload;
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_m_gram_data[level_idx][ctx_id].payload << END_LOG;
                         } else {
                             //The payload could not be found
                             LOG_DEBUG << "The payload id could not be found!" << END_LOG;
@@ -382,10 +382,10 @@ namespace uva {
 
                         //Search for the index using binary search
                         TShortId idx = BASE::UNDEFINED_ARR_IDX;
-                        if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
-                                m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
+                        if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_n_gram_data, BASE::FIRST_VALID_CTX_ID,
+                                m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
                             //Return the data
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_N_gram_data[idx].prob;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_n_gram_data[idx].prob;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         } else {
                             LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
@@ -430,28 +430,28 @@ namespace uva {
 
                     //Sort the entries per context with respect to the word index
                     //the order could be arbitrary if a non-basic word index is used!
-                    const size_t num_prev_ctx = (CURR_LEVEL == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_M_N_gram_num_ctx_ids[mgram_idx - 1];
+                    const size_t num_prev_ctx = (CURR_LEVEL == M_GRAM_LEVEL_2) ? m_one_gram_arr_size : m_m_n_gram_num_ctx_ids[mgram_idx - 1];
                     LOG_DEBUG2 << "Number of previous contexts: " << num_prev_ctx << END_LOG;
                     for (size_t ctx_id = 0; ctx_id < num_prev_ctx; ++ctx_id) {
-                        const TSubArrReference & info = m_M_gram_ctx_2_data[mgram_idx][ctx_id];
+                        const TSubArrReference & info = m_m_gram_ctx_2_data[mgram_idx][ctx_id];
                         if (info.begin_idx != BASE::UNDEFINED_ARR_IDX) {
                             LOG_DEBUG3 << "Sorting for context id: " << ctx_id << ", info.beginIdx: "
                                     << info.begin_idx << ", info.endIdx: " << info.end_idx << END_LOG;
-                            my_sort<TWordIdPBEntry>(&m_M_gram_data[mgram_idx][info.begin_idx], (info.end_idx - info.begin_idx) + 1);
+                            my_sort<TWordIdPBEntry>(&m_m_gram_data[mgram_idx][info.begin_idx], (info.end_idx - info.begin_idx) + 1);
                         }
                     }
                 }
 
                 inline void post_n_grams() {
-                    LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_N_gram_data
-                            << ", size: " << m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
+                    LOG_DEBUG2 << "Sorting the N-gram's data: ptr: " << m_n_gram_data
+                            << ", size: " << m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] << END_LOG;
 
                     //Order the N-gram array as it is unordered and we will binary search it later!
                     //Note: We dot not use Q-sort as it needs quite a lot of extra memory!
                     //Also, I did not yet see any performance advantages compared to sort!
                     //Actually the qsort provided here was 50% slower on a 20 Gb language
                     //model when compared to the str::sort!
-                    my_sort<TCtxIdProbEntry>(m_N_gram_data, m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR]);
+                    my_sort<TCtxIdProbEntry>(m_n_gram_data, m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR]);
                 };
 
             private:
@@ -461,20 +461,20 @@ namespace uva {
 
                 //Stores the M-gram context to data mappings for: 1 < M < N
                 //This is a two dimensional array
-                TSubArrReference * m_M_gram_ctx_2_data[BASE::NUM_M_GRAM_LEVELS];
+                TSubArrReference * m_m_gram_ctx_2_data[BASE::NUM_M_GRAM_LEVELS];
                 //Stores the M-gram data for the M levels: 1 < M < N
                 //This is a two dimensional array
-                TWordIdPBEntry * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
+                TWordIdPBEntry * m_m_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //Stores the N-gram data
-                TCtxIdProbEntry * m_N_gram_data;
+                TCtxIdProbEntry * m_n_gram_data;
 
                 //Stores the size of the One-gram
                 TShortId m_one_gram_arr_size;
                 //Stores the maximum number of context id  per M-gram level: 1 < M <= N
-                TShortId m_M_N_gram_num_ctx_ids[BASE::NUM_M_N_GRAM_LEVELS];
+                TShortId m_m_n_gram_num_ctx_ids[BASE::NUM_M_N_GRAM_LEVELS];
                 //Stores the context id counters per M-gram level: 1 < M <= N
-                TShortId m_M_N_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
+                TShortId m_m_n_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
             };
 
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2WArrayTrieBasic;
