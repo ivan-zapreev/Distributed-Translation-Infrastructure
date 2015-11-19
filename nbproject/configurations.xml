@@ -1312,7 +1312,7 @@
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-march=native -lrt -m64 -lprofiler</commandLine>
+          <commandLine>-march=native -lrt -m64 ${LDFLAGS} -lprofiler</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
