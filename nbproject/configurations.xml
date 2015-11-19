@@ -1312,7 +1312,7 @@
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
-          <commandLine>-march=native -lrt -m64 -lprofiler CPUPROFILE=/home/izapree1/tmp ./myprogram ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</commandLine>
+          <commandLine>-march=native -lrt -m64 -lprofiler CPUPROFILE=/home/izapree1/tmp/profile.log ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
