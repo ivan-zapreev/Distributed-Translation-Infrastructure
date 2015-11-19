@@ -55,8 +55,8 @@ namespace uva {
                 if (DO_SANITY_CHECKS) {
                     //Initialize the hash statistics map
                     for (int i = 0; i < MAX_LEVEL; i++) {
-                        hashSizes[i].first = UINT64_MAX;
-                        hashSizes[i].second = 0;
+                        m_hash_sizes[i].first = UINT64_MAX;
+                        m_hash_sizes[i].second = 0;
                     }
                 }
 
@@ -89,7 +89,7 @@ namespace uva {
                     const uint numEntries = counts[idx];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&pMGramMap[idx - 1], &pMGramAlloc[idx - 1], numEntries, "M-Grams", m_mgram_mem_factor);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx - 1], &m_m_gram_alloc_ptrs[idx - 1], numEntries, "M-Grams", m_mgram_mem_factor);
                 }
             }
 
@@ -100,7 +100,7 @@ namespace uva {
                 const size_t numEntries = counts[MAX_LEVEL - 1];
 
                 //Reserve the memory for the map
-                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc, numEntries, "N-Grams", m_ngram_mem_factor);
+                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -124,7 +124,7 @@ namespace uva {
                 if (DO_SANITY_CHECKS) {
                     //Print the hash sizes statistics
                     for (int i = 0; i < MAX_LEVEL; i++) {
-                        LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << hashSizes[i].first << ", " << hashSizes[i].second << " ]" << END_LOG;
+                        LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << m_hash_sizes[i].first << ", " << m_hash_sizes[i].second << " ]" << END_LOG;
                     }
                 }
 
@@ -135,11 +135,11 @@ namespace uva {
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
                 for (int idx = 0; idx < (MAX_LEVEL - 2); idx++) {
-                    deallocate_container<TMGramsMap, TMGramAllocator>(&pMGramMap[idx], &pMGramAlloc[idx]);
+                    deallocate_container<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &m_m_gram_alloc_ptrs[idx]);
                 }
 
                 //Deallocate N-Grams
-                deallocate_container<TNGramsMap, TNGramAllocator>(&pNGramMap, &pNGramAlloc);
+                deallocate_container<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr);
             }
 
             //Make sure that there will be templates instantiated, at least for the given parameter values

@@ -172,9 +172,9 @@ namespace uva {
 
                         //Store the payload
                         if (CURR_LEVEL == MAX_LEVEL) {
-                            pNGramMap->operator[](ctx_id) = gram.m_payload.m_prob;
+                            m_n_gram_map_ptr->operator[](ctx_id) = gram.m_payload.m_prob;
                         } else {
-                            pMGramMap[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
+                            m_m_gram_map_ptrs[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
                         }
                     }
                 }
@@ -223,8 +223,8 @@ namespace uva {
                         if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
-                            TMGramsMap::const_iterator result = pMGramMap[level_idx]->find(ctx_id);
-                            if (result == pMGramMap[level_idx]->end()) {
+                            TMGramsMap::const_iterator result = m_m_gram_map_ptrs[level_idx]->find(ctx_id);
+                            if (result == m_m_gram_map_ptrs[level_idx]->end()) {
                                 //The payload could not be found
                                 LOG_DEBUG << "The payload id could not be found!" << END_LOG;
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
@@ -259,8 +259,8 @@ namespace uva {
                         //Get the next context id
                         if (BASE::m_get_ctx_id[MAX_LEVEL - 1](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
                             LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
-                            TNGramsMap::const_iterator result = pNGramMap->find(ctx_id);
-                            if (result == pNGramMap->end()) {
+                            TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(ctx_id);
+                            if (result == m_n_gram_map_ptr->end()) {
                                 //The payload could not be found
                                 LOG_DEBUG << "The payload id could not be found!" << END_LOG;
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
@@ -300,9 +300,9 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, T_M_Gram_Payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                 //The actual data storage for the M Grams for 1 < M < N
-                TMGramAllocator * pMGramAlloc[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                TMGramAllocator * m_m_gram_alloc_ptrs[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
                 //The array of maps map storing M-grams for 1 < M < N
-                TMGramsMap * pMGramMap[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                TMGramsMap * m_m_gram_map_ptrs[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
 
                 //The type of key,value pairs to be stored in the N Grams map
                 typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -311,12 +311,12 @@ namespace uva {
                 //The N Grams map type
                 typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                 //The actual data storage for the N Grams
-                TNGramAllocator * pNGramAlloc;
+                TNGramAllocator * m_n_gram_alloc_ptr;
                 //The map storing the N-Grams, they do not have back-off values
-                TNGramsMap * pNGramMap;
+                TNGramsMap * m_n_gram_map_ptr;
 
                 //The structure for storing the hash key values statistics
-                pair<TLongId, TLongId> hashSizes[MAX_LEVEL];
+                pair<TLongId, TLongId> m_hash_sizes[MAX_LEVEL];
 
                 /**
                  * This method must used to provide the N-gram count information
