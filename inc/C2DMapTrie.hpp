@@ -1,5 +1,5 @@
 /* 
- * File:   C2DHashMapTrie.hpp
+ * File:   C2DMapTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

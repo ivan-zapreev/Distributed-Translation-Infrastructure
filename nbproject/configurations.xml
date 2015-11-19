@@ -13,8 +13,8 @@
       <itemPath>inc/BaseMGram.hpp</itemPath>
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
-      <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
       <itemPath>inc/C2DHybridTrie.hpp</itemPath>
+      <itemPath>inc/C2DMapTrie.hpp</itemPath>
       <itemPath>inc/C2WArrayTrie.hpp</itemPath>
       <itemPath>inc/CStyleFileReader.hpp</itemPath>
       <itemPath>inc/Configuration.hpp</itemPath>
@@ -753,9 +753,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -896,9 +896,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1047,9 +1047,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1190,9 +1190,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1333,9 +1333,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1476,9 +1476,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1619,9 +1619,9 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>

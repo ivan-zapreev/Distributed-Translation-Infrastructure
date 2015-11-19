@@ -40,7 +40,7 @@
 #include "ARPATrieBuilder.hpp"
 #include "ARPAGramBuilder.hpp"
 
-#include "C2DHashMapTrie.hpp"
+#include "C2DMapTrie.hpp"
 #include "W2CHybridTrie.hpp"
 #include "C2WArrayTrie.hpp"
 #include "W2CArrayTrie.hpp"

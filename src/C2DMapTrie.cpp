@@ -22,7 +22,7 @@
  *
  * Created on August 14, 2015, 1:53 PM
  */
-#include "C2DHashMapTrie.hpp"
+#include "C2DMapTrie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
