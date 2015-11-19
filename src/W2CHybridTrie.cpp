@@ -1,5 +1,5 @@
 /* 
- * File:   W2CHybridMemoryTrie.cpp
+ * File:   W2CHybridTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -22,7 +22,7 @@
  *
  * Created on August 21, 2015, 4:18 PM
  */
-#include "W2CHybridMemoryTrie.hpp"
+#include "W2CHybridTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 

@@ -1,5 +1,5 @@
 /* 
- * File:   W2COrderedArrayTrie.cpp
+ * File:   W2CArrayTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -22,7 +22,7 @@
  *
  * Created on August 27, 2015, 08:33 PM
  */
-#include "W2COrderedArrayTrie.hpp"
+#include "W2CArrayTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
 

@@ -1,5 +1,5 @@
 /* 
- * File:   W2CHybridMemoryTrie.hpp
+ * File:   W2CHybridTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -34,7 +34,7 @@
 #include "LayeredTrieBase.hpp"
 
 #include "AWordIndex.hpp"
-#include "W2CHybridMemoryTrieStorage.hpp"
+#include "W2CH_UM_Storage.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;

@@ -1,5 +1,5 @@
 /* 
- * File:   G2DHashMapTrie.cpp
+ * File:   G2DMapTrie.cpp
  *
  * Visit my Linked-in profile:
  *      <https://nl.linkedin.com/in/zapreevis>
@@ -22,7 +22,7 @@
  * Created on September 8, 2015, 11:22 AM
  */
 
-#include "G2DHashMapTrie.hpp"
+#include "G2DMapTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
 #include <algorithm>    // std::max

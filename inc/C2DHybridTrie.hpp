@@ -1,5 +1,5 @@
 /* 
- * File:   C2DMapArrayTrie.hpp
+ * File:   C2DHybridTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

@@ -1,5 +1,5 @@
 /* 
- * File:   G2DHashMapTrie.hpp
+ * File:   G2DMapTrie.hpp
  *
  * Visit my Linked-in profile:
  *      <https://nl.linkedin.com/in/zapreevis>

@@ -14,8 +14,8 @@
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
       <itemPath>inc/C2DHashMapTrie.hpp</itemPath>
-      <itemPath>inc/C2DMapArrayTrie.hpp</itemPath>
-      <itemPath>inc/C2WOrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/C2DHybridTrie.hpp</itemPath>
+      <itemPath>inc/C2WArrayTrie.hpp</itemPath>
       <itemPath>inc/CStyleFileReader.hpp</itemPath>
       <itemPath>inc/Configuration.hpp</itemPath>
       <itemPath>inc/CountingWordIndex.hpp</itemPath>
@@ -23,7 +23,7 @@
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Executor.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
-      <itemPath>inc/G2DHashMapTrie.hpp</itemPath>
+      <itemPath>inc/G2DMapTrie.hpp</itemPath>
       <itemPath>inc/GenericTrieBase.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
@@ -42,9 +42,9 @@
       <itemPath>inc/StatisticsMonitor.hpp</itemPath>
       <itemPath>inc/StringUtils.hpp</itemPath>
       <itemPath>inc/TextPieceReader.hpp</itemPath>
-      <itemPath>inc/W2CHybridMemoryTrie.hpp</itemPath>
-      <itemPath>inc/W2CHybridMemoryTrieStorage.hpp</itemPath>
-      <itemPath>inc/W2COrderedArrayTrie.hpp</itemPath>
+      <itemPath>inc/W2CArrayTrie.hpp</itemPath>
+      <itemPath>inc/W2CH_UM_Storage.hpp</itemPath>
+      <itemPath>inc/W2CHybridTrie.hpp</itemPath>
       <itemPath>inc/WordIndexTrieBase.hpp</itemPath>
       <itemPath>inc/xxhash.h</itemPath>
     </logicalFolder>
@@ -59,14 +59,14 @@
       <itemPath>src/ARPATrieBuilder.cpp</itemPath>
       <itemPath>src/AWordIndex.cpp</itemPath>
       <itemPath>src/ByteMGramId.cpp</itemPath>
-      <itemPath>src/C2DHashMapTrie.cpp</itemPath>
-      <itemPath>src/C2DMapArrayTrie.cpp</itemPath>
-      <itemPath>src/C2WOrderedArrayTrie.cpp</itemPath>
-      <itemPath>src/G2DHashMapTrie.cpp</itemPath>
+      <itemPath>src/C2DHybridTrie.cpp</itemPath>
+      <itemPath>src/C2DMapTrie.cpp</itemPath>
+      <itemPath>src/C2WArrayTrie.cpp</itemPath>
+      <itemPath>src/G2DMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
-      <itemPath>src/W2CHybridMemoryTrie.cpp</itemPath>
-      <itemPath>src/W2COrderedArrayTrie.cpp</itemPath>
+      <itemPath>src/W2CArrayTrie.cpp</itemPath>
+      <itemPath>src/W2CHybridTrie.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
       <itemPath>src/xxhash.c</itemPath>
     </logicalFolder>
@@ -755,9 +755,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -773,7 +773,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -811,11 +811,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -829,21 +829,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -898,9 +898,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -916,7 +916,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -954,11 +954,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -972,21 +972,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1049,9 +1049,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1067,7 +1067,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1105,11 +1105,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1123,21 +1123,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1192,9 +1192,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1210,7 +1210,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1248,11 +1248,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1266,21 +1266,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1335,9 +1335,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1353,7 +1353,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1391,11 +1391,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1409,21 +1409,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1478,9 +1478,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1496,7 +1496,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1534,11 +1534,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1552,21 +1552,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1621,9 +1621,9 @@
       </item>
       <item path="inc/C2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2DMapArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/C2WOrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/C2WArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/CStyleFileReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1639,7 +1639,7 @@
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/G2DHashMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/GenericTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1677,11 +1677,11 @@
       </item>
       <item path="inc/TextPieceReader.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CArrayTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2CHybridMemoryTrieStorage.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CH_UM_Storage.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/W2COrderedArrayTrie.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/W2CHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/WordIndexTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1695,21 +1695,21 @@
       </item>
       <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2DHashMapTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2DMapArrayTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/C2WOrderedArrayTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/G2DHashMapTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/W2CHybridMemoryTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="src/W2COrderedArrayTrie.cpp" ex="false" tool="1" flavor2="9">
+      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="9">
       </item>

@@ -1,5 +1,5 @@
 /* 
- * File:   C2WOrderedArrayTrie.hpp
+ * File:   C2WArrayTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

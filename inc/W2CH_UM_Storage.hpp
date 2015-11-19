@@ -1,5 +1,5 @@
 /* 
- * File:   HybridMemoryTrieStorage.hpp
+ * File:   W2CH_UM_Storage.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

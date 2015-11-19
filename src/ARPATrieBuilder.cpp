@@ -34,11 +34,11 @@
 #include "ARPAGramBuilderFactory.hpp"
 
 #include "C2DHashMapTrie.hpp"
-#include "W2CHybridMemoryTrie.hpp"
-#include "C2WOrderedArrayTrie.hpp"
-#include "W2COrderedArrayTrie.hpp"
-#include "C2DMapArrayTrie.hpp"
-#include "G2DHashMapTrie.hpp"
+#include "W2CHybridTrie.hpp"
+#include "C2WArrayTrie.hpp"
+#include "W2CArrayTrie.hpp"
+#include "C2DHybridTrie.hpp"
+#include "G2DMapTrie.hpp"
 
 using namespace uva::smt::tries;
 using namespace uva::smt::logging;

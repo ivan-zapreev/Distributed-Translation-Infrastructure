@@ -1,5 +1,5 @@
 /* 
- * File:   C2WOrderedArrayTrie.cpp
+ * File:   C2WArrayTrie.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -22,7 +22,7 @@
  *
  * Created on August 25, 2015, 11:27 PM
  */
-#include "C2WOrderedArrayTrie.hpp"
+#include "C2WArrayTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 

@@ -1,5 +1,5 @@
 /* 
- * File:   W2COrderedArrayTrie.hpp
+ * File:   W2CArrayTrie.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
