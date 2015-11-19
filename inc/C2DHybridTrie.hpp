@@ -216,14 +216,17 @@ namespace uva {
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //Store the shorthand for the context id
+                        //Store the shorthand for the context and end word id
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TShortId & word_id = query.m_gram[query.m_end_word_idx];
+                        
                         //Compute the distance between words
                         const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
                         LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
-                                << SSTR(query.m_end_word_idx) << ", end word id: " << query.m_gram[query.m_end_word_idx] << END_LOG;
+                                << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
+                        
                         //Get the next context id
-                        if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
+                        if (BASE::m_get_ctx_id[be_dist](this, word_id, ctx_id)) {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
@@ -231,7 +234,8 @@ namespace uva {
                             LOG_DEBUG << "The payload is retrieved: " << (string) m_m_gram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
-                            LOG_DEBUG << "The payload id could not be found!" << END_LOG;
+                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                    << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
                         LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
@@ -248,19 +252,23 @@ namespace uva {
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //Store the shorthand for the context id
+                        //Store the shorthand for the context and end word id
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                        const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, query.m_gram[query.m_end_word_idx]);
+                        const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
 
                         //Search for the map for that context id
                         TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(key);
                         if (result == m_n_gram_map_ptr->end()) {
                             //The payload could not be found
+                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                    << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         } else {
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                            LOG_DEBUG << "The payload is retrieved: " << result->second << END_LOG;
                         }
                     }
                 }

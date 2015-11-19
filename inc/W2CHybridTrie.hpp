@@ -178,6 +178,10 @@ namespace uva {
                 inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
+
+                    LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
+                            << "," << SSTR(word_idx) << "]" << END_LOG;
+
                     //The data is always present.
                     query.m_payloads[word_idx][word_idx] = &m_mgram_data[0][query.m_gram[word_idx]];
 
@@ -190,15 +194,39 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    //Get the context id, note we use short ids here!
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //Return the data by the context
-                        payload = m_mgram_data[CURR_LEVEL - 1][ctx_id];
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        return GPR_Enum::FAILED_GPR;
-                    }*/
+                    LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                            << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
+
+                    LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
+
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context and end word id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TShortId & word_id = query.m_gram[query.m_end_word_idx];
+
+                        //Compute the distance between words
+                        const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
+                        LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
+                                << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
+
+                        //Get the next context id
+                        if (BASE::m_get_ctx_id[be_dist](this, word_id, ctx_id)) {
+                            LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
+                            //There is data found under this context
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_mgram_data[be_dist][ctx_id];
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_mgram_data[be_dist][ctx_id] << END_LOG;
+                        } else {
+                            //The payload could not be found
+                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                    << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        }
+                        LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
+                    }
                 }
 
                 /**
@@ -206,29 +234,37 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    //Try to find the word mapping first
-                    StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][end_word_id];
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
 
-                    //If the mapping is present the search further, otherwise return false
-                    if (ctx_mapping != NULL) {
-                        typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
-                        if (result == ctx_mapping->end()) {
-                            //The data could not be found
-                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context and end word id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TShortId & word_id = query.m_gram[query.m_end_word_idx];
+
+                        //Try to find the word mapping first
+                        StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
+
+                        //If the mapping is present the search further, otherwise return false
+                        if (ctx_mapping != NULL) {
+                            typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
+                            if (result == ctx_mapping->end()) {
+                                //The data could not be found
+                                status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                            } else {
+                                //The data could be found
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                                LOG_DEBUG << "The payload is retrieved: " << result->second << END_LOG;
+                                status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                            }
                         } else {
-                            //The data could be found
-                            LOG_DEBUG1 << "Found the probability value: " << result->second << ", end_word_id: "
-                                    << SSTR(end_word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                            //The payload could not be found
+                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                    << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
-                    } else {
-                        LOG_DEBUG1 << "There are no elements @ level: " << SSTR(MAX_LEVEL)
-                                << " for word_id: " << SSTR(end_word_id) << "!" << END_LOG;
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
-                     */
                 }
 
                 /**

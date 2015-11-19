@@ -55,7 +55,7 @@ namespace uva {
                 ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
 
                 //Memset the M grams reference and data arrays
-                memset(pMGramAlloc, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
+                memset(m_m_gram_alloc_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
                 memset(m_m_gram_map_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
                 memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_Gram_Payload *));
 
@@ -94,7 +94,7 @@ namespace uva {
                     const uint num_grams = counts[idx + 1];
 
                     //Reserve the memory for the map
-                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &pMGramAlloc[idx], num_grams, "M-Grams", m_mgram_mem_factor);
+                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &m_m_gram_alloc_ptrs[idx], num_grams, "M-Grams", m_mgram_mem_factor);
 
                     //Get the number of M-gram indexes on this level
                     const uint num_ngram_idx = m_M_gram_num_ctx_ids[idx];
@@ -147,7 +147,7 @@ namespace uva {
 
                 //Deallocate M-Grams there are N-2 M-gram levels in the array
                 for (int idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
-                    deallocate_container<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &pMGramAlloc[idx]);
+                    deallocate_container<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &m_m_gram_alloc_ptrs[idx]);
                     delete[] m_m_gram_data[idx];
                 }
 

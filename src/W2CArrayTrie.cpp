@@ -45,12 +45,12 @@ namespace uva {
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             W2CArrayTrie<MAX_LEVEL, WordIndexType>::W2CArrayTrie(WordIndexType & word_index)
             : LayeredTrieBase<W2CArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __W2CArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
-            m_num_word_ids(0), m_1_gram_data(NULL), m_N_gram_word_2_data(NULL) {
+            m_num_word_ids(0), m_1_gram_data(NULL), m_n_gram_word_2_data(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
 
                 //Memset the M/N grams reference and data arrays
-                memset(m_M_gram_word_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
+                memset(m_m_gram_word_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -71,11 +71,11 @@ namespace uva {
                 //04) Allocate data for the M-grams
 
                 for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
-                    preAllocateWordsData<T_M_GramWordEntry>(m_M_gram_word_2_data[i], counts[i + 1], counts[0]);
+                    preAllocateWordsData<T_M_GramWordEntry>(m_m_gram_word_2_data[i], counts[i + 1], counts[0]);
                 }
 
                 //05) Allocate the data for the N-Grams 
-                preAllocateWordsData<T_N_GramWordEntry>(m_N_gram_word_2_data, counts[MAX_LEVEL - 1], counts[0]);
+                preAllocateWordsData<T_N_GramWordEntry>(m_n_gram_word_2_data, counts[MAX_LEVEL - 1], counts[0]);
             }
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -84,9 +84,9 @@ namespace uva {
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                     for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
-                        delete[] m_M_gram_word_2_data[i];
+                        delete[] m_m_gram_word_2_data[i];
                     }
-                    delete[] m_N_gram_word_2_data;
+                    delete[] m_n_gram_word_2_data;
                 }
             }
 

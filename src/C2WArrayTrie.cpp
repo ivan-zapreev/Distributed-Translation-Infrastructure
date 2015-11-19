@@ -49,7 +49,7 @@ namespace uva {
                 ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                
                 //Memset the M grams reference and data arrays
-                memset(m_M_gram_ctx_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
+                memset(m_m_gram_ctx_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
                 memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TWordIdPBEntry *));
 
                 //Initialize the array of counters
@@ -90,8 +90,8 @@ namespace uva {
                 //The number of contexts is the number of words in previous level 1 i.e. counts[0]
                 //Yet we know that the word index begins with 2, due to UNDEFINED and UNKNOWN word ids
                 //Therefore for the 2-gram level contexts array we add two more elements, just to simplify computations
-                m_M_gram_ctx_2_data[0] = new TSubArrReference[m_one_gram_arr_size];
-                memset(m_M_gram_ctx_2_data[0], 0, m_one_gram_arr_size * sizeof (TSubArrReference));
+                m_m_gram_ctx_2_data[0] = new TSubArrReference[m_one_gram_arr_size];
+                memset(m_m_gram_ctx_2_data[0], 0, m_one_gram_arr_size * sizeof (TSubArrReference));
 
                 //Now also allocate the data for the 2-Grams, the number of 2-grams is m_MN_gram_size[0] 
                 m_m_gram_data[0] = new TWordIdPBEntry[m_m_n_gram_num_ctx_ids[0]];
@@ -102,8 +102,8 @@ namespace uva {
                     //Here i is the index of the array, the corresponding M-gram
                     //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                     //on the previous level - the maximum number of possible contexts.
-                    m_M_gram_ctx_2_data[i] = new TSubArrReference[m_m_n_gram_num_ctx_ids[i - 1]];
-                    memset(m_M_gram_ctx_2_data[i], 0, m_m_n_gram_num_ctx_ids[i - 1] * sizeof (TSubArrReference));
+                    m_m_gram_ctx_2_data[i] = new TSubArrReference[m_m_n_gram_num_ctx_ids[i - 1]];
+                    memset(m_m_gram_ctx_2_data[i], 0, m_m_n_gram_num_ctx_ids[i - 1] * sizeof (TSubArrReference));
                     //The m_MN_gram_size[i] stores the number of elements
                     //on the current level - the number of M-Grams.
                     m_m_gram_data[i] = new TWordIdPBEntry[m_m_n_gram_num_ctx_ids[i]];
@@ -121,7 +121,7 @@ namespace uva {
                 if (m_1_gram_data != NULL) {
                     delete[] m_1_gram_data;
                     for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
-                        delete[] m_M_gram_ctx_2_data[i];
+                        delete[] m_m_gram_ctx_2_data[i];
                         delete[] m_m_gram_data[i];
                     }
                     delete[] m_n_gram_data;
