@@ -207,9 +207,7 @@ namespace uva {
                             << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //First ensure the context of the given sub-m-gram
-                    BASE::ensure_context(query, status);
-
-                    LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
+                    LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -229,8 +227,8 @@ namespace uva {
                             TMGramsMap::const_iterator result = m_m_gram_map_ptrs[level_idx]->find(ctx_id);
                             if (result == m_m_gram_map_ptrs[level_idx]->end()) {
                                 //The payload could not be found
-                                LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
-                                        << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
+                                LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)
+                                        << ", word_id: " << SSTR(word_id) << END_LOG;
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                             } else {
                                 //There is data found under this context
@@ -239,7 +237,8 @@ namespace uva {
                             }
                         } else {
                             //The payload could not be found
-                            LOG_DEBUG << "The payload id could not be found!" << END_LOG;
+                            LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)
+                                    << ", word_id: " << SSTR(word_id) << END_LOG;
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
                         LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
@@ -252,7 +251,7 @@ namespace uva {
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //First ensure the context of the given sub-m-gram
-                    BASE::ensure_context(query, status);
+                    LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {

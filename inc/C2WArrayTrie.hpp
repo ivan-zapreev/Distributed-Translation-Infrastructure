@@ -330,9 +330,7 @@ namespace uva {
                             << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //First ensure the context of the given sub-m-gram
-                    BASE::ensure_context(query, status);
-
-                    LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
+                    LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -354,8 +352,8 @@ namespace uva {
                             LOG_DEBUG << "The payload is retrieved: " << (string) m_m_gram_data[level_idx][ctx_id].payload << END_LOG;
                         } else {
                             //The payload could not be found
-                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
-                                    << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
+                            LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)
+                                    << ", word_id: " << SSTR(word_id) << END_LOG;
                             status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                         }
                         LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
@@ -368,7 +366,7 @@ namespace uva {
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //First ensure the context of the given sub-m-gram
-                    BASE::ensure_context(query, status);
+                    LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
                     //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
@@ -391,7 +389,6 @@ namespace uva {
                             //Return the data
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_n_gram_data[idx].prob;
                             LOG_DEBUG << "The payload is retrieved: " << m_n_gram_data[idx].prob << END_LOG;
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         } else {
                             //The payload could not be found
                             LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
