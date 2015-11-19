@@ -310,6 +310,10 @@ namespace uva {
                 inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
+
+                    LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
+                            << "," << SSTR(word_idx) << "]" << END_LOG;
+
                     //The data is always present.
                     query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
 
@@ -322,23 +326,36 @@ namespace uva {
                  * For more details @see LayeredTrieBase
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    //Compute the m-gram index
-                    constexpr TModelLevel LEVEL_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+                    LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                            << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
-                    LOG_DEBUG2 << "Getting " << SSTR(CURR_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
 
-                    //Get the context id, note we use short ids here!
-                    if (get_ctx_id<CURR_LEVEL>(word_id, ctx_id)) {
-                        //Return the data
-                        payload = m_M_gram_data[LEVEL_IDX][ctx_id].payload;
-                        return GPR_Enum::PAYLOAD_GPR;
-                    } else {
-                        //The data could not be found
-                        return GPR_Enum::FAILED_GPR;
+                    LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
+
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        //Compute the distance between words
+                        const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
+                        LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
+                                << SSTR(query.m_end_word_idx) << ", end word id: " << query.m_gram[query.m_end_word_idx] << END_LOG;
+                        //Get the next context id
+                        if (BASE::m_get_ctx_id[be_dist](this, query.m_gram[query.m_end_word_idx], ctx_id)) {
+                            const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
+                            LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
+                            //There is data found under this context
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_M_gram_data[level_idx][ctx_id].payload;
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_M_gram_data[level_idx][ctx_id].payload << END_LOG;
+                        } else {
+                            //The payload could not be found
+                            LOG_DEBUG << "The payload id could not be found!" << END_LOG;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        }
+                        LOG_DEBUG << "Context ensure status is: " << status_to_string(status) << END_LOG;
                     }
-                     * */
                 }
 
                 /**
@@ -346,28 +363,36 @@ namespace uva {
                  * @see GenericTrieBase
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    /*
-                    LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
-                            << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+                    //First ensure the context of the given sub-m-gram
+                    BASE::ensure_context(query, status);
 
-                    //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                    const TLongId key = TShortId_TShortId_2_TLongId(word_id, ctx_id);
-                    LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(word_id = " << SSTR(word_id)
-                            << ", ctx_id = " << SSTR(ctx_id) << ") = " << SSTR(key) << END_LOG;
+                    //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Store the shorthand for the context and end word id
+                        TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                        const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                    //Search for the index using binary search
-                    TShortId idx = BASE::UNDEFINED_ARR_IDX;
-                    if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
-                            m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
-                        //Return the data
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_N_gram_data[idx].prob;
-                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                    } else {
-                        LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
-                                << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
-                        status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                                << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
+
+                        //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
+                        const TLongId key = TShortId_TShortId_2_TLongId(word_id, ctx_id);
+                        LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(word_id = " << SSTR(word_id)
+                                << ", ctx_id = " << SSTR(ctx_id) << ") = " << SSTR(key) << END_LOG;
+
+                        //Search for the index using binary search
+                        TShortId idx = BASE::UNDEFINED_ARR_IDX;
+                        if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_N_gram_data, BASE::FIRST_VALID_CTX_ID,
+                                m_M_N_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
+                            //Return the data
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_N_gram_data[idx].prob;
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                        } else {
+                            LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
+                                    << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
+                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                        }
                     }
-                     */
                 }
 
                 /**
