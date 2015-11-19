@@ -10,4 +10,4 @@
 # Release__Centos_ configuration
 # Debug__Centos_ configuration
 # Profile__Centos_ configuration
-# Release__Centos_gperf configuration
+# Release__Centos_gperftools configuration

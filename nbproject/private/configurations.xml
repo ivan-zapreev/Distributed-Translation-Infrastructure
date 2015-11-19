@@ -241,7 +241,7 @@
         </environment>
       </runprofile>
     </conf>
-    <conf name="Release__Centos_gperf" type="1">
+    <conf name="Release__Centos_gperftools" type="1">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>4</platform>

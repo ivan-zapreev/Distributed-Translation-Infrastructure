@@ -62,14 +62,14 @@ CND_ARTIFACT_PATH_Profile__Centos_=dist/Profile__Centos_/back-off-language-model
 CND_PACKAGE_DIR_Profile__Centos_=dist/Profile__Centos_/GNU-MacOSX/package
 CND_PACKAGE_NAME_Profile__Centos_=back-off-language-model-smt.tar
 CND_PACKAGE_PATH_Profile__Centos_=dist/Profile__Centos_/GNU-MacOSX/package/back-off-language-model-smt.tar
-# Release__Centos_gperf configuration
-CND_PLATFORM_Release__Centos_gperf=GNU-MacOSX
-CND_ARTIFACT_DIR_Release__Centos_gperf=dist/Release__Centos_gperf
-CND_ARTIFACT_NAME_Release__Centos_gperf=back-off-language-model-smt
-CND_ARTIFACT_PATH_Release__Centos_gperf=dist/Release__Centos_gperf/back-off-language-model-smt
-CND_PACKAGE_DIR_Release__Centos_gperf=dist/Release__Centos_gperf/GNU-MacOSX/package
-CND_PACKAGE_NAME_Release__Centos_gperf=back-off-language-model-smt.tar
-CND_PACKAGE_PATH_Release__Centos_gperf=dist/Release__Centos_gperf/GNU-MacOSX/package/back-off-language-model-smt.tar
+# Release__Centos_gperftools configuration
+CND_PLATFORM_Release__Centos_gperftools=GNU-MacOSX
+CND_ARTIFACT_DIR_Release__Centos_gperftools=dist/Release__Centos_gperftools
+CND_ARTIFACT_NAME_Release__Centos_gperftools=back-off-language-model-smt
+CND_ARTIFACT_PATH_Release__Centos_gperftools=dist/Release__Centos_gperftools/back-off-language-model-smt
+CND_PACKAGE_DIR_Release__Centos_gperftools=dist/Release__Centos_gperftools/GNU-MacOSX/package
+CND_PACKAGE_NAME_Release__Centos_gperftools=back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Release__Centos_gperftools=dist/Release__Centos_gperftools/GNU-MacOSX/package/back-off-language-model-smt.tar
 #
 # include compiler specific variables
 #
