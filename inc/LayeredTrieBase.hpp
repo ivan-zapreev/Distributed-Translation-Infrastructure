@@ -145,191 +145,192 @@ namespace uva {
                 status = MGramStatusEnum::GOOD_PRESENT_MGS; \
             }
 
-        /**
-         * This class defined the trie interface and functionality that is expected by the TrieDriver class
-         */
-        template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
-        class LayeredTrieBase : public GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> {
-        public:
-            //Typedef the base class
-            typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
-
-            //The typedef for the function that gets the payload from the m-gram
-            typedef std::function<bool (const TrieType*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
-
             /**
-             * The basic constructor
-             * @param word_index the word index to be used
+             * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            explicit LayeredTrieBase(WordIndexType & word_index)
-            : GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> (word_index),
-            m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
-                //Perform an error check! This container has bounds on the supported trie level
-                ASSERT_CONDITION_THROW((MAX_LEVEL > sizeof (m_get_ctx_id)), string("The maximum supported trie level is") + std::to_string(sizeof (m_get_ctx_id)));
-                //Clean the cache memory
-                memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
-            }
+            template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
+            class LayeredTrieBase : public GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> {
+            public:
+                //Typedef the base class
+                typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
 
-            /**
-             * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
-             * @return returns true, by default all layered tries need context ids when searching for data
-             */
-            static constexpr bool is_need_getting_ctx_ids() {
-                return true;
-            }
+                //The typedef for the function that gets the payload from the m-gram
+                typedef std::function<bool (const TrieType*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
 
-            /**
-             * @see GenericTrieBase
-             */
-            inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
-                BASE::pre_allocate(counts);
-            }
-
-            /**
-             * Allows to get the the new context id for the word and previous context id given the level
-             * @param CURR_LEVEL the currently considered m-gram level
-             * @param word_id the word id on this level
-             * @param ctx_id the previous level context id
-             * @return true if computation of the next context is succeeded
-             */
-            template<TModelLevel CURR_LEVEL>
-            inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
-                THROW_MUST_OVERRIDE();
-            }
-
-            /**
-             * Allows to retrieve the cached context id for the given M-gram if any
-             * @param mGram the m-gram to get the context id for
-             * @param result the output parameter, will store the cached id, if any
-             * @return true if there was nothing cached, otherwise false
-             */
-            template<TModelLevel CURR_LEVEL>
-            inline bool get_cached_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & result) const {
-                //Compute the context level
-                constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
-                //Check if this is the same m-gram
-                if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
-                    result = m_cached_ctx[CONTEXT_LEVEL].m_ctx_id;
-                    //There was something cached, so no need to search further!
-                    return false;
+                /**
+                 * The basic constructor
+                 * @param word_index the word index to be used
+                 */
+                explicit LayeredTrieBase(WordIndexType & word_index)
+                : GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> (word_index),
+                m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
+                    //Perform an error check! This container has bounds on the supported trie level
+                    ASSERT_CONDITION_THROW((MAX_LEVEL > sizeof (m_get_ctx_id)), string("The maximum supported trie level is") + std::to_string(sizeof (m_get_ctx_id)));
+                    //Clean the cache memory
+                    memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
                 }
-                //There was nothing cached, so return keep searching!
-                return true;
-            }
 
-            /**
-             * Allows to cache the context id of the given m-grams context
-             * @param gram the m-gram to cache
-             * @param ctx_id the m-gram context id to cache.
-             */
-            template<TModelLevel CURR_LEVEL>
-            inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & ctx_id) {
-                //Compute the context level
-                constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
-                //Copy the context word ids
-                memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId));
-                //Store the cache value
-                m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
-            }
+                /**
+                 * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
+                 * @return returns true, by default all layered tries need context ids when searching for data
+                 */
+                static constexpr bool is_need_getting_ctx_ids() {
+                    return true;
+                }
 
-        protected:
+                /**
+                 * @see GenericTrieBase
+                 */
+                inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    BASE::pre_allocate(counts);
+                }
 
-            //Stores the zero payload for begin used when no payload is found
-            const T_M_Gram_Payload m_zero_payload;
+                /**
+                 * Allows to get the the new context id for the word and previous context id given the level
+                 * @param CURR_LEVEL the currently considered m-gram level
+                 * @param word_id the word id on this level
+                 * @param ctx_id the previous level context id
+                 * @return true if computation of the next context is succeeded
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    THROW_MUST_OVERRIDE();
+                }
 
-            //Stores the get context id function template instances
-            static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
+                /**
+                 * Allows to retrieve the cached context id for the given M-gram if any
+                 * @param mGram the m-gram to get the context id for
+                 * @param result the output parameter, will store the cached id, if any
+                 * @return true if there was nothing cached, otherwise false
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline bool get_cached_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & result) const {
+                    //Compute the context level
+                    constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                    //Check if this is the same m-gram
+                    if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
+                        result = m_cached_ctx[CONTEXT_LEVEL].m_ctx_id;
+                        //There was something cached, so no need to search further!
+                        return false;
+                    }
+                    //There was nothing cached, so return keep searching!
+                    return true;
+                }
 
-            /**
-             * For the given query tries to ensure that the context is computed and stored.
-             * Also for the context the payload is retrieved. If the back-off is also not
-             * found sets its payload pointer to the zero payload structure.
-             * WARNING: This method is to be only called for minimal bi-gram queries!
-             * WARNING: Is only to be called if the context has not been computed yet
-             * @param query the query to work with
-             * @return true if the context was successfully computed, otherwise false.
-             */
-            inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                //Get the context id reference for convenience
-                TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                /**
+                 * Allows to cache the context id of the given m-grams context
+                 * @param gram the m-gram to cache
+                 * @param ctx_id the m-gram context id to cache.
+                 */
+                template<TModelLevel CURR_LEVEL>
+                inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & ctx_id) {
+                    //Compute the context level
+                    constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                    //Copy the context word ids
+                    memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId));
+                    //Store the cache value
+                    m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
+                }
 
-                LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                        << ", " << SSTR(query.m_end_word_idx) << "], the last computed context value is: "
-                        << ctx_id << END_LOG;
+            protected:
 
-                //The first context is the first word id
-                ctx_id = query.m_gram[query.m_begin_word_idx];
+                //Stores the zero payload for begin used when no payload is found
+                const T_M_Gram_Payload m_zero_payload;
 
-                LOG_DEBUG << "Setting the first context value to the first word id: " << ctx_id << END_LOG;
+                //Stores the get context id function template instances
+                static const TGetCtxIdFunc m_get_ctx_id[M_GRAM_LEVEL_7];
 
-                //Decrement the end word index to get down to the back-off level
-                query.m_end_word_idx--;
+                /**
+                 * For the given query tries to ensure that the context is computed and stored.
+                 * Also for the context the payload is retrieved. If the back-off is also not
+                 * found sets its payload pointer to the zero payload structure.
+                 * WARNING: This method is to be only called for minimal bi-gram queries!
+                 * WARNING: Is only to be called if the context has not been computed yet
+                 * @param query the query to work with
+                 * @return true if the context was successfully computed, otherwise false.
+                 */
+                inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    //Get the context id reference for convenience
+                    TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
 
-                //Check if the back-off m-gram is a unigram or not
-                if (query.m_begin_word_idx == query.m_end_word_idx) {
-                    //The the back-off sub-m-gram is a uni-gram obtain its payload
-                    static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
-                } else {
-                    //set the result status to true
+                    LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                            << ", " << SSTR(query.m_end_word_idx) << "], the last computed context value is: "
+                            << ctx_id << END_LOG;
+
+                    //The first context is the first word id
+                    ctx_id = query.m_gram[query.m_begin_word_idx];
+
+                    LOG_DEBUG << "Setting the first context value to the first word id: " << ctx_id << END_LOG;
+
+                    //Decrement the end word index to get down to the back-off level
+                    query.m_end_word_idx--;
+
+                    //Set the result status to true
                     status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                    //If the back-off sub-m-gram is not a uni-gram then do the context
-                    for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
-                        if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
-                            //If the next context could not be computed, we stop with a bad status
-                            status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                            break;
+
+                    //Check if the back-off m-gram is a unigram or not
+                    if (query.m_begin_word_idx == query.m_end_word_idx) {
+                        //The the back-off sub-m-gram is a uni-gram obtain its payload
+                        static_cast<const TrieType*> (this)->get_unigram_payload(query);
+                    } else {
+                        //If the back-off sub-m-gram is not a uni-gram then do the context
+                        for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
+                            if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
+                                //If the next context could not be computed, we stop with a bad status
+                                status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                                break;
+                            }
+                        }
+
+                        //If the context of the back-off sub-m-gram could be computed then retrieve its payload
+                        if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                            //The back-off sub-m-gram is at least a bi-gram and never an n-gram
+                            static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                        }
+
+                        //If the back-off payload could not be computed, set the zero payload
+                        if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
+                            //Set the back-off payload to zero payload!
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
                         }
                     }
+                    //Increment the end word index to get back to the original sub-m-gram
+                    query.m_end_word_idx++;
 
-                    //If the context of the back-off sub-m-gram could be computed then retrieve its payload
-                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //The back-off sub-m-gram is at least a bi-gram and never an n-gram
-                        static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
-                    }
-
-                    //If the back-off payload could not be computed, set the zero payload
-                    if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //Set the back-off payload to zero payload!
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
-                    }
+                    LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
+                            << ", " << SSTR(query.m_end_word_idx) << "] status is: "
+                            << status_to_string(status) << END_LOG;
                 }
-                //Increment the end word index to get back to the original sub-m-gram
-                query.m_end_word_idx++;
 
-                LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                        << ", " << SSTR(query.m_end_word_idx) << "] status is: "
-                        << status_to_string(status) << END_LOG;
-            }
+            private:
 
-        private:
+                /**
+                 * This structure is to store the cached word ids and context ids
+                 * @param m_word_ids the word ids identifier of the m-gram 
+                 * @param m_ctx_id the cached context id for the m-gram
+                 */
+                typedef struct {
+                    TShortId m_word_ids[MAX_LEVEL];
+                    TLongId m_ctx_id;
+                } TContextCacheEntry;
 
-            /**
-             * This structure is to store the cached word ids and context ids
-             * @param m_word_ids the word ids identifier of the m-gram 
-             * @param m_ctx_id the cached context id for the m-gram
-             */
-            typedef struct {
-                TShortId m_word_ids[MAX_LEVEL];
-                TLongId m_ctx_id;
-            } TContextCacheEntry;
+                //Stores the cached contexts data 
+                TContextCacheEntry m_cached_ctx[MAX_LEVEL];
+            };
 
-            //Stores the cached contexts data 
-            TContextCacheEntry m_cached_ctx[MAX_LEVEL];
-        };
+            template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
+            const typename LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::TGetCtxIdFunc
+            LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::m_get_ctx_id[M_GRAM_LEVEL_7] = {
+                NULL,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_5>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_6>,
+                &TrieType::template get_ctx_id<M_GRAM_LEVEL_7>
+            };
 
-        template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
-        const typename LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::TGetCtxIdFunc
-        LayeredTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE>::m_get_ctx_id[M_GRAM_LEVEL_7] = {
-            NULL,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_2>,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_3>,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_4>,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_5>,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_6>,
-            &TrieType::template get_ctx_id<M_GRAM_LEVEL_7>
-        };
-
-        //Define the template for instantiating the layered trie class children templates
+            //Define the template for instantiating the layered trie class children templates
 #define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
             template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >; \
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_1>(const TShortId word_id, TLongId & ctx_id) const; \
@@ -340,8 +341,8 @@ namespace uva {
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_6>(const TShortId word_id, TLongId & ctx_id) const; \
             template bool CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >::get_ctx_id<M_GRAM_LEVEL_7>(const TShortId word_id, TLongId & ctx_id) const;
 
+        }
     }
-}
 }
 
 #endif	/* LAYEREDTRIEBASE_HPP */

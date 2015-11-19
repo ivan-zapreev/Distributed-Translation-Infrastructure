@@ -214,10 +214,8 @@ namespace uva {
                  * Allows to attempt the sub-m-gram payload retrieval for m==1.
                  * The retrieval of a uni-gram data is always a success.
                  * @see GenericTrieBase
-                 * @param query the query containing the actual query data
-                 * @param status the resulting status of the operation
                  */
-                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
                     //Get the uni-gram word index
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //This is at least a uni-gram we have, therefore first process the it in a special way
@@ -226,9 +224,6 @@ namespace uva {
                     //Store the uni-gram payload pointer and add the probability to the total conditional probability 
                     query.m_payloads[word_idx][word_idx] = &m_1_gram_data[word_id];
                     LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
-
-                    //The resulting status is always a success
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 }
 
                 /**

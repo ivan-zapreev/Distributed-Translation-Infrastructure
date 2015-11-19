@@ -335,16 +335,15 @@ namespace uva {
                  * This method allows to process the uni-gram case, retrieve payload and account for probabilities.
                  * @param TrieType the trie type
                  * @param query the m-gram query data
-                 * @param status the resulting status of computations
                  */
-                inline void process_unigram(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void process_unigram(T_Query_Exec_Data & query) const {
                     //Get the uni-gram word index
                     const TModelLevel & word_idx = query.m_begin_word_idx;
                     //Get the reference to the payload for convenience
                     const void * & payload = query.m_payloads[word_idx][word_idx];
 
                     //Retrieve the payload
-                    static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                    static_cast<const TrieType*> (this)->get_unigram_payload(query);
                     LOG_DEBUG << "The 1-gram is found, payload: "
                             << (string) (* (const T_M_Gram_Payload *) payload) << END_LOG;
 
@@ -420,7 +419,7 @@ namespace uva {
                     //The uni-gram case is special
                     if (query.m_begin_word_idx == query.m_end_word_idx) {
                         //Retrieve the payload
-                        process_unigram(query, status);
+                        process_unigram(query);
 
                         //Increment the end_word_idx to move on, to the next sub-m-gram
                         query.m_end_word_idx++;
@@ -438,6 +437,9 @@ namespace uva {
                             return;
                         }
                     }
+
+                    //If we are here the everything is fine, set the result status to good
+                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 }
 
                 /**
@@ -460,7 +462,9 @@ namespace uva {
                         //Try to retrieve the back-off sub-m-gram
                         if (query.m_begin_word_idx == query.m_end_word_idx) {
                             //If the back-off sub-m-gram is a uni-gram then
-                            static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                            static_cast<const TrieType*> (this)->get_unigram_payload(query);
+                            //Set the result status to good
+                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
                         } else {
                             //The back-off sub-m-gram has a level M: 1 < M < N
                             static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
@@ -531,8 +535,7 @@ namespace uva {
                             << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //Once we are done with the loop above we need to retrieve and account for the unknown word uni-gram
-                    MGramStatusEnum status;
-                    process_unigram(query, status);
+                    process_unigram(query);
                 }
 
                 /**

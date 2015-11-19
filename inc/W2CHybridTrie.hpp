@@ -175,7 +175,7 @@ namespace uva {
                  * The retrieval of a uni-gram data is always a success
                  * @see GenericTrieBase
                  */
-                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
                     //Get the word index for convenience
                     const TModelLevel & word_idx = query.m_begin_word_idx;
 
@@ -184,9 +184,6 @@ namespace uva {
 
                     //The data is always present.
                     query.m_payloads[word_idx][word_idx] = &m_mgram_data[0][query.m_gram[word_idx]];
-
-                    //The resulting status is always a success
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
                 };
 
                 /**
