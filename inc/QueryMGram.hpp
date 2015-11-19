@@ -183,19 +183,6 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the parameters
-                     * @param BEGIN_WORD_IDX the begin word index of the sub-m-gram
-                     * @param END_WORD_IDX the end word index of the sub-m-gram
-                     * @param gram_ptr the pointer to the m-gram to work with
-                     * @return the hash value for the given sub-m-gram
-                     */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                    static inline uint64_t get_hash_static(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *gram_ptr) {
-                        return gram_ptr->get_hash<BEGIN_WORD_IDX, END_WORD_IDX>();
-                    }
-
-                    /**
                      * For the given N-gram, for some level M <=N , this method
                      * allows to give the string of the object for which the
                      * probability is computed, e.g.:
@@ -300,13 +287,13 @@ namespace uva {
 
                 template<typename WordIndexType, TModelLevel MAX_LEVEL>
                 const typename T_Query_M_Gram<WordIndexType, MAX_LEVEL>::TGetHashFunc T_Query_M_Gram<WordIndexType, MAX_LEVEL>::m_get_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
-                    {&get_hash_static<0, 0>, &get_hash_static<0, 1>, &get_hash_static<0, 2>, &get_hash_static<0, 3>, &get_hash_static<0, 4>, &get_hash_static<0, 5>, &get_hash_static<0, 6>},
-                    {NULL, &get_hash_static<1, 1>, &get_hash_static<1, 2>, &get_hash_static<1, 3>, &get_hash_static<1, 4>, &get_hash_static<1, 5>, &get_hash_static<1, 6>},
-                    {NULL, NULL, &get_hash_static<2, 2>, &get_hash_static<2, 3>, &get_hash_static<2, 4>, &get_hash_static<2, 5>, &get_hash_static<2, 6>},
-                    {NULL, NULL, NULL, &get_hash_static<3, 3>, &get_hash_static<3, 4>, &get_hash_static<3, 5>, &get_hash_static<3, 6>},
-                    {NULL, NULL, NULL, NULL, &get_hash_static<4, 4>, &get_hash_static<4, 5>, &get_hash_static<4, 6>},
-                    {NULL, NULL, NULL, NULL, NULL, &get_hash_static<5, 5>, &get_hash_static<5, 6>},
-                    {NULL, NULL, NULL, NULL, NULL, NULL, &get_hash_static<6, 6>}
+                    {&T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 0>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 1>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<0, 6>},
+                    {NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 1>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<1, 6>},
+                    {NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<2, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<2, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<2, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<2, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<2, 6>},
+                    {NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<3, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<3, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<3, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<3, 6>},
+                    {NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<4, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<4, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<4, 6>},
+                    {NULL, NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<5, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<5, 6>},
+                    {NULL, NULL, NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template get_hash<6, 6>}
                 };
 
             }
