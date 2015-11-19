@@ -469,10 +469,33 @@ namespace uva {
                 }
 
                 /**
-                 * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
-                 * @param TrieType the trie type
-                 * @param query the m-gram query data the begin word index will be changed
+                 * This method allows to retrieve the payload of a uni-gram or an m-gram with m < n
+                 * @param query the m-gram query data
                  * @param status the resulting status of the operation
+                 */
+                inline void get_uni_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                    LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                            << SSTR(query.m_end_word_idx) << "] needs to be retrieved!" << END_LOG;
+                    //Check if the back-off sub-m-gram is potentially available
+                    is_m_gram_potentially_present(query, status);
+                    LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                            << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
+
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //Try to retrieve the back-off sub-m-gram
+                        if (query.m_begin_word_idx == query.m_end_word_idx) {
+                            //If the back-off sub-m-gram is a uni-gram then
+                            static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
+                        } else {
+                            //The back-off sub-m-gram has a level M: 1 < M < N
+                            static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
+                        }
+                    }
+                }
+
+                /**
+                 * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
+                 * @param query the m-gram query data the begin word index will be changed
                  */
                 inline void back_off_and_step_down(T_Query_Exec_Data & query) const {
                     LOG_DEBUG << "query.m_begin_word_idx = " << SSTR(query.m_begin_word_idx) << ","
@@ -489,23 +512,8 @@ namespace uva {
                         //Decrease the end word index, as we need the back-off data
                         query.m_end_word_idx--;
 
-                        LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
-                                << SSTR(query.m_end_word_idx) << "] is not available, needs to be retrieved!" << END_LOG;
-                        //Check if the back-off sub-m-gram is potentially available
-                        is_m_gram_potentially_present(query, status);
-                        LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
-                                << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
-
-                        if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                            //Try to retrieve the back-off sub-m-gram
-                            if (query.m_begin_word_idx == query.m_end_word_idx) {
-                                //If the back-off sub-m-gram is a uni-gram then
-                                static_cast<const TrieType*> (this)->get_unigram_payload(query, status);
-                            } else {
-                                //The back-off sub-m-gram has a level M: 1 < M < N
-                                static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
-                            }
-                        }
+                        //Get the payload for the unigram or m-gram with m < n
+                        get_uni_m_gram_payload(query, status);
 
                         //Increase the end word index as we are going back to normal
                         query.m_end_word_idx++;
