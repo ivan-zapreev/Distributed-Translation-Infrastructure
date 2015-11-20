@@ -175,9 +175,12 @@ namespace uva {
                      * Where 0 and 1 are reserved word ids. If the word index
                      * is not continuous then the uni-gram payloads can not be stored in
                      * a word id indexed array. 
+                     * 
+                     * This method is to be overridden by the children classes.
+                     * The default implementation returns false!
                      */
-                    inline bool is_word_index_continuous() {
-                        THROW_MUST_OVERRIDE();
+                    static constexpr inline bool is_word_index_continuous() {
+                        return false;
                     }
 
                     /**

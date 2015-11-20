@@ -248,7 +248,7 @@ namespace uva {
                      * @see AWordIndex
                      * @return true - this word index is continuous.
                      */
-                    constexpr inline bool is_word_index_continuous() const  {
+                    static constexpr inline bool is_word_index_continuous() {
                         return true;
                     }
 
