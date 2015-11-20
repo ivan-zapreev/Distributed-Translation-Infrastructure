@@ -29,6 +29,7 @@
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
+      <itemPath>inc/HashingWordIndex.hpp</itemPath>
       <itemPath>inc/LayeredTrieBase.hpp</itemPath>
       <itemPath>inc/Logger.hpp</itemPath>
       <itemPath>inc/MGramCumulativeQuery.hpp</itemPath>
@@ -785,6 +786,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
@@ -927,6 +930,8 @@
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1079,6 +1084,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
@@ -1221,6 +1228,8 @@
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1365,6 +1374,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
@@ -1507,6 +1518,8 @@
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1651,6 +1664,8 @@
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/Logger.hpp" ex="false" tool="3" flavor2="0">
@@ -1793,6 +1808,8 @@
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/LayeredTrieBase.hpp" ex="false" tool="3" flavor2="0">
       </item>
