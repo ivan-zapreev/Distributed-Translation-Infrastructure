@@ -109,7 +109,7 @@ namespace uva {
                         //Note that, by now all the words must have been counted
                         //and have their unique words ids, so here we do it simple!
                         //Return the id that has already been issued!
-                        return _pWordIndexMap->at(token.str());
+                        return m_word_index_map_ptr->at(token.str());
                     }
 
                     /**
@@ -119,7 +119,7 @@ namespace uva {
                     void count_word(const TextPieceReader & token) {
                         //Misuse the internal word index map for storing the word counts in it.
                         LOG_DEBUG3 << "Counting word: [" << token.str() << "]" << END_LOG;
-                        BasicWordIndex::_pWordIndexMap->operator[](token.str()) += 1;
+                        BasicWordIndex::m_word_index_map_ptr->operator[](token.str()) += 1;
                     };
 
                     /**
@@ -142,17 +142,17 @@ namespace uva {
 
                         //00. Remove the <unk> word from the Map as it must get fixed index
                         LOG_DEBUG2 << "Remove the <unk> word from the Map as it must get fixed index" << END_LOG;
-                        BasicWordIndex::_pWordIndexMap->erase(AWordIndex::UNKNOWN_WORD_STR);
+                        BasicWordIndex::m_word_index_map_ptr->erase(AWordIndex::UNKNOWN_WORD_STR);
 
                         //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
                         LOG_DEBUG2 << "Create an array of words info objects from BasicWordIndex::_pWordIndexMap" << END_LOG;
-                        const size_t num_words = BasicWordIndex::_pWordIndexMap->size();
+                        const size_t num_words = BasicWordIndex::m_word_index_map_ptr->size();
                         __CountingWordIndex::TWordInfo * word_infos = new __CountingWordIndex::TWordInfo[num_words];
 
                         //02. Copy the word information from the map into that array.
                         LOG_DEBUG2 << "Copy the word information from the map into that array." << END_LOG;
-                        BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::_pWordIndexMap->begin();
-                        for (size_t idx = 0; iter != BasicWordIndex::_pWordIndexMap->end(); ++iter, ++idx) {
+                        BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::m_word_index_map_ptr->begin();
+                        for (size_t idx = 0; iter != BasicWordIndex::m_word_index_map_ptr->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
                             word_infos[idx].count = iter->second;
                         }
@@ -171,9 +171,9 @@ namespace uva {
                             //Get the next word
                             string & word = word_infos[idx].word;
                             //Give it the next index
-                            BasicWordIndex::_pWordIndexMap->operator[](word) = BasicWordIndex::_nextNewWordId++;
+                            BasicWordIndex::m_word_index_map_ptr->operator[](word) = BasicWordIndex::m_next_new_word_id++;
                             LOG_DEBUG4 << "Word [" << word << "], count: " << SSTR(word_infos[idx].count)
-                                    << " gets id: " << SSTR(BasicWordIndex::_nextNewWordId - 1) << END_LOG;
+                                    << " gets id: " << SSTR(BasicWordIndex::m_next_new_word_id - 1) << END_LOG;
                         }
 
                         //05. Delete the temporary sorted array
@@ -182,7 +182,7 @@ namespace uva {
 
                         //06. Put back the <unk> word with its fixed index into the map
                         LOG_DEBUG2 << "Put back the <unk> word with its fixed index into the map" << END_LOG;
-                        BasicWordIndex::_pWordIndexMap->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
+                        BasicWordIndex::m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
 
                         LOG_DEBUG1 << "Finished the post word counting actions!" << END_LOG;
                     };

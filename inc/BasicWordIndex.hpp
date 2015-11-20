@@ -63,7 +63,7 @@ namespace uva {
                      * storage allocation in the unordered_map used for the word index
                      */
                     BasicWordIndex(const float wordIndexMemFactor)
-                    : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL), _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(wordIndexMemFactor) {
+                    : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL), m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(wordIndexMemFactor) {
                     };
 
                     /**
@@ -84,11 +84,11 @@ namespace uva {
                         const size_t numWords = get_number_of_words(num_words);
 
                         //Reserve the memory for the map
-                        reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc,
-                                numWords, "WordIndex", _wordIndexMemFactor);
+                        reserve_mem_unordered_map<TWordIndexMap, TWordIndexAllocator>(&m_word_index_map_ptr, &m_word_index_alloc_ptr,
+                                numWords, "WordIndex", m_word_index_mem_factor);
 
                         //Register the unknown word with the first available hash value
-                        TWordIdType& word_id = _pWordIndexMap->operator[](UNKNOWN_WORD_STR);
+                        TWordIdType& word_id = m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR);
                         word_id = UNKNOWN_WORD_ID;
                     };
 
@@ -98,8 +98,8 @@ namespace uva {
                      * @see AWordIndex
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
-                        TWordIndexMapConstIter result = _pWordIndexMap->find(token.str());
-                        if (result == _pWordIndexMap->end()) {
+                        TWordIndexMapConstIter result = m_word_index_map_ptr->find(token.str());
+                        if (result == m_word_index_map_ptr->end()) {
                             LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
                                     << UNKNOWN_WORD_STR << "', id: "
                                     << SSTR(UNKNOWN_WORD_ID) << END_LOG;
@@ -124,11 +124,11 @@ namespace uva {
                      */
                     inline TWordIdType register_word(const TextPieceReader & token) {
                         //First get/create an existing/new word entry from from/in the word index
-                        TWordIdType& hash = _pWordIndexMap->operator[](token.str());
+                        TWordIdType& hash = m_word_index_map_ptr->operator[](token.str());
 
                         if (hash == UNDEFINED_WORD_ID) {
                             //If the word hash is not defined yet, then issue it a new hash id
-                            hash = _nextNewWordId++;
+                            hash = m_next_new_word_id++;
                             LOG_DEBUG2 << "Word: '" << token.str() << "' is not known yet, issuing it a new id: " << SSTR(hash) << END_LOG;
                         }
 
@@ -188,7 +188,7 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~BasicWordIndex() {
-                        deallocate_container<TWordIndexMap, TWordIndexAllocator>(&_pWordIndexMap, &_pWordIndexAlloc);
+                        deallocate_container<TWordIndexMap, TWordIndexAllocator>(&m_word_index_map_ptr, &m_word_index_alloc_ptr);
                     };
 
                     /**
@@ -216,7 +216,7 @@ namespace uva {
                      * @return the begin constant iterator
                      */
                     TWordIndexMapConstIter begin() {
-                        return _pWordIndexMap->begin();
+                        return m_word_index_map_ptr->begin();
                     }
 
                     /**
@@ -224,7 +224,7 @@ namespace uva {
                      * @return the end constant iterator
                      */
                     TWordIndexMapConstIter end() {
-                        return _pWordIndexMap->end();
+                        return m_word_index_map_ptr->end();
                     }
 
                 protected:
@@ -234,22 +234,22 @@ namespace uva {
                      * @param orig the object to copy from
                      */
                     BasicWordIndex(const BasicWordIndex & other)
-                    : _pWordIndexAlloc(NULL), _pWordIndexMap(NULL),
-                    _nextNewWordId(MIN_KNOWN_WORD_ID), _wordIndexMemFactor(0.0) {
+                    : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL),
+                    m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(0.0) {
                         throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                     }
                     //This is the pointer to the fixed memory allocator used to allocate the map's memory
-                    TWordIndexAllocator * _pWordIndexAlloc;
+                    TWordIndexAllocator * m_word_index_alloc_ptr;
 
                     //This map stores the word index, i.e. assigns each unique word a unique id
-                    TWordIndexMap * _pWordIndexMap;
+                    TWordIndexMap * m_word_index_map_ptr;
 
                     //Stores the last allocated word hash
-                    TWordIdType _nextNewWordId;
+                    TWordIdType m_next_new_word_id;
 
                     //Stores the assigned memory factor for storage allocation
                     //in the unordered_map used for the word index
-                    const float _wordIndexMemFactor;
+                    const float m_word_index_mem_factor;
 
                 };
             }
