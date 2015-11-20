@@ -338,7 +338,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                virtual bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a new line!" << END_LOG;
                     return get_first<'\n'>(out);
                 }
@@ -350,7 +350,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                virtual bool get_first_space(TextPieceReader& out) {
+                inline bool get_first_space(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a space!" << END_LOG;
                     return get_first<' '>(out);
                 }
@@ -362,7 +362,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                virtual bool get_last_space(TextPieceReader& out) {
+                inline bool get_last_space(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching backward for a space!" << END_LOG;
                     return get_last<' '>(out);
                 }
@@ -374,7 +374,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                virtual bool get_first_tab(TextPieceReader& out) {
+                inline bool get_first_tab(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a tab!" << END_LOG;
                     return get_first<'\t'>(out);
                 }

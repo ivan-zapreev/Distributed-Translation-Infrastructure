@@ -72,6 +72,35 @@ namespace uva {
                  */
                 virtual void reset() {throw Exception("Not implemented for this File reader type!");};
                 
+
+                /**
+                 * Virtualizing the get methods from @see textPieceReader
+                 */
+                virtual bool get_first_line(TextPieceReader& out) {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
+                 * Virtualizing the get methods from @see textPieceReader
+                 */
+                virtual bool get_first_space(TextPieceReader& out) {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
+                 * Virtualizing the get methods from @see textPieceReader
+                 */
+                virtual bool get_last_space(TextPieceReader& out) {
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
+                 * Virtualizing the get methods from @see textPieceReader
+                 */
+                virtual bool get_first_tab(TextPieceReader& out) {
+                    THROW_NOT_IMPLEMENTED();
+                }
+                
                 /**
                  * Allows to close the file
                  */

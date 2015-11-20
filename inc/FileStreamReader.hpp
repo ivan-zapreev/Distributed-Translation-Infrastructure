@@ -117,14 +117,6 @@ namespace uva {
                     }
                 }
 
-                virtual bool get_first_space(TextPieceReader& out) {
-                    throw Exception("FileStreamReader::getSpace(TextPieceReader& out) must not be used!");
-                }
-
-                virtual bool get_first_tab(TextPieceReader& out) {
-                    throw Exception("FileStreamReader::getTab(TextPieceReader& out) must not be used!");
-                }
-
                 /**
                  * This method is used to check if the file was successfully opened.
                  * @return true if the file is successfully opened otherwise false.

@@ -150,7 +150,7 @@ namespace uva {
                         }
                     }
                 }
-                
+
                 /**
                  * Allows to log the information about the instantiated file reader type
                  */
@@ -158,6 +158,10 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
+                virtual bool get_first_line(TextPieceReader& out) {
+                    return TextPieceReader::get_first_line(out);
+                }
+                
                 /**
                  * This method is used to check if the file was successfully opened.
                  * @return true if the file is successfully opened otherwise false.
@@ -185,7 +189,7 @@ namespace uva {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;
                         //Release the memory
-                        int err = munmap(const_cast<void*>(filePtr), len);
+                        int err = munmap(const_cast<void*> (filePtr), len);
                         LOG_DEBUG << "Result of munmap is: " << err << END_LOG;
                         //Re-set the internals!
                         set(NULL, 0);
