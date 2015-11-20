@@ -95,7 +95,9 @@ namespace uva {
 
                     /**
                      * This function gets an id for the given word word based no the stored 1-Grams.
-                     * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
+                     * Continuous word index: If the word is not known then an unknown word ID is
+                     *                        returned: UNKNOWN_WORD_ID
+                     * Discontinuous word index: The returned word id is always >= MIN_KNOWN_WORD_ID
                      * @param token the word to hash
                      * @return the word id or UNKNOWN_WORD_ID if the word is not found
                      */
@@ -115,6 +117,7 @@ namespace uva {
                     /**
                      * This function creates/gets an id for the given word.
                      * Note: The ids must be unique and continuous!
+                     * The returned word id is always >= MIN_KNOWN_WORD_ID
                      * @param token the word to hash
                      * @return the resulting hash
                      */
@@ -172,9 +175,12 @@ namespace uva {
                     /**
                      * Allows to indicate if the word index is continuous, i.e.
                      * it issues the word ids in a continuous range starting from 0.
-                     * Where 0 and 1 are reserved word ids. If the word index
-                     * is not continuous then the uni-gram payloads can not be stored in
-                     * a word id indexed array. 
+                     * Where 0 and 1 are reserved word ids.
+                     * 
+                     * If the word index is not continuous then the uni-gram payload
+                     * can not be stored in a word id indexed array. Moreover, any word
+                     * id considered to be a known word, i.e. the unknown word id
+                     * is never returned by the word index.
                      * 
                      * This method is to be overridden by the children classes.
                      * The default implementation returns false!

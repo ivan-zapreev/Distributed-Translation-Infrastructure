@@ -47,7 +47,10 @@ namespace uva {
             namespace dictionary {
 
                 /**
-                 * This is a hashing word index, it is trivial - each word gets an id which is its hash value
+                 * This is a hashing word index, it is trivial - each word gets an id which is its hash value.
+                 * This also means that any word is considered to be a known word. Therefore, in the Tries if
+                 * the word id has no associated payload then an unknown word payload is to be used.
+                 * Still the unknown and undefined word ids are reserved nd should not be issued.
                  */
                 class HashingWordIndex : public AWordIndex<uint64_t> {
                 public:
@@ -74,13 +77,19 @@ namespace uva {
                     };
 
                     /**
+                     * Does not detect unknown words.
+                     * The returned word id is >= MIN_KNOWN_WORD_ID
                      * @see AWordIndex
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
-                        return compute_hash(token);
+                        //Return the word index making sure that it is at least
+                        //equal to two. So that the undefined and unknown word
+                        //indexes are not used and no overflow or other checks.
+                        return compute_hash(token) | (1 << 1);
                     };
 
                     /**
+                     * The returned word id is >= MIN_KNOWN_WORD_ID
                      * @see AWordIndex
                      */
                     inline bool is_word_registering_needed() const {
@@ -88,10 +97,11 @@ namespace uva {
                     };
 
                     /**
+                     * The returned word id is >= MIN_KNOWN_WORD_ID
                      * @see AWordIndex
                      */
                     inline TWordIdType register_word(const TextPieceReader & token) {
-                        return compute_hash(token);
+                        return get_word_id(token);
                     };
 
                     /**
