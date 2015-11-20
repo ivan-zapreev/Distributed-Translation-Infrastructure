@@ -164,6 +164,7 @@ namespace uva {
 #define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(LEVEL) \
                 template class ARPAGramBuilder<BasicWordIndex, LEVEL>; \
                 template class ARPAGramBuilder<CountingWordIndex, LEVEL>; \
+                template class ARPAGramBuilder<HashingWordIndex, LEVEL>; \
                 template class ARPAGramBuilder<TOptBasicWordIndex, LEVEL>; \
                 template class ARPAGramBuilder<TOptCountWordIndex, LEVEL>;
 

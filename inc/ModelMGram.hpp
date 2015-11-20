@@ -39,6 +39,7 @@
 
 #include "ByteMGramId.hpp"
 #include "BasicWordIndex.hpp"
+#include "HashingWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
 

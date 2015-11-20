@@ -80,7 +80,8 @@ namespace uva {
                     COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1,
                     OPTIMIZING_BASIC_WORD_INDEX = COUNTING_WORD_INDEX + 1,
                     OPTIMIZING_COUNTING_WORD_INDEX = OPTIMIZING_BASIC_WORD_INDEX + 1,
-                    size_word_index = OPTIMIZING_COUNTING_WORD_INDEX + 1
+                    HASHING_WORD_INDEX = OPTIMIZING_COUNTING_WORD_INDEX + 1,
+                    size_word_index = HASHING_WORD_INDEX + 1
                 };
 
                 namespace __HashMapWordIndex {

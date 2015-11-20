@@ -34,6 +34,7 @@
 #include "LayeredTrieBase.hpp"
 
 #include "AWordIndex.hpp"
+#include "HashingWordIndex.hpp"
 #include "ArrayUtils.hpp"
 
 using namespace std;
@@ -481,7 +482,7 @@ namespace uva {
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2WArrayTrieCount;
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2WArrayTrieOptBasic;
             typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2WArrayTrieOptCount;
-
+            typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TC2WArrayTrieHashing;
         }
     }
 }

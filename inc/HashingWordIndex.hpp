@@ -37,11 +37,9 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
-using namespace uva::utils::math;
 using namespace uva::smt::file;
 using namespace uva::smt::exceptions;
 using namespace uva::smt::tries;
-using namespace uva::smt::utils::array;
 
 namespace uva {
     namespace smt {
@@ -56,8 +54,9 @@ namespace uva {
 
                     /**
                      * The basic constructor
+                     * @param memory_factor is not used, is here only for interface compliancy
                      */
-                    HashingWordIndex() : AWordIndex<uint64_t>() {
+                    HashingWordIndex(const size_t memory_factor) : AWordIndex<uint64_t>() {
                     }
 
                     /**
@@ -85,7 +84,7 @@ namespace uva {
                      * @see AWordIndex
                      */
                     inline bool is_word_registering_needed() const {
-                        return false
+                        return false;
                     };
 
                     /**
@@ -118,8 +117,7 @@ namespace uva {
             }
         }
     }
-
-
+}
 
 #endif	/* HASHINGWORDINDEX_HPP */
 

@@ -475,26 +475,32 @@ namespace uva {
                 template class ARPATrieBuilder<TC2DMapTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DMapTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DMapTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DMapTrieHashing, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CHybridTrieBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CHybridTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CHybridTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CHybridTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CHybridTrieHashing, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2WArrayTrieBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2WArrayTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2WArrayTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2WArrayTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2WArrayTrieHashing, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CArrayTrieBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CArrayTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CArrayTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TW2CArrayTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CArrayTrieHashing, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DHybridTrieBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DHybridTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DHybridTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TC2DHybridTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DHybridTrieHashing, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>;
+                template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TG2DMapTrieHashing, TFileReaderModel>;
 
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);

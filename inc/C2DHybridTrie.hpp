@@ -34,6 +34,7 @@
 
 #include "LayeredTrieBase.hpp"
 
+#include "HashingWordIndex.hpp"
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
@@ -340,6 +341,7 @@ namespace uva {
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DHybridTrieCount;
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DHybridTrieOptBasic;
             typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2DHybridTrieOptCount;
+            typedef C2DHybridTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TC2DHybridTrieHashing;
         }
     }
 }

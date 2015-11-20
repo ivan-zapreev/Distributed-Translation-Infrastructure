@@ -34,6 +34,7 @@
 #include "LayeredTrieBase.hpp"
 
 #include "AWordIndex.hpp"
+#include "HashingWordIndex.hpp"
 #include "W2CH_UM_Storage.hpp"
 
 using namespace std;
@@ -311,6 +312,7 @@ namespace uva {
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CHybridTrieCount;
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CHybridTrieOptBasic;
             typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TW2CHybridTrieOptCount;
+            typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TW2CHybridTrieHashing;
         }
     }
 }

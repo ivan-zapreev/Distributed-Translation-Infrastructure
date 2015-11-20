@@ -32,6 +32,7 @@
 #include "Exceptions.hpp"
 
 #include "AWordIndex.hpp"
+#include "HashingWordIndex.hpp"
 #include "ModelMGram.hpp"
 #include "ByteMGramId.hpp"
 
@@ -440,6 +441,7 @@ namespace uva {
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TG2DMapTrieCount;
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TG2DMapTrieOptBasic;
             typedef G2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TG2DMapTrieOptCount;
+            typedef G2DMapTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TG2DMapTrieHashing;
         }
     }
 }

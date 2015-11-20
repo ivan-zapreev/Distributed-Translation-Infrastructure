@@ -36,6 +36,7 @@
 #include "BasicWordIndex.hpp"
 #include "CountingWordIndex.hpp"
 #include "OptimizingWordIndex.hpp"
+#include "HashingWordIndex.hpp"
 
 #include "ARPATrieBuilder.hpp"
 #include "ARPAGramBuilder.hpp"
@@ -324,6 +325,9 @@ namespace uva {
                             break;
                         case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
                             choose_trie_type_and_execute<OptimizingWordIndex<CountingWordIndex>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            break;
+                        case WordIndexTypesEnum::HASHING_WORD_INDEX:
+                            choose_trie_type_and_execute<HashingWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         default:
                             stringstream msg;

@@ -145,6 +145,7 @@ namespace uva {
             //Make sure that there will be templates instantiated, at least for the given parameter values
             INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, BasicWordIndex);
             INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, CountingWordIndex);
+            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, HashingWordIndex);
             INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, TOptBasicWordIndex);
             INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, TOptCountWordIndex);
         }

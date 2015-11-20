@@ -49,6 +49,7 @@
 #include "GreedyMemoryAllocator.hpp"
 #include "HashingUtils.hpp"
 #include "TextPieceReader.hpp"
+#include "HashingWordIndex.hpp"
 
 using namespace std;
 using namespace uva::smt::hashing;
@@ -345,6 +346,7 @@ namespace uva {
 
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DMapTrieBasic;
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DMapTrieCount;
+            typedef C2DMapTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TC2DMapTrieHashing;
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DMapTrieOptBasic;
             typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2DMapTrieOptCount;
         }

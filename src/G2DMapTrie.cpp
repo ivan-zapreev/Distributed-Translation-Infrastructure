@@ -107,6 +107,7 @@ namespace uva {
 
             INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, BasicWordIndex);
             INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, CountingWordIndex);
+            INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, HashingWordIndex);
             INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, TOptBasicWordIndex);
             INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, TOptCountWordIndex);
         }
