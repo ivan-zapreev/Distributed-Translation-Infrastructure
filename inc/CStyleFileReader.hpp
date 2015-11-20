@@ -104,7 +104,7 @@ namespace uva {
                     }
                 };
 
-                virtual bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG3 << "Searching for a new line, m_file_ptr = " << m_file_ptr << END_LOG;
                     
                     //First read the line from the file

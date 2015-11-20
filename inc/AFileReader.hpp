@@ -74,31 +74,35 @@ namespace uva {
                 
 
                 /**
-                 * Virtualizing the get methods from @see textPieceReader
+                 * Each file reader implementation will need to override these method, if needed.
+                 * The method is non-virtual for performance reasons!
                  */
-                virtual bool get_first_line(TextPieceReader& out) {
-                    THROW_NOT_IMPLEMENTED();
+                bool get_first_line(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
                 }
 
                 /**
-                 * Virtualizing the get methods from @see textPieceReader
+                 * Each file reader implementation will need to override these method, if needed.
+                 * The method is non-virtual for performance reasons!
                  */
-                virtual bool get_first_space(TextPieceReader& out) {
-                    THROW_NOT_IMPLEMENTED();
+                bool get_first_space(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
                 }
 
                 /**
-                 * Virtualizing the get methods from @see textPieceReader
+                 * Each file reader implementation will need to override these method, if needed.
+                 * The method is non-virtual for performance reasons!
                  */
-                virtual bool get_last_space(TextPieceReader& out) {
-                    THROW_NOT_IMPLEMENTED();
+                bool get_last_space(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
                 }
 
                 /**
-                 * Virtualizing the get methods from @see textPieceReader
+                 * Each file reader implementation will need to override these method, if needed.
+                 * The method is non-virtual for performance reasons!
                  */
-                virtual bool get_first_tab(TextPieceReader& out) {
-                    THROW_NOT_IMPLEMENTED();
+                bool get_first_tab(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
                 }
                 
                 /**

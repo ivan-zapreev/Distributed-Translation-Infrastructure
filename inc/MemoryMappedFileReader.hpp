@@ -158,7 +158,7 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILE__ << "> file reader!" << END_LOG;
                 }
 
-                virtual bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(TextPieceReader& out) {
                     return TextPieceReader::get_first_line(out);
                 }
                 

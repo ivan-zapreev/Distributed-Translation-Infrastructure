@@ -164,12 +164,12 @@ namespace uva {
                  * @param fstr the file to read data from
                  * @param trie the trie to put the data into
                  */
-                template<typename TrieType>
-                static void fill_in_trie(AFileReader & fstr, TrieType & trie) {
+                template<typename TrieType, typename TFileReaderModel>
+                static void fill_in_trie(TFileReaderModel & fstr, TrieType & trie) {
                     //A trie container and the corps file stream are already instantiated and are given
 
                     //A.1. Create the TrieBuilder and give the trie to it
-                    ARPATrieBuilder<TrieType> builder(trie, fstr);
+                    ARPATrieBuilder<TrieType, TFileReaderModel> builder(trie, fstr);
 
                     LOG_INFO3 << "Collision detections are: "
                             << (DO_SANITY_CHECKS ? "ON" : "OFF")
@@ -185,8 +185,8 @@ namespace uva {
                  * @param testFile the file containing the N-Gram (5-Gram queries)
                  * @return the CPU seconds used to run the queries, without time needed to read the test file
                  */
-                template<typename TrieType, typename TrieQueryType>
-                static void read_and_execute_queries(TrieType & trie, AFileReader &testFile) {
+                template<typename TrieType, typename TrieQueryType, typename TFileReaderQuery>
+                static void read_and_execute_queries(TrieType & trie, TFileReaderQuery &testFile) {
                     //Declare time variables for CPU times in seconds
                     double startTime = 0.0, endTime = 0.0;
                     //Will store the read line (word1 word2 word3 word4 word5)
@@ -220,8 +220,8 @@ namespace uva {
                     LOG_USAGE << "Total query execution time is " << (endTime - startTime) << " CPU seconds." << END_LOG;
                 }
 
-                template<typename TrieType, bool IS_CUM_QUERY>
-                void execute(const __Executor::TExecutionParams& params, AFileReader &modelFile, AFileReader &testFile) {
+                template<typename TrieType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
+                void execute(const __Executor::TExecutionParams& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                     //Get the word index type and make an instance of the word index
                     typename TrieType::WordIndexType word_index(params.m_word_index_mem_fact);
                     //Make an instance of the trie
@@ -269,9 +269,9 @@ namespace uva {
                     LOG_USAGE << "Cleaning up memory ..." << END_LOG;
                 }
 
-                template<typename WordIndexType, bool IS_CUM_QUERY>
+                template<typename WordIndexType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
                 static void choose_trie_type_and_execute(const __Executor::TExecutionParams& params,
-                        AFileReader &modelFile, AFileReader &testFile) {
+                        TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                     switch (params.m_trie_type) {
                         case TrieTypesEnum::C2DH_TRIE:
                             execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
@@ -304,10 +304,10 @@ namespace uva {
                  * @param modelFile the model file existing and opened, will be closed by this function
                  * @param testFile the model file existing and opened, will be closed by this function
                  */
-                template<bool IS_CUM_QUERY>
+                template<bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
                 static void choose_word_index_and_execute(
                         __Executor::TExecutionParams& params,
-                        AFileReader &modelFile, AFileReader &testFile) {
+                        TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                     LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
 
                     //Chose the word index type and then the trie type
@@ -338,8 +338,9 @@ namespace uva {
                  * @param modelFile the open model file, will be closed within this call stack
                  * @param testFile the open queries file, will be closed within this call stack
                  */
+                template<typename TFileReaderModel, typename TFileReaderQuery>
                 static void choose_and_execute(__Executor::TExecutionParams& params,
-                        AFileReader &modelFile, AFileReader &testFile) {
+                        TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                     if (params.m_trie_type_name == TC2DMapTrie_STR) {
                         params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
                         params.m_trie_type = TrieTypesEnum::C2DM_TRIE;
@@ -395,7 +396,9 @@ namespace uva {
                     //ToDo: Add the possibility to choose between the file readers from the command line!
                     LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
                     StatisticsMonitor::getMemoryStatistics(memStatStart);
+
                     //Attempt to open the model file
+                    //ToDo: Add the possibility to choose between the file readers from the command line!
                     //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
                     //FileStreamReader modelFile(params.modelFileName.c_str());
                     CStyleFileReader modelFile(params.m_model_file_name.c_str());
@@ -407,8 +410,9 @@ namespace uva {
 
                     //ToDo: Add the possibility to choose between the file readers from the command line!
                     //Attempt to open the test file
+                    MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
                     //FileStreamReader testFile(params.testFileName.c_str());
-                    CStyleFileReader testFile(params.m_queries_file_name.c_str());
+                    //CStyleFileReader testFile(params.m_queries_file_name.c_str());
 
                     //If the files could be opened then proceed with training and then testing
                     if ((modelFile.is_open()) && (testFile.is_open())) {

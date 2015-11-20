@@ -27,6 +27,10 @@
 
 #include "ARPATrieBuilder.hpp"
 
+#include "CStyleFileReader.hpp"
+#include "FileStreamReader.hpp"
+#include "MemoryMappedFileReader.hpp"
+
 #include "Globals.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
@@ -49,22 +53,22 @@ namespace uva {
         namespace tries {
             namespace arpa {
 
-                template<typename TrieType>
-                ARPATrieBuilder<TrieType>::ARPATrieBuilder(TrieType & trie, AFileReader & file) :
+                template<typename TrieType, typename TFileReaderModel>
+                ARPATrieBuilder<TrieType, TFileReaderModel>::ARPATrieBuilder(TrieType & trie, TFileReaderModel & file) :
                 m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<typename TrieType>
-                ARPATrieBuilder<TrieType>::ARPATrieBuilder(const ARPATrieBuilder<TrieType>& orig) :
+                template<typename TrieType, typename TFileReaderModel>
+                ARPATrieBuilder<TrieType, TFileReaderModel>::ARPATrieBuilder(const ARPATrieBuilder<TrieType, TFileReaderModel>& orig) :
                 m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                 }
 
-                template<typename TrieType>
-                ARPATrieBuilder<TrieType>::~ARPATrieBuilder() {
+                template<typename TrieType, typename TFileReaderModel>
+                ARPATrieBuilder<TrieType, TFileReaderModel>::~ARPATrieBuilder() {
                 }
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::read_headers() {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::read_headers() {
                     LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                     while (true) {
@@ -99,8 +103,8 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA headers." << END_LOG;
                 }
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::pre_allocate(size_t counts[MAX_LEVEL]) {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[MAX_LEVEL]) {
                     LOG_INFO << "Expected number of M-grams per level: "
                             << arrayToString<size_t, MAX_LEVEL>(counts) << END_LOG;
 
@@ -117,8 +121,8 @@ namespace uva {
                     Logger::stop_progress_bar();
                 }
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::read_data(size_t counts[MAX_LEVEL]) {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::read_data(size_t counts[MAX_LEVEL]) {
                     LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                     //If we are here then it means we just finished reading the
@@ -185,12 +189,12 @@ namespace uva {
                     LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
                 }
 
-                template<typename TrieType>
+                template<typename TrieType, typename TFileReaderModel>
                 template<TModelLevel CURR_LEVEL>
-                void ARPATrieBuilder<TrieType>::read_m_gram_level() {
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::read_m_gram_level() {
                     //Declare the pointer to the N-Grma builder
-                    ARPAGramBuilder<WordIndexType, CURR_LEVEL> *pNGBuilder = NULL;
-                    ARPAGramBuilderFactory<TrieType>::template get_builder<CURR_LEVEL>(m_trie, &pNGBuilder);
+                    ARPAGramBuilder<WordIndexType, CURR_LEVEL> *gram_builder_ptr = NULL;
+                    ARPAGramBuilderFactory<TrieType>::template get_builder<CURR_LEVEL>(m_trie, &gram_builder_ptr);
 
                     try {
                         //The counter of the N-grams
@@ -205,7 +209,7 @@ namespace uva {
                                 if (m_line.has_more()) {
                                     //Pass the given N-gram string to the N-Gram Builder. If the
                                     //N-gram is not matched then stop the loop and move on
-                                    if (pNGBuilder->parse_line(m_line)) {
+                                    if (gram_builder_ptr->parse_line(m_line)) {
                                         //If there was no match then it is something else
                                         //than the given level N-gram so we move on
                                         LOG_DEBUG << "Actual number of " << CURR_LEVEL << "-grams is: " << numNgrams << END_LOG;
@@ -227,22 +231,22 @@ namespace uva {
                         }
                     } catch (...) {
                         //Free the allocated N-gram builder in case of an exception 
-                        delete pNGBuilder;
+                        delete gram_builder_ptr;
                         //Re-throw the exception
                         throw;
                     }
                     //Free the allocated N-gram builder in case of no exception 
-                    delete pNGBuilder;
-                    pNGBuilder = NULL;
+                    delete gram_builder_ptr;
+                    gram_builder_ptr = NULL;
 
                     LOG_DEBUG << "Finished reading ARPA " << CURR_LEVEL << "-Grams." << END_LOG;
                     //Stop the progress bar in case of no exception
                     Logger::stop_progress_bar();
                 }
 
-                template<typename TrieType>
+                template<typename TrieType, typename TFileReaderModel>
                 template<TModelLevel CURR_LEVEL>
-                void ARPATrieBuilder<TrieType>::do_post_m_gram_actions() {
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::do_post_m_gram_actions() {
                     //Check if the post gram actions are needed! If yes - perform.
                     if (m_trie.template is_post_grams<CURR_LEVEL>()) {
                         //Do the progress bard indicator
@@ -261,8 +265,8 @@ namespace uva {
                     }
                 }
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::get_word_counts() {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::get_word_counts() {
                     //Check if we need another pass for words counting.
                     if (m_trie.get_word_index().is_word_counts_needed()) {
                         //Do the progress bard indicator
@@ -284,8 +288,8 @@ namespace uva {
                     }
                 }
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::do_word_index_post_1_gram_actions() {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::do_word_index_post_1_gram_actions() {
                     //Perform the post actions if needed
                     if (m_trie.get_word_index().is_post_actions_needed()) {
                         //Do the progress bard indicator
@@ -303,9 +307,9 @@ namespace uva {
                     }
                 }
 
-                template<typename TrieType>
+                template<typename TrieType, typename TFileReaderModel>
                 template<TModelLevel CURR_LEVEL>
-                void ARPATrieBuilder<TrieType>::read_grams() {
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::read_grams() {
                     stringstream msg;
                     //Do the progress bard indicator
                     msg << "Reading ARPA " << CURR_LEVEL << "-Grams";
@@ -353,9 +357,9 @@ namespace uva {
                  * All we need to do is then read all the words in
                  * M-Gram sections and count them with the word index.
                  */
-                template<typename TrieType>
+                template<typename TrieType, typename TFileReaderModel>
                 template<TModelLevel CURR_LEVEL>
-                void ARPATrieBuilder<TrieType>::get_level_word_counts() {
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::get_level_word_counts() {
                     typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
 
                     //The regular expression for matching the n-grams section
@@ -410,8 +414,8 @@ namespace uva {
                  * one gram section again. After this method we can proceed
                  * reading M-grams and add them to the trie.
                  */
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::return_to_grams() {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::return_to_grams() {
                     //Reset the file
                     m_file.reset();
 
@@ -435,8 +439,8 @@ namespace uva {
                 //will be limited by the N parameter provided to the class template and not
                 //the maximum N-gram level present in the file.
 
-                template<typename TrieType>
-                void ARPATrieBuilder<TrieType>::build() {
+                template<typename TrieType, typename TFileReaderModel>
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::build() {
                     LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                     //Declare an array of N-Gram counts, that is to be filled from the
@@ -472,35 +476,35 @@ namespace uva {
                 }
 
                 //Make sure that there will be templates instantiated, at least for the given parameter values
-                template class ARPATrieBuilder<TC2DMapTrieBasic>;
-                template class ARPATrieBuilder<TC2DMapTrieCount>;
-                template class ARPATrieBuilder<TC2DMapTrieOptBasic>;
-                template class ARPATrieBuilder<TC2DMapTrieOptCount>;
-
-                template class ARPATrieBuilder<TW2CHybridTrieBasic>;
-                template class ARPATrieBuilder<TW2CHybridTrieCount>;
-                template class ARPATrieBuilder<TW2CHybridTrieOptBasic>;
-                template class ARPATrieBuilder<TW2CHybridTrieOptCount>;
-
-                template class ARPATrieBuilder<TC2WArrayTrieBasic>;
-                template class ARPATrieBuilder<TC2WArrayTrieCount>;
-                template class ARPATrieBuilder<TC2WArrayTrieOptBasic>;
-                template class ARPATrieBuilder<TC2WArrayTrieOptCount>;
-
-                template class ARPATrieBuilder<TW2CArrayTrieBasic>;
-                template class ARPATrieBuilder<TW2CArrayTrieCount>;
-                template class ARPATrieBuilder<TW2CArrayTrieOptBasic>;
-                template class ARPATrieBuilder<TW2CArrayTrieOptCount>;
-
-                template class ARPATrieBuilder<TC2DHybridTrieBasic>;
-                template class ARPATrieBuilder<TC2DHybridTrieCount>;
-                template class ARPATrieBuilder<TC2DHybridTrieOptBasic>;
-                template class ARPATrieBuilder<TC2DHybridTrieOptCount>;
-
-                template class ARPATrieBuilder<TG2DMapTrieBasic>;
-                template class ARPATrieBuilder<TG2DMapTrieCount>;
-                template class ARPATrieBuilder<TG2DMapTrieOptBasic>;
-                template class ARPATrieBuilder<TG2DMapTrieOptCount>;
+#define INSTANTIATE_TRIE_BUILDER_FILE_READER(TFileReaderModel) \
+                template class ARPATrieBuilder<TC2DMapTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DMapTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DMapTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DMapTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CHybridTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CHybridTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CHybridTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CHybridTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2WArrayTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2WArrayTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2WArrayTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2WArrayTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CArrayTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CArrayTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CArrayTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TW2CArrayTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DHybridTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DHybridTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DHybridTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TC2DHybridTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TG2DMapTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TG2DMapTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TG2DMapTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>;
+                
+                INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
+                INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);
+                INSTANTIATE_TRIE_BUILDER_FILE_READER(MemoryMappedFileReader);
             }
         }
     }

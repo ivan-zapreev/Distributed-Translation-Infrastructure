@@ -89,7 +89,7 @@ namespace uva {
                     m_file_stream.seekg(0, std::ios::beg);
                 };
 
-                virtual bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file

@@ -49,7 +49,7 @@ namespace uva {
                  * This is the Trie builder class that reads an input file stream
                  * and creates n-grams and then records them into the provided Trie.
                  */
-                template<typename TrieType>
+                template<typename TrieType, typename TFileReaderModel>
                 class ARPATrieBuilder {
                 public:
                     static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
@@ -60,7 +60,7 @@ namespace uva {
                      * @param trie the trie to fill in with data from the text corpus
                      * @param _fstr the file stream to read from
                      */
-                    ARPATrieBuilder(TrieType & trie, AFileReader & file);
+                    ARPATrieBuilder(TrieType & trie, TFileReaderModel & file);
 
                     /**
                      * This function will read from the file and build the trie
@@ -72,7 +72,7 @@ namespace uva {
                     //The reference to the trie to be build
                     TrieType & m_trie;
                     //The reference to the input file with language model
-                    AFileReader & m_file;
+                    TFileReaderModel & m_file;
                     //Stores the next line data
                     TextPieceReader m_line;
                     //The regular expression for matching the n-gram amount entry of the data section
@@ -84,7 +84,7 @@ namespace uva {
                      * The copy constructor
                      * @param orig the other builder to copy
                      */
-                    ARPATrieBuilder(const ARPATrieBuilder<TrieType>& orig);
+                    ARPATrieBuilder(const ARPATrieBuilder<TrieType, TFileReaderModel>& orig);
 
                     /**
                      * This method is used to read and process the ARPA headers
@@ -119,15 +119,15 @@ namespace uva {
                         /**
                          * This template is to be used for the level parameter values < MAX_LEVEL
                          */
-                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType> * builder) {
+                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
                             //If we expect more N-grams then make a recursive call to read the higher order N-gram
                             LOG_DEBUG2 << "The currently read N-grams level is " << CURR_LEVEL << ", the maximum level is " << MAX_LEVEL
-                                    << ", the current line is '" << builder->m_line << "'" << END_LOG;
+                                    << ", the current line is '" << builder.m_line << "'" << END_LOG;
 
                             //There are still N-Gram levels to read
-                            if (builder->m_line != END_OF_ARPA_FILE) {
+                            if (builder.m_line != END_OF_ARPA_FILE) {
                                 //We did not encounter the \end\ tag yet so do recursion to the next level
-                                builder->read_grams < CURR_LEVEL + 1 > ();
+                                builder.read_grams < CURR_LEVEL + 1 > ();
                             } else {
                                 //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                                 LOG_WARNING << "End of ARPA file, read " << CURR_LEVEL << "-grams and there is "
@@ -138,14 +138,14 @@ namespace uva {
                         /**
                          * This template is to be used for the level parameter values < MAX_LEVEL
                          */
-                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType> * builder) {
+                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
                             //Test if we need to move on or we are done or an error is detected
-                            if ((CURR_LEVEL < MAX_LEVEL) && (builder->m_line != END_OF_ARPA_FILE)) {
+                            if ((CURR_LEVEL < MAX_LEVEL) && (builder.m_line != END_OF_ARPA_FILE)) {
                                 LOG_DEBUG1 << "Finished counting words in " << SSTR(CURR_LEVEL)
                                         << "-grams, going to the next level" << END_LOG;
                                 //There are still N-Gram levels to read
                                 //We did not encounter the \end\ tag yet so do recursion to the next level
-                                builder->get_level_word_counts < CURR_LEVEL + 1 > ();
+                                builder.get_level_word_counts < CURR_LEVEL + 1 > ();
                             }
                         }
                     };
@@ -156,14 +156,14 @@ namespace uva {
                         /**
                          * This template specialization is to be used for the level parameter values == MAX_LEVEL
                          */
-                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType> * builder) {
+                        static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
                             //If we expect more N-grams then make a recursive call to read the higher order N-gram
                             LOG_DEBUG2 << "The currently read N-grams level is " << MAX_LEVEL << ", the maximum level is " << MAX_LEVEL
-                                    << ", the current line is '" << builder->m_line << "'" << END_LOG;
+                                    << ", the current line is '" << builder.m_line << "'" << END_LOG;
                             //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
-                            if (builder->m_line != END_OF_ARPA_FILE) {
+                            if (builder.m_line != END_OF_ARPA_FILE) {
                                 stringstream msg;
-                                msg << "Incorrect ARPA format: Got '" << builder->m_line
+                                msg << "Incorrect ARPA format: Got '" << builder.m_line
                                         << "' instead of '" << END_OF_ARPA_FILE
                                         << "' when reading " << MAX_LEVEL << "-grams section!";
                                 throw Exception(msg.str());
@@ -173,7 +173,7 @@ namespace uva {
                         /**
                          * This template specialization is to be used for the level parameter values == MAX_LEVEL
                          */
-                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType> * builder) {
+                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
                             //Do nothing - stop recursion
                         }
                     };
@@ -185,7 +185,7 @@ namespace uva {
                      */
                     template<TModelLevel CURR_LEVEL>
                     inline void check_and_go_m_grams() {
-                        Func<CURR_LEVEL>::check_and_go_m_grams(this);
+                        Func<CURR_LEVEL>::check_and_go_m_grams(*this);
                     }
 
                     /**
@@ -195,7 +195,7 @@ namespace uva {
                      */
                     template<TModelLevel CURR_LEVEL>
                     inline void check_and_get_level_word_counts() {
-                        Func<CURR_LEVEL>::check_and_get_level_word_counts(this);
+                        Func<CURR_LEVEL>::check_and_get_level_word_counts(*this);
                     }
 
                     /**
@@ -245,8 +245,8 @@ namespace uva {
                     void read_grams();
                 };
 
-                template<typename TrieType>
-                constexpr TModelLevel ARPATrieBuilder<TrieType>::MAX_LEVEL;
+                template<typename TrieType, typename TFileReaderModel>
+                constexpr TModelLevel ARPATrieBuilder<TrieType, TFileReaderModel>::MAX_LEVEL;
             }
         }
     }
