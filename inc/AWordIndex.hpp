@@ -170,6 +170,17 @@ namespace uva {
                     };
 
                     /**
+                     * Allows to indicate if the word index is continuous, i.e.
+                     * it issues the word ids in a continuous range starting from 0.
+                     * Where 0 and 1 are reserved word ids. If the word index
+                     * is not continuous then the uni-gram payloads can not be stored in
+                     * a word id indexed array. 
+                     */
+                    inline bool is_word_index_continuous() {
+                        THROW_MUST_OVERRIDE();
+                    }
+
+                    /**
                      * The basic destructor
                      */
                     virtual ~AWordIndex() {

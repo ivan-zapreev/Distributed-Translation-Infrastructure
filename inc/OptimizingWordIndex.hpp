@@ -243,6 +243,16 @@ namespace uva {
                     };
 
                     /**
+                     * Allows to indicate if the word index is continuous, i.e.
+                     * it issues the word ids in a continuous range starting from 0.
+                     * @see AWordIndex
+                     * @return true - this word index is continuous.
+                     */
+                    constexpr inline bool is_word_index_continuous() const  {
+                        return true;
+                    }
+
+                    /**
                      * The basic destructor
                      */
                     virtual ~OptimizingWordIndex() {

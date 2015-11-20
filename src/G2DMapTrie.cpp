@@ -48,6 +48,7 @@ namespace uva {
             m_1_gram_data(NULL), m_N_gram_data(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
+                ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                 //Initialize the array of number of gram ids per level
                 memset(m_num_buckets, 0, MAX_LEVEL * sizeof (TShortId));

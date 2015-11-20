@@ -109,6 +109,14 @@ namespace uva {
                     };
 
                     /**
+                     * @see AWordIndex
+                     * @return false - this word index is not continuous.
+                     */
+                    constexpr inline bool is_word_index_continuous() const {
+                        return false;
+                    }
+
+                    /**
                      * The basic destructor
                      */
                     virtual ~HashingWordIndex() {

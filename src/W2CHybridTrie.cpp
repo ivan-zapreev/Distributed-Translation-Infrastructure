@@ -46,6 +46,7 @@ namespace uva {
             m_storage_factory(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
                 
                 //Check for the storage memory sized. This one is needed to be able to store
                 //N-gram probabilities in the C type container as its value! See description

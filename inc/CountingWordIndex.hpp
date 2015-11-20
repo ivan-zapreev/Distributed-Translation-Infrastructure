@@ -198,6 +198,16 @@ namespace uva {
                     };
 
                     /**
+                     * Allows to indicate if the word index is continuous, i.e.
+                     * it issues the word ids in a continuous range starting from 0.
+                     * @see AWordIndex
+                     * @return true - this word index is continuous.
+                     */
+                    constexpr inline bool is_word_index_continuous() const  {
+                        return BasicWordIndex::is_word_index_continuous();
+                    }
+
+                    /**
                      * Is to be called if the post actions are needed right after
                      * that all the individual words have been added into the index.
                      * @see AWordIndex
