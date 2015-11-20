@@ -190,8 +190,8 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    inline void count_word(const TextPieceReader & token) {
-                        m_disp_word_index_ptr->count_word(token);
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
+                        m_disp_word_index_ptr->count_word(word, prob);
                     };
 
                     /**

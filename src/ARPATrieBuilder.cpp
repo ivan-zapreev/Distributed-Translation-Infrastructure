@@ -273,7 +273,7 @@ namespace uva {
                         Logger::start_progress_bar(string("Counting all words"));
 
                         //Start recursive counting of words
-                        get_level_word_counts<M_GRAM_LEVEL_1>();
+                        get_word_counts_from_unigrams();
                         LOG_DEBUG1 << "Finished counting words in M-grams!" << END_LOG;
 
                         //Perform the post counting actions;
@@ -358,50 +358,44 @@ namespace uva {
                  * M-Gram sections and count them with the word index.
                  */
                 template<typename TrieType, typename TFileReaderModel>
-                template<TModelLevel CURR_LEVEL>
-                void ARPATrieBuilder<TrieType, TFileReaderModel>::get_level_word_counts() {
+                void ARPATrieBuilder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
                     typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
 
                     //The regular expression for matching the n-grams section
                     stringstream regexpStr;
-                    regexpStr << "\\\\" << CURR_LEVEL << "\\-grams\\:";
+                    regexpStr << "\\\\" << M_GRAM_LEVEL_1 << "\\-grams\\:";
                     LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
                     const regex n_gram_sect_reg_exp(regexpStr.str());
 
                     //Check if the line that was input is the header of the N-grams section for N=level
                     if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
-                        //The tokens array to put words into
-                        TextPieceReader tokens[MAX_LEVEL];
+                        //Declare the variables needed to get the word counts
+                        TextPieceReader word;
+                        TLogProbBackOff prob;
 
                         //Read the current level N-grams and add them to the trie
                         while (m_file.get_first_line(m_line)) {
-                            LOG_DEBUG1 << "Reading " << SSTR(CURR_LEVEL) << "-gram, got: [" << m_line.str() << "]" << END_LOG;
+                            LOG_DEBUG1 << "Reading " << SSTR(M_GRAM_LEVEL_1) << "-gram, got: [" << m_line.str() << "]" << END_LOG;
                             //If this is not an empty line
                             if (m_line.has_more()) {
                                 //Parse line to words without probabilities and back-offs
                                 //If it is not the M-gram line then we stop break
-                                if (ARPAGramBuilder<WordIndexType, CURR_LEVEL>::gram_line_to_tokens(m_line, tokens)) {
-                                    //Add words to the index: count them
-                                    for (size_t idx = 0; idx < CURR_LEVEL; idx++) {
-                                        LOG_DEBUG2 << "Adding the " << SSTR(idx) << "'th word to word index." << END_LOG;
-                                        word_index.count_word(tokens[idx]);
-                                        //Update the progress bar status
-                                        Logger::update_progress_bar();
-                                    }
+                                if (ARPAGramBuilder<WordIndexType, M_GRAM_LEVEL_1>::unigram_to_prob(m_line, word, prob)) {
+                                    //Set the word with its probability into the word index
+                                    word_index.count_word(word, prob);
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
                                 } else {
                                     //This is not an expected M-gram
-                                    LOG_DEBUG1 << "Stopping words counting in M-gram level: " << SSTR(CURR_LEVEL) << END_LOG;
+                                    LOG_DEBUG1 << "Stopping words counting in M-gram level: " << SSTR(M_GRAM_LEVEL_1) << END_LOG;
                                     break;
                                 }
                             }
                         }
-
                         LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
-
-                        //Go into recursion or stop if the maximum level is reached
-                        check_and_get_level_word_counts<CURR_LEVEL>();
-
-                        LOG_DEBUG1 << "Finished counting words in " << SSTR(CURR_LEVEL) << "-grams" << END_LOG;
+                        LOG_DEBUG1 << "Finished counting words in " << SSTR(M_GRAM_LEVEL_1) << "-grams" << END_LOG;
+                    } else {
+                        THROW_EXCEPTION("Could not count words, did not get a match with for the beginning of the 1-gram section!");
                     }
 
                     //Update the progress bar status
@@ -501,7 +495,7 @@ namespace uva {
                 template class ARPATrieBuilder<TG2DMapTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>;
-                
+
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(MemoryMappedFileReader);

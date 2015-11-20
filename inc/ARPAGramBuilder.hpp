@@ -77,56 +77,40 @@ namespace uva {
                     bool parse_line(TextPieceReader & data);
 
                     /**
-                     * Tokenise a given piece of text into a set of text peices.
-                     * The text piece should be a M-gram line from ARPA file with
-                     * tab separated probability and back-off and space separated words.
-                     * The back-off is optional
-                     * @param text the piece of text to tokenise
-                     * @param gram the gram container to put data into
-                     * @param level the expected M-gram level
-                     * @return true if the M-gram was successfully parsed
+                     * Takes the uni-gram line and parses it to the word and its probability, no back-off weight!
+                     * @param text the piece to read the uni-gram line from
+                     * @param word [out] the text piece reader to read the word into
+                     * @param prob [out] the variable to set the probability value into
+                     * @return true if the uni-gram was successfully parsed
                      */
-                    static inline bool gram_line_to_tokens(TextPieceReader &text, TextPieceReader * tokens) {
-                        TextPieceReader storage;
-                        //First read text until the first tab, it should be present if it is a M-gram line
-                        if (text.get_first_tab(storage)) {
-                            //There should be some text left it it is an M-gram
-                            if (text.has_more()) {
-                                //Read until the next tab or end of line into the storage
-                                if (text.get_first_tab(storage)) {
-                                    //Note storage should contain all the space separated M-gram tokens, read them
-                                    TModelLevel idx = 0;
-                                    while (storage.get_first_space(tokens[idx])) {
-                                        idx++;
-                                    }
-                                    //We should read exactly as many tokens as expected
-                                    if (idx == CURR_LEVEL) {
-                                        //We read as many tokens as there should be
+                    static inline bool unigram_to_prob(TextPieceReader &text, TextPieceReader & word, TLogProbBackOff & prob) {
+                        //There should be some text left it it is an M-gram
+                        if (text.has_more()) {
+                            //First read text until the first tab, it should be present if it is a uni-gram line
+                            if (text.get_first_tab(word)) {
+                                if (fast_stoT<float>(prob, word.get_rest_c_str())) {
+                                    //If the uni-gram probability has been parsed, then read the next token which should be the word itself
+                                    if (text.get_first_tab(word)) {
+                                        //We read the word and so we are done reading this uni-gram the rest is irrelevant
                                         return true;
                                     } else {
-                                        //We read fewer tokens! This is not an M-gram we expected
-                                        LOG_WARNING << "Read only " << SSTR(idx) << " words from a "
-                                                << SSTR(CURR_LEVEL) << "-gram: [" << text.str()
-                                                << "], expected: " << SSTR(CURR_LEVEL) << END_LOG;
+                                        //It looks like we are done with reading uni-grams
+                                        LOG_DEBUG1 << "Could not read the uni-gram word, looks like we are done!" << END_LOG;
                                         return false;
                                     }
                                 } else {
-                                    //Unexpected end of text
-                                    LOG_WARNING << "An unexpected end of line '" << text.str()
-                                            << "' when reading the " << CURR_LEVEL << "-gram!" << END_LOG;
+                                    //It looks like we are done with reading uni-grams
+                                    LOG_DEBUG1 << "Could not parse the uni-gram probability (" << word.str() << "), looks like we are done!" << END_LOG;
                                     return false;
                                 }
                             } else {
-                                LOG_DEBUG1 << " Encountered [" << SSTR(text.str())
-                                        << "] while trying to parse an " << SSTR(CURR_LEVEL)
-                                        << "-gram." << END_LOG;
-                                //There is nothing left, this is definitely not an M-gram!
+                                //It looks like we are done with reading uni-grams
+                                LOG_DEBUG1 << "Could read the uni-gram probability as string, looks like we are done!" << END_LOG;
                                 return false;
                             }
                         } else {
                             //Unexpected end of text
-                            LOG_WARNING << "An unexpected end of line '" << text.str()
-                                    << "' when reading the " << CURR_LEVEL << "-gram!" << END_LOG;
+                            LOG_WARNING << "An unexpected end of line '" << text.str() << "' when reading the uni-gram!" << END_LOG;
                             return false;
                         }
                     }
@@ -140,7 +124,7 @@ namespace uva {
                     TextPieceReader m_token;
 
                     //This is the N-Gram container to store the parsed N-gram data
-                    T_Model_M_Gram<WordIndexType> m_ngram;
+                    T_Model_M_Gram<WordIndexType> m_m_gram;
 
                     //The minimum and maximum number of tokens in the N-Gram string
                     static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;

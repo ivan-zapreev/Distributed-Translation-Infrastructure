@@ -134,20 +134,6 @@ namespace uva {
                                         << "nothing more to read. The maximum allowed N-gram level is " << MAX_LEVEL << END_LOG;
                             }
                         }
-                        
-                        /**
-                         * This template is to be used for the level parameter values < MAX_LEVEL
-                         */
-                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
-                            //Test if we need to move on or we are done or an error is detected
-                            if ((CURR_LEVEL < MAX_LEVEL) && (builder.m_line != END_OF_ARPA_FILE)) {
-                                LOG_DEBUG1 << "Finished counting words in " << SSTR(CURR_LEVEL)
-                                        << "-grams, going to the next level" << END_LOG;
-                                //There are still N-Gram levels to read
-                                //We did not encounter the \end\ tag yet so do recursion to the next level
-                                builder.get_level_word_counts < CURR_LEVEL + 1 > ();
-                            }
-                        }
                     };
 
                     template<typename DUMMY>
@@ -169,13 +155,6 @@ namespace uva {
                                 throw Exception(msg.str());
                             }
                         }
-                        
-                        /**
-                         * This template specialization is to be used for the level parameter values == MAX_LEVEL
-                         */
-                        static inline void check_and_get_level_word_counts(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
-                            //Do nothing - stop recursion
-                        }
                     };
 
                     /**
@@ -186,16 +165,6 @@ namespace uva {
                     template<TModelLevel CURR_LEVEL>
                     inline void check_and_go_m_grams() {
                         Func<CURR_LEVEL>::check_and_go_m_grams(*this);
-                    }
-
-                    /**
-                     * Checks if this is the last M-gram level we had to read,
-                     * if no read more otherwise we are done.
-                     * @param level the M-gram level we are counting words for.
-                     */
-                    template<TModelLevel CURR_LEVEL>
-                    inline void check_and_get_level_word_counts() {
-                        Func<CURR_LEVEL>::check_and_get_level_word_counts(*this);
                     }
 
                     /**
@@ -225,8 +194,7 @@ namespace uva {
                      * M-Gram sections and count them with the word index.
                      * @param level the M-gram level we are counting words for.
                      */
-                    template<TModelLevel CURR_LEVEL>
-                    void get_level_word_counts();
+                    void get_word_counts_from_unigrams();
 
                     /**
                      * This method should be called after the word counting is done.

@@ -137,8 +137,9 @@ namespace uva {
                      * word usages and then distribute the word ids in such a way
                      * that the most used words get the lowest ids.
                      * @param token the word to count
+                     * @param prob the word log probability
                      */
-                    inline void count_word(const TextPieceReader & token) {
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
                         THROW_MUST_OVERRIDE();
                     };
 

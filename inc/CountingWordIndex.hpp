@@ -49,22 +49,22 @@ namespace uva {
 
                 namespace __CountingWordIndex {
                     //This structure is used to store the word 
-                    //information such as the word and its count
+                    //information such as the word and its probability
 
                     typedef struct {
                         string word;
-                        TShortId count;
+                        TLogProbBackOff prob;
                     } TWordInfo;
 
                     /**
                      * The comparison operator for two word info objects,
-                     * the one that is smaller has the highest word count.
+                     * the one that is smaller has the highest word probability.
                      * @param one the first object to compare
                      * @param two the second object to compare
-                     * @return the smaller one is the most used one, with the higher word count
+                     * @return the smaller one is the most used one, with the higher word probability
                      */
                     inline bool operator<(const TWordInfo & one, const TWordInfo & two) {
-                        return (one.count > two.count);
+                        return (one.prob > two.prob);
                     }
                 }
 
@@ -116,10 +116,10 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    void count_word(const TextPieceReader & token) {
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
                         //Misuse the internal word index map for storing the word counts in it.
-                        LOG_DEBUG3 << "Counting word: [" << token.str() << "]" << END_LOG;
-                        BasicWordIndex::m_word_index_map_ptr->operator[](token.str()) += 1;
+                        LOG_DEBUG1 << "Adding the word: '" << word.str() << "', with prob: " << prob << END_LOG;
+                        BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = reinterpret_cast<TWordIdType &>(prob);
                     };
 
                     /**
@@ -154,7 +154,7 @@ namespace uva {
                         BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::m_word_index_map_ptr->begin();
                         for (size_t idx = 0; iter != BasicWordIndex::m_word_index_map_ptr->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
-                            word_infos[idx].count = iter->second;
+                            word_infos[idx].prob = reinterpret_cast<const TLogProbBackOff &>(iter->second);
                         }
 
                         //03. Sort the array of word info object in order to get
@@ -172,8 +172,8 @@ namespace uva {
                             string & word = word_infos[idx].word;
                             //Give it the next index
                             BasicWordIndex::m_word_index_map_ptr->operator[](word) = BasicWordIndex::m_next_new_word_id++;
-                            LOG_DEBUG4 << "Word [" << word << "], count: " << SSTR(word_infos[idx].count)
-                                    << " gets id: " << SSTR(BasicWordIndex::m_next_new_word_id - 1) << END_LOG;
+                            LOG_DEBUG4 << "Word [" << word << "], count: " << word_infos[idx].prob << " gets id: "
+                                    << SSTR(BasicWordIndex::m_next_new_word_id - 1) << END_LOG;
                         }
 
                         //05. Delete the temporary sorted array
