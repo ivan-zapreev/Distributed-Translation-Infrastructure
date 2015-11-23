@@ -303,12 +303,8 @@ namespace uva {
                     LOG_DEBUG1 << "The m-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    if (DO_SANITY_CHECKS && (bucket_idx >= num_buckets)) {
-                        stringstream msg;
-                        msg << "The m-gram has a bad bucket index: " << SSTR(bucket_idx)
-                                << ", must be within [0, " << SSTR(num_buckets) << "]";
-                        throw Exception(msg.str());
-                    }
+                    ASSERT_SANITY_THROW((bucket_idx >= num_buckets), string("The m-gram has a bad bucket index: ") +
+                            std::to_string(bucket_idx) + ", must be within [0, " + std::to_string(num_buckets));
 
                     return bucket_idx;
                 }

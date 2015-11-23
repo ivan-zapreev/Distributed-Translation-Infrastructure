@@ -73,6 +73,7 @@ namespace uva {
                 static const string TW2CArrayTrie_STR = string("w2ca");
                 static const string C2DHybridTrie_STR = string("c2dh");
                 static const string G2DMapTrie_STR = string("g2dm");
+                static const string H2DMapTrie_STR = string("h2dm");
 
                 /**
                  * Returns the default trie type name string
@@ -94,6 +95,7 @@ namespace uva {
                     p_supported_tries->push_back(TW2CArrayTrie_STR);
                     p_supported_tries->push_back(C2DHybridTrie_STR);
                     p_supported_tries->push_back(G2DMapTrie_STR);
+                    p_supported_tries->push_back(H2DMapTrie_STR);
                 }
 
                 /**
@@ -200,7 +202,7 @@ namespace uva {
 
                     //Enable the next line for the pin-point debugging of the querying process
                     //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG3;
-                    
+
                     //Read the test file line by line
                     while (testFile.get_first_line(line)) {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
@@ -292,10 +294,11 @@ namespace uva {
                         case TrieTypesEnum::G2DM_TRIE:
                             execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
+                        //case TrieTypesEnum::H2DM_TRIE:
+                        //    execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
+                        //    break;
                         default:
-                            stringstream msg;
-                            msg << "Unrecognized trie type: " << params.m_trie_type;
-                            throw Exception(msg.str());
+                            THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type);
                     }
                 }
 
@@ -369,9 +372,12 @@ namespace uva {
                                             params.m_word_index_type = __G2DMapTrie::WORD_INDEX_TYPE;
                                             params.m_trie_type = TrieTypesEnum::G2DM_TRIE;
                                         } else {
-                                            stringstream msg;
-                                            msg << "Unrecognized trie type: " + params.m_trie_type_name;
-                                            throw Exception(msg.str());
+                                            if (params.m_trie_type_name == H2DMapTrie_STR) {
+                                                params.m_word_index_type = __H2DMapTrie::WORD_INDEX_TYPE;
+                                                params.m_trie_type = TrieTypesEnum::H2DM_TRIE;
+                                            } else {
+                                                THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type_name);
+                                            }
                                         }
                                     }
                                 }

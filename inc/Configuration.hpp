@@ -121,7 +121,8 @@ namespace uva {
                 W2CA_TRIE = G2DM_TRIE + 1,
                 C2WA_TRIE = W2CA_TRIE + 1,
                 W2CH_TRIE = C2WA_TRIE + 1,
-                size_trie = W2CH_TRIE + 1
+                H2DM_TRIE = W2CH_TRIE + 1,
+                size_trie = H2DM_TRIE + 1
             };
 
             namespace __C2DHybridTrie {
@@ -170,6 +171,30 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static const WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                //This flag is to enable/disable the bitmap cache hashing in this Trie
+                //The experiments show that with 20*bitmap cache this is about 5% faster
+                static const bool DO_BITMAP_HASH_CACHE = true;
+            }
+
+            namespace __H2DMapTrie {
+                //Stores the memory increment factor, the number we will multiply by the computed increment
+                static const float MEM_INC_FACTOR = 0.3;
+                //Stores the minimum capacity increase in number of elements, must be >= 1!!!
+                static const size_t MIN_MEM_INC_NUM = 1;
+                //This constant stores true or false. If the value is true then the log2
+                //based memory increase strategy is used, otherwise it is log10 base.
+                //For log10 the percentage of memory increase drops slower than for log2
+                //with the growth of the #number of already allocated elements
+                static const alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+                //This is the factor that is used to define an average number of words
+                //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
+                //level is defined as the number of M-grams in this level divided by
+                //this factor value 
+                static const float WORDS_PER_BUCKET_FACTOR = 0.1;
+                //Stores the word index type to be used in this trie, COUNTING
+                //index is a must to save memory for gram ids! The optimizing
+                //word index gives about 10% performance improvement!
+                static const WordIndexTypesEnum WORD_INDEX_TYPE = HASHING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
                 //The experiments show that with 20*bitmap cache this is about 5% faster
                 static const bool DO_BITMAP_HASH_CACHE = true;
