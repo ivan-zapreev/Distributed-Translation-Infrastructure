@@ -84,9 +84,8 @@ namespace uva {
                             const size_t min_mem_inc, const float mem_inc_factor)
                     : m_stype(stype), m_get_capacity_inc_func(get_capacity_inc_func),
                     m_min_mem_inc(min_mem_inc), m_mem_inc_factor(mem_inc_factor) {
-                        if (DO_SANITY_CHECKS && (m_min_mem_inc < 1)) {
-                            throw Exception("Inappropriate minimum memory increment!");
-                        }
+                        //Perform a sanity check if needed.
+                        ASSERT_SANITY_THROW((m_min_mem_inc < 1), "Inappropriate minimum memory increment!");
                     }
 
                     MemIncreaseStrategy()
@@ -425,13 +424,10 @@ namespace uva {
                                 << ", ptr: " << SSTR(m_ptr) << END_LOG;
 
                         //Do the null pointer check if sanity
-                        if (DO_SANITY_CHECKS && (new_capacity > m_capacity)
-                                && (new_capacity > 0) && (m_ptr == NULL)) {
-                            stringstream msg;
-                            msg << "Ran out of memory when trying to allocate "
-                                    << new_capacity << " data elements for a word_id";
-                            throw Exception(msg.str());
-                        }
+                        ASSERT_SANITY_THROW(((new_capacity > m_capacity)
+                                && (new_capacity > 0) && (m_ptr == NULL)),
+                                string("Ran out of memory when trying to allocate ") +
+                                std::to_string(new_capacity) + " data elements for a word_id");
                     }
 
                     /**
