@@ -258,8 +258,6 @@ namespace uva {
                     modelFile.close();
                     LOG_DEBUG << "Getting the memory statistics after closing the Model file ..." << END_LOG;
                     StatisticsMonitor::getMemoryStatistics(memStatEnd);
-                    //LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-                    //report_memory_usage("Closing the Language Model file", memStatStart, memStatEnd, true);
 
                     LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
                     if (IS_CUM_QUERY) {

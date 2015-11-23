@@ -226,16 +226,13 @@ namespace uva {
 
 
 #define EXTRACT_P(NAME_PTR)  \
-   ELEMENT_TYPE * NAME_PTR;  \
-   extract_m_ptr(NAME_PTR);
+   ELEMENT_TYPE_PTR & NAME_PTR = extract_bytes<sizeof (IDX_DATA_TYPE), ELEMENT_TYPE_PTR > (m_params);
 
 #define EXTRACT_C(NAME_CAPACITY)        \
-    IDX_DATA_TYPE NAME_CAPACITY;               \
-    extract_m_capacity(NAME_CAPACITY);  \
+    IDX_DATA_TYPE & NAME_CAPACITY = extract_bytes<0, IDX_DATA_TYPE > (m_params);
 
 #define EXTRACT_S(NAME_SIZE)    \
-    IDX_DATA_TYPE NAME_SIZE;           \
-    extract_m_size(NAME_SIZE);
+    IDX_DATA_TYPE & NAME_SIZE = extract_bytes<sizeof (ELEMENT_TYPE_PTR) + sizeof (IDX_DATA_TYPE), IDX_DATA_TYPE > (m_params);
 
 #define EXTRACT_PC(NAME_PTR, NAME_CAPACITY) \
         EXTRACT_P(NAME_PTR);                \
@@ -282,9 +279,6 @@ namespace uva {
                         //Get the reference to the new element
                         ELEMENT_TYPE & new_element = m_ptr[m_size++];
 
-                        //Store the new size
-                        store_m_size(m_size);
-
                         //Return the new/free element
                         return new_element;
                     }
@@ -308,17 +302,17 @@ namespace uva {
                      * @throws out_of_range exception if the index is outside the array size.
                      */
                     inline const ELEMENT_TYPE & operator[](IDX_DATA_TYPE idx) const {
-                        EXTRACT_S(m_size);
-                        if (idx < m_size) {
-                            EXTRACT_P(m_ptr);
-                            return m_ptr[idx];
-                        } else {
+                        //Perform sanity checks if needed
+                        if (DO_SANITY_CHECKS) {
+                            EXTRACT_S(m_size);
                             EXTRACT_C(m_capacity);
-                            stringstream msg;
-                            msg << "Invalid index: " << SSTR(idx) << ", size: "
-                                    << SSTR(m_size) << ", capacity: " << SSTR(m_capacity);
-                            throw out_of_range(msg.str());
+                            ASSERT_SANITY_THROW((idx >= m_size), string("Invalid index: ")
+                                    + std::to_string(idx) + string(", size: ") + std::to_string(m_size)
+                                    + string(", capacity: ") + std::to_string(m_capacity));
                         }
+
+                        EXTRACT_P(m_ptr);
+                        return m_ptr[idx];
                     }
 
                     /**
@@ -400,30 +394,6 @@ namespace uva {
                     //The first m_capacity, is then m_ptr, then m_size
                     uint8_t m_params[PARAMETERS_SIZE_BYTES];
 
-                    inline void store_m_capacity(const IDX_DATA_TYPE m_capacity) {
-                        store_bytes<0, IDX_DATA_TYPE > (m_params, m_capacity);
-                    }
-
-                    inline void extract_m_capacity(IDX_DATA_TYPE & m_capacity) const {
-                        extract_bytes<0, IDX_DATA_TYPE > (m_params, m_capacity);
-                    }
-
-                    inline void store_m_ptr(const ELEMENT_TYPE_PTR m_ptr) {
-                        store_bytes<sizeof (IDX_DATA_TYPE), ELEMENT_TYPE_PTR > (m_params, m_ptr);
-                    }
-
-                    inline void extract_m_ptr(ELEMENT_TYPE_PTR & m_ptr) const {
-                        extract_bytes<sizeof (IDX_DATA_TYPE), ELEMENT_TYPE_PTR > (m_params, m_ptr);
-                    }
-
-                    inline void store_m_size(const IDX_DATA_TYPE m_size) {
-                        store_bytes<sizeof (ELEMENT_TYPE_PTR) + sizeof (IDX_DATA_TYPE), IDX_DATA_TYPE > (m_params, m_size);
-                    }
-
-                    inline void extract_m_size(IDX_DATA_TYPE & m_size) const {
-                        extract_bytes<sizeof (ELEMENT_TYPE_PTR) + sizeof (IDX_DATA_TYPE), IDX_DATA_TYPE > (m_params, m_size);
-                    }
-
                     /**
                      * This methods allows to reallocate the data to the new capacity
                      * @param new_capacity the desired new capacity
@@ -435,20 +405,12 @@ namespace uva {
                                 << SSTR(sizeof (ELEMENT_TYPE)) << END_LOG;
 
                         //Reallocate memory, potentially we get a new pointer!
-                        ELEMENT_TYPE_PTR new_ptr = (ELEMENT_TYPE_PTR) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
-
-                        //If the pointer has changed - change the value and store it!
-                        if (new_ptr != m_ptr) {
-                            m_ptr = new_ptr;
-                            store_m_ptr(m_ptr);
-                        }
+                        m_ptr = (ELEMENT_TYPE_PTR) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
 
                         LOG_DEBUG2 << "Memory is reallocated ptr: " << SSTR(m_ptr) << END_LOG;
 
                         //Clean the newly allocated memory
                         if (new_capacity > m_capacity) {
-                            //const size_t new_num_elem = (new_capacity - m_capacity);
-                            //memset(m_ptr + m_capacity, 0, new_num_elem * sizeof (ELEMENT_TYPE));
                             for (IDX_DATA_TYPE idx = m_capacity; idx < new_capacity; ++idx) {
                                 new(static_cast<void *> (&m_ptr[idx])) ELEMENT_TYPE();
                                 LOG_DEBUG3 << "Creating a new element [" << SSTR(idx)
@@ -458,7 +420,6 @@ namespace uva {
 
                         //Set the new capacity in
                         m_capacity = new_capacity;
-                        store_m_capacity(m_capacity);
 
                         LOG_DEBUG2 << "The end capacity is " << SSTR(m_capacity)
                                 << ", ptr: " << SSTR(m_ptr) << END_LOG;
@@ -501,7 +462,7 @@ namespace uva {
                                     new_capacity = MAX_SIZE_TYPE_VALUE;
                                 } else {
                                     //We are already at full capacity! Panic!!!!
-                                    THROW_EXCEPTION(string("Unable to increase the capacity, reached the maximum of ")+
+                                    THROW_EXCEPTION(string("Unable to increase the capacity, reached the maximum of ") +
                                             std::to_string(MAX_SIZE_TYPE_VALUE) + " allowed by the data type!");
                                 }
                             }

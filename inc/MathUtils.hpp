@@ -413,13 +413,24 @@ if(sizeof(value_type) == 2) { \
                  * @param source the data to be placed
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
+                inline void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
                     //We do not care about endian type here as we just will store the data
                     //and once it is extracted the order of bytes will be restored 
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
 
                     //Copy the bytes
                     memcpy(p_target + BEGIN_BYTE_IDX, p_source, sizeof (DATA_TYPE));
+                }
+
+                /**
+                 * Allows to get reference to the data from the given position in the byte array
+                 * @param BEGIN_BYTE_IDX the array index from which start reading the data
+                 * @param DATA_TYPE the data type of the data to be extracted
+                 * @param p_source the array to extract data from
+                 */
+                template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
+                inline DATA_TYPE & extract_bytes(const uint8_t * p_source) {
+                    return *reinterpret_cast<DATA_TYPE *> (const_cast<uint8_t * >(p_source + BEGIN_BYTE_IDX));
                 }
 
                 /**
@@ -430,7 +441,7 @@ if(sizeof(value_type) == 2) { \
                  * @param target the data to store the extracted
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
+                inline void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
                     //We do not care about endian type here as we just will store the data
                     //and once it is extracted the order of bytes will be restored 
 
