@@ -275,7 +275,8 @@ namespace uva {
                     } else {
                         //If the back-off sub-m-gram is not a uni-gram then do the context
                         for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
-                            if (!m_get_ctx_id[query.m_end_word_idx - word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
+                            LOG_DEBUG2 << "Getting the context id for sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ", " << SSTR(word_idx) << "]" << END_LOG;
+                            if (!m_get_ctx_id[word_idx - query.m_begin_word_idx](static_cast<const TrieType*> (this), query.m_gram[word_idx], ctx_id)) {
                                 //If the next context could not be computed, we stop with a bad status
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 break;
