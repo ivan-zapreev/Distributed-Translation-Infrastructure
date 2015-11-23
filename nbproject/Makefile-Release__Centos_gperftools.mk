@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/C2DMapTrie.o \
 	${OBJECTDIR}/src/C2WArrayTrie.o \
 	${OBJECTDIR}/src/G2DMapTrie.o \
+	${OBJECTDIR}/src/H2DMapTrie.o \
 	${OBJECTDIR}/src/Logger.o \
 	${OBJECTDIR}/src/StatisticsMonitor.o \
 	${OBJECTDIR}/src/W2CArrayTrie.o \
@@ -114,6 +115,11 @@ ${OBJECTDIR}/src/G2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/G2DMapTrie.
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DMapTrie.o src/G2DMapTrie.cpp
+
+${OBJECTDIR}/src/H2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/H2DMapTrie.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/H2DMapTrie.o src/H2DMapTrie.cpp
 
 ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

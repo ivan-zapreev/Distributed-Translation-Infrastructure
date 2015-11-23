@@ -28,6 +28,7 @@
       <itemPath>inc/Globals.hpp</itemPath>
       <itemPath>inc/GreedyMemoryAllocator.hpp</itemPath>
       <itemPath>inc/GreedyMemoryStorage.hpp</itemPath>
+      <itemPath>inc/H2DMapTrie.hpp</itemPath>
       <itemPath>inc/HashingUtils.hpp</itemPath>
       <itemPath>inc/HashingWordIndex.hpp</itemPath>
       <itemPath>inc/LayeredTrieBase.hpp</itemPath>
@@ -64,6 +65,7 @@
       <itemPath>src/C2DMapTrie.cpp</itemPath>
       <itemPath>src/C2WArrayTrie.cpp</itemPath>
       <itemPath>src/G2DMapTrie.cpp</itemPath>
+      <itemPath>src/H2DMapTrie.cpp</itemPath>
       <itemPath>src/Logger.cpp</itemPath>
       <itemPath>src/StatisticsMonitor.cpp</itemPath>
       <itemPath>src/W2CArrayTrie.cpp</itemPath>
@@ -784,6 +786,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -839,6 +843,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -929,6 +935,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -984,6 +992,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1082,6 +1092,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1137,6 +1149,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1227,6 +1241,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1282,6 +1298,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1372,6 +1390,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1427,6 +1447,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1517,6 +1539,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1572,6 +1596,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1662,6 +1688,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1717,6 +1745,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1807,6 +1837,8 @@
       </item>
       <item path="inc/GreedyMemoryStorage.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/H2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/HashingUtils.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/HashingWordIndex.hpp" ex="false" tool="3" flavor2="0">
@@ -1862,6 +1894,8 @@
       <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Logger.cpp" ex="false" tool="1" flavor2="9">
       </item>
