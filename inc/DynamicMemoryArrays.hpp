@@ -102,7 +102,7 @@ namespace uva {
                      * Allows to retrieve the strategy name
                      * @return the strategy name
                      */
-                    string get_strategy_info() const {
+                    inline string get_strategy_info() const {
                         stringstream msg;
                         msg << _memIncTypesEnumStr[m_stype] << ", memory increments: Min = "
                                 << SSTR(m_min_mem_inc) << " elements, Factor = "

@@ -51,8 +51,8 @@ namespace uva {
                  * This data structure stores the probability and back off weight payload for an m-gram
                  */
                 struct S_M_Gram_Payload {
-                    TLogProbBackOff m_prob;
-                    TLogProbBackOff m_back;
+                    TLogProbBackOff m_prob; // 4 byte for a float
+                    TLogProbBackOff m_back; // 4 byte for a float
 
                     S_M_Gram_Payload() {
                     }

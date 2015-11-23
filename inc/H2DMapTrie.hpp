@@ -57,6 +57,8 @@ namespace uva {
 
             namespace __H2DMapTrie {
 
+#pragma pack(push, 1) // exact fit - no padding
+
                 /**
                  * This template structure is used for storing trie hash map elements
                  * Each element contains and id of the m-gram and its payload -
@@ -66,8 +68,8 @@ namespace uva {
                  */
                 template<typename PAYLOAD_TYPE>
                 struct S_M_GramData {
-                    uint64_t id;
-                    PAYLOAD_TYPE payload;
+                    uint64_t id; //8 byte
+                    PAYLOAD_TYPE payload; //xxx byte 8 byte for T_M_Gram_Payload 4 byte for TLogProbBackOff
 
                     //Stores the memory increase strategy object
                     const static MemIncreaseStrategy m_mem_strat;
@@ -90,6 +92,7 @@ namespace uva {
                         }
                     }
                 };
+#pragma pack(pop) //back to whatever the previous packing mode was 
 
                 typedef S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
