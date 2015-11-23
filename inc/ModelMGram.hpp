@@ -63,7 +63,7 @@ namespace uva {
 
                     //Stores the m-gram payload i.e. its probability and back-off weight
                     T_M_Gram_Payload m_payload;
-                    
+
                     //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                     TLogProbBackOff m_prob;
 
@@ -103,16 +103,31 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to detect whether the given m-gram is an <unk> unigram.
+                     * @return true if this is an <unk> unigram
+                     */
+                    inline bool is_unk_unigram() const {
+                        return ((BASE::m_actual_level == M_GRAM_LEVEL_1) &&
+                                (BASE::m_tokens[BASE::m_actual_begin_word_idx] == WordIndexType::UNKNOWN_WORD_STR));
+                    }
+
+                    /**
                      * Allows to prepare the M-gram for being used for adding it to the trie
                      * This includes registering the one gram in the word index
                      */
                     inline void prepare_for_adding() {
+                        LOG_DEBUG1 << "Preparing the " << SSTR(BASE::m_actual_level) << "-gram for adding to the trie." << END_LOG;
                         //If we have a unigram then add it to the index otherwise get the word ids
                         if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
                             if (BASE::m_word_index.is_word_registering_needed()) {
                                 //Register the word if it is needed
                                 BASE::m_word_ids[BASE::m_actual_begin_word_idx] = BASE::m_word_index.register_word(BASE::m_tokens[BASE::m_actual_begin_word_idx]);
+                            } else {
+                                //Otherwise jut get its id
+                                BASE::m_word_ids[BASE::m_actual_begin_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_begin_word_idx]);
                             }
+                            //The Unigram's hash value is equal to the word id
+                            m_hash_values[BASE::m_actual_begin_word_idx] = BASE::m_word_ids[BASE::m_actual_begin_word_idx];
                         } else {
                             //Store the word ids without the unknown word flags and pre-compute the m-gram hash values
                             TModelLevel curr_idx = BASE::m_actual_end_word_idx;

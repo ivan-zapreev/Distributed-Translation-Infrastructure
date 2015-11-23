@@ -163,15 +163,11 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                    //Perform sanity checks if needed
+                    ASSERT_SANITY_THROW(((CURR_LEVEL == MAX_LEVEL) || (CURR_LEVEL < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(CURR_LEVEL));
+
                     //Compute the m-gram index
                     constexpr TModelLevel M_GRAM_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
-
-                    //Perform sanity checks if needed
-                    if (DO_SANITY_CHECKS && ((CURR_LEVEL == MAX_LEVEL) || (M_GRAM_IDX < 0))) {
-                        stringstream msg;
-                        msg << "Unsupported level id: " << CURR_LEVEL;
-                        throw Exception(msg.str());
-                    }
 
                     LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(CURR_LEVEL)
                             << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
@@ -335,12 +331,12 @@ namespace uva {
                         //Store the shorthand for the context and end word id
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                         const TShortId & word_id = query.m_gram[query.m_end_word_idx];
-                        
+
                         //Compute the distance between words
                         const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
                         LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                 << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
-                        
+
                         //Get the next context id
                         if (BASE::m_get_ctx_id[be_dist](this, word_id, ctx_id)) {
                             const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;

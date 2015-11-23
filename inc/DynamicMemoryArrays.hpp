@@ -501,10 +501,8 @@ namespace uva {
                                     new_capacity = MAX_SIZE_TYPE_VALUE;
                                 } else {
                                     //We are already at full capacity! Panic!!!!
-                                    stringstream msg;
-                                    msg << "Unable to increase the capacity, reached the maximum of "
-                                            << SSTR(MAX_SIZE_TYPE_VALUE) << " allowed by the data type!";
-                                    throw Exception(msg.str());
+                                    THROW_EXCEPTION(string("Unable to increase the capacity, reached the maximum of ")+
+                                            std::to_string(MAX_SIZE_TYPE_VALUE) + " allowed by the data type!");
                                 }
                             }
                             LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;

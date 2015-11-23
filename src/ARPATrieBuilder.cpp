@@ -43,6 +43,7 @@
 #include "W2CArrayTrie.hpp"
 #include "C2DHybridTrie.hpp"
 #include "G2DMapTrie.hpp"
+#include "H2DMapTrie.hpp"
 
 using namespace uva::smt::tries;
 using namespace uva::smt::logging;
@@ -500,7 +501,12 @@ namespace uva {
                 template class ARPATrieBuilder<TG2DMapTrieCount, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieOptBasic, TFileReaderModel>; \
                 template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieHashing, TFileReaderModel>;
+                template class ARPATrieBuilder<TG2DMapTrieHashing, TFileReaderModel>; \
+                template class ARPATrieBuilder<TH2DMapTrieBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TH2DMapTrieCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TH2DMapTrieOptBasic, TFileReaderModel>; \
+                template class ARPATrieBuilder<TH2DMapTrieOptCount, TFileReaderModel>; \
+                template class ARPATrieBuilder<TH2DMapTrieHashing, TFileReaderModel>;
 
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
                 INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);

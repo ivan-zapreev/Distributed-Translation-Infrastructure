@@ -262,21 +262,24 @@ namespace uva {
                         hash_column[END_WORD_IDX] = BASE::m_word_ids[END_WORD_IDX];
 
                         LOG_DEBUG1 << "hash[" << SSTR(END_WORD_IDX) << "] = " << hash_column[END_WORD_IDX] << END_LOG;
+                        
+                        //If there is more to compute do that in a loop
+                        if (END_WORD_IDX > BEGIN_WORD_IDX) {
+                            //Start iterating from the end of the sub-m-gram
+                            TModelLevel curr_idx = END_WORD_IDX;
+                            do {
+                                //Decrement the word id
+                                curr_idx--;
 
-                        //Start iterating from the end of the sub-m-gram
-                        TModelLevel curr_idx = END_WORD_IDX;
-                        do {
-                            //Decrement the word id
-                            curr_idx--;
+                                //Incrementally build up hash, using the previous hash value and the next word id
+                                hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
 
-                            //Incrementally build up hash, using the previous hash value and the next word id
-                            hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
+                                LOG_DEBUG1 << "word[" << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
+                                        << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
 
-                            LOG_DEBUG1 << "word[" << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
-                                    << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
-
-                            //Stop iterating if the reached the beginning of the m-gram
-                        } while (curr_idx != BEGIN_WORD_IDX);
+                                //Stop iterating if the reached the beginning of the m-gram
+                            } while (curr_idx != BEGIN_WORD_IDX);
+                        }
 
                         //Compute the current m-gram level
                         constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;

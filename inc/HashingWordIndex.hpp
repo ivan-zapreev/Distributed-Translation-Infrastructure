@@ -85,7 +85,10 @@ namespace uva {
                         //Return the word index making sure that it is at least
                         //equal to two. So that the undefined and unknown word
                         //indexes are not used and no overflow or other checks.
-                        return compute_hash(token) | (1 << 1);
+                        const uint64_t hash_value = compute_hash(token);
+                        const TWordIdType word_id = hash_value | (1 << 1);
+                        LOG_DEBUG2 << "Hashing '" << token << "' into: " << hash_value << ", resulting id is: " << word_id << END_LOG;
+                        return word_id;
                     };
 
                     /**
@@ -97,11 +100,11 @@ namespace uva {
                     };
 
                     /**
-                     * The returned word id is >= MIN_KNOWN_WORD_ID
+                     * The word registration is not needed, for this word index.
                      * @see AWordIndex
                      */
                     inline TWordIdType register_word(const TextPieceReader & token) {
-                        return get_word_id(token);
+                        THROW_MUST_NOT_CALL();
                     };
 
                     /**

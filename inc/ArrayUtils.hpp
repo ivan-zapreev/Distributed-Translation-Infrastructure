@@ -47,11 +47,14 @@ namespace uva {
 
                 /**
                  * Define the function type for the comparison function
+                 * @return Negative value if one is smaller than two
+                 *         Zero if one is equal to two
+                 *         Positive value if one is larger than two
                  */
                 template<typename ELEM_TYPE>
                 struct T_IS_EXT_COMPARE_FUNC {
-                    typedef std::function<int(const ELEM_TYPE &, const ELEM_TYPE &) > func_type;
-                    typedef int(* func_ptr)(const ELEM_TYPE &, const ELEM_TYPE &);
+                    typedef std::function<int(const ELEM_TYPE & one, const ELEM_TYPE & two) > func_type;
+                    typedef int(* func_ptr)(const ELEM_TYPE & one, const ELEM_TYPE & two);
                 };
 
                 /**

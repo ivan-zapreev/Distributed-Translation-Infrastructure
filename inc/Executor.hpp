@@ -47,6 +47,7 @@
 #include "W2CArrayTrie.hpp"
 #include "C2DHybridTrie.hpp"
 #include "G2DMapTrie.hpp"
+#include "H2DMapTrie.hpp"
 
 #include "QueryMGram.hpp"
 #include "MGramCumulativeQuery.hpp"
@@ -294,11 +295,11 @@ namespace uva {
                         case TrieTypesEnum::G2DM_TRIE:
                             execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
-                        //case TrieTypesEnum::H2DM_TRIE:
-                        //    execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                        //    break;
+                        case TrieTypesEnum::H2DM_TRIE:
+                            execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
+                            break;
                         default:
-                            THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type);
+                            THROW_EXCEPTION(string("Unrecognized trie type: ")+std::to_string(params.m_trie_type));
                     }
                 }
 

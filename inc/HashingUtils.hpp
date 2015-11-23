@@ -572,7 +572,6 @@ namespace uva {
              * @return the resulting hash.
              */
             inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
-                //return stupidHash(data, len);
                 return MurmurHash64A(data, len, seed);
             }
 

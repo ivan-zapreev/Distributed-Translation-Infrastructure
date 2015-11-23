@@ -147,7 +147,8 @@ namespace uva {
             template class T_M_Gram_Cumulative_Query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
             template class T_M_Gram_Cumulative_Query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
             template class T_M_Gram_Cumulative_Query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Cumulative_Query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
+            template class T_M_Gram_Cumulative_Query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Cumulative_Query<H2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
 
 #define INSTANTIATE_TYPEDEF_M_GRAM_CUMULATIVE_QUERY_LEVEL(M_GRAM_LEVEL); \
             INSTANTIATE_TYPEDEF_M_GRAM_CUMULATIVE_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
