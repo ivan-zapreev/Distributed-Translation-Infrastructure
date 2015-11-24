@@ -249,7 +249,8 @@ namespace uva {
                             << ", and data[" << u_idx << "] = " << std::to_string(array[u_idx].id) << END_LOG;
 
                     int64_t mid_pos = 0;
-                    while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
+                    //while ((array[l_idx].id <= key) && (key <= array[u_idx].id) && (l_idx != u_idx)) {
+                    while ((array[l_idx].id < key) && (key <= array[u_idx].id)) {
                         long double low_diff = (long double) (key - array[l_idx].id);
                         //LOG_DEBUG3 << "low_diff = " << key << " - " << array[l_idx].id << " = " << low_diff << END_LOG;
                         long double range_diff = (long double) (array[u_idx].id - array[l_idx].id);
