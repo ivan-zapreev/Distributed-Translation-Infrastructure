@@ -73,15 +73,15 @@ namespace uva {
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
-                    m_num_buckets[idx] = max(counts[idx] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR,
-                            __H2DMapTrie::WORDS_PER_BUCKET_FACTOR);
+                    //Compute the number of buckets, there should be at least one
+                    m_num_buckets[idx] = max(counts[idx] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR, 1.0f);
                     m_m_gram_data[idx] = new TProbBackOffBucket[m_num_buckets[idx]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 constexpr TModelLevel MAX_LEVEL_IDX = MAX_LEVEL - LEVEL_IDX_OFFSET;
-                m_num_buckets[MAX_LEVEL_IDX] = max(counts[MAX_LEVEL_IDX] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR,
-                        __H2DMapTrie::WORDS_PER_BUCKET_FACTOR);
+                //Compute the number of buckets, there should be at least one
+                m_num_buckets[MAX_LEVEL_IDX] = max(counts[MAX_LEVEL_IDX] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR, 1.0f);
                 m_n_gram_data = new TProbBucket[m_num_buckets[MAX_LEVEL_IDX]];
             };
 

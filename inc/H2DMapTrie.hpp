@@ -341,6 +341,7 @@ namespace uva {
                     //        typename BUCKET_TYPE::TIndexType,
                     //        const uint64_t, &__H2DMapTrie::S_M_GramData<typename BUCKET_TYPE::TElemType>::compare >
                     //        (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
+                    
                     return my_isearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType, const uint64_t >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
