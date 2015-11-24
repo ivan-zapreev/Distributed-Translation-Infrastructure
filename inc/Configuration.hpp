@@ -65,8 +65,12 @@ namespace uva {
                 //Stores the possible memory increase types
 
                 enum MemIncTypesEnum {
-                    UNDEFINED = 0, CONSTANT = UNDEFINED + 1, LINEAR = CONSTANT + 1, LOG_2 = LINEAR + 1,
-                    LOG_10 = LOG_2 + 1, size = LOG_10 + 1
+                    UNDEFINED = 0,
+                    CONSTANT = UNDEFINED + 1,
+                    LINEAR = CONSTANT + 1,
+                    LOG_2 = LINEAR + 1,
+                    LOG_10 = LOG_2 + 1,
+                    size = LOG_10 + 1
                 };
             }
 
@@ -154,7 +158,7 @@ namespace uva {
 
             namespace __G2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                static constexpr float MEM_INC_FACTOR = 0.3;
+                static constexpr float MEM_INC_FACTOR = 1.0;
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static constexpr size_t MIN_MEM_INC_NUM = 1;
                 //This constant stores the memory increase strategy to be used.

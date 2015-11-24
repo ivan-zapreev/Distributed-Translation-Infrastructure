@@ -155,7 +155,6 @@ namespace uva {
                             break;
                         case MemIncTypesEnum::LOG_10:
                             inc_func = [] (const float fcap) -> float {
-                                //Get the float capacity value, make it minimum of one element to avoid problems
                                 return fcap / log10(fcap);
                             };
                             break;
