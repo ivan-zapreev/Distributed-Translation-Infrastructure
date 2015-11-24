@@ -158,7 +158,7 @@ namespace uva {
 
             namespace __G2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                static constexpr float MEM_INC_FACTOR = 1.0;
+                static constexpr float MEM_INC_FACTOR = 0.3;
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static constexpr size_t MIN_MEM_INC_NUM = 1;
                 //This constant stores the memory increase strategy to be used.
@@ -181,7 +181,7 @@ namespace uva {
 
             namespace __H2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                static constexpr float MEM_INC_FACTOR = 0.3;
+                static constexpr float MEM_INC_FACTOR = 1.0;
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static constexpr size_t MIN_MEM_INC_NUM = 1;
                 //This constant stores the memory increase strategy to be used.
