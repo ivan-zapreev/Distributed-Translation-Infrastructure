@@ -284,13 +284,11 @@ namespace uva {
                 typedef uint16_t TBucketCapacityType;
 
                 //These are arrays of buckets for M-Gram levels with 1 <= M < N
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, TBucketCapacityType,
-                static_cast<TBucketCapacityType> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBackOffBucket;
+                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, TBucketCapacityType > TProbBackOffBucket;
                 TProbBackOffBucket * m_m_gram_data[NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, TBucketCapacityType,
-                static_cast<TBucketCapacityType> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBucket;
+                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, TBucketCapacityType > TProbBucket;
                 TProbBucket * m_n_gram_data;
 
                 //Stores the number of m-gram ids/buckets per level
