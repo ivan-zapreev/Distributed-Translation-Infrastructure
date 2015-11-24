@@ -1335,6 +1335,7 @@
             <pElem>inc</pElem>
           </incDir>
           <commandLine>-mtune=native -std=c++0x -lrt -m64</commandLine>
+          <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>

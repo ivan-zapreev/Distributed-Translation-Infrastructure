@@ -79,72 +79,72 @@ ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 ${OBJECTDIR}/src/ARPAGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPAGramBuilder.o src/ARPAGramBuilder.cpp
 
 ${OBJECTDIR}/src/ARPATrieBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPATrieBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ARPATrieBuilder.o src/ARPATrieBuilder.cpp
 
 ${OBJECTDIR}/src/AWordIndex.o: nbproject/Makefile-${CND_CONF}.mk src/AWordIndex.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AWordIndex.o src/AWordIndex.cpp
 
 ${OBJECTDIR}/src/ByteMGramId.o: nbproject/Makefile-${CND_CONF}.mk src/ByteMGramId.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ByteMGramId.o src/ByteMGramId.cpp
 
 ${OBJECTDIR}/src/C2DHybridTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2DHybridTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DHybridTrie.o src/C2DHybridTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DHybridTrie.o src/C2DHybridTrie.cpp
 
 ${OBJECTDIR}/src/C2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2DMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DMapTrie.o src/C2DMapTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2DMapTrie.o src/C2DMapTrie.cpp
 
 ${OBJECTDIR}/src/C2WArrayTrie.o: nbproject/Makefile-${CND_CONF}.mk src/C2WArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WArrayTrie.o src/C2WArrayTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/C2WArrayTrie.o src/C2WArrayTrie.cpp
 
 ${OBJECTDIR}/src/G2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/G2DMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DMapTrie.o src/G2DMapTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/G2DMapTrie.o src/G2DMapTrie.cpp
 
 ${OBJECTDIR}/src/H2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/H2DMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/H2DMapTrie.o src/H2DMapTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/H2DMapTrie.o src/H2DMapTrie.cpp
 
 ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Logger.o src/Logger.cpp
 
 ${OBJECTDIR}/src/StatisticsMonitor.o: nbproject/Makefile-${CND_CONF}.mk src/StatisticsMonitor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StatisticsMonitor.o src/StatisticsMonitor.cpp
 
 ${OBJECTDIR}/src/W2CArrayTrie.o: nbproject/Makefile-${CND_CONF}.mk src/W2CArrayTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CArrayTrie.o src/W2CArrayTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CArrayTrie.o src/W2CArrayTrie.cpp
 
 ${OBJECTDIR}/src/W2CHybridTrie.o: nbproject/Makefile-${CND_CONF}.mk src/W2CHybridTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridTrie.o src/W2CHybridTrie.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/W2CHybridTrie.o src/W2CHybridTrie.cpp
 
 ${OBJECTDIR}/src/main.o: nbproject/Makefile-${CND_CONF}.mk src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 ${OBJECTDIR}/src/xxhash.o: nbproject/Makefile-${CND_CONF}.mk src/xxhash.c 
 	${MKDIR} -p ${OBJECTDIR}/src
