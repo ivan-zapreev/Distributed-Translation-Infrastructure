@@ -210,12 +210,12 @@ namespace uva {
                      * The basic constructor, does not pre-allocate any memory
                      */
                     ADynamicStackArray() {
+                        //Initialize the array
+                        memset(m_params, 0, PARAMETERS_SIZE_BYTES);
+                        //If the initial capacity is given then pre-allocate data
                         if (INITIAL_CAPACITY > 0) {
                             //Set the initial capacity and memory strategy via one method
                             pre_allocate(INITIAL_CAPACITY);
-                        } else {
-                            //Initialize the array
-                            memset(m_params, 0, PARAMETERS_SIZE_BYTES);
                         }
                     }
 
