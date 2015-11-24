@@ -56,8 +56,8 @@ OBJECTFILES= \
 CFLAGS=-march=native -Wall -Werror
 
 # CC Compiler Flags
-CCFLAGS=-march=native -std=c++0x -lrt -m64
-CXXFLAGS=-march=native -std=c++0x -lrt -m64
+CCFLAGS=-mtune=native -std=c++0x -lrt -m64
+CXXFLAGS=-mtune=native -std=c++0x -lrt -m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -74,7 +74,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
-	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -march=native -lrt -m64 ${LDFLAGS} -lprofiler -ltcmalloc
+	/opt/rh/devtoolset-3/root/usr/bin/g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -mtune=native -lrt -m64 ${LDFLAGS} -lprofiler -ltcmalloc
 
 ${OBJECTDIR}/src/ARPAGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

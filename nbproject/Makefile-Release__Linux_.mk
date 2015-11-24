@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
-CND_DLIB_EXT=so
+CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Release__Linux_
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -56,8 +56,8 @@ OBJECTFILES= \
 CFLAGS=-march=native -Wall -Werror
 
 # CC Compiler Flags
-CCFLAGS=-march=native -std=c++0x -lrt -m64
-CXXFLAGS=-march=native -std=c++0x -lrt -m64
+CCFLAGS=-mtune=native -std=c++0x -lrt -m64
+CXXFLAGS=-mtune=native -std=c++0x -lrt -m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -74,7 +74,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}
-	g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -march=native -lrt -m64
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt ${OBJECTFILES} ${LDLIBSOPTIONS} -mtune=native
 
 ${OBJECTDIR}/src/ARPAGramBuilder.o: nbproject/Makefile-${CND_CONF}.mk src/ARPAGramBuilder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
