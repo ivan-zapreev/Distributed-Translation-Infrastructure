@@ -79,7 +79,7 @@ namespace uva {
                                 << SSTR(u_idx) << "!";                                              \
                         throw Exception(msg.str());                                                 \
                     } else {                                                                        \
-                        TSLongId mid_pos;                                                           \
+                        int64_t mid_pos;                                                           \
                         while (l_idx <= u_idx) {                                                    \
                             mid_pos = (l_idx + u_idx) / 2;                                          \
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
@@ -113,7 +113,7 @@ namespace uva {
                                 << SSTR(u_idx) << "!";                                              \
                         throw Exception(msg.str());                                                 \
                     } else {                                                                        \
-                        TSLongId mid_pos;                                                           \
+                        int64_t mid_pos;                                                           \
                         while (l_idx <= u_idx) {                                                    \
                             mid_pos = (l_idx + u_idx) / 2;                                          \
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "                 \
@@ -203,7 +203,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE>
-                inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
+                inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
                     BSEARCH_TWO_FIELDS(word_id, ctx_id);
                 }
 
@@ -221,7 +221,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
                     BSEARCH_ONE_FIELD(id);
                 }
 
@@ -300,7 +300,7 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE>
-                inline bool my_lsearch(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx, const ARR_ELEM_TYPE key, IDX_TYPE & found_pos) {
+                inline bool my_lsearch(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const ARR_ELEM_TYPE key, IDX_TYPE & found_pos) {
                     LOG_DEBUG2 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
 
                     if (key > array[u_idx]) {

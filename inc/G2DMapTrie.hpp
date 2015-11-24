@@ -312,23 +312,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to perform search in the bucket for the given M-gram id
-                 * @param mgram_id_key the m-gram id to look for.
-                 * @param ref the reference to the bucket
-                 * @param found_idx the found index
-                 * @return true if the M-gram id was found and otherwise false
-                 */
-                template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL>
-                static inline bool search_gram(T_Gram_Id_Data_Ptr mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType & found_idx) {
-                    LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
-                    return my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                            typename BUCKET_TYPE::TIndexType,
-                            typename BUCKET_TYPE::TElemType::TMGramIdType,
-                            TM_Gram_Id::template compare<CURR_LEVEL> >
-                            (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
-                }
-
-                /**
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
                  * @param BEGIN_WORD_IDX the begin word index for the sub-m-gram
@@ -368,7 +351,11 @@ namespace uva {
                         //3. Search for the query id in the bucket
                         //The data is available search for the word index in the array
                         typename BUCKET_TYPE::TIndexType found_idx;
-                        if (search_gram<BUCKET_TYPE, CURR_LEVEL>(mgram_id_ptr, ref, found_idx)) {
+                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType,
+                                typename BUCKET_TYPE::TIndexType,
+                                typename BUCKET_TYPE::TElemType::TMGramIdType,
+                                TM_Gram_Id::template compare<CURR_LEVEL> >
+                                (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_idx)) {
                             query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &ref[found_idx].payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //We are now done, the payload is found, can return!

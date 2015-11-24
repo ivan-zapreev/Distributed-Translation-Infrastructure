@@ -467,7 +467,7 @@ namespace uva {
                  * @throw nothing
                  */
                 template<typename WORD_ENTRY_TYPE>
-                bool get_m_n_gram_local_entry_idx(const WORD_ENTRY_TYPE & ref, const TLongId ctx_id, typename WORD_ENTRY_TYPE::TIndexType & localIdx) const {
+                bool get_m_n_gram_local_entry_idx(const WORD_ENTRY_TYPE & ref, const TLongId ctx_id, typename WORD_ENTRY_TYPE::TIndexType & local_idx) const {
                     LOG_DEBUG2 << "Searching word data entry for ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                     //Check if there is data to search in
@@ -475,8 +475,8 @@ namespace uva {
                         //The data is available search for the word index in the array
                         //WQRNING: Switching to linear search here significantly worsens
                         //the performance!
-                        if (my_bsearch_id<typename WORD_ENTRY_TYPE::TElemType, typename WORD_ENTRY_TYPE::TIndexType > (ref.data(), 0, ref.size() - 1, ctx_id, localIdx)) {
-                            LOG_DEBUG2 << "Found sub array local index = " << SSTR(localIdx) << END_LOG;
+                        if (my_bsearch_id<typename WORD_ENTRY_TYPE::TElemType, typename WORD_ENTRY_TYPE::TIndexType > (ref.data(), 0, ref.size() - 1, ctx_id, local_idx)) {
+                            LOG_DEBUG2 << "Found sub array local index = " << SSTR(local_idx) << END_LOG;
                             return true;
                         } else {
                             LOG_DEBUG1 << "Unable to find M-gram context id for a word, prev ctx_id: "
