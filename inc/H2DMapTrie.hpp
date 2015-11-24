@@ -281,11 +281,13 @@ namespace uva {
                 T_M_Gram_Payload m_unk_word_payload;
 
                 //These are arrays of buckets for M-Gram levels with 1 <= M < N
-                typedef ADynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, uint8_t > TProbBackOffBucket;
+                typedef ADynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, uint8_t,
+                static_cast<uint32_t> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBackOffBucket;
                 TProbBackOffBucket * m_m_gram_data[NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef ADynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, uint8_t > TProbBucket;
+                typedef ADynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, uint8_t,
+                static_cast<uint32_t> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBucket;
                 TProbBucket * m_n_gram_data;
 
                 //Stores the number of m-gram ids/buckets per level

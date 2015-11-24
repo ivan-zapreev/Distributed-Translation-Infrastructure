@@ -182,10 +182,11 @@ namespace uva {
                 /**
                  * This class represents a dynamic memory array and stores the main methods needed for its operation
                  * @param ELEMENT_TYPE the array element type
-                 * @param SIZE_T the type is to be used for the size, capacity and index variables, should be an unsigned type!
+                 * @param IDX_DATA_TYPE the type is to be used for the size, capacity and index variables, should be an unsigned type!
+                 * @param INITIAL_CAPACITY the number of words, which defines the initial capacity.
                  * @param DESTRUCTOR the destructor function to be used on the elements when the container is deleted, default is NULL
                  */
-                template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE,
+                template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY = 0,
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR>
                 class ADynamicStackArray {
                 public:
@@ -206,21 +207,16 @@ namespace uva {
                     static constexpr size_t PARAMETERS_SIZE_BYTES = (sizeof (ELEMENT_TYPE_PTR) + 2 * sizeof (IDX_DATA_TYPE));
 
                     /**
-                     * The basic constructor, that allows to pre-allocate some memory
-                     * @param capacity the initial capacity to allocate
-                     */
-                    ADynamicStackArray(const IDX_DATA_TYPE capacity)
-                    : ADynamicStackArray() {
-                        //Set the initial capacity and memory strategy via one method
-                        pre_allocate(capacity);
-                    }
-
-                    /**
                      * The basic constructor, does not pre-allocate any memory
                      */
                     ADynamicStackArray() {
-                        //Initialize the array
-                        memset(m_params, 0, PARAMETERS_SIZE_BYTES);
+                        if (INITIAL_CAPACITY > 0) {
+                            //Set the initial capacity and memory strategy via one method
+                            pre_allocate(INITIAL_CAPACITY);
+                        } else {
+                            //Initialize the array
+                            memset(m_params, 0, PARAMETERS_SIZE_BYTES);
+                        }
                     }
 
 
@@ -397,7 +393,7 @@ namespace uva {
                      * This methods allows to reallocate the data to the new capacity
                      * @param new_capacity the desired new capacity
                      */
-                    void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE new_capacity) {
+                    inline void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE new_capacity) {
                         LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
                                 << ", the old capacity was " << SSTR(m_capacity)
                                 << ", ptr: " << SSTR((void*) m_ptr) << ", elem size: "
@@ -437,7 +433,7 @@ namespace uva {
                      * @param IS_INC if true then the memory will be attempted to increase, otherwise decrease
                      */
                     template<bool IS_INC = true >
-                    void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE & m_size) {
+                    inline void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE & m_size) {
                         IDX_DATA_TYPE new_capacity;
 
                         LOG_DEBUG2 << "Memory reallocation request: "
@@ -518,9 +514,9 @@ namespace uva {
                 };
 
                 //Get the maximum value for the given template type
-                template<typename ELEMENT_TYPE, typename SIZE_T,
+                template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY,
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-                const size_t ADynamicStackArray<ELEMENT_TYPE, SIZE_T, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (SIZE_T) - 1];
+                const size_t ADynamicStackArray<ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (IDX_DATA_TYPE) - 1];
             }
         }
     }
