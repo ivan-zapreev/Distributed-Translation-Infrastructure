@@ -279,15 +279,18 @@ namespace uva {
 
                 //Stores the unknown word payload data
                 T_M_Gram_Payload m_unk_word_payload;
+                
+                //typedef the bucket capacity type, for convenience.
+                typedef uint16_t TBucketCapacityType;
 
                 //These are arrays of buckets for M-Gram levels with 1 <= M < N
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, uint8_t,
-                static_cast<uint8_t> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBackOffBucket;
+                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, TBucketCapacityType,
+                static_cast<TBucketCapacityType> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBackOffBucket;
                 TProbBackOffBucket * m_m_gram_data[NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, uint8_t,
-                static_cast<uint8_t> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBucket;
+                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, TBucketCapacityType,
+                static_cast<TBucketCapacityType> (__H2DMapTrie::WORDS_PER_BUCKET_FACTOR) > TProbBucket;
                 TProbBucket * m_n_gram_data;
 
                 //Stores the number of m-gram ids/buckets per level
@@ -341,7 +344,7 @@ namespace uva {
                     //        typename BUCKET_TYPE::TIndexType,
                     //        const uint64_t, &__H2DMapTrie::S_M_GramData<typename BUCKET_TYPE::TElemType>::compare >
                     //        (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
-                    
+
                     return my_isearch_id< typename BUCKET_TYPE::TElemType,
                             typename BUCKET_TYPE::TIndexType, const uint64_t >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
