@@ -188,7 +188,7 @@ namespace uva {
                  */
                 template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY = 0,
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR>
-                class ADynamicStackArray {
+                class DynamicStackArray {
                 public:
 
                     //Make the element type publicly available
@@ -209,7 +209,7 @@ namespace uva {
                     /**
                      * The basic constructor, does not pre-allocate any memory
                      */
-                    ADynamicStackArray() {
+                    DynamicStackArray() {
                         //Initialize the array
                         memset(m_params, 0, PARAMETERS_SIZE_BYTES);
                         //If the initial capacity is given then pre-allocate data
@@ -360,7 +360,7 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    ~ADynamicStackArray() {
+                    ~DynamicStackArray() {
                         EXTRACT_P(m_ptr);
                         if (m_ptr != NULL) {
                             if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
@@ -516,7 +516,7 @@ namespace uva {
                 //Get the maximum value for the given template type
                 template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY,
                 typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-                const size_t ADynamicStackArray<ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (IDX_DATA_TYPE) - 1];
+                const size_t DynamicStackArray<ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (IDX_DATA_TYPE) - 1];
             }
         }
     }

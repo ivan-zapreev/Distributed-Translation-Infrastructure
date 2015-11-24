@@ -268,11 +268,11 @@ namespace uva {
                 T_M_Gram_Payload * m_1_gram_data;
 
                 //These are arrays of buckets for M-Gram levels with 1 < M < N
-                typedef ADynamicStackArray<__G2DMapTrie::T_M_Gram_PB_Entry, uint8_t, 0, &__G2DMapTrie::destroy_Comp_M_Gram_Id<__G2DMapTrie::T_M_Gram_PB_Entry> > TProbBackOffBucket;
+                typedef DynamicStackArray<__G2DMapTrie::T_M_Gram_PB_Entry, uint8_t, 0, &__G2DMapTrie::destroy_Comp_M_Gram_Id<__G2DMapTrie::T_M_Gram_PB_Entry> > TProbBackOffBucket;
                 TProbBackOffBucket * m_M_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                 //This is an array of buckets for the N-Gram level
-                typedef ADynamicStackArray<__G2DMapTrie::T_M_Gram_Prob_Entry, uint8_t, 0, &__G2DMapTrie::destroy_Comp_M_Gram_Id<__G2DMapTrie::T_M_Gram_Prob_Entry> > TProbBucket;
+                typedef DynamicStackArray<__G2DMapTrie::T_M_Gram_Prob_Entry, uint8_t, 0, &__G2DMapTrie::destroy_Comp_M_Gram_Id<__G2DMapTrie::T_M_Gram_Prob_Entry> > TProbBucket;
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
