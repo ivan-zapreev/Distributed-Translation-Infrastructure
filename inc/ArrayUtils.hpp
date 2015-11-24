@@ -158,7 +158,7 @@ namespace uva {
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE,
                 typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr COMPARE_FUNC>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, TSLongId l_idx, TSLongId u_idx,
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx,
                         const KEY_TYPE key, IDX_TYPE & found_pos) {
                     LOG_DEBUG3 << "Searching between indexes " << l_idx << " and " << u_idx << END_LOG;
                     if (DO_SANITY_CHECKS && ((l_idx < 0) || (l_idx > u_idx))) {
@@ -168,12 +168,12 @@ namespace uva {
                                 << SSTR(u_idx) << "!";
                         throw Exception(msg.str());
                     } else {
-                        TSLongId mid_pos;
+                        int64_t mid_pos;
                         while (l_idx <= u_idx) {
                             mid_pos = (l_idx + u_idx) / 2;
                             LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = "
                                     << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG;
-                            int result = COMPARE_FUNC(key, array[mid_pos].id);
+                            int64_t result = COMPARE_FUNC(key, array[mid_pos].id);
                             if (result < 0) {
                                 u_idx = mid_pos - 1;
                             } else {
