@@ -25,6 +25,8 @@ echo "c2dh"
 eval "../dist/Release__${1}_/back-off-language-model-smt ${4} -m ${2} -q ${3} -t c2dh ${FILTER} > release.c2dh.out"
 echo "g2dm"
 eval "../dist/Release__${1}_/back-off-language-model-smt ${4} -m ${2} -q ${3} -t g2dm ${FILTER} > release.g2dm.out"
+echo "h2dm"
+eval "../dist/Release__${1}_/back-off-language-model-smt ${4} -m ${2} -q ${3} -t h2dm ${FILTER} > release.h2dm.out"
 
 echo "----> c2wa vs. c2dm"
 diff release.c2wa.out release.c2dm.out > diff.c2wa.c2dm.out
@@ -45,6 +47,10 @@ cat diff.c2wa.c2dh.out | wc -l
 echo "----> c2wa vs. g2dm"
 diff release.c2wa.out release.g2dm.out > diff.c2wa.g2dm.out
 cat diff.c2wa.g2dm.out | wc -l
+
+echo "----> c2wa vs. h2dm"
+diff release.c2wa.out release.h2dm.out > diff.c2wa.h2dm.out
+cat diff.c2wa.h2dm.out | wc -l
 
 echo "------------------------------"
 
@@ -67,3 +73,7 @@ cat diff.c2dm.c2dh.out | wc -l
 echo "----> c2dm vs. g2dm"
 diff release.c2dm.out release.g2dm.out > diff.c2dm.g2dm.out
 cat diff.c2dm.g2dm.out | wc -l
+
+echo "----> c2dm vs. h2dm"
+diff release.c2dm.out release.h2dm.out > diff.c2dm.h2dm.out
+cat diff.c2dm.h2dm.out | wc -l

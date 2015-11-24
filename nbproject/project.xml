@@ -136,6 +136,10 @@
                     <name>Profile__Centos_</name>
                     <type>1</type>
                 </confElem>
+                <confElem>
+                    <name>Release__Centos_gperftools</name>
+                    <type>1</type>
+                </confElem>
             </confList>
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
