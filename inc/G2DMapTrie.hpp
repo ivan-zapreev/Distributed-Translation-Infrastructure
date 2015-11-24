@@ -57,6 +57,8 @@ namespace uva {
 
             namespace __G2DMapTrie {
 
+#pragma pack(push, 1) // exact fit - no padding
+
                 /**
                  * This template structure is used for storing trie hash map elements
                  * Each element contains and id of the m-gram and its payload -
@@ -92,6 +94,7 @@ namespace uva {
                 get_mem_incr_strat(__G2DMapTrie::MEM_INC_TYPE,
                         __G2DMapTrie::MIN_MEM_INC_NUM, __G2DMapTrie::MEM_INC_FACTOR);
             }
+#pragma pack(pop) //back to whatever the previous packing mode was 
 
             /**
              * This is a Gram to Data trie that is implemented as a HashMap.
