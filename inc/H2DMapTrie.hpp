@@ -335,9 +335,12 @@ namespace uva {
                 static inline bool search_gram(const uint64_t mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType & found_idx) {
                     LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
 
-                    return my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                            typename BUCKET_TYPE::TIndexType,
-                            const uint64_t, &__H2DMapTrie::S_M_GramData<typename BUCKET_TYPE::TElemType>::compare >
+                    //return my_bsearch_id< typename BUCKET_TYPE::TElemType,
+                    //        typename BUCKET_TYPE::TIndexType,
+                    //        const uint64_t, &__H2DMapTrie::S_M_GramData<typename BUCKET_TYPE::TElemType>::compare >
+                    //        (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
+                    return my_isearch_id< typename BUCKET_TYPE::TElemType,
+                            typename BUCKET_TYPE::TIndexType, const uint64_t >
                             (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
                 }
 
