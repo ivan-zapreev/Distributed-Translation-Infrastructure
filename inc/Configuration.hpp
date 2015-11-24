@@ -188,7 +188,7 @@ namespace uva {
                 //per buckets in H2DHashMapTrie. I.e. the number of buckets per trie
                 //level is defined as the number of M-grams in this level divided by
                 //this factor value 
-                static constexpr float WORDS_PER_BUCKET_FACTOR = 1;
+                static constexpr float WORDS_PER_BUCKET_FACTOR = 2;
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
