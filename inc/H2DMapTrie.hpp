@@ -279,7 +279,7 @@ namespace uva {
 
                 //Stores the unknown word payload data
                 T_M_Gram_Payload m_unk_word_payload;
-                
+
                 //typedef the bucket capacity type, for convenience.
                 typedef uint16_t TBucketCapacityType;
 
@@ -328,27 +328,6 @@ namespace uva {
                 }
 
                 /**
-                 * Allows to perform search in the bucket for the given M-gram id
-                 * @param mgram_id_key the m-gram id to look for.
-                 * @param ref the reference to the bucket
-                 * @param found_idx the found index
-                 * @return true if the M-gram id was found and otherwise false
-                 */
-                template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL>
-                static inline bool search_gram(const uint64_t mgram_id_key, const BUCKET_TYPE & ref, typename BUCKET_TYPE::TIndexType & found_idx) {
-                    LOG_DEBUG2 << "# words in the bucket: " << ref.size() << END_LOG;
-
-                    //return my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                    //        typename BUCKET_TYPE::TIndexType,
-                    //        const uint64_t, &__H2DMapTrie::S_M_GramData<typename BUCKET_TYPE::TElemType>::compare >
-                    //        (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
-
-                    return my_isearch_id< typename BUCKET_TYPE::TElemType,
-                            typename BUCKET_TYPE::TIndexType, const uint64_t >
-                            (ref.data(), 0, ref.size() - 1, mgram_id_key, found_idx);
-                }
-
-                /**
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
                  * @param BEGIN_WORD_IDX the begin word index for the sub-m-gram
@@ -381,10 +360,10 @@ namespace uva {
                         LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
 
                         //Search for the query id in the bucket, the query id is its hash value.
-                        //The data is available search for the word index in the array.
-                        typename BUCKET_TYPE::TIndexType found_idx;
-                        if (search_gram<BUCKET_TYPE, CURR_LEVEL>(hash_value, ref, found_idx)) {
-                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &ref[found_idx].payload;
+                        const typename BUCKET_TYPE::TElemType * elem_ptr;
+                        if (my_isearch_id< typename BUCKET_TYPE::TElemType, const uint64_t >
+                                (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
+                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &elem_ptr->payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //We are now done, the payload is found, can return!
                             return;

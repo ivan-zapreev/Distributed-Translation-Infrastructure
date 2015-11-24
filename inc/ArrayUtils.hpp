@@ -239,8 +239,8 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
-                bool my_isearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
+                template<typename ARR_ELEM_TYPE, typename KEY_TYPE>
+                bool my_isearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const KEY_TYPE key, const ARR_ELEM_TYPE * & found_elem) {
                     ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), string("Impossible binary search parameters, l_idx = ") +
                             std::to_string(l_idx) + string(", u_idx = ") + std::to_string(u_idx) + string("!"));
 
@@ -258,16 +258,16 @@ namespace uva {
                         long double count_diff = (long double) (u_idx - l_idx);
                         //LOG_DEBUG3 << "range_diff = " << u_idx << " - " << l_idx << " = " << count_diff << END_LOG;
                         mid_pos = (int64_t) ((low_diff * count_diff) / range_diff + l_idx);
-                        
+
                         LOG_DEBUG3 << "l_idx:" << l_idx << ", mid_pos data[" << mid_pos << "] = "
                                 << std::to_string(array[mid_pos].id) << ", u_idx:" << u_idx << END_LOG;
                         if (key < array[mid_pos].id) {
                             u_idx = mid_pos - 1;
                         } else {
                             if (key == array[mid_pos].id) {
-                                found_pos = mid_pos;
+                                found_elem = &array[mid_pos];
                                 LOG_DEBUG3 << "Found key: " << std::to_string(key)
-                                        << " @ position: " << found_pos << END_LOG;
+                                        << " @ position: " << mid_pos << END_LOG;
                                 return true;
                             } else {
                                 l_idx = mid_pos + 1;
@@ -275,9 +275,9 @@ namespace uva {
                         }
                     }
                     if (array[l_idx].id == key) {
-                        found_pos = l_idx;
+                        found_elem = &array[l_idx];
                         LOG_DEBUG3 << "Found key: " << std::to_string(key)
-                                << " @ position: " << found_pos << END_LOG;
+                                << " @ position: " << l_idx << END_LOG;
                         return true;
                     } else {
                         LOG_DEBUG3 << "The key: " << std::to_string(key)
