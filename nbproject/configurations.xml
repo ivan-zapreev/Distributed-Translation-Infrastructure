@@ -717,7 +717,7 @@
           <commandLine>-march=native -Wall -Werror</commandLine>
         </cTool>
         <ccTool>
-          <developmentMode>0</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>ext</pElem>
@@ -1023,7 +1023,7 @@
           <commandLine>-march=native -Wall -Werror</commandLine>
         </cTool>
         <ccTool>
-          <developmentMode>0</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>g++ -std=c++0x -m64</commandlineTool>
           <incDir>
             <pElem>ext</pElem>
@@ -1328,7 +1328,7 @@
           <commandLine>-march=native -Wall -Werror</commandLine>
         </cTool>
         <ccTool>
-          <developmentMode>0</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
             <pElem>ext</pElem>
@@ -1776,7 +1776,7 @@
           <commandLine>-march=native -Wall -Werror</commandLine>
         </cTool>
         <ccTool>
-          <developmentMode>0</developmentMode>
+          <developmentMode>6</developmentMode>
           <commandlineTool>/opt/rh/devtoolset-3/root/usr/bin/g++</commandlineTool>
           <incDir>
             <pElem>ext</pElem>
