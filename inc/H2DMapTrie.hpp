@@ -330,8 +330,24 @@ namespace uva {
                             }
                             break;
                         }
-                        case 2: //If there is 2-3 elements do linear search
-                        case 3:
+                        case 2:
+                        {
+                            const typename BUCKET_TYPE::TElemType & elem1 = ref.data()[0];
+                            if (elem1.id == hash_value) {
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem1.payload;
+                                //We are now done, the payload is found, can return!
+                                return MGramStatusEnum::GOOD_PRESENT_MGS;
+                            } else {
+                                const typename BUCKET_TYPE::TElemType & elem2 = ref.data()[1];
+                                if (elem2.id == hash_value) {
+                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem2.payload;
+                                    //We are now done, the payload is found, can return!
+                                    return MGramStatusEnum::GOOD_PRESENT_MGS;
+                                }
+                            }
+                            break;
+                        }
+                        case 3: //If there is 3 elements do linear search
                         {
                             LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
                             //Search for the query id in the bucket, the query id is its hash value.
