@@ -119,9 +119,6 @@ namespace uva {
                 inline void execute() {
                     LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
 
-                    //Prepare the m-gram for querying
-                    BASE::m_query.m_gram.prepare_for_querying();
-
                     //Clean the probability entries
                     memset(BASE::m_query.m_probs, ZERO_PROB_WEIGHT, sizeof (TLogProbBackOff) * MAX_LEVEL);
                     //Clean the payload pointer entries

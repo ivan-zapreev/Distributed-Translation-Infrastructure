@@ -72,34 +72,6 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to prepare the M-gram for being queried. 
-                     * If the cumulative probability is to be computed then all
-                     * word ids are needed, in case only the longest sub-m-gram
-                     * conditional probability is computed, we need to start
-                     * from the last word and go backwards. Then we shall stop
-                     * as soon as we reach the first unknown word!
-                     * @param IS_UNK_WORD_FLAGS if set to true then we also compute
-                     * the <unk> word flags so that later at any time we can check
-                     * whether a given sub-m-gram has <unk> words in it.
-                     */
-                    inline void prepare_for_querying() {
-                        LOG_DEBUG1 << "Preparing for the query execution" << END_LOG;
-
-                        //Set all the "computed hash level" flags to "undefined"
-                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
-
-                        //Clean up the word ids
-                        LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
-                        //Retrieve all the word ids unconditionally, as we will need all of them
-                        for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
-                            BASE::m_word_ids[curr_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_word_idx]);
-                            LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
-                                    << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
-                        }
-                        LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
-                    }
-
-                    /**
                      * Allows to retrieve the hash value for the sub-m-gram 
                      * defined by the parameters
                      * @param begin_word_idx the begin word index of the sub-m-gram
@@ -183,29 +155,32 @@ namespace uva {
                      * @param gram the gram container to put data into
                      */
                     inline void set_m_gram_from_text(TextPieceReader &text) {
+                        //Set all the "computed hash level" flags to "undefined"
+                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
+
+                        //Initialize the end word index with the begin word index
                         BASE::m_actual_end_word_idx = BASE::m_actual_begin_word_idx;
 
                         //Read the tokens one by one backwards and decrement the index
-                        while (text.get_first_space(BASE::m_tokens[BASE::m_actual_end_word_idx++]));
-
-                        //Adjust the end word index, in the loop above we always
-                        //increment for the one extra time, for the false result.
-                        //So after the loop the end word index is equal to the word
-                        //count + 1. Now set it to the proper value, subtracting 2
-                        BASE::m_actual_end_word_idx -= 2;
-
-                        //Set the actual level value to be the number of read words
-                        BASE::m_actual_level = BASE::m_actual_end_word_idx + 1;
-
-                        //Do the sanity check if needed!
-                        if (DO_SANITY_CHECKS && (
-                                (BASE::m_actual_level < M_GRAM_LEVEL_1) ||
-                                (BASE::m_actual_level > MAX_LEVEL))) {
-                            stringstream msg;
-                            msg << "A broken N-gram query: " << (string) * this
-                                    << ", level: " << SSTR(BASE::m_actual_level);
-                            throw Exception(msg.str());
+                        while (text.get_first_space(BASE::m_tokens[BASE::m_actual_end_word_idx])) {
+                            //Retrieve the word id
+                            BASE::m_word_ids[BASE::m_actual_end_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_end_word_idx]);
+                            LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_end_word_idx] << "' is: "
+                                    << SSTR(BASE::m_word_ids[BASE::m_actual_end_word_idx]) << "!" << END_LOG;
+                            //Increment the counter
+                            ++BASE::m_actual_end_word_idx;
                         }
+
+                        //After the loop the end word index is equal to the word count/m-gram level
+                        BASE::m_actual_level = BASE::m_actual_end_word_idx;
+
+                        //Adjust the end word index, decrement it by one
+                        BASE::m_actual_end_word_idx -= 1;
+
+                        ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
+                                (BASE::m_actual_level > MAX_LEVEL)),
+                                string("A broken N-gram query: ") + ((string) * this) +
+                                string(", level: ") + std::to_string(BASE::m_actual_level));
                     }
 
                 private:
