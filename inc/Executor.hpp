@@ -208,11 +208,8 @@ namespace uva {
                     while (testFile.get_first_line(line)) {
                         LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
-                        //Parse the line into an N-Gram
-                        query.set_m_gram_from_text(line);
-
                         //Query the Trie for the results
-                        query.execute();
+                        query.execute(line);
 
                         //Print the results:
                         query.log_results();

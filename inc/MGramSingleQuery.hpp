@@ -97,9 +97,13 @@ namespace uva {
 
                 /**
                  * Allows to execute m-gram the query
+                 * @param text the piece containing the m-gram query
                  */
-                void execute() {
+                void execute(TextPieceReader &text) {
                     LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
+
+                    //Set the text piece into the m-gram
+                    BASE::m_query.m_gram.set_m_gram_from_text(text);
 
                     //Clean the relevant probability entry
                     BASE::m_query.m_probs[ BASE::m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;

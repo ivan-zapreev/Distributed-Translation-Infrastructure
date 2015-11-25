@@ -82,15 +82,6 @@ namespace uva {
                 : m_trie(trie), m_query(trie.get_word_index()) {
                 }
 
-                /**
-                 * Tokenise a given piece of text into a space separated list of text pieces.
-                 * @param text the piece of text to tokenise
-                 * @param gram the gram container to put data into
-                 */
-                inline void set_m_gram_from_text(TextPieceReader &text) {
-                    m_query.m_gram.set_m_gram_from_text(text);
-                }
-
             protected:
                 //Stores the reference to the constant trie.
                 const TrieType & m_trie;
