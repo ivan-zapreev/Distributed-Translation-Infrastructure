@@ -350,13 +350,12 @@ namespace uva {
 
                         //3. Search for the query id in the bucket
                         //The data is available search for the word index in the array
-                        typename BUCKET_TYPE::TIndexType found_idx;
+                        const typename BUCKET_TYPE::TElemType * found_elem_ptr;
                         if (my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                                typename BUCKET_TYPE::TIndexType,
                                 typename BUCKET_TYPE::TElemType::TMGramIdType,
                                 TM_Gram_Id::template compare<CURR_LEVEL> >
-                                (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_idx)) {
-                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &ref[found_idx].payload;
+                                (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_elem_ptr)) {
+                            query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &found_elem_ptr->payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
                             //We are now done, the payload is found, can return!
                             return;

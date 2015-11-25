@@ -73,26 +73,26 @@ namespace uva {
 
                     //Stores the memory increase strategy object
                     const static MemIncreaseStrategy m_mem_strat;
-
-                    /**
-                     * Allows to compare two ids
-                     * @param one the first id to compare
-                     * @param two the second id to compare
-                     * @return -1 iff (one < two), 0 iff (one == two), +1 iff (one > two)
-                     */
-                    static inline int compare(const uint64_t & one, const uint64_t & two) {
-                        if (one < two) {
-                            return -1;
-                        } else {
-                            if (one == two) {
-                                return 0;
-                            } else {
-                                return +1;
-                            }
-                        }
-                    }
                 };
 #pragma pack(pop) //back to whatever the previous packing mode was 
+
+                /**
+                 * Allows to compare two ids
+                 * @param one the first id to compare
+                 * @param two the second id to compare
+                 * @return -1 iff (one < two), 0 iff (one == two), +1 iff (one > two)
+                 */
+                static inline int compare(const uint64_t & one, const uint64_t & two) {
+                    if (one < two) {
+                        return -1;
+                    } else {
+                        if (one == two) {
+                            return 0;
+                        } else {
+                            return +1;
+                        }
+                    }
+                }
 
                 typedef S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
@@ -361,7 +361,8 @@ namespace uva {
 
                         //Search for the query id in the bucket, the query id is its hash value.
                         const typename BUCKET_TYPE::TElemType * elem_ptr;
-                        if (my_isearch_id< typename BUCKET_TYPE::TElemType, const uint64_t >
+                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType,
+                                const uint64_t, __H2DMapTrie::compare >
                                 (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
                             query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &elem_ptr->payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
