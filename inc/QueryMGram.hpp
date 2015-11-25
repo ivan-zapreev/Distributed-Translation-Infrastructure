@@ -167,8 +167,6 @@ namespace uva {
                             BASE::m_word_ids[BASE::m_actual_end_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_end_word_idx]);
                             LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_end_word_idx] << "' is: "
                                     << SSTR(BASE::m_word_ids[BASE::m_actual_end_word_idx]) << "!" << END_LOG;
-                            //Set the computed hash level to zero
-                            //m_computed_hash_level[BASE::m_actual_end_word_idx] = M_GRAM_LEVEL_UNDEF;
                             //Increment the counter
                             ++BASE::m_actual_end_word_idx;
                         }
