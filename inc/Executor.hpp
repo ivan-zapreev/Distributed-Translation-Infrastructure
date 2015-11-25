@@ -421,7 +421,7 @@ namespace uva {
                     //Attempt to open the test file
                     MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
                     //FileStreamReader testFile(params.m_queries_file_name.c_str());
-                    CStyleFileReader testFile(params.m_queries_file_name.c_str());
+                    //CStyleFileReader testFile(params.m_queries_file_name.c_str());
 
                     //If the files could be opened then proceed with training and then testing
                     if ((modelFile.is_open()) && (testFile.is_open())) {
