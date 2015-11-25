@@ -89,9 +89,6 @@ namespace uva {
                         memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
                         //Clean up the word ids
-                        memset(BASE::m_word_ids, WordIndexType::UNDEFINED_WORD_ID, MAX_LEVEL * sizeof (TWordIdType));
-
-                        /*
                         LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
                         //Retrieve all the word ids unconditionally, as we will need all of them
                         for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
@@ -99,7 +96,6 @@ namespace uva {
                             LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
                                     << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
                         }
-                         */
                         LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
                     }
 
@@ -238,11 +234,6 @@ namespace uva {
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
                         uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[end_word_idx]);
 
-                        //Obtain the word id of the last word
-                        if (BASE::m_word_ids[end_word_idx] == WordIndexType::UNDEFINED_WORD_ID) {
-                            const_cast<TWordIdType&> (BASE::m_word_ids[end_word_idx]) = BASE::m_word_index.get_word_id(BASE::m_tokens[end_word_idx]);
-                        }
-
                         //If the word is not unknown then the first hash, the word's hash is its id
                         hash_column[end_word_idx] = BASE::m_word_ids[end_word_idx];
 
@@ -255,11 +246,6 @@ namespace uva {
                             do {
                                 //Decrement the word id
                                 curr_idx--;
-
-                                //Check if the word id is to be retrieved
-                                if (BASE::m_word_ids[curr_idx] == WordIndexType::UNDEFINED_WORD_ID) {
-                                    const_cast<TWordIdType&> (BASE::m_word_ids[curr_idx]) = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
-                                }
 
                                 //Incrementally build up hash, using the previous hash value and the next word id
                                 hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);

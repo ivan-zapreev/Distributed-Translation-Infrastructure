@@ -195,9 +195,6 @@ namespace uva {
                      * @return the resulting word id
                      */
                     inline TWordIdType operator[](const TModelLevel word_idx) const {
-                        if (m_word_ids[word_idx] == WordIndexType::UNDEFINED_WORD_ID) {
-                            const_cast<TWordIdType&> (m_word_ids[word_idx]) = m_word_index.get_word_id(m_tokens[word_idx]);
-                        }
                         return m_word_ids[word_idx];
                     };
 
