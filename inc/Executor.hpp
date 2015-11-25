@@ -419,7 +419,7 @@ namespace uva {
 
                     //ToDo: Add the possibility to choose between the file readers from the command line!
                     //Attempt to open the test file
-                    //MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
+                    MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
                     //FileStreamReader testFile(params.m_queries_file_name.c_str());
                     CStyleFileReader testFile(params.m_queries_file_name.c_str());
 
