@@ -316,17 +316,46 @@ namespace uva {
                     //Get the bucket to look into
                     const BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                    //Check that the bucket with the given index is not empty
-                    if (ref.has_data()) {
-                        LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
-
-                        //Search for the query id in the bucket, the query id is its hash value.
-                        const typename BUCKET_TYPE::TElemType * elem_ptr;
-                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
-                                (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
-                            //We are now done, the payload is found, can return!
-                            return MGramStatusEnum::GOOD_PRESENT_MGS;
+                    //Unroll the search into several specific cases
+                    switch (ref.size()) {
+                        case 0: //If there is no elements then we are done, nothing to be found
+                            break;
+                        case 1: //If there is one element, then just perform a trivial check
+                        {
+                            const typename BUCKET_TYPE::TElemType & elem = ref.data()[0];
+                            if (elem.id == hash_value) {
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem.payload;
+                                //We are now done, the payload is found, can return!
+                                return MGramStatusEnum::GOOD_PRESENT_MGS;
+                            }
+                            break;
+                        }
+                        case 2: //If there is 2-3 elements do linear search
+                        case 3:
+                        {
+                            LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
+                            //Search for the query id in the bucket, the query id is its hash value.
+                            const typename BUCKET_TYPE::TElemType * elem_ptr;
+                            if (my_lsearch_id< typename BUCKET_TYPE::TElemType >
+                                    (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
+                                //We are now done, the payload is found, can return!
+                                return MGramStatusEnum::GOOD_PRESENT_MGS;
+                            }
+                            break;
+                        }
+                        default: //If there is more than 3 elements then perform a binary search on data
+                        {
+                            LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
+                            //Search for the query id in the bucket, the query id is its hash value.
+                            const typename BUCKET_TYPE::TElemType * elem_ptr;
+                            if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
+                                    (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
+                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
+                                //We are now done, the payload is found, can return!
+                                return MGramStatusEnum::GOOD_PRESENT_MGS;
+                            }
+                            break;
                         }
                     }
 
