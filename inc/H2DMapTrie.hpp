@@ -316,7 +316,8 @@ namespace uva {
                     //Get the bucket to look into
                     const BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                    //Unroll the search into several specific cases
+                    //Unroll the search into several specific cases, note the order is trying
+                    //to put the most relevant cases first, it gives micro performance boost.
                     switch (ref.size()) {
                         case 2: //If there is two elements, perform an  explicit check
                         {
