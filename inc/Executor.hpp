@@ -408,8 +408,8 @@ namespace uva {
 
                     //Attempt to open the model file
                     //ToDo: Add the possibility to choose between the file readers from the command line!
-                    //MemoryMappedFileReader modelFile(params.modelFileName.c_str());
-                    //FileStreamReader modelFile(params.modelFileName.c_str());
+                    //MemoryMappedFileReader modelFile(params.m_model_file_name.c_str());
+                    //FileStreamReader modelFile(params.m_model_file_name.c_str());
                     CStyleFileReader modelFile(params.m_model_file_name.c_str());
                     modelFile.log_reader_type_usage_info();
                     LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
@@ -420,7 +420,7 @@ namespace uva {
                     //ToDo: Add the possibility to choose between the file readers from the command line!
                     //Attempt to open the test file
                     //MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
-                    //FileStreamReader testFile(params.testFileName.c_str());
+                    //FileStreamReader testFile(params.m_queries_file_name.c_str());
                     CStyleFileReader testFile(params.m_queries_file_name.c_str());
 
                     //If the files could be opened then proceed with training and then testing
