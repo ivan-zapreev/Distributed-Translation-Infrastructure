@@ -123,7 +123,6 @@ namespace uva {
                         //column could have been assigned with hashes. However, in
                         //case of proper use of the class this is the only check we need.
                         if (m_computed_hash_level[end_word_idx] == M_GRAM_LEVEL_UNDEF) {
-                            //return m_compute_hash[begin_word_idx][end_word_idx](this);
                             return compute_hash(begin_word_idx,end_word_idx);
                         }
 
@@ -131,16 +130,6 @@ namespace uva {
 
                         //Return the hash value that must have been pre-computed
                         return m_hash_matrix[end_word_idx][begin_word_idx];
-                    }
-
-                    /**
-                     * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the template parameters
-                     * @return the hash value for the given sub-m-gram
-                     */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                    inline uint64_t get_hash() const {
-                        return get_hash(BEGIN_WORD_IDX, END_WORD_IDX);
                     }
 
                     /**
@@ -232,12 +221,6 @@ namespace uva {
                     //Stores the computed hash values
                     uint64_t m_hash_matrix[MAX_LEVEL][MAX_LEVEL];
 
-                    //The typedef for the function that gets the payload from the trie
-                    typedef std::function<uint64_t(const T_Query_M_Gram<WordIndexType, MAX_LEVEL> *) > TGetHashFunc;
-
-                    //Stores the get-hash function pointers for hash values
-                    static const TGetHashFunc m_compute_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7];
-
                     /**
                      * This constructor is made private as it is not to be used
                      */
@@ -250,24 +233,23 @@ namespace uva {
                      * defined by the template parameters
                      * @return the hash value for the given sub-m-gram
                      */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX>
-                    inline uint64_t compute_hash() const {
-                        LOG_DEBUG1 << "Computing the hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
-                                << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
-                                << "is: " << SSTR(m_computed_hash_level[END_WORD_IDX]) << END_LOG;
+                    inline uint64_t compute_hash(const TModelLevel begin_word_idx, TModelLevel end_word_idx) const {
+                        LOG_DEBUG1 << "Computing the hash values for begin/end index: " << SSTR(begin_word_idx)
+                                << "/" << SSTR(end_word_idx) << ", the previous computed begin level "
+                                << "is: " << SSTR(m_computed_hash_level[end_word_idx]) << END_LOG;
 
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
-                        uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[END_WORD_IDX]);
+                        uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[end_word_idx]);
 
                         //If the word is not unknown then the first hash, the word's hash is its id
-                        hash_column[END_WORD_IDX] = BASE::m_word_ids[END_WORD_IDX];
+                        hash_column[end_word_idx] = BASE::m_word_ids[end_word_idx];
 
-                        LOG_DEBUG1 << "hash[" << SSTR(END_WORD_IDX) << "] = " << hash_column[END_WORD_IDX] << END_LOG;
+                        LOG_DEBUG1 << "hash[" << SSTR(end_word_idx) << "] = " << hash_column[end_word_idx] << END_LOG;
                         
                         //If there is more to compute do that in a loop
-                        if (END_WORD_IDX > BEGIN_WORD_IDX) {
+                        if (end_word_idx > begin_word_idx) {
                             //Start iterating from the end of the sub-m-gram
-                            TModelLevel curr_idx = END_WORD_IDX;
+                            TModelLevel curr_idx = end_word_idx;
                             do {
                                 //Decrement the word id
                                 curr_idx--;
@@ -279,86 +261,24 @@ namespace uva {
                                         << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
 
                                 //Stop iterating if the reached the beginning of the m-gram
-                            } while (curr_idx != BEGIN_WORD_IDX);
+                            } while (curr_idx != begin_word_idx);
                         }
 
                         //Compute the current m-gram level
-                        constexpr TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
+                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
 
                         //Cast the const modifier away to set the internal flag
-                        const_cast<TModelLevel&> (m_computed_hash_level[END_WORD_IDX]) = CURR_LEVEL;
+                        const_cast<TModelLevel&> (m_computed_hash_level[end_word_idx]) = curr_level;
 
-                        LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
-                                << m_computed_hash_level[END_WORD_IDX] << END_LOG;
+                        LOG_DEBUG1 << "compute_hash_level[" << SSTR(end_word_idx) << "] = "
+                                << m_computed_hash_level[end_word_idx] << END_LOG;
 
-                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[BEGIN_WORD_IDX] << END_LOG;
-
-                        //Return the hash value that must have been pre-computed
-                        return hash_column[BEGIN_WORD_IDX];
-                    }
-
-                    /**
-                     * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the template parameters
-                     * @return the hash value for the given sub-m-gram
-                     */
-                    inline uint64_t compute_hash(const TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX) const {
-                        LOG_DEBUG1 << "Computing the hash values for begin/end index: " << SSTR(BEGIN_WORD_IDX)
-                                << "/" << SSTR(END_WORD_IDX) << ", the previous computed begin level "
-                                << "is: " << SSTR(m_computed_hash_level[END_WORD_IDX]) << END_LOG;
-
-                        //The column has not been processed before, we need to iterate and incrementally compute hashes
-                        uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[END_WORD_IDX]);
-
-                        //If the word is not unknown then the first hash, the word's hash is its id
-                        hash_column[END_WORD_IDX] = BASE::m_word_ids[END_WORD_IDX];
-
-                        LOG_DEBUG1 << "hash[" << SSTR(END_WORD_IDX) << "] = " << hash_column[END_WORD_IDX] << END_LOG;
-                        
-                        //If there is more to compute do that in a loop
-                        if (END_WORD_IDX > BEGIN_WORD_IDX) {
-                            //Start iterating from the end of the sub-m-gram
-                            TModelLevel curr_idx = END_WORD_IDX;
-                            do {
-                                //Decrement the word id
-                                curr_idx--;
-
-                                //Incrementally build up hash, using the previous hash value and the next word id
-                                hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
-
-                                LOG_DEBUG1 << "word[" << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
-                                        << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
-
-                                //Stop iterating if the reached the beginning of the m-gram
-                            } while (curr_idx != BEGIN_WORD_IDX);
-                        }
-
-                        //Compute the current m-gram level
-                        const TModelLevel CURR_LEVEL = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
-
-                        //Cast the const modifier away to set the internal flag
-                        const_cast<TModelLevel&> (m_computed_hash_level[END_WORD_IDX]) = CURR_LEVEL;
-
-                        LOG_DEBUG1 << "compute_hash_level[" << SSTR(END_WORD_IDX) << "] = "
-                                << m_computed_hash_level[END_WORD_IDX] << END_LOG;
-
-                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[BEGIN_WORD_IDX] << END_LOG;
+                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[begin_word_idx] << END_LOG;
 
                         //Return the hash value that must have been pre-computed
-                        return hash_column[BEGIN_WORD_IDX];
+                        return hash_column[begin_word_idx];
                     }
 
-                };
-
-                template<typename WordIndexType, TModelLevel MAX_LEVEL>
-                const typename T_Query_M_Gram<WordIndexType, MAX_LEVEL>::TGetHashFunc T_Query_M_Gram<WordIndexType, MAX_LEVEL>::m_compute_hash[M_GRAM_LEVEL_7][M_GRAM_LEVEL_7] = {
-                    {&T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 0>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 1>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<0, 6>},
-                    {NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 1>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<1, 6>},
-                    {NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<2, 2>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<2, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<2, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<2, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<2, 6>},
-                    {NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<3, 3>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<3, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<3, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<3, 6>},
-                    {NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<4, 4>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<4, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<4, 6>},
-                    {NULL, NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<5, 5>, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<5, 6>},
-                    {NULL, NULL, NULL, NULL, NULL, NULL, &T_Query_M_Gram<WordIndexType, MAX_LEVEL>::template compute_hash<6, 6>}
                 };
 
             }

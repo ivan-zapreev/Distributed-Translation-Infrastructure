@@ -330,7 +330,7 @@ namespace uva {
                     LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(CURR_LEVEL) << "-gram ["
                             << BEGIN_WORD_IDX << "," << END_WORD_IDX << "] of: " << (string) query.m_gram << END_LOG;
 
-                    const uint32_t bucket_idx = get_bucket_id(query.m_gram.template get_hash<BEGIN_WORD_IDX, END_WORD_IDX>(), num_buckets[CURR_LEVEL - 1]);
+                    const uint32_t bucket_idx = get_bucket_id(query.m_gram.template get_hash(BEGIN_WORD_IDX, END_WORD_IDX), num_buckets[CURR_LEVEL - 1]);
                     LOG_DEBUG << "The " << SSTR(CURR_LEVEL) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(CURR_LEVEL) << "-gram ["
