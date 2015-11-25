@@ -73,6 +73,7 @@ namespace uva {
 
                     //Stores the memory increase strategy object
                     const static MemIncreaseStrategy m_mem_strat;
+                    typedef uint64_t TIdType;
                 };
 #pragma pack(pop) //back to whatever the previous packing mode was 
 
@@ -339,13 +340,16 @@ namespace uva {
 
                         //Search for the query id in the bucket, the query id is its hash value.
                         const typename BUCKET_TYPE::TElemType * elem_ptr;
-                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                                const uint64_t, __H2DMapTrie::compare >
-                                (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
-                            //We are now done, the payload is found, can return!
-                            return MGramStatusEnum::GOOD_PRESENT_MGS;
-                        }
+                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
+                                (ref.data(), 0, ref.size() - 1, hash_value,
+                                [](const typename BUCKET_TYPE::TElemType::TIdType & one,
+                                const typename BUCKET_TYPE::TElemType::TIdType & two)-> int {
+                                    return __H2DMapTrie::compare(one, two);
+                                }, elem_ptr)) {
+                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
+                        //We are now done, the payload is found, can return!
+                        return MGramStatusEnum::GOOD_PRESENT_MGS;
+                    }
                     }
 
                     //Could not retrieve the payload for the given sub-m-gram

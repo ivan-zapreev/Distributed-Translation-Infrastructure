@@ -134,7 +134,7 @@ namespace uva {
                 }                                                                           \
                 return false;
 
-#define BSEARCH_ONE_FIELD_COMPARE(RETURN_STATEMENT) \
+#define BSEARCH_ID_FIELD_COMPARE(RETURN_STATEMENT) \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
                         string("Impossible search parameters, l_idx = ") + \
                         std::to_string(l_idx) + string(", u_idx = ") + \
@@ -163,31 +163,7 @@ namespace uva {
                  * This is a binary search algorithm for some ordered array
                  * @param ARR_ELEM_TYPE the array element structure, must have id field
                  *        as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
-                 * @param COMPARE the compare function template parameter
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param found_pos the out parameter that stores the found element index, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE,
-                typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr COMPARE_FUNC>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx,
-                        const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    BSEARCH_ONE_FIELD_COMPARE(found_pos = (IDX_TYPE) mid_pos);
-                }
-
-                /**
-                 * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have id field
-                 *        as this method will specifically use it to compare elements.
-                 * @param IDX_TYPE the index type 
-                 * @param KEY_TYPE the key type template parameter
-                 * @param COMPARE the compare function template parameter
+                 * @param COMPARE_FUNC the compare function
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -196,11 +172,12 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE, typename KEY_TYPE,
-                typename T_IS_EXT_COMPARE_FUNC<KEY_TYPE>::func_ptr COMPARE_FUNC>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx,
-                        const KEY_TYPE key, const ARR_ELEM_TYPE * & found_elem) {
-                    BSEARCH_ONE_FIELD_COMPARE(found_elem = &array[mid_pos]);
+                template<typename ARR_ELEM_TYPE>
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array,
+                        int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key,
+                        typename T_IS_EXT_COMPARE_FUNC<typename ARR_ELEM_TYPE::TIdType>::func_type COMPARE_FUNC,
+                        const ARR_ELEM_TYPE * & found_elem) {
+                    BSEARCH_ID_FIELD_COMPARE(found_elem = &array[mid_pos]);
                 }
 
                 /**
