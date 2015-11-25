@@ -119,7 +119,7 @@ ${OBJECTDIR}/src/G2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/G2DMapTrie.
 ${OBJECTDIR}/src/H2DMapTrie.o: nbproject/Makefile-${CND_CONF}.mk src/H2DMapTrie.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Werror -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/H2DMapTrie.o src/H2DMapTrie.cpp
+	$(COMPILE.cc) -O3 -Iext -Iinc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/H2DMapTrie.o src/H2DMapTrie.cpp
 
 ${OBJECTDIR}/src/Logger.o: nbproject/Makefile-${CND_CONF}.mk src/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

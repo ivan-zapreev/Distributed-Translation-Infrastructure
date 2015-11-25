@@ -69,14 +69,6 @@ namespace uva {
                      */
                     T_Query_M_Gram(WordIndexType & word_index)
                     : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index) {
-                        //Check that the level is supported
-                        if (MAX_LEVEL > M_GRAM_LEVEL_7) {
-                            stringstream msg;
-                            msg << "The T_Query_M_Gram class in " << __FILE__ << " does not support "
-                                    << "trie level: " << SSTR(MAX_LEVEL) << ", the maximum supported "
-                                    << "level is: " << SSTR(M_GRAM_LEVEL_7) << ", please extend!";
-                            throw Exception(msg.str());
-                        }
                     }
 
                     /**
@@ -96,6 +88,10 @@ namespace uva {
                         //Set all the "computed hash level" flags to "undefined"
                         memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
+                        //Clean up the word ids
+                        memset(BASE::m_word_ids, WordIndexType::UNDEFINED_WORD_ID, MAX_LEVEL * sizeof (TWordIdType));
+
+                        /*
                         LOG_DEBUG1 << "Start retrieving the word ids: forward" << END_LOG;
                         //Retrieve all the word ids unconditionally, as we will need all of them
                         for (TModelLevel curr_word_idx = BASE::m_actual_begin_word_idx; curr_word_idx <= BASE::m_actual_end_word_idx; ++curr_word_idx) {
@@ -103,6 +99,7 @@ namespace uva {
                             LOG_DEBUG2 << "The word: '" << BASE::m_tokens[curr_word_idx] << "' is: "
                                     << SSTR(BASE::m_word_ids[curr_word_idx]) << "!" << END_LOG;
                         }
+                         */
                         LOG_DEBUG1 << "Done preparing for the query execution!" << END_LOG;
                     }
 
@@ -123,7 +120,7 @@ namespace uva {
                         //column could have been assigned with hashes. However, in
                         //case of proper use of the class this is the only check we need.
                         if (m_computed_hash_level[end_word_idx] == M_GRAM_LEVEL_UNDEF) {
-                            return compute_hash(begin_word_idx,end_word_idx);
+                            return compute_hash(begin_word_idx, end_word_idx);
                         }
 
                         LOG_DEBUG1 << "Resulting hash value: " << m_hash_matrix[end_word_idx][begin_word_idx] << END_LOG;
@@ -164,7 +161,7 @@ namespace uva {
                      * For the given N-gram, this method allows to give the string 
                      * of the object for which the probability is computed, e.g.:
                      * N-gram = "word1" -> result = "word1"
-                     * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                     * N-gram = "word1 word2 word3" -> result = "word1 word2 word3"
                      * @return the resulting string
                      */
                     inline string get_mgram_prob_str() const {
@@ -241,11 +238,16 @@ namespace uva {
                         //The column has not been processed before, we need to iterate and incrementally compute hashes
                         uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[end_word_idx]);
 
+                        //Obtain the word id of the last word
+                        if (BASE::m_word_ids[end_word_idx] == WordIndexType::UNDEFINED_WORD_ID) {
+                            const_cast<TWordIdType&> (BASE::m_word_ids[end_word_idx]) = BASE::m_word_index.get_word_id(BASE::m_tokens[end_word_idx]);
+                        }
+
                         //If the word is not unknown then the first hash, the word's hash is its id
                         hash_column[end_word_idx] = BASE::m_word_ids[end_word_idx];
 
                         LOG_DEBUG1 << "hash[" << SSTR(end_word_idx) << "] = " << hash_column[end_word_idx] << END_LOG;
-                        
+
                         //If there is more to compute do that in a loop
                         if (end_word_idx > begin_word_idx) {
                             //Start iterating from the end of the sub-m-gram
@@ -253,6 +255,11 @@ namespace uva {
                             do {
                                 //Decrement the word id
                                 curr_idx--;
+
+                                //Check if the word id is to be retrieved
+                                if (BASE::m_word_ids[curr_idx] == WordIndexType::UNDEFINED_WORD_ID) {
+                                    const_cast<TWordIdType&> (BASE::m_word_ids[curr_idx]) = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
+                                }
 
                                 //Incrementally build up hash, using the previous hash value and the next word id
                                 hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
