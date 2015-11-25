@@ -77,24 +77,6 @@ namespace uva {
                 };
 #pragma pack(pop) //back to whatever the previous packing mode was 
 
-                /**
-                 * Allows to compare two ids
-                 * @param one the first id to compare
-                 * @param two the second id to compare
-                 * @return -1 iff (one < two), 0 iff (one == two), +1 iff (one > two)
-                 */
-                static inline int compare(const uint64_t & one, const uint64_t & two) {
-                    if (one < two) {
-                        return -1;
-                    } else {
-                        if (one == two) {
-                            return 0;
-                        } else {
-                            return +1;
-                        }
-                    }
-                }
-
                 typedef S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
                 typedef S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
 
@@ -341,15 +323,11 @@ namespace uva {
                         //Search for the query id in the bucket, the query id is its hash value.
                         const typename BUCKET_TYPE::TElemType * elem_ptr;
                         if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
-                                (ref.data(), 0, ref.size() - 1, hash_value,
-                                [](const typename BUCKET_TYPE::TElemType::TIdType & one,
-                                const typename BUCKET_TYPE::TElemType::TIdType & two)-> int {
-                                    return __H2DMapTrie::compare(one, two);
-                                }, elem_ptr)) {
-                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
-                        //We are now done, the payload is found, can return!
-                        return MGramStatusEnum::GOOD_PRESENT_MGS;
-                    }
+                                (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
+                            //We are now done, the payload is found, can return!
+                            return MGramStatusEnum::GOOD_PRESENT_MGS;
+                        }
                     }
 
                     //Could not retrieve the payload for the given sub-m-gram

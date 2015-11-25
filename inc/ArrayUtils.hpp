@@ -71,7 +71,7 @@ namespace uva {
                 //account the overflows, although these are also not that threatening
                 //the reason is that the actual array index is TShortId and we use
                 //for index iterations a much longer but signed data type TLongId
-#define BSEARCH_ONE_FIELD(FIELD_NAME) \
+#define BSEARCH_ONE_FIELD(FIELD_NAME, RETURN_STATEMENT) \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
                         string("Impossible search parameters, l_idx = ") + \
                         std::to_string(l_idx) + string(", u_idx = ") + \
@@ -89,7 +89,7 @@ namespace uva {
                         } else {                                                            \
                             LOG_DEBUG4 << "The found mid_pos = "                            \
                                     << SSTR(mid_pos) << END_LOG;                            \
-                            found_pos = mid_pos;                                            \
+                            RETURN_STATEMENT;                                               \
                             return true;                                                    \
                         }                                                                   \
                     }                                                                       \
@@ -172,17 +172,18 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-                template<typename ARR_ELEM_TYPE>
+                template<typename ARR_ELEM_TYPE, typename T_IS_EXT_COMPARE_FUNC<typename ARR_ELEM_TYPE::TIdType>::func_ptr COMPARE_FUNC>
                 inline bool my_bsearch_id(const ARR_ELEM_TYPE * array,
                         int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key,
-                        typename T_IS_EXT_COMPARE_FUNC<typename ARR_ELEM_TYPE::TIdType>::func_type COMPARE_FUNC,
                         const ARR_ELEM_TYPE * & found_elem) {
                     BSEARCH_ID_FIELD_COMPARE(found_elem = &array[mid_pos]);
                 }
 
                 /**
-                 * This is a binary search algorithm for some ordered array for two keys
-                 * @param ARR_ELEM_TYPE the array element structure, must have word_id field as this method will specifically use it to compare elements.
+                 * This is a binary search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure, must have ctx_id field as this method will specifically use it to compare elements.
+                 * @param IDX_TYPE the index type 
+                 * @param KEY_TYPE the key type template parameter
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
@@ -192,8 +193,10 @@ namespace uva {
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
                 template<typename ARR_ELEM_TYPE>
-                inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
-                    BSEARCH_TWO_FIELDS(word_id, ctx_id);
+                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array,
+                        int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key,
+                        const ARR_ELEM_TYPE * & found_elem) {
+                    BSEARCH_ONE_FIELD(id, found_elem = &array[mid_pos]);
                 }
 
                 /**
@@ -211,7 +214,23 @@ namespace uva {
                  */
                 template<typename ARR_ELEM_TYPE, typename IDX_TYPE, typename KEY_TYPE>
                 inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const KEY_TYPE key, IDX_TYPE & found_pos) {
-                    BSEARCH_ONE_FIELD(id);
+                    BSEARCH_ONE_FIELD(id, found_pos = mid_pos);
+                }
+
+                /**
+                 * This is a binary search algorithm for some ordered array for two keys
+                 * @param ARR_ELEM_TYPE the array element structure, must have word_id field as this method will specifically use it to compare elements.
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_pos the out parameter that stores the found element index, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+                template<typename ARR_ELEM_TYPE>
+                inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
+                    BSEARCH_TWO_FIELDS(word_id, ctx_id);
                 }
 
                 /**
