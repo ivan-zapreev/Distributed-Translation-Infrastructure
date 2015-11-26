@@ -134,7 +134,24 @@ namespace uva {
                 }                                                                           \
                 return false;
 
-#define BSEARCH_ID_FIELD_COMPARE(RETURN_STATEMENT) \
+                /**
+                 * This is a binary search algorithm for some ordered array
+                 * @param ARR_ELEM_TYPE the array element structure, must have id field
+                 *        as this method will specifically use it to compare elements.
+                 * @param COMPARE_STATEMENT the compare statement that is to return a compare result
+                 * @param array the pointer to the first array element
+                 * @param l_idx the initial left border index for searching
+                 * @param u_idx the initial right border index for searching
+                 * @param key the key we are searching for
+                 * @param found_elem the out parameter that stores the pointer to the found element, if any
+                 * @return true if the element was found, otherwise false
+                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
+                 */
+#define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT) \
+            template<typename ARR_ELEM_TYPE, TModelLevel CURR_LEVEL> \
+            static inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, \
+                    int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key, \
+                    const ARR_ELEM_TYPE * & found_elem) { \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
                         string("Impossible search parameters, l_idx = ") + \
                         std::to_string(l_idx) + string(", u_idx = ") + \
@@ -144,40 +161,21 @@ namespace uva {
                     mid_pos = (l_idx + u_idx) / 2; \
                     LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = " \
                             << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG; \
-                    int64_t result = COMPARE_FUNC(key, array[mid_pos].id); \
+                    int64_t result = COMPARE_STATEMENT(key, array[mid_pos].id); \
                     if (result < 0) { \
                         u_idx = mid_pos - 1; \
                     } else { \
                         if (result == 0) { \
                             LOG_DEBUG4 << "The found mid_pos = " << SSTR(mid_pos) << END_LOG; \
-                            RETURN_STATEMENT; \
+                            found_elem = &array[mid_pos]; \
                             return true; \
                         } else { \
                             l_idx = mid_pos + 1; \
                         } \
                     } \
                 } \
-                return false;
-
-                /**
-                 * This is a binary search algorithm for some ordered array
-                 * @param ARR_ELEM_TYPE the array element structure, must have id field
-                 *        as this method will specifically use it to compare elements.
-                 * @param COMPARE_FUNC the compare function
-                 * @param array the pointer to the first array element
-                 * @param l_idx the initial left border index for searching
-                 * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
-                 * @param found_elem the out parameter that stores the pointer to the found element, if any
-                 * @return true if the element was found, otherwise false
-                 * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
-                 */
-                template<typename ARR_ELEM_TYPE, typename T_IS_EXT_COMPARE_FUNC<typename ARR_ELEM_TYPE::TIdType>::func_ptr COMPARE_FUNC>
-                inline bool my_bsearch_id(const ARR_ELEM_TYPE * array,
-                        int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key,
-                        const ARR_ELEM_TYPE * & found_elem) {
-                    BSEARCH_ID_FIELD_COMPARE(found_elem = &array[mid_pos]);
-                }
+                return false; \
+            }
 
                 /**
                  * This is a binary search algorithm for some ordered array

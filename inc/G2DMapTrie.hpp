@@ -311,6 +311,9 @@ namespace uva {
                     return bucket_idx;
                 }
 
+                //Declare the binary search function inlining the call to compare function.
+                DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(TM_Gram_Id::template compare<CURR_LEVEL>);
+                
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level
                  * @param BUCKET_TYPE the level bucket type
@@ -351,8 +354,7 @@ namespace uva {
                         //3. Search for the query id in the bucket
                         //The data is available search for the word index in the array
                         const typename BUCKET_TYPE::TElemType * found_elem_ptr;
-                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType,
-                                TM_Gram_Id::template compare<CURR_LEVEL> >
+                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType, CURR_LEVEL>
                                 (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_elem_ptr)) {
                             query.m_payloads[BEGIN_WORD_IDX][END_WORD_IDX] = &found_elem_ptr->payload;
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
