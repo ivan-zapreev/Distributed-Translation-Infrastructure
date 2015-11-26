@@ -119,22 +119,18 @@ namespace uva {
                  * 
                  * @param word_id the current word id
                  * @param ctx_id [in] - the previous context id, [out] - the next context id
-                 * @param level the M-gram level we are working with M
+                 * @param curr_level the M-gram level we are working with M
                  * @return the resulting context
                  * @throw nothing.
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
                     //Compute the m-gram index
-                    const TModelLevel mgram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+                    const TModelLevel mgram_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
 
-                    if (DO_SANITY_CHECKS && ((CURR_LEVEL == MAX_LEVEL) || (mgram_idx < 0))) {
-                        stringstream msg;
-                        msg << "Unsupported level id: " << CURR_LEVEL;
-                        throw Exception(msg.str());
-                    }
+                    ASSERT_SANITY_THROW((curr_level == MAX_LEVEL) || (mgram_idx < 0),
+                            string("Unsupported level id: ") + std::to_string(curr_level));
 
-                    LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(CURR_LEVEL)
+                    LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(curr_level)
                             << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
                             << SSTR(ctx_id) << END_LOG;
 
@@ -150,9 +146,9 @@ namespace uva {
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!
-                    if (DO_SANITY_CHECKS && (CURR_LEVEL == M_GRAM_LEVEL_2) && (ctx_id < WordIndexType::MIN_KNOWN_WORD_ID)) {
+                    if (DO_SANITY_CHECKS && (curr_level == M_GRAM_LEVEL_2) && (ctx_id < WordIndexType::MIN_KNOWN_WORD_ID)) {
                         LOG_WARNING << "Perhaps we are being paranoid but there "
-                                << "seems to be a problem! The " << SSTR(CURR_LEVEL) << "-gram ctx_id: "
+                                << "seems to be a problem! The " << SSTR(curr_level) << "-gram ctx_id: "
                                 << SSTR(ctx_id) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
                                 << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                     }
@@ -514,10 +510,10 @@ namespace uva {
                     if (get_m_n_gram_local_entry_idx<WORD_ENTRY_TYPE>(ref, ctx_id, local_idx)) {
                         //Return the pointer to the data located by the local index
                         *ppData = &ref[local_idx];
-                        
+
                         //The next ctx_id is the sum of the local index and the context index offset
                         ctx_id = ref.cio + local_idx;
-                        
+
                         return true;
                     } else {
                         LOG_DEBUG2 << "Unable to find data entry for an m/n-gram ctx_id: "

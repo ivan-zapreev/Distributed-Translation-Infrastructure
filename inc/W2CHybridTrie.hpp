@@ -69,34 +69,33 @@ namespace uva {
                  * 
                  * @param word_id the current word id
                  * @param ctx_id [in] - the previous context id, [out] - the next context id
-                 * @param level the M-gram level we are working with M
+                 * @param curr_level the M-gram level we are working with M
                  * @return the resulting context
                  * @throw nothing
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
-                    LOG_DEBUG3 << "Retrieving context level: " << CURR_LEVEL << ", word_id: "
+                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
+                    LOG_DEBUG3 << "Retrieving context level: " << curr_level << ", word_id: "
                             << word_id << ", ctx_id: " << ctx_id << END_LOG;
                     //Retrieve the context data for the given word
-                    StorageContainer* ctx_mapping = m_mgram_mapping[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET][word_id];
+                    StorageContainer* ctx_mapping = m_mgram_mapping[curr_level - BASE::MGRAM_IDX_OFFSET][word_id];
 
                     //Check that the context data is available
                     if (ctx_mapping != NULL) {
                         typename StorageContainer::const_iterator result = ctx_mapping->find(ctx_id);
                         if (result == ctx_mapping->end()) {
                             LOG_DEBUG2 << "Can not find ctx_id: " << SSTR(ctx_id) << " for level: "
-                                    << SSTR(CURR_LEVEL) << ", word_id: " << SSTR(word_id) << END_LOG;
+                                    << SSTR(curr_level) << ", word_id: " << SSTR(word_id) << END_LOG;
                             return false;
                         } else {
                             LOG_DEBUG2 << "Found next ctx_id: " << SSTR(result->second)
-                                    << " for level: " << SSTR(CURR_LEVEL) << ", word_id: "
+                                    << " for level: " << SSTR(curr_level) << ", word_id: "
                                     << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                             ctx_id = result->second;
                             return true;
                         }
                     } else {
-                        LOG_DEBUG2 << "No context data for: " << SSTR(CURR_LEVEL)
+                        LOG_DEBUG2 << "No context data for: " << SSTR(curr_level)
                                 << ", word_id: " << SSTR(word_id) << END_LOG;
                         return false;
                     }
@@ -205,16 +204,17 @@ namespace uva {
                         const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                         //Compute the distance between words
-                        const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
-                        LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
+                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                 << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                         //Get the next context id
-                        if (BASE::m_get_ctx_id[be_dist](this, word_id, ctx_id)) {
+                        if (get_ctx_id(curr_level, word_id, ctx_id)) {
                             LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
+                            const TModelLevel level_idx = curr_level - 1;
                             //There is data found under this context
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_mgram_data[be_dist][ctx_id];
-                            LOG_DEBUG << "The payload is retrieved: " << (string) m_mgram_data[be_dist][ctx_id] << END_LOG;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_mgram_data[level_idx][ctx_id];
+                            LOG_DEBUG << "The payload is retrieved: " << (string) m_mgram_data[level_idx][ctx_id] << END_LOG;
                         } else {
                             //The payload could not be found
                             LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)

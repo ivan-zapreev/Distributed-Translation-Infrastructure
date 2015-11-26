@@ -157,19 +157,18 @@ namespace uva {
                  * 
                  * @param word_id the current word id
                  * @param ctx_id [in] - the previous context id, [out] - the next context id
-                 * @param level the M-gram level we are working with M
+                 * @param curr_level the M-gram level we are working with M
                  * @return the resulting context
                  * @throw nothing
                  */
-                template<TModelLevel CURR_LEVEL>
-                inline bool get_ctx_id(const TShortId word_id, TLongId & ctx_id) const {
+                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
                     //Perform sanity checks if needed
-                    ASSERT_SANITY_THROW(((CURR_LEVEL == MAX_LEVEL) || (CURR_LEVEL < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(CURR_LEVEL));
+                    ASSERT_SANITY_THROW(((curr_level == MAX_LEVEL) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
 
                     //Compute the m-gram index
-                    constexpr TModelLevel M_GRAM_IDX = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+                    const TModelLevel level_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
 
-                    LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(CURR_LEVEL)
+                    LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(curr_level)
                             << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
                             << SSTR(ctx_id) << END_LOG;
 
@@ -177,7 +176,7 @@ namespace uva {
                     //case and the previous word is unknown (ctx_id == 0) we still can use
                     //the ctx_id to get the data entry. The reason is that we allocated memory
                     //for it but being for an unknown word context it should have no data!
-                    TSubArrReference & ref = m_m_gram_ctx_2_data[M_GRAM_IDX][ctx_id];
+                    TSubArrReference & ref = m_m_gram_ctx_2_data[level_idx][ctx_id];
 
                     LOG_DEBUG2 << "Got context mapping for ctx_id: " << SSTR(ctx_id)
                             << ", with beginIdx: " << SSTR(ref.begin_idx) << ", endIdx: "
@@ -187,7 +186,7 @@ namespace uva {
                     if (ref.begin_idx != BASE::UNDEFINED_ARR_IDX) {
                         //The data is available search for the word index in the array
                         //WARNING: The linear search here is much slower!!!
-                        if (my_bsearch_id<TWordIdPBEntry>(m_m_gram_data[M_GRAM_IDX], ref.begin_idx, ref.end_idx, word_id, ctx_id)) {
+                        if (my_bsearch_id<TWordIdPBEntry>(m_m_gram_data[level_idx], ref.begin_idx, ref.end_idx, word_id, ctx_id)) {
                             LOG_DEBUG2 << "The next ctx_id for word_id: " << SSTR(word_id) << ", is: " << SSTR(ctx_id) << END_LOG;
                             return true;
                         }
@@ -333,13 +332,13 @@ namespace uva {
                         const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                         //Compute the distance between words
-                        const TModelLevel be_dist = query.m_end_word_idx - query.m_begin_word_idx;
-                        LOG_DEBUG << "be_dist: " << SSTR(be_dist) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
+                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                 << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                         //Get the next context id
-                        if (BASE::m_get_ctx_id[be_dist](this, word_id, ctx_id)) {
-                            const TModelLevel level_idx = be_dist + 1 - BASE::MGRAM_IDX_OFFSET;
+                        if (get_ctx_id(curr_level, word_id, ctx_id)) {
+                            const TModelLevel level_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_m_gram_data[level_idx][ctx_id].payload;
