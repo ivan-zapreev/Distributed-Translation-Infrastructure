@@ -245,6 +245,10 @@ namespace uva {
                     constexpr static TModelLevel m_actual_begin_word_idx = 0;
                     TModelLevel m_actual_end_word_idx;
                 };
+
+                template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
+                constexpr TModelLevel T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>::m_actual_begin_word_idx;
+
             }
         }
     }

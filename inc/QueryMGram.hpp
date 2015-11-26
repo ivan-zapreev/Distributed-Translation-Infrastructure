@@ -78,23 +78,58 @@ namespace uva {
                      * @param end_word_idx the end word index of the sub-m-gram
                      * @return the hash value for the given sub-m-gram
                      */
-                    inline uint64_t get_hash(const TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                    inline uint64_t get_hash(TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                        //Define the reference to the previous level
+                        TModelLevel & prev_level_ref = const_cast<TModelLevel &> (m_hash_level_row[begin_word_idx]);
+
                         LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(begin_word_idx)
                                 << "/" << SSTR(end_word_idx) << ", the previous computed begin level "
-                                << "is: " << SSTR(m_computed_hash_level[end_word_idx]) << END_LOG;
+                                << "is: " << SSTR(prev_level_ref) << END_LOG;
 
-                        //Check if the given column has already been processed.
-                        //This is not an exact check, as not all the rows of the
-                        //column could have been assigned with hashes. However, in
-                        //case of proper use of the class this is the only check we need.
-                        if (m_computed_hash_level[end_word_idx] == M_GRAM_LEVEL_UNDEF) {
-                            return compute_hash(begin_word_idx, end_word_idx);
+                        //Define the reference to the hash row
+                        uint64_t(& hash_row_ref)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[begin_word_idx]);
+
+                        //Compute the current level
+                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
+                        //Check if the given hash is already available.
+                        if (curr_level > prev_level_ref) {
+                            //Check if there has its been computed before for this row
+                            if (prev_level_ref == M_GRAM_LEVEL_UNDEF) {
+                                //If there has not been anything computed yet,
+                                //then first initialize the starting word
+                                hash_row_ref[begin_word_idx] = BASE::m_word_ids[begin_word_idx];
+
+                                LOG_DEBUG1 << "word[" << SSTR(begin_word_idx) << "] = "
+                                        << BASE::m_word_ids[begin_word_idx]
+                                        << ", hash[" << SSTR(begin_word_idx) << "] = "
+                                        << hash_row_ref[begin_word_idx] << END_LOG;
+
+                                ++begin_word_idx;
+                            } else {
+                                //This is the case of at least a bi-gram, but the actual
+                                //begin word index is the one stored from before
+                                begin_word_idx += prev_level_ref;
+                            }
+
+                            //Iterate on and compute the subsequent hashes, if any
+                            for (; begin_word_idx <= end_word_idx; ++begin_word_idx) {
+                                //Incrementally build up hash, using the previous hash value and the next word id
+                                hash_row_ref[begin_word_idx] = combine_hash(BASE::m_word_ids[begin_word_idx], hash_row_ref[begin_word_idx - 1]);
+
+                                LOG_DEBUG1 << "hash[" << SSTR(begin_word_idx) << "] = combine( word["
+                                        << SSTR(begin_word_idx) << "] = " << BASE::m_word_ids[begin_word_idx]
+                                        << ", hash[" << SSTR(begin_word_idx - 1) << "] = "
+                                        << hash_row_ref[begin_word_idx - 1] << " ) = "
+                                        << hash_row_ref[begin_word_idx] << END_LOG;
+                            }
+                            //Set the processed level 
+                            prev_level_ref = curr_level;
                         }
 
-                        LOG_DEBUG1 << "Resulting hash value: " << m_hash_matrix[end_word_idx][begin_word_idx] << END_LOG;
+                        LOG_DEBUG1 << "Resulting hash value: " << hash_row_ref[end_word_idx] << END_LOG;
 
                         //Return the hash value that must have been pre-computed
-                        return m_hash_matrix[end_word_idx][begin_word_idx];
+                        return hash_row_ref[end_word_idx];
                     }
 
                     /**
@@ -156,7 +191,7 @@ namespace uva {
                      */
                     inline void set_m_gram_from_text(TextPieceReader &text) {
                         //Set all the "computed hash level" flags to "undefined"
-                        memset(m_computed_hash_level, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
+                        memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
                         //Initialize the end word index with the begin word index
                         BASE::m_actual_end_word_idx = BASE::m_actual_begin_word_idx;
@@ -185,7 +220,7 @@ namespace uva {
 
                 private:
                     //Stores the hash computed flags
-                    TModelLevel m_computed_hash_level[MAX_LEVEL];
+                    TModelLevel m_hash_level_row[MAX_LEVEL];
                     //Stores the computed hash values
                     uint64_t m_hash_matrix[MAX_LEVEL][MAX_LEVEL];
 
@@ -194,57 +229,6 @@ namespace uva {
                      */
                     T_Query_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
                     : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index, actual_level) {
-                    }
-
-                    /**
-                     * Allows to retrieve the hash value for the sub-m-gram 
-                     * defined by the template parameters
-                     * @return the hash value for the given sub-m-gram
-                     */
-                    inline uint64_t compute_hash(const TModelLevel begin_word_idx, TModelLevel end_word_idx) const {
-                        LOG_DEBUG1 << "Computing the hash values for begin/end index: " << SSTR(begin_word_idx)
-                                << "/" << SSTR(end_word_idx) << ", the previous computed begin level "
-                                << "is: " << SSTR(m_computed_hash_level[end_word_idx]) << END_LOG;
-
-                        //The column has not been processed before, we need to iterate and incrementally compute hashes
-                        uint64_t(& hash_column)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[end_word_idx]);
-
-                        //If the word is not unknown then the first hash, the word's hash is its id
-                        hash_column[end_word_idx] = BASE::m_word_ids[end_word_idx];
-
-                        LOG_DEBUG1 << "hash[" << SSTR(end_word_idx) << "] = " << hash_column[end_word_idx] << END_LOG;
-
-                        //If there is more to compute do that in a loop
-                        if (end_word_idx > begin_word_idx) {
-                            //Start iterating from the end of the sub-m-gram
-                            TModelLevel curr_idx = end_word_idx;
-                            do {
-                                //Decrement the word id
-                                curr_idx--;
-
-                                //Incrementally build up hash, using the previous hash value and the next word id
-                                hash_column[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], hash_column[curr_idx + 1]);
-
-                                LOG_DEBUG1 << "word[" << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
-                                        << ", hash[" << SSTR(curr_idx) << "] = " << hash_column[curr_idx] << END_LOG;
-
-                                //Stop iterating if the reached the beginning of the m-gram
-                            } while (curr_idx != begin_word_idx);
-                        }
-
-                        //Compute the current m-gram level
-                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
-
-                        //Cast the const modifier away to set the internal flag
-                        const_cast<TModelLevel&> (m_computed_hash_level[end_word_idx]) = curr_level;
-
-                        LOG_DEBUG1 << "compute_hash_level[" << SSTR(end_word_idx) << "] = "
-                                << m_computed_hash_level[end_word_idx] << END_LOG;
-
-                        LOG_DEBUG1 << "Resulting hash value: " << hash_column[begin_word_idx] << END_LOG;
-
-                        //Return the hash value that must have been pre-computed
-                        return hash_column[begin_word_idx];
                     }
 
                 };

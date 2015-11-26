@@ -117,34 +117,44 @@ namespace uva {
                      */
                     inline void prepare_for_adding() {
                         LOG_DEBUG1 << "Preparing the " << SSTR(BASE::m_actual_level) << "-gram for adding to the trie." << END_LOG;
+
                         //If we have a unigram then add it to the index otherwise get the word ids
                         if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
+                            const TModelLevel & begin_word_idx = BASE::m_actual_begin_word_idx;
                             if (BASE::m_word_index.is_word_registering_needed()) {
                                 //Register the word if it is needed
-                                BASE::m_word_ids[BASE::m_actual_begin_word_idx] = BASE::m_word_index.register_word(BASE::m_tokens[BASE::m_actual_begin_word_idx]);
+                                BASE::m_word_ids[begin_word_idx] = BASE::m_word_index.register_word(BASE::m_tokens[begin_word_idx]);
                             } else {
                                 //Otherwise jut get its id
-                                BASE::m_word_ids[BASE::m_actual_begin_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_begin_word_idx]);
+                                BASE::m_word_ids[begin_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[begin_word_idx]);
                             }
                             //The Unigram's hash value is equal to the word id
-                            m_hash_values[BASE::m_actual_begin_word_idx] = BASE::m_word_ids[BASE::m_actual_begin_word_idx];
+                            m_hash_values[begin_word_idx] = BASE::m_word_ids[begin_word_idx];
+
+                            LOG_DEBUG1 << "word[" << SSTR(begin_word_idx) << "] = "
+                                    << BASE::m_word_ids[begin_word_idx]
+                                    << ", hash[" << SSTR(begin_word_idx) << "] = "
+                                    << m_hash_values[begin_word_idx] << END_LOG;
                         } else {
-                            //Store the word ids without the unknown word flags and pre-compute the m-gram hash values
-                            TModelLevel curr_idx = BASE::m_actual_end_word_idx;
+                            TModelLevel curr_idx = BASE::m_actual_begin_word_idx;
+                            //Start with the first word
                             BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
                             //The Unigram's hash value is equal to the word id
                             m_hash_values[curr_idx] = BASE::m_word_ids[curr_idx];
 
-                            //Move on and compute the incremental hash
-                            do {
-                                //Decrement the index
-                                curr_idx--;
+                            //Store the word ids without the unknown word flags and pre-compute the m-gram hash values
+                            for (++curr_idx; curr_idx <= BASE::m_actual_end_word_idx; ++curr_idx) {
                                 //Get the next word id
                                 BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
                                 //Compute the next hash value 
-                                m_hash_values[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], m_hash_values[curr_idx + 1]);
-                                //Stop iterating if the reached the beginning of the m-gram
-                            } while (curr_idx != BASE::m_actual_begin_word_idx);
+                                m_hash_values[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], m_hash_values[curr_idx - 1]);
+
+                                LOG_DEBUG1 << "hash[" << SSTR(curr_idx) << "] = combine( word["
+                                        << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
+                                        << ", hash[" << SSTR(curr_idx - 1) << "] = "
+                                        << m_hash_values[curr_idx - 1] << " ) = "
+                                        << m_hash_values[curr_idx] << END_LOG;
+                            }
                         }
                     }
 
@@ -155,7 +165,7 @@ namespace uva {
                     inline uint64_t get_hash() const {
                         //The hash value is computed incrementally and backwards and therefore
                         //the full hash is stored under the index of the first n-gram's word
-                        return m_hash_values[BASE::m_actual_begin_word_idx];
+                        return m_hash_values[BASE::m_actual_end_word_idx];
                     }
 
                     /**
