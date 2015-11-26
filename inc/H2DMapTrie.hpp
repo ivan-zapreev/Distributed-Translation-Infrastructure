@@ -128,8 +128,11 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    //Register the m-gram in the hash cache
-                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
+                    //If not a uni-gram then register in the cache
+                    if (CURR_LEVEL != M_GRAM_LEVEL_1) {
+                        //Register the m-gram in the hash cache
+                        this->register_m_gram_cache(gram);
+                    }
 
                     //Compute the M-gram level index, here we store m-grams for 1 <=m < n in one structure
                     constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - LEVEL_IDX_OFFSET);

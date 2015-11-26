@@ -149,14 +149,14 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    //Register the m-gram in the hash cache
-                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
-
                     const TShortId word_id = gram.get_end_word_id();
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Store the payload
                         m_1_gram_data[word_id] = gram.m_payload;
                     } else {
+                        //Register the m-gram in the hash cache
+                        this->register_m_gram_cache(gram);
+
                         //Define the context id variable
                         TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
                         //Obtain the m-gram context id
@@ -214,12 +214,12 @@ namespace uva {
                         //Store the shorthand for the context and end word id
                         TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                         const TShortId & word_id = query.m_gram[query.m_end_word_idx];
-                        
+
                         //Compute the distance between words
                         const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
                         LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                 << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
-                        
+
                         //Get the next context id
                         if (get_ctx_id(curr_level, word_id, ctx_id)) {
                             const TModelLevel level_idx = curr_level - BASE::MGRAM_IDX_OFFSET;

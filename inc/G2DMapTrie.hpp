@@ -139,15 +139,15 @@ namespace uva {
                  */
                 template<TModelLevel CURR_LEVEL>
                 inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
-                    //Register the m-gram in the hash cache
-                    this->template register_m_gram_cache<CURR_LEVEL>(gram);
-
                     if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                         //Get the word id of this unigram, so there is just one word in it and its the end one
                         const TShortId word_id = gram.get_end_word_id();
                         //Store the probability data in the one gram data storage, under its id
                         m_1_gram_data[word_id] = gram.m_payload;
                     } else {
+                        //Register the m-gram in the hash cache
+                        this->register_m_gram_cache(gram);
+
                         //Get the bucket index
                         LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
                         TShortId bucket_idx = get_bucket_id(gram.get_hash(), m_num_buckets[CURR_LEVEL - 1]);

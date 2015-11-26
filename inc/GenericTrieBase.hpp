@@ -311,12 +311,16 @@ namespace uva {
                  * Is to be used from the sub-classes from the add_X_gram methods.
                  * This method allows to register the given M-gram in internal high
                  * level caches if present.
+                 * 
+                 * WARNING: Is not to be used on uni-grams!!!
+                 * 
                  * @param gram the M-gram to cache
                  */
-                template<TModelLevel CURR_LEVEL>
                 inline void register_m_gram_cache(const T_Model_M_Gram<WordIndexType> &gram) {
-                    if (NEEDS_BITMAP_HASH_CACHE && (CURR_LEVEL > M_GRAM_LEVEL_1)) {
-                        m_bitmap_hash_cach[CURR_LEVEL - MGRAM_IDX_OFFSET].template cache_m_gram_hash<WordIndexType, CURR_LEVEL>(gram);
+                    if (NEEDS_BITMAP_HASH_CACHE) {
+                        const TModelLevel curr_level = gram.get_m_gram_level();
+                        ASSERT_SANITY_THROW((curr_level == M_GRAM_LEVEL_1), "Trying to add a uni-gram to a bitmap hash cache!");
+                        m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET].template cache_m_gram_hash<WordIndexType>(gram);
                     }
                 }
 
