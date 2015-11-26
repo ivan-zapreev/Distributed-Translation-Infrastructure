@@ -26,7 +26,6 @@
 #define	H2DHASHMAPTRIE_HPP
 
 #include <string>       // std::string
-#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -94,9 +93,6 @@ namespace uva {
             class H2DMapTrie : public GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
-
-                //The typedef for the retrieving function
-                typedef function<uint32_t(const H2DMapTrie&, const uint64_t gram_hash) > TGetBucketIdFunct;
 
                 /**
                  * The basic constructor

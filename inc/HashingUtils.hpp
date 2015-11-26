@@ -29,7 +29,6 @@
 #include <string>     // std::string
 #include <cmath>      // std::floor, std::sqrt
 #include <stdint.h>   // srd::uint32_t
-#include <functional> // std::function
 
 #include "Logger.hpp"
 #include "Globals.hpp"

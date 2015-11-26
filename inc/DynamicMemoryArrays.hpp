@@ -26,7 +26,6 @@
 #include <functional>   // std::function 
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
-#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Logger.hpp"

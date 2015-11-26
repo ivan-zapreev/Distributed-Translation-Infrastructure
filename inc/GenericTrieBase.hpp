@@ -27,7 +27,6 @@
 #define	GENERICTRIEBASE_HPP
 
 #include <string>       // std::string
-#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"

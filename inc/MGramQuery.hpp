@@ -26,7 +26,6 @@
 #ifndef MGRAMQUERY_HPP
 #define	MGRAMQUERY_HPP
 
-#include <functional>   //std::function
 #include <string>       //std::string
 
 #include "Globals.hpp"

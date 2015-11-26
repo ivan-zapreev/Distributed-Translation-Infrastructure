@@ -29,7 +29,6 @@
 
 #include <string>       // std::string
 #include <cstring>      // std::memcmp std::memcpy
-#include <functional>   // std::function
 
 #include "Globals.hpp"
 #include "Exceptions.hpp"
@@ -153,9 +152,6 @@ namespace uva {
             public:
                 //Typedef the base class
                 typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, NEEDS_BITMAP_HASH_CACHE> BASE;
-
-                //The typedef for the function that gets the payload from the m-gram
-                typedef std::function<bool (const TrieType*, const TShortId word_id, TLongId & ctx_id) > TGetCtxIdFunc;
 
                 /**
                  * The basic constructor
