@@ -168,29 +168,6 @@ namespace uva {
                         return m_hash_values[BASE::m_actual_end_word_idx];
                     }
 
-                    /**
-                     * Allows to create a new m-gram id for the given m-gram of the specific current level, and the back-off flag.
-                     * For the argument reference to the id data pointer the following holds:
-                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
-                     * as needed to store the given id.
-                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
-                     * @param CURR_LEVEL the current M-gram level to compute the id for
-                     * @param IS_BACK_OFF true if the M-gram id is to be computed for the back-off M-gram of the given level, default is false.
-                     * @param m_p_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
-                     */
-                    template<TModelLevel CURR_LEVEL>
-                    inline void create_m_gram_id(T_Gram_Id_Data_Ptr & m_p_gram_id) const {
-                        //Perform the sanity check if needed
-                        if (DO_SANITY_CHECKS && (CURR_LEVEL != BASE::m_actual_level)) {
-                            stringstream msg;
-                            msg << "The actual (" << SSTR(CURR_LEVEL) << ") and current ("
-                                    << SSTR(BASE::m_actual_level) << ") level mismatch!";
-                            throw Exception(msg.str());
-                        }
-
-                        BASE::template create_m_gram_id < BASE::m_actual_begin_word_idx, CURR_LEVEL - 1 > (m_p_gram_id);
-                    }
-
                 private:
                     //The data structure to store the N-gram hashes
                     uint64_t m_hash_values[MAX_LEVEL_CAPACITY] = {};

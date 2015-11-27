@@ -135,11 +135,12 @@ namespace uva {
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-#define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT) \
-            template<typename ARR_ELEM_TYPE, TModelLevel CURR_LEVEL> \
+#define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT, EXTRA_PARAMS) \
+            template<typename ARR_ELEM_TYPE> \
             static inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, \
-                    int64_t l_idx, int64_t u_idx, const typename ARR_ELEM_TYPE::TIdType key, \
-                    const ARR_ELEM_TYPE * & found_elem) { \
+                    int64_t l_idx, int64_t u_idx, \
+                    const typename ARR_ELEM_TYPE::TIdType key, \
+                    const ARR_ELEM_TYPE * & found_elem, EXTRA_PARAMS) { \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
                         string("Impossible search parameters, l_idx = ") + \
                         std::to_string(l_idx) + string(", u_idx = ") + \
@@ -149,7 +150,7 @@ namespace uva {
                     mid_pos = (l_idx + u_idx) / 2; \
                     LOG_DEBUG4 << "l_idx = " << SSTR(l_idx) << ", u_idx = " \
                             << SSTR(u_idx) << ", mid_pos = " << SSTR(mid_pos) << END_LOG; \
-                    int64_t result = COMPARE_STATEMENT(key, array[mid_pos].id); \
+                    int64_t result = COMPARE_STATEMENT; \
                     if (result < 0) { \
                         u_idx = mid_pos - 1; \
                     } else { \

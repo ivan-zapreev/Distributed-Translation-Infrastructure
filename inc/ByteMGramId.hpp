@@ -168,14 +168,12 @@ namespace uva {
                          * theat this instance was created with the one argument constructor of this class allocated
                          * maximum needed memory for this level. Then the argument M-gram level must be smaller or
                          * equal to  the level this object was created with.
-                         * @param begin_idx the M-gram to create the id for
-                         * @param num_word_ids the number of word ids
                          * @param word_ids the pointer to the array of word ids
+                         * @param num_word_ids the number of word ids
                          * @param m_p_gram_id the pointer to the data storage to be initialized
                          * @return true if the M-gram id could be created, otherwise false
                          */
-                        template<uint8_t begin_idx, uint8_t num_word_ids>
-                        static void create_m_gram_id(const TWordIdType * word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+                        static void create_m_gram_id(const TWordIdType * word_ids, const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
 
                         /**
                          * The basic constructor that allocates maximum memory
@@ -200,14 +198,14 @@ namespace uva {
 
                         /**
                          * Allows to compare two M-Gram ids of a fixed M-gram level
+                         * @param num_words the number of words in the m-gram 
                          * @param m_p_gram_id_one the first M-gram id
                          * @param m_p_gram_id_two the second M-gram id
                          * @return Negative value if one is smaller than two
                          *         Zero if one is equal to two
                          *         Positive value if one is larger than two
                          */
-                        template<TModelLevel level>
-                        static int compare(const T_Gram_Id_Data_Ptr & m_p_gram_id_one, const T_Gram_Id_Data_Ptr & m_p_gram_id_two);
+                        static int compare(const TModelLevel num_words, const T_Gram_Id_Data_Ptr & m_p_gram_id_one, const T_Gram_Id_Data_Ptr & m_p_gram_id_two);
 
                         /**
                          * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
@@ -216,9 +214,8 @@ namespace uva {
                          * @param level the M-grams' level M
                          * @return true if the first M-gram is "smaller" than the second, otherwise false
                          */
-                        template<TModelLevel level>
-                        static bool is_equal_m_grams_id(const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare<level>(one, two) == 0);
+                        static bool is_equal_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(level, one, two) == 0);
                         }
 
                         /**
@@ -228,9 +225,8 @@ namespace uva {
                          * @param level the M-grams' level M
                          * @return true if the first M-gram is "smaller" than the second, otherwise false
                          */
-                        template<TModelLevel level>
-                        static bool is_less_m_grams_id(const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare<level>(one, two) < 0);
+                        static bool is_less_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(level, one, two) < 0);
                         }
 
                         /**
@@ -240,9 +236,8 @@ namespace uva {
                          * @param level the M-grams' level M
                          * @return true if the first M-gram is "larger" than the second, otherwise false
                          */
-                        template<TModelLevel level>
-                        static bool is_more_m_grams_id(const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare<level>(one, two) > 0);
+                        static bool is_more_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(level, one, two) > 0);
                         };
                     };
 

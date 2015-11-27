@@ -384,8 +384,8 @@ if(sizeof(value_type) == 2) { \
                  * @param p_source the byte array with data to copy from
                  * @param target the variable to put the bits at the end of
                  */
-                template<uint8_t num_bytes, typename TSourceType>
-                static inline void copy_begin_bytes_to_end(const uint8_t * p_source, TSourceType & target) {
+                template<typename TSourceType>
+                static inline void copy_begin_bytes_to_end(const uint8_t * p_source, const uint8_t num_bytes, TSourceType & target) {
                     LOG_DEBUG4 << "Copying " << SSTR((uint32_t) num_bytes) << " bits to "
                             << bitset < BYTES_TO_BITS(sizeof (TSourceType))>(target) << END_LOG;
 

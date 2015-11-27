@@ -204,27 +204,21 @@ namespace uva {
                      * a) If there was no memory allocated for the M-gram id then there will be allocated as much
                      * as needed to store the given id.
                      * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
-                     * @param BEGIN_WORD_IDX the index of the first word in the sub-m-gram, indexes start with 0
-                     * @param END_WORD_IDX the index of the last word in the sub-m-gram, indexes start with 0
+                     * @param begin_word_idx the index of the first word in the sub-m-gram, indexes start with 0
+                     * @param number_of_words the number of sub-m-gram words
                      * @param word_ids the list of the word ids for the entire m-gram, where at least the m-gram word
                      *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                      * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                      */
-                    template<TModelLevel BEGIN_WORD_IDX, TModelLevel END_WORD_IDX >
-                    inline void create_m_gram_id(T_Gram_Id_Data_Ptr & p_m_gram_id) const {
-                        //Compute the number of words based on the input template parameters
-                        constexpr TModelLevel NUMBER_OF_WORDS = (END_WORD_IDX - BEGIN_WORD_IDX) + 1;
-
-                        LOG_DEBUG << "Computing sub " << SSTR(NUMBER_OF_WORDS) << "-gram id for the gram "
-                                << "defined by the first, and the last word indexes: ["
-                                << SSTR(BEGIN_WORD_IDX) << ", " << SSTR(END_WORD_IDX) << "]" << END_LOG;
+                    inline void create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, T_Gram_Id_Data_Ptr & p_m_gram_id) const {
+                        LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
+                                << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        T_M_Gram_Id::template create_m_gram_id<BEGIN_WORD_IDX, NUMBER_OF_WORDS>(m_word_ids, p_m_gram_id);
+                        T_M_Gram_Id::template create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                         //Log the result
-                        LOG_DEBUG << "Allocated " << NUMBER_OF_WORDS << "-gram id is: " << (void*) p_m_gram_id
-                                << " for " << tokens_to_string(m_tokens, BEGIN_WORD_IDX, END_WORD_IDX) << END_LOG;
+                        LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id << END_LOG;
                     }
 
                 protected:
