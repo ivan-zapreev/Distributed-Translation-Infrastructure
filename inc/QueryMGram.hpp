@@ -194,23 +194,20 @@ namespace uva {
                         memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
                         //Initialize the end word index with the begin word index
-                        BASE::m_actual_end_word_idx = BASE::m_actual_begin_word_idx;
+                        BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
 
                         //Read the tokens one by one backwards and decrement the index
-                        while (text.get_first_space(BASE::m_tokens[BASE::m_actual_end_word_idx])) {
+                        while (text.get_first_space(BASE::m_tokens[BASE::m_actual_level])) {
                             //Retrieve the word id
-                            BASE::m_word_ids[BASE::m_actual_end_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_end_word_idx]);
-                            LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_end_word_idx] << "' is: "
-                                    << SSTR(BASE::m_word_ids[BASE::m_actual_end_word_idx]) << "!" << END_LOG;
+                            BASE::m_word_ids[BASE::m_actual_level] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_level]);
+                            LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_level] << "' is: "
+                                    << SSTR(BASE::m_word_ids[BASE::m_actual_level]) << "!" << END_LOG;
                             //Increment the counter
-                            ++BASE::m_actual_end_word_idx;
+                            ++BASE::m_actual_level;
                         }
 
-                        //After the loop the end word index is equal to the word count/m-gram level
-                        BASE::m_actual_level = BASE::m_actual_end_word_idx;
-
-                        //Adjust the end word index, decrement it by one
-                        BASE::m_actual_end_word_idx -= 1;
+                        //Set the actual end word index
+                        BASE::m_actual_end_word_idx =  BASE::m_actual_level - 1;
 
                         ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
                                 (BASE::m_actual_level > MAX_LEVEL)),
