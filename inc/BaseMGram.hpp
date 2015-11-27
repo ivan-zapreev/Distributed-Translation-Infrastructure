@@ -215,7 +215,7 @@ namespace uva {
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        T_M_Gram_Id::template create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
+                        T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                         //Log the result
                         LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id << END_LOG;
