@@ -193,7 +193,7 @@ namespace uva {
                         //Set all the "computed hash level" flags to "undefined"
                         memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
 
-                        //Initialize the end word index with the begin word index
+                        //Initialize the actual level with undefined (zero)
                         BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
 
                         //Read the tokens one by one backwards and decrement the index
