@@ -151,25 +151,30 @@ namespace uva {
                         //Get the number of elements stored in the bucket
                         const size_t num_elems = m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx];
                         switch (num_elems) {
-                            case 2:
+                            case 0:
                             {
-                                uint_fast32_t idx2 = m_word_hash_buckets[bucket_idx] + 1;
-                                if (IS_EQUAL(token, m_word_entries[idx2])) {
-                                    return m_word_entries[idx2].m_word_id;
-                                }
-                                //Fall through into the next case
+                                return UNKNOWN_WORD_ID;
                             }
                             case 1:
                             {
-                                uint_fast32_t idx1 = m_word_hash_buckets[bucket_idx];
-                                if (IS_EQUAL(token, m_word_entries[idx1])) {
-                                    return m_word_entries[idx1].m_word_id;
+                                uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
+                                if (IS_EQUAL(token, m_word_entries[idx])) {
+                                    return m_word_entries[idx].m_word_id;
                                 }
-                                break;
+                                return UNKNOWN_WORD_ID;
                             }
-                            case 0:
+                            case 2:
                             {
-                                break;
+                                uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
+                                if (IS_EQUAL(token, m_word_entries[idx])) {
+                                    return m_word_entries[idx].m_word_id;
+                                } else {
+                                    ++idx; //Move to the next element
+                                    if (IS_EQUAL(token, m_word_entries[idx])) {
+                                        return m_word_entries[idx].m_word_id;
+                                    }
+                                    return UNKNOWN_WORD_ID;
+                                }
                             }
                             default:
                             {
@@ -180,9 +185,9 @@ namespace uva {
                                         return m_word_entries[idx].m_word_id;
                                     }
                                 }
+                                return UNKNOWN_WORD_ID;
                             }
                         }
-                        return UNKNOWN_WORD_ID;
                     };
 
                     /**
