@@ -158,7 +158,7 @@ namespace uva {
 
             namespace __G2DMapTrie {
                 //Stores the memory increment factor, the number we will multiply by the computed increment
-                static constexpr float MEM_INC_FACTOR = 0.3;
+                static constexpr float MEM_INC_FACTOR = 1.0;
                 //Stores the minimum capacity increase in number of elements, must be >= 1!!!
                 static constexpr size_t MIN_MEM_INC_NUM = 1;
                 //This constant stores the memory increase strategy to be used.
@@ -169,7 +169,7 @@ namespace uva {
                 //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
                 //level is defined as the number of M-grams in this level divided by
                 //this factor value 
-                static constexpr float WORDS_PER_BUCKET_FACTOR = 1;
+                static constexpr float WORDS_PER_BUCKET_FACTOR = 2;
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!

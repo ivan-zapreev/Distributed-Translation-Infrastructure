@@ -237,7 +237,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
                     //Call the templated part via function pointer
-                    get_payload<TProbBackOffBucket>(m_num_buckets, m_M_gram_data[layer_idx], query, status);
+                    status = get_payload<TProbBackOffBucket>(m_num_buckets, m_M_gram_data[layer_idx], query);
                 }
 
                 /**
@@ -250,7 +250,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                     //Call the templated part via function pointer
-                    get_payload<TProbBucket>(m_num_buckets, m_N_gram_data, query, status);
+                    status = get_payload<TProbBucket>(m_num_buckets, m_N_gram_data, query);
                 }
 
                 /**
@@ -302,11 +302,11 @@ namespace uva {
                  * @param query the query M-gram state 
                  * @param buckets the array of buckets to work with
                  * @param payload_ptr_ptr [out] the pointer to the payload pointer
-                 * @param status [out] the resulting status of the operation
+                 * @return the resulting status of the operation
                  */
                 template<typename BUCKET_TYPE>
-                static inline void get_payload(const TShortId num_buckets[MAX_LEVEL], const BUCKET_TYPE * buckets,
-                        typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) {
+                static inline MGramStatusEnum get_payload(const TShortId num_buckets[MAX_LEVEL], const BUCKET_TYPE * buckets,
+                        typename BASE::T_Query_Exec_Data & query) {
                     //Compute the current level of the sub-m-gram
                     const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
 
@@ -322,32 +322,56 @@ namespace uva {
                     //Get the bucket to look into
                     const BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                    //1. Check that the bucket with the given index is not empty
-                    if (ref.has_data()) {
+                    if (ref.size() > 0) {
                         LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
-                        //2. Compute the query id
+
+                        //Compute the query id
                         DECLARE_STACK_GRAM_ID(TM_Gram_Id, mgram_id, curr_level);
                         T_Gram_Id_Data_Ptr mgram_id_ptr = &mgram_id[0];
 
                         //Create the M-gram id from the word ids.
                         query.m_gram.create_m_gram_id(query.m_begin_word_idx, curr_level, mgram_id_ptr);
 
-                        //3. Search for the query id in the bucket
-                        //The data is available search for the word index in the array
-                        const typename BUCKET_TYPE::TElemType * found_elem_ptr;
-                        if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
-                                (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_elem_ptr, curr_level)) {
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &found_elem_ptr->payload;
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                            //The payload retrieval was successful, return
-                            return;
+                        //Unroll the search into several specific cases, note the order is trying
+                        //to put the most relevant cases first, it gives micro performance boost.
+                        switch (ref.size()) {
+                            case 2: //If there is two elements, perform an  explicit check
+                            {
+                                const typename BUCKET_TYPE::TElemType & elem2 = ref.data()[1];
+                                if (TM_Gram_Id::compare(curr_level, mgram_id_ptr, elem2.id) == 0) {
+                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem2.payload;
+                                    //We are now done, the payload is found, can return!
+                                    return MGramStatusEnum::GOOD_PRESENT_MGS;
+                                }
+                                //Move on to case 1
+                            }
+                            case 1: //If there is one element, perform an  explicit check
+                            {
+                                const typename BUCKET_TYPE::TElemType & elem1 = ref.data()[0];
+                                if (TM_Gram_Id::compare(curr_level, mgram_id_ptr, elem1.id) == 0) {
+                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem1.payload;
+                                    //We are now done, the payload is found, can return!
+                                    return MGramStatusEnum::GOOD_PRESENT_MGS;
+                                }
+                                break;
+                            }
+                            default: //If there is more than 3 elements then perform a binary search on data
+                            {
+                                const typename BUCKET_TYPE::TElemType * found_elem_ptr;
+                                if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
+                                        (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_elem_ptr, curr_level)) {
+                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &found_elem_ptr->payload;
+                                    return MGramStatusEnum::GOOD_PRESENT_MGS;
+                                }
+                                break;
+                            }
                         }
                     }
 
                     //Could not retrieve the payload for the given sub-m-gram
                     LOG_DEBUG << "Unable to find the sub-m-gram [" << SSTR(query.m_begin_word_idx)
                             << ", " << SSTR(query.m_end_word_idx) << "] payload!" << END_LOG;
-                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                    return MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                 }
 
                 /**
