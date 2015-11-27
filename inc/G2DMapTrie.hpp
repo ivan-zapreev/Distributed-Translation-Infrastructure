@@ -375,7 +375,7 @@ namespace uva {
                             //Update the progress bar status
                             Logger::update_progress_bar();
                                     //Return the result
-                            return TM_Gram_Id::template is_less_m_grams_id(CURR_LEVEL, first.id, second.id);
+                            return TM_Gram_Id::is_less_m_grams_id(CURR_LEVEL, first.id, second.id);
                         });
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }
