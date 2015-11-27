@@ -11,3 +11,4 @@
 # Debug__Centos_ configuration
 # Profile__Centos_ configuration
 # Release__Centos_gperftools configuration
+# Profile__MacOs_ configuration

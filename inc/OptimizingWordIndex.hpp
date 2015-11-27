@@ -92,6 +92,8 @@ namespace uva {
                     : m_num_words(0), m_num_buckets(0), m_num_bucket_maps(0),
                     m_word_hash_buckets(NULL), m_word_entries(NULL) {
                         m_disp_word_index_ptr = new SubWordIndexType(memory_factor);
+                        ASSERT_SANITY_THROW(!m_disp_word_index_ptr->is_word_registering_needed(),
+                                "This word index requires a sub-word index with word registration!");
                     }
 
                     /**
@@ -140,24 +142,47 @@ namespace uva {
                      * @see AWordIndex
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
-                        if (m_disp_word_index_ptr == NULL) {
-                            //Compute the bucket id
-                            const uint_fast32_t bucket_idx = get_bucket_idx(token);
+                        //Compute the bucket id
+                        const uint_fast32_t bucket_idx = get_bucket_idx(token);
 
-                            LOG_DEBUG3 << "Number of words in bucket: " << bucket_idx << " is: "
-                                    << (m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx]) << END_LOG;
+                        LOG_DEBUG3 << "Number of words in bucket: " << bucket_idx << " is: "
+                                << (m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx]) << END_LOG;
 
-                            //Search within the bucket
-                            for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
-                                    idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
-                                if (IS_EQUAL(token, m_word_entries[idx])) {
-                                    return m_word_entries[idx].m_word_id;
+                        //Get the number of elements stored in the bucket
+                        const size_t num_elems = m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx];
+                        switch (num_elems) {
+                            case 2:
+                            {
+                                uint_fast32_t idx2 = m_word_hash_buckets[bucket_idx] + 1;
+                                if (IS_EQUAL(token, m_word_entries[idx2])) {
+                                    return m_word_entries[idx2].m_word_id;
+                                }
+                                //Fall through into the next case
+                            }
+                            case 1:
+                            {
+                                uint_fast32_t idx1 = m_word_hash_buckets[bucket_idx];
+                                if (IS_EQUAL(token, m_word_entries[idx1])) {
+                                    return m_word_entries[idx1].m_word_id;
+                                }
+                                break;
+                            }
+                            case 0:
+                            {
+                                break;
+                            }
+                            default:
+                            {
+                                //Search within the bucket
+                                for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
+                                        idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
+                                    if (IS_EQUAL(token, m_word_entries[idx])) {
+                                        return m_word_entries[idx].m_word_id;
+                                    }
                                 }
                             }
-                            return UNKNOWN_WORD_ID;
-                        } else {
-                            return m_disp_word_index_ptr->get_word_id(token);
                         }
+                        return UNKNOWN_WORD_ID;
                     };
 
                     /**
@@ -166,7 +191,7 @@ namespace uva {
                      * @see AWordIndex
                      */
                     inline bool is_word_registering_needed() const {
-                        return m_disp_word_index_ptr->is_word_registering_needed();
+                        return true;
                     };
 
                     /**

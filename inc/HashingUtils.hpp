@@ -613,8 +613,8 @@ namespace uva {
              * @return the resulting hash < limit
              */
             inline uint_fast32_t compute_hash(const uint32_t limit, const char * data, uint32_t len, const uint64_t seed = 16777619U) {
-                const uint_fast32_t hash = compute_hash(data, len, seed);
-                return ( hash - (hash / limit) * limit);
+                const uint_fast64_t hash = compute_hash(data, len, seed);
+                return static_cast<uint_fast32_t>( hash - (hash / limit) * limit);
             }
 
             /**

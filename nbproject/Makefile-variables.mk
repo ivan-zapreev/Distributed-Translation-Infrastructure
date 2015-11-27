@@ -70,6 +70,14 @@ CND_ARTIFACT_PATH_Release__Centos_gperftools=dist/Release__Centos_gperftools/bac
 CND_PACKAGE_DIR_Release__Centos_gperftools=dist/Release__Centos_gperftools/GNU-MacOSX/package
 CND_PACKAGE_NAME_Release__Centos_gperftools=back-off-language-model-smt.tar
 CND_PACKAGE_PATH_Release__Centos_gperftools=dist/Release__Centos_gperftools/GNU-MacOSX/package/back-off-language-model-smt.tar
+# Profile__MacOs_ configuration
+CND_PLATFORM_Profile__MacOs_=GNU-MacOSX
+CND_ARTIFACT_DIR_Profile__MacOs_=dist/Profile__MacOs_
+CND_ARTIFACT_NAME_Profile__MacOs_=back-off-language-model-smt
+CND_ARTIFACT_PATH_Profile__MacOs_=dist/Profile__MacOs_/back-off-language-model-smt
+CND_PACKAGE_DIR_Profile__MacOs_=dist/Profile__MacOs_/GNU-MacOSX/package
+CND_PACKAGE_NAME_Profile__MacOs_=back-off-language-model-smt.tar
+CND_PACKAGE_PATH_Profile__MacOs_=dist/Profile__MacOs_/GNU-MacOSX/package/back-off-language-model-smt.tar
 #
 # include compiler specific variables
 #

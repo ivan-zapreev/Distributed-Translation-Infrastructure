@@ -169,17 +169,8 @@ namespace uva {
                      * This function retrieves the pointer to the last word id of the m-gram.
                      * @return the pointer to the first word id element, 
                      */
-                    inline const TWordIdType * first_word_id() const {
-                        return &m_word_ids[m_actual_begin_word_idx];
-                    }
-
-                    /**
-                     * Allows to work with the list of ids as with the continuous array.
-                     * This function retrieves the pointer to the last word id of the m-gram.
-                     * @return the pointer to the last word id element, 
-                     */
-                    inline const TWordIdType * last_word_id() const {
-                        return &m_word_ids[m_actual_end_word_idx];
+                    inline const TWordIdType * word_ids() const {
+                        return m_word_ids;
                     }
 
                     /**

@@ -117,7 +117,7 @@ namespace uva {
                     //Try to retrieve the context from the cache, if not present then compute it
                     if (trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
                         //Compute the context id, check on the level
-                        const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.first_word_id(), ctx_id, ctx_id);
+                        const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.word_ids(), ctx_id, ctx_id);
 
                         LOG_DEBUG4 << "The context level is: " << SSTR(ctx_level) << ", the current level is " << SSTR(CURR_LEVEL) << END_LOG;
 
@@ -201,7 +201,7 @@ namespace uva {
                     //Compute the context level
                     constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
                     //Check if this is the same m-gram
-                    if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
+                    if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.word_ids(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
                         result = m_cached_ctx[CONTEXT_LEVEL].m_ctx_id;
                         //There was something cached, so no need to search further!
                         return false;
@@ -220,7 +220,7 @@ namespace uva {
                     //Compute the context level
                     constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
                     //Copy the context word ids
-                    memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.first_word_id(), CONTEXT_LEVEL * sizeof (TShortId));
+                    memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.word_ids(), CONTEXT_LEVEL * sizeof (TShortId));
                     //Store the cache value
                     m_cached_ctx[CONTEXT_LEVEL].m_ctx_id = ctx_id;
                 }
