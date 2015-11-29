@@ -254,8 +254,7 @@ namespace uva {
                  * @return true if the function thinks it successfully parsed the
                  * input, otherwise false.
                  */
-                template<typename T>
-                inline bool fast_stoT(T & r, const char *p) {
+                inline bool fast_s_to_f(float & r, const char *p) {
                     r = 0.0;
                     int c = 0; // counter to check how many numbers we got!
 
@@ -271,23 +270,23 @@ namespace uva {
 
                     // Get the digits before decimal point
                     while (valid_digit(*p)) {
-                        r = (r * 10.0) + (*p - '0');
+                        r = (r * 10.0f) + (*p - '0');
                         ++p;
                         ++c;
                     }
 
                     // Get the digits after decimal point
                     if (*p == '.') {
-                        T f = 0.0;
-                        T scale = 1.0;
+                        float f = 0.0;
+                        float scale = 1.0;
                         ++p;
                         while (valid_digit(*p)) {
-                            f = (f * 10.0) + (*p - '0');
+                            f = (f * 10.0f) + (*p - '0');
                             ++p;
-                            scale *= 10.0;
+                            scale *= 10.0f;
                             ++c;
                         }
-                        r += f / scale;
+                        r += f * 1.0f/scale;
                     }
 
                     // FIRST CHECK:
@@ -312,21 +311,21 @@ namespace uva {
                         // Get exponent
                         c = 0;
                         while (valid_digit(*p)) {
-                            e = (e * 10) + (*p - '0');
+                            e = (e * 10.0f) + (*p - '0');
                             ++p;
                             ++c;
                         }
-                        if (!neg && e > (uint) std::numeric_limits<T>::max_exponent10) {
-                            e = (uint) std::numeric_limits<T>::max_exponent10;
-                        } else if (e < (uint) std::numeric_limits<T>::min_exponent10) {
-                            e = (uint) std::numeric_limits<T>::max_exponent10;
+                        if (!neg && e > (uint) std::numeric_limits<float>::max_exponent10) {
+                            e = (uint) std::numeric_limits<float>::max_exponent10;
+                        } else if (e < (uint) std::numeric_limits<float>::min_exponent10) {
+                            e = (uint) std::numeric_limits<float>::max_exponent10;
                         }
                         // SECOND CHECK:
                         if (c == 0) {
                             return false;
                         } // we got no  exponent! this was not intended!!
 
-                        T scaleE = 1.0;
+                        float scaleE = 1.0;
                         // Calculate scaling factor.
 
                         while (e >= 50) {
@@ -335,12 +334,12 @@ namespace uva {
                         }
                         //while (e >=  8) { scaleE *= 1E8;  e -=  8; }
                         while (e > 0) {
-                            scaleE *= 10.0;
+                            scaleE *= 10.0f;
                             e -= 1;
                         }
 
                         if (negE) {
-                            r /= scaleE;
+                            r *= 1.0f/scaleE;
                         } else {
                             r *= scaleE;
                         }

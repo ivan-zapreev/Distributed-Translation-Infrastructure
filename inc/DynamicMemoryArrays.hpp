@@ -47,7 +47,7 @@ namespace uva {
                  * @param the first argument is the current capacity as float
                  * @return the capacity increase
                  */
-                typedef std::function<float (const float) > TCapacityIncFunct;
+                typedef std::function<size_t(const size_t) > TCapacityIncFunct;
 
                 /**
                  * Stores the string names of the memory increase strategies,
@@ -66,8 +66,8 @@ namespace uva {
                     TCapacityIncFunct m_get_capacity_inc_func;
                     //Stores the minimum allowed memory increment, in number of elements
                     size_t m_min_mem_inc;
-                    //Stores the maximum allowed memory increment, in percent from the current number of elements
-                    float m_mem_inc_factor;
+                    //Stores the memory increment coefficient, must be larger than 0
+                    size_t m_mem_inc_factor;
 
                 public:
 
@@ -80,11 +80,12 @@ namespace uva {
                      */
                     MemIncreaseStrategy(const MemIncTypesEnum & stype,
                             const TCapacityIncFunct get_capacity_inc_func,
-                            const size_t min_mem_inc, const float mem_inc_factor)
+                            const size_t min_mem_inc, const size_t mem_inc_factor)
                     : m_stype(stype), m_get_capacity_inc_func(get_capacity_inc_func),
                     m_min_mem_inc(min_mem_inc), m_mem_inc_factor(mem_inc_factor) {
                         //Perform a sanity check if needed.
                         ASSERT_SANITY_THROW((m_min_mem_inc < 1), "Inappropriate minimum memory increment!");
+                        ASSERT_SANITY_THROW((m_mem_inc_factor == 0), "Inappropriate memory increment factor!");
                     }
 
                     MemIncreaseStrategy()
@@ -115,10 +116,9 @@ namespace uva {
                      * @param capacity the current capacity
                      * @return the proposed capacity increase
                      */
-                    inline const size_t compute_new_capacity(const size_t capacity) const {
+                    inline const size_t get_new_capacity(const size_t capacity) const {
                         //Get the float capacity value, make it minimum of one element to avoid problems
-                        const float fcap = (capacity > 0) ? (float) capacity : 1.0;
-                        const size_t cap_inc = (size_t) (m_mem_inc_factor * m_get_capacity_inc_func(fcap));
+                        const size_t cap_inc = m_mem_inc_factor * m_get_capacity_inc_func((capacity > 0) ? capacity : 1);
                         return capacity + max(cap_inc, m_min_mem_inc);
                     }
                 };
@@ -131,30 +131,30 @@ namespace uva {
                  * @return the pointer to a newly allocated strategy object
                  */
                 inline MemIncreaseStrategy get_mem_incr_strat(const MemIncTypesEnum stype,
-                        const size_t min_mem_inc, const float mem_inc_factor) {
+                        const size_t min_mem_inc, const size_t mem_inc_factor) {
                     TCapacityIncFunct inc_func;
 
                     //ToDo: optimize this switch, it is pretty ugly, use a map or something
                     switch (stype) {
                         case MemIncTypesEnum::CONSTANT:
-                            inc_func = [] (const float fcap) -> float {
+                            inc_func = [] (const size_t fcap) -> size_t {
                                 //Return zero as then the minimum constant increase will be used!
                                 return 0;
                             };
                             break;
                         case MemIncTypesEnum::LINEAR:
-                            inc_func = [] (const float fcap) -> float {
+                            inc_func = [] (const size_t fcap) -> size_t {
                                 return fcap;
                             };
                             break;
                         case MemIncTypesEnum::LOG_2:
-                            inc_func = [] (const float fcap) -> float {
-                                return fcap / log(fcap);
+                            inc_func = [] (const size_t fcap) -> size_t {
+                                return fcap * (1 / log(fcap));
                             };
                             break;
                         case MemIncTypesEnum::LOG_10:
-                            inc_func = [] (const float fcap) -> float {
-                                return fcap / log10(fcap);
+                            inc_func = [] (const size_t fcap) -> size_t {
+                                return fcap * (1 / log10(fcap));
                             };
                             break;
                         default:
@@ -266,7 +266,8 @@ namespace uva {
 
                         //Allocate more memory if needed
                         if (m_size == m_capacity) {
-                            reallocate<true>(m_ptr, m_capacity, m_size);
+                            const size_t new_capacity = ELEMENT_TYPE::m_mem_strat.get_new_capacity(m_capacity);
+                            reallocate<true>(m_ptr, m_capacity, new_capacity);
                         }
 
                         //Get the reference to the new element
@@ -388,22 +389,32 @@ namespace uva {
                     uint8_t m_params[PARAMETERS_SIZE_BYTES];
 
                     /**
-                     * This methods allows to reallocate the data to the new capacity
-                     * @param new_capacity the desired new capacity
+                     * Allows to reallocate the word entry data increasing or decreasing its capacity.
+                     * How much memory will exactly be allocated depends on the memory increase strategy,
+                     * the current capacity and the IS_INC flag.
+                     * @param IS_INC if true then the memory will be attempted to increase, otherwise decrease
                      */
-                    inline void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE new_capacity) {
+                    template<bool IS_INC = true >
+                    static inline void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, size_t new_capacity) {
                         LOG_DEBUG2 << "The new capacity is " << SSTR(new_capacity)
                                 << ", the old capacity was " << SSTR(m_capacity)
                                 << ", ptr: " << SSTR((void*) m_ptr) << ", elem size: "
                                 << SSTR(sizeof (ELEMENT_TYPE)) << END_LOG;
 
+                        //Check that there is still space to be allocated
+                        ASSERT_CONDITION_THROW(IS_INC && (m_capacity == MAX_SIZE_TYPE_VALUE),
+                                string("Unable to increase the capacity, reached the maximum of ") +
+                                std::to_string(MAX_SIZE_TYPE_VALUE) + " allowed by the data type!");
+
                         //Reallocate memory, potentially we get a new pointer!
+                        new_capacity = min(new_capacity, MAX_SIZE_TYPE_VALUE);
+                        ASSERT_SANITY_THROW((m_capacity == new_capacity), "The new capacity is equal to the old one!");
                         m_ptr = (ELEMENT_TYPE_PTR) realloc(m_ptr, new_capacity * sizeof (ELEMENT_TYPE));
 
                         LOG_DEBUG2 << "Memory is reallocated ptr: " << SSTR(m_ptr) << END_LOG;
 
-                        //Clean the newly allocated memory
-                        if (new_capacity > m_capacity) {
+                        //Initialize the newly allocated memory
+                        if (IS_INC) {
                             for (IDX_DATA_TYPE idx = m_capacity; idx < new_capacity; ++idx) {
                                 new(static_cast<void *> (&m_ptr[idx])) ELEMENT_TYPE();
                                 LOG_DEBUG3 << "Creating a new element [" << SSTR(idx)
@@ -418,52 +429,9 @@ namespace uva {
                                 << ", ptr: " << SSTR(m_ptr) << END_LOG;
 
                         //Do the null pointer check if sanity
-                        ASSERT_SANITY_THROW(((new_capacity > m_capacity)
-                                && (new_capacity > 0) && (m_ptr == NULL)),
+                        ASSERT_SANITY_THROW((m_ptr == NULL),
                                 string("Ran out of memory when trying to allocate ") +
                                 std::to_string(new_capacity) + " data elements for a word_id");
-                    }
-
-                    /**
-                     * Allows to reallocate the word entry data increasing or decreasing its capacity.
-                     * How much memory will exactly be allocated depends on the memory increase strategy,
-                     * the current capacity and the IS_INC flag.
-                     * @param IS_INC if true then the memory will be attempted to increase, otherwise decrease
-                     */
-                    template<bool IS_INC = true >
-                    inline void reallocate(ELEMENT_TYPE_PTR & m_ptr, IDX_DATA_TYPE & m_capacity, IDX_DATA_TYPE & m_size) {
-                        IDX_DATA_TYPE new_capacity;
-
-                        LOG_DEBUG2 << "Memory reallocation request: "
-                                << ((IS_INC) ? "increase" : "decrease") << END_LOG;
-
-                        //Compute the new number of elements
-                        if (IS_INC) {
-                            //Compute the new capacity
-                            size_t advised_capacity = ELEMENT_TYPE::m_mem_strat.compute_new_capacity(m_capacity);
-                            //Check if the given capacity passes within the maximum allowed values for capacity etc
-                            if (advised_capacity <= MAX_SIZE_TYPE_VALUE) {
-                                //If it passes then set it in
-                                new_capacity = (IDX_DATA_TYPE) advised_capacity;
-                            } else {
-                                //If it does not pass then try to see if we can still allocate something
-                                if (m_capacity < MAX_SIZE_TYPE_VALUE) {
-                                    //If we can still allocate more, then go to the max!
-                                    new_capacity = MAX_SIZE_TYPE_VALUE;
-                                } else {
-                                    //We are already at full capacity! Panic!!!!
-                                    THROW_EXCEPTION(string("Unable to increase the capacity, reached the maximum of ") +
-                                            std::to_string(MAX_SIZE_TYPE_VALUE) + " allowed by the data type!");
-                                }
-                            }
-                            LOG_DEBUG2 << "Computed new capacity is: " << new_capacity << END_LOG;
-                        } else {
-                            //Decrease the capacity to the current size, remove the unneeded
-                            new_capacity = m_size;
-                        }
-
-                        //Reallocate to the computed new capacity
-                        reallocate(m_ptr, m_capacity, new_capacity);
                     }
                 };
 

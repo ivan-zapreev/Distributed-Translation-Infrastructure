@@ -67,7 +67,7 @@ namespace uva {
                     //Read the first element until the tab, we read until the tab because it should be the probability
                     if (line.get_first_tab(m_token)) {
                         //Try to parse it float
-                        if (fast_stoT<float>(m_m_gram.m_payload.m_prob, m_token.get_rest_c_str())) {
+                        if (fast_s_to_f(m_m_gram.m_payload.m_prob, m_token.get_rest_c_str())) {
                             LOG_DEBUG2 << "Parsed the N-gram probability: " << m_m_gram.m_payload.m_prob << END_LOG;
 
                             //Start the new m-gram
@@ -96,7 +96,7 @@ namespace uva {
                             //Now if there is something left it should be the back-off weight, otherwise we are done
                             if (line.has_more()) {
                                 //Take the remainder of the line and try to parse it!
-                                if (!fast_stoT<float>(m_m_gram.m_payload.m_back, line.get_rest_c_str())) {
+                                if (!fast_s_to_f(m_m_gram.m_payload.m_back, line.get_rest_c_str())) {
                                     LOG_WARNING << "Could not parse the remainder of the line '" << line.str()
                                             << "' as a back-off weight!" << END_LOG;
                                     //The first token was not a float, need to skip to another N-Gram section(?)

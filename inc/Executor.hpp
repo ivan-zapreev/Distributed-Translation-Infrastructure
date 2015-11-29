@@ -116,7 +116,7 @@ namespace uva {
                     //The word index type to be used with the trie
                     WordIndexTypesEnum m_word_index_type;
                     //Stores the word index memory factor
-                    size_t m_word_index_mem_fact;
+                    float m_word_index_mem_fact;
                     //The trie type 
                     TrieTypesEnum m_trie_type;
                 } TExecutionParams;

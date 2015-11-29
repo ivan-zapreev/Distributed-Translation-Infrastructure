@@ -88,7 +88,7 @@ namespace uva {
                      * have a reference or a pointer to the argument object
                      * @param memory_factor the memory factor for the SubWordIndexType constructor
                      */
-                    OptimizingWordIndex(const size_t memory_factor)
+                    OptimizingWordIndex(const float memory_factor)
                     : m_num_words(0), m_num_buckets(0), m_num_bucket_maps(0),
                     m_word_hash_buckets(NULL), m_word_entries(NULL) {
                         m_disp_word_index_ptr = new SubWordIndexType(memory_factor);

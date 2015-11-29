@@ -59,7 +59,7 @@ namespace uva {
                      * The basic constructor
                      * @param memory_factor is not used, is here only for interface compliancy
                      */
-                    HashingWordIndex(const size_t memory_factor) : AWordIndex<uint64_t>() {
+                    HashingWordIndex(const float memory_factor) : AWordIndex<uint64_t>() {
                     }
 
                     /**

@@ -88,7 +88,7 @@ namespace uva {
                         if (text.has_more()) {
                             //First read text until the first tab, it should be present if it is a uni-gram line
                             if (text.get_first_tab(word)) {
-                                if (fast_stoT<float>(prob, word.get_rest_c_str())) {
+                                if (fast_s_to_f(prob, word.get_rest_c_str())) {
                                     //If the uni-gram probability has been parsed, then read the next token which should be the word itself
                                     if (text.get_first_tab(word)) {
                                         //We read the word and so we are done reading this uni-gram the rest is irrelevant
