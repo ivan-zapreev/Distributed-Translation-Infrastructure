@@ -124,7 +124,7 @@ namespace uva {
                     BASE::m_query.m_gram.set_m_gram_from_text(text);
 
                     //Clean the probability entries
-                    memset(BASE::m_query.m_probs, ZERO_PROB_WEIGHT, sizeof (TLogProbBackOff) * MAX_LEVEL);
+                    memset(BASE::m_query.m_probs, 0, sizeof (TLogProbBackOff) * MAX_LEVEL);
                     //Clean the payload pointer entries
                     memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
 
