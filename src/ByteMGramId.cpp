@@ -159,16 +159,18 @@ namespace uva {
                      * the end (reverse the word order) as this can potentially
                      * increase speed of the comparison operation.
                      * 
+                     * @param IS_ALLOCATE a flag that indicates whether we need to allocate new memory
                      * @param word_ids the pointer to the array of word ids
                      * @param num_word_ids the number of tokens in the M-gram
                      * @param m_p_gram_id the pointer to the data storage to be initialized.
-                     * If (*m_p_p_gram_id == NULL) new memory will be allocated for the id, otherwise the
+                     * If (IS_ALLOCATE == true) new memory will be allocated for the id, otherwise the
                      * pointer will be used to store the id. It is then assumed that there is enough memory
                      * allocated to store the id. For an M-gram it is (4*M) bytes that is needed to store
                      * the longed M-gram id.
                      * @return the number of bytes in the m-gram id
                      */
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    template<bool IS_ALLOCATE>
                     uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::create_m_gram_id(const TWordIdType * word_ids,
                             const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id) {
                         //Do the sanity check if needed
@@ -178,12 +180,12 @@ namespace uva {
                                 std::to_string(M_GRAM_LEVEL_5) + string("]"));
 
                         //Get the id len in bytes
-                        static const uint8_t ID_TYPE_LEN_BYTES = M_GRAM_ID_TYPE_LEN_BYTES[num_word_ids];
+                        static const uint8_t TYPE_LEN_BYTES = ID_TYPE_LEN_BYTES[num_word_ids];
 
-                        uint8_t id_len_bytes = ID_TYPE_LEN_BYTES;
+                        uint8_t id_len_bytes = TYPE_LEN_BYTES;
 
                         LOG_DEBUG3 << "Creating the " << SSTR(num_word_ids) << "-gram id with "
-                                << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES) << END_LOG;
+                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES) << END_LOG;
 
                         //Obtain the word ids and their lengths in bytes and
                         //the total length in bytes needed to store the key
@@ -193,7 +195,7 @@ namespace uva {
                         LOG_DEBUG3 << "Total len. in bytes: " << SSTR((uint32_t) id_len_bytes) << END_LOG;
 
                         //Allocate the id memory if there was nothing pre-allocated yet
-                        if (m_p_gram_id == NULL) {
+                        if (IS_ALLOCATE) {
                             //Allocate memory
                             m_p_gram_id = new uint8_t[id_len_bytes];
                             LOG_DEBUG3 << "Created a Byte_M_Gram_Id: " << SSTR((void *) m_p_gram_id) << END_LOG;
@@ -204,13 +206,13 @@ namespace uva {
                         //Determine the type id value from the bit lengths of the words
                         uint32_t id_type_value = 0;
                         gram_id_byte_len_2_type(num_word_ids, len_bytes, id_type_value);
-                        LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << (uint32_t) ID_TYPE_LEN_BYTES
+                        LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << (uint32_t) TYPE_LEN_BYTES
                                 << ", id_type_value: " << id_type_value << END_LOG;
 
                         //Append the id type to the M-gram id
                         uint8_t to_byte_pos = 0;
-                        copy_end_bytes_to_pos(id_type_value, ID_TYPE_LEN_BYTES, m_p_gram_id, to_byte_pos);
-                        to_byte_pos += ID_TYPE_LEN_BYTES;
+                        copy_end_bytes_to_pos(id_type_value, TYPE_LEN_BYTES, m_p_gram_id, to_byte_pos);
+                        to_byte_pos += TYPE_LEN_BYTES;
 
                         //Append the word id meaningful bits to the id in reverse order
                         for (int idx = (num_word_ids - 1); idx >= 0; --idx) {
@@ -219,15 +221,24 @@ namespace uva {
                         }
 
                         LOG_DEBUG3 << "Finished making the " << SSTR(num_word_ids) << "-gram id with "
-                                << "id type length: " << SSTR((uint32_t) ID_TYPE_LEN_BYTES)
+                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES)
                                 << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
-                        
+
                         return id_len_bytes;
                     }
 
                     //Make sure at least the following templates are instantiated
                     template class Byte_M_Gram_Id<uint32_t, M_GRAM_LEVEL_MAX>;
+                    template uint8_t Byte_M_Gram_Id<uint32_t, M_GRAM_LEVEL_MAX>::create_m_gram_id<true>(const uint32_t * word_ids,
+                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+                    template uint8_t Byte_M_Gram_Id<uint32_t, M_GRAM_LEVEL_MAX>::create_m_gram_id<false>(const uint32_t * word_ids,
+                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+
                     template class Byte_M_Gram_Id<uint64_t, M_GRAM_LEVEL_MAX>;
+                    template uint8_t Byte_M_Gram_Id<uint64_t, M_GRAM_LEVEL_MAX>::create_m_gram_id<true>(const uint64_t * word_ids,
+                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+                    template uint8_t Byte_M_Gram_Id<uint64_t, M_GRAM_LEVEL_MAX>::create_m_gram_id<false>(const uint64_t * word_ids,
+                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
                 }
             }
         }

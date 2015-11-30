@@ -90,18 +90,21 @@ namespace uva {
                     class Byte_M_Gram_Id {
                     public:
 
+                        //Stores ther number of bytes needed to store a word id
+                        static constexpr uint8_t NUM_BYTES_WORD_ID = sizeof (TWordIdType);
+
                         /**
                          * Stores the m-gram id multipliers multipliers up to and including level 7
                          */
                         static constexpr uint32_t NUMBER_ID_TYPES_PER_LEVEL[] = {
-                            const_expr::power(sizeof (TWordIdType), 0),
-                            const_expr::power(sizeof (TWordIdType), 1),
-                            const_expr::power(sizeof (TWordIdType), 2),
-                            const_expr::power(sizeof (TWordIdType), 3),
-                            const_expr::power(sizeof (TWordIdType), 4),
-                            const_expr::power(sizeof (TWordIdType), 5),
-                            const_expr::power(sizeof (TWordIdType), 6),
-                            const_expr::power(sizeof (TWordIdType), 7)
+                            const_expr::power(NUM_BYTES_WORD_ID, 0),
+                            const_expr::power(NUM_BYTES_WORD_ID, 1),
+                            const_expr::power(NUM_BYTES_WORD_ID, 2),
+                            const_expr::power(NUM_BYTES_WORD_ID, 3),
+                            const_expr::power(NUM_BYTES_WORD_ID, 4),
+                            const_expr::power(NUM_BYTES_WORD_ID, 5),
+                            const_expr::power(NUM_BYTES_WORD_ID, 6),
+                            const_expr::power(NUM_BYTES_WORD_ID, 7)
                         };
 
                         //Allows to compute the byte length of the id type if the word ids are of
@@ -111,9 +114,10 @@ namespace uva {
                         //The number of bits needed to store the type is ceil(log_2(2,097,152)/8) = 3
 #define N_GRAM_ID_TYPE_LEN_BYTES(LEVEL) VALUE_LEN_BYTES(NUMBER_ID_TYPES_PER_LEVEL[(LEVEL)])
 
-                        //The length of the M-gram id types in bits depending on the M-Gram level starting from 2.
-                        static constexpr uint8_t M_GRAM_ID_TYPE_LEN_BYTES[] = {
-                            0, 0,
+                        //The length of the M-gram id types in bits depending on the M-Gram level starting from 1.
+                        static constexpr uint8_t ID_TYPE_LEN_BYTES[] = {
+                            0,
+                            N_GRAM_ID_TYPE_LEN_BYTES(1),
                             N_GRAM_ID_TYPE_LEN_BYTES(2),
                             N_GRAM_ID_TYPE_LEN_BYTES(3),
                             N_GRAM_ID_TYPE_LEN_BYTES(4),
@@ -126,24 +130,28 @@ namespace uva {
                         //type TWordIdType and there is NUMBER of them. For example if TWordIdType
                         //Is uint64_t and there is 7 word ids of that type then:
                         //7 TWordIdType values for 7 word ids, plus the memory needed to store type
-#define N_GRAM_ID_MAX_LEN_BYTES(LEVEL)  static_cast<uint8_t> ((LEVEL) * sizeof (TWordIdType) + M_GRAM_ID_TYPE_LEN_BYTES[LEVEL])
+#define MAX_N_GRAM_ID_LEN_BYTES(LEVEL)  static_cast<uint8_t> ((LEVEL) * NUM_BYTES_WORD_ID + ID_TYPE_LEN_BYTES[LEVEL])
 
                         //Stores the maximum number of bits up to and including M-grams
-                        //of level 5.  We use sizeof (TWordIdType) as each word_id is of type
+                        //of level 7.  We use sizeof (TWordIdType) as each word_id is of type
                         //TWordIdType, and the maximum number of bits is thus defined by the
                         //number of word_ids in the M-gram and their max size in bytes.
-                        static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
-                            0, 0,
-                            N_GRAM_ID_MAX_LEN_BYTES(2),
-                            N_GRAM_ID_MAX_LEN_BYTES(3),
-                            N_GRAM_ID_MAX_LEN_BYTES(4),
-                            N_GRAM_ID_MAX_LEN_BYTES(5),
-                            N_GRAM_ID_MAX_LEN_BYTES(6),
-                            N_GRAM_ID_MAX_LEN_BYTES(7)
+                        static constexpr uint8_t MAX_ID_LEN_BYTES[] = {
+                            0,
+                            MAX_N_GRAM_ID_LEN_BYTES(1),
+                            MAX_N_GRAM_ID_LEN_BYTES(2),
+                            MAX_N_GRAM_ID_LEN_BYTES(3),
+                            MAX_N_GRAM_ID_LEN_BYTES(4),
+                            MAX_N_GRAM_ID_LEN_BYTES(5),
+                            MAX_N_GRAM_ID_LEN_BYTES(6),
+                            MAX_N_GRAM_ID_LEN_BYTES(7)
                         };
 
                         //Allows to declare the stack allocated m-gram id for the given level and with the given name
-#define DECLARE_STACK_GRAM_ID(type, name, level) T_Gram_Id_Data_Elem name[type::M_GRAM_MAX_ID_LEN_BYTES[(level)]];
+#define DECLARE_STACK_GRAM_ID(type, name, level) T_Gram_Id_Data_Elem name[type::MAX_ID_LEN_BYTES[(level)]];
+
+                        //Stores the mapping from the m-gram id lengths into the id type value, is pre-computed
+#include "ByteMGramIdTables.hpp"
 
                         /**
                          * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
@@ -158,6 +166,7 @@ namespace uva {
                          * @param m_p_gram_id the pointer to the data storage to be initialized
                          * @return the number of bytes in the m-gram id
                          */
+                        template<bool IS_ALLOCATE>
                         static uint8_t create_m_gram_id(const TWordIdType * word_ids,
                                 const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
 
@@ -176,7 +185,7 @@ namespace uva {
                                     + std::to_string(M_GRAM_LEVEL_6) + string("], see M_GRAM_MAX_ID_LEN_BYTES array!"));
 
                             //Allocate maximum memory that could be needed to store the given M-gram level id
-                            m_gram_id::allocate_m_gram_id(m_p_gram_id, M_GRAM_MAX_ID_LEN_BYTES[level]);
+                            m_gram_id::allocate_m_gram_id(m_p_gram_id, MAX_ID_LEN_BYTES[level]);
                         }
 
                         /**
@@ -234,23 +243,35 @@ namespace uva {
                          */
                         template<TModelLevel CURR_LEVEL>
                         static inline void gram_id_type_2_byte_len(uint32_t id_type, uint8_t & id_len_bytes) {
-                            //Compute the M-gram id length from the M-gram id type.
-                            //Here we use the pre-computed multipliers we add the
-                            //final bits at the end of the function.
-                            uint8_t word_len_bypes = 0;
-                            for (int idx = (CURR_LEVEL - 1); idx >= 0; --idx) {
+                            LOG_DEBUG3 << "Computing the " << SSTR(CURR_LEVEL) << "-gram id len in bytes" << END_LOG;
 
-                                word_len_bypes = (uint8_t) (id_type / NUMBER_ID_TYPES_PER_LEVEL[idx]);
-
-                                LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(NUMBER_ID_TYPES_PER_LEVEL[idx])
-                                        << " =  " << SSTR((uint32_t) word_len_bypes) << END_LOG;
-
-                                id_type = (uint8_t) (id_type % NUMBER_ID_TYPES_PER_LEVEL[idx]);
-                                id_len_bytes += word_len_bypes;
+                            //Depending on the level return the pre-computed value
+                            switch (CURR_LEVEL) {
+                                case M_GRAM_LEVEL_5:
+                                    id_len_bytes += LEVEL_5_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                case M_GRAM_LEVEL_4:
+                                    id_len_bytes += LEVEL_4_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                case M_GRAM_LEVEL_3:
+                                    id_len_bytes += LEVEL_3_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                case M_GRAM_LEVEL_2:
+                                    id_len_bytes += LEVEL_2_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                case M_GRAM_LEVEL_6:
+                                    id_len_bytes += LEVEL_6_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                case M_GRAM_LEVEL_7:
+                                    id_len_bytes += LEVEL_7_GRAM_TO_BYTE_LEN[id_type];
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(CURR_LEVEL) +
+                                            string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
+                                            std::to_string(M_GRAM_LEVEL_7) + string("], insufficient data!"));
                             }
-                            //Note that in the loop above we have "coeff = len_bits[idx] - 1"
-                            //Therefore, here we add the number of tokens to account for this -1's
-                            id_len_bytes += (uint8_t) CURR_LEVEL;
+
+                            LOG_DEBUG3 << "Resulting len in bytes = " << SSTR(id_len_bytes) << END_LOG;
                         }
 
                         /**
@@ -265,20 +286,34 @@ namespace uva {
                          * @param id_type [out] the resulting id type the initial value is expected to be 0
                          */
                         static inline void gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes, uint32_t & id_type) {
-                            //Do the sanity check for against overflows
-                            ASSERT_SANITY_THROW((gram_level > M_GRAM_LEVEL_5), string("Unsupported m-gram level: ") +
-                                    std::to_string(gram_level) + string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) +
-                                    string(", ") + std::to_string(M_GRAM_LEVEL_6) + string("], insufficient multipliers!"));
-
                             LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
 
-                            //Compute the M-gram id type. Here we use the pre-computed multipliers
-                            for (size_t idx = 0; idx < gram_level; ++idx) {
-                                LOG_DEBUG3 << ((uint32_t) len_bytes[idx] - 1) << " * " << NUMBER_ID_TYPES_PER_LEVEL[idx] << " =  "
-                                        << ((uint32_t) len_bytes[idx] - 1) * NUMBER_ID_TYPES_PER_LEVEL[idx] << END_LOG;
-
-                                id_type += ((uint32_t) len_bytes[idx] - 1) * NUMBER_ID_TYPES_PER_LEVEL[idx];
+                            //Depending on the level return the pre-computed value
+                            switch (gram_level) {
+                                case M_GRAM_LEVEL_5:
+                                    id_type = LEVEL_5_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]];
+                                    break;
+                                case M_GRAM_LEVEL_4:
+                                    id_type = LEVEL_4_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]];
+                                    break;
+                                case M_GRAM_LEVEL_3:
+                                    id_type = LEVEL_3_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]];
+                                    break;
+                                case M_GRAM_LEVEL_2:
+                                    id_type = LEVEL_2_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]];
+                                    break;
+                                case M_GRAM_LEVEL_6:
+                                    id_type = LEVEL_6_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]];
+                                    break;
+                                case M_GRAM_LEVEL_7:
+                                    id_type = LEVEL_7_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]][len_bytes[6]];
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(gram_level) +
+                                            string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
+                                            std::to_string(M_GRAM_LEVEL_7) + string("], insufficient data!"));
                             }
+
                             LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                         };
 
@@ -327,13 +362,53 @@ namespace uva {
                     };
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::M_GRAM_MAX_ID_LEN_BYTES[];
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::NUM_BYTES_WORD_ID;
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::M_GRAM_ID_TYPE_LEN_BYTES[];
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::MAX_ID_LEN_BYTES[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::ID_TYPE_LEN_BYTES[];
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::NUMBER_ID_TYPES_PER_LEVEL[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_2_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_3_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_4_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_5_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                    
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_7_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_2_GRAM_TO_BYTE_LEN[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_3_GRAM_TO_BYTE_LEN[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_4_GRAM_TO_BYTE_LEN[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_5_GRAM_TO_BYTE_LEN[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_BYTE_LEN[];
+
+                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_7_GRAM_TO_BYTE_LEN[];
+
                 }
             }
         }

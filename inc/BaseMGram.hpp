@@ -79,6 +79,9 @@ namespace uva {
                     //The type of the word id
                     typedef typename WordIndexType::TWordIdType TWordIdType;
 
+                    //Declare the shorthand for the m-gram id type
+                    typedef Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> TM_Gram_Id;
+
                     //Define the corresponding M-gram id type
                     typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
 
@@ -92,13 +95,14 @@ namespace uva {
                     T_Base_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
                     : m_word_index(word_index), m_actual_level(actual_level),
                     m_actual_end_word_idx(actual_level - 1) {
-                        if (DO_SANITY_CHECKS && (m_actual_level > MAX_LEVEL_CAPACITY)) {
-                            stringstream msg;
-                            msg << "The provided actual level: " << SSTR(m_actual_level)
-                                    << " exceeds the maximum level capacity: "
-                                    << SSTR(MAX_LEVEL_CAPACITY) << " of the T_Base_M_Gram class!";
-                            throw Exception(msg.str());
-                        }
+                        //Perform sanity check if needed 
+                        ASSERT_SANITY_THROW((m_actual_level > MAX_LEVEL_CAPACITY),
+                                string("The provided actual level: ") + std::to_string(m_actual_level) +
+                                string(" exceeds the maximum level capacity: ") +
+                                std::to_string(MAX_LEVEL_CAPACITY) + string(" of the T_Base_M_Gram class!"));
+
+                        //Initialize the m-gram id pointer
+                        m_gram_id_ptr = &m_gram_id[0];
                     }
 
                     /**
@@ -111,6 +115,8 @@ namespace uva {
                     T_Base_M_Gram(WordIndexType & word_index)
                     : m_word_index(word_index), m_actual_level(M_GRAM_LEVEL_UNDEF),
                     m_actual_end_word_idx(M_GRAM_LEVEL_UNDEF) {
+                        //Initialize the m-gram id pointer
+                        m_gram_id_ptr = &m_gram_id[0];
                     }
 
                     /**
@@ -118,6 +124,7 @@ namespace uva {
                      * @return the word index
                      */
                     inline WordIndexType & get_word_index() const {
+
                         return m_word_index;
                     }
 
@@ -126,6 +133,7 @@ namespace uva {
                      * @return the actual m-gram level
                      */
                     inline TModelLevel get_m_gram_level() const {
+
                         return m_actual_level;
                     }
 
@@ -134,6 +142,7 @@ namespace uva {
                      * @return the id of the last word
                      */
                     inline TWordIdType get_end_word_id() const {
+
                         return m_word_ids[m_actual_end_word_idx];
                     }
 
@@ -142,6 +151,7 @@ namespace uva {
                      * @return the index of the begin word
                      */
                     inline TModelLevel get_begin_word_idx() const {
+
                         return m_actual_begin_word_idx;
                     }
 
@@ -150,6 +160,7 @@ namespace uva {
                      * @return the index of the end word
                      */
                     inline TModelLevel get_end_word_idx() const {
+
                         return m_actual_end_word_idx;
                     }
 
@@ -161,6 +172,7 @@ namespace uva {
                      */
                     template<TModelLevel WORD_IDX>
                     inline const TWordIdType * get_word_id_ptr() const {
+
                         return &m_word_ids[WORD_IDX];
                     }
 
@@ -170,6 +182,7 @@ namespace uva {
                      * @return the pointer to the first word id element, 
                      */
                     inline const TWordIdType * word_ids() const {
+
                         return m_word_ids;
                     }
 
@@ -177,6 +190,7 @@ namespace uva {
                      * The basic to string conversion operator for the m-gram
                      */
                     inline operator string() const {
+
                         return tokens_to_string(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
                     };
 
@@ -186,6 +200,7 @@ namespace uva {
                      * @return the resulting word id
                      */
                     inline TWordIdType operator[](const TModelLevel word_idx) const {
+
                         return m_word_ids[word_idx];
                     };
 
@@ -206,13 +221,38 @@ namespace uva {
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        uint8_t len_bytes = T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
+                        uint8_t len_bytes = T_M_Gram_Id::template create_m_gram_id<true>(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                         //Log the result
                         LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id
                                 << ", with the byte length: " << SSTR(len_bytes) << END_LOG;
-                        
+
                         return len_bytes;
+                    }
+
+                    /**
+                     * Allows to create a new m-gram id for the sub-m-gram defined by the given of the method template parameters.
+                     * For the argument reference to the id data pointer the following holds:
+                     * a) If there was no memory allocated for the M-gram id then there will be allocated as much
+                     * as needed to store the given id.
+                     * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
+                     * @param begin_word_idx the index of the first word in the sub-m-gram, indexes start with 0
+                     * @param number_of_words the number of sub-m-gram words
+                     * @param word_ids the list of the word ids for the entire m-gram, where at least the m-gram word
+                     *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
+                     * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
+                     */
+                    inline const T_Gram_Id_Data_Ptr get_m_gram_id_ref(const TModelLevel begin_word_idx, const TModelLevel number_of_words, uint8_t & len_bytes) {
+                        LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
+                                << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
+
+                        //Create the M-gram id from the word ids.
+                        len_bytes = T_M_Gram_Id::template create_m_gram_id<false>(&m_word_ids[begin_word_idx], number_of_words, m_gram_id_ptr);
+
+                        //Log the result
+                        LOG_DEBUG << "Initialized a new " << number_of_words << "-gram id of byte length: " << SSTR(len_bytes) << END_LOG;
+
+                        return m_gram_id_ptr;
                     }
 
                 protected:
@@ -227,6 +267,11 @@ namespace uva {
 
                     //Stores the actual m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
                     TModelLevel m_actual_level;
+
+                    //Declare the m-gram id container
+                    DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, MAX_LEVEL_CAPACITY);
+                    //Declare the m-gram id pointer
+                    T_Gram_Id_Data_Ptr m_gram_id_ptr;
 
                     //These variables store the actual begin and end word index
                     //for all the words of this M-gram stored in the internal arrays

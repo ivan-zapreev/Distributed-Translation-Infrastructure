@@ -328,12 +328,9 @@ namespace uva {
                     if (ref.size() > 0) {
                         LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
 
-                        //Compute the m-gram query id
-                        DECLARE_STACK_GRAM_ID(TM_Gram_Id, mgram_id, curr_level);
-                        T_Gram_Id_Data_Ptr id_ptr = &mgram_id[0];
-
-                        //Create the M-gram id from the word ids.
-                        const uint8_t len_bytes = query.m_gram.create_m_gram_id(query.m_begin_word_idx, curr_level, id_ptr);
+                        //Obtain the m-gram id and its length
+                        uint8_t len_bytes;
+                        T_Gram_Id_Data_Ptr id_ptr = query.m_gram.get_m_gram_id_ref(query.m_begin_word_idx, curr_level, len_bytes);
 
                         //Unroll the search into several specific cases, note the order is trying
                         //to put the most relevant cases first, it gives micro performance boost.
@@ -398,7 +395,7 @@ namespace uva {
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
 
                         //Get one of the id length in bytes
-                        const uint8_t ID_TYPE_LEN_BYTES = TM_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[CURR_LEVEL];
+                        const uint8_t ID_TYPE_LEN_BYTES = TM_Gram_Id::ID_TYPE_LEN_BYTES[CURR_LEVEL];
 
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
