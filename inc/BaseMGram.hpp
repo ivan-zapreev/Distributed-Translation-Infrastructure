@@ -221,7 +221,7 @@ namespace uva {
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        uint8_t len_bytes = T_M_Gram_Id::template create_m_gram_id<true>(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
+                        uint8_t len_bytes = T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                         //Log the result
                         LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id
@@ -247,7 +247,7 @@ namespace uva {
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        len_bytes = T_M_Gram_Id::template create_m_gram_id<false>(&m_word_ids[begin_word_idx], number_of_words, m_gram_id_ptr);
+                        len_bytes = T_M_Gram_Id::compute_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, m_gram_id_ptr);
 
                         //Log the result
                         LOG_DEBUG << "Initialized a new " << number_of_words << "-gram id of byte length: " << SSTR(len_bytes) << END_LOG;

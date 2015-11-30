@@ -337,7 +337,7 @@ if(sizeof(value_type) == 2) { \
                  * @param size the number of elements in the array
                  * @return the string representation in bits
                  */
-                inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
+                static inline string bytes_to_bit_string(const uint8_t * bytes, const size_t size) {
                     stringstream data;
                     data << "(";
                     for (size_t idx = 0; idx < size; ++idx) {
@@ -413,7 +413,7 @@ if(sizeof(value_type) == 2) { \
                  * @param source the data to be placed
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                inline void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
+                static inline void store_bytes(uint8_t * p_target, const DATA_TYPE source) {
                     //We do not care about endian type here as we just will store the data
                     //and once it is extracted the order of bytes will be restored 
                     const uint8_t * p_source = static_cast<const uint8_t *> (static_cast<const void *> (& source));
@@ -429,7 +429,7 @@ if(sizeof(value_type) == 2) { \
                  * @param p_source the array to extract data from
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                inline DATA_TYPE & extract_bytes(const uint8_t * p_source) {
+                static inline DATA_TYPE & extract_bytes(const uint8_t * p_source) {
                     return *reinterpret_cast<DATA_TYPE *> (const_cast<uint8_t * >(p_source + BEGIN_BYTE_IDX));
                 }
 
@@ -441,7 +441,7 @@ if(sizeof(value_type) == 2) { \
                  * @param target the data to store the extracted
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
-                inline void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
+                static inline void extract_bytes(const uint8_t * p_source, DATA_TYPE & target) {
                     //We do not care about endian type here as we just will store the data
                     //and once it is extracted the order of bytes will be restored 
 

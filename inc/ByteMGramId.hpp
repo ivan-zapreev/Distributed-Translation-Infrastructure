@@ -154,21 +154,27 @@ namespace uva {
 #include "ByteMGramIdTables.hpp"
 
                         /**
-                         * This method allows to re-initialize this class with a new M-gram id for the given M-gram.
-                         * a) If there was no memory allocated for the M-gram id then there will be allocated as much
-                         * as needed to store the given id.
-                         * b) If there was memory allocated then no re-allocation will be done, then it is assumed
-                         * theat this instance was created with the one argument constructor of this class allocated
-                         * maximum needed memory for this level. Then the argument M-gram level must be smaller or
-                         * equal to  the level this object was created with.
+                         * This method allows to create new M-gram id for the given M-gram.
+                         * There should be no memory allocated for the M-gram id. This method
+                         * will allocate as much as needed to store the given id.
                          * @param word_ids the pointer to the array of word ids
                          * @param num_word_ids the number of word ids
                          * @param m_p_gram_id the pointer to the data storage to be initialized
                          * @return the number of bytes in the m-gram id
                          */
-                        template<bool IS_ALLOCATE>
                         static uint8_t create_m_gram_id(const TWordIdType * word_ids,
                                 const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+
+                        /**
+                         * This method allows to compute the m-gram id and set it
+                         * into the pre-allocated memory given by a pointer.
+                         * @param word_ids the pointer to the array of word ids
+                         * @param num_word_ids the number of word ids
+                         * @param m_p_gram_id the pointer to the data storage to be initialized
+                         * @return the number of bytes in the m-gram id
+                         */
+                        static uint8_t compute_m_gram_id(const TWordIdType * word_ids,
+                                const uint8_t num_word_ids, T_Gram_Id_Data_Ptr m_p_gram_id);
 
                         /**
                          * The basic constructor that allocates maximum memory
@@ -234,81 +240,62 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to compute the byte length for the id of the given type
+                         * Allows to compute the byte length for the id of the given type.
+                         * Can compute the byte length for the M-grams until ( and including) M = 6.
                          * @param CURR_LEVEL the M-Gram level M
                          * @param id_type the type id
-                         * @param id_len_bytes [out] the total byte length to store the id
-                         *                           of this type, this input value will
-                         *                           be incremented with the byte lengths.
+                         * @return the total byte length to store the id of this type.
                          */
                         template<TModelLevel CURR_LEVEL>
-                        static inline void gram_id_type_2_byte_len(uint32_t id_type, uint8_t & id_len_bytes) {
+                        static inline const uint8_t & gram_id_type_2_byte_len(uint32_t id_type) {
                             LOG_DEBUG3 << "Computing the " << SSTR(CURR_LEVEL) << "-gram id len in bytes" << END_LOG;
 
                             //Depending on the level return the pre-computed value
                             switch (CURR_LEVEL) {
                                 case M_GRAM_LEVEL_5:
-                                    id_len_bytes += LEVEL_5_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
+                                    return LEVEL_5_GRAM_TO_BYTE_LEN[id_type];
                                 case M_GRAM_LEVEL_4:
-                                    id_len_bytes += LEVEL_4_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
+                                    return LEVEL_4_GRAM_TO_BYTE_LEN[id_type];
                                 case M_GRAM_LEVEL_3:
-                                    id_len_bytes += LEVEL_3_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
+                                    return LEVEL_3_GRAM_TO_BYTE_LEN[id_type];
                                 case M_GRAM_LEVEL_2:
-                                    id_len_bytes += LEVEL_2_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
+                                    return LEVEL_2_GRAM_TO_BYTE_LEN[id_type];
                                 case M_GRAM_LEVEL_6:
-                                    id_len_bytes += LEVEL_6_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
+                                    return LEVEL_6_GRAM_TO_BYTE_LEN[id_type];
                                 default:
                                     THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(CURR_LEVEL) +
                                             string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
                                             std::to_string(M_GRAM_LEVEL_6) + string("], insufficient data!"));
                             }
-
-                            LOG_DEBUG3 << "Resulting len in bytes = " << SSTR(id_len_bytes) << END_LOG;
                         }
 
                         /**
                          * This method is needed to compute the id type identifier.
-                         * Can compute the id type for M-grams until (including) M = 5
-                         * The type is computed as in a 32-based numeric system, e.g. for M==5:
-                         *          (len_bits[0]-1)*32^0 + (len_bits[1]-1)*32^1 +
-                         *          (len_bits[2]-1)*32^2 + (len_bits[3]-1)*32^3 +
-                         *          (len_bits[4]-1)*32^4
+                         * Can compute the id type for the M-grams until (and including) M = 6
                          * @param gram_level the number of word ids
                          * @param len_bytes the bytes needed per word id
-                         * @param id_type [out] the resulting id type the initial value is expected to be 0
+                         * @param return the resulting id type the initial value is expected to be 0
                          */
-                        static inline void gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes, uint32_t & id_type) {
+                        static inline const uint32_t &  gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes) {
                             LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
 
                             //Depending on the level return the pre-computed value
                             switch (gram_level) {
                                 case M_GRAM_LEVEL_5:
-                                    id_type = LEVEL_5_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]];
-                                    break;
+                                    return LEVEL_5_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]];
                                 case M_GRAM_LEVEL_4:
-                                    id_type = LEVEL_4_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]];
-                                    break;
+                                    return LEVEL_4_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]];
                                 case M_GRAM_LEVEL_3:
-                                    id_type = LEVEL_3_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]];
-                                    break;
+                                    return LEVEL_3_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]];
                                 case M_GRAM_LEVEL_2:
-                                    id_type = LEVEL_2_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]];
-                                    break;
+                                    return LEVEL_2_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]];
                                 case M_GRAM_LEVEL_6:
-                                    id_type = LEVEL_6_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]];
-                                    break;
+                                    return LEVEL_6_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]];
                                 default:
                                     THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(gram_level) +
                                             string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
                                             std::to_string(M_GRAM_LEVEL_6) + string("], insufficient data!"));
                             }
-
-                            LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
                         };
 
                         /**
@@ -331,8 +318,7 @@ namespace uva {
                                 copy_begin_bytes_to_end(one, id_type_len_bytes, type_one);
 
                                 //Compute the length of the remainder of the m-gram id 
-                                uint8_t id_len_bytes = 0;
-                                gram_id_type_2_byte_len<CURR_LEVEL>(type_one, id_len_bytes);
+                                const uint8_t & id_len_bytes = gram_id_type_2_byte_len<CURR_LEVEL>(type_one);
 
                                 //Compare the remainders of the m-gram ids
                                 result = memcmp(one + id_type_len_bytes, two + id_type_len_bytes, id_len_bytes);
