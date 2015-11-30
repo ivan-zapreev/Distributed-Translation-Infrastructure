@@ -174,10 +174,10 @@ namespace uva {
                     uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::create_m_gram_id(const TWordIdType * word_ids,
                             const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id) {
                         //Do the sanity check if needed
-                        ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_7),
+                        ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_6),
                                 string("create_m_gram_id: Unsupported m-gram level: ") + std::to_string(num_word_ids) +
                                 string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
-                                std::to_string(M_GRAM_LEVEL_7) + string("]"));
+                                std::to_string(M_GRAM_LEVEL_6) + string("]"));
 
                         //Get the id len in bytes
                         static const uint8_t TYPE_LEN_BYTES = ID_TYPE_LEN_BYTES[num_word_ids];

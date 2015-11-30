@@ -262,13 +262,10 @@ namespace uva {
                                 case M_GRAM_LEVEL_6:
                                     id_len_bytes += LEVEL_6_GRAM_TO_BYTE_LEN[id_type];
                                     break;
-                                case M_GRAM_LEVEL_7:
-                                    id_len_bytes += LEVEL_7_GRAM_TO_BYTE_LEN[id_type];
-                                    break;
                                 default:
                                     THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(CURR_LEVEL) +
                                             string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
-                                            std::to_string(M_GRAM_LEVEL_7) + string("], insufficient data!"));
+                                            std::to_string(M_GRAM_LEVEL_6) + string("], insufficient data!"));
                             }
 
                             LOG_DEBUG3 << "Resulting len in bytes = " << SSTR(id_len_bytes) << END_LOG;
@@ -305,13 +302,10 @@ namespace uva {
                                 case M_GRAM_LEVEL_6:
                                     id_type = LEVEL_6_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]];
                                     break;
-                                case M_GRAM_LEVEL_7:
-                                    id_type = LEVEL_7_GRAM_TO_TYPE_LEN[len_bytes[0]][len_bytes[1]][len_bytes[2]][len_bytes[3]][len_bytes[4]][len_bytes[5]][len_bytes[6]];
-                                    break;
                                 default:
                                     THROW_EXCEPTION(string("Unsupported m-gram level: ") + std::to_string(gram_level) +
                                             string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) + string(", ") +
-                                            std::to_string(M_GRAM_LEVEL_7) + string("], insufficient data!"));
+                                            std::to_string(M_GRAM_LEVEL_6) + string("], insufficient data!"));
                             }
 
                             LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
@@ -387,9 +381,6 @@ namespace uva {
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
-                    
-                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_7_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_2_GRAM_TO_BYTE_LEN[];
@@ -405,9 +396,6 @@ namespace uva {
 
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_BYTE_LEN[];
-
-                    template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                    constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_7_GRAM_TO_BYTE_LEN[];
 
                 }
             }

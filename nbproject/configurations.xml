@@ -1190,13 +1190,13 @@
             <pElem>ext</pElem>
             <pElem>inc</pElem>
           </incDir>
-          <commandLine>-O0 -g -std=c++0x -m64 -pg -Wall -Werror</commandLine>
+          <commandLine>-O0 -g -std=c++0x -m64 -pg -Wall -Werror -fno-omit-frame-pointer</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/back-off-language-model-smt</output>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-g -O0 -m64 -pg -Wall</commandLine>
+          <commandLine>-g -O0 -m64 -pg -Wall -fno-omit-frame-pointer</commandLine>
         </linkerTool>
       </compileType>
       <item path="./inc/AWordIndex.hpp" ex="false" tool="3" flavor2="0">
