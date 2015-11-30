@@ -249,13 +249,13 @@ namespace uva {
                  * ToDo: Try to impose the string length limit and test the performance
                  * on reading large ARPA files!
                  * 
-                 * @param r the type to read into
+                 * @param res the type to read into
                  * @param p the pointer to read from,
                  * @return true if the function thinks it successfully parsed the
                  * input, otherwise false.
                  */
-                inline bool fast_s_to_f(float & r, const char *p) {
-                    r = 0.0;
+                inline bool fast_s_to_f(float & res, const char *p) {
+                    uint32_t int_part = 0.0;
                     int c = 0; // counter to check how many numbers we got!
 
                     // Get the sign!
@@ -270,23 +270,24 @@ namespace uva {
 
                     // Get the digits before decimal point
                     while (valid_digit(*p)) {
-                        r = (r * 10.0f) + (*p - '0');
+                        int_part = (int_part * 10) + (*p - '0');
                         ++p;
                         ++c;
                     }
+                    res = int_part;
 
                     // Get the digits after decimal point
                     if (*p == '.') {
-                        float f = 0.0;
-                        float scale = 1.0;
+                        uint32_t dec_part = 0;
+                        uint32_t scale = 1;
                         ++p;
                         while (valid_digit(*p)) {
-                            f = (f * 10.0f) + (*p - '0');
+                            dec_part = (dec_part * 10) + (*p - '0');
                             ++p;
-                            scale *= 10.0f;
+                            scale *= 10;
                             ++c;
                         }
-                        r += f * 1.0f/scale;
+                        res += dec_part * ( 1.0f / scale );
                     }
 
                     // FIRST CHECK:
@@ -311,7 +312,7 @@ namespace uva {
                         // Get exponent
                         c = 0;
                         while (valid_digit(*p)) {
-                            e = (e * 10.0f) + (*p - '0');
+                            e = (e * 10) + (*p - '0');
                             ++p;
                             ++c;
                         }
@@ -325,29 +326,23 @@ namespace uva {
                             return false;
                         } // we got no  exponent! this was not intended!!
 
-                        float scaleE = 1.0;
+                        uint32_t scale_exp = 1.0;
                         // Calculate scaling factor.
-
-                        while (e >= 50) {
-                            scaleE *= 1E50;
-                            e -= 50;
-                        }
-                        //while (e >=  8) { scaleE *= 1E8;  e -=  8; }
                         while (e > 0) {
-                            scaleE *= 10.0f;
+                            scale_exp *= 10;
                             e -= 1;
                         }
 
                         if (negE) {
-                            r *= 1.0f/scaleE;
+                            res *= 1.0f / scale_exp;
                         } else {
-                            r *= scaleE;
+                            res *= scale_exp;
                         }
                     }
 
                     // Apply sign to number
                     if (neg) {
-                        r = -r;
+                        res = -res;
                     }
 
                     return true;
