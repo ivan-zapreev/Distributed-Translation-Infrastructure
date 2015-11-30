@@ -184,14 +184,11 @@ namespace uva {
                          */
                         static inline void allocate_byte_m_gram_id(const TModelLevel level, T_Gram_Id_Data_Ptr & m_p_gram_id) {
                             //Do the sanity check for against overflows
-                            if (DO_SANITY_CHECKS && (level > M_GRAM_LEVEL_6)) {
-                                stringstream msg;
-                                msg << "Byte_M_Gram_Id: Unsupported m-gram level: "
-                                        << SSTR(level) << ", must be within ["
-                                        << SSTR(M_GRAM_LEVEL_2) << ", "
-                                        << SSTR(M_GRAM_LEVEL_6) << "], see M_GRAM_MAX_ID_LEN_BYTES array!";
-                                throw Exception(msg.str());
-                            }
+                            ASSERT_SANITY_THROW((level > M_GRAM_LEVEL_6),
+                                    string("Byte_M_Gram_Id: Unsupported m-gram level: ")
+                                    + std::to_string(level) + string(", must be within [")
+                                    + std::to_string(M_GRAM_LEVEL_2) + string(", ")
+                                    + std::to_string(M_GRAM_LEVEL_6) + string("], see M_GRAM_MAX_ID_LEN_BYTES array!"));
 
                             //Allocate maximum memory that could be needed to store the given M-gram level id
                             m_gram_id::allocate_m_gram_id(m_p_gram_id, M_GRAM_MAX_ID_LEN_BYTES[level]);
@@ -269,6 +266,35 @@ namespace uva {
                             //Therefore, here we add the number of tokens to account for this -1's
                             id_len_bytes += (uint8_t) CURR_LEVEL;
                         }
+
+                        /**
+                         * This method is needed to compute the id type identifier.
+                         * Can compute the id type for M-grams until (including) M = 5
+                         * The type is computed as in a 32-based numeric system, e.g. for M==5:
+                         *          (len_bits[0]-1)*32^0 + (len_bits[1]-1)*32^1 +
+                         *          (len_bits[2]-1)*32^2 + (len_bits[3]-1)*32^3 +
+                         *          (len_bits[4]-1)*32^4
+                         * @param gram_level the number of word ids
+                         * @param len_bytes the bytes needed per word id
+                         * @param id_type [out] the resulting id type the initial value is expected to be 0
+                         */
+                        static inline void gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes, uint32_t & id_type) {
+                            //Do the sanity check for against overflows
+                            ASSERT_SANITY_THROW((gram_level > M_GRAM_LEVEL_5), string("Unsupported m-gram level: ") +
+                                    std::to_string(gram_level) + string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) +
+                                    string(", ") + std::to_string(M_GRAM_LEVEL_6) + string("], insufficient multipliers!"));
+
+                            LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
+
+                            //Compute the M-gram id type. Here we use the pre-computed multipliers
+                            for (size_t idx = 0; idx < gram_level; ++idx) {
+                                LOG_DEBUG3 << ((uint32_t) len_bytes[idx] - 1) << " * " << M_GRAM_ID_TYPE_MULT[idx] << " =  "
+                                        << ((uint32_t) len_bytes[idx] - 1) * M_GRAM_ID_TYPE_MULT[idx] << END_LOG;
+
+                                id_type += ((uint32_t) len_bytes[idx] - 1) * M_GRAM_ID_TYPE_MULT[idx];
+                            }
+                            LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
+                        };
 
                         /**
                          * This is a fore-declaration of the function that can compare two M-gram ids of the same given level

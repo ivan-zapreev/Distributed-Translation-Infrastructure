@@ -112,36 +112,6 @@ namespace uva {
                         }
                     };
 
-                    /**
-                     * This method is needed to compute the id type identifier.
-                     * Can compute the id type for M-grams until (including) M = 5
-                     * The type is computed as in a 32-based numeric system, e.g. for M==5:
-                     *          (len_bits[0]-1)*32^0 + (len_bits[1]-1)*32^1 +
-                     *          (len_bits[2]-1)*32^2 + (len_bits[3]-1)*32^3 +
-                     *          (len_bits[4]-1)*32^4
-                     * @param gram_level the number of word ids
-                     * @param len_bytes the bytes needed per word id
-                     * @param id_type [out] the resulting id type the initial value is expected to be 0
-                     */
-                    template<typename TWordIdType>
-                    inline void gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes, uint32_t & id_type) {
-                        //Do the sanity check for against overflows
-                        ASSERT_SANITY_THROW((gram_level > M_GRAM_LEVEL_5), string("Unsupported m-gram level: ") +
-                                std::to_string(gram_level) + string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) +
-                                string(", ") + std::to_string(M_GRAM_LEVEL_6) + string("], insufficient multipliers!"));
-
-                        LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
-
-                        //Compute the M-gram id type. Here we use the pre-computed multipliers
-                        for (size_t idx = 0; idx < gram_level; ++idx) {
-                            LOG_DEBUG3 << ((uint32_t) len_bytes[idx] - 1) << " * " << Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_MULT[idx] << " =  "
-                                    << ((uint32_t) len_bytes[idx] - 1) * Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_MULT[idx] << END_LOG;
-
-                            id_type += ((uint32_t) len_bytes[idx] - 1) * Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_MULT[idx];
-                        }
-                        LOG_DEBUG3 << "Resulting id_type = " << SSTR(id_type) << END_LOG;
-                    };
-
                     template<typename TWordIdType>
                     static inline uint8_t compute_byte_lengths(const TWordIdType * word_ids, const TModelLevel num_word_ids, uint8_t * len_bytes) {
                         uint8_t id_len_bytes = 0;
@@ -233,7 +203,7 @@ namespace uva {
 
                         //Determine the type id value from the bit lengths of the words
                         uint32_t id_type_value = 0;
-                        gram_id_byte_len_2_type<TWordIdType>(num_word_ids, len_bytes, id_type_value);
+                        gram_id_byte_len_2_type(num_word_ids, len_bytes, id_type_value);
                         LOG_DEBUG3 << "ID_TYPE_LEN_BYTES: " << (uint32_t) ID_TYPE_LEN_BYTES
                                 << ", id_type_value: " << id_type_value << END_LOG;
 
