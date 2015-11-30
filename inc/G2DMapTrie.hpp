@@ -104,6 +104,7 @@ namespace uva {
             public:
                 typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
                 typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
+                typedef typename WordIndexType::TWordIdType TWordIdType;
 
                 /**
                  * The basic constructor
@@ -294,7 +295,9 @@ namespace uva {
                 }
 
                 //Declare the binary search function inlining the call to compare function.
-                DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(TM_Gram_Id::compare(curr_level, key, array[mid_pos].id), TModelLevel curr_level);
+                DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(
+                        TM_Gram_Id::compare(len_bytes, id_ptr, array[mid_pos].id),
+                        const uint8_t len_bytes, T_Gram_Id_Data_Ptr const & id_ptr);
 
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level
@@ -325,12 +328,12 @@ namespace uva {
                     if (ref.size() > 0) {
                         LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
 
-                        //Compute the query id
+                        //Compute the m-gram query id
                         DECLARE_STACK_GRAM_ID(TM_Gram_Id, mgram_id, curr_level);
-                        T_Gram_Id_Data_Ptr mgram_id_ptr = &mgram_id[0];
+                        T_Gram_Id_Data_Ptr id_ptr = &mgram_id[0];
 
                         //Create the M-gram id from the word ids.
-                        query.m_gram.create_m_gram_id(query.m_begin_word_idx, curr_level, mgram_id_ptr);
+                        const uint8_t len_bytes = query.m_gram.create_m_gram_id(query.m_begin_word_idx, curr_level, id_ptr);
 
                         //Unroll the search into several specific cases, note the order is trying
                         //to put the most relevant cases first, it gives micro performance boost.
@@ -338,7 +341,7 @@ namespace uva {
                             case 2: //If there is two elements, perform an  explicit check
                             {
                                 const typename BUCKET_TYPE::TElemType & elem2 = ref.data()[1];
-                                if (TM_Gram_Id::compare(curr_level, mgram_id_ptr, elem2.id) == 0) {
+                                if (TM_Gram_Id::compare(len_bytes, id_ptr, elem2.id) == 0) {
                                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem2.payload;
                                     //We are now done, the payload is found, can return!
                                     return MGramStatusEnum::GOOD_PRESENT_MGS;
@@ -348,7 +351,7 @@ namespace uva {
                             case 1: //If there is one element, perform an  explicit check
                             {
                                 const typename BUCKET_TYPE::TElemType & elem1 = ref.data()[0];
-                                if (TM_Gram_Id::compare(curr_level, mgram_id_ptr, elem1.id) == 0) {
+                                if (TM_Gram_Id::compare(len_bytes, id_ptr, elem1.id) == 0) {
                                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem1.payload;
                                     //We are now done, the payload is found, can return!
                                     return MGramStatusEnum::GOOD_PRESENT_MGS;
@@ -359,7 +362,7 @@ namespace uva {
                             {
                                 const typename BUCKET_TYPE::TElemType * found_elem_ptr;
                                 if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
-                                        (ref.data(), 0, ref.size() - 1, mgram_id_ptr, found_elem_ptr, curr_level)) {
+                                        (ref.data(), 0, ref.size() - 1, found_elem_ptr, len_bytes, id_ptr)) {
                                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &found_elem_ptr->payload;
                                     return MGramStatusEnum::GOOD_PRESENT_MGS;
                                 }
@@ -393,13 +396,17 @@ namespace uva {
                         LOG_DEBUG1 << "Shrinking the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
 
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
+
+                        //Get one of the id length in bytes
+                        const uint8_t ID_TYPE_LEN_BYTES = TM_Gram_Id::M_GRAM_ID_TYPE_LEN_BYTES[CURR_LEVEL];
+
                         //Order the N-gram array as it is unordered and we will binary search it later!
                         ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
                             LOG_DEBUG1 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::update_progress_bar();
-                                    //Return the result
-                            return TM_Gram_Id::is_less_m_grams_id(CURR_LEVEL, first.id, second.id);
+                            //Return the result
+                            return TM_Gram_Id::template is_less_m_grams_id<CURR_LEVEL>(ID_TYPE_LEN_BYTES, first.id, second.id);
                         });
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
                     }

@@ -93,7 +93,7 @@ namespace uva {
                         /**
                          * Stores the m-gram id multipliers multipliers up to and including level 7
                          */
-                        static constexpr uint32_t gram_id_type_mult[] = {
+                        static constexpr uint32_t M_GRAM_ID_TYPE_MULT[] = {
                             const_expr::power(sizeof (TWordIdType), 0),
                             const_expr::power(sizeof (TWordIdType), 1),
                             const_expr::power(sizeof (TWordIdType), 2),
@@ -147,8 +147,8 @@ namespace uva {
 #define DECLARE_STACK_GRAM_ID(type, name, level) T_Gram_Id_Data_Elem name[type::M_GRAM_MAX_ID_LEN_BYTES[(level)]];
 
                         //Stores the maximum number of bits up to and including M-grams
-                        //of level 5.  We use sizeof (TShortId) as each word_id is of type
-                        //TShortId, and the maximum number of bits is thus defined by the
+                        //of level 5.  We use sizeof (TWordIdType) as each word_id is of type
+                        //TWordIdType, and the maximum number of bits is thus defined by the
                         //number of word_ids in the M-gram and their max size in bytes.
                         static constexpr uint8_t M_GRAM_MAX_ID_LEN_BYTES[] = {
                             0, 0,
@@ -171,9 +171,10 @@ namespace uva {
                          * @param word_ids the pointer to the array of word ids
                          * @param num_word_ids the number of word ids
                          * @param m_p_gram_id the pointer to the data storage to be initialized
-                         * @return true if the M-gram id could be created, otherwise false
+                         * @return the number of bytes in the m-gram id
                          */
-                        static void create_m_gram_id(const TWordIdType * word_ids, const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+                        static uint8_t create_m_gram_id(const TWordIdType * word_ids,
+                                const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
 
                         /**
                          * The basic constructor that allocates maximum memory
@@ -198,46 +199,118 @@ namespace uva {
 
                         /**
                          * Allows to compare two M-Gram ids of a fixed M-gram level
-                         * @param num_words the number of words in the m-gram 
+                         * @param id_len_bytes the minimum total number of bytes in both m-gram ids.
                          * @param m_p_gram_id_one the first M-gram id
                          * @param m_p_gram_id_two the second M-gram id
                          * @return Negative value if one is smaller than two
                          *         Zero if one is equal to two
                          *         Positive value if one is larger than two
                          */
-                        static int compare(const TModelLevel num_words, const T_Gram_Id_Data_Ptr & m_p_gram_id_one, const T_Gram_Id_Data_Ptr & m_p_gram_id_two);
-
-                        /**
-                         * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
-                         * @param one the first M-gram to compare
-                         * @param two the second M-gram to compare
-                         * @param level the M-grams' level M
-                         * @return true if the first M-gram is "smaller" than the second, otherwise false
-                         */
-                        static bool is_equal_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare(level, one, two) == 0);
+                        static inline int compare(const uint8_t id_len_bytes,
+                                const T_Gram_Id_Data_Ptr & m_p_gram_id_one,
+                                const T_Gram_Id_Data_Ptr & m_p_gram_id_two) {
+                            //Compare with the fast system function. Note that, the
+                            //First element of an id is its type, and all of the type
+                            //lengths for the m-gram of a given level is the same.
+                            //The id type defines the lengths of the rest of the id.
+                            //Thus, if the m-gram level is equal then we only get to
+                            //compare the bytes after the id type if the id types are equal.
+                            return memcmp(m_p_gram_id_one, m_p_gram_id_two, id_len_bytes);
                         }
 
                         /**
                          * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                         * @param id_len_bytes the minimum total number of bytes in both m-gram ids.
                          * @param one the first M-gram to compare
                          * @param two the second M-gram to compare
-                         * @param level the M-grams' level M
                          * @return true if the first M-gram is "smaller" than the second, otherwise false
                          */
-                        static bool is_less_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare(level, one, two) < 0);
+                        static inline bool is_equal_m_grams_id(const uint8_t id_len_bytes,
+                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(id_len_bytes, one, two) == 0);
                         }
 
                         /**
                          * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                         * @param id_len_bytes the minimum total number of bytes in both m-gram ids.
                          * @param one the first M-gram to compare
                          * @param two the second M-gram to compare
-                         * @param level the M-grams' level M
+                         * @return true if the first M-gram is "smaller" than the second, otherwise false
+                         */
+                        static inline bool is_less_m_grams_id(const uint8_t id_len_bytes,
+                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(id_len_bytes, one, two) < 0);
+                        }
+
+                        /**
+                         * Allows to compute the byte length for the id of the given type
+                         * @param CURR_LEVEL the M-Gram level M
+                         * @param id_type the type id
+                         * @param id_len_bytes [out] the total byte length to store the id
+                         *                           of this type, this input value will
+                         *                           be incremented with the byte lengths.
+                         */
+                        template<TModelLevel CURR_LEVEL>
+                        static inline void gram_id_type_2_byte_len(uint32_t id_type, uint8_t & id_len_bytes) {
+                            //Compute the M-gram id length from the M-gram id type.
+                            //Here we use the pre-computed multipliers we add the
+                            //final bits at the end of the function.
+                            uint8_t coeff = 0;
+                            for (int idx = (CURR_LEVEL - 1); idx >= 0; --idx) {
+
+                                coeff = (uint8_t) (id_type / M_GRAM_ID_TYPE_MULT[idx]);
+
+                                LOG_DEBUG3 << SSTR(id_type) << " / " << SSTR(M_GRAM_ID_TYPE_MULT[idx]) << " =  " << SSTR((uint32_t) coeff) << END_LOG;
+
+                                id_type = (uint8_t) (id_type % M_GRAM_ID_TYPE_MULT[idx]);
+                                id_len_bytes += coeff;
+                            }
+                            //Note that in the loop above we have "coeff = len_bits[idx] - 1"
+                            //Therefore, here we add the number of tokens to account for this -1's
+                            id_len_bytes += (uint8_t) CURR_LEVEL;
+                        }
+
+                        /**
+                         * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                         * @param id_type_len_bytes the minimum total number of bytes in both m-gram ids.
+                         * @param one the first M-gram to compare
+                         * @param two the second M-gram to compare
+                         * @return true if the first M-gram is "smaller" than the second, otherwise false
+                         */
+                        template<TModelLevel CURR_LEVEL>
+                        static inline bool is_less_m_grams_id(const uint8_t id_type_len_bytes,
+                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            //First compare the types of the id
+                            int result = compare(id_type_len_bytes, one, two);
+
+                            //If the id types are equal now we need to compare the keys until the end
+                            if (result == 0) {
+                                //Extract the id type from the id
+                                uint32_t type_one = 0;
+                                copy_begin_bytes_to_end(one, id_type_len_bytes, type_one);
+
+                                //Compute the length of the remainder of the m-gram id 
+                                uint8_t id_len_bytes = 0;
+                                gram_id_type_2_byte_len<CURR_LEVEL>(type_one, id_len_bytes);
+
+                                //Compare the remainders of the m-gram ids
+                                result = memcmp(one + id_type_len_bytes, two + id_type_len_bytes, id_len_bytes);
+                            }
+
+                            //The id types are not equal
+                            return (result < 0);
+                        }
+
+                        /**
+                         * This is a fore-declaration of the function that can compare two M-gram ids of the same given level
+                         * @param id_len_bytes the minimum total number of bytes in both m-gram ids.
+                         * @param one the first M-gram to compare
+                         * @param two the second M-gram to compare
                          * @return true if the first M-gram is "larger" than the second, otherwise false
                          */
-                        static bool is_more_m_grams_id(const TModelLevel level, const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
-                            return (compare(level, one, two) > 0);
+                        static inline bool is_more_m_grams_id(const uint8_t id_len_bytes,
+                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                            return (compare(id_len_bytes, one, two) > 0);
                         };
                     };
 
@@ -248,7 +321,7 @@ namespace uva {
                     constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_LEN_BYTES[];
 
                     template<typename TWordIdType>
-                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::gram_id_type_mult[];
+                    constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::M_GRAM_ID_TYPE_MULT[];
                 }
             }
         }

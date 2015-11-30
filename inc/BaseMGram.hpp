@@ -201,15 +201,18 @@ namespace uva {
                      *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                      * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                      */
-                    inline void create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, T_Gram_Id_Data_Ptr & p_m_gram_id) const {
+                    inline uint8_t create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, T_Gram_Id_Data_Ptr & p_m_gram_id) const {
                         LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
                         //Create the M-gram id from the word ids.
-                        T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
+                        uint8_t len_bytes = T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                         //Log the result
-                        LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id << END_LOG;
+                        LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id
+                                << ", with the byte length: " << SSTR(len_bytes) << END_LOG;
+                        
+                        return len_bytes;
                     }
 
                 protected:

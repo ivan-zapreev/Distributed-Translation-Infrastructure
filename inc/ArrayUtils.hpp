@@ -130,17 +130,16 @@ namespace uva {
                  * @param array the pointer to the first array element
                  * @param l_idx the initial left border index for searching
                  * @param u_idx the initial right border index for searching
-                 * @param key the key we are searching for
                  * @param found_elem the out parameter that stores the pointer to the found element, if any
+                 * @param the variable list of arguments needed for the compare statement
                  * @return true if the element was found, otherwise false
                  * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
                  */
-#define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT, EXTRA_PARAMS) \
+#define DECLARE_STATIC_BSEARCH_ID_FIELD_COMPARE_FUNC(COMPARE_STATEMENT, ...) \
             template<typename ARR_ELEM_TYPE> \
             static inline bool my_bsearch_id(const ARR_ELEM_TYPE * array, \
                     int64_t l_idx, int64_t u_idx, \
-                    const typename ARR_ELEM_TYPE::TIdType key, \
-                    const ARR_ELEM_TYPE * & found_elem, EXTRA_PARAMS) { \
+                    const ARR_ELEM_TYPE * & found_elem, __VA_ARGS__) { \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
                         string("Impossible search parameters, l_idx = ") + \
                         std::to_string(l_idx) + string(", u_idx = ") + \
