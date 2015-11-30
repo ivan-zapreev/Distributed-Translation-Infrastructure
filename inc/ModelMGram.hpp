@@ -57,7 +57,7 @@ namespace uva {
                     //The type of the word id
                     typedef typename WordIndexType::TWordIdType TWordIdType;
                     //Define the corresponding M-gram id type
-                    typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
+                    typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
                     //Define the base class type
                     typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
 

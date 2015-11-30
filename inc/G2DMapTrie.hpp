@@ -103,7 +103,7 @@ namespace uva {
             class G2DMapTrie : public GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
-                typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType> TM_Gram_Id;
+                typedef Byte_M_Gram_Id<typename WordIndexType::TWordIdType, MAX_LEVEL> TM_Gram_Id;
                 typedef typename WordIndexType::TWordIdType TWordIdType;
 
                 /**

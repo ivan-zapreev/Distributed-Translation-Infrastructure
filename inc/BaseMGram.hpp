@@ -80,7 +80,7 @@ namespace uva {
                     typedef typename WordIndexType::TWordIdType TWordIdType;
 
                     //Define the corresponding M-gram id type
-                    typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
+                    typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
 
                     /**
                      * The basic constructor, is to be used when the M-gram level
