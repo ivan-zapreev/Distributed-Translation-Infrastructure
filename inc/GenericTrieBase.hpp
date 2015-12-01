@@ -201,18 +201,24 @@ namespace uva {
                     if (NEEDS_BITMAP_HASH_CACHE) {
                         //Check if the end word is unknown, if not proceed to the cache check
                         if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
-                            //Compute the model level
-                            const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                            //Check if the begin word is unknown, if not proceed to the cache check
+                            if (query.m_gram[query.m_begin_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
+                                //Compute the model level
+                                const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
 
-                            //If the caching is enabled, the higher sub-m-gram levels always require checking
-                            const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
+                                //If the caching is enabled, the higher sub-m-gram levels always require checking
+                                const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
 
-                            //Get the m-gram's hash
-                            const uint64_t hash = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
+                                //Get the m-gram's hash
+                                const uint64_t hash = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
 
-                            if (ref.is_hash_cached(hash)) {
-                                //The m-gram hash is cached, so potentially a payload data
-                                status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                                if (ref.is_hash_cached(hash)) {
+                                    //The m-gram hash is cached, so potentially a payload data
+                                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                                } else {
+                                    //The m-gram hash is not in cache, so definitely no data
+                                    status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
+                                }
                             } else {
                                 //The m-gram hash is not in cache, so definitely no data
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
@@ -252,17 +258,6 @@ namespace uva {
                         if (query.m_begin_word_idx != query.m_end_word_idx) {
                             //If this is not a uni-gram case then 
                             switch (status) {
-                                case MGramStatusEnum::GOOD_PRESENT_MGS: //The previous status was good: process the next sub-m-gram
-                                {
-                                    //Retrieve the next sub-m-gram payload
-                                    process_m_n_gram(query, status);
-                                    //If the sub-m-gram was found then just move on
-                                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                                        //Move on to the longer sub-m-gram
-                                        ++query.m_end_word_idx;
-                                    }
-                                    break;
-                                }
                                 case MGramStatusEnum::BAD_NO_PAYLOAD_MGS: //The previous status was: unknown payload
                                 {
                                     //The m-gram payload was not found, so this is not a uni-gram. The method will
@@ -283,6 +278,17 @@ namespace uva {
 
                                     //The status is always an unknown end word, so that we keep iterating down the column
                                     status = MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS;
+                                    break;
+                                }
+                                case MGramStatusEnum::GOOD_PRESENT_MGS: //The previous status was good: process the next sub-m-gram
+                                {
+                                    //Retrieve the next sub-m-gram payload
+                                    process_m_n_gram(query, status);
+                                    //If the sub-m-gram was found then just move on
+                                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                        //Move on to the longer sub-m-gram
+                                        ++query.m_end_word_idx;
+                                    }
                                     break;
                                 }
                                 default:
