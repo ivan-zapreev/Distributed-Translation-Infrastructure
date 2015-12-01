@@ -400,9 +400,9 @@ namespace uva {
 
                         //Go through the buckets array and initialize the begin indexes
                         for (size_t idx = 0; idx < m_num_bucket_maps; ++idx) {
-                            if (DO_SANITY_CHECKS && (m_word_hash_buckets[idx] > 2)) {
-                                LOG_WARNING << "Optimizing word index: A bucket with " << m_word_hash_buckets[idx] << " words is detected!" << END_LOG;
-                            }
+                            
+                            ASSERT_SANITY_THROW((m_word_hash_buckets[idx] > 2), string("Optimizing word index: A bucket with ") +
+                                    std::to_string(m_word_hash_buckets[idx]) + string(" words is detected!"));
 
                             next_idx = curr_idx + m_word_hash_buckets[idx];
                             m_word_hash_buckets[idx] = curr_idx;
@@ -441,12 +441,8 @@ namespace uva {
                             while (m_word_entries[entry_idx].m_word != NULL) {
                                 entry_idx++;
 
-                                if (DO_SANITY_CHECKS && (entry_idx >= m_num_words)) {
-                                    stringstream msg;
-                                    msg << "Exceeded the allowed entry index: " << (m_num_words - 1)
-                                            << " in bucket: " << bucket_idx;
-                                    throw Exception(msg.str());
-                                }
+                                ASSERT_SANITY_THROW((entry_idx >= m_num_words), string("Exceeded the allowed entry index: ") +
+                                        std::to_string(m_num_words - 1) + string(" in bucket: ") + std::to_string(bucket_idx));
 
                                 LOG_DEBUG2 << "Skipping on to entry_idx: " << entry_idx << END_LOG;
                             }
