@@ -304,7 +304,7 @@ namespace uva {
                         //Initialize the number of buckets divider
                         m_num_buckets_divider = (m_num_buckets - 1);
 
-                        LOG_USAGE << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
+                        LOG_DEBUG << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
 
                         //Allocate the buckets themselves
                         m_word_buckets = new TBucketEntry[m_num_buckets];
