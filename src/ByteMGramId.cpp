@@ -176,7 +176,7 @@ namespace uva {
                                 std::to_string(M_GRAM_LEVEL_6) + string("]"));
 
                         //Get the id len in bytes
-                        static const uint8_t TYPE_LEN_BYTES = ID_TYPE_LEN_BYTES[num_word_ids];
+                        const uint8_t TYPE_LEN_BYTES = ID_TYPE_LEN_BYTES[num_word_ids];
 
                         uint8_t id_len_bytes = TYPE_LEN_BYTES;
 
@@ -214,8 +214,8 @@ namespace uva {
                         }
 
                         LOG_DEBUG3 << "Finished making the " << SSTR(num_word_ids) << "-gram id with "
-                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES)
-                                << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
+                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES) << END_LOG;
+                        LOG_DEBUG3 << "Id bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
 
                         return id_len_bytes;
                     }
@@ -289,8 +289,8 @@ namespace uva {
                         copy_end_bytes_to_pos(id_type_value, TYPE_LEN_BYTES, m_p_gram_id, 0);
 
                         LOG_DEBUG3 << "Finished making the " << SSTR(num_word_ids) << "-gram id with "
-                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES)
-                                << ", bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
+                                << "id type length: " << SSTR((uint32_t) TYPE_LEN_BYTES) << END_LOG;
+                        LOG_DEBUG3 << "Id bits: " << bytes_to_bit_string(m_p_gram_id, id_len_bytes) << END_LOG;
 
                         return id_len_bytes;
                     }
