@@ -94,8 +94,8 @@ namespace uva {
                 }
 
                 namespace __OptimizingWordIndex {
-                    //This is the number of buckets factor for the optimizing word index
-                    //The number of buckets will be the number of words * this value
+                    //This is the number of buckets factor for the optimizing word index. The 
+                    //number of buckets will be proportional the number of words * this value
                     static constexpr float BUCKETS_FACTOR = 10.0;
                 }
             }
@@ -165,11 +165,10 @@ namespace uva {
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
                 static constexpr alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
-                //This is the factor that is used to define an average number of words
-                //per buckets in G2DHashMapTrie. I.e. the number of buckets per trie
-                //level is defined as the number of M-grams in this level divided by
-                //this factor value 
-                static constexpr float WORDS_PER_BUCKET_FACTOR = 2;
+                //This is the factor that is used to define an average number
+                //of words per buckets in G2DHashMapTrie. The number of buckets
+                //will be proportional to the number of words * this value
+                static constexpr float BUCKETS_FACTOR = 0.5;
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!

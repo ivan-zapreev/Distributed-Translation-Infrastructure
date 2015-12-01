@@ -117,8 +117,8 @@ namespace uva {
                  */
                 inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
-                    LOG_INFO << "Using the #buckets divider: "
-                            << SSTR(__G2DMapTrie::WORDS_PER_BUCKET_FACTOR) << END_LOG;
+                    LOG_INFO << "Using the #buckets factor: "
+                            << SSTR(__G2DMapTrie::BUCKETS_FACTOR) << END_LOG;
                     LOG_INFO << "Using  and the " << __G2DMapTrie::T_M_Gram_PB_Entry::m_mem_strat.get_strategy_info()
                             << " memory allocation strategy." << END_LOG;
                 }
@@ -147,7 +147,7 @@ namespace uva {
 
                         //Get the bucket index
                         LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
-                        TShortId bucket_idx = get_bucket_id(gram.get_hash(), m_num_buckets[CURR_LEVEL - 1]);
+                        uint32_t bucket_idx = get_bucket_id(gram.get_hash(), m_bucket_dividers[CURR_LEVEL - 1]);
 
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Create a new M-Gram data entry
@@ -238,7 +238,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBackOffBucket>(m_num_buckets, m_M_gram_data[layer_idx], query);
+                    status = get_payload<TProbBackOffBucket>(m_bucket_dividers, m_M_gram_data[layer_idx], query);
                 }
 
                 /**
@@ -251,7 +251,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBucket>(m_num_buckets, m_N_gram_data, query);
+                    status = get_payload<TProbBucket>(m_bucket_dividers, m_N_gram_data, query);
                 }
 
                 /**
@@ -273,23 +273,27 @@ namespace uva {
                 TProbBucket * m_N_gram_data;
 
                 //Stores the number of gram ids/buckets per level
-                TShortId m_num_buckets[MAX_LEVEL];
+                uint32_t m_num_buckets[MAX_LEVEL];
+
+                //Stores the bucket dividers per level
+                uint32_t m_bucket_dividers[MAX_LEVEL];
 
                 /**
                  * Allows to get the bucket index for the given M-gram hash
                  * @param curr_level the m-gram level we need the bucked id for
                  * @param gram_hash the M-gram hash to compute the bucked index for
-                 * @param num_buckets the number of buckers
+                 * @param m_bucket_divider the number of buckers
                  * @param return the resulting bucket index
                  */
-                static inline TShortId get_bucket_id(const uint64_t gram_hash, const TShortId num_buckets) {
+                static inline uint32_t get_bucket_id(const uint64_t gram_hash, const uint32_t m_bucket_divider) {
                     LOG_DEBUG1 << "The m-gram hash is: " << gram_hash << END_LOG;
-                    TShortId bucket_idx = gram_hash % num_buckets;
+                    uint32_t bucket_idx = gram_hash & m_bucket_divider;
                     LOG_DEBUG1 << "The m-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
-                    ASSERT_SANITY_THROW((bucket_idx >= num_buckets), string("The m-gram has a bad bucket index: ") +
-                            std::to_string(bucket_idx) + ", must be within [0, " + std::to_string(num_buckets));
+                    ASSERT_SANITY_THROW((bucket_idx > m_bucket_divider),
+                            string("The m-gram has a bad bucket index: ") + std::to_string(bucket_idx) +
+                            string(", must be within [0, ") + std::to_string(m_bucket_divider) + "]");
 
                     return bucket_idx;
                 }
@@ -308,7 +312,7 @@ namespace uva {
                  * @return the resulting status of the operation
                  */
                 template<typename BUCKET_TYPE>
-                static inline MGramStatusEnum get_payload(const TShortId num_buckets[MAX_LEVEL], const BUCKET_TYPE * buckets,
+                static inline MGramStatusEnum get_payload(const uint32_t m_bucket_divider[MAX_LEVEL], const BUCKET_TYPE * buckets,
                         typename BASE::T_Query_Exec_Data & query) {
                     //Compute the current level of the sub-m-gram
                     const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
@@ -317,7 +321,7 @@ namespace uva {
                             << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;
 
                     const uint64_t hash_value = query.m_gram.get_hash(query.m_begin_word_idx, query.m_end_word_idx);
-                    const uint32_t bucket_idx = get_bucket_id(hash_value, num_buckets[curr_level - 1]);
+                    const uint32_t bucket_idx = get_bucket_id(hash_value, m_bucket_divider[curr_level - 1]);
                     LOG_DEBUG << "The " << SSTR(curr_level) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(curr_level) << "-gram ["
@@ -402,7 +406,7 @@ namespace uva {
                             LOG_DEBUG1 << "Comparing " << SSTR((void*) first.id) << " with " << SSTR((void*) second.id) << END_LOG;
                             //Update the progress bar status
                             Logger::update_progress_bar();
-                            //Return the result
+                                    //Return the result
                             return TM_Gram_Id::template is_less_m_grams_id<CURR_LEVEL>(ID_TYPE_LEN_BYTES, first.id, second.id);
                         });
                         LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
