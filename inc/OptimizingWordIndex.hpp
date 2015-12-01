@@ -143,7 +143,7 @@ namespace uva {
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
                         //Compute the bucket id
-                        const uint_fast32_t bucket_idx = get_bucket_idx(token);
+                        const uint_fast64_t bucket_idx = get_bucket_idx(token);
 
                         LOG_DEBUG3 << "Number of words in bucket: " << bucket_idx << " is: "
                                 << (m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx]) << END_LOG;
@@ -360,7 +360,7 @@ namespace uva {
                      * @param token the token to compute the bucket id for
                      * @return the bucket id
                      */
-                    inline uint32_t get_bucket_idx(const TextPieceReader & token) const {
+                    inline uint_fast64_t get_bucket_idx(const TextPieceReader & token) const {
                         return compute_hash(token) & m_num_buckets_divider;
                     }
 
@@ -369,7 +369,7 @@ namespace uva {
                      * @param token the token to compute the bucket id for
                      * @return the bucket id
                      */
-                    inline uint32_t get_bucket_idx(const string & token) const {
+                    inline uint_fast64_t get_bucket_idx(const string & token) const {
                         return compute_hash(token) & m_num_buckets_divider;
                     }
 
@@ -379,7 +379,7 @@ namespace uva {
                     inline void count_elements_per_bucket() {
                         BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
                         const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
-                        uint32_t idx = 0;
+                        uint_fast64_t idx = 0;
 
                         //Go through all the words and count the number of elements per bucket
                         while (curr != end) {
@@ -418,7 +418,7 @@ namespace uva {
 
                         BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
                         const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
-                        uint32_t bucket_idx = 0;
+                        uint_fast64_t bucket_idx = 0;
                         uint32_t entry_idx = 0;
 
                         //Go through all the words and fill in the buckets
