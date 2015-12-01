@@ -419,40 +419,6 @@ namespace uva {
                 }
 
                 /**
-                 * This method does stream compute of the m-gram probabilities
-                 * in one row, until it can not go further.
-                 * @param TrieType the trie type
-                 * @param query the query data to be used the end word index is changed
-                 * @param status the resulting status of the operation
-                 */
-                inline void stream_right(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    //The uni-gram case is special
-                    if (query.m_begin_word_idx == query.m_end_word_idx) {
-                        //Retrieve the payload
-                        process_unigram(query);
-
-                        //Increment the end_word_idx to move on, to the next sub-m-gram
-                        ++query.m_end_word_idx;
-                    }
-
-                    //If this is at least a bi-gram, continue iterations, otherwise we are done!
-                    for (; query.m_end_word_idx <= query.m_gram.get_end_word_idx(); ++query.m_end_word_idx) {
-                        //Retrieve the payload
-                        process_m_n_gram(query, status);
-
-                        //Check if we need to stream further
-                        if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
-                            //If we could not retrieve the payload at some point
-                            //then it is time to stop streaming and do a back-off
-                            return;
-                        }
-                    }
-
-                    //If we are here the everything is fine, set the result status to good
-                    status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                }
-
-                /**
                  * This method allows to retrieve the payload of a uni-gram or an m-gram with m < n
                  * @param query the m-gram query data
                  * @return the resulting status of the operation
