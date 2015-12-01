@@ -337,7 +337,7 @@ namespace uva {
                      */
                     inline void allocate_data_storage() {
                         //First determine the number of buckets to be used, make it a power of two!
-                        m_num_buckets = const_expr::power(2, log2_64(__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words) + 1);
+                        m_num_buckets = const_expr::power(2, log2::log2_64(__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words) + 1);
                         LOG_USAGE << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
                         //Initialize the number of buckets divider
                         m_num_buckets_divider = (m_num_buckets - 1);
