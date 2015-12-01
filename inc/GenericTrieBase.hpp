@@ -193,12 +193,13 @@ namespace uva {
                  */
                 inline void is_m_gram_potentially_present(const T_Query_Exec_Data& query,
                         MGramStatusEnum &status) const {
-                    //Check if the end word is unknown
-                    if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
-                        //Compute the model level
-                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
-                        //Check if the caching is enabled
-                        if (NEEDS_BITMAP_HASH_CACHE && (curr_level > M_GRAM_LEVEL_1)) {
+                    //Check if the caching is enabled and needed, for a uni-gram the payload is always present
+                    if (NEEDS_BITMAP_HASH_CACHE && (query.m_begin_word_idx != query.m_end_word_idx)) {
+                        //Check if the end word is unknown, if not proceed to the cache check
+                        if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
+                            //Compute the model level
+                            const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+
                             //If the caching is enabled, the higher sub-m-gram levels always require checking
                             const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
 
@@ -213,15 +214,15 @@ namespace uva {
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                             }
                         } else {
-                            //If caching is not enabled then we always check the trie
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
+                            //The end word is unknown, so definitely no m-gram data
+                            status = MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS;
                         }
                     } else {
-                        //The end word is unknown, so definitely no m-gram data
-                        status = MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS;
+                        //If caching is not enabled then we always check the trie
+                        status = MGramStatusEnum::GOOD_PRESENT_MGS;
                     }
                 }
-
+                
                 /**
                  * This method allows to get the payloads and compute the (joint) m-gram probabilities.
                  * @param TrieType the trie type
