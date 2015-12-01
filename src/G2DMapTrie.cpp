@@ -63,8 +63,8 @@ namespace uva {
                 LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
                 LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
-            
-                    //Computes the number of buckets as a power of two, based on the number of elements
+
+            //Computes the number of buckets as a power of two, based on the number of elements
 #define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
     const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
 
@@ -88,7 +88,7 @@ namespace uva {
                     //Compute the number of buckets, there should be at least one
                     m_num_buckets[idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[idx]);
                     m_bucket_dividers[idx] = m_num_buckets[idx] - 1;
-                    m_M_gram_data[idx-1] = new TProbBackOffBucket[m_num_buckets[idx + 1]];
+                    m_M_gram_data[idx - 1] = new TProbBackOffBucket[m_num_buckets[idx]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them

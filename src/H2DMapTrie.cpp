@@ -64,10 +64,10 @@ namespace uva {
                 LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
 
-                    //Computes the number of buckets as a power of two, based on the number of elements
+            //Computes the number of buckets as a power of two, based on the number of elements
 #define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
     const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
-            
+
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             void H2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
                 //Call the base-class
