@@ -317,6 +317,9 @@ namespace uva {
                     //Stores the number of mappings
                     size_t m_num_buckets;
 
+                    //Stores the number of buckets divider
+                    size_t m_num_buckets_divider;
+
                     //Stores the number of bucket mappings: the number of buckets + 1
                     size_t m_num_bucket_maps;
 
@@ -333,11 +336,11 @@ namespace uva {
                      * Allocate the data storages
                      */
                     inline void allocate_data_storage() {
-                        //First determine the number of buckets to be used
-                        m_num_buckets = (__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words);
-
-                        //Make it even to facilitate the divisions (?)
-                        m_num_buckets += (is_odd_A(m_num_buckets) ? 1 : 0);
+                        //First determine the number of buckets to be used, make it a power of two!
+                        m_num_buckets = const_expr::power(2, log2_64(__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words) + 1);
+                        LOG_USAGE << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
+                        //Initialize the number of buckets divider
+                        m_num_buckets_divider = (m_num_buckets - 1);
 
                         //Now allocate the number of elements in the hash mappings
                         //Make it +1 in order to store the end position of the last bucket
@@ -358,7 +361,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const TextPieceReader & token) const {
-                        return compute_hash(m_num_buckets, token);
+                        return compute_hash(token) & m_num_buckets_divider;
                     }
 
                     /**
@@ -367,7 +370,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint32_t get_bucket_idx(const string & token) const {
-                        return compute_hash(m_num_buckets, token);
+                        return compute_hash(token) & m_num_buckets_divider;
                     }
 
                     /**
