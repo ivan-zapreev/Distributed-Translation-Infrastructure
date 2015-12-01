@@ -156,7 +156,7 @@ namespace uva {
                             get_next_bucket_idx(bucket_idx);
                         }
                         LOG_DEBUG3 << "Encountered an empty bucket, the word is unknown!" << END_LOG;
-                        
+
                         return UNKNOWN_WORD_ID;
                     };
 
@@ -285,15 +285,26 @@ namespace uva {
                     //Stores the buckets data
                     TBucketEntry * m_word_buckets;
 
+                    //Computes the number of buckets as a power of two, based on the number of elements
+#define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
+    const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
+
                     /**
                      * Allocate the data storages
                      */
                     inline void allocate_data_storage() {
-                        //First determine the number of buckets to be used, make it a power of two!
-                        m_num_buckets = const_expr::power(2, log2::log2_64(__OptimizingWordIndex::BUCKETS_FACTOR * m_num_words) + 1);
-                        LOG_DEBUG << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
+                        //Perform the compulsory check
+                        ASSERT_CONDITION_THROW((__OptimizingWordIndex::BUCKETS_FACTOR < 1.0),
+                                "__OptimizingWordIndex::BUCKETS_FACTOR must be >= 1.0");
+
+                        //First determine the number of buckets to be used, make
+                        //it a power of two! Also make sure that there is at least
+                        //one extra bucket to indicate the end of search sequence.
+                        m_num_buckets = COMPUTE_NUMBER_OF_BUCKETS(m_num_words);
                         //Initialize the number of buckets divider
                         m_num_buckets_divider = (m_num_buckets - 1);
+
+                        LOG_USAGE << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
 
                         //Allocate the buckets themselves
                         m_word_buckets = new TBucketEntry[m_num_buckets];

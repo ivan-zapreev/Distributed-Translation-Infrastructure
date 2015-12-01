@@ -49,6 +49,7 @@ namespace uva {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                 ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                ASSERT_CONDITION_THROW((__G2DMapTrie::BUCKETS_FACTOR < 1.0), "__G2DMapTrie::BUCKETS_FACTOR must be >= 1.0");
 
                 //Initialize the arrays of number of gram ids and bucker dividers per level
                 memset(m_num_buckets, 0, MAX_LEVEL * sizeof (uint32_t));
@@ -62,6 +63,10 @@ namespace uva {
                 LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
                 LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
             };
+            
+                    //Computes the number of buckets as a power of two, based on the number of elements
+#define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
+    const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
@@ -79,18 +84,19 @@ namespace uva {
                 pbData.m_back = ZERO_BACK_OFF_WEIGHT;
 
                 //Compute the number of M-Gram level buckets and pre-allocate them
-                for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
+                for (TModelLevel idx = 1; idx <= BASE::NUM_M_GRAM_LEVELS; ++idx) {
                     //Compute the number of buckets, there should be at least one
-                    m_num_buckets[idx + 1] = const_expr::power(2, log2::log2_64(__G2DMapTrie::BUCKETS_FACTOR * counts[idx + 1]) + 1);
-                    m_bucket_dividers[idx + 1] = m_num_buckets[idx + 1] - 1;
-                    m_M_gram_data[idx] = new TProbBackOffBucket[m_num_buckets[idx + 1]];
+                    m_num_buckets[idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[idx]);
+                    m_bucket_dividers[idx] = m_num_buckets[idx] - 1;
+                    m_M_gram_data[idx-1] = new TProbBackOffBucket[m_num_buckets[idx + 1]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 //Compute the number of buckets, there should be at least one
-                m_num_buckets[MAX_LEVEL - 1] = const_expr::power(2, log2::log2_64(__G2DMapTrie::BUCKETS_FACTOR * counts[MAX_LEVEL - 1]) + 1);
-                m_bucket_dividers[MAX_LEVEL - 1] = m_num_buckets[MAX_LEVEL - 1] - 1;
-                m_N_gram_data = new TProbBucket[m_num_buckets[MAX_LEVEL - 1]];
+                const TModelLevel ll_idx = (MAX_LEVEL - 1);
+                m_num_buckets[ll_idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[ll_idx]);
+                m_bucket_dividers[ll_idx] = m_num_buckets[ll_idx] - 1;
+                m_N_gram_data = new TProbBucket[m_num_buckets[ll_idx]];
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
