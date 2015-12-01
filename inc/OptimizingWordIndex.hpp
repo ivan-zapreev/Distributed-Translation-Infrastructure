@@ -89,8 +89,7 @@ namespace uva {
                      * @param memory_factor the memory factor for the SubWordIndexType constructor
                      */
                     OptimizingWordIndex(const float memory_factor)
-                    : m_num_words(0), m_num_buckets(0), m_num_bucket_maps(0),
-                    m_word_hash_buckets(NULL), m_word_entries(NULL) {
+                    : m_num_words(0), m_num_buckets(0), m_word_buckets(NULL) {
                         m_disp_word_index_ptr = new SubWordIndexType(memory_factor);
                         ASSERT_SANITY_THROW(!m_disp_word_index_ptr->is_word_registering_needed(),
                                 "This word index requires a sub-word index with word registration!");
@@ -143,51 +142,22 @@ namespace uva {
                      */
                     inline TWordIdType get_word_id(const TextPieceReader & token) const {
                         //Compute the bucket id
-                        const uint_fast64_t bucket_idx = get_bucket_idx(token);
+                        uint_fast64_t bucket_idx = get_bucket_idx(token);
 
-                        LOG_DEBUG3 << "Number of words in bucket: " << bucket_idx << " is: "
-                                << (m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx]) << END_LOG;
+                        LOG_DEBUG3 << "Searching for: " << token.str() << ", the " <<
+                                "initial bucket index is: " << bucket_idx << END_LOG;
 
-                        //Get the number of elements stored in the bucket
-                        const size_t num_elems = m_word_hash_buckets[bucket_idx + 1] - m_word_hash_buckets[bucket_idx];
-                        switch (num_elems) {
-                            case 0:
-                            {
-                                return UNKNOWN_WORD_ID;
+                        //Search until an empty bucket or the word is found
+                        while (m_word_buckets[bucket_idx].m_word != NULL) {
+                            //Search within the bucket
+                            if (IS_EQUAL(token, m_word_buckets[bucket_idx])) {
+                                return m_word_buckets[bucket_idx].m_word_id;
                             }
-                            case 1:
-                            {
-                                uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
-                                if (IS_EQUAL(token, m_word_entries[idx])) {
-                                    return m_word_entries[idx].m_word_id;
-                                }
-                                return UNKNOWN_WORD_ID;
-                            }
-                            case 2:
-                            {
-                                uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
-                                if (IS_EQUAL(token, m_word_entries[idx])) {
-                                    return m_word_entries[idx].m_word_id;
-                                } else {
-                                    ++idx; //Move to the next element
-                                    if (IS_EQUAL(token, m_word_entries[idx])) {
-                                        return m_word_entries[idx].m_word_id;
-                                    }
-                                    return UNKNOWN_WORD_ID;
-                                }
-                            }
-                            default:
-                            {
-                                //Search within the bucket
-                                for (uint_fast32_t idx = m_word_hash_buckets[bucket_idx];
-                                        idx != m_word_hash_buckets[bucket_idx + 1]; ++idx) {
-                                    if (IS_EQUAL(token, m_word_entries[idx])) {
-                                        return m_word_entries[idx].m_word_id;
-                                    }
-                                }
-                                return UNKNOWN_WORD_ID;
-                            }
+                            get_next_bucket_idx(bucket_idx);
                         }
+                        LOG_DEBUG3 << "Encountered an empty bucket, the word is unknown!" << END_LOG;
+                        
+                        return UNKNOWN_WORD_ID;
                     };
 
                     /**
@@ -259,12 +229,6 @@ namespace uva {
                         //Allocate the data storages
                         allocate_data_storage();
 
-                        //Count the number of elements per bucket
-                        count_elements_per_bucket();
-
-                        //Convert the number of elements per bucket into word index
-                        build_word_hash_buckets();
-
                         //Fill in the buckets with data
                         fill_buckets_with_data();
 
@@ -286,21 +250,16 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~OptimizingWordIndex() {
-                        //Delete the buckets
-                        if (m_word_hash_buckets != NULL) {
-                            delete[] m_word_hash_buckets;
-                        }
-
                         //Delete bucket entries
-                        if (m_word_entries != NULL) {
+                        if (m_word_buckets != NULL) {
                             //Delete words
-                            for (size_t idx = 0; idx < m_num_words; ++idx) {
-                                if ((m_word_entries[idx].m_len != 0) && (m_word_entries[idx].m_word != NULL)) {
-                                    delete[] m_word_entries[idx].m_word;
+                            for (size_t idx = 0; idx < m_num_buckets; ++idx) {
+                                if ((m_word_buckets[idx].m_len != 0) && (m_word_buckets[idx].m_word != NULL)) {
+                                    delete[] m_word_buckets[idx].m_word;
                                 }
                             }
                             //Delete entries
-                            delete[] m_word_entries;
+                            delete[] m_word_buckets;
                         }
 
                         //Dispose the disposable word index if this is not done yet
@@ -320,17 +279,11 @@ namespace uva {
                     //Stores the number of buckets divider
                     uint_fast64_t m_num_buckets_divider;
 
-                    //Stores the number of bucket mappings: the number of buckets + 1
-                    size_t m_num_bucket_maps;
-
-                    //Stores the word hash mapping from the hash to the begin position in the data array
-                    uint32_t * m_word_hash_buckets;
-
                     //Typedef the bucket entry
                     typedef __OptimizingWordIndex::WordIndexBucketEntry<TWordIdType> TBucketEntry;
 
                     //Stores the buckets data
-                    TBucketEntry * m_word_entries;
+                    TBucketEntry * m_word_buckets;
 
                     /**
                      * Allocate the data storages
@@ -342,14 +295,8 @@ namespace uva {
                         //Initialize the number of buckets divider
                         m_num_buckets_divider = (m_num_buckets - 1);
 
-                        //Now allocate the number of elements in the hash mappings
-                        //Make it +1 in order to store the end position of the last bucket
-                        m_num_bucket_maps = m_num_buckets + 1;
-                        m_word_hash_buckets = new uint32_t[m_num_bucket_maps];
-                        fill_n(m_word_hash_buckets, m_num_bucket_maps, 0);
-
                         //Allocate the buckets themselves
-                        m_word_entries = new TBucketEntry[m_num_words];
+                        m_word_buckets = new TBucketEntry[m_num_buckets];
 
                         LOG_DEBUG << "Allocated " << m_num_buckets << " buckets for "
                                 << m_num_words << " words" << END_LOG;
@@ -374,41 +321,13 @@ namespace uva {
                     }
 
                     /**
-                     * Count the number of elements per bucket
+                     * Provides the next bucket index
+                     * @param bucket_idx [in/out] the bucket index
                      */
-                    inline void count_elements_per_bucket() {
-                        BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
-                        const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
-                        uint_fast64_t idx = 0;
-
-                        //Go through all the words and count the number of elements per bucket
-                        while (curr != end) {
-                            const BasicWordIndex::TWordIndexEntry & entry = *curr;
-                            idx = get_bucket_idx(entry.first);
-                            //Here we miss use the mappings array to store counts
-                            m_word_hash_buckets[idx] += 1;
-                            curr++;
-                        }
-                    };
-
-                    /**
-                     * Convert the number of elements per bucket into word index
-                     */
-                    inline void build_word_hash_buckets() {
-                        uint32_t curr_idx = 0;
-                        uint32_t next_idx = 0;
-
-                        //Go through the buckets array and initialize the begin indexes
-                        for (size_t idx = 0; idx < m_num_bucket_maps; ++idx) {
-                            
-                            ASSERT_SANITY_THROW((m_word_hash_buckets[idx] > 2), string("Optimizing word index: A bucket with ") +
-                                    std::to_string(m_word_hash_buckets[idx]) + string(" words is detected!"));
-
-                            next_idx = curr_idx + m_word_hash_buckets[idx];
-                            m_word_hash_buckets[idx] = curr_idx;
-                            curr_idx = next_idx;
-                        }
-                    };
+                    inline void get_next_bucket_idx(uint_fast64_t & bucket_idx) const {
+                        bucket_idx = (bucket_idx + 1) & m_num_buckets_divider;
+                        LOG_DEBUG3 << "Moving on to the next bucket: " << bucket_idx << END_LOG;
+                    }
 
                     /**
                      * Fill in the buckets with data
@@ -419,7 +338,6 @@ namespace uva {
                         BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
                         const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
                         uint_fast64_t bucket_idx = 0;
-                        uint32_t entry_idx = 0;
 
                         //Go through all the words and fill in the buckets
                         while (curr != end) {
@@ -432,26 +350,18 @@ namespace uva {
 
                             LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << END_LOG;
 
-                            //Get the bucket begin index
-                            entry_idx = m_word_hash_buckets[bucket_idx];
-
-                            LOG_DEBUG2 << "Got bucket begin entry_idx: " << entry_idx << END_LOG;
-
-                            //Search for the first empty entry
-                            while (m_word_entries[entry_idx].m_word != NULL) {
-                                entry_idx++;
-
-                                ASSERT_SANITY_THROW((entry_idx >= m_num_words), string("Exceeded the allowed entry index: ") +
-                                        std::to_string(m_num_words - 1) + string(" in bucket: ") + std::to_string(bucket_idx));
-
-                                LOG_DEBUG2 << "Skipping on to entry_idx: " << entry_idx << END_LOG;
+                            //Search for the first empty bucket
+                            while (m_word_buckets[bucket_idx].m_word != NULL) {
+                                LOG_DEBUG2 << "The bucket: " << bucket_idx <<
+                                        " is full, skipping to the next." << END_LOG;
+                                get_next_bucket_idx(bucket_idx);
                             }
 
                             LOG_DEBUG2 << "Adding word: '" << word_data.first
-                                    << "' to entry position: " << entry_idx << END_LOG;
+                                    << "' to bucket: " << bucket_idx << END_LOG;
 
                             //Copy the data into the bucket
-                            TBucketEntry & entry = m_word_entries[entry_idx];
+                            TBucketEntry & entry = m_word_buckets[bucket_idx];
 
                             //Copy the string but without the terminating null character
                             entry.m_len = word_data.first.length();
