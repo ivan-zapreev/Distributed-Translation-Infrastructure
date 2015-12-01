@@ -265,12 +265,12 @@ namespace uva {
                             if (status == MGramStatusEnum::BAD_NO_PAYLOAD_MGS) {
                                 //The payload of the m-gram defined by the current values of begin_word_idx, end_word_idx
                                 //could not be found in the trie, therefore we need to back-off and then keep streaming.
-                                back_off_and_step_down(query);
+                                process_unknown_gram(query);
                                 //Do not move on and stay on this end word idx
                             } else {
                                 if (status == MGramStatusEnum::BAD_END_WORD_UNKNOWN_MGS) {
                                     //The end word is not known back-off down and then do diagonal, if there is columns left
-                                    stream_down_unknown(query);
+                                    process_unknown_word(query);
                                     LOG_DEBUG << "query.m_end_word_idx = " << SSTR(query.m_end_word_idx) << ","
                                             << " query.m_gram.get_end_word_idx() = " << SSTR(query.m_gram.get_end_word_idx()) << END_LOG;
                                     //If this was not the last column then we need to go diagonal
@@ -463,7 +463,7 @@ namespace uva {
                  * @param query the m-gram query data the end begin word index will be changed
                  * @param status the resulting status of the operation
                  */
-                inline void stream_down_unknown(T_Query_Exec_Data & query) const {
+                inline void process_unknown_word(T_Query_Exec_Data & query) const {
                     LOG_DEBUG << "Streaming down, from : [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
                     //If there is at least two words in the m-gram
@@ -524,7 +524,7 @@ namespace uva {
                  * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
                  * @param query the m-gram query data the begin word index will be changed
                  */
-                inline void back_off_and_step_down(T_Query_Exec_Data & query) const {
+                inline void process_unknown_gram(T_Query_Exec_Data & query) const {
                     LOG_DEBUG << "query.m_begin_word_idx = " << SSTR(query.m_begin_word_idx) << ","
                             << " query.m_end_word_idx = " << SSTR(query.m_end_word_idx) << END_LOG;
 
