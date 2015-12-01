@@ -212,6 +212,8 @@ namespace uva {
                             //The id type defines the lengths of the rest of the id.
                             //Thus, if the m-gram level is equal then we only get to
                             //compare the bytes after the id type if the id types are equal.
+                            LOG_DEBUG2 << "Comparing: " << bytes_to_bit_string(m_p_gram_id_one, id_len_bytes) << END_LOG;
+                            LOG_DEBUG2 << "With:      " << bytes_to_bit_string(m_p_gram_id_two, id_len_bytes) << END_LOG;
                             return memcmp(m_p_gram_id_one, m_p_gram_id_two, id_len_bytes);
                         }
 
