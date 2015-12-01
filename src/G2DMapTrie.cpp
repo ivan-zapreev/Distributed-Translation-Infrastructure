@@ -49,7 +49,7 @@ namespace uva {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                 ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
-                ASSERT_CONDITION_THROW((__G2DMapTrie::BUCKETS_FACTOR < 1.0), "__G2DMapTrie::BUCKETS_FACTOR must be >= 1.0");
+                //ASSERT_CONDITION_THROW((__G2DMapTrie::BUCKETS_FACTOR < 1.0), "__G2DMapTrie::BUCKETS_FACTOR must be >= 1.0");
 
                 //Initialize the arrays of number of gram ids and bucker dividers per level
                 memset(m_num_buckets, 0, MAX_LEVEL * sizeof (uint32_t));
