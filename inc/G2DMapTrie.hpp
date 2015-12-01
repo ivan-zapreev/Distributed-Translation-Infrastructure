@@ -147,7 +147,7 @@ namespace uva {
 
                         //Get the bucket index
                         LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << END_LOG;
-                        uint32_t bucket_idx = get_bucket_id(gram.get_hash(), m_bucket_dividers[CURR_LEVEL - 1]);
+                        const uint_fast64_t bucket_idx = get_bucket_id(gram.get_hash(), m_bucket_dividers[CURR_LEVEL - 1]);
 
                         if (CURR_LEVEL == MAX_LEVEL) {
                             //Create a new M-Gram data entry
@@ -276,7 +276,7 @@ namespace uva {
                 uint32_t m_num_buckets[MAX_LEVEL];
 
                 //Stores the bucket dividers per level
-                uint32_t m_bucket_dividers[MAX_LEVEL];
+                uint_fast64_t m_bucket_dividers[MAX_LEVEL];
 
                 /**
                  * Allows to get the bucket index for the given M-gram hash
@@ -285,10 +285,11 @@ namespace uva {
                  * @param m_bucket_divider the number of buckers
                  * @param return the resulting bucket index
                  */
-                static inline uint32_t get_bucket_id(const uint64_t gram_hash, const uint32_t m_bucket_divider) {
-                    LOG_DEBUG1 << "The m-gram hash is: " << gram_hash << END_LOG;
-                    uint32_t bucket_idx = gram_hash & m_bucket_divider;
-                    LOG_DEBUG1 << "The m-gram bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                static inline uint_fast64_t get_bucket_id(const uint_fast64_t gram_hash, const uint_fast64_t m_bucket_divider) {
+                    //Compute the bucket index
+                    const uint_fast64_t bucket_idx = gram_hash & m_bucket_divider;
+
+                    LOG_DEBUG1 << "The m-gram hash is: " << gram_hash << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     ASSERT_SANITY_THROW((bucket_idx > m_bucket_divider),
@@ -312,7 +313,7 @@ namespace uva {
                  * @return the resulting status of the operation
                  */
                 template<typename BUCKET_TYPE>
-                static inline MGramStatusEnum get_payload(const uint32_t m_bucket_divider[MAX_LEVEL], const BUCKET_TYPE * buckets,
+                static inline MGramStatusEnum get_payload(const uint_fast64_t m_bucket_divider[MAX_LEVEL], const BUCKET_TYPE * buckets,
                         typename BASE::T_Query_Exec_Data & query) {
                     //Compute the current level of the sub-m-gram
                     const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
@@ -321,7 +322,7 @@ namespace uva {
                             << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;
 
                     const uint64_t hash_value = query.m_gram.get_hash(query.m_begin_word_idx, query.m_end_word_idx);
-                    const uint32_t bucket_idx = get_bucket_id(hash_value, m_bucket_divider[curr_level - 1]);
+                    const uint_fast64_t bucket_idx = get_bucket_id(hash_value, m_bucket_divider[curr_level - 1]);
                     LOG_DEBUG << "The " << SSTR(curr_level) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(curr_level) << "-gram ["

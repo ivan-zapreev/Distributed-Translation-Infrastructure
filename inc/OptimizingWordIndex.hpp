@@ -318,7 +318,7 @@ namespace uva {
                     size_t m_num_buckets;
 
                     //Stores the number of buckets divider
-                    size_t m_num_buckets_divider;
+                    uint_fast64_t m_num_buckets_divider;
 
                     //Stores the number of bucket mappings: the number of buckets + 1
                     size_t m_num_bucket_maps;
