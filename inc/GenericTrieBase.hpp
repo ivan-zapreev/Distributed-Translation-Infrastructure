@@ -188,13 +188,17 @@ namespace uva {
                 /**
                  * Allows to check if the given sub-m-gram, defined by the begin_word_idx
                  * and end_word_idx parameters, is potentially present in the trie.
+                 * THis method must not be called for uni-grams, those always have a payload!
                  * @param query the m-gram query data
                  * @param status [out] the resulting status of the operation
                  */
                 inline void is_m_gram_potentially_present(const T_Query_Exec_Data& query,
                         MGramStatusEnum &status) const {
-                    //Check if the caching is enabled and needed, for a uni-gram the payload is always present
-                    if (NEEDS_BITMAP_HASH_CACHE && (query.m_begin_word_idx != query.m_end_word_idx)) {
+                    //Do sanity check if needed
+                    ASSERT_SANITY_THROW((query.m_begin_word_idx != query.m_end_word_idx), "Trying the check the bitmap hash cache for a uni-gram!");
+
+                    //Check if the caching is enabled and needed
+                    if (NEEDS_BITMAP_HASH_CACHE) {
                         //Check if the end word is unknown, if not proceed to the cache check
                         if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
                             //Compute the model level
@@ -222,7 +226,7 @@ namespace uva {
                         status = MGramStatusEnum::GOOD_PRESENT_MGS;
                     }
                 }
-                
+
                 /**
                  * This method allows to get the payloads and compute the (joint) m-gram probabilities.
                  * @param TrieType the trie type
@@ -378,9 +382,9 @@ namespace uva {
                     is_m_gram_potentially_present(query, status);
                     LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                             << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
-                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
 
+                    //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
+                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                         //Compute the current sub-m-gram level
                         const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
                         LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
@@ -427,28 +431,29 @@ namespace uva {
                 inline MGramStatusEnum get_uni_m_gram_payload(T_Query_Exec_Data & query) const {
                     LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                             << SSTR(query.m_end_word_idx) << "] needs to be retrieved!" << END_LOG;
-                    //Declare the status variable
-                    MGramStatusEnum status;
+                    //Try to retrieve the back-off sub-m-gram
+                    if (query.m_begin_word_idx == query.m_end_word_idx) {
+                        //If the back-off sub-m-gram is a uni-gram then
+                        static_cast<const TrieType*> (this)->get_unigram_payload(query);
 
-                    //Check if the back-off sub-m-gram is potentially available
-                    is_m_gram_potentially_present(query, status);
-                    LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
-                            << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
+                        //Set the result status to good
+                        return MGramStatusEnum::GOOD_PRESENT_MGS;
+                    } else {
+                        //Declare the status variable
+                        MGramStatusEnum status;
 
-                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                        //Try to retrieve the back-off sub-m-gram
-                        if (query.m_begin_word_idx == query.m_end_word_idx) {
-                            //If the back-off sub-m-gram is a uni-gram then
-                            static_cast<const TrieType*> (this)->get_unigram_payload(query);
-                            //Set the result status to good
-                            status = MGramStatusEnum::GOOD_PRESENT_MGS;
-                        } else {
+                        //Check if the back-off sub-m-gram is potentially available
+                        is_m_gram_potentially_present(query, status);
+                        LOG_DEBUG << "The payload availability status for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
+                                << SSTR(query.m_end_word_idx) << "] is: " << status_to_string(status) << END_LOG;
+
+                        if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                             //The back-off sub-m-gram has a level M: 1 < M < N
                             static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
                         }
-                    }
 
-                    return status;
+                        return status;
+                    }
                 }
 
                 /**
@@ -472,8 +477,8 @@ namespace uva {
                         //Declare the back-off payload shorthand
                         const void * & bo_payload_ref = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
 
-                        //If the payload is present, then take it into account
-                        if (((bo_payload_ref == NULL) ? get_uni_m_gram_payload(query) : MGramStatusEnum::GOOD_PRESENT_MGS) == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                        //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
+                        if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {
                             LOG_DEBUG << "The m-gram is found, payload: "
                                     << (string) (* ((const T_M_Gram_Payload *) bo_payload_ref)) << END_LOG;
                             query.m_probs[end_word_idx] += ((const T_M_Gram_Payload *) bo_payload_ref)->m_back;
@@ -529,8 +534,8 @@ namespace uva {
                     //Define the reference to the payload pointer, just for convenience
                     const void * & bo_payload_ref = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
 
-                    //If the back-off payload is present use it if not then try to retrieve it
-                    if (((bo_payload_ref == NULL) ? get_uni_m_gram_payload(query) : MGramStatusEnum::GOOD_PRESENT_MGS) == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                    //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
+                    if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {
                         LOG_DEBUG << "The m-gram is found, payload: "
                                 << (string) (* ((const T_M_Gram_Payload *) bo_payload_ref)) << END_LOG;
                         query.m_probs[query.m_end_word_idx + 1] += ((const T_M_Gram_Payload *) bo_payload_ref)->m_back;
