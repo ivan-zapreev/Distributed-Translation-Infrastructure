@@ -117,7 +117,7 @@ namespace uva {
                  */
                 inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
-                    LOG_INFO << "Using the #buckets factor: "
+                    LOG_INFO << "Using the #buckets divider: "
                             << SSTR(__G2DMapTrie::BUCKETS_FACTOR) << END_LOG;
                     LOG_INFO << "Using  and the " << __G2DMapTrie::T_M_Gram_PB_Entry::m_mem_strat.get_strategy_info()
                             << " memory allocation strategy." << END_LOG;
@@ -282,7 +282,7 @@ namespace uva {
                  * Allows to get the bucket index for the given M-gram hash
                  * @param curr_level the m-gram level we need the bucked id for
                  * @param gram_hash the M-gram hash to compute the bucked index for
-                 * @param m_bucket_divider the number of buckers
+                 * @param m_bucket_divider the number of buckets
                  * @param return the resulting bucket index
                  */
                 static inline uint_fast64_t get_bucket_id(const uint_fast64_t gram_hash, const uint_fast64_t m_bucket_divider) {

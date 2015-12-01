@@ -50,8 +50,9 @@ namespace uva {
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                 ASSERT_CONDITION_THROW((word_index.is_word_index_continuous()), "This trie can not be used with a continuous word index!");
 
-                //Initialize the array of number of gram ids per level
+                //Initialize the arrays of number of gram ids and bucker dividers per level
                 memset(m_num_buckets, 0, MAX_LEVEL * sizeof (TShortId));
+                memset(m_bucket_dividers, 0, MAX_LEVEL * sizeof (uint32_t));
 
                 //Clear the M-Gram bucket arrays
                 memset(m_m_gram_data, 0, NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
@@ -74,14 +75,16 @@ namespace uva {
                 //Compute the number of M-Gram level buckets and pre-allocate them
                 for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                     //Compute the number of buckets, there should be at least one
-                    m_num_buckets[idx] = max(counts[idx] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR, 1.0f);
+                    m_num_buckets[idx] = const_expr::power(2, log2::log2_64(__H2DMapTrie::BUCKETS_FACTOR * counts[idx]) + 1);
+                    m_bucket_dividers[idx] = m_num_buckets[idx] - 1;
                     m_m_gram_data[idx] = new TProbBackOffBucket[m_num_buckets[idx]];
                 }
 
                 //Compute the number of N-Gram level buckets and pre-allocate them
                 constexpr TModelLevel MAX_LEVEL_IDX = MAX_LEVEL - LEVEL_IDX_OFFSET;
                 //Compute the number of buckets, there should be at least one
-                m_num_buckets[MAX_LEVEL_IDX] = max(counts[MAX_LEVEL_IDX] / __H2DMapTrie::WORDS_PER_BUCKET_FACTOR, 1.0f);
+                m_num_buckets[MAX_LEVEL_IDX] = const_expr::power(2, log2::log2_64(__H2DMapTrie::BUCKETS_FACTOR * counts[MAX_LEVEL_IDX]) + 1);
+                m_bucket_dividers[MAX_LEVEL_IDX] = m_num_buckets[MAX_LEVEL_IDX] - 1;
                 m_n_gram_data = new TProbBucket[m_num_buckets[MAX_LEVEL_IDX]];
             };
 
