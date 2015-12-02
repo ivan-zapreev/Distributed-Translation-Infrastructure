@@ -61,6 +61,14 @@ namespace uva {
                     typedef T_Gram_Id_Data_Elem * T_Gram_Id_Data_Ptr;
 
                     /**
+                     * This structure defined the m-gram id key which consists of the m-gram id and its length in bytes
+                     */
+                    typedef struct {
+                        T_Gram_Id_Data_Ptr m_id;
+                        uint8_t m_len_bytes;
+                    }  T_Gram_Id_Key;
+                    
+                    /**
                      * The basic constructor that allocates maximum memory
                      * needed to store the M-gram id of the given level.
                      * @param level the level of the M-grams this object will store id for.

@@ -286,8 +286,8 @@ namespace uva {
                     TBucketEntry * m_word_buckets;
 
                     //Computes the number of buckets as a power of two, based on the number of elements
-#define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
-    const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
+#define COMPUTE_NUMBER_OF_BUCKETS_1(NUM_ELEMENTS) \
+    const_expr::power(2, const_expr::ceil(const_expr::log2(__OptimizingWordIndex::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
 
                     /**
                      * Allocate the data storages
@@ -300,7 +300,7 @@ namespace uva {
                         //First determine the number of buckets to be used, make
                         //it a power of two! Also make sure that there is at least
                         //one extra bucket to indicate the end of search sequence.
-                        m_num_buckets = COMPUTE_NUMBER_OF_BUCKETS(m_num_words);
+                        m_num_buckets = COMPUTE_NUMBER_OF_BUCKETS_1(m_num_words);
                         //Initialize the number of buckets divider
                         m_num_buckets_divider = (m_num_buckets - 1);
 

@@ -45,58 +45,42 @@ namespace uva {
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             G2DMapTrie<MAX_LEVEL, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
             : GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
-            m_1_gram_data(NULL), m_N_gram_data(NULL) {
+            m_1_gram_data(NULL), m_n_gram_data(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                 ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
-                //ASSERT_CONDITION_THROW((__G2DMapTrie::BUCKETS_FACTOR < 1.0), "__G2DMapTrie::BUCKETS_FACTOR must be >= 1.0");
-
-                //Initialize the arrays of number of gram ids and bucker dividers per level
-                memset(m_num_buckets, 0, MAX_LEVEL * sizeof (uint32_t));
-                memset(m_bucket_dividers, 0, MAX_LEVEL * sizeof (uint32_t));
 
                 //Clear the M-Gram bucket arrays
-                memset(m_M_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
+                memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackMap*));
 
-                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (__G2DMapTrie::T_M_Gram_PB_Entry) << END_LOG;
-                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (__G2DMapTrie::T_M_Gram_Prob_Entry) << END_LOG;
-                LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
-                LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbBackMap)= " << sizeof (TProbBackMap) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbMap)= " << sizeof (TProbMap) << END_LOG;
             };
-
-            //Computes the number of buckets as a power of two, based on the number of elements
-#define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
-    const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             void G2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
                 //Call the base-class
                 BASE::pre_allocate(counts);
 
-                //02) Pre-allocate the 1-Gram data
-                m_num_buckets[0] = BASE::get_word_index().get_number_of_words(counts[0]);
-                m_1_gram_data = new T_M_Gram_Payload[m_num_buckets[0]];
-                memset(m_1_gram_data, 0, m_num_buckets[0] * sizeof (T_M_Gram_Payload));
+                //Pre-allocate the 1-Gram data
+                const size_t num_words = BASE::get_word_index().get_number_of_words(counts[0]);
+                m_1_gram_data = new T_M_Gram_Payload[num_words];
+                memset(m_1_gram_data, 0, num_words * sizeof (T_M_Gram_Payload));
 
-                //03) Insert the unknown word data into the allocated array
-                T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                pbData.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                pbData.m_back = ZERO_BACK_OFF_WEIGHT;
+                //Insert the unknown word data into the allocated array
+                T_M_Gram_Payload & pb_data = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                pb_data.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                pb_data.m_back = ZERO_BACK_OFF_WEIGHT;
 
-                //Compute the number of M-Gram level buckets and pre-allocate them
+                //Initialize the m-gram maps
                 for (TModelLevel idx = 1; idx <= BASE::NUM_M_GRAM_LEVELS; ++idx) {
-                    //Compute the number of buckets, there should be at least one
-                    m_num_buckets[idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[idx]);
-                    m_bucket_dividers[idx] = m_num_buckets[idx] - 1;
-                    m_M_gram_data[idx - 1] = new TProbBackOffBucket[m_num_buckets[idx]];
+                    m_m_gram_data[idx - 1] = new TProbBackMap(__G2DMapTrie::BUCKETS_FACTOR, counts[idx]);
                 }
 
-                //Compute the number of N-Gram level buckets and pre-allocate them
-                //Compute the number of buckets, there should be at least one
-                const TModelLevel ll_idx = (MAX_LEVEL - 1);
-                m_num_buckets[ll_idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[ll_idx]);
-                m_bucket_dividers[ll_idx] = m_num_buckets[ll_idx] - 1;
-                m_N_gram_data = new TProbBucket[m_num_buckets[ll_idx]];
+                //Initialize the n-gram's map
+                m_n_gram_data = new TProbMap(__G2DMapTrie::BUCKETS_FACTOR, counts[MAX_LEVEL - 1]);
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
@@ -105,13 +89,12 @@ namespace uva {
                 if (m_1_gram_data != NULL) {
                     //De-allocate one grams
                     delete[] m_1_gram_data;
-                    //De-allocate M-Grams
+                    //De-allocate m-gram maps
                     for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
-
-                        delete[] m_M_gram_data[idx];
+                        delete m_m_gram_data[idx];
                     }
-                    //De-allocate N-Grams
-                    delete[] m_N_gram_data;
+                    //De-allocate n-grams map
+                    delete m_n_gram_data;
                 }
             };
 

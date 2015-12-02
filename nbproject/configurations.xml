@@ -13,6 +13,7 @@
       <itemPath>inc/BaseMGram.hpp</itemPath>
       <itemPath>inc/BasicWordIndex.hpp</itemPath>
       <itemPath>inc/ByteMGramId.hpp</itemPath>
+      <itemPath>inc/ByteMGramIdTables.hpp</itemPath>
       <itemPath>inc/C2DHybridTrie.hpp</itemPath>
       <itemPath>inc/C2DMapTrie.hpp</itemPath>
       <itemPath>inc/C2WArrayTrie.hpp</itemPath>
@@ -23,6 +24,7 @@
       <itemPath>inc/Exceptions.hpp</itemPath>
       <itemPath>inc/Executor.hpp</itemPath>
       <itemPath>inc/FileStreamReader.hpp</itemPath>
+      <itemPath>inc/FixedSizeHashMap.hpp</itemPath>
       <itemPath>inc/G2DMapTrie.hpp</itemPath>
       <itemPath>inc/GenericTrieBase.hpp</itemPath>
       <itemPath>inc/Globals.hpp</itemPath>
@@ -756,6 +758,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -775,6 +779,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -905,6 +911,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -924,6 +932,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1062,6 +1072,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1081,6 +1093,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1211,6 +1225,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1230,6 +1246,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1361,6 +1379,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1380,6 +1400,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1510,6 +1532,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1529,6 +1553,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1659,6 +1685,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1678,6 +1706,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1808,6 +1838,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1827,6 +1859,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1957,6 +1991,8 @@
       </item>
       <item path="inc/ByteMGramId.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/ByteMGramIdTables.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/C2DHybridTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/C2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
@@ -1976,6 +2012,8 @@
       <item path="inc/Executor.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/FileStreamReader.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/FixedSizeHashMap.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/G2DMapTrie.hpp" ex="false" tool="3" flavor2="0">
       </item>
