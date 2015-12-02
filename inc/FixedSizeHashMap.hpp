@@ -55,7 +55,7 @@ namespace uva {
             public:
                 typedef ELEMENT_TYPE TElemType;
                 //Stores the step taken to go to the next bucket
-                static constexpr uint_fast64_t BUCKET_STEP = 1;
+                static constexpr uint_fast64_t BUCKET_STEP = 13;
                 //Stores the index that of the non-used element
                 static constexpr IDX_TYPE NO_ELEMENT_INDEX = 0;
                 //Stores the minimal valid element index
