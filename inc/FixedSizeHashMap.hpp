@@ -160,11 +160,16 @@ namespace uva {
                  */
                 inline void set_number_of_elements(const double buckets_factor, const size_t num_elems) {
                     //Do a compulsory assert on the buckets factor
-                    ASSERT_CONDITION_THROW((buckets_factor < 1.0), "buckets_factor must be >= 1.0");
+                    ASSERT_CONDITION_THROW((buckets_factor < 1.0), string("buckets_factor: ") +
+                            std::to_string(buckets_factor) + string(", must be >= 1.0"));
+
                     //Compute the number of buckets
                     m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(buckets_factor * (num_elems + 1))));
                     //Compute the buckets divider
                     m_capacity = m_num_buckets - 1;
+
+                    ASSERT_CONDITION_THROW((num_elems > m_capacity), string("Insufficient buckets capacity: ") +
+                            std::to_string(m_capacity) + string(" need at least ") + std::to_string(num_elems));
 
                     LOG_DEBUG << "num_elems: " << num_elems << ", m_num_buckets: " << m_num_buckets
                             << ", m_bucket_divider: " << m_capacity << END_LOG;
