@@ -61,7 +61,7 @@ namespace uva {
                  */
                 explicit FixedSizeHashMap(const double buckets_factor, const size_t num_elems) {
                     //Compute and set the number of buckets and the buckets divider
-                    set_number_of_beckets(buckets_factor, num_elems);
+                    set_number_of_elements(buckets_factor, num_elems);
                     //Set the current number of stored elements to zero
                     m_size = 0;
                     //Allocate the elements
@@ -158,7 +158,7 @@ namespace uva {
                  * multiplied with before converting it into the number of buckets.
                  * @param num_elems the number of elements to compute the buckets for
                  */
-                inline void set_number_of_beckets(const double buckets_factor, const size_t num_elems) {
+                inline void set_number_of_elements(const double buckets_factor, const size_t num_elems) {
                     //Do a compulsory assert on the buckets factor
                     ASSERT_CONDITION_THROW((buckets_factor < 1.0), "buckets_factor must be >= 1.0");
                     //Compute the number of buckets

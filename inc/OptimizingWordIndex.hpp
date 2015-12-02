@@ -277,7 +277,7 @@ namespace uva {
                     size_t m_num_buckets;
 
                     //Stores the number of buckets divider
-                    uint_fast64_t m_num_buckets_divider;
+                    uint_fast64_t m_capacity;
 
                     //Typedef the bucket entry
                     typedef __OptimizingWordIndex::WordIndexBucketEntry<TWordIdType> TBucketEntry;
@@ -285,24 +285,30 @@ namespace uva {
                     //Stores the buckets data
                     TBucketEntry * m_word_buckets;
 
-                    //Computes the number of buckets as a power of two, based on the number of elements
-#define COMPUTE_NUMBER_OF_BUCKETS_1(NUM_ELEMENTS) \
-    const_expr::power(2, const_expr::ceil(const_expr::log2(__OptimizingWordIndex::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
+                    /**
+                     * Sets the number of buckets as a power of two, based on the number of elements
+                     * @param buckets_factor the buckets factor that the number of elements will be
+                     * multiplied with before converting it into the number of buckets.
+                     * @param num_elems the number of elements to compute the buckets for
+                     */
+                    inline void set_number_of_elements(const double buckets_factor, const size_t num_elems) {
+                        //Do a compulsory assert on the buckets factor
+                        ASSERT_CONDITION_THROW((buckets_factor < 1.0), "buckets_factor must be >= 1.0");
+                        //Compute the number of buckets
+                        m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(buckets_factor * (num_elems + 1))));
+                        //Compute the buckets divider
+                        m_capacity = m_num_buckets - 1;
+
+                        LOG_DEBUG << "num_elems: " << num_elems << ", m_num_buckets: " << m_num_buckets
+                                << ", m_bucket_divider: " << m_capacity << END_LOG;
+                    }
 
                     /**
                      * Allocate the data storages
                      */
                     inline void allocate_data_storage() {
-                        //Perform the compulsory check
-                        ASSERT_CONDITION_THROW((__OptimizingWordIndex::BUCKETS_FACTOR < 1.0),
-                                "__OptimizingWordIndex::BUCKETS_FACTOR must be >= 1.0");
-
-                        //First determine the number of buckets to be used, make
-                        //it a power of two! Also make sure that there is at least
-                        //one extra bucket to indicate the end of search sequence.
-                        m_num_buckets = COMPUTE_NUMBER_OF_BUCKETS_1(m_num_words);
-                        //Initialize the number of buckets divider
-                        m_num_buckets_divider = (m_num_buckets - 1);
+                        //Set the number of buckets and the capacity
+                        set_number_of_elements(__OptimizingWordIndex::BUCKETS_FACTOR, m_num_words);
 
                         LOG_DEBUG << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
 
@@ -319,7 +325,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint_fast64_t get_bucket_idx(const TextPieceReader & token) const {
-                        return compute_hash(token) & m_num_buckets_divider;
+                        return compute_hash(token) & m_capacity;
                     }
 
                     /**
@@ -328,7 +334,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint_fast64_t get_bucket_idx(const string & token) const {
-                        return compute_hash(token) & m_num_buckets_divider;
+                        return compute_hash(token) & m_capacity;
                     }
 
                     /**
@@ -336,7 +342,7 @@ namespace uva {
                      * @param bucket_idx [in/out] the bucket index
                      */
                     inline void get_next_bucket_idx(uint_fast64_t & bucket_idx) const {
-                        bucket_idx = (bucket_idx + 1) & m_num_buckets_divider;
+                        bucket_idx = (bucket_idx + 1) & m_capacity;
                         LOG_DEBUG3 << "Moving on to the next bucket: " << bucket_idx << END_LOG;
                     }
 
