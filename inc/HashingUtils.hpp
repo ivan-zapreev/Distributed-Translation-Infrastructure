@@ -50,7 +50,7 @@ namespace uva {
 
             /*****************************************************************************************************/
 
-            inline uint_fast32_t hash32(uint_fast32_t key, uint_fast32_t seed = 2166136261U) {
+            static inline uint_fast32_t hash32(uint_fast32_t key, uint_fast32_t seed = 2166136261U) {
                 uint8_t* bytes = (uint8_t*) (&key);
                 uint_fast32_t hash = (16777619U * seed) ^ bytes[0];
                 hash = (16777619U * hash) ^ bytes[1];
@@ -67,7 +67,7 @@ namespace uva {
              * @param seed
              * @return 
              */
-            inline uint_fast64_t hash64(uint_fast64_t key, uint_fast64_t seed = 2166136261U) {
+            static inline uint_fast64_t hash64(uint_fast64_t key, uint_fast64_t seed = 2166136261U) {
                 /*
                 uint8_t* bytes = (uint8_t*) (&key);
                 uint_fast32_t hash = (16777619U * seed) ^ bytes[0];
@@ -83,7 +83,7 @@ namespace uva {
                 return seed ^ (key + 0x9e3779b9 + (seed << 6) + (seed >> 2));
             }
 
-            inline uint_fast32_t hash32_str(const char* data, int len, uint_fast32_t seed = 2166136261U) {
+            static inline uint_fast32_t hash32_str(const char* data, int len, uint_fast32_t seed = 2166136261U) {
                 uint_fast32_t hash = seed;
                 for (int32_t i = 0; i != len; ++i) {
                     hash = (16777619U * hash) ^ (uint8_t) (data[i]);
@@ -91,7 +91,7 @@ namespace uva {
                 return hash;
             }
 
-            inline uint_fast32_t hash32_str(const string & token) {
+            static inline uint_fast32_t hash32_str(const string & token) {
                 return hash32_str(token.c_str(), token.length());
             }
 
@@ -109,7 +109,7 @@ namespace uva {
             const std::size_t fnv_offset_basis = 14695981039346656037u;
 #endif
 
-            inline uint_fast32_t basic_fnv_1(const char * data, uint32_t len) {
+            static inline uint_fast32_t basic_fnv_1(const char * data, uint32_t len) {
                 uint_fast32_t hash = fnv_offset_basis;
                 for (size_t idx = 0; idx != len; ++idx) {
                     hash *= fnv_prime;
@@ -118,11 +118,11 @@ namespace uva {
                 return hash;
             };
 
-            inline uint32_t basic_fnv_1(const string & token) {
+            static inline uint32_t basic_fnv_1(const string & token) {
                 return basic_fnv_1(token.c_str(), token.length());
             }
 
-            inline uint_fast32_t basic_fnv_1a(const char * data, uint32_t len) {
+            static inline uint_fast32_t basic_fnv_1a(const char * data, uint32_t len) {
                 uint_fast32_t hash = fnv_offset_basis;
                 for (size_t idx = 0; idx != len; ++idx) {
 
@@ -132,7 +132,7 @@ namespace uva {
                 return hash;
             };
 
-            inline uint32_t basic_fnv_1a(const string & token) {
+            static inline uint32_t basic_fnv_1a(const string & token) {
                 return basic_fnv_1a(token.c_str(), token.length());
             }
 
@@ -141,22 +141,22 @@ namespace uva {
             //The seed for xxhash
             static const unsigned XXHASH_SEED = 0u;
 
-            inline uint_fast32_t computeXXHash32(const char * data, uint32_t len) {
+            static inline uint_fast32_t computeXXHash32(const char * data, uint32_t len) {
 
                 return XXH32(data, len, XXHASH_SEED);
             }
 
-            inline uint_fast32_t computeXXHash32(const string & token) {
+            static inline uint_fast32_t computeXXHash32(const string & token) {
 
                 return XXH32(token.c_str(), token.length(), XXHASH_SEED);
             }
 
-            inline uint_fast64_t computeXXHash64(const char * data, uint32_t len) {
+            static inline uint_fast64_t computeXXHash64(const char * data, uint32_t len) {
 
                 return XXH64(data, len, XXHASH_SEED);
             }
 
-            inline uint_fast64_t computeXXHash64(const string & token) {
+            static inline uint_fast64_t computeXXHash64(const string & token) {
 
                 return XXH64(token.c_str(), token.length(), XXHASH_SEED);
             }
@@ -194,7 +194,7 @@ namespace uva {
                        +(uint_fast32_t)(((const uint8_t *)(d))[0]) )
 #endif
 
-            inline uint_fast32_t computePaulHsiehHash(const char * data, uint32_t len) {
+            static inline uint_fast32_t computePaulHsiehHash(const char * data, uint32_t len) {
                 uint_fast32_t hash = len, tmp;
                 int rem;
 
@@ -244,7 +244,7 @@ namespace uva {
              * @param str the string to hash
              * @return the hash value
              */
-            inline uint_fast32_t computePaulHsiehHash(const string & str) {
+            static inline uint_fast32_t computePaulHsiehHash(const string & str) {
 
                 return computePaulHsiehHash(str.c_str(), str.length());
             }
@@ -259,7 +259,7 @@ namespace uva {
              * @param str the string to hash
              * @return the resulting hash
              */
-            inline uint_fast32_t computeDjb2Hash(const char * data, uint32_t len) {
+            static inline uint_fast32_t computeDjb2Hash(const char * data, uint32_t len) {
                 uint_fast32_t hashVal = 5381;
 
                 for (std::size_t i = 0; i != len; ++i) {
@@ -270,7 +270,7 @@ namespace uva {
                 return hashVal;
             }
 
-            inline uint_fast32_t computeDjb2Hash(const string & str) {
+            static inline uint_fast32_t computeDjb2Hash(const string & str) {
 
                 return computeDjb2Hash(str.c_str(), str.length());
             }
@@ -293,7 +293,7 @@ namespace uva {
 #define B 76963 /* another prime */
 #define C 86969 /* yet another prime */
 
-            inline uint_fast32_t computePrimesHash(const char * data, uint32_t len) {
+            static inline uint_fast32_t computePrimesHash(const char * data, uint32_t len) {
                 uint_fast32_t h = 31 /* also prime */;
                 for (std::size_t i = 0; i != len; ++i) {
                     h = (h * A) ^ (data[i] * B);
@@ -301,14 +301,14 @@ namespace uva {
                 return h; // or return h % C;
             }
 
-            inline uint_fast32_t computePrimesHash(const string & str) {
+            static inline uint_fast32_t computePrimesHash(const string & str) {
 
                 return computePrimesHash(str.c_str(), str.length());
             }
 
             /*****************************************************************************************************/
 
-            inline uint_fast32_t computeRSHash(const char * data, uint32_t len) {
+            static inline uint_fast32_t computeRSHash(const char * data, uint32_t len) {
                 uint_fast32_t b = 378551;
                 uint_fast32_t a = 63689;
                 uint_fast32_t hash = 0;
@@ -321,13 +321,13 @@ namespace uva {
                 return hash;
             }
 
-            inline uint_fast32_t computeRSHash(const string & str) {
+            static inline uint_fast32_t computeRSHash(const string & str) {
                 return computeRSHash(str.c_str(), str.length());
             }
 
             /*****************************************************************************************************/
 
-            inline uint_fast32_t stupidHash(const char * data, uint32_t len) {
+            static inline uint_fast32_t stupidHash(const char * data, uint32_t len) {
                 uint_fast32_t hash = hash32(len);
                 for (std::size_t i = 0; i != len; ++i) {
                     hash = (16777619U * hash) ^ data[i];
@@ -335,7 +335,7 @@ namespace uva {
                 return hash;
             }
 
-            inline uint_fast32_t stupidHash(const string & str) {
+            static inline uint_fast32_t stupidHash(const string & str) {
                 return stupidHash(str.c_str(), str.length());
             }
 
@@ -350,7 +350,7 @@ namespace uva {
              * @param seed the seed to use
              * @return the hash value
              */
-            inline uint32_t crapWowHash(const char *key, uint32_t len, uint32_t seed) {
+            static inline uint32_t crapWowHash(const char *key, uint32_t len, uint32_t seed) {
 #if !defined(__LP64__) && !defined(_MSC_VER) && ( defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) )
                 // esi = k, ebx = h
                 uint32_t hash;
@@ -439,7 +439,7 @@ namespace uva {
 
             // 64-bit hash for 64-bit platforms
 
-            inline uint64_t MurmurHash64A(const void * key, std::size_t len, uint64_t seed) {
+            static inline uint64_t MurmurHash64A(const void * key, std::size_t len, uint64_t seed) {
                 const uint64_t m = 0xc6a4a7935bd1e995ULL;
                 const int r = 47;
 
@@ -494,7 +494,7 @@ namespace uva {
 
             // 64-bit hash for 32-bit platforms
 
-            inline uint64_t MurmurHash64B(uint64_t seed, const void * key, std::size_t len) {
+            static inline uint64_t MurmurHash64B(uint64_t seed, const void * key, std::size_t len) {
                 const unsigned int m = 0x5bd1e995;
                 const int r = 24;
 
@@ -581,7 +581,7 @@ namespace uva {
              * @param len the length of the data to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
+            static inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
                 return MurmurHash64A(data, len, seed);
             }
 
@@ -590,7 +590,7 @@ namespace uva {
              * @param token the string to hash
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const TextPieceReader & token, const uint64_t seed = 16777619U) {
+            static inline uint_fast64_t compute_hash(const TextPieceReader & token, const uint64_t seed = 16777619U) {
                 return compute_hash(token.get_begin_c_str(), token.length(), seed);
             }
 
@@ -599,54 +599,8 @@ namespace uva {
              * @param token the token to compute hash for
              * @return the resulting hash.
              */
-            inline uint_fast64_t compute_hash(const string & token, const uint64_t seed = 16777619U) {
+            static inline uint_fast64_t compute_hash(const string & token, const uint64_t seed = 16777619U) {
                 return compute_hash(token.c_str(), token.length(), seed);
-            }
-
-            /*****************************************************************************************************/
-
-            /**
-             * Allows to compute the hash limited by the given value
-             * @param data the data to hash
-             * @param len the length of the data to hash
-             * @param limit the upper limit of the resulting hash (non-reachable)
-             * @return the resulting hash < limit
-             */
-            inline uint_fast32_t compute_hash(const uint32_t limit, const char * data, uint32_t len, const uint64_t seed = 16777619U) {
-                const uint_fast64_t hash = compute_hash(data, len, seed);
-                return static_cast<uint_fast32_t>( hash - (hash / limit) * limit);
-            }
-
-            /**
-             * Allows to compute the hash limited by the given value
-             * @param token the string to hash
-             * @param limit the upper limit of the resulting hash (non-reachable)
-             * @return the resulting hash < limit
-             */
-            inline uint_fast32_t compute_hash(const uint32_t limit, const TextPieceReader & token, const uint64_t seed = 16777619U) {
-                return compute_hash(limit, token.get_begin_c_str(), token.length(), seed);
-            }
-
-            /**
-             * Allows to compute the hash limited by the given value
-             * @param token the string to hash
-             * @param limit the upper limit of the resulting hash (non-reachable)
-             * @return the resulting hash < limit
-             */
-            inline uint_fast32_t compute_hash(const uint32_t limit, const string & token, const uint64_t seed = 16777619U) {
-                return compute_hash(limit, token.c_str(), token.length(), seed);
-            }
-
-            /*****************************************************************************************************/
-
-            /**
-             * Allows to combine two hashes into one
-             * @param hash_one the first hash value
-             * @param hash_two the second hash value
-             * @return the resulting combines hash value
-             */
-            inline uint_fast64_t combine_hash(const uint_fast64_t hash_one, const uint_fast64_t hash_two) {
-                return hash64(hash_one, hash_two);
             }
 
             /*****************************************************************************************************/
@@ -660,7 +614,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TLongId cantor(TLongId x, TLongId y) {
+            static inline uint_fast64_t cantor(uint_fast64_t x, uint_fast64_t y) {
 
                 return ((x + y)*(x + y + 1)) / 2 + y;
             }
@@ -674,10 +628,10 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void uncantor(const TLongId z, TShortId &x, TLongId &y) {
+            static inline void uncantor(const uint_fast64_t z, TShortId &x, uint_fast64_t &y) {
 
-                const TLongId w = floor((sqrt(8 * z + 1) - 1) / 2);
-                const TLongId t = (w * w + w) / 2;
+                const uint_fast64_t w = floor((sqrt(8 * z + 1) - 1) / 2);
+                const uint_fast64_t t = (w * w + w) / 2;
                 y = (z - t);
                 x = (TShortId) (w - y);
             }
@@ -692,7 +646,7 @@ namespace uva {
              * @param y the previous context
              * @return the context reference for the next N-gram level
              */
-            inline TLongId szudzik(TLongId x, TLongId y) {
+            static inline uint_fast64_t szudzik(uint_fast64_t x, uint_fast64_t y) {
 
                 return ( x >= y ? (y + x + x * x) : (x + y * y));
             }
@@ -706,10 +660,10 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            inline void unszudzik(const TLongId z, TShortId &x, TLongId &y) {
-                const TLongId zrf = floor(sqrt(z));
-                const TLongId zrfs = zrf * zrf;
-                const TLongId zmzrfs = z - zrfs;
+            static inline void unszudzik(const uint_fast64_t z, TShortId &x, uint_fast64_t &y) {
+                const uint_fast64_t zrf = floor(sqrt(z));
+                const uint_fast64_t zrfs = zrf * zrf;
+                const uint_fast64_t zmzrfs = z - zrfs;
                 if (zmzrfs < zrf) {
                     x = zmzrfs;
                     y = zrf;
@@ -717,6 +671,23 @@ namespace uva {
                     x = zrf;
                     y = zmzrfs - zrf;
                 }
+            }
+
+            /*****************************************************************************************************/
+
+            /**
+             * Allows to combine two hashes into one, at the moment is implemented
+             * using the Cantor function which provides the best result so far among:
+             *  1. one ^ two
+             *  2. hash64(one, two)
+             *  3. szudzik
+             * @param hash_one the first hash value
+             * @param hash_two the second hash value
+             * @return the resulting combines hash value
+             */
+            static inline uint_fast64_t combine_hash(const uint_fast64_t hash_two, const uint_fast64_t hash_one) {
+                LOG_DEBUG4 << "cantor(" << hash_one << ", " << hash_two << ") = " << cantor(hash_one, hash_two) << END_LOG;
+                return cantor(hash_one, hash_two);
             }
 
         }

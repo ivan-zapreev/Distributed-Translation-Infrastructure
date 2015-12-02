@@ -304,8 +304,8 @@ namespace uva {
                         ASSERT_CONDITION_THROW((num_elems > m_capacity), string("Insufficient buckets capacity: ") +
                                 std::to_string(m_capacity) + string(" need at least ") + std::to_string(num_elems));
 
-                        LOG_DEBUG << "num_elems: " << num_elems << ", m_num_buckets: " << m_num_buckets
-                                << ", m_bucket_divider: " << m_capacity << END_LOG;
+                        LOG_DEBUG << "OWI: num_elems: " << num_elems << ", m_num_buckets: " << m_num_buckets
+                                << ", m_capacity: " << m_capacity << END_LOG;
                     }
 
                     /**

@@ -81,15 +81,8 @@ namespace uva {
                     /**
                      * The basic constructor
                      */
-                    S_M_GramData() : m_id(NULL) {
-                    }
-
-                    /**
-                     * Allows to test id the data structure is set with data
-                     * @return 
-                     */
-                    inline bool is_full() const {
-                        return (m_id != NULL);
+                    S_M_GramData() {
+                        m_id = NULL;
                     }
 
                     /**
