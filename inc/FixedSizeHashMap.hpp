@@ -48,31 +48,32 @@ namespace uva {
              *          1. operator==(const KEY_TYPE &); the comparison operator for the key value
              *          2. static void clear(ELEMENT_TYPE & ); the cleaning method to destroy contents of the element.
              * @param KEY_TYPE the key type for retrieving the element
+             * @param IDX_TYPE the index type, is related to the number of elements
              */
-            template<typename ELEMENT_TYPE, typename KEY_TYPE>
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE = uint32_t>
             class FixedSizeHashMap {
             public:
                 typedef ELEMENT_TYPE TElemType;
                 //Stores the step taken to go to the next bucket
-                static constexpr size_t BUCKET_STEP = 1;
+                static constexpr uint_fast64_t BUCKET_STEP = 1;
                 //Stores the index that of the non-used element
-                static constexpr size_t NO_ELEMENT_INDEX = 0;
+                static constexpr IDX_TYPE NO_ELEMENT_INDEX = 0;
                 //Stores the minimal valid element index
-                static constexpr size_t MIN_ELEMENT_INDEX = NO_ELEMENT_INDEX + 1;
+                static constexpr IDX_TYPE MIN_ELEMENT_INDEX = NO_ELEMENT_INDEX + 1;
                 //Stores the maximum valid element index
-                const size_t MAX_ELEMENT_INDEX;
+                const IDX_TYPE MAX_ELEMENT_INDEX;
 
                 /**
                  * The basic constructor that allows to instantiate the map for the given number of elements
                  * @param num_elems the number of elements that will be stored in the map
                  */
-                explicit FixedSizeHashMap(const double buckets_factor, const size_t num_elems) : MAX_ELEMENT_INDEX(num_elems) {
+                explicit FixedSizeHashMap(const double buckets_factor, const IDX_TYPE num_elems) : MAX_ELEMENT_INDEX(num_elems) {
                     //Compute and set the number of buckets and the buckets divider
                     set_number_of_elements(buckets_factor, num_elems);
                     //Set the current number of stored elements to zero
                     m_next_elem_idx = MIN_ELEMENT_INDEX;
                     //Allocate the number of buckets
-                    m_buckets = new size_t[m_num_buckets];
+                    m_buckets = new IDX_TYPE[m_num_buckets];
                     //Allocate the elements, add an extra one, the 0'th 
                     //element will never be used its index is reserved.
                     m_elems = new ELEMENT_TYPE[num_elems + 1];
@@ -95,23 +96,24 @@ namespace uva {
 
                     LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
                             << " for hash value: " << hash_value << END_LOG;
-                    size_t num_skipped = 0;
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         LOG_DEBUG2 << "The bucket: " << bucket_idx <<
                                 " is full, skipping to the next." << END_LOG;
                         get_next_bucket_idx(bucket_idx);
-                        num_skipped++;
                     }
 
                     LOG_DEBUG2 << "<----------------The first empty bucket index is: "
                             << bucket_idx << END_LOG;
 
+                    //Get the element index and increment
+                    const IDX_TYPE elem_idx = m_next_elem_idx++;
+                    
                     //Set the bucket to point to the given element
-                    m_buckets[bucket_idx] = m_next_elem_idx++;
+                    m_buckets[bucket_idx] = elem_idx;
 
                     //Return the element under the index
-                    return m_elems[m_buckets[bucket_idx]];
+                    return m_elems[elem_idx];
                 }
 
                 /**
@@ -150,7 +152,7 @@ namespace uva {
                 ~FixedSizeHashMap() {
                     if (m_elems != NULL) {
                         //Call the destructors on the allocated objects
-                        for (size_t idx = MIN_ELEMENT_INDEX; idx < MAX_ELEMENT_INDEX; ++idx) {
+                        for (IDX_TYPE idx = MIN_ELEMENT_INDEX; idx < MAX_ELEMENT_INDEX; ++idx) {
 
                             LOG_DEBUG4 << "Deallocating an element [" << SSTR(idx)
                                     << "]: " << SSTR((void *) &m_elems[idx]) << END_LOG;
@@ -164,17 +166,17 @@ namespace uva {
 
             private:
                 //Stores the number of buckets
-                size_t m_num_buckets;
+                uint_fast64_t m_num_buckets;
                 //Stores the buckets capacity, there should be at
                 //least one empty bucket so the capacity is less then
                 //the available number of buckets.
-                size_t m_buckets_capacity;
+                uint_fast64_t m_buckets_capacity;
 
                 //Stores the current number of stored elements
-                size_t m_next_elem_idx;
+                IDX_TYPE m_next_elem_idx;
 
                 //Stores the buckets
-                size_t * m_buckets;
+                IDX_TYPE * m_buckets;
                 //Stores the array of reserved elements
                 ELEMENT_TYPE * m_elems;
 
@@ -184,7 +186,7 @@ namespace uva {
                  * multiplied with before converting it into the number of buckets.
                  * @param num_elems the number of elements to compute the buckets for
                  */
-                inline void set_number_of_elements(const double buckets_factor, const size_t num_elems) {
+                inline void set_number_of_elements(const double buckets_factor, const IDX_TYPE num_elems) {
                     //Do a compulsory assert on the buckets factor
 
                     ASSERT_CONDITION_THROW((buckets_factor < 1.0), string("buckets_factor: ") +
@@ -233,14 +235,14 @@ namespace uva {
                 }
             };
 
-            template<typename ELEMENT_TYPE, typename KEY_TYPE>
-            constexpr size_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE>::BUCKET_STEP;
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
+            constexpr uint_fast64_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::BUCKET_STEP;
 
-            template<typename ELEMENT_TYPE, typename KEY_TYPE>
-            constexpr size_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE>::NO_ELEMENT_INDEX;
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
+            constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NO_ELEMENT_INDEX;
 
-            template<typename ELEMENT_TYPE, typename KEY_TYPE>
-            constexpr size_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE>::MIN_ELEMENT_INDEX;
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
+            constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::MIN_ELEMENT_INDEX;
 
         }
     }

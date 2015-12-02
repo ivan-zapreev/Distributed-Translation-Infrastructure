@@ -131,7 +131,7 @@ namespace uva {
                  */
                 inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
-                    LOG_INFO << "Using the #buckets divider: "
+                    LOG_INFO << "Using the #buckets factor: "
                             << SSTR(__G2DMapTrie::BUCKETS_FACTOR) << END_LOG;
                 }
 
