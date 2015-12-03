@@ -200,8 +200,12 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
-                    const TModelLevel layer_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
+                    //Get the current level for logging
+                    const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+
+                    //Get the current level of the sub-m-gram
+                    const TModelLevel & layer_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
                     //Call the templated part via function pointer
@@ -248,8 +252,8 @@ namespace uva {
                 template<typename STORAGE_MAP>
                 static inline MGramStatusEnum get_payload(const STORAGE_MAP * map,
                         typename BASE::T_Query_Exec_Data & query) {
-                    //Compute the current level of the sub-m-gram
-                    const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                    //Get the current level for logging
+                    const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                     LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(curr_level) << "-gram ["
                             << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;

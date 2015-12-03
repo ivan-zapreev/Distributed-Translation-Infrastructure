@@ -208,7 +208,7 @@ namespace uva {
                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_unk_word_payload;
 
                     //Call the templated part via function pointer
-                    (void) get_payload<TProbBackOffBucket>(m_bucket_dividers, m_m_gram_data[0], query);
+                    (void) get_payload<TProbBackOffBucket>(m_bucket_dividers[0], m_m_gram_data[0], query);
                 }
 
                 /**
@@ -218,12 +218,15 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                    const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
-                    const TModelLevel layer_idx = curr_level - LEVEL_IDX_OFFSET;
+                    //Get the current level for logging
+                    const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                    //Get the current level of the sub-m-gram
+                    const TModelLevel & layer_idx = CURR_LEVEL_MIN_1_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBackOffBucket>(m_bucket_dividers, m_m_gram_data[layer_idx], query);
+                    status = get_payload<TProbBackOffBucket>(m_bucket_dividers[layer_idx], m_m_gram_data[layer_idx], query);
                 }
 
                 /**
@@ -237,7 +240,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBucket>(m_bucket_dividers, m_n_gram_data, query);
+                    status = get_payload<TProbBucket>(m_bucket_dividers[MAX_LEVEL - 1], m_n_gram_data, query);
                 }
 
                 /**
@@ -303,16 +306,16 @@ namespace uva {
                  * @param status [out] the resulting status of the operation
                  */
                 template<typename BUCKET_TYPE>
-                static inline MGramStatusEnum get_payload(const uint_fast64_t bucket_dividers[MAX_LEVEL], const BUCKET_TYPE * buckets,
+                static inline MGramStatusEnum get_payload(const uint_fast64_t bucket_divider, const BUCKET_TYPE * buckets,
                         typename BASE::T_Query_Exec_Data & query) {
-                    //Compute the current level of the sub-m-gram
-                    const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                    //Get the current level for logging
+                    const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                     LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(curr_level) << "-gram ["
                             << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;
 
                     const uint64_t hash_value = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
-                    const uint_fast64_t bucket_idx = get_bucket_id(hash_value, bucket_dividers[curr_level - 1]);
+                    const uint_fast64_t bucket_idx = get_bucket_id(hash_value, bucket_divider);
                     LOG_DEBUG << "The " << SSTR(curr_level) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(curr_level) << "-gram ["
