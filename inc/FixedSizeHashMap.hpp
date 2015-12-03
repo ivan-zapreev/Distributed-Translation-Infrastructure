@@ -54,8 +54,13 @@ namespace uva {
             class FixedSizeHashMap {
             public:
                 typedef ELEMENT_TYPE TElemType;
+                //Stores the number of bucket steps we are going to use, must be a power of two
+                static constexpr uint_fast32_t NUM_BUCKET_STEPS = 256;
+                //Stores the bucket step index divider
+                static constexpr uint_fast32_t STEP_IDX_DIVIDER = NUM_BUCKET_STEPS - 1;
                 //Stores the step taken to go to the next bucket
-                static constexpr uint_fast64_t BUCKET_STEP = 1013;
+                static constexpr uint_fast64_t BUCKET_STEPS[NUM_BUCKET_STEPS] = {3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621};
+
                 //Stores the index that of the non-used element
                 static constexpr IDX_TYPE NO_ELEMENT_INDEX = 0;
                 //Stores the minimal valid element index
@@ -97,10 +102,11 @@ namespace uva {
                     LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
                             << " for hash value: " << hash_value << END_LOG;
                     //Search for the first empty bucket
+                    uint_fast32_t attempt = 0;
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         LOG_DEBUG2 << "The bucket: " << bucket_idx <<
                                 " is full, skipping to the next." << END_LOG;
-                        get_next_bucket_idx(bucket_idx);
+                        get_next_bucket_idx(attempt, bucket_idx);
                     }
 
                     LOG_DEBUG2 << "<----------------The first empty bucket index is: "
@@ -108,7 +114,7 @@ namespace uva {
 
                     //Get the element index and increment
                     const IDX_TYPE elem_idx = m_next_elem_idx++;
-                    
+
                     //Set the bucket to point to the given element
                     m_buckets[bucket_idx] = elem_idx;
 
@@ -129,6 +135,7 @@ namespace uva {
                     LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for hash value: " << hash_value << END_LOG;
 
                     //Search for the first empty bucket
+                    uint_fast32_t attempt = 0;
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         //Check if the element is equal to the key
                         if (m_elems[m_buckets[bucket_idx]] == key) {
@@ -138,7 +145,7 @@ namespace uva {
                             return &m_elems[m_buckets[bucket_idx]];
                         }
                         //The element is not found, move to the next one
-                        get_next_bucket_idx(bucket_idx);
+                        get_next_bucket_idx(attempt, bucket_idx);
                     }
 
                     LOG_DEBUG2 << "Encountered an empty bucket, the word is unknown!" << END_LOG;
@@ -227,16 +234,25 @@ namespace uva {
 
                 /**
                  * Provides the next bucket index
+                 * @param index the index for getting the next step id
                  * @param bucket_idx [in/out] the bucket index
                  */
-                inline void get_next_bucket_idx(uint_fast64_t & bucket_idx) const {
-                    bucket_idx = (bucket_idx + BUCKET_STEP) & m_buckets_capacity;
+                inline void get_next_bucket_idx(uint_fast32_t & index, uint_fast64_t & bucket_idx) const {
+                    index++;
+                    index &= STEP_IDX_DIVIDER;
+                    bucket_idx = (bucket_idx + BUCKET_STEPS[index]) & m_buckets_capacity;
                     LOG_DEBUG3 << "Moving on to the next bucket: " << bucket_idx << END_LOG;
                 }
             };
 
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr uint_fast64_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::BUCKET_STEP;
+            constexpr uint_fast64_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::BUCKET_STEPS[NUM_BUCKET_STEPS];
+
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
+            constexpr uint_fast32_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NUM_BUCKET_STEPS;
+
+            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
+            constexpr uint_fast32_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::STEP_IDX_DIVIDER;
 
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
             constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NO_ELEMENT_INDEX;
