@@ -68,7 +68,6 @@ namespace uva {
              * @return 
              */
             static inline uint_fast64_t hash64(uint_fast64_t key, uint_fast64_t seed = 2166136261U) {
-                /*
                 uint8_t* bytes = (uint8_t*) (&key);
                 uint_fast32_t hash = (16777619U * seed) ^ bytes[0];
                 hash = (16777619U * hash) ^ bytes[1];
@@ -79,8 +78,7 @@ namespace uva {
                 hash = (16777619U * hash) ^ bytes[6];
                 hash = (16777619U * hash) ^ bytes[7];
                 return hash;
-                 */
-                return seed ^ (key + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+                //return seed ^ (key + 0x9e3779b9 + (seed << 6) + (seed >> 2));
             }
 
             static inline uint_fast32_t hash32_str(const char* data, int len, uint_fast32_t seed = 2166136261U) {

@@ -86,10 +86,10 @@ namespace uva {
 
                 /**
                  * Allows to add a new element for the given hash value
-                 * @param hash_value the hash value of the element
+                 * @param key_value the key value of the element
                  * @return the reference to the new element
                  */
-                ELEMENT_TYPE & add_new_element(const uint_fast64_t hash_value) {
+                ELEMENT_TYPE & add_new_element(const uint_fast64_t key_value) {
                     //Check if the capacity is exceeded.
                     if (m_next_elem_idx > MAX_ELEMENT_INDEX) {
                         THROW_EXCEPTION(string("Used up all the elements, the last ") +
@@ -97,10 +97,10 @@ namespace uva {
                     }
 
                     //Get the bucket index from the hash
-                    uint_fast64_t bucket_idx = get_bucket_idx(hash_value);
+                    uint_fast64_t bucket_idx = get_bucket_idx(key_value);
 
                     LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
-                            << " for hash value: " << hash_value << END_LOG;
+                            << " for hash value: " << key_value << END_LOG;
                     //Search for the first empty bucket
                     uint_fast8_t attempt = 0;
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
@@ -124,15 +124,15 @@ namespace uva {
 
                 /**
                  * Allows to retrieve the element for the given hash value and key
-                 * @param hash_value the hash value of the element
+                 * @param key_value the key value of the element
                  * @param key the key value of the element
                  * @return the pointer to the found element or NULL if nothing is found
                  */
-                const ELEMENT_TYPE * get_element(const uint_fast64_t hash_value, const KEY_TYPE & key) const {
+                const ELEMENT_TYPE * get_element(const uint_fast64_t key_value, const KEY_TYPE & key) const {
                     //Get the bucket index from the hash
-                    uint_fast64_t bucket_idx = get_bucket_idx(hash_value);
+                    uint_fast64_t bucket_idx = get_bucket_idx(key_value);
 
-                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for hash value: " << hash_value << END_LOG;
+                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for hash value: " << key_value << END_LOG;
 
                     //Search for the first empty bucket
                     uint_fast8_t attempt = 0;
@@ -213,16 +213,16 @@ namespace uva {
 
                 /**
                  * Allows to get the bucket index for the given hash value
-                 * @param hash_value the hash value to compute the bucked index for
+                 * @param key_value the key value to compute the bucked index for
                  * @param return the resulting bucket index
                  */
-                inline uint_fast64_t get_bucket_idx(const uint_fast64_t hash_value) const {
+                inline uint_fast64_t get_bucket_idx(const uint_fast64_t key_value) const {
                     //Compute the bucket index, note that since m_capacity is the power of two,
                     //we can compute ( hash_value % m_num_buckets ) as ( hash_value & m_capacity )
                     //where m_capacity = ( m_num_buckets - 1);
-                    const uint_fast64_t bucket_idx = hash_value & m_buckets_capacity;
+                    const uint_fast64_t bucket_idx = hash64(key_value) & m_buckets_capacity;
 
-                    LOG_DEBUG1 << "The hash value is: " << hash_value << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_DEBUG1 << "The hash value is: " << key_value << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     ASSERT_SANITY_THROW((bucket_idx > m_buckets_capacity),
