@@ -110,6 +110,40 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
                 const static TModelLevel M_GRAM_LEVEL_8 = 8u;
+
+
+                //Stores the maximum sopported level
+                static constexpr TModelLevel MAX_SUPP_GRAM_LEVEL = M_GRAM_LEVEL_6;
+
+                //This structure stores the current level value mapping from the [begin,end] value pair
+                static constexpr TModelLevel CURR_LEVEL_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
+                    {M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4, M_GRAM_LEVEL_5, M_GRAM_LEVEL_6},
+                    {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4, M_GRAM_LEVEL_5},
+                    {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4},
+                    {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3},
+                    {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2},
+                    {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1},
+                };
+
+                //This structure stores the current level minus 1 value mapping from the [begin,end] value pair
+                static constexpr TModelLevel CURR_LEVEL_MIN_1_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
+                    {0, 1, 2, 3, 4, 5},
+                    {0, 0, 1, 2, 3, 4},
+                    {0, 0, 0, 1, 2, 3},
+                    {0, 0, 0, 0, 1, 2},
+                    {0, 0, 0, 0, 0, 1},
+                    {0, 0, 0, 0, 0, 0},
+                };
+
+                //This structure stores the current level minus 2 value mapping from the [begin,end] value pair
+                static constexpr TModelLevel CURR_LEVEL_MIN_2_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
+                    {0, 0, 1, 2, 3, 4},
+                    {0, 0, 0, 1, 2, 3},
+                    {0, 0, 0, 0, 1, 2},
+                    {0, 0, 0, 0, 0, 1},
+                    {0, 0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0, 0},
+                };
             }
         }
 

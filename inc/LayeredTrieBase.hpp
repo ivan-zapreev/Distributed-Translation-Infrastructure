@@ -76,15 +76,15 @@ namespace uva {
                     //If we are at least at a level 3 m-gram
                     if (CURR_LEVEL >= M_GRAM_LEVEL_3) {
                         if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_3)) prev_ctx_id = ctx_id;
-                        if (trie.get_ctx_id(M_GRAM_LEVEL_2, word_ids[1], ctx_id)) {
+                        if (trie.get_ctx_id(M_GRAM_LEVEL_2 - M_GRAM_LEVEL_2, word_ids[1], ctx_id)) {
                             //If we are at least at a level 4 m-gram
                             if (CURR_LEVEL >= M_GRAM_LEVEL_4) {
                                 if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_4)) prev_ctx_id = ctx_id;
-                                if (trie.get_ctx_id(M_GRAM_LEVEL_3, word_ids[2], ctx_id)) {
+                                if (trie.get_ctx_id(M_GRAM_LEVEL_3 - M_GRAM_LEVEL_2, word_ids[2], ctx_id)) {
                                     //If we are at least at a level 5 m-gram
                                     if (CURR_LEVEL >= M_GRAM_LEVEL_5) {
                                         if (GET_BACK_OFF_CTX_ID && (CURR_LEVEL == M_GRAM_LEVEL_5)) prev_ctx_id = ctx_id;
-                                        if (trie.get_ctx_id(M_GRAM_LEVEL_4, word_ids[3], ctx_id)) {
+                                        if (trie.get_ctx_id(M_GRAM_LEVEL_4 - M_GRAM_LEVEL_2, word_ids[3], ctx_id)) {
                                             return M_GRAM_LEVEL_5;
                                         }
                                     }
@@ -181,12 +181,12 @@ namespace uva {
 
                 /**
                  * Allows to get the the new context id for the word and previous context id given the level
-                 * @param curr_level the currently considered m-gram level
+                 * @param level_idx the m-gram level index, where m is > 1 and index is computed as m - 2;
                  * @param word_id the word id on this level
                  * @param ctx_id the previous level context id
                  * @return true if computation of the next context is succeeded
                  */
-                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
+                inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -263,8 +263,8 @@ namespace uva {
                         //If the back-off sub-m-gram is not a uni-gram then do the context
                         for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
                             LOG_DEBUG2 << "Getting the context id for sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ", " << SSTR(word_idx) << "]" << END_LOG;
-                            const TModelLevel curr_level = (word_idx - query.m_begin_word_idx) + 1;
-                            if (!static_cast<const TrieType*> (this)->get_ctx_id(curr_level, query.m_gram[word_idx], ctx_id)) {
+                            const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][word_idx];
+                            if (!static_cast<const TrieType*> (this)->get_ctx_id(level_idx, query.m_gram[word_idx], ctx_id)) {
                                 //If the next context could not be computed, we stop with a bad status
                                 status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 break;

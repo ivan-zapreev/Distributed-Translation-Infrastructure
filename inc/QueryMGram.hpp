@@ -90,7 +90,7 @@ namespace uva {
                         uint64_t(& hash_row_ref)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[begin_word_idx]);
 
                         //Compute the current level
-                        const TModelLevel curr_level = (end_word_idx - begin_word_idx) + 1;
+                        const TModelLevel curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
                         //Check if the given hash is already available.
                         if (curr_level > prev_level_ref) {
                             //Check if there has its been computed before for this row
@@ -207,7 +207,7 @@ namespace uva {
                         }
 
                         //Set the actual end word index
-                        BASE::m_actual_end_word_idx =  BASE::m_actual_level - 1;
+                        BASE::m_actual_end_word_idx = BASE::m_actual_level - 1;
 
                         ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
                                 (BASE::m_actual_level > MAX_LEVEL)),

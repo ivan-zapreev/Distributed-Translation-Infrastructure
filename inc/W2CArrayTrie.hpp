@@ -112,22 +112,14 @@ namespace uva {
                 explicit W2CArrayTrie(WordIndexType & word_index);
 
                 /**
-                 * Computes the N-Gram context using the previous context and the current word id
-                 * 
-                 * WARNING: Must only be called for the M-gram level 1 < M < N!
-                 * @see LayeredTrieBase
-                 * 
-                 * @param word_id the current word id
-                 * @param ctx_id [in] - the previous context id, [out] - the next context id
-                 * @param curr_level the M-gram level we are working with M
-                 * @return the resulting context
-                 * @throw nothing.
+                 * Computes the M-Gram context using the previous context and the current word id
+                 * @see LayeredTrieBese
                  */
-                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
-                    //Compute the m-gram index
-                    const TModelLevel mgram_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
+                inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                    //Compute back the current level pure for debug purposes.
+                    const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
-                    ASSERT_SANITY_THROW((curr_level == MAX_LEVEL) || (mgram_idx < 0),
+                    ASSERT_SANITY_THROW((curr_level == MAX_LEVEL) || (level_idx < 0),
                             string("Unsupported level id: ") + std::to_string(curr_level));
 
                     LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(curr_level)
@@ -135,14 +127,14 @@ namespace uva {
                             << SSTR(ctx_id) << END_LOG;
 
                     //First get the sub-array reference. 
-                    const T_M_GramWordEntry & ref = m_m_gram_word_2_data[mgram_idx][word_id];
-
+                    const T_M_GramWordEntry & ref = m_m_gram_word_2_data[level_idx][word_id];
+                    
                     if (DO_SANITY_CHECKS && ref.has_data()) {
                         LOG_DEBUG3 << "ref.size: " << SSTR(ref.size()) << ", ref.cio: "
                                 << SSTR(ref.cio) << ", ctx_id range: [" << SSTR(ref[0].id) << ", "
                                 << SSTR(ref[ref.size() - 1].id) << "]" << END_LOG;
                     }
-
+ 
                     //Check that if this is the 2-Gram case and the previous context
                     //id is 0 then it is the unknown word id, at least this is how it
                     //is now in ATrie implementation, so we need to do a warning!

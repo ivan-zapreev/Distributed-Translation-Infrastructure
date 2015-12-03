@@ -150,23 +150,15 @@ namespace uva {
                 explicit C2WArrayTrie(WordIndexType & p_word_index);
 
                 /**
-                 * Computes the N-Gram context using the previous context and the current word id
-                 * 
-                 * WARNING: Must only be called for the M-gram level 1 < M < N!
-                 * @see LayeredTrieBase
-                 * 
-                 * @param word_id the current word id
-                 * @param ctx_id [in] - the previous context id, [out] - the next context id
-                 * @param curr_level the M-gram level we are working with M
-                 * @return the resulting context
-                 * @throw nothing
+                 * Computes the M-Gram context using the previous context and the current word id
+                 * @see LayeredTrieBese
                  */
-                inline bool get_ctx_id(const TModelLevel curr_level, const TShortId word_id, TLongId & ctx_id) const {
+                inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                    //Compute back the current level pure for debug purposes.
+                    const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
+                    
                     //Perform sanity checks if needed
                     ASSERT_SANITY_THROW(((curr_level == MAX_LEVEL) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
-
-                    //Compute the m-gram index
-                    const TModelLevel level_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
 
                     LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(curr_level)
                             << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
@@ -332,13 +324,13 @@ namespace uva {
                         const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                         //Compute the distance between words
-                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                         LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                 << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                         //Get the next context id
-                        if (get_ctx_id(curr_level, word_id, ctx_id)) {
-                            const TModelLevel level_idx = curr_level - BASE::MGRAM_IDX_OFFSET;
+                        const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                        if (get_ctx_id(level_idx, word_id, ctx_id)) {
                             LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                             //There is data found under this context
                             query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_m_gram_data[level_idx][ctx_id].payload;

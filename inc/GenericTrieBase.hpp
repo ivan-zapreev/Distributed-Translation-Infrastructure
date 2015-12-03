@@ -143,6 +143,8 @@ namespace uva {
                  */
                 explicit GenericTrieBase(WordIndexType & word_index)
                 : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
+                    ASSERT_CONDITION_THROW((MAX_LEVEL> MAX_SUPP_GRAM_LEVEL), string("Unsupported max level: ") + 
+                            std::to_string(MAX_LEVEL) + string(", the maximum supported is: ") + std::to_string(MAX_SUPP_GRAM_LEVEL));
                 }
 
                 /**
@@ -203,11 +205,11 @@ namespace uva {
                         if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
                             //Check if the begin word is unknown, if not proceed to the cache check
                             if (query.m_gram[query.m_begin_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
-                                //Compute the model level
-                                const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                                //Compute the level array index
+                                const TModelLevel level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                                 //If the caching is enabled, the higher sub-m-gram levels always require checking
-                                const BitmapHashCache & ref = m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET];
+                                const BitmapHashCache & ref = m_bitmap_hash_cach[level_idx];
 
                                 //Get the m-gram's hash
                                 const uint64_t hash = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
@@ -406,7 +408,7 @@ namespace uva {
                     //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                         //Compute the current sub-m-gram level
-                        const TModelLevel curr_level = (query.m_end_word_idx - query.m_begin_word_idx) + 1;
+                        const TModelLevel curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                         LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
 
                         //Just for convenience get the reference to the payload element
