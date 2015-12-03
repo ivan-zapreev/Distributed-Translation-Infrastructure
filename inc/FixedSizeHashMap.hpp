@@ -59,7 +59,7 @@ namespace uva {
                 //Stores the bucket step index divider
                 static constexpr uint_fast8_t STEP_IDX_DIVIDER = NUM_BUCKET_STEPS - 1;
                 //Stores the step taken to go to the next bucket
-                static constexpr uint_fast64_t BUCKET_STEPS[NUM_BUCKET_STEPS] = {3, 541, 1087, 1621};
+                static constexpr uint_fast64_t BUCKET_STEPS[NUM_BUCKET_STEPS] = {541, 1087, 1621, 2161};
 
                 //Stores the index that of the non-used element
                 static constexpr IDX_TYPE NO_ELEMENT_INDEX = 0;
