@@ -96,7 +96,7 @@ namespace uva {
                 namespace __OptimizingWordIndex {
                     //This is the number of buckets factor for the optimizing word index. The 
                     //number of buckets will be proportional the number of words * this value
-                    static constexpr double BUCKETS_FACTOR = 1.0;
+                    static constexpr double BUCKETS_FACTOR = 2.0;
                 }
             }
             using namespace dictionary;
