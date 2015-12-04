@@ -81,8 +81,7 @@ namespace uva {
                     /**
                      * The basic constructor
                      */
-                    S_M_GramData() {
-                        m_id = NULL;
+                    S_M_GramData() : m_id(NULL) {
                     }
 
                     /**

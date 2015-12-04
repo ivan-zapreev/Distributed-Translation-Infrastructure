@@ -54,12 +54,6 @@ namespace uva {
             class FixedSizeHashMap {
             public:
                 typedef ELEMENT_TYPE TElemType;
-                //Stores the number of bucket steps we are going to use, must be a power of two
-                static constexpr uint_fast8_t NUM_BUCKET_STEPS = 4;
-                //Stores the bucket step index divider
-                static constexpr uint_fast8_t STEP_IDX_DIVIDER = NUM_BUCKET_STEPS - 1;
-                //Stores the step taken to go to the next bucket
-                static constexpr uint_fast64_t BUCKET_STEPS[NUM_BUCKET_STEPS] = {541, 1087, 1621, 2161};
 
                 //Stores the index that of the non-used element
                 static constexpr IDX_TYPE NO_ELEMENT_INDEX = 0;
@@ -102,11 +96,10 @@ namespace uva {
                     LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
                             << " for hash value: " << key_value << END_LOG;
                     //Search for the first empty bucket
-                    uint_fast8_t attempt = 0;
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         LOG_DEBUG2 << "The bucket: " << bucket_idx <<
                                 " is full, skipping to the next." << END_LOG;
-                        get_next_bucket_idx(attempt, bucket_idx);
+                        get_next_bucket_idx(bucket_idx);
                     }
 
                     LOG_DEBUG2 << "<----------------The first empty bucket index is: "
@@ -135,7 +128,6 @@ namespace uva {
                     LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for hash value: " << key_value << END_LOG;
 
                     //Search for the first empty bucket
-                    uint_fast8_t attempt = 0;
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         //Check if the element is equal to the key
                         if (m_elems[m_buckets[bucket_idx]] == key) {
@@ -145,7 +137,7 @@ namespace uva {
                             return &m_elems[m_buckets[bucket_idx]];
                         }
                         //The element is not found, move to the next one
-                        get_next_bucket_idx(attempt, bucket_idx);
+                        get_next_bucket_idx(bucket_idx);
                     }
 
                     LOG_DEBUG2 << "Encountered an empty bucket, the word is unknown!" << END_LOG;
@@ -220,9 +212,11 @@ namespace uva {
                     //Compute the bucket index, note that since m_capacity is the power of two,
                     //we can compute ( hash_value % m_num_buckets ) as ( hash_value & m_capacity )
                     //where m_capacity = ( m_num_buckets - 1);
-                    const uint_fast64_t bucket_idx = key_value & m_buckets_capacity;
+                    const uint_fast64_t bucket_idx = hash64(key_value) & m_buckets_capacity;
 
-                    LOG_DEBUG1 << "The hash value is: " << key_value << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
+                    LOG_DEBUG3 << "The key value is: " << key_value
+                            << ", hash value: " << hash64(key_value)
+                            << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
                     ASSERT_SANITY_THROW((bucket_idx > m_buckets_capacity),
@@ -234,25 +228,13 @@ namespace uva {
 
                 /**
                  * Provides the next bucket index
-                 * @param index the index for getting the next step id
                  * @param bucket_idx [in/out] the bucket index
                  */
-                inline void get_next_bucket_idx(uint_fast8_t & index, uint_fast64_t & bucket_idx) const {
-                    index++;
-                    index &= STEP_IDX_DIVIDER;
-                    bucket_idx = (bucket_idx + BUCKET_STEPS[index]) & m_buckets_capacity;
+                inline void get_next_bucket_idx(uint_fast64_t & bucket_idx) const {
+                    bucket_idx = (bucket_idx + 1) & m_buckets_capacity;
                     LOG_DEBUG3 << "Moving on to the next bucket: " << bucket_idx << END_LOG;
                 }
             };
-
-            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr uint_fast64_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::BUCKET_STEPS[NUM_BUCKET_STEPS];
-
-            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr uint_fast8_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NUM_BUCKET_STEPS;
-
-            template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr uint_fast8_t FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::STEP_IDX_DIVIDER;
 
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
             constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NO_ELEMENT_INDEX;
