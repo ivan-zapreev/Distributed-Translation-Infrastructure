@@ -212,7 +212,7 @@ namespace uva {
                     //Compute the bucket index, note that since m_capacity is the power of two,
                     //we can compute ( hash_value % m_num_buckets ) as ( hash_value & m_capacity )
                     //where m_capacity = ( m_num_buckets - 1);
-                    const uint_fast64_t bucket_idx = hash64(key_value) & m_buckets_capacity;
+                    const uint_fast64_t bucket_idx = MurmurHash64B(key_value) & m_buckets_capacity;
 
                     LOG_DEBUG3 << "The key value is: " << key_value
                             << ", hash value: " << hash64(key_value)
