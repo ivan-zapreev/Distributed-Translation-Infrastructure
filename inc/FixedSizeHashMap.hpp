@@ -215,7 +215,7 @@ namespace uva {
                     const uint_fast64_t bucket_idx = MurmurHash64B(key_value) & m_buckets_capacity;
 
                     LOG_DEBUG3 << "The key value is: " << key_value
-                            << ", hash value: " << hash64(key_value)
+                            << ", hash value: " << MurmurHash64B(key_value)
                             << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
