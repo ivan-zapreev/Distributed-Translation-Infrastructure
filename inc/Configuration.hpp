@@ -102,17 +102,8 @@ namespace uva {
             using namespace dictionary;
 
             namespace __BitmapHashCache {
-                //The default number of buckets allocated for hash is equal to the
-                //number of M-grams in the Trie level. This is absolutely not enough
-                //As then the cache will be fully used and there will be only performance
-                //losses. To make the cache work we need much more buckets so that the
-                //queried M-grams have a very low chance to fall into the buckets with
-                //the Trie grams. So the bigger this number the better, yet the
-                //memory constraints. ALthough they are not crucial as we use bitmaps.
-                //NOTE: The experiments with C2WA showed a 5% performance improvement
-                //In the range of values 15-50. Yet, looking at memory consumption the 
-                //optimum value was chosen to be 20 as with 15 it starts deteriorating 
-                static constexpr float BUCKETS_FACTOR = 20;
+                //The buckets factor for the bitmap hash cache.
+                static constexpr float BUCKETS_FACTOR = 10;
             }
 
             //Stores the possible Trie types
