@@ -112,7 +112,7 @@ namespace uva {
                 //NOTE: The experiments with C2WA showed a 5% performance improvement
                 //In the range of values 15-50. Yet, looking at memory consumption the 
                 //optimum value was chosen to be 20 as with 15 it starts deteriorating 
-                static constexpr float BUCKET_MULTIPLIER_FACTOR = 20;
+                static constexpr float BUCKETS_FACTOR = 20;
             }
 
             //Stores the possible Trie types
@@ -180,8 +180,8 @@ namespace uva {
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = HASHING_WORD_INDEX;
                 //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that with 20*bitmap cache this is about 5% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //The experiments show that without the cache this trie is 7% faster
+                static constexpr bool DO_BITMAP_HASH_CACHE = false;
             }
 
             namespace __W2CArrayTrie {

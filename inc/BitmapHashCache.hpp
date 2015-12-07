@@ -63,7 +63,7 @@ namespace uva {
                     /**
                      * The basic constructor, does not do much - only default initialization
                      */
-                    BitmapHashCache() : m_num_elems(0), m_data_ptr(NULL) {
+                    BitmapHashCache() : m_num_buckets(0), m_data_ptr(NULL) {
                     }
 
                     /**
@@ -86,10 +86,12 @@ namespace uva {
                         }
 
                         if (num_elems != 0) {
-                            m_num_elems = num_elems * __BitmapHashCache::BUCKET_MULTIPLIER_FACTOR;
-                            size_t num_bytes = NUM_BYTES_4_BITS(m_num_elems);
+                            //Compute the number of buckets as a power of two, so that we do not need to use %
+                            m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(__BitmapHashCache::BUCKETS_FACTOR * (num_elems + 1))));
+                            m_buckets_capacity = m_num_buckets - 1;
+                            size_t num_bytes = NUM_BYTES_4_BITS(m_num_buckets);
 
-                            LOG_DEBUG2 << "Pre-allocating: " << m_num_elems
+                            LOG_DEBUG2 << "Pre-allocating: " << m_num_buckets
                                     << " elements, that is " << num_bytes
                                     << " bytes." << END_LOG;
 
@@ -144,7 +146,9 @@ namespace uva {
 
                 private:
                     //Stores the number of elements this bitset was pre-allocated for
-                    size_t m_num_elems;
+                    size_t m_num_buckets;
+                    //Stores the buckets capacity that should be the number of buckets minus one
+                    size_t m_buckets_capacity;
                     //Stores the data allocated for the bitset
                     uint8_t * m_data_ptr;
 
@@ -156,10 +160,11 @@ namespace uva {
                      */
                     inline void get_bit_pos(const uint64_t hash, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                         LOG_DEBUG2 << "The hash value is: " << hash
-                                << ", the number of elements is: " << m_num_elems << END_LOG;
+                                << ", the number of elements is: " << m_num_buckets << END_LOG;
 
-                        //Convert it to the number of elements
-                        uint32_t global_bit_idx = hash % m_num_elems;
+                        //Convert it to the number of elements, use m_buckets_capacity = m_num_buckets - 1;
+                        //where m_num_buckets is the power of two
+                        uint32_t global_bit_idx = hash & m_buckets_capacity;
 
                         //Convert the global bit index into the byte index and bit offset
                         byte_idx = BYTE_IDX(global_bit_idx);
