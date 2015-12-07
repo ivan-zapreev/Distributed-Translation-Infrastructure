@@ -182,7 +182,7 @@ namespace uva {
                 //This is the factor that is used to define an average number of words
                 //per buckets in H2DHashMapTrie. The number of buckets
                 //will be proportional to the number of words * this value
-                static constexpr double BUCKETS_FACTOR = 0.5;
+                static constexpr double BUCKETS_FACTOR = 2.0;
                 //Stores the word index type to be used in this trie, COUNTING
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!

@@ -234,11 +234,11 @@ namespace uva {
                 //Stores the 1-gram data
                 T_M_Gram_Payload * m_1_gram_data;
 
-                //These are arrays of buckets for M-Gram levels with 1 < M < N
+                //This is an array of hash maps for M-Gram levels with 1 < M < N
                 typedef FixedSizeHashMap<T_M_Gram_PB_Entry, T_Gram_Id_Key> TProbBackMap;
                 TProbBackMap * m_m_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
-                //This is an array of buckets for the N-Gram level
+                //This is hash map pointer for the N-Gram level
                 typedef FixedSizeHashMap<T_M_Gram_Prob_Entry, T_Gram_Id_Key> TProbMap;
                 TProbMap * m_n_gram_data;
 

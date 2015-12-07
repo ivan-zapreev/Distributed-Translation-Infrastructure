@@ -53,7 +53,7 @@ namespace uva {
                 //Clear the M-Gram bucket arrays
                 memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackMap*));
 
-                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Back_Off_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_PB_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
                 LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
                 LOG_DEBUG << "sizeof(TProbBackMap)= " << sizeof (TProbBackMap) << END_LOG;
                 LOG_DEBUG << "sizeof(TProbMap)= " << sizeof (TProbMap) << END_LOG;

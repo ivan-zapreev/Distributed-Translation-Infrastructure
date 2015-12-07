@@ -38,7 +38,7 @@
 #include "TextPieceReader.hpp"
 
 #include "ArrayUtils.hpp"
-#include "DynamicMemoryArrays.hpp"
+#include "FixedSizeHashMap.hpp"
 
 #include "GenericTrieBase.hpp"
 
@@ -46,7 +46,7 @@ using namespace std;
 
 using namespace uva::smt::logging;
 using namespace uva::smt::file;
-using namespace uva::smt::tries::alloc;
+using namespace uva::utils::containers;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::m_grams;
 
@@ -65,24 +65,44 @@ namespace uva {
                  * @param id stores the M-gram id
                  * @param payload stores the payload which is either probability or probability with back-off
                  */
-                template<typename PAYLOAD_TYPE>
+                template<typename TPayloadType>
                 struct S_M_GramData {
-                    uint64_t id; //8 byte
-                    PAYLOAD_TYPE payload; //xxx byte 8 byte for T_M_Gram_Payload 4 byte for TLogProbBackOff
+                    //The m-gram id type
+                    typedef uint64_t TM_Gram_Id;
+                    //The self typedef
+                    typedef S_M_GramData<TPayloadType> SELF;
 
-                    //Stores the memory increase strategy object
-                    const static MemIncreaseStrategy m_mem_strat;
-                    typedef uint64_t TIdType;
+                    //The field storing the m-gram id
+                    TM_Gram_Id m_id; //8 byte
+
+                    //The field storing the m-gram payload
+                    TPayloadType m_payload; //xxx byte 8 byte for T_M_Gram_Payload 4 byte for TLogProbBackOff
+
+                    /**
+                     * The basic constructor
+                     */
+                    S_M_GramData() : m_id(0) {
+                    }
+
+                    /**
+                     * The comparison operator, allows to  compare two m-gram ids
+                     * @param id the m-gram id to compare with
+                     * @return true if the ids are equal, otherwise false
+                     */
+                    inline bool operator==(const TM_Gram_Id & id) const {
+                        return (m_id == id);
+                    }
+
+                    /**
+                     * Allows to clear the data allocated for the given element
+                     * @param elem the element to clear
+                     */
+                    static inline void clear(SELF & elem) {
+                        //There is nothing to be cleared
+                    }
+
                 };
 #pragma pack(pop) //back to whatever the previous packing mode was 
-
-                typedef S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
-                typedef S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
-
-                template<typename PAYLOAD_TYPE>
-                const MemIncreaseStrategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
-                get_mem_incr_strat(__H2DMapTrie::MEM_INC_TYPE,
-                        __H2DMapTrie::MIN_MEM_INC_NUM, __H2DMapTrie::MEM_INC_FACTOR);
             }
 
             /**
@@ -93,6 +113,9 @@ namespace uva {
             class H2DMapTrie : public GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> {
             public:
                 typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef typename WordIndexType::TWordIdType TWordIdType;
+                typedef __H2DMapTrie::S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
+                typedef __H2DMapTrie::S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                 /**
                  * The basic constructor
@@ -105,10 +128,8 @@ namespace uva {
                  */
                 inline void log_trie_type_usage_info() const {
                     LOG_USAGE << "Using the <" << __FILE__ << "> model." << END_LOG;
-                    LOG_INFO << "Using the #buckets divider: "
+                    LOG_INFO << "Using the #buckets factor: "
                             << SSTR(__H2DMapTrie::BUCKETS_FACTOR) << END_LOG;
-                    LOG_INFO << "Using  and the " << __H2DMapTrie::T_M_Gram_PB_Entry::m_mem_strat.get_strategy_info()
-                            << " memory allocation strategy." << END_LOG;
                 }
 
                 /**
@@ -136,15 +157,14 @@ namespace uva {
                     //Get the bucket index
                     const uint64_t hash_value = gram.get_hash();
                     LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << " hash value: " << hash_value << END_LOG;
-                    const uint_fast64_t bucket_idx = get_bucket_id(hash_value, m_bucket_dividers[LEVEL_IDX]);
 
                     if (CURR_LEVEL == MAX_LEVEL) {
                         //Create a new M-Gram data entry
-                        __H2DMapTrie::T_M_Gram_Prob_Entry & data = m_n_gram_data[bucket_idx].allocate();
+                        T_M_Gram_Prob_Entry & data = m_n_gram_data->add_new_element(hash_value);
                         //The n-gram id is equal to its hash value
-                        data.id = hash_value;
+                        data.m_id = hash_value;
                         //Set the probability data
-                        data.payload = gram.m_payload.m_prob;
+                        data.m_payload = gram.m_payload.m_prob;
                     } else {
                         //Check if this is an <unk> unigram, in this case we store the payload elsewhere
                         if ((CURR_LEVEL == M_GRAM_LEVEL_1) && gram.is_unk_unigram()) {
@@ -152,49 +172,14 @@ namespace uva {
                             m_unk_word_payload = gram.m_payload;
                         } else {
                             //Create a new M-Gram data entry
-                            __H2DMapTrie::T_M_Gram_PB_Entry & data = m_m_gram_data[LEVEL_IDX][bucket_idx].allocate();
+                            T_M_Gram_PB_Entry & data = m_m_gram_data[LEVEL_IDX]->add_new_element(hash_value);
                             //The m-gram id is equal to its hash value
-                            data.id = hash_value;
+                            data.m_id = hash_value;
                             //Set the probability and back-off data
-                            data.payload = gram.m_payload;
+                            data.m_payload = gram.m_payload;
                         }
                     }
                 }
-
-                /**
-                 * This method allows to check if post processing should be called after
-                 * all the X level grams are read. This method is virtual.
-                 * For more details @see WordIndexTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                bool is_post_grams() const {
-                    //We need post m-gram actions for all m-gram level values
-                    return true;
-                }
-
-                /**
-                 * This method should be called after all the X level grams are read.
-                 * For more details @see WordIndexTrieBase
-                 */
-                template<TModelLevel CURR_LEVEL>
-                inline void post_grams() {
-                    //Call the base class method first
-                    if (BASE::template is_post_grams<CURR_LEVEL>()) {
-                        BASE::template post_grams<CURR_LEVEL>();
-                    }
-
-                    //Do the post actions here
-                    if (CURR_LEVEL == MAX_LEVEL) {
-                        //Sort the level's data
-                        post_m_n_grams<TProbBucket, MAX_LEVEL>(m_n_gram_data);
-                    } else {
-                        //Compute the M-gram level index
-                        constexpr TModelLevel CURR_LEVEL_IDX = (CURR_LEVEL - LEVEL_IDX_OFFSET);
-
-                        //Sort the level's data
-                        post_m_n_grams<TProbBackOffBucket, CURR_LEVEL>(m_m_gram_data[CURR_LEVEL_IDX]);
-                    }
-                };
 
                 /**
                  * Allows to attempt the sub-m-gram payload retrieval for m==1.
@@ -208,7 +193,7 @@ namespace uva {
                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_unk_word_payload;
 
                     //Call the templated part via function pointer
-                    (void) get_payload<TProbBackOffBucket>(m_bucket_dividers[0], m_m_gram_data[0], query);
+                    (void) get_payload<TProbBackMap>(m_m_gram_data[0], query);
                 }
 
                 /**
@@ -226,7 +211,7 @@ namespace uva {
                     LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBackOffBucket>(m_bucket_dividers[layer_idx], m_m_gram_data[layer_idx], query);
+                    status = get_payload<TProbBackMap>(m_m_gram_data[layer_idx], query);
                 }
 
                 /**
@@ -236,11 +221,10 @@ namespace uva {
                  * @param status the resulting status of the operation
                  */
                 inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-
                     LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
 
                     //Call the templated part via function pointer
-                    status = get_payload<TProbBucket>(m_bucket_dividers[MAX_LEVEL - 1], m_n_gram_data, query);
+                    status = get_payload<TProbMap>(m_n_gram_data, query);
                 }
 
                 /**
@@ -262,51 +246,25 @@ namespace uva {
                 //typedef the bucket capacity type, for convenience.
                 typedef uint16_t TBucketCapacityType;
 
-                //These are arrays of buckets for M-Gram levels with 1 <= M < N
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_PB_Entry, TBucketCapacityType > TProbBackOffBucket;
-                TProbBackOffBucket * m_m_gram_data[NUM_M_GRAM_LEVELS];
+                //This is an array of hash maps for M-Gram levels with 1 < M < N
+                typedef FixedSizeHashMap<T_M_Gram_PB_Entry, T_M_Gram_PB_Entry::TM_Gram_Id > TProbBackMap;
+                TProbBackMap * m_m_gram_data[NUM_M_GRAM_LEVELS];
 
-                //This is an array of buckets for the N-Gram level
-                typedef DynamicStackArray<__H2DMapTrie::T_M_Gram_Prob_Entry, TBucketCapacityType > TProbBucket;
-                TProbBucket * m_n_gram_data;
+                //This is hash map pointer for the N-Gram level
+                typedef FixedSizeHashMap<T_M_Gram_Prob_Entry, T_M_Gram_Prob_Entry::TM_Gram_Id > TProbMap;
+                TProbMap * m_n_gram_data;
 
                 //Stores the number of m-gram ids/buckets per level
                 TShortId m_num_buckets[MAX_LEVEL];
 
-                //Stores the bucket dividers per level
-                uint_fast64_t m_bucket_dividers[MAX_LEVEL];
-
-                /**
-                 * Allows to get the bucket index for the given M-gram hash
-                 * @param curr_level the m-gram level we need the bucked id for
-                 * @param gram_hash the M-gram hash to compute the bucked index for
-                 * @param m_bucket_divider the number of buckets
-                 * @param return the resulting bucket index
-                 */
-                static inline uint_fast64_t get_bucket_id(const uint_fast64_t gram_hash, const uint_fast64_t m_bucket_divider) {
-                    //Compute the bucket index
-                    const uint_fast64_t bucket_idx = gram_hash & m_bucket_divider;
-
-                    LOG_DEBUG1 << "The m-gram hash is: " << gram_hash << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
-
-                    //If the sanity check is on then check on that the id is within the range
-                    ASSERT_SANITY_THROW((bucket_idx > m_bucket_divider),
-                            string("The m-gram has a bad bucket index: ") + std::to_string(bucket_idx) +
-                            string(", must be within [0, ") + std::to_string(m_bucket_divider) + "]");
-
-                    return bucket_idx;
-                }
-
                 /**
                  * Gets the probability for the given level M-gram, searches on specific level
-                 * @param BUCKET_TYPE the level bucket type
+                 * @param STORAGE_MAP the level map type
                  * @param query the query M-gram state 
-                 * @param buckets the array of buckets to work with
-                 * @param payload_ptr_ptr [out] the pointer to the payload pointer
-                 * @param status [out] the resulting status of the operation
+                 * @return the resulting status of the operation
                  */
-                template<typename BUCKET_TYPE>
-                static inline MGramStatusEnum get_payload(const uint_fast64_t bucket_divider, const BUCKET_TYPE * buckets,
+                template<typename STORAGE_MAP>
+                static inline MGramStatusEnum get_payload(const STORAGE_MAP * map,
                         typename BASE::T_Query_Exec_Data & query) {
                     //Get the current level for logging
                     const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
@@ -315,88 +273,21 @@ namespace uva {
                             << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;
 
                     const uint64_t hash_value = query.m_gram.template get_hash(query.m_begin_word_idx, query.m_end_word_idx);
-                    const uint_fast64_t bucket_idx = get_bucket_id(hash_value, bucket_divider);
-                    LOG_DEBUG << "The " << SSTR(curr_level) << "-gram hash bucket idx is: " << bucket_idx << END_LOG;
 
                     LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(curr_level) << "-gram ["
                             << SSTR(query.m_begin_word_idx) << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
-                    //Get the bucket to look into
-                    const BUCKET_TYPE & ref = buckets[bucket_idx];
 
-                    //Unroll the search into several specific cases, note the order is trying
-                    //to put the most relevant cases first, it gives micro performance boost.
-                    switch (ref.size()) {
-                        case 2: //If there is two elements, perform an  explicit check
-                        {
-                            const typename BUCKET_TYPE::TElemType & elem2 = ref.data()[1];
-                            if (elem2.id == hash_value) {
-                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem2.payload;
-                                //We are now done, the payload is found, can return!
-                                return MGramStatusEnum::GOOD_PRESENT_MGS;
-                            }
-                            //Move on to case 1
-                        }
-                        case 1: //If there is one element, perform an  explicit check
-                        {
-                            const typename BUCKET_TYPE::TElemType & elem = ref.data()[0];
-                            if (elem.id == hash_value) {
-                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem.payload;
-                                //We are now done, the payload is found, can return!
-                                return MGramStatusEnum::GOOD_PRESENT_MGS;
-                            }
-                            break;
-                        }
-                        default: //If there is more than 3 elements then perform a binary search on data
-                        {
-                            LOG_DEBUG << "The bucket contains " << ref.size() << " elements!" << END_LOG;
-                            //Search for the query id in the bucket, the query id is its hash value.
-                            const typename BUCKET_TYPE::TElemType * elem_ptr;
-                            if (my_bsearch_id< typename BUCKET_TYPE::TElemType >
-                                    (ref.data(), 0, ref.size() - 1, hash_value, elem_ptr)) {
-                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem_ptr->payload;
-                                //We are now done, the payload is found, can return!
-                                return MGramStatusEnum::GOOD_PRESENT_MGS;
-                            }
-                            break;
-                        }
-                        case 0: //If there is no elements then we are done, nothing to be found
-                            break;
-                    }
-
-                    //Could not retrieve the payload for the given sub-m-gram
-                    LOG_DEBUG << "Unable to find the sub-m-gram [" << SSTR(query.m_begin_word_idx)
-                            << ", " << SSTR(query.m_end_word_idx) << "] payload!" << END_LOG;
-                    return MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
-                }
-
-                /**
-                 * Performs the post-processing actions on the buckets in the given M-gram level
-                 * @param BUCKET_TYPE the sort of buckets we should work with
-                 * @param CURR_LEVEL the M-gram level value M
-                 * @param buckets the pointer to the array of buckets to process
-                 */
-                template<typename BUCKET_TYPE, TModelLevel CURR_LEVEL >
-                void post_m_n_grams(BUCKET_TYPE * buckets) {
-                    //Iterate through all buckets and shrink/sort sub arrays
-                    for (TShortId bucket_idx = 0; bucket_idx < m_num_buckets[CURR_LEVEL - 1]; ++bucket_idx) {
-                        //First get the sub-array reference. 
-                        BUCKET_TYPE & ref = buckets[bucket_idx];
-
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
-                        //Reduce capacity if there is unused memory
-                        ref.shrink();
-                        LOG_DEBUG1 << "Shrinking the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
-
-                        LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " ..." << END_LOG;
-                        //Order the N-gram array as it is unordered and we will binary search it later!
-                        ref.sort([&] (const typename BUCKET_TYPE::TElemType & first, const typename BUCKET_TYPE::TElemType & second) -> bool {
-                            LOG_DEBUG1 << "Comparing " << first.id << " with " << second.id << END_LOG;
-                            //Update the progress bar status
-                            Logger::update_progress_bar();
-                                    //Return the result
-                            return (first.id < second.id);
-                        });
-                        LOG_DEBUG1 << "Sorting the " << SSTR(CURR_LEVEL) << "-gram level bucket idx: " << SSTR(bucket_idx) << " is done" << END_LOG;
+                    //Get the element from the map, note that the key is the hash value
+                    const typename STORAGE_MAP::TElemType * elem = map->get_element(hash_value, hash_value);
+                    if (elem != NULL) {
+                        //We are now done, the payload is found, can return!
+                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem->m_payload;
+                        return MGramStatusEnum::GOOD_PRESENT_MGS;
+                    } else {
+                        //Could not retrieve the payload for the given sub-m-gram
+                        LOG_DEBUG << "Unable to find the sub-m-gram [" << SSTR(query.m_begin_word_idx)
+                                << ", " << SSTR(query.m_end_word_idx) << "] payload!" << END_LOG;
+                        return MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                     }
                 }
             };

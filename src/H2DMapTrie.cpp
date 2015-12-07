@@ -49,24 +49,15 @@ namespace uva {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                 ASSERT_CONDITION_THROW((word_index.is_word_index_continuous()), "This trie can not be used with a continuous word index!");
-                //ASSERT_CONDITION_THROW((__H2DMapTrie::BUCKETS_FACTOR < 1.0), "__H2DMapTrie::BUCKETS_FACTOR must be >= 1.0");
-
-                //Initialize the arrays of number of gram ids and bucker dividers per level
-                memset(m_num_buckets, 0, MAX_LEVEL * sizeof (TShortId));
-                memset(m_bucket_dividers, 0, MAX_LEVEL * sizeof (uint32_t));
 
                 //Clear the M-Gram bucket arrays
-                memset(m_m_gram_data, 0, NUM_M_GRAM_LEVELS * sizeof (TProbBackOffBucket*));
+                memset(m_m_gram_data, 0, NUM_M_GRAM_LEVELS * sizeof (TProbBackMap*));
 
-                LOG_DEBUG << "sizeof(__H2DMapTrie::T_M_Gram_PB_Entry)= " << sizeof (__H2DMapTrie::T_M_Gram_PB_Entry) << END_LOG;
-                LOG_DEBUG << "sizeof(__H2DMapTrie::T_M_Gram_Prob_Entry)= " << sizeof (__H2DMapTrie::T_M_Gram_Prob_Entry) << END_LOG;
-                LOG_DEBUG << "sizeof(TProbBackOffBucket)= " << sizeof (TProbBackOffBucket) << END_LOG;
-                LOG_DEBUG << "sizeof(TProbBucket)= " << sizeof (TProbBucket) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_PB_Entry)= " << sizeof (T_M_Gram_PB_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(T_M_Gram_Prob_Entry)= " << sizeof (T_M_Gram_Prob_Entry) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbBackMap)= " << sizeof (TProbBackMap) << END_LOG;
+                LOG_DEBUG << "sizeof(TProbBackMap)= " << sizeof (TProbMap) << END_LOG;
             };
-
-            //Computes the number of buckets as a power of two, based on the number of elements
-#define COMPUTE_NUMBER_OF_BUCKETS(NUM_ELEMENTS) \
-    const_expr::power(2, const_expr::ceil(const_expr::log2(__H2DMapTrie::BUCKETS_FACTOR * ((NUM_ELEMENTS) + 1))))
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             void H2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
@@ -77,30 +68,23 @@ namespace uva {
                 m_unk_word_payload.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
                 m_unk_word_payload.m_back = ZERO_BACK_OFF_WEIGHT;
 
-                //Compute the number of M-Gram level buckets and pre-allocate them
+                //Initialize the m-gram maps
                 for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
-                    //Compute the number of buckets, there should be at least one
-                    m_num_buckets[idx] = COMPUTE_NUMBER_OF_BUCKETS(counts[idx]);
-                    m_bucket_dividers[idx] = m_num_buckets[idx] - 1;
-                    m_m_gram_data[idx] = new TProbBackOffBucket[m_num_buckets[idx]];
+                    m_m_gram_data[idx] = new TProbBackMap(__H2DMapTrie::BUCKETS_FACTOR, counts[idx]);
                 }
 
-                //Compute the number of N-Gram level buckets and pre-allocate them
-                constexpr TModelLevel MAX_LEVEL_IDX = MAX_LEVEL - LEVEL_IDX_OFFSET;
-                //Compute the number of buckets, there should be at least one
-                m_num_buckets[MAX_LEVEL_IDX] = COMPUTE_NUMBER_OF_BUCKETS(counts[MAX_LEVEL_IDX]);
-                m_bucket_dividers[MAX_LEVEL_IDX] = m_num_buckets[MAX_LEVEL_IDX] - 1;
-                m_n_gram_data = new TProbBucket[m_num_buckets[MAX_LEVEL_IDX]];
+                //Initialize the n-gram's map
+                m_n_gram_data = new TProbMap(__H2DMapTrie::BUCKETS_FACTOR, counts[MAX_LEVEL - 1]);
             };
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             H2DMapTrie<MAX_LEVEL, WordIndexType>::~H2DMapTrie() {
                 //De-allocate M-Grams
                 for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
-                    delete[] m_m_gram_data[idx];
+                    delete m_m_gram_data[idx];
                 }
                 //De-allocate N-Grams
-                delete[] m_n_gram_data;
+                delete m_n_gram_data;
             };
 
             INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, BasicWordIndex);
