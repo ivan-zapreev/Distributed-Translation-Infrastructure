@@ -171,14 +171,6 @@ namespace uva {
             }
 
             namespace __H2DMapTrie {
-                //Stores the memory increment factor, the number we will multiply by the computed increment
-                static constexpr size_t MEM_INC_FACTOR = 1;
-                //Stores the minimum capacity increase in number of elements, must be >= 1!!!
-                static constexpr size_t MIN_MEM_INC_NUM = 1;
-                //This constant stores the memory increase strategy to be used.
-                //For log10 the percentage of memory increase drops slower than for log2
-                //with the growth of the #number of already allocated elements
-                static constexpr alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
                 //This is the factor that is used to define an average number of words
                 //per buckets in H2DHashMapTrie. The number of buckets
                 //will be proportional to the number of words * this value
