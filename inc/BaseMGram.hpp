@@ -216,7 +216,7 @@ namespace uva {
                      *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                      * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                      */
-                    inline uint8_t create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, T_Gram_Id_Data_Ptr & p_m_gram_id) const {
+                    inline uint8_t create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
                         LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
@@ -242,7 +242,7 @@ namespace uva {
                      *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                      * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                      */
-                    inline const T_Gram_Id_Data_Ptr get_m_gram_id_ref(const TModelLevel begin_word_idx, const TModelLevel number_of_words, uint8_t & len_bytes) {
+                    inline const TM_Gram_Id_Value_Ptr get_m_gram_id_ref(const TModelLevel begin_word_idx, const TModelLevel number_of_words, uint8_t & len_bytes) {
                         LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                 << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
@@ -271,7 +271,7 @@ namespace uva {
                     //Declare the m-gram id container
                     DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, MAX_LEVEL_CAPACITY);
                     //Declare the m-gram id pointer
-                    T_Gram_Id_Data_Ptr m_gram_id_ptr;
+                    TM_Gram_Id_Value_Ptr m_gram_id_ptr;
 
                     //These variables store the actual begin and end word index
                     //for all the words of this M-gram stored in the internal arrays

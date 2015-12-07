@@ -54,27 +54,35 @@ namespace uva {
                  */
                 namespace m_gram_id {
 
-                    //define the basic type block for the M-gram id
-                    typedef uint8_t T_Gram_Id_Data_Elem;
-
                     //Define the basic type as an alias for the compressed M-Gram id
-                    typedef T_Gram_Id_Data_Elem * T_Gram_Id_Data_Ptr;
+                    typedef uint8_t * TM_Gram_Id_Value_Ptr;
+
+#pragma pack(push, 1) // exact fit - no padding
+
+                    //Define the m-gram id as a structure storing two things
+                    //The m-gram id type and the pointer to the m-gram id itself
+                    typedef struct {
+                         uint32_t id_type;
+                         TM_Gram_Id_Value_Ptr id_value;
+                    } TM_Gram_Id;
 
                     /**
                      * This structure defined the m-gram id key which consists of the m-gram id and its length in bytes
                      */
                     typedef struct {
-                        T_Gram_Id_Data_Ptr m_id;
+                        TM_Gram_Id_Value_Ptr m_id;
                         uint8_t m_len_bytes;
-                    }  T_Gram_Id_Key;
-                    
+                    } T_Gram_Id_Key;
+
+#pragma pack(pop) //back to whatever the previous packing mode was 
+
                     /**
                      * The basic constructor that allocates maximum memory
                      * needed to store the M-gram id of the given level.
                      * @param level the level of the M-grams this object will store id for.
                      * @param m_p_gram_id the pointer to initialize
                      */
-                    static inline void allocate_m_gram_id(T_Gram_Id_Data_Ptr & m_p_gram_id, uint8_t size) {
+                    static inline void allocate_m_gram_id(TM_Gram_Id_Value_Ptr & m_p_gram_id, uint8_t size) {
                         //Allocate maximum memory that could be needed to store the given M-gram level id
                         m_p_gram_id = new uint8_t[size];
                         LOG_DEBUG4 << "Allocating a M_Gram_Id: " << (void*) m_p_gram_id << " of size " << (uint32_t) size << END_LOG;
@@ -84,7 +92,7 @@ namespace uva {
                      * Allows to destroy the M-Gram id if it is not NULL.
                      * @param m_p_gram_id the M-gram id pointer to destroy
                      */
-                    static inline void destroy(T_Gram_Id_Data_Ptr & m_p_gram_id) {
+                    static inline void destroy(TM_Gram_Id_Value_Ptr & m_p_gram_id) {
                         if (m_p_gram_id != NULL) {
                             LOG_DEBUG4 << "Deallocating a M_Gram_Id: " << (void*) m_p_gram_id << END_LOG;
                             delete[] m_p_gram_id;
@@ -156,7 +164,7 @@ namespace uva {
                         };
 
                         //Allows to declare the stack allocated m-gram id for the given level and with the given name
-#define DECLARE_STACK_GRAM_ID(type, name, level) T_Gram_Id_Data_Elem name[type::MAX_ID_LEN_BYTES[(level)]];
+#define DECLARE_STACK_GRAM_ID(type, name, level) uint8_t name[type::MAX_ID_LEN_BYTES[(level)]];
 
                         //Stores the mapping from the m-gram id lengths into the id type value, is pre-computed
 #include "ByteMGramIdTables.hpp"
@@ -171,7 +179,7 @@ namespace uva {
                          * @return the number of bytes in the m-gram id
                          */
                         static uint8_t create_m_gram_id(const TWordIdType * word_ids,
-                                const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id);
+                                const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr & m_p_gram_id);
 
                         /**
                          * This method allows to compute the m-gram id and set it
@@ -182,7 +190,7 @@ namespace uva {
                          * @return the number of bytes in the m-gram id
                          */
                         static uint8_t compute_m_gram_id(const TWordIdType * word_ids,
-                                const uint8_t num_word_ids, T_Gram_Id_Data_Ptr m_p_gram_id);
+                                const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr m_p_gram_id);
 
                         /**
                          * The basic constructor that allocates maximum memory
@@ -190,7 +198,7 @@ namespace uva {
                          * @param level the level of the M-grams this object will store id for.
                          * @param m_p_gram_id the pointer to initialize
                          */
-                        static inline void allocate_byte_m_gram_id(const TModelLevel level, T_Gram_Id_Data_Ptr & m_p_gram_id) {
+                        static inline void allocate_byte_m_gram_id(const TModelLevel level, TM_Gram_Id_Value_Ptr & m_p_gram_id) {
                             //Do the sanity check for against overflows
                             ASSERT_SANITY_THROW((level > M_GRAM_LEVEL_6),
                                     string("Byte_M_Gram_Id: Unsupported m-gram level: ")
@@ -212,8 +220,8 @@ namespace uva {
                          *         Positive value if one is larger than two
                          */
                         static inline int compare(const uint8_t id_len_bytes,
-                                const T_Gram_Id_Data_Ptr & m_p_gram_id_one,
-                                const T_Gram_Id_Data_Ptr & m_p_gram_id_two) {
+                                const TM_Gram_Id_Value_Ptr & m_p_gram_id_one,
+                                const TM_Gram_Id_Value_Ptr & m_p_gram_id_two) {
                             //Compare with the fast system function. Note that, the
                             //First element of an id is its type, and all of the type
                             //lengths for the m-gram of a given level is the same.
@@ -233,7 +241,7 @@ namespace uva {
                          * @return true if the first M-gram is "smaller" than the second, otherwise false
                          */
                         static inline bool is_equal_m_grams_id(const uint8_t id_len_bytes,
-                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                                const TM_Gram_Id_Value_Ptr & one, const TM_Gram_Id_Value_Ptr & two) {
                             return (compare(id_len_bytes, one, two) == 0);
                         }
 
@@ -245,7 +253,7 @@ namespace uva {
                          * @return true if the first M-gram is "smaller" than the second, otherwise false
                          */
                         static inline bool is_less_m_grams_id(const uint8_t id_len_bytes,
-                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                                const TM_Gram_Id_Value_Ptr & one, const TM_Gram_Id_Value_Ptr & two) {
                             return (compare(id_len_bytes, one, two) < 0);
                         }
 
@@ -286,7 +294,7 @@ namespace uva {
                          * @param len_bytes the bytes needed per word id
                          * @param return the resulting id type the initial value is expected to be 0
                          */
-                        static inline const uint32_t &  gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes) {
+                        static inline const uint32_t & gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes) {
                             LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
 
                             //Depending on the level return the pre-computed value
@@ -317,7 +325,7 @@ namespace uva {
                          */
                         template<TModelLevel CURR_LEVEL>
                         static inline bool is_less_m_grams_id(const uint8_t id_type_len_bytes,
-                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                                const TM_Gram_Id_Value_Ptr & one, const TM_Gram_Id_Value_Ptr & two) {
                             //First compare the types of the id
                             int result = compare(id_type_len_bytes, one, two);
 
@@ -346,7 +354,7 @@ namespace uva {
                          * @return true if the first M-gram is "larger" than the second, otherwise false
                          */
                         static inline bool is_more_m_grams_id(const uint8_t id_len_bytes,
-                                const T_Gram_Id_Data_Ptr & one, const T_Gram_Id_Data_Ptr & two) {
+                                const TM_Gram_Id_Value_Ptr & one, const TM_Gram_Id_Value_Ptr & two) {
                             return (compare(id_len_bytes, one, two) > 0);
                         };
                     };

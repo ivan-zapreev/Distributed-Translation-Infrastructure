@@ -168,7 +168,7 @@ namespace uva {
                      */
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::create_m_gram_id(const TWordIdType * word_ids,
-                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr & m_p_gram_id) {
+                            const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr & m_p_gram_id) {
                         //Do the sanity check if needed
                         ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_6),
                                 string("create_m_gram_id: Unsupported m-gram level: ") + std::to_string(num_word_ids) +
@@ -247,7 +247,7 @@ namespace uva {
                      */
                     template<typename TWordIdType, TModelLevel MAX_LEVEL>
                     uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::compute_m_gram_id(const TWordIdType * word_ids,
-                            const uint8_t num_word_ids, T_Gram_Id_Data_Ptr m_p_gram_id) {
+                            const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr m_p_gram_id) {
                         //Do the sanity check if needed
                         ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_6),
                                 string("create_m_gram_id: Unsupported m-gram level: ") + std::to_string(num_word_ids) +

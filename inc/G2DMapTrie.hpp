@@ -74,7 +74,7 @@ namespace uva {
                     typedef S_M_GramData<TPayloadType, TWordIdType, MAX_LEVEL> SELF;
 
                     //The m-gram id pointer
-                    T_Gram_Id_Data_Ptr m_id;
+                    TM_Gram_Id_Value_Ptr m_id;
                     //The m-gram payload
                     TPayloadType m_payload;
 
