@@ -57,15 +57,6 @@ namespace uva {
                     //Define the basic type as an alias for the compressed M-Gram id
                     typedef uint8_t * TM_Gram_Id_Value_Ptr;
 
-#pragma pack(push, 1) // exact fit - no padding
-
-                    //Define the m-gram id as a structure storing two things
-                    //The m-gram id type and the pointer to the m-gram id itself
-                    typedef struct {
-                         uint32_t id_type;
-                         TM_Gram_Id_Value_Ptr id_value;
-                    } TM_Gram_Id;
-
                     /**
                      * This structure defined the m-gram id key which consists of the m-gram id and its length in bytes
                      */
@@ -73,8 +64,6 @@ namespace uva {
                         TM_Gram_Id_Value_Ptr m_id;
                         uint8_t m_len_bytes;
                     } T_Gram_Id_Key;
-
-#pragma pack(pop) //back to whatever the previous packing mode was 
 
                     /**
                      * The basic constructor that allocates maximum memory
