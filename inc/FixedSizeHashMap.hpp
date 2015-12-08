@@ -43,7 +43,11 @@ namespace uva {
         namespace containers {
 
             /**
-             * This class represents a fixed size hash map that stores a pre-defined number of elements
+             * This class represents a fixed size hash map that stores a pre-defined number of elements.
+             * This is a linear probing hash map implementation, the linear probing hash map is currently
+             * known to be the fastest hash map there is, see:
+             * "Fast and Compact Hash Tables for Integer Keys" by Nikolas Askitis
+             * 
              * @param ELEMENT_TYPE the element type, this type is expected to have the following interfase:
              *          1. operator==(const KEY_TYPE &); the comparison operator for the key value
              *          2. static void clear(ELEMENT_TYPE & ); the cleaning method to destroy contents of the element.
@@ -204,18 +208,31 @@ namespace uva {
                 }
 
                 /**
+                 * This is the mixing function as defined in https://code.google.com/p/fast-hash/
+                 * its purpose is to mix the keys so that the keys that would go into the dame
+                 * bucket would get spread through out the buckets instead.
+                 * @param h the reference to the 64 bit key to mix
+                 * @return the reference to the same 64 bit key that has been hashed
+                 */
+                uint_fast64_t & mix_fasthash(uint_fast64_t & h) const {
+                    h ^= h >> 23;
+                    h *= 0x2127599bf4325c37ULL;
+                    h ^= h >> 47;
+                    return h;
+                }
+
+                /**
                  * Allows to get the bucket index for the given hash value
                  * @param key_value the key value to compute the bucked index for
                  * @param return the resulting bucket index
                  */
-                inline uint_fast64_t get_bucket_idx(const uint_fast64_t key_value) const {
+                inline uint_fast64_t get_bucket_idx(uint_fast64_t key_value) const {
                     //Compute the bucket index, note that since m_capacity is the power of two,
                     //we can compute ( hash_value % m_num_buckets ) as ( hash_value & m_capacity )
                     //where m_capacity = ( m_num_buckets - 1);
-                    const uint_fast64_t bucket_idx = MurmurHash64B(key_value) & m_buckets_capacity;
+                    const uint_fast64_t bucket_idx = mix_fasthash(key_value) & m_buckets_capacity;
 
-                    LOG_DEBUG3 << "The key value is: " << key_value
-                            << ", hash value: " << MurmurHash64B(key_value)
+                    LOG_DEBUG3 << "The mixed key value is: " << key_value
                             << ", bucket_idx: " << SSTR(bucket_idx) << END_LOG;
 
                     //If the sanity check is on then check on that the id is within the range
