@@ -571,7 +571,6 @@ namespace uva {
                 return h;
             }
 
-
             // 64-bit hash for 32-bit platforms
 
             static inline uint_fast64_t MurmurHash64B(uint_fast64_t key, uint_fast64_t seed = 16777619U) {
