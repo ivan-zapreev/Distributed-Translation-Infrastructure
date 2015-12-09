@@ -615,6 +615,21 @@ namespace uva {
                 return h;
             }
 
+            /*****************************************************************************************************/
+
+            /**
+             * This is the mixing function as defined in https://code.google.com/p/fast-hash/
+             * its purpose is to mix the keys so that the keys that would go into the dame
+             * bucket would get spread through out the buckets instead.
+             * @param h the reference to the 64 bit key to mix
+             * @return the reference to the same 64 bit key that has been hashed
+             */
+            static inline uint_fast64_t & mix_fasthash(uint_fast64_t & h) {
+                h ^= h >> 23;
+                h *= 0x2127599bf4325c37ULL;
+                h ^= h >> 47;
+                return h;
+            }
 
             /*****************************************************************************************************/
 

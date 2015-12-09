@@ -87,7 +87,7 @@ namespace uva {
 
                         if (num_elems != 0) {
                             //Compute the number of buckets as a power of two, so that we do not need to use %
-                            m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(__BitmapHashCache::BUCKETS_FACTOR * (num_elems + 1))));
+                            m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(__BitmapHashCache::BUCKETS_FACTOR * num_elems)));
                             m_buckets_capacity = m_num_buckets - 1;
                             size_t num_bytes = NUM_BYTES_4_BITS(m_num_buckets);
 
@@ -125,17 +125,15 @@ namespace uva {
                     /**
                      * Allows to check if the given sub-m-gram, defined by the begin_word_idx
                      * and end_word_idx parameters, is potentially present in the trie.
-                     * @param begin_word_idx the begin word index in the given m-gram
-                     * @param end_word_idx the end word index in the given m-gram
-                     * @param gram the m-gram to work with
+                     * @param key the m-gram key
                      * @return true if the sub-m-gram is potentially present, otherwise false
                      */
-                    inline bool is_hash_cached(const uint64_t hash) const {
+                    inline bool is_hash_cached(uint_fast64_t key) const {
 
                         //Get the M-gram hash positions
                         uint32_t byte_idx = 0;
                         uint32_t bit_offset_idx = 0;
-                        get_bit_pos(hash, byte_idx, bit_offset_idx);
+                        get_bit_pos(key, byte_idx, bit_offset_idx);
 
                         LOG_DEBUG2 << "Returning: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << " & "
                                 << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx]) << END_LOG;
@@ -154,23 +152,23 @@ namespace uva {
 
                     /**
                      * Allows to get the bit position for the M-gram
-                     * @param hash the M-gram hash get position for
+                     * @param key the M-gram key
                      * @param byte_idx [out] the M-gram byte index
                      * @param bit_offset_idx [out] the M-gram relative bit index
                      */
-                    inline void get_bit_pos(const uint64_t hash, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        LOG_DEBUG2 << "The hash value is: " << hash
+                    inline void get_bit_pos(uint_fast64_t & key, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
+                        LOG_DEBUG2 << "The key value is: " << key
                                 << ", the number of elements is: " << m_num_buckets << END_LOG;
 
                         //Convert it to the number of elements, use m_buckets_capacity = m_num_buckets - 1;
-                        //where m_num_buckets is the power of two
-                        uint32_t global_bit_idx = hash & m_buckets_capacity;
+                        //where m_num_buckets is the power of two, also do extra shuffling of elements
+                        uint32_t global_bit_idx = mix_fasthash(key) & m_buckets_capacity;
 
                         //Convert the global bit index into the byte index and bit offset
                         byte_idx = BYTE_IDX(global_bit_idx);
                         bit_offset_idx = REMAINING_BIT_IDX(global_bit_idx);
 
-                        LOG_DEBUG2 << "The M-gram hash: " << hash << ", byte_idx: " << byte_idx
+                        LOG_DEBUG2 << "The M-gram hash: " << key << ", byte_idx: " << byte_idx
                                 << ", bit_offset_idx: " << bit_offset_idx << END_LOG;
                     }
 
@@ -182,11 +180,11 @@ namespace uva {
                      */
                     template<typename WordIndexType>
                     inline void get_bit_pos(const T_Model_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
-                        const uint64_t hash = gram.get_hash();
+                        uint_fast64_t key = gram.get_hash();
 
-                        LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << hash << END_LOG;
+                        LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << key << END_LOG;
 
-                        return get_bit_pos(hash, byte_idx, bit_offset_idx);
+                        return get_bit_pos(key, byte_idx, bit_offset_idx);
                     }
                 };
             }
