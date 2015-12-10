@@ -161,8 +161,9 @@ namespace uva {
                                 << ", the number of elements is: " << m_num_buckets << END_LOG;
 
                         //Convert it to the number of elements, use m_buckets_capacity = m_num_buckets - 1;
-                        //where m_num_buckets is the power of two, also do extra shuffling of elements
-                        uint32_t global_bit_idx = mix_fasthash(key) & m_buckets_capacity;
+                        //where m_num_buckets is the power of two, do not do extra shuffling of elements
+                        //this does not really add any performance speed up to the models.
+                        uint32_t global_bit_idx = key & m_buckets_capacity;
 
                         //Convert the global bit index into the byte index and bit offset
                         byte_idx = BYTE_IDX(global_bit_idx);
