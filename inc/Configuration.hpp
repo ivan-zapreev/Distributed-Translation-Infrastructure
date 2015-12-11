@@ -124,8 +124,8 @@ namespace uva {
                 //index does not seem to give any performance improvements. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
-                //---This flag is to enable/disable the bitmap cache hashing in this Trie
-                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 20;
+                //With the bitmap hashing we get some 5% performance improvement
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
             }
 
             namespace __C2DMapTrie {
@@ -137,7 +137,7 @@ namespace uva {
                 //index does not seem to give any performance improvements. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
-                //+++With the bitmap hash caching on we are not faster with this trie
+                //With the bitmap hash caching on we are not faster with this trie
                 static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
             }
 
@@ -150,8 +150,8 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //---This flag is to enable/disable the bitmap cache hashing in this Trie
-                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 20;
+                //With the bitmap hashing we get some 5% performance improvement
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
             }
 
             namespace __H2DMapTrie {
@@ -163,7 +163,7 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = HASHING_WORD_INDEX;
-                //+++With the bitmap hash caching on we are not faster with this trie
+                //With the bitmap hash caching on we are not faster with this trie
                 static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
             }
 
@@ -188,7 +188,7 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //+++With the bitmap hashing we get some significant performance improvement
+                //With the bitmap hashing we get some 5% performance improvement
                 static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
             }
 
@@ -197,7 +197,7 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //+++With the bitmap hashing we get some significant performance improvement
+                //With the bitmap hashing we get some 5% performance improvement
                 static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
             }
 
@@ -209,7 +209,7 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //+++With the bitmap hashing we get some significant performance improvement
+                //With the bitmap hashing we get some 5% performance improvement
                 static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
             }
         }
