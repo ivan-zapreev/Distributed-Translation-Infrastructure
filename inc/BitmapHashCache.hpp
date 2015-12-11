@@ -80,20 +80,20 @@ namespace uva {
                      * @param num_elems
                      * @return 
                      */
-                    inline void pre_allocate(const size_t num_elems) {
+                    inline void pre_allocate(const size_t num_elems, const uint8_t buckets_factor) {
                         if (DO_SANITY_CHECKS && (m_data_ptr != NULL)) {
                             throw Exception("The bitset is already pre-allocated!");
                         }
 
                         if (num_elems != 0) {
                             //Compute the number of buckets as a power of two, so that we do not need to use %
-                            m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(__BitmapHashCache::BUCKETS_FACTOR * num_elems)));
+                            m_num_buckets = const_expr::power(2, const_expr::ceil(const_expr::log2(buckets_factor * num_elems)));
                             m_buckets_capacity = m_num_buckets - 1;
                             size_t num_bytes = NUM_BYTES_4_BITS(m_num_buckets);
 
-                            LOG_DEBUG2 << "Pre-allocating: " << m_num_buckets
-                                    << " elements, that is " << num_bytes
-                                    << " bytes." << END_LOG;
+                            LOG_DEBUG << "num_elems: " << num_elems
+                                    << " m_num_buckets: " << m_num_buckets
+                                    << " bytes: " << num_bytes << END_LOG;
 
                             m_data_ptr = new uint8_t[num_bytes];
                             fill_n(m_data_ptr, num_bytes, 0u);
@@ -163,13 +163,13 @@ namespace uva {
                         //Convert it to the number of elements, use m_buckets_capacity = m_num_buckets - 1;
                         //where m_num_buckets is the power of two, do not do extra shuffling of elements
                         //this does not really add any performance speed up to the models.
-                        uint32_t global_bit_idx = key & m_buckets_capacity;
+                        const uint32_t global_bit_idx = key & m_buckets_capacity;
 
                         //Convert the global bit index into the byte index and bit offset
                         byte_idx = BYTE_IDX(global_bit_idx);
                         bit_offset_idx = REMAINING_BIT_IDX(global_bit_idx);
 
-                        LOG_DEBUG2 << "The M-gram hash: " << key << ", byte_idx: " << byte_idx
+                        LOG_DEBUG1 << "The M-gram hash: " << key << ", byte_idx: " << byte_idx
                                 << ", bit_offset_idx: " << bit_offset_idx << END_LOG;
                     }
 

@@ -44,7 +44,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             G2DMapTrie<MAX_LEVEL, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
-            : GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
             m_1_gram_data(NULL), m_n_gram_data(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));

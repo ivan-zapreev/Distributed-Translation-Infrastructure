@@ -63,9 +63,9 @@ namespace uva {
              * the lookup is O(log(n)), as we need to use binary searches there.
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class C2DHybridTrie : public LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> {
+            class C2DHybridTrie : public LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
             public:
-                typedef LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the

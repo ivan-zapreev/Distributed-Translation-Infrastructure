@@ -91,11 +91,13 @@ namespace uva {
             /**
              * This class defined the trie interface and functionality that is expected by the TrieDriver class
              */
-            template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, bool NEEDS_BITMAP_HASH_CACHE>
+            template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
             class GenericTrieBase : public WordIndexTrieBase<MAX_LEVEL, WordIndexType> {
             public:
                 //Typedef the base class
                 typedef WordIndexTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                //The flag indicating if the bitmap hash caching is needed
+                const static bool NEEDS_BITMAP_HASH_CACHE = (BITMAP_HASH_CACHE_BUCKETS_FACTOR > 1);
 
                 /**
                  * This structure stores the basic data required for a query execution.
@@ -164,7 +166,7 @@ namespace uva {
                     //Pre-allocate the bitmap cache for hashes if needed
                     if (NEEDS_BITMAP_HASH_CACHE) {
                         for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
-                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1]);
+                            m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1], BITMAP_HASH_CACHE_BUCKETS_FACTOR);
                             Logger::update_progress_bar();
                         }
                     }

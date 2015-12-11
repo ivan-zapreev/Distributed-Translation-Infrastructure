@@ -101,11 +101,6 @@ namespace uva {
             }
             using namespace dictionary;
 
-            namespace __BitmapHashCache {
-                //The buckets factor for the bitmap hash cache.
-                static constexpr float BUCKETS_FACTOR = 10;
-            }
-
             //Stores the possible Trie types
 
             enum TrieTypesEnum {
@@ -129,8 +124,8 @@ namespace uva {
                 //index does not seem to give any performance improvements. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //---This flag is to enable/disable the bitmap cache hashing in this Trie
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 20;
             }
 
             namespace __C2DMapTrie {
@@ -142,9 +137,8 @@ namespace uva {
                 //index does not seem to give any performance improvements. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that with 20*bitmap cache this is about 5% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //+++With the bitmap hash caching on we are not faster with this trie
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
             }
 
             namespace __G2DMapTrie {
@@ -156,9 +150,8 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that with 20*bitmap cache this is about 5% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //---This flag is to enable/disable the bitmap cache hashing in this Trie
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 20;
             }
 
             namespace __H2DMapTrie {
@@ -170,9 +163,8 @@ namespace uva {
                 //index is a must to save memory for gram ids! The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = HASHING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that without the cache this trie is 7% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = false;
+                //+++With the bitmap hash caching on we are not faster with this trie
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
             }
 
             namespace __W2CArrayTrie {
@@ -196,9 +188,8 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that with 20*bitmap cache this is about 5% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //+++With the bitmap hashing we get some significant performance improvement
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
             }
 
             namespace __C2WArrayTrie {
@@ -206,9 +197,8 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                //The experiments show that with 20*bitmap cache this is about 5% faster
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //+++With the bitmap hashing we get some significant performance improvement
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
             }
 
             namespace __W2CHybridTrie {
@@ -219,8 +209,8 @@ namespace uva {
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!
                 static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
-                //This flag is to enable/disable the bitmap cache hashing in this Trie
-                static constexpr bool DO_BITMAP_HASH_CACHE = true;
+                //+++With the bitmap hashing we get some significant performance improvement
+                static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
             }
         }
     }

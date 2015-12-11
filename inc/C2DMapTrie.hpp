@@ -80,9 +80,9 @@ namespace uva {
              * 
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> {
+            class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
             public:
-                typedef LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                 /**
                  * The basic class constructor, accepts memory factors that are the

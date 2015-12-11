@@ -42,7 +42,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
             W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
-            : LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
             m_storage_factory(NULL) {
                 //Perform an error check! This container has bounds on the supported trie level
                 ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));

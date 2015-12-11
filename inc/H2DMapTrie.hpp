@@ -110,9 +110,9 @@ namespace uva {
              * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class H2DMapTrie : public GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> {
+            class H2DMapTrie : public GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
             public:
-                typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                 typedef typename WordIndexType::TWordIdType TWordIdType;
                 typedef __H2DMapTrie::S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
                 typedef __H2DMapTrie::S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;

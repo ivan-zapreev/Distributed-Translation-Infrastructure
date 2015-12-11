@@ -46,7 +46,7 @@ namespace uva {
             C2DHybridTrie<MAX_LEVEL, WordIndexType>::C2DHybridTrie(WordIndexType & word_index,
                     const float mram_mem_factor,
                     const float ngram_mem_factor)
-            : LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : LayeredTrieBase<C2DHybridTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
             m_mgram_mem_factor(mram_mem_factor),
             m_ngram_mem_factor(ngram_mem_factor),
             m_1_gram_data(NULL) {

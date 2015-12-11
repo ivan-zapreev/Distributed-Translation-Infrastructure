@@ -42,7 +42,7 @@ namespace uva {
 
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
             C2WArrayTrie<MAX_LEVEL, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
-            : LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::DO_BITMAP_HASH_CACHE>(word_index),
+            : LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
             m_1_gram_data(NULL), m_n_gram_data(NULL), m_one_gram_arr_size(0) {
 
                  //Perform an error check! This container has bounds on the supported trie level

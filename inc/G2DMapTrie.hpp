@@ -112,9 +112,9 @@ namespace uva {
              * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
              */
             template<TModelLevel MAX_LEVEL, typename WordIndexType>
-            class G2DMapTrie : public GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> {
+            class G2DMapTrie : public GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
             public:
-                typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::DO_BITMAP_HASH_CACHE> BASE;
+                typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                 typedef typename WordIndexType::TWordIdType TWordIdType;
                 typedef __G2DMapTrie::S_M_GramData<T_M_Gram_Payload, TWordIdType, MAX_LEVEL> T_M_Gram_PB_Entry;
                 typedef __G2DMapTrie::S_M_GramData<TLogProbBackOff, TWordIdType, MAX_LEVEL> T_M_Gram_Prob_Entry;
