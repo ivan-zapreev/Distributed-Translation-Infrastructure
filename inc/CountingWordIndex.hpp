@@ -87,9 +87,10 @@ namespace uva {
                      * storage allocation in the unordered_map used for the word index
                      */
                     CountingWordIndex(const float wordIndexMemFactor) : BasicWordIndex(wordIndexMemFactor) {
-                        if (BasicWordIndex::is_word_counts_needed()) {
-                            throw Exception("The BasicWordIndex must needs word counts! Update CountingWordIndex!");
-                        }
+                        ASSERT_CONDITION_THROW(BasicWordIndex::is_word_counts_needed(),
+                                "The BasicWordIndex must needs word counts! Update CountingWordIndex!");
+                        ASSERT_CONDITION_THROW(sizeof(TWordIdType) != sizeof(TLogProbBackOff),
+                                "The same size TWordIdType and TLogProbBackOff types are required!");
                     }
                     
                     /**
@@ -119,7 +120,9 @@ namespace uva {
                     inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
                         //Misuse the internal word index map for storing the word counts in it.
                         LOG_DEBUG1 << "Adding the word: '" << word.str() << "', with prob: " << prob << END_LOG;
-                        BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = *reinterpret_cast<TWordIdType*>(&prob);
+                        TWordIdType value;
+                        memcpy(&value, &prob, sizeof(TWordIdType));
+                        BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = value;
                     };
 
                     /**
@@ -154,7 +157,7 @@ namespace uva {
                         BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::m_word_index_map_ptr->begin();
                         for (size_t idx = 0; iter != BasicWordIndex::m_word_index_map_ptr->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
-                            word_infos[idx].prob = *reinterpret_cast<const TLogProbBackOff*>(&iter->second);
+                            memcpy(&word_infos[idx].prob, &iter->second, sizeof(TLogProbBackOff));
                         }
 
                         //03. Sort the array of word info object in order to get
