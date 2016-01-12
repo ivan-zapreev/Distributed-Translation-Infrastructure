@@ -116,10 +116,10 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
                         //Misuse the internal word index map for storing the word counts in it.
                         LOG_DEBUG1 << "Adding the word: '" << word.str() << "', with prob: " << prob << END_LOG;
-                        BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = reinterpret_cast<TWordIdType &>(prob);
+                        BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = *reinterpret_cast<TWordIdType*>(&prob);
                     };
 
                     /**
@@ -154,7 +154,7 @@ namespace uva {
                         BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::m_word_index_map_ptr->begin();
                         for (size_t idx = 0; iter != BasicWordIndex::m_word_index_map_ptr->end(); ++iter, ++idx) {
                             word_infos[idx].word = iter->first;
-                            word_infos[idx].prob = reinterpret_cast<const TLogProbBackOff &>(iter->second);
+                            word_infos[idx].prob = *reinterpret_cast<const TLogProbBackOff*>(&iter->second);
                         }
 
                         //03. Sort the array of word info object in order to get

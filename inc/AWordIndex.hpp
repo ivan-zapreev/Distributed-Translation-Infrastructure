@@ -142,7 +142,7 @@ namespace uva {
                      * @param token the word to count
                      * @param prob the word log probability
                      */
-                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
                         THROW_MUST_OVERRIDE();
                     };
 

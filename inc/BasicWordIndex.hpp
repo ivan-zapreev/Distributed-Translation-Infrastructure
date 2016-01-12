@@ -149,7 +149,7 @@ namespace uva {
                      * This method is to be used when the word counting is needed.
                      * @see AWordIndex
                      */
-                    inline void count_word(const TextPieceReader & word, TLogProbBackOff &prob) {
+                    inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
                         //There is nothing to be done
                         THROW_MUST_NOT_CALL();
                     };
