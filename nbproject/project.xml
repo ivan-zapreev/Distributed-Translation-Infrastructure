@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>Back-Off-Language-Model-SMT</name>
+            <name>Basic-Phrase-Based-Decoding</name>
             <c-extensions>c</c-extensions>
             <cpp-extensions>cpp</cpp-extensions>
             <header-extensions>h,hpp</header-extensions>
@@ -12,137 +12,12 @@
             <sourceRootList>
                 <sourceRootElem>src</sourceRootElem>
                 <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>ext</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Release__Linux_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Debug__Linux_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Release__MacOs_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Debug__MacOs_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Release__Centos_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Debug__Centos_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Profile__Centos_</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Release__Centos_gperftools</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Profile__MacOs_</name>
-                    <type>1</type>
+                    <name>Default</name>
+                    <type>0</type>
                 </confElem>
             </confList>
             <formatting>

@@ -1,82 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="95">
-  <projectmakefile>Makefile</projectmakefile>
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="ext" name="2">
+      <df name="tclap">
+        <in>Arg.h</in>
+        <in>ArgException.h</in>
+        <in>ArgTraits.h</in>
+        <in>CmdLine.h</in>
+        <in>CmdLineInterface.h</in>
+        <in>CmdLineOutput.h</in>
+        <in>Constraint.h</in>
+        <in>DocBookOutput.h</in>
+        <in>HelpVisitor.h</in>
+        <in>IgnoreRestVisitor.h</in>
+        <in>MultiArg.h</in>
+        <in>MultiSwitchArg.h</in>
+        <in>OptionalUnlabeledTracker.h</in>
+        <in>StandardTraits.h</in>
+        <in>StdOutput.h</in>
+        <in>SwitchArg.h</in>
+        <in>UnlabeledMultiArg.h</in>
+        <in>UnlabeledValueArg.h</in>
+        <in>ValueArg.h</in>
+        <in>ValuesConstraint.h</in>
+        <in>VersionVisitor.h</in>
+        <in>Visitor.h</in>
+        <in>XorHandler.h</in>
+        <in>ZshCompletionOutput.h</in>
+      </df>
+      <df name="websocketpp">
+      </df>
+    </df>
+    <df root="inc" name="1">
+      <in>AFileReader.hpp</in>
+      <in>ARPAGramBuilder.hpp</in>
+      <in>ARPAGramBuilderFactory.hpp</in>
+      <in>ARPATrieBuilder.hpp</in>
+      <in>AWordIndex.hpp</in>
+      <in>ArrayUtils.hpp</in>
+      <in>BaseMGram.hpp</in>
+      <in>BasicWordIndex.hpp</in>
+      <in>BitmapHashCache.hpp</in>
+      <in>ByteMGramId.hpp</in>
+      <in>ByteMGramIdTables.hpp</in>
+      <in>C2DHybridTrie.hpp</in>
+      <in>C2DMapTrie.hpp</in>
+      <in>C2WArrayTrie.hpp</in>
+      <in>CStyleFileReader.hpp</in>
+      <in>Configuration.hpp</in>
+      <in>CountingWordIndex.hpp</in>
+      <in>DynamicMemoryArrays.hpp</in>
+      <in>Exceptions.hpp</in>
+      <in>Executor.hpp</in>
+      <in>FileStreamReader.hpp</in>
+      <in>FixedSizeHashMap.hpp</in>
+      <in>G2DMapTrie.hpp</in>
+      <in>GenericTrieBase.hpp</in>
+      <in>Globals.hpp</in>
+      <in>GreedyMemoryAllocator.hpp</in>
+      <in>GreedyMemoryStorage.hpp</in>
+      <in>H2DMapTrie.hpp</in>
+      <in>HashingUtils.hpp</in>
+      <in>HashingWordIndex.hpp</in>
+      <in>LayeredTrieBase.hpp</in>
+      <in>Logger.hpp</in>
+      <in>MGramCumulativeQuery.hpp</in>
+      <in>MGramQuery.hpp</in>
+      <in>MGramSingleQuery.hpp</in>
+      <in>MathUtils.hpp</in>
+      <in>MemoryMappedFileReader.hpp</in>
+      <in>ModelMGram.hpp</in>
+      <in>OptimizingWordIndex.hpp</in>
+      <in>QueryMGram.hpp</in>
+      <in>StatisticsMonitor.hpp</in>
+      <in>StringUtils.hpp</in>
+      <in>TextPieceReader.hpp</in>
+      <in>W2CArrayTrie.hpp</in>
+      <in>W2CH_UM_Storage.hpp</in>
+      <in>W2CHybridTrie.hpp</in>
+      <in>WordIndexTrieBase.hpp</in>
+      <in>xxhash.h</in>
+    </df>
+    <df root="src" name="0">
+      <in>ARPAGramBuilder.cpp</in>
+      <in>ARPATrieBuilder.cpp</in>
+      <in>AWordIndex.cpp</in>
+      <in>ByteMGramId.cpp</in>
+      <in>C2DHybridTrie.cpp</in>
+      <in>C2DMapTrie.cpp</in>
+      <in>C2WArrayTrie.cpp</in>
+      <in>G2DMapTrie.cpp</in>
+      <in>H2DMapTrie.cpp</in>
+      <in>Logger.cpp</in>
+      <in>StatisticsMonitor.cpp</in>
+      <in>W2CArrayTrie.cpp</in>
+      <in>W2CHybridTrie.cpp</in>
+      <in>main.cpp</in>
+      <in>xxhash.c</in>
+    </df>
+  </logicalFolder>
+  <projectmakefile>build/Makefile</projectmakefile>
   <confs>
-    <conf name="Release__Linux_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Debug__Linux_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-            <option name="debug_command"
-                    value="./dist/Debug__Linux_/back-off-language-model-smt test-data/e_1000.lm test-data/test.txt w2ca info3"/>
-            <option name="debug_dir"
-                    value="/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/."/>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Release__MacOs_" type="1">
+    <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>4</platform>
       </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>
         </gdb_pathmaps>
@@ -97,214 +138,8 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
         </runcommandpicklist>
         <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Debug__MacOs_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-            <option name="debug_command"
-                    value="./dist/Debug__Linux_/back-off-language-model-smt test-data/e_1000.lm test-data/test.txt w2ca info3"/>
-            <option name="debug_dir"
-                    value="/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/."/>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Release__Centos_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Debug__Centos_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Profile__Centos_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Release__Centos_gperftools" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
-        <terminal-type>0</terminal-type>
-        <remove-instrumentation>0</remove-instrumentation>
-        <environment>
-        </environment>
-      </runprofile>
-    </conf>
-    <conf name="Profile__MacOs_" type="1">
-      <toolsSet>
-        <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
-      </toolsSet>
-      <dbx_gdbdebugger version="1">
-        <gdb_pathmaps>
-        </gdb_pathmaps>
-        <gdb_interceptlist>
-          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
-        </gdb_interceptlist>
-        <gdb_options>
-          <DebugOptions>
-            <option name="debug_command"
-                    value="./dist/Debug__Linux_/back-off-language-model-smt test-data/e_1000.lm test-data/test.txt w2ca info3"/>
-            <option name="debug_dir"
-                    value="/home/zapreevis/NetBeansProjects/Back-Off-Language-Model-SMT/."/>
-          </DebugOptions>
-        </gdb_options>
-        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
-      </dbx_gdbdebugger>
-      <nativedebugger version="1">
-        <engine>gdb</engine>
-      </nativedebugger>
-      <runprofile version="9">
-        <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-        </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
-        <buildfirst>true</buildfirst>
+        <rundir>build</rundir>
+        <buildfirst>false</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>

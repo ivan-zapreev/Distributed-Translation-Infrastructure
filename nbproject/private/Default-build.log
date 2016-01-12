@@ -1,0 +1,17 @@
+Scanning dependencies of target bpbd-server
+[  6%] Building CXX object CMakeFiles/bpbd-server.dir/src/ARPAGramBuilder.cpp.o
+[ 13%] Building CXX object CMakeFiles/bpbd-server.dir/src/ARPATrieBuilder.cpp.o
+[ 20%] Building CXX object CMakeFiles/bpbd-server.dir/src/AWordIndex.cpp.o
+[ 26%] Building CXX object CMakeFiles/bpbd-server.dir/src/ByteMGramId.cpp.o
+[ 33%] Building CXX object CMakeFiles/bpbd-server.dir/src/C2DHybridTrie.cpp.o
+[ 40%] Building CXX object CMakeFiles/bpbd-server.dir/src/C2DMapTrie.cpp.o
+[ 46%] Building CXX object CMakeFiles/bpbd-server.dir/src/C2WArrayTrie.cpp.o
+[ 53%] Building CXX object CMakeFiles/bpbd-server.dir/src/G2DMapTrie.cpp.o
+[ 60%] Building CXX object CMakeFiles/bpbd-server.dir/src/H2DMapTrie.cpp.o
+[ 66%] Building CXX object CMakeFiles/bpbd-server.dir/src/Logger.cpp.o
+[ 73%] Building CXX object CMakeFiles/bpbd-server.dir/src/main.cpp.o
+[ 80%] Building CXX object CMakeFiles/bpbd-server.dir/src/StatisticsMonitor.cpp.o
+[ 86%] Building CXX object CMakeFiles/bpbd-server.dir/src/W2CArrayTrie.cpp.o
+[ 93%] Building CXX object CMakeFiles/bpbd-server.dir/src/W2CHybridTrie.cpp.o
+[100%] Linking CXX executable bpbd-server
+[100%] Built target bpbd-server
