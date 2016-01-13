@@ -39,7 +39,7 @@
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::utils::array;
+using namespace uva::utils::containers::utils;
 
 namespace uva {
     namespace smt {

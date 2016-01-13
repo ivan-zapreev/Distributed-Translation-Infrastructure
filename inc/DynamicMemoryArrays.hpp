@@ -33,7 +33,7 @@
 #include "MathUtils.hpp"
 
 using namespace std;
-using namespace uva::utils::array;
+using namespace uva::utils::containers::utils;
 using namespace uva::utils::math::bits;
 
 #ifndef DYNAMICMEMORYARRAYS_HPP

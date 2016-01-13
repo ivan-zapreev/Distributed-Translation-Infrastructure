@@ -46,7 +46,7 @@ using namespace uva::utils::math;
 using namespace uva::utils::file;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::tries;
-using namespace uva::utils::array;
+using namespace uva::utils::containers::utils;
 using namespace uva::utils::hashing;
 
 namespace uva {

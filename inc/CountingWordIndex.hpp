@@ -40,7 +40,7 @@
 using namespace std;
 using namespace uva::utils::file;
 using namespace uva::utils::exceptions;
-using namespace uva::utils::array;
+using namespace uva::utils::containers::utils;
 
 namespace uva {
     namespace smt {

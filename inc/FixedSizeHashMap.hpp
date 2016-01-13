@@ -32,7 +32,7 @@
 #include "ArrayUtils.hpp"
 
 using namespace std;
-using namespace uva::utils::array;
+using namespace uva::utils::containers::utils;
 
 #ifndef FIXEDSIZEHASHMAP_HPP
 #define	FIXEDSIZEHASHMAP_HPP
