@@ -33,10 +33,10 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
-using namespace uva::smt::utils::text;
+using namespace uva::utils::text;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace file {
 
             /**

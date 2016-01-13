@@ -40,9 +40,9 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
-using namespace uva::smt::hashing;
-using namespace uva::smt::logging;
+using namespace uva::utils::logging;
 using namespace uva::smt::tries::alloc;
+using namespace uva::smt::tries::identifiers;
 
 namespace uva {
     namespace smt {

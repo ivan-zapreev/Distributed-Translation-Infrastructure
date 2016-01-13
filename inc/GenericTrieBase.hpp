@@ -45,8 +45,8 @@
 #include "BitmapHashCache.hpp"
 
 using namespace std;
-using namespace uva::smt::logging;
-using namespace uva::smt::file;
+using namespace uva::utils::logging;
+using namespace uva::utils::file;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::m_grams;
 using namespace uva::utils::math::bits;

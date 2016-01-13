@@ -31,10 +31,10 @@
 #include "Logger.hpp"
 #include "StatisticsMonitor.hpp"
 
-using uva::smt::monitore::StatisticsMonitor;
+using namespace uva::utils::monitore;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace logging {
 
             std::ostream& operator<<(std::ostream& stream, const unsigned char & value) {

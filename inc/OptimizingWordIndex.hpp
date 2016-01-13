@@ -43,10 +43,11 @@
 
 using namespace std;
 using namespace uva::utils::math;
-using namespace uva::smt::file;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::file;
+using namespace uva::utils::exceptions;
 using namespace uva::smt::tries;
-using namespace uva::smt::utils::array;
+using namespace uva::utils::array;
+using namespace uva::utils::hashing;
 
 namespace uva {
     namespace smt {
@@ -330,7 +331,7 @@ namespace uva {
                      * @return the bucket id
                      */
                     inline uint_fast64_t get_bucket_idx(const TextPieceReader & token) const {
-                        return compute_hash(token) & m_capacity;
+                        return compute_hash(token.get_begin_c_str(), token.length()) & m_capacity;
                     }
 
                     /**

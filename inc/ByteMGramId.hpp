@@ -39,9 +39,9 @@ using namespace std;
 using namespace uva::utils::math;
 using namespace uva::utils::math::log2;
 using namespace uva::utils::math::bits;
-using namespace uva::smt::hashing;
-using namespace uva::smt::logging;
-using namespace uva::smt::file;
+using namespace uva::utils::logging;
+using namespace uva::utils::file;
+using namespace uva::smt::tries::identifiers;
 
 namespace uva {
     namespace smt {

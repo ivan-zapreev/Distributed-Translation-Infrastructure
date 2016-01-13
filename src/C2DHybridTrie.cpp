@@ -36,7 +36,7 @@
 #include "OptimizingWordIndex.hpp"
 
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::utils::text;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {

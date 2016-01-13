@@ -45,10 +45,10 @@
 #include <cstdio>
 #include <sstream>
 
-using namespace uva::smt::logging;
+using namespace uva::utils::logging;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace monitore {
 
             /**

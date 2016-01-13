@@ -40,10 +40,10 @@
 using namespace std;
 
 using namespace uva::utils::math;
-using namespace uva::smt::logging;
-using namespace uva::smt::hashing;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 using namespace uva::smt::tries::m_grams;
+using namespace uva::smt::tries::identifiers;
 
 namespace uva {
     namespace smt {

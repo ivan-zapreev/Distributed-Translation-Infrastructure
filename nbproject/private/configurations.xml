@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df root="ext" name="2">
+    <df root="ext" name="0">
       <df name="tclap">
         <in>Arg.h</in>
         <in>ArgException.h</in>
@@ -81,7 +81,7 @@
       <in>WordIndexTrieBase.hpp</in>
       <in>xxhash.h</in>
     </df>
-    <df root="src" name="0">
+    <df root="src" name="2">
       <in>ARPAGramBuilder.cpp</in>
       <in>ARPATrieBuilder.cpp</in>
       <in>AWordIndex.cpp</in>

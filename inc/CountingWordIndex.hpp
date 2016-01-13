@@ -38,9 +38,9 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
-using namespace uva::smt::exceptions;
-using namespace uva::smt::utils::array;
+using namespace uva::utils::file;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::array;
 
 namespace uva {
     namespace smt {

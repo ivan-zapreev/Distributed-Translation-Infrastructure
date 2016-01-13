@@ -37,8 +37,9 @@
 #include "TextPieceReader.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::file;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::hashing;
 using namespace uva::smt::tries;
 
 namespace uva {
@@ -85,7 +86,7 @@ namespace uva {
                         //Return the word index making sure that it is at least
                         //equal to two. So that the undefined and unknown word
                         //indexes are not used and no overflow or other checks.
-                        const uint64_t hash_value = compute_hash(token);
+                        const uint64_t hash_value = compute_hash(token.get_begin_c_str(), token.length());
                         const TWordIdType word_id = hash_value | (1 << 1);
                         LOG_DEBUG2 << "Hashing '" << token << "' into: " << hash_value << ", resulting id is: " << word_id << END_LOG;
                         return word_id;

@@ -34,8 +34,8 @@
 #include "Exceptions.hpp"
 
 using std::invalid_argument;
-using namespace uva::smt::logging;
-using namespace uva::smt::utils::text;
+using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {

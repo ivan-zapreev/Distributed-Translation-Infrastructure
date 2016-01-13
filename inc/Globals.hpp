@@ -33,9 +33,6 @@
 
 using namespace std;
 
-//Declare the program version string
-#define PROGRAM_VERSION_STR "1.1"
-
 //Declare the maximum stack trace depth
 #define MAX_STACK_TRACE_LEN 100
 
@@ -65,17 +62,6 @@ namespace uva {
         //need to disable these warnings in order to be able to build the code.
 #pragma GCC diagnostic ignored "-Warray-bounds"
 
-        //This is the pattern used for file path separation
-        const string PATH_SEPARATION_SYMBOLS = "/\\";
-        //This is a delimiter used in the test files
-        const char TOKEN_DELIMITER_CHAR = ' ';
-        //The expected number of program arguments
-        const uint32_t EXPECTED_NUMBER_OF_ARGUMENTS = 4;
-        //The expected number of user arguments
-        const uint32_t EXPECTED_USER_NUMBER_OF_ARGUMENTS = (EXPECTED_NUMBER_OF_ARGUMENTS - 1);
-        //The number of bytes in one Mb
-        const uint32_t BYTES_ONE_MB = 1024u;
-
         //The following type definitions are important for storing the Tries information
         namespace tries {
 
@@ -98,6 +84,21 @@ namespace uva {
             const TLogProbBackOff UNDEF_LOG_PROB_WEIGHT = 100.0f;
             //The default value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
+
+            //The following type definitions are important for creating hashes
+            namespace identifiers {
+                //This is the small id type to be used for e.g. word ids
+                typedef uint32_t TShortId;
+                //The maximum word index/id value
+                const static TShortId MAX_SHORT_ID_VALUE = UINT32_MAX;
+                //This is the long id type to be used for e.g. long context ids 
+                typedef uint64_t TLongId;
+                //The signed version of the long id, is used in binary searches and such
+                typedef int64_t TSLongId;
+
+                //Combine two short ids into one long id in a bit fashion
+#define TShortId_TShortId_2_TLongId(first, second) ((((TLongId) first) << 32) | second)
+            }
 
             namespace m_grams {
                 //Various M-gram levels
@@ -145,21 +146,6 @@ namespace uva {
                     {0, 0, 0, 0, 0, 0},
                 };
             }
-        }
-
-        //The following type definitions are important for creating hashes
-        namespace hashing {
-            //This is the small id type to be used for e.g. word ids
-            typedef uint32_t TShortId;
-            //The maximum word index/id value
-            const static TShortId MAX_SHORT_ID_VALUE = UINT32_MAX;
-            //This is the long id type to be used for e.g. long context ids 
-            typedef uint64_t TLongId;
-            //The signed version of the long id, is used in binary searches and such
-            typedef int64_t TSLongId;
-
-            //Combine two short ids into one long id in a bit fashion
-#define TShortId_TShortId_2_TLongId(first, second) ((((TLongId) first) << 32) | second)
         }
     }
 }

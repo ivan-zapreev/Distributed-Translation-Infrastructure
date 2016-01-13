@@ -41,10 +41,10 @@
 #include "HashingUtils.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
-using namespace uva::smt::hashing;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::file;
+using namespace uva::utils::exceptions;
 using namespace uva::smt::tries::alloc;
+using namespace uva::smt::tries::identifiers;
 
 namespace uva {
     namespace smt {

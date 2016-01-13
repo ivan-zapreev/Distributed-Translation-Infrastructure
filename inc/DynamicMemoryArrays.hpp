@@ -33,7 +33,7 @@
 #include "ArrayUtils.hpp"
 
 using namespace std;
-using namespace uva::smt::utils::array;
+using namespace uva::utils::array;
 
 #ifndef DYNAMICMEMORYARRAYS_HPP
 #define	DYNAMICMEMORYARRAYS_HPP

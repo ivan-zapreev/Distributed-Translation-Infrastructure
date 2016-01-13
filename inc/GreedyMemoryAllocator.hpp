@@ -36,8 +36,8 @@
 #include "Exceptions.hpp"
 #include "Globals.hpp"
 
-using uva::smt::logging::Logger;
-using uva::smt::exceptions::Exception;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace smt {

@@ -54,18 +54,21 @@
 #include "MGramSingleQuery.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
-using namespace uva::smt::logging;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::file;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::monitore;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::smt::tries::arpa;
-using namespace uva::smt::monitore;
 
 namespace uva {
     namespace smt {
         namespace tries {
 
             namespace __Executor {
+
+                //The number of bytes in one Mb
+                const uint32_t BYTES_ONE_MB = 1024u;
 
                 //Initialize constants
                 static const string TC2DMapTrie_STR = string("c2dm");
@@ -294,7 +297,7 @@ namespace uva {
                             execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                             break;
                         default:
-                            THROW_EXCEPTION(string("Unrecognized trie type: ")+std::to_string(params.m_trie_type));
+                            THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.m_trie_type));
                     }
                 }
 

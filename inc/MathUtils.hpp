@@ -35,8 +35,8 @@
 #include "Logger.hpp"
 
 using namespace std;
-using namespace uva::smt::logging;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace utils {

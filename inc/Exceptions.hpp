@@ -31,8 +31,12 @@
 using namespace std;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace exceptions {
+
+            //Enables all sorts of internal sanity checks,
+            //e.g. sets the collision detection on and off.
+            constexpr bool DO_SANITY_CHECKS = false;
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \

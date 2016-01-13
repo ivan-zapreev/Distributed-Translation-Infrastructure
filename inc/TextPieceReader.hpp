@@ -37,12 +37,12 @@
 
 using namespace std;
 using namespace uva::smt::tries;
-using namespace uva::smt::exceptions;
-using namespace uva::smt::logging;
-using namespace uva::smt::utils::text;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace file {
 
             //The maximum length of the text that will be managed by this class as a string convertable

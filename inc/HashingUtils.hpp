@@ -36,13 +36,10 @@
 #define XXH_NAMESPACE
 #include "xxhash.h"   // XXH32 XXH64
 
-#include "TextPieceReader.hpp"
-
 using namespace std;
-using namespace uva::smt::file;
 
 namespace uva {
-    namespace smt {
+    namespace utils {
         namespace hashing {
 
             /*****************************************************************************************************/
@@ -437,7 +434,7 @@ namespace uva {
 
             // 64-bit hash for 64-bit platforms
 
-            static inline uint_fast64_t MurmurHash64A(const void * key, std::size_t len, uint_fast64_t seed) {
+            static inline uint_fast64_t MurmurHash64A(const void * key, std::size_t len, uint_fast64_t seed = 16777619U) {
                 const uint_fast64_t m = 0xc6a4a7935bd1e995ULL;
                 const int r = 47;
 
@@ -639,17 +636,8 @@ namespace uva {
              * @param len the length of the data to hash
              * @return the resulting hash.
              */
-            static inline uint_fast64_t compute_hash(const char * data, uint32_t len, const uint64_t seed = 16777619U) {
-                return MurmurHash64A(data, len, seed);
-            }
-
-            /**
-             * The function used to compute hash in the application, uses one of the specific hashing functions above.
-             * @param token the string to hash
-             * @return the resulting hash.
-             */
-            static inline uint_fast64_t compute_hash(const TextPieceReader & token, const uint64_t seed = 16777619U) {
-                return compute_hash(token.get_begin_c_str(), token.length(), seed);
+            static inline uint_fast64_t compute_hash(const char * data, uint32_t len) {
+                return MurmurHash64A(data, len);
             }
 
             /**
@@ -657,8 +645,8 @@ namespace uva {
              * @param token the token to compute hash for
              * @return the resulting hash.
              */
-            static inline uint_fast64_t compute_hash(const string & token, const uint64_t seed = 16777619U) {
-                return compute_hash(token.c_str(), token.length(), seed);
+            static inline uint_fast64_t compute_hash(const string & token) {
+                return compute_hash(token.c_str(), token.length());
             }
 
             /*****************************************************************************************************/
@@ -686,12 +674,12 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            static inline void uncantor(const uint_fast64_t z, TShortId &x, uint_fast64_t &y) {
+            static inline void uncantor(const uint_fast64_t z, uint_fast32_t  &x, uint_fast64_t &y) {
 
                 const uint_fast64_t w = floor((sqrt(8 * z + 1) - 1) / 2);
                 const uint_fast64_t t = (w * w + w) / 2;
                 y = (z - t);
-                x = (TShortId) (w - y);
+                x = (uint_fast32_t ) (w - y);
             }
 
             /**
@@ -718,7 +706,7 @@ namespace uva {
              * @param x the previous word in the context
              * @param y the context of the previous word
              */
-            static inline void unszudzik(const uint_fast64_t z, TShortId &x, uint_fast64_t &y) {
+            static inline void unszudzik(const uint_fast64_t z, uint_fast32_t  &x, uint_fast64_t &y) {
                 const uint_fast64_t zrf = floor(sqrt(z));
                 const uint_fast64_t zrfs = zrf * zrf;
                 const uint_fast64_t zmzrfs = z - zrfs;

@@ -52,10 +52,13 @@ using namespace TCLAP;
 using namespace uva::smt;
 using namespace uva::smt::tries;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::file;
-using namespace uva::smt::logging;
-using namespace uva::smt::utils::text;
-using namespace uva::smt::exceptions;
+using namespace uva::utils::file;
+using namespace uva::utils::logging;
+using namespace uva::utils::text;
+using namespace uva::utils::exceptions;
+
+//Declare the program version string
+#define PROGRAM_VERSION_STR "1.1"
 
 /**
  * This functions does nothing more but printing the program header information

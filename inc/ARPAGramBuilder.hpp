@@ -36,7 +36,7 @@
 #include "ModelMGram.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
+using namespace uva::utils::file;
 using namespace uva::smt::tries::m_grams;
 
 namespace uva {

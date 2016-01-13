@@ -33,7 +33,7 @@
 #include "AFileReader.hpp"
 
 using namespace std;
-using namespace uva::smt::file;
+using namespace uva::utils::file;
 
 namespace uva {
     namespace smt {

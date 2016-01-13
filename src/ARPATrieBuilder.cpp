@@ -46,8 +46,8 @@
 #include "H2DMapTrie.hpp"
 
 using namespace uva::smt::tries;
-using namespace uva::smt::logging;
-using namespace uva::smt::utils::text;
+using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -107,7 +107,7 @@ namespace uva {
                 template<typename TrieType, typename TFileReaderModel>
                 void ARPATrieBuilder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[MAX_LEVEL]) {
                     LOG_INFO << "Expected number of M-grams per level: "
-                            << arrayToString<size_t, MAX_LEVEL>(counts) << END_LOG;
+                            << array_to_string<size_t, MAX_LEVEL>(counts) << END_LOG;
 
                     //Do the progress bard indicator
                     Logger::start_progress_bar(string("Pre-allocating memory"));

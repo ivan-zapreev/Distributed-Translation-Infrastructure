@@ -31,28 +31,6 @@
 
 namespace uva {
     namespace smt {
-        namespace logging {
-
-            /**
-             * This enumeration stores all the available logging levels.
-             */
-            enum DebugLevelsEnum {
-                ERROR = 0, WARNING = ERROR + 1, USAGE = WARNING + 1, RESULT = USAGE + 1,
-                INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
-                DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1,
-                DEBUG4 = DEBUG3 + 1, size = DEBUG4 + 1
-            };
-
-            //Defines the maximum logging level
-            static constexpr DebugLevelsEnum LOGER_MAX_LEVEL = INFO3;
-
-            //Defines the log level from which the detailed timing info is available
-            static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
-
-            //Enables all sorts of internal sanity checks,
-            //e.g. sets the collision detection on and off.
-            constexpr bool DO_SANITY_CHECKS = false;
-        }
 
         //The following type definitions are important for storing the Tries information
         namespace tries {
