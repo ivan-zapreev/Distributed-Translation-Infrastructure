@@ -33,127 +33,125 @@
 
 #include "Logger.hpp"
 #include "Exceptions.hpp"
-#include "Globals.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 namespace uva {
-    namespace smt {
-        namespace tries {
-            namespace alloc {
+    namespace utils {
+        namespace containers {
+
+            /**
+             * This is the greedy memory storage class that in the first place
+             * allocates some storage and then only grows it if more space is needed!
+             */
+            class GreedyMemoryStorage {
+            public:
+
+                //The data type used for data storage elements for the custom allocators
+                typedef uint8_t TStorageData;
+
+                //The size type to be used
+                typedef std::size_t size_type;
 
                 /**
-                 * This is the greedy memory storage class that in the first place
-                 * allocates some storage and then only grows it if more space is needed!
+                 * The basic constructor
                  */
-                class GreedyMemoryStorage {
-                public:
+                explicit GreedyMemoryStorage() {
+                }
 
-                    //The data type used for data storage elements for the custom allocators
-                    typedef uint8_t TStorageData;
-
-                    //The size type to be used
-                    typedef std::size_t size_type;
-
-                    /**
-                     * The basic constructor
-                     */
-                    explicit GreedyMemoryStorage() {}
-
-                    /**
-                     * The basic constructor of the greedy storage.
-                     * @param numBytes the number of bytes to pre-allocate the buffer for - the initial buffer capacity
-                     */
-                    explicit GreedyMemoryStorage(size_type numBytes) :
-                    _numBytes(numBytes),
-                    _allocBytes(0) {
-                        //Allocate the data buffer
-                        LOG_DEBUG3 << "Pre-Allocating " << numBytes << " bytes storage!" << END_LOG;
-                        if (_numBytes > 0) {
-                            _pBuffer = new TStorageData[_numBytes];
-                            //Register the first allocated memory buffer
-                            _memoryBuffers.push_back(_pBuffer);
-                        } else {
-                            _pBuffer = NULL;
-                        }
+                /**
+                 * The basic constructor of the greedy storage.
+                 * @param numBytes the number of bytes to pre-allocate the buffer for - the initial buffer capacity
+                 */
+                explicit GreedyMemoryStorage(size_type numBytes) :
+                _numBytes(numBytes),
+                _allocBytes(0) {
+                    //Allocate the data buffer
+                    LOG_DEBUG3 << "Pre-Allocating " << numBytes << " bytes storage!" << END_LOG;
+                    if (_numBytes > 0) {
+                        _pBuffer = new TStorageData[_numBytes];
+                        //Register the first allocated memory buffer
+                        _memoryBuffers.push_back(_pBuffer);
+                    } else {
+                        _pBuffer = NULL;
                     }
+                }
 
-                    /**
-                     * The copy constructor
-                     */
-                    GreedyMemoryStorage(const GreedyMemoryStorage& source) :
-                    _pBuffer(source._pBuffer),
-                    _numBytes(source._numBytes),
-                    _allocBytes(source._allocBytes) {
-                        throw Exception("The GreedyMemoryStorage is not to be copied!");
+                /**
+                 * The copy constructor
+                 */
+                GreedyMemoryStorage(const GreedyMemoryStorage& source) :
+                _pBuffer(source._pBuffer),
+                _numBytes(source._numBytes),
+                _allocBytes(source._allocBytes) {
+                    throw Exception("The GreedyMemoryStorage is not to be copied!");
+                }
+
+                /**
+                 * The basic destructor.
+                 */
+                ~GreedyMemoryStorage() {
+                    //Deallocate the actual storage
+                    for (std::vector<void*>::iterator it = _memoryBuffers.begin(); it != _memoryBuffers.end(); ++it) {
+                        delete [] static_cast<TStorageData*> (*it);
                     }
+                }
 
-                    /**
-                     * The basic destructor.
-                     */
-                    ~GreedyMemoryStorage() {
-                        //Deallocate the actual storage
-                        for (std::vector<void*>::iterator it = _memoryBuffers.begin(); it != _memoryBuffers.end(); ++it) {
-                            delete [] static_cast<TStorageData*> (*it);
-                        }
+                /**
+                 * Returns the current buffer size
+                 * @return the current buffer size
+                 */
+                size_type getBufferSizeBytes() const {
+                    return _numBytes;
+                }
+
+                /**
+                 * Returns the number of free bytes remaining
+                 * @return the number of free bytes remaining
+                 */
+                size_type getAvailableBytes() const {
+                    return (_numBytes - _allocBytes);
+                }
+
+                /**
+                 * Allocates the memory of required size,if there is no enough space in the buffer, then reallocates!
+                 * @param num the number of bytes to allocate in the buffer
+                 * @return the pointer to the beginning of the allocated memory block
+                 */
+                void* allocate(size_type num) {
+                    const size_type remains = getAvailableBytes();
+                    void* ptr = NULL;
+
+                    //Check if there is more space needed!
+                    if (remains > num) {
+                        //Allocate the requested memory in the buffer
+                        ptr = static_cast<void*> (static_cast<char*> (_pBuffer) + _allocBytes);
+                        _allocBytes += num;
+                    } else {
+                        //WARNING: If we need more space we allocate it additionally in a not so efficient way.
+                        LOG_DEBUG3 << "Allocating additional: " << num << " bytes!" << END_LOG;
+                        ptr = static_cast<void*> (new TStorageData[num]);
+                        _memoryBuffers.push_back(ptr);
                     }
+                    return ptr;
+                }
 
-                    /**
-                     * Returns the current buffer size
-                     * @return the current buffer size
-                     */
-                    size_type getBufferSizeBytes() const {
-                        return _numBytes;
-                    }
+            protected:
+                //The pre-allocated block of memory
+                void* _pBuffer;
 
-                    /**
-                     * Returns the number of free bytes remaining
-                     * @return the number of free bytes remaining
-                     */
-                    size_type getAvailableBytes() const {
-                        return (_numBytes - _allocBytes);
-                    }
+                //The additionally allocated memory will be stored here
+                vector<void*> _memoryBuffers;
 
-                    /**
-                     * Allocates the memory of required size,if there is no enough space in the buffer, then reallocates!
-                     * @param num the number of bytes to allocate in the buffer
-                     * @return the pointer to the beginning of the allocated memory block
-                     */
-                    void* allocate(size_type num) {
-                        const size_type remains = getAvailableBytes();
-                        void* ptr = NULL;
+                //The pre-allocated buffer size
+                size_type _numBytes;
 
-                        //Check if there is more space needed!
-                        if (remains > num) {
-                            //Allocate the requested memory in the buffer
-                            ptr = static_cast<void*> (static_cast<char*> (_pBuffer) + _allocBytes);
-                            _allocBytes += num;
-                        } else {
-                            //WARNING: If we need more space we allocate it additionally in a not so efficient way.
-                            LOG_DEBUG3 << "Allocating additional: " << num << " bytes!" << END_LOG;
-                            ptr = static_cast<void*> (new TStorageData[num]);
-                            _memoryBuffers.push_back(ptr);
-                        }
-                        return ptr;
-                    }
+                //The number of pre-allocated bytes in the preallocated buffer
+                size_type _allocBytes;
+            };
 
-                protected:
-                    //The pre-allocated block of memory
-                    void* _pBuffer;
-
-                    //The additionally allocated memory will be stored here
-                    vector<void*> _memoryBuffers;
-
-                    //The pre-allocated buffer size
-                    size_type _numBytes;
-
-                    //The number of pre-allocated bytes in the preallocated buffer
-                    size_type _allocBytes;
-                };
-
-            }
         }
     }
 }

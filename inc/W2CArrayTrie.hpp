@@ -31,7 +31,7 @@
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 
 #include "LayeredTrieBase.hpp"
@@ -44,7 +44,8 @@
 using namespace std;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::utils::array;
-using namespace uva::smt::tries::alloc;
+using namespace uva::utils::containers;
+using namespace uva::utils::containers::alloc;
 using namespace uva::smt::tries::__W2CArrayTrie;
 
 namespace uva {

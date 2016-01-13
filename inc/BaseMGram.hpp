@@ -28,7 +28,7 @@
 
 #include <string>       // std::string
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Exceptions.hpp"
 
 #include "TextPieceReader.hpp"
@@ -191,7 +191,7 @@ namespace uva {
                      */
                     inline operator string() const {
 
-                        return tokens_to_string(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
+                        return tokens_to_string<M_GRAM_LEVEL_MAX>(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
                     };
 
                     /**

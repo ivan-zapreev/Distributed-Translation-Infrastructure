@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 

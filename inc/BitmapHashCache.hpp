@@ -29,7 +29,6 @@
 #include <cstdint>      //  std::uint8_t std::uint32_t 
 #include <bitset>       //  std::bitset
 
-#include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "Logger.hpp"
 

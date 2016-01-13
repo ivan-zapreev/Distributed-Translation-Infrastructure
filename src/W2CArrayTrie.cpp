@@ -26,7 +26,7 @@
 
 #include <inttypes.h>   // std::uint32_t
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 

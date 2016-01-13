@@ -28,7 +28,7 @@
 
 #include <string>       // std::string
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 
 #include "LayeredTrieBase.hpp"

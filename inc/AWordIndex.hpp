@@ -28,7 +28,8 @@
 
 #include <string>   // std::string
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
+#include "TrieConfigs.hpp"
 #include "Logger.hpp"
 #include "TextPieceReader.hpp"
 

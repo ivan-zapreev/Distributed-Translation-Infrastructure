@@ -29,6 +29,9 @@
 #include <inttypes.h>
 #include <string>
 
+#include "DynamicMemoryArrays.hpp"
+using namespace uva::utils::containers;
+
 namespace uva {
     namespace smt {
 
@@ -37,20 +40,6 @@ namespace uva {
 
             //The considered maximum length of the N-gram 
             constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
-
-            namespace alloc {
-
-                //Stores the possible memory increase types
-
-                enum MemIncTypesEnum {
-                    UNDEFINED = 0,
-                    CONSTANT = UNDEFINED + 1,
-                    LINEAR = CONSTANT + 1,
-                    LOG_2 = LINEAR + 1,
-                    LOG_10 = LOG_2 + 1,
-                    size = LOG_10 + 1
-                };
-            }
 
             namespace dictionary {
 
@@ -161,7 +150,7 @@ namespace uva {
                 //based memory increase strategy is used, otherwise it is log10 base.
                 //For log10 the percentage of memory increase drops slower than for log2
                 //with the growth of the #number of already allocated elements
-                static constexpr alloc::MemIncTypesEnum MEM_INC_TYPE = alloc::MemIncTypesEnum::LOG_2;
+                static constexpr MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
                 //Stores the word index type to be used in this trie, the  COUNTING
                 //index gives about 5% faster faster querying. The optimizing
                 //word index gives about 10% performance improvement!

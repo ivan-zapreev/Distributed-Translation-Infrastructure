@@ -27,7 +27,6 @@
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "ArrayUtils.hpp"

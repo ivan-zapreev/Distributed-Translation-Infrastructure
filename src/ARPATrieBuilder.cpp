@@ -31,7 +31,7 @@
 #include "FileStreamReader.hpp"
 #include "MemoryMappedFileReader.hpp"
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "StringUtils.hpp"
 #include "ARPAGramBuilder.hpp"

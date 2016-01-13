@@ -30,7 +30,7 @@
 #include <ios>          //std::hex
 #include <functional>   // std::function
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "ARPAGramBuilder.hpp"
 #include "Exceptions.hpp"
 #include "Logger.hpp"

@@ -30,9 +30,8 @@
 #include <cstring>      //  std::memcpy
 #include <bitset>       //  std::bitset
 
-#include "Globals.hpp"
-#include "Exceptions.hpp"
 #include "Logger.hpp"
+#include "Exceptions.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;

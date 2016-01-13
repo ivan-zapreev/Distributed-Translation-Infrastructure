@@ -31,7 +31,6 @@
 #include <stdio.h>  // std::getline
 #include <cstdlib>  // std::malloc
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"

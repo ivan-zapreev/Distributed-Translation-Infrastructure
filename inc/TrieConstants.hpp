@@ -29,33 +29,10 @@
 #include <inttypes.h>
 #include <string>
 
-#include "Configuration.hpp"
-
 using namespace std;
-
-//Declare the maximum stack trace depth
-#define MAX_STACK_TRACE_LEN 100
 
 namespace uva {
     namespace smt {
-
-        // Check windows
-#if _WIN32 || _WIN64
-#if _WIN64
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
-
-        // Check GCC
-#if __GNUC__
-#if __x86_64__ || __ppc64__
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
 
         //As the m-gram level is a template parameter, some template instances will violate 
         //the array index constraint. These templates will not be used @ runtime but we
@@ -85,7 +62,7 @@ namespace uva {
             //The default value of the unknown word probability weight
             const TLogProbBackOff UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
 
-            //The following type definitions are important for creating hashes
+            //This namespace stores types and constants for the m-gram and context identifiers.
             namespace identifiers {
                 //This is the small id type to be used for e.g. word ids
                 typedef uint32_t TShortId;
@@ -100,6 +77,7 @@ namespace uva {
 #define TShortId_TShortId_2_TLongId(first, second) ((((TLongId) first) << 32) | second)
             }
 
+            //This namespace stores m-gram levels and related constants
             namespace m_grams {
                 //Various M-gram levels
                 const static TModelLevel M_GRAM_LEVEL_UNDEF = 0u; //MUST BE ZERO
@@ -111,7 +89,6 @@ namespace uva {
                 const static TModelLevel M_GRAM_LEVEL_6 = 6u;
                 const static TModelLevel M_GRAM_LEVEL_7 = 7u;
                 const static TModelLevel M_GRAM_LEVEL_8 = 8u;
-
 
                 //Stores the maximum sopported level
                 static constexpr TModelLevel MAX_SUPP_GRAM_LEVEL = M_GRAM_LEVEL_6;

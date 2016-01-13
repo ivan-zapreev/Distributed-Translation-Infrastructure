@@ -34,12 +34,10 @@
 #include <cstring> // std::memchr
 
 #include "Logger.hpp"
-#include "Globals.hpp"
 #include "Exceptions.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-using uva::smt::tries::TModelLevel;
 
 namespace uva {
     namespace utils {

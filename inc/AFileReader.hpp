@@ -26,7 +26,6 @@
 #ifndef AFILEREADER_HPP
 #define	AFILEREADER_HPP
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"

@@ -30,7 +30,7 @@
 #include <string>       // std::string
 #include <cstring>      // std::memcmp std::memcpy
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Exceptions.hpp"
 #include "Logger.hpp"
 

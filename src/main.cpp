@@ -34,7 +34,6 @@
 
 #include "tclap/CmdLine.h"
 
-#include "Globals.hpp"
 #include "Exceptions.hpp"
 #include "StatisticsMonitor.hpp"
 #include "Logger.hpp"
@@ -59,6 +58,27 @@ using namespace uva::utils::exceptions;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.1"
+
+        // Check windows
+#if _WIN32 || _WIN64
+#if _WIN64
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
+        // Check GCC
+#if __GNUC__
+#if __x86_64__ || __ppc64__
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
+//Declare the maximum stack trace depth
+#define MAX_STACK_TRACE_LEN 100
 
 /**
  * This functions does nothing more but printing the program header information

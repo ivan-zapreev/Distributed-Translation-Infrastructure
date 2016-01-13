@@ -31,17 +31,18 @@
 
 #include <typeinfo>  //std::typeid
 
-#include "GreedyMemoryStorage.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
-#include "Globals.hpp"
+
+#include "GreedyMemoryStorage.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::containers;
 
 namespace uva {
-    namespace smt {
-        namespace tries {
+    namespace utils {
+        namespace containers {
             namespace alloc {
 
                 //This is the experimentally obtained memory increase factor for the unordered_map

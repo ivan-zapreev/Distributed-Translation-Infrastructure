@@ -40,7 +40,6 @@
 #include <cstring>
 #include <errno.h> 
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"

@@ -27,7 +27,7 @@
 
 #include <string>       // std::string
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Exceptions.hpp"
 
 #include "AWordIndex.hpp"

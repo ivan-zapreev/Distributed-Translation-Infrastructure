@@ -29,7 +29,7 @@
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Exceptions.hpp"
 #include "MemoryMappedFileReader.hpp"
 

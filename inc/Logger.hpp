@@ -34,7 +34,6 @@
 #include <vector>    // std::vector
 #include <time.h>    // std::clock std::clock_t
 
-#include "Globals.hpp"
 #include "Exceptions.hpp"
 
 using namespace std;

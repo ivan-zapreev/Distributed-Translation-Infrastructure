@@ -31,7 +31,6 @@
 #include <stdint.h>   // srd::uint32_t
 
 #include "Logger.hpp"
-#include "Globals.hpp"
 
 #define XXH_NAMESPACE
 #include "xxhash.h"   // XXH32 XXH64
@@ -88,47 +87,6 @@ namespace uva {
 
             static inline uint_fast32_t hash32_str(const string & token) {
                 return hash32_str(token.c_str(), token.length());
-            }
-
-            /*****************************************************************************************************/
-            /***********From: http://www.boost.org/doc/libs/1_38_0/libs/unordered/examples/fnv1.hpp***************/
-            /*****************************************************************************************************/
-
-#ifdef ENVIRONMENT64
-            // For 32 bit machines:
-            const std::size_t fnv_prime = 16777619u;
-            const std::size_t fnv_offset_basis = 2166136261u;
-#else
-            // For 64 bit machines:
-            const std::size_t fnv_prime = 1099511628211u;
-            const std::size_t fnv_offset_basis = 14695981039346656037u;
-#endif
-
-            static inline uint_fast32_t basic_fnv_1(const char * data, uint32_t len) {
-                uint_fast32_t hash = fnv_offset_basis;
-                for (size_t idx = 0; idx != len; ++idx) {
-                    hash *= fnv_prime;
-                    hash ^= data[idx];
-                }
-                return hash;
-            };
-
-            static inline uint32_t basic_fnv_1(const string & token) {
-                return basic_fnv_1(token.c_str(), token.length());
-            }
-
-            static inline uint_fast32_t basic_fnv_1a(const char * data, uint32_t len) {
-                uint_fast32_t hash = fnv_offset_basis;
-                for (size_t idx = 0; idx != len; ++idx) {
-
-                    hash ^= data[idx];
-                    hash *= fnv_prime;
-                }
-                return hash;
-            };
-
-            static inline uint32_t basic_fnv_1a(const string & token) {
-                return basic_fnv_1a(token.c_str(), token.length());
             }
 
             /*****************************************************************************************************/

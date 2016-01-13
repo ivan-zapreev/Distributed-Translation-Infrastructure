@@ -31,14 +31,14 @@
 #include <unordered_map>    // std::unordered_map
 #include <map>              // std::map
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "AWordIndex.hpp"
 #include "GreedyMemoryAllocator.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::alloc;
+using namespace uva::utils::containers::alloc;
 
 namespace uva {
     namespace smt {

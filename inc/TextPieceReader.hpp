@@ -30,15 +30,13 @@
 #include <cstring>      // std::memchr std::strncpy
 #include <algorithm>    // std::min
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"
 
 using namespace std;
-using namespace uva::smt::tries;
-using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 using namespace uva::utils::text;
 
 namespace uva {
@@ -495,12 +493,12 @@ namespace uva {
              * @param to_idx the to index
              * @return the resulting string
              */
-            template<TModelLevel MAX_LEVEL = M_GRAM_LEVEL_MAX>
-            inline string tokens_to_string(const TextPieceReader tokens[MAX_LEVEL], const TModelLevel begin_idx, const TModelLevel end_idx) {
+            template<size_t NUM_TOKENS>
+            inline string tokens_to_string(const TextPieceReader tokens[NUM_TOKENS], const size_t begin_idx, const size_t end_idx) {
                 stringstream data;
                 data << "[ ";
                 LOG_DEBUG4 << "Appending tokens from idx: " << SSTR(begin_idx) << " to idx: " << SSTR(end_idx) << END_LOG;
-                for (int i = begin_idx; i <= end_idx; i++) {
+                for (size_t i = begin_idx; i <= end_idx; i++) {
                     LOG_DEBUG4 << "Appending token [" << SSTR(i) << "] = '"
                             << tokens[i].str() << "' to the string!" << END_LOG;
                     data << tokens[i].str() << " ";

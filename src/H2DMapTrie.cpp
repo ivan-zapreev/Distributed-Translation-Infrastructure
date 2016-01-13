@@ -27,7 +27,7 @@
 #include <inttypes.h>   // std::uint32_t
 #include <algorithm>    // std::max
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 

@@ -41,7 +41,7 @@
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 
 #include "LayeredTrieBase.hpp"
@@ -53,7 +53,7 @@
 
 using namespace std;
 using namespace uva::utils::logging;
-using namespace uva::smt::tries::alloc;
+using namespace uva::utils::containers::alloc;
 using namespace uva::smt::tries::identifiers;
 
 namespace uva {

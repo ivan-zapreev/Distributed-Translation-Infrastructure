@@ -29,7 +29,7 @@
 #include <string>   // std::string
 #include <cstring>  // std::strncpy std::strncmp
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 

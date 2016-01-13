@@ -27,7 +27,7 @@
 
 #include "AWordIndex.hpp"
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "TextPieceReader.hpp"
 

@@ -31,7 +31,7 @@
 
 #include "AWordIndex.hpp"
 
-#include "Globals.hpp"
+#include "TrieConstants.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 
@@ -43,7 +43,7 @@
 using namespace std;
 using namespace uva::utils::file;
 using namespace uva::utils::exceptions;
-using namespace uva::smt::tries::alloc;
+using namespace uva::utils::containers::alloc;
 using namespace uva::smt::tries::identifiers;
 
 namespace uva {

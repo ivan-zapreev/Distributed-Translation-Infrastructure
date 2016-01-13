@@ -32,7 +32,6 @@
 #include <functional>   // std::function
 
 #include "Logger.hpp"
-#include "Globals.hpp"
 #include "Exceptions.hpp"
 
 using namespace std;
@@ -55,7 +54,7 @@ namespace uva {
             //NOTE: Do the binary search, note that we do not take care of index
             //underflows as they are signed. Yet, we might want to take into
             //account the overflows, although these are also not that threatening
-            //the reason is that the actual array index is TShortId and we use
+            //the reason is that the actual array index is uint32_t and we use
             //for index iterations a much longer but signed data type TLongId
 #define BSEARCH_ONE_FIELD(FIELD_NAME, RETURN_STATEMENT) \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
@@ -85,7 +84,7 @@ namespace uva {
             //NOTE: Do the binary search, note that we do not take care of index
             //underflows as they are signed. Yet, we might want to take into
             //account the overflows, although these are also not that threatening
-            //the reason is that the actual array index is TShortId and we use
+            //the reason is that the actual array index is uint32_t and we use
             //for index iterations a much longer but signed data type TLongId
 #define BSEARCH_TWO_FIELDS(FIELD_ONE,FIELD_TWO) \
                 ASSERT_SANITY_THROW(((l_idx < 0) || (l_idx > u_idx)), \
@@ -213,7 +212,7 @@ namespace uva {
              * @throws Exception in case (l_idx < 0) || (l_idx > u_idx), with sanity checks on
              */
             template<typename ARR_ELEM_TYPE>
-            inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const TShortId key1, const TShortId key2, TShortId & found_pos) {
+            inline bool my_bsearch_wordId_ctxId(const ARR_ELEM_TYPE * array, int64_t l_idx, int64_t u_idx, const uint32_t key1, const uint32_t key2, uint32_t & found_pos) {
                 BSEARCH_TWO_FIELDS(word_id, ctx_id);
             }
 
@@ -392,7 +391,7 @@ namespace uva {
              * @param is_less_func the is-less function
              */
             template<typename ELEM_TYPE>
-            inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size,
+            inline void my_sort(ELEM_TYPE * array_begin, const uint32_t array_size,
                     typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_type is_less_func) {
                 //Do not do sorting if the array size is less than two
                 if (array_size > 1) {
@@ -411,7 +410,7 @@ namespace uva {
              * @param array_size the size of the array
              */
             template<typename ELEM_TYPE, typename T_IS_COMPARE_FUNC<ELEM_TYPE>::func_ptr IS_LESS_FUNC>
-            inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+            inline void my_sort(ELEM_TYPE * array_begin, const uint32_t array_size) {
                 //Do not do sorting if the array size is less than two
                 if (array_size > 1) {
                     //Order the N-gram array as it is unordered and we will binary search it later!
@@ -446,7 +445,7 @@ namespace uva {
              * @param array_size the size of the array
              */
             template<typename ELEM_TYPE, bool IS_PROGRESS = true >
-            inline void my_sort(ELEM_TYPE * array_begin, const TShortId array_size) {
+            inline void my_sort(ELEM_TYPE * array_begin, const uint32_t array_size) {
                 my_sort<ELEM_TYPE, is_less<ELEM_TYPE, IS_PROGRESS> >(array_begin, array_size);
             }
         }

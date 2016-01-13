@@ -29,7 +29,6 @@
 #include <cstring>  // std::strlen
 #include <fstream>  // std::ifstream
 
-#include "Globals.hpp"
 #include "Logger.hpp"
 #include "Exceptions.hpp"
 #include "StringUtils.hpp"
