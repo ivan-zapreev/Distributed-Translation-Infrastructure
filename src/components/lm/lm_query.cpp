@@ -29,10 +29,9 @@
 #include <fstream>      // std::ifstream
 #include <math.h>       //std::pow
 
-#include <stdexcept>
-#include <execinfo.h>
-
 #include "tclap/CmdLine.h"
+
+#include "system.hpp"
 
 #include "components/statistics/StatisticsMonitor.hpp"
 #include "components/logging/Logger.hpp"
@@ -59,27 +58,6 @@ using namespace uva::utils::exceptions;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.1"
-
-        // Check windows
-#if _WIN32 || _WIN64
-#if _WIN64
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
-
-        // Check GCC
-#if __GNUC__
-#if __x86_64__ || __ppc64__
-#define ENVIRONMENT64
-#else
-#define ENVIRONMENT32
-#endif
-#endif
-
-//Declare the maximum stack trace depth
-#define MAX_STACK_TRACE_LEN 100
 
 /**
  * This functions does nothing more but printing the program header information
@@ -143,12 +121,6 @@ void create_arguments_parser() {
     p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
 }
 
-#define SAFE_DESTROY(ptr) \
-    if (ptr != NULL) { \
-        delete ptr; \
-        ptr = NULL; \
-    }
-
 /**
  * Allows to deallocate the parameters parser if it is needed
  */
@@ -191,21 +163,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Set the logging level right away
     Logger::set_reporting_level(p_debug_level_arg->getValue());
-}
-
-/**
- * The uncaught exceptions handler
- */
-void handler() {
-    void *trace_elems[20];
-    int trace_elem_count(backtrace(trace_elems, MAX_STACK_TRACE_LEN));
-    char **stack_syms(backtrace_symbols(trace_elems, trace_elem_count));
-    LOG_ERROR << "Ooops, Sorry! Something terrible has happened, we crashed!" << END_LOG;
-    for (int i = 0; i < trace_elem_count; ++i) {
-        LOG_ERROR << stack_syms[i] << END_LOG;
-    }
-    free(stack_syms);
-    exit(1);
 }
 
 /**

@@ -27,6 +27,7 @@
 #define	TRANSLATION_CLIENT_HPP
 
 #include <cstdlib>
+#include <string>
 
 #define ASIO_STANDALONE
 
@@ -53,7 +54,10 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
 
-                    translation_client(const std::string & uri) : m_uri(uri), m_open(false), m_done(false) {
+                    translation_client(const string & host, const uint16_t port) : m_open(false), m_done(false) {
+                        //Initialize the URI to connect to
+                        m_uri = string("ws://") + host + string(":") + to_string(port);
+
                         // Set up access channels to only log interesting things
                         m_client.clear_access_channels(websocketpp::log::alevel::all);
                         m_client.set_access_channels(websocketpp::log::alevel::connect);
@@ -191,12 +195,12 @@ namespace uva {
                         }
                     }
                 private:
-                    const std::string & m_uri;
                     client m_client;
                     websocketpp::connection_hdl m_hdl;
                     websocketpp::lib::mutex m_lock;
                     bool m_open;
                     bool m_done;
+                    string m_uri;
                 };
             }
         }

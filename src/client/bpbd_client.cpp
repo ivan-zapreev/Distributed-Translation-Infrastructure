@@ -24,25 +24,107 @@
  */
 
 #include <cstdlib>
+#include <string>
+
+#include "tclap/CmdLine.h"
+
+#include "system.hpp"
 
 #include "client/translation_client.hpp"
 
-using namespace std;
-using namespace uva::smt::decodig::client;
+#include "utils/Exceptions.hpp"
 
-/*
- * 
+using namespace std;
+using namespace TCLAP;
+using namespace uva::smt::decodig::client;
+using namespace uva::utils::exceptions;
+
+//Declare the program version string
+#define PROGRAM_VERSION_STR "1.0"
+
+/**
+ * This structure stores the program execution parameters
+ */
+typedef struct {
+    string host;
+    uint16_t port;
+} TExecutionParams;
+
+/**
+ * This functions does nothing more but printing the program header information
+ */
+static void print_info() {
+    //ToDo: Implement
+}
+
+/**
+ * Creates and sets up the command line parameters parser
+ */
+void create_arguments_parser() {
+    //ToDo: Implement
+}
+
+/**
+ * Allows to deallocate the parameters parser if it is needed
+ */
+void destroy_arguments_parser() {
+    //ToDo: Implement
+}
+
+/**
+ * This function tries to extract the 
+ * @param argc the number of program arguments
+ * @param argv the array of program arguments
+ * @param params the structure that will be filled in with the parsed program arguments
+ */
+static void extract_arguments(const uint argc, char const * const * const argv, TExecutionParams & params) {
+    //ToDo: Implement
+}
+
+/**
+ * The main program entry point
  */
 int main(int argc, char** argv) {
-    std::string uri = "ws://localhost:9002";
+    //Declare the return code
+    int returnCode = 0;
 
-    if (argc == 2) {
-        uri = argv[1];
+    //Set the uncaught exception handler
+    std::set_terminate(handler);
+
+    //First print the program info
+    print_info();
+
+    //Set up possible program arguments
+    create_arguments_parser();
+
+    try {
+        //Define en empty parameters structure
+        TExecutionParams params = {};
+
+        //Attempt to extract the program arguments
+        extract_arguments(argc, argv, params);
+
+        //Create the translation client
+        translation_client client(params.host, params.port);
+        
+        //Connect to the translation server
+        client.connect();
+        
+        //ToDo: Read the source corpus from the text file
+        
+        //ToDo: Query the translation job and wait for the reply
+
+        //ToDo: Write the translation result to the text file
+
+    } catch (Exception & ex) {
+        //The argument's extraction has failed, print the error message and quit
+        LOG_ERROR << ex.getMessage() << END_LOG;
+        returnCode = 1;
     }
 
-    translation_client client(uri);
-    client.connect();
+    //Destroy the command line parameters parser
+    destroy_arguments_parser();
 
-    return 0;
+    return returnCode;
 }
 

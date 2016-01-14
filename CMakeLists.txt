@@ -39,7 +39,9 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 ##############################DEFINE THE CLIENT EXECUTABLE###########################
 
 #Manually add the source files if needed
-set(BPBD_CLIENT_SOURCES src/client/bpbd_client.cpp)
+set(BPBD_CLIENT_SOURCES
+    src/client/bpbd_client.cpp
+    src/components/logging/Logger.cpp)
 #Define the server executable
 add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 
