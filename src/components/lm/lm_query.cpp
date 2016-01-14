@@ -34,10 +34,11 @@
 
 #include "tclap/CmdLine.h"
 
-#include "utils/Exceptions.hpp"
 #include "components/statistics/StatisticsMonitor.hpp"
 #include "components/logging/Logger.hpp"
+
 #include "utils/StringUtils.hpp"
+#include "utils/Exceptions.hpp"
 
 #include "utils/file/AFileReader.hpp"
 #include "utils/file/MemoryMappedFileReader.hpp"
