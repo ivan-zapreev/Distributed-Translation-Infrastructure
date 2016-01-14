@@ -31,12 +31,13 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
+using namespace std;
+
 typedef websocketpp::server<websocketpp::config::asio> server;
 
 void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
         std::cout << msg->get_payload() << std::endl;
 }
-using namespace std;
 
 /*
  * 

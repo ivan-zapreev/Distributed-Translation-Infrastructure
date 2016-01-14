@@ -49,7 +49,7 @@ add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 if(UNIX AND NOT APPLE)
     target_link_libraries(lm-query rt)
     target_link_libraries(bpbd-server rt)
-    target_link_libraries(bpbd-client rt)
+    target_link_libraries(bpbd-client rt pthread)
 endif()
 
 #####################################################################################3
