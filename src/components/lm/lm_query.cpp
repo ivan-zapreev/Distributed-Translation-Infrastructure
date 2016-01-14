@@ -1,5 +1,5 @@
 /* 
- * File:   main.cpp
+ * File:   lm_query.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

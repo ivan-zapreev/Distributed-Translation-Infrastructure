@@ -1,5 +1,5 @@
 /* 
- * File:   TrieBuilder.cpp
+ * File:   ARPATrieBuilder.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:

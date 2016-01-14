@@ -28,6 +28,145 @@
         <in>XorHandler.h</in>
         <in>ZshCompletionOutput.h</in>
       </df>
+      <df name="websocketpp">
+        <df name="base64">
+          <in>base64.hpp</in>
+        </df>
+        <df name="common">
+          <in>asio.hpp</in>
+          <in>asio_ssl.hpp</in>
+          <in>chrono.hpp</in>
+          <in>connection_hdl.hpp</in>
+          <in>cpp11.hpp</in>
+          <in>functional.hpp</in>
+          <in>md5.hpp</in>
+          <in>memory.hpp</in>
+          <in>network.hpp</in>
+          <in>platforms.hpp</in>
+          <in>random.hpp</in>
+          <in>regex.hpp</in>
+          <in>stdint.hpp</in>
+          <in>system_error.hpp</in>
+          <in>thread.hpp</in>
+          <in>time.hpp</in>
+          <in>type_traits.hpp</in>
+        </df>
+        <df name="concurrency">
+          <in>basic.hpp</in>
+          <in>none.hpp</in>
+        </df>
+        <df name="config">
+          <in>asio.hpp</in>
+          <in>asio_client.hpp</in>
+          <in>asio_no_tls.hpp</in>
+          <in>asio_no_tls_client.hpp</in>
+          <in>boost_config.hpp</in>
+          <in>core.hpp</in>
+          <in>core_client.hpp</in>
+          <in>debug.hpp</in>
+          <in>debug_asio.hpp</in>
+          <in>debug_asio_no_tls.hpp</in>
+          <in>minimal_client.hpp</in>
+          <in>minimal_server.hpp</in>
+        </df>
+        <df name="extensions">
+          <df name="permessage_deflate">
+            <in>disabled.hpp</in>
+            <in>enabled.hpp</in>
+          </df>
+          <in>extension.hpp</in>
+        </df>
+        <df name="http">
+          <df name="impl">
+            <in>parser.hpp</in>
+            <in>request.hpp</in>
+            <in>response.hpp</in>
+          </df>
+          <in>constants.hpp</in>
+          <in>parser.hpp</in>
+          <in>request.hpp</in>
+          <in>response.hpp</in>
+        </df>
+        <df name="impl">
+          <in>connection_impl.hpp</in>
+          <in>endpoint_impl.hpp</in>
+          <in>utilities_impl.hpp</in>
+        </df>
+        <df name="logger">
+          <in>basic.hpp</in>
+          <in>levels.hpp</in>
+          <in>stub.hpp</in>
+          <in>syslog.hpp</in>
+        </df>
+        <df name="message_buffer">
+          <in>alloc.hpp</in>
+          <in>message.hpp</in>
+          <in>pool.hpp</in>
+        </df>
+        <df name="processors">
+          <in>base.hpp</in>
+          <in>hybi00.hpp</in>
+          <in>hybi07.hpp</in>
+          <in>hybi08.hpp</in>
+          <in>hybi13.hpp</in>
+          <in>processor.hpp</in>
+        </df>
+        <df name="random">
+          <in>none.hpp</in>
+          <in>random_device.hpp</in>
+        </df>
+        <df name="roles">
+          <in>client_endpoint.hpp</in>
+          <in>server_endpoint.hpp</in>
+        </df>
+        <df name="sha1">
+          <in>sha1.hpp</in>
+        </df>
+        <df name="transport">
+          <df name="asio">
+            <df name="security">
+              <in>base.hpp</in>
+              <in>none.hpp</in>
+              <in>tls.hpp</in>
+            </df>
+            <in>base.hpp</in>
+            <in>connection.hpp</in>
+            <in>endpoint.hpp</in>
+          </df>
+          <df name="base">
+            <in>connection.hpp</in>
+            <in>endpoint.hpp</in>
+          </df>
+          <df name="debug">
+            <in>base.hpp</in>
+            <in>connection.hpp</in>
+            <in>endpoint.hpp</in>
+          </df>
+          <df name="iostream">
+            <in>base.hpp</in>
+            <in>connection.hpp</in>
+            <in>endpoint.hpp</in>
+          </df>
+          <df name="stub">
+            <in>base.hpp</in>
+            <in>connection.hpp</in>
+            <in>endpoint.hpp</in>
+          </df>
+        </df>
+        <in>client.hpp</in>
+        <in>close.hpp</in>
+        <in>connection.hpp</in>
+        <in>connection_base.hpp</in>
+        <in>endpoint.hpp</in>
+        <in>endpoint_base.hpp</in>
+        <in>error.hpp</in>
+        <in>frame.hpp</in>
+        <in>server.hpp</in>
+        <in>uri.hpp</in>
+        <in>utf8_validator.hpp</in>
+        <in>utilities.hpp</in>
+        <in>version.hpp</in>
+      </df>
     </df>
     <df root="inc" name="1">
       <in>AFileReader.hpp</in>
@@ -80,21 +219,37 @@
       <in>xxhash.h</in>
     </df>
     <df root="src" name="2">
-      <in>ARPAGramBuilder.cpp</in>
-      <in>ARPATrieBuilder.cpp</in>
-      <in>AWordIndex.cpp</in>
-      <in>ByteMGramId.cpp</in>
-      <in>C2DHybridTrie.cpp</in>
-      <in>C2DMapTrie.cpp</in>
-      <in>C2WArrayTrie.cpp</in>
-      <in>G2DMapTrie.cpp</in>
-      <in>H2DMapTrie.cpp</in>
-      <in>Logger.cpp</in>
-      <in>StatisticsMonitor.cpp</in>
-      <in>W2CArrayTrie.cpp</in>
-      <in>W2CHybridTrie.cpp</in>
-      <in>main.cpp</in>
-      <in>xxhash.c</in>
+      <df name="client">
+        <in>bpbd_client.cpp</in>
+      </df>
+      <df name="components">
+        <df name="lm">
+          <in>ARPAGramBuilder.cpp</in>
+          <in>ARPATrieBuilder.cpp</in>
+          <in>AWordIndex.cpp</in>
+          <in>ByteMGramId.cpp</in>
+          <in>C2DHybridTrie.cpp</in>
+          <in>C2DMapTrie.cpp</in>
+          <in>C2WArrayTrie.cpp</in>
+          <in>G2DMapTrie.cpp</in>
+          <in>H2DMapTrie.cpp</in>
+          <in>W2CArrayTrie.cpp</in>
+          <in>W2CHybridTrie.cpp</in>
+          <in>lm_query.cpp</in>
+        </df>
+        <df name="logging">
+          <in>Logger.cpp</in>
+        </df>
+        <df name="statistics">
+          <in>StatisticsMonitor.cpp</in>
+        </df>
+        <df name="utils">
+          <in>xxhash.c</in>
+        </df>
+      </df>
+      <df name="server">
+        <in>bpbd_server.cpp</in>
+      </df>
     </df>
   </logicalFolder>
   <projectmakefile>build/Makefile</projectmakefile>

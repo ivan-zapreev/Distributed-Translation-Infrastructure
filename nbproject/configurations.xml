@@ -6,20 +6,37 @@
     <df root="inc" name="1">
     </df>
     <df root="src" name="2">
-      <in>ARPAGramBuilder.cpp</in>
-      <in>ARPATrieBuilder.cpp</in>
-      <in>AWordIndex.cpp</in>
-      <in>ByteMGramId.cpp</in>
-      <in>C2DHybridTrie.cpp</in>
-      <in>C2DMapTrie.cpp</in>
-      <in>C2WArrayTrie.cpp</in>
-      <in>G2DMapTrie.cpp</in>
-      <in>H2DMapTrie.cpp</in>
-      <in>Logger.cpp</in>
-      <in>StatisticsMonitor.cpp</in>
-      <in>W2CArrayTrie.cpp</in>
-      <in>W2CHybridTrie.cpp</in>
-      <in>main.cpp</in>
+      <df name="client">
+        <in>bpbd_client.cpp</in>
+      </df>
+      <df name="components">
+        <df name="lm">
+          <in>ARPAGramBuilder.cpp</in>
+          <in>ARPATrieBuilder.cpp</in>
+          <in>AWordIndex.cpp</in>
+          <in>ByteMGramId.cpp</in>
+          <in>C2DHybridTrie.cpp</in>
+          <in>C2DMapTrie.cpp</in>
+          <in>C2WArrayTrie.cpp</in>
+          <in>G2DMapTrie.cpp</in>
+          <in>H2DMapTrie.cpp</in>
+          <in>W2CArrayTrie.cpp</in>
+          <in>W2CHybridTrie.cpp</in>
+          <in>lm_query.cpp</in>
+        </df>
+        <df name="logging">
+          <in>Logger.cpp</in>
+        </df>
+        <df name="statistics">
+          <in>StatisticsMonitor.cpp</in>
+        </df>
+        <df name="utils">
+          <in>xxhash.c</in>
+        </df>
+      </df>
+      <df name="server">
+        <in>bpbd_server.cpp</in>
+      </df>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -54,6 +71,13 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>inc</pElem>
+              <pElem>ext</pElem>
+              <pElem>build</pElem>
+            </incDir>
+          </cTool>
           <ccTool>
             <incDir>
               <pElem>inc</pElem>
@@ -63,59 +87,84 @@
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="src/ARPAGramBuilder.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/ARPATrieBuilder.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/ARPAGramBuilder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/AWordIndex.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/ARPATrieBuilder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/ByteMGramId.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/AWordIndex.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/C2DHybridTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/ByteMGramId.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/C2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/C2DHybridTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/C2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/G2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/H2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/G2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/Logger.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/H2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/StatisticsMonitor.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/W2CHybridTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/W2CHybridTrie.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/main.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/components/logging/Logger.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/statistics/StatisticsMonitor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/utils/xxhash.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>

@@ -1,5 +1,5 @@
 /* 
- * File:   NGramBuilder.cpp
+ * File:   ARPAGramBuilder.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
