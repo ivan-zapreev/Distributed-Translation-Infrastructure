@@ -34,17 +34,17 @@
 
 #include "tclap/CmdLine.h"
 
-#include "Exceptions.hpp"
-#include "StatisticsMonitor.hpp"
-#include "Logger.hpp"
-#include "StringUtils.hpp"
+#include "utils/Exceptions.hpp"
+#include "components/statistics/StatisticsMonitor.hpp"
+#include "components/logging/Logger.hpp"
+#include "utils/StringUtils.hpp"
 
-#include "AFileReader.hpp"
-#include "MemoryMappedFileReader.hpp"
-#include "FileStreamReader.hpp"
-#include "CStyleFileReader.hpp"
+#include "utils/file/AFileReader.hpp"
+#include "utils/file/MemoryMappedFileReader.hpp"
+#include "utils/file/FileStreamReader.hpp"
+#include "utils/file/CStyleFileReader.hpp"
 
-#include "Executor.hpp"
+#include "components/lm/Executor.hpp"
 
 using namespace std;
 using namespace TCLAP;

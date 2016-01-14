@@ -563,54 +563,84 @@
       <in>asio.hpp</in>
     </df>
     <df root="inc" name="1">
-      <in>AFileReader.hpp</in>
-      <in>ARPAGramBuilder.hpp</in>
-      <in>ARPAGramBuilderFactory.hpp</in>
-      <in>ARPATrieBuilder.hpp</in>
-      <in>AWordIndex.hpp</in>
-      <in>ArrayUtils.hpp</in>
-      <in>BaseMGram.hpp</in>
-      <in>BasicWordIndex.hpp</in>
-      <in>BitmapHashCache.hpp</in>
-      <in>ByteMGramId.hpp</in>
-      <in>ByteMGramIdTables.hpp</in>
-      <in>C2DHybridTrie.hpp</in>
-      <in>C2DMapTrie.hpp</in>
-      <in>C2WArrayTrie.hpp</in>
-      <in>CStyleFileReader.hpp</in>
-      <in>CountingWordIndex.hpp</in>
-      <in>DynamicMemoryArrays.hpp</in>
-      <in>Exceptions.hpp</in>
-      <in>Executor.hpp</in>
-      <in>FileStreamReader.hpp</in>
-      <in>FixedSizeHashMap.hpp</in>
-      <in>G2DMapTrie.hpp</in>
-      <in>GenericTrieBase.hpp</in>
-      <in>GreedyMemoryAllocator.hpp</in>
-      <in>GreedyMemoryStorage.hpp</in>
-      <in>H2DMapTrie.hpp</in>
-      <in>HashingUtils.hpp</in>
-      <in>HashingWordIndex.hpp</in>
-      <in>LayeredTrieBase.hpp</in>
-      <in>Logger.hpp</in>
-      <in>MGramCumulativeQuery.hpp</in>
-      <in>MGramQuery.hpp</in>
-      <in>MGramSingleQuery.hpp</in>
-      <in>MathUtils.hpp</in>
-      <in>MemoryMappedFileReader.hpp</in>
-      <in>ModelMGram.hpp</in>
-      <in>OptimizingWordIndex.hpp</in>
-      <in>QueryMGram.hpp</in>
-      <in>StatisticsMonitor.hpp</in>
-      <in>StringUtils.hpp</in>
-      <in>TextPieceReader.hpp</in>
-      <in>TrieConfigs.hpp</in>
-      <in>TrieConstants.hpp</in>
-      <in>W2CArrayTrie.hpp</in>
-      <in>W2CH_UM_Storage.hpp</in>
-      <in>W2CHybridTrie.hpp</in>
-      <in>WordIndexTrieBase.hpp</in>
-      <in>xxhash.h</in>
+      <df name="client">
+        <in>translation_client.hpp</in>
+      </df>
+      <df name="components">
+        <df name="lm">
+          <df name="builders">
+            <in>ARPAGramBuilder.hpp</in>
+            <in>ARPAGramBuilderFactory.hpp</in>
+            <in>ARPATrieBuilder.hpp</in>
+          </df>
+          <df name="dictionaries">
+            <in>AWordIndex.hpp</in>
+            <in>BasicWordIndex.hpp</in>
+            <in>CountingWordIndex.hpp</in>
+            <in>HashingWordIndex.hpp</in>
+            <in>OptimizingWordIndex.hpp</in>
+          </df>
+          <df name="mgrams">
+            <in>BaseMGram.hpp</in>
+            <in>ByteMGramId.hpp</in>
+            <in>ByteMGramIdTables.hpp</in>
+            <in>ModelMGram.hpp</in>
+            <in>QueryMGram.hpp</in>
+          </df>
+          <df name="tries">
+            <df name="queries">
+              <in>MGramCumulativeQuery.hpp</in>
+              <in>MGramQuery.hpp</in>
+              <in>MGramSingleQuery.hpp</in>
+            </df>
+            <in>BitmapHashCache.hpp</in>
+            <in>C2DHybridTrie.hpp</in>
+            <in>C2DMapTrie.hpp</in>
+            <in>C2WArrayTrie.hpp</in>
+            <in>G2DMapTrie.hpp</in>
+            <in>GenericTrieBase.hpp</in>
+            <in>H2DMapTrie.hpp</in>
+            <in>LayeredTrieBase.hpp</in>
+            <in>W2CArrayTrie.hpp</in>
+            <in>W2CH_UM_Storage.hpp</in>
+            <in>W2CHybridTrie.hpp</in>
+            <in>WordIndexTrieBase.hpp</in>
+          </df>
+          <in>Executor.hpp</in>
+          <in>TrieConfigs.hpp</in>
+          <in>TrieConstants.hpp</in>
+        </df>
+        <df name="logging">
+          <in>Logger.hpp</in>
+        </df>
+        <df name="statistics">
+          <in>StatisticsMonitor.hpp</in>
+        </df>
+      </df>
+      <df name="server">
+        <in>translation_server.hpp</in>
+      </df>
+      <df name="utils">
+        <df name="containers">
+          <in>ArrayUtils.hpp</in>
+          <in>DynamicMemoryArrays.hpp</in>
+          <in>FixedSizeHashMap.hpp</in>
+          <in>GreedyMemoryAllocator.hpp</in>
+          <in>GreedyMemoryStorage.hpp</in>
+        </df>
+        <df name="file">
+          <in>AFileReader.hpp</in>
+          <in>CStyleFileReader.hpp</in>
+          <in>FileStreamReader.hpp</in>
+          <in>MemoryMappedFileReader.hpp</in>
+          <in>TextPieceReader.hpp</in>
+        </df>
+        <in>Exceptions.hpp</in>
+        <in>HashingUtils.hpp</in>
+        <in>MathUtils.hpp</in>
+        <in>StringUtils.hpp</in>
+        <in>xxhash.h</in>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -618,17 +648,25 @@
       </df>
       <df name="components">
         <df name="lm">
-          <in>ARPAGramBuilder.cpp</in>
-          <in>ARPATrieBuilder.cpp</in>
-          <in>AWordIndex.cpp</in>
-          <in>ByteMGramId.cpp</in>
-          <in>C2DHybridTrie.cpp</in>
-          <in>C2DMapTrie.cpp</in>
-          <in>C2WArrayTrie.cpp</in>
-          <in>G2DMapTrie.cpp</in>
-          <in>H2DMapTrie.cpp</in>
-          <in>W2CArrayTrie.cpp</in>
-          <in>W2CHybridTrie.cpp</in>
+          <df name="builders">
+            <in>ARPAGramBuilder.cpp</in>
+            <in>ARPATrieBuilder.cpp</in>
+          </df>
+          <df name="dictionaries">
+            <in>AWordIndex.cpp</in>
+          </df>
+          <df name="ngrams">
+            <in>ByteMGramId.cpp</in>
+          </df>
+          <df name="tries">
+            <in>C2DHybridTrie.cpp</in>
+            <in>C2DMapTrie.cpp</in>
+            <in>C2WArrayTrie.cpp</in>
+            <in>G2DMapTrie.cpp</in>
+            <in>H2DMapTrie.cpp</in>
+            <in>W2CArrayTrie.cpp</in>
+            <in>W2CHybridTrie.cpp</in>
+          </df>
           <in>lm_query.cpp</in>
         </df>
         <df name="logging">
@@ -637,12 +675,12 @@
         <df name="statistics">
           <in>StatisticsMonitor.cpp</in>
         </df>
-        <df name="utils">
-          <in>xxhash.c</in>
-        </df>
       </df>
       <df name="server">
         <in>bpbd_server.cpp</in>
+      </df>
+      <df name="utils">
+        <in>xxhash.c</in>
       </df>
     </df>
   </logicalFolder>

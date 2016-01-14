@@ -4,6 +4,12 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="client">
+        <in>translation_client.hpp</in>
+      </df>
+      <df name="server">
+        <in>translation_server.hpp</in>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -11,17 +17,25 @@
       </df>
       <df name="components">
         <df name="lm">
-          <in>ARPAGramBuilder.cpp</in>
-          <in>ARPATrieBuilder.cpp</in>
-          <in>AWordIndex.cpp</in>
-          <in>ByteMGramId.cpp</in>
-          <in>C2DHybridTrie.cpp</in>
-          <in>C2DMapTrie.cpp</in>
-          <in>C2WArrayTrie.cpp</in>
-          <in>G2DMapTrie.cpp</in>
-          <in>H2DMapTrie.cpp</in>
-          <in>W2CArrayTrie.cpp</in>
-          <in>W2CHybridTrie.cpp</in>
+          <df name="builders">
+            <in>ARPAGramBuilder.cpp</in>
+            <in>ARPATrieBuilder.cpp</in>
+          </df>
+          <df name="dictionaries">
+            <in>AWordIndex.cpp</in>
+          </df>
+          <df name="ngrams">
+            <in>ByteMGramId.cpp</in>
+          </df>
+          <df name="tries">
+            <in>C2DHybridTrie.cpp</in>
+            <in>C2DMapTrie.cpp</in>
+            <in>C2WArrayTrie.cpp</in>
+            <in>G2DMapTrie.cpp</in>
+            <in>H2DMapTrie.cpp</in>
+            <in>W2CArrayTrie.cpp</in>
+            <in>W2CHybridTrie.cpp</in>
+          </df>
           <in>lm_query.cpp</in>
         </df>
         <df name="logging">
@@ -30,12 +44,12 @@
         <df name="statistics">
           <in>StatisticsMonitor.cpp</in>
         </df>
-        <df name="utils">
-          <in>xxhash.c</in>
-        </df>
       </df>
       <df name="server">
         <in>bpbd_server.cpp</in>
+      </df>
+      <df name="utils">
+        <in>xxhash.c</in>
       </df>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -87,60 +101,29 @@
           </ccTool>
         </makeTool>
       </makefileType>
+      <item path="inc/client/translation_client.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/components/lm/ARPAGramBuilder.cpp"
+      <item path="src/components/lm/builders/ARPAGramBuilder.cpp"
             ex="false"
             tool="1"
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/components/lm/ARPATrieBuilder.cpp"
+      <item path="src/components/lm/builders/ARPATrieBuilder.cpp"
             ex="false"
             tool="1"
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/components/lm/AWordIndex.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/ByteMGramId.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/C2DHybridTrie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/C2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/C2WArrayTrie.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/G2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/H2DMapTrie.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/W2CArrayTrie.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/components/lm/W2CHybridTrie.cpp"
+      <item path="src/components/lm/dictionaries/AWordIndex.cpp"
             ex="false"
             tool="1"
             flavor2="8">
@@ -148,6 +131,62 @@
         </ccTool>
       </item>
       <item path="src/components/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/ngrams/ByteMGramId.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/C2DHybridTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/C2DMapTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/C2WArrayTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/G2DMapTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/H2DMapTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/W2CArrayTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/components/lm/tries/W2CHybridTrie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
@@ -162,11 +201,11 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/components/utils/xxhash.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/utils/xxhash.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -23,9 +23,9 @@
  * Created on April 18, 2015, 12:18 PM
  */
 
-#include "StatisticsMonitor.hpp"
-#include "Exceptions.hpp"
-#include "Logger.hpp"
+#include "components/statistics/StatisticsMonitor.hpp"
+#include "utils/Exceptions.hpp"
+#include "components/logging/Logger.hpp"
 
 #if defined(_WIN32)
 #include <Windows.h>

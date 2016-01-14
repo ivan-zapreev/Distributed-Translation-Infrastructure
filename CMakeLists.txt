@@ -12,20 +12,20 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64")
 #Bring the source files into the project
 set(LM_QUERY_SOURCES 
     src/components/lm/lm_query.cpp
-    src/components/lm/W2CHybridTrie.cpp
-    src/components/lm/W2CArrayTrie.cpp
-    src/components/lm/H2DMapTrie.cpp
-    src/components/lm/G2DMapTrie.cpp
-    src/components/lm/C2WArrayTrie.cpp
-    src/components/lm/C2DMapTrie.cpp
-    src/components/lm/C2DHybridTrie.cpp
-    src/components/lm/ByteMGramId.cpp
-    src/components/lm/AWordIndex.cpp
-    src/components/lm/ARPATrieBuilder.cpp
-    src/components/lm/ARPAGramBuilder.cpp
+    src/components/lm/tries/W2CHybridTrie.cpp
+    src/components/lm/tries/W2CArrayTrie.cpp
+    src/components/lm/tries/H2DMapTrie.cpp
+    src/components/lm/tries/G2DMapTrie.cpp
+    src/components/lm/tries/C2WArrayTrie.cpp
+    src/components/lm/tries/C2DMapTrie.cpp
+    src/components/lm/tries/C2DHybridTrie.cpp
+    src/components/lm/ngrams/ByteMGramId.cpp
+    src/components/lm/dictionaries/AWordIndex.cpp
+    src/components/lm/builders/ARPATrieBuilder.cpp
+    src/components/lm/builders/ARPAGramBuilder.cpp
     src/components/logging/Logger.cpp
     src/components/statistics/StatisticsMonitor.cpp 
-    src/components/utils/xxhash.c)
+    src/utils/xxhash.c)
 #Define the server executable
 add_executable(lm-query ${LM_QUERY_SOURCES})
 
