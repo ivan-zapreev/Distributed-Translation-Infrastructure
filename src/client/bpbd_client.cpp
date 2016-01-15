@@ -80,24 +80,24 @@ static ValueArg<string> * p_debug_level_arg = NULL;
 void create_arguments_parser() {
     //Declare the command line arguments parser
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
+    
+    //Add the  parameter - compulsory
+    p_file_in_arg = new ValueArg<string>("I", "input-file", "The source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
 
     //Add the  parameter - compulsory
-    p_file_in_arg = new ValueArg<string>("if", "input-file", "A back-off language model file name in ARPA format", true, "", "model file name", *p_cmd_args);
+    p_lang_in_arg = new ValueArg<string>("i", "input-lang", "The source language to translate from", true, "", "source language", *p_cmd_args);
 
     //Add the  parameter - compulsory
-    p_lang_in_arg = new ValueArg<string>("il", "input-lang", "A back-off language model file name in ARPA format", true, "", "model file name", *p_cmd_args);
-
-    //Add the  parameter - compulsory
-    p_file_out_arg = new ValueArg<string>("of", "output-file", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
+    p_file_out_arg = new ValueArg<string>("O", "output-file", "The output file to put the translation into", true, "", "target file name", *p_cmd_args);
 
     //Add the  parameter - optional, by default is "English"
-    p_lang_out_arg = new ValueArg<string>("ol", "output-lang", "A text file containing new line separated M-gram queries", false, "English", "query file name", *p_cmd_args);
+    p_lang_out_arg = new ValueArg<string>("o", "output-lang", "The target language to translate into, default is 'English'", false, "English", "target language", *p_cmd_args);
 
     //Add the  parameter - optional, by default is "localhost"
-    p_host_arg = new ValueArg<string>("h", "host", "A text file containing new line separated M-gram queries", false, "localhost", "query file name", *p_cmd_args);
+    p_host_arg = new ValueArg<string>("s", "server", "The server address to connect to, default is 'localhost'", false, "localhost", "server address", *p_cmd_args);
 
     //Add the  parameter - optional, by default is 9002
-    p_port_arg = new ValueArg<uint16_t>("p", "port", "A text file containing new line separated M-gram queries", false, 9002, "query file name", *p_cmd_args);
+    p_port_arg = new ValueArg<uint16_t>("p", "port", "The server port to connect to, default is 9002", false, 9002, "server port", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     Logger::get_reporting_levels(&debug_levels);
