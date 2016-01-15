@@ -139,10 +139,15 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     //Store the parsed parameter values
     params.file_in = p_file_in_arg->getValue();
     params.lang_in = p_lang_in_arg->getValue();
+    LOG_USAGE << "Given input file: '" << params.file_in << "', language: '" << params.lang_in << "'" << END_LOG;
+
     params.file_out = p_file_out_arg->getValue();
     params.lang_out = p_lang_out_arg->getValue();
+    LOG_USAGE << "Given output file: '" << params.file_out << "', language: '" << params.lang_out << "'" << END_LOG;
+
     params.host = p_host_arg->getValue();
     params.port = p_port_arg->getValue();
+    LOG_USAGE << "Using server address: '" << params.host << "', port: '" << params.port << "'" << END_LOG;
 
     //Set the logging level right away
     Logger::set_reporting_level(p_debug_level_arg->getValue());
