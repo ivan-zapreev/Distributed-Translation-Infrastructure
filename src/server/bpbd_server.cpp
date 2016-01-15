@@ -47,7 +47,29 @@ using namespace uva::utils::exceptions;
  * This structure stores the program execution parameters
  */
 typedef struct {
-    uint16_t port;
+    //The language model file name 
+    string m_lang_model_file_name;
+    //The translation model file name 
+    string m_translation_model_file_name;
+    //The reordering model file name 
+    string m_reordering_model_file_name;
+
+    //The target language name
+    string m_target_lang_name;
+    //The source language name
+    string m_source_lang_name;
+    
+    //The port to listen to
+    uint16_t m_port;
+    
+    //The distortion limit to use
+    uint32_t m_distortion_limit;
+    //The pruning threshold to be used
+    float m_pruning_threshold;
+    //The stack capacity for stack pruning
+    uint32_t m_stack_capacity;
+    //The stack expansion strategy
+    string m_expansion_strategy;
 } TExecutionParams;
 
 /**
@@ -105,7 +127,7 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         //Instantiate the translation server
-        translation_server server(params.port);
+        translation_server server(params.m_port);
 
         //Run the translation server
         server.run();

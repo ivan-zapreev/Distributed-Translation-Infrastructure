@@ -47,12 +47,18 @@ using namespace uva::utils::exceptions;
  * This structure stores the program execution parameters
  */
 typedef struct {
-    string file_in;
-    string lang_in;
-    string file_out;
-    string lang_out;
-    string host;
-    uint16_t port;
+    //The source file name with the text to translate
+    string m_source_file;
+    //The language to translate from
+    string m_source_lang;
+    //The target file name to put the translation into
+    string m_target_file;
+    //The language to translate into
+    string m_target_lang;
+    //The server to connect to
+    string m_server;
+    //The server port to connect through
+    uint16_t m_port;
 } TExecutionParams;
 
 /**
@@ -64,11 +70,11 @@ static void print_info() {
 
 //The pointer to the command line parameters parser
 static CmdLine * p_cmd_args = NULL;
-static ValueArg<string> * p_file_in_arg = NULL;
-static ValueArg<string> * p_lang_in_arg = NULL;
-static ValueArg<string> * p_file_out_arg = NULL;
-static ValueArg<string> * p_lang_out_arg = NULL;
-static ValueArg<string> * p_host_arg = NULL;
+static ValueArg<string> * p_source_file_arg = NULL;
+static ValueArg<string> * p_source_lang_arg = NULL;
+static ValueArg<string> * p_target_file_arg = NULL;
+static ValueArg<string> * p_target_lang_arg = NULL;
+static ValueArg<string> * p_server_arg = NULL;
 static ValueArg<uint16_t> * p_port_arg = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
@@ -82,19 +88,19 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
     
     //Add the  parameter - compulsory
-    p_file_in_arg = new ValueArg<string>("I", "input-file", "The source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
+    p_source_file_arg = new ValueArg<string>("I", "input-file", "The source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
 
     //Add the  parameter - compulsory
-    p_lang_in_arg = new ValueArg<string>("i", "input-lang", "The source language to translate from", true, "", "source language", *p_cmd_args);
+    p_source_lang_arg = new ValueArg<string>("i", "input-lang", "The source language to translate from", true, "", "source language", *p_cmd_args);
 
     //Add the  parameter - compulsory
-    p_file_out_arg = new ValueArg<string>("O", "output-file", "The output file to put the translation into", true, "", "target file name", *p_cmd_args);
+    p_target_file_arg = new ValueArg<string>("O", "output-file", "The output file to put the translation into", true, "", "target file name", *p_cmd_args);
 
     //Add the  parameter - optional, by default is "English"
-    p_lang_out_arg = new ValueArg<string>("o", "output-lang", "The target language to translate into, default is 'English'", false, "English", "target language", *p_cmd_args);
+    p_target_lang_arg = new ValueArg<string>("o", "output-lang", "The target language to translate into, default is 'English'", false, "English", "target language", *p_cmd_args);
 
     //Add the  parameter - optional, by default is "localhost"
-    p_host_arg = new ValueArg<string>("s", "server", "The server address to connect to, default is 'localhost'", false, "localhost", "server address", *p_cmd_args);
+    p_server_arg = new ValueArg<string>("s", "server", "The server address to connect to, default is 'localhost'", false, "localhost", "server address", *p_cmd_args);
 
     //Add the  parameter - optional, by default is 9002
     p_port_arg = new ValueArg<uint16_t>("p", "port", "The server port to connect to, default is 9002", false, 9002, "server port", *p_cmd_args);
@@ -109,11 +115,11 @@ void create_arguments_parser() {
  * Allows to deallocate the parameters parser if it is needed
  */
 void destroy_arguments_parser() {
-    SAFE_DESTROY(p_file_in_arg);
-    SAFE_DESTROY(p_lang_in_arg);
-    SAFE_DESTROY(p_file_out_arg);
-    SAFE_DESTROY(p_lang_out_arg);
-    SAFE_DESTROY(p_host_arg);
+    SAFE_DESTROY(p_source_file_arg);
+    SAFE_DESTROY(p_source_lang_arg);
+    SAFE_DESTROY(p_target_file_arg);
+    SAFE_DESTROY(p_target_lang_arg);
+    SAFE_DESTROY(p_server_arg);
     SAFE_DESTROY(p_port_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
@@ -137,17 +143,17 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     }
 
     //Store the parsed parameter values
-    params.file_in = p_file_in_arg->getValue();
-    params.lang_in = p_lang_in_arg->getValue();
-    LOG_USAGE << "Given input file: '" << params.file_in << "', language: '" << params.lang_in << "'" << END_LOG;
+    params.m_source_file = p_source_file_arg->getValue();
+    params.m_source_lang = p_source_lang_arg->getValue();
+    LOG_USAGE << "Given input file: '" << params.m_source_file << "', language: '" << params.m_source_lang << "'" << END_LOG;
 
-    params.file_out = p_file_out_arg->getValue();
-    params.lang_out = p_lang_out_arg->getValue();
-    LOG_USAGE << "Given output file: '" << params.file_out << "', language: '" << params.lang_out << "'" << END_LOG;
+    params.m_target_file = p_target_file_arg->getValue();
+    params.m_target_lang = p_target_lang_arg->getValue();
+    LOG_USAGE << "Given output file: '" << params.m_target_file << "', language: '" << params.m_target_lang << "'" << END_LOG;
 
-    params.host = p_host_arg->getValue();
-    params.port = p_port_arg->getValue();
-    LOG_USAGE << "Using server address: '" << params.host << "', port: '" << params.port << "'" << END_LOG;
+    params.m_server = p_server_arg->getValue();
+    params.m_port = p_port_arg->getValue();
+    LOG_USAGE << "Using server address: '" << params.m_server << "', port: '" << params.m_port << "'" << END_LOG;
 
     //Set the logging level right away
     Logger::set_reporting_level(p_debug_level_arg->getValue());
@@ -177,7 +183,7 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         //Create the translation client
-        translation_client client(params.host, params.port);
+        translation_client client(params.m_server, params.m_port);
         
         //Connect to the translation server
         client.connect();
