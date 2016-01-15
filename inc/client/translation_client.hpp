@@ -45,7 +45,7 @@ using websocketpp::lib::bind;
 
 namespace uva {
     namespace smt {
-        namespace decodig {
+        namespace decoding {
             namespace client {
 
                 /**

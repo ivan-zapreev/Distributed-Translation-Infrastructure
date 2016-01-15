@@ -32,7 +32,8 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 ###############################DEFINE THE SERVER EXECUTABLE##########################
 
 #Manually add the source files if needed
-set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp)
+set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
+    src/components/logging/Logger.cpp)
 #Define the server executable
 add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 

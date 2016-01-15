@@ -31,7 +31,7 @@
 
 #include "tclap/CmdLine.h"
 
-#include "system.hpp"
+#include "common.hpp"
 
 #include "components/statistics/StatisticsMonitor.hpp"
 #include "components/logging/Logger.hpp"
@@ -49,6 +49,7 @@
 using namespace std;
 using namespace TCLAP;
 using namespace uva::smt;
+using namespace uva::smt::decoding::common;
 using namespace uva::smt::tries;
 using namespace uva::smt::tries::dictionary;
 using namespace uva::utils::file;
@@ -63,23 +64,7 @@ using namespace uva::utils::exceptions;
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
-    LOG_USAGE << "|                 Back Off Language Model(s) for SMT     :)\\___/(: |" << END_LOG;
-    LOG_USAGE << "|                       Software version " << PROGRAM_VERSION_STR << "             {(@)v(@)} |" << END_LOG;
-    LOG_USAGE << "|                         The Owl release.               {|~- -~|} |" << END_LOG;
-    LOG_USAGE << "|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\\} |" << END_LOG;
-    LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;
-    LOG_USAGE << "|        This software is distributed under GPL 2.0 license        |" << END_LOG;
-    LOG_USAGE << "|          (GPL stands for GNU General Public License)             |" << END_LOG;
-    LOG_USAGE << "|          The product comes with ABSOLUTELY NO WARRANTY.          |" << END_LOG;
-    LOG_USAGE << "|   This is a free software, you are welcome to redistribute it.   |" << END_LOG;
-#ifdef ENVIRONMENT64
-    LOG_USAGE << "|                     Running in 64 bit mode!                      |" << END_LOG;
-#else
-    LOG_USAGE << "|                     Running in 32 bit mode!                      |" << END_LOG;
-#endif
-    LOG_USAGE << "|                 Build on: " << __DATE__ << " " << __TIME__ << "                   |" << END_LOG;
-    LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
+    print_info("Back Off Language Model(s) for SMT", PROGRAM_VERSION_STR);
 }
 
 //The pointer to the command line parameters parser

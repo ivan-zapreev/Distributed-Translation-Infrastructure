@@ -24,20 +24,100 @@
  */
 
 #include <cstdlib>
+#include <string>
+
+#include "tclap/CmdLine.h"
+
+#include "common.hpp"
 
 #include "server/translation_server.hpp"
 
-using namespace std;
-using namespace uva::smt::decodig::server;
+#include "utils/Exceptions.hpp"
 
-/*
- * 
+using namespace std;
+using namespace TCLAP;
+using namespace uva::smt::decoding::server;
+using namespace uva::smt::decoding::common;
+using namespace uva::utils::exceptions;
+
+//Declare the program version string
+#define PROGRAM_VERSION_STR "1.0"
+
+/**
+ * This structure stores the program execution parameters
+ */
+typedef struct {
+    uint16_t port;
+} TExecutionParams;
+
+/**
+ * This functions does nothing more but printing the program header information
+ */
+static void print_info() {
+    print_info("The translation server application", PROGRAM_VERSION_STR);
+}
+
+/**
+ * Creates and sets up the command line parameters parser
+ */
+void create_arguments_parser() {
+    //ToDo: Implement
+}
+
+/**
+ * Allows to deallocate the parameters parser if it is needed
+ */
+void destroy_arguments_parser() {
+    //ToDo: Implement
+}
+
+/**
+ * This function tries to extract the 
+ * @param argc the number of program arguments
+ * @param argv the array of program arguments
+ * @param params the structure that will be filled in with the parsed program arguments
+ */
+static void extract_arguments(const uint argc, char const * const * const argv, TExecutionParams & params) {
+    //ToDo: Implement
+}
+
+/**
+ * The main program entry point
  */
 int main(int argc, char** argv) {
-    translation_server server(9002);
+    //Declare the return code
+    int returnCode = 0;
 
-    server.run();
+    //Set the uncaught exception handler
+    std::set_terminate(handler);
 
-    return 0;
+    //First print the program info
+    print_info();
+
+    //Set up possible program arguments
+    create_arguments_parser();
+
+    try {
+        //Define en empty parameters structure
+        TExecutionParams params = {};
+
+        //Attempt to extract the program arguments
+        extract_arguments(argc, argv, params);
+
+        //Instantiate the translation server
+        translation_server server(params.port);
+
+        //Run the translation server
+        server.run();
+    } catch (Exception & ex) {
+        //The argument's extraction has failed, print the error message and quit
+        LOG_ERROR << ex.getMessage() << END_LOG;
+        returnCode = 1;
+    }
+
+    //Destroy the command line parameters parser
+    destroy_arguments_parser();
+
+    return returnCode;
 }
 

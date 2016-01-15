@@ -641,7 +641,6 @@
         <in>StringUtils.hpp</in>
         <in>xxhash.h</in>
       </df>
-      <in>system.hpp</in>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -690,7 +689,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

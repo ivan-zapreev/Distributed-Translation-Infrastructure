@@ -28,7 +28,7 @@
 
 #include "tclap/CmdLine.h"
 
-#include "system.hpp"
+#include "common.hpp"
 
 #include "client/translation_client.hpp"
 
@@ -36,7 +36,8 @@
 
 using namespace std;
 using namespace TCLAP;
-using namespace uva::smt::decodig::client;
+using namespace uva::smt::decoding::client;
+using namespace uva::smt::decoding::common;
 using namespace uva::utils::exceptions;
 
 //Declare the program version string
@@ -46,6 +47,8 @@ using namespace uva::utils::exceptions;
  * This structure stores the program execution parameters
  */
 typedef struct {
+    string file_in;
+    string file_out;
     string host;
     uint16_t port;
 } TExecutionParams;
@@ -54,7 +57,7 @@ typedef struct {
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    //ToDo: Implement
+    print_info("The translation client application", PROGRAM_VERSION_STR);
 }
 
 /**

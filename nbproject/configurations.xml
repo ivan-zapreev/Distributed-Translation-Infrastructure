@@ -10,7 +10,6 @@
       <df name="server">
         <in>translation_server.hpp</in>
       </df>
-      <in>system.hpp</in>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -104,9 +103,9 @@
       </makefileType>
       <item path="inc/client/translation_client.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/common.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/system.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
