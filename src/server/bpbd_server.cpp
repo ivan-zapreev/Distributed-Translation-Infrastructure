@@ -27,6 +27,7 @@
 #include <string>
 
 #include "tclap/CmdLine.h"
+#include "INI.h"
 
 #include "common.hpp"
 
