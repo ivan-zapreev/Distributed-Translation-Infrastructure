@@ -31,7 +31,10 @@
 
 #define ASIO_STANDALONE
 
+#pragma GCC diagnostic push 
+#pragma GCC diagnostic ignored "-Wunused-local-typedef"
 #include <websocketpp/config/asio_no_tls_client.hpp>
+#pragma GCC diagnostic pop
 #include <websocketpp/client.hpp>
 #include <websocketpp/common/thread.hpp>
 
