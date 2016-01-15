@@ -135,9 +135,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     try {
         p_cmd_args->parse(argc, argv);
     } catch (ArgException &e) {
-        stringstream msg;
-        msg << "Error: " << e.error() << ", for argument: " << e.argId();
-        throw Exception(msg.str());
+        THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
     }
 
     //Store the parsed parameter values

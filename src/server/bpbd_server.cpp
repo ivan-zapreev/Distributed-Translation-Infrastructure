@@ -59,10 +59,10 @@ typedef struct {
     string m_target_lang_name;
     //The source language name
     string m_source_lang_name;
-    
+
     //The port to listen to
     uint16_t m_port;
-    
+
     //The distortion limit to use
     uint32_t m_distortion_limit;
     //The pruning threshold to be used
@@ -80,18 +80,37 @@ static void print_info() {
     print_info("The translation server application", PROGRAM_VERSION_STR);
 }
 
+//The pointer to the command line parameters parser
+static CmdLine * p_cmd_args = NULL;
+static ValueArg<string> * p_config_file_arg = NULL;
+static vector<string> debug_levels;
+static ValuesConstraint<string> * p_debug_levels_constr = NULL;
+static ValueArg<string> * p_debug_level_arg = NULL;
+
 /**
  * Creates and sets up the command line parameters parser
  */
 void create_arguments_parser() {
-    //ToDo: Implement
+    //Declare the command line arguments parser
+    p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
+
+    //Add the configuration file parameter - compulsory
+    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the server options", true, "", "server configuration file", *p_cmd_args);
+
+    //Add the -d the debug level parameter - optional, default is e.g. RESULT
+    Logger::get_reporting_levels(&debug_levels);
+    p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
+    p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
 }
 
 /**
  * Allows to deallocate the parameters parser if it is needed
  */
 void destroy_arguments_parser() {
-    //ToDo: Implement
+    SAFE_DESTROY(p_config_file_arg);
+    SAFE_DESTROY(p_debug_levels_constr);
+    SAFE_DESTROY(p_debug_level_arg);
+    SAFE_DESTROY(p_cmd_args);
 }
 
 /**
@@ -101,7 +120,29 @@ void destroy_arguments_parser() {
  * @param params the structure that will be filled in with the parsed program arguments
  */
 static void extract_arguments(const uint argc, char const * const * const argv, TExecutionParams & params) {
-    //ToDo: Implement
+    //Parse the arguments
+    try {
+        p_cmd_args->parse(argc, argv);
+    } catch (ArgException &e) {
+        stringstream msg;
+        msg << "Error: " << e.error() << ", for argument: " << e.argId();
+        throw Exception(msg.str());
+    }
+
+    //Get the configuration file name and read the config values from the file
+    const string config_file_name = p_config_file_arg->getValue();
+    INI<> ini(config_file_name, false);
+
+    //Parse the configuration file
+    if (ini.parse()) {
+        //ToDo: Get the configuration options from the file
+    } else {
+        //We could not parse the configuration file, report an error
+        THROW_EXCEPTION(string("Could not parse the configuration file: ") + config_file_name);
+    }
+
+    //Set the logging level right away
+    Logger::set_reporting_level(p_debug_level_arg->getValue());
 }
 
 /**
