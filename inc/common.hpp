@@ -52,7 +52,7 @@ namespace uva {
                     LOG_USAGE << "|                 " << prog_name_str << "     :)\\___/(: |" << END_LOG;
                     LOG_USAGE << "|                       Software version " << prog_ver_str << "             {(@)v(@)} |" << END_LOG;
                     LOG_USAGE << "|                         The Owl release.               {|~- -~|} |" << END_LOG;
-                    LOG_USAGE << "|             Copyright (C) Dr. Ivan S Zapreev, 2016     {/^'^'^\\} |" << END_LOG;
+                    LOG_USAGE << "|            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^\\} |" << END_LOG;
                     LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;
                     LOG_USAGE << "|        This software is distributed under GPL 2.0 license        |" << END_LOG;
                     LOG_USAGE << "|          (GPL stands for GNU General Public License)             |" << END_LOG;
