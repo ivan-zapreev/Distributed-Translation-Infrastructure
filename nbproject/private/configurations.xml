@@ -560,6 +560,7 @@
         <in>utilities.hpp</in>
         <in>version.hpp</in>
       </df>
+      <in>INI.h</in>
       <in>asio.hpp</in>
     </df>
     <df root="inc" name="1">
@@ -641,6 +642,7 @@
         <in>StringUtils.hpp</in>
         <in>xxhash.h</in>
       </df>
+      <in>common.hpp</in>
     </df>
     <df root="src" name="2">
       <df name="client">

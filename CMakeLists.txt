@@ -5,7 +5,7 @@ project (Basic-Phrase-Based-Decoding)
 include_directories(inc ext)
 
 #Add the required flags
-set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64")
+set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64 -Wno-unused-local-typedef")
 
 ###############################DEFINE THE LM QUERY###################################
 
