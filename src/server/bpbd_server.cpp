@@ -190,7 +190,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
     } else {
         //We could not parse the configuration file, report an error
-        THROW_EXCEPTION(string("Could not parse the configuration file: ") + config_file_name);
+        THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
     }
 }
 
