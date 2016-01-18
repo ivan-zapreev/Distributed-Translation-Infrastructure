@@ -29,8 +29,17 @@
 namespace uva {
     namespace smt {
         namespace decoding {
-            namespace messaging {
-                
+            namespace common {
+                namespace messaging {
+
+                    /**
+                     * This class represents the translation request message.
+                     */
+                    class translation_job_request {
+                    public:
+                    private:
+                    };
+                }
             }
         }
     }
