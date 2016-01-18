@@ -49,19 +49,19 @@ using namespace uva::utils::exceptions;
  */
 typedef struct {
     //The language model file name 
-    string m_lang_model_file_name;
+    string m_language_model;
     //The translation model file name 
-    string m_translation_model_file_name;
+    string m_translation_model;
     //The reordering model file name 
-    string m_reordering_model_file_name;
+    string m_reordering_model;
 
     //The target language name
-    string m_target_lang_name;
+    string m_target_lang;
     //The source language name
-    string m_source_lang_name;
+    string m_source_lang;
 
     //The port to listen to
-    uint16_t m_port;
+    uint16_t m_server_port;
 
     //The distortion limit to use
     uint32_t m_distortion_limit;
@@ -113,6 +113,41 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_cmd_args);
 }
 
+//Declare the default value
+static const string UNKNOWN_INI_FILE_VALUE = "<UNKNOWN_VALUE>";
+
+//Allows to get and assert on the given section/key value presence
+#define GET_ASSERT(ini, section, key, value_str) \
+    const string value_str = ini.get(section, key, UNKNOWN_INI_FILE_VALUE); \
+    ASSERT_CONDITION_THROW((value_str == UNKNOWN_INI_FILE_VALUE), \
+            string("Could not find '[") + section + string("]/") + \
+            key + string("' section/key in the configuration file!"));
+
+template<typename INT_TYPE>
+INT_TYPE get_integer(INI<> &ini, string section, string key) {
+    //Get the value and assert on its presence
+    GET_ASSERT(ini, section, key, value_str);
+
+    //Parse this value to an integer
+    return (INT_TYPE) stoi(value_str);
+}
+
+string get_string(INI<> &ini, string section, string key) {
+    //Get the value and assert on its presence
+    GET_ASSERT(ini, section, key, value_str);
+
+    //Parse this value to an integer
+    return value_str;
+}
+
+float get_float(INI<> &ini, string section, string key) {
+    //Get the value and assert on its presence
+    GET_ASSERT(ini, section, key, value_str);
+
+    //Parse this value to an integer
+    return stof(value_str);
+}
+
 /**
  * This function tries to extract the 
  * @param argc the number of program arguments
@@ -124,10 +159,11 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     try {
         p_cmd_args->parse(argc, argv);
     } catch (ArgException &e) {
-        stringstream msg;
-        msg << "Error: " << e.error() << ", for argument: " << e.argId();
-        throw Exception(msg.str());
+        THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
     }
+
+    //Set the logging level right away
+    Logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Get the configuration file name and read the config values from the file
     const string config_file_name = p_config_file_arg->getValue();
@@ -135,14 +171,27 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Parse the configuration file
     if (ini.parse()) {
-        //ToDo: Get the configuration options from the file
+        //Get the configuration options from the file
+        string section = "Server Options";
+        params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
+        section = "Language Options";
+        params.m_source_lang = get_string(ini, section, "source_lang");
+        params.m_target_lang = get_string(ini, section, "target_lang1");
+
+        section = "Input Models";
+        params.m_language_model = get_string(ini, section, "language_model");
+        params.m_translation_model = get_string(ini, section, "translation_model");
+        params.m_reordering_model = get_string(ini, section, "reordering_model");
+
+        section = "Decoding Options";
+        params.m_distortion_limit = get_integer<uint32_t>(ini, section, "distortion_limit");
+        params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
+        params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
+        params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
     } else {
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not parse the configuration file: ") + config_file_name);
     }
-
-    //Set the logging level right away
-    Logger::set_reporting_level(p_debug_level_arg->getValue());
 }
 
 /**
@@ -169,7 +218,7 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         //Instantiate the translation server
-        translation_server server(params.m_port);
+        translation_server server(params.m_server_port);
 
         //Run the translation server
         server.run();

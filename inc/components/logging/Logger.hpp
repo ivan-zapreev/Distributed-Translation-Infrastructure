@@ -34,8 +34,6 @@
 #include <vector>    // std::vector
 #include <time.h>    // std::clock std::clock_t
 
-#include "utils/Exceptions.hpp"
-
 using namespace std;
 
 namespace uva {
@@ -262,7 +260,6 @@ namespace uva {
                 static unsigned int m_update_counter;
 
             };
-
         }
     }
 }

@@ -137,10 +137,11 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     try {
         p_cmd_args->parse(argc, argv);
     } catch (ArgException &e) {
-        stringstream msg;
-        msg << "Error: " << e.error() << ", for argument: " << e.argId();
-        throw Exception(msg.str());
+        THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
     }
+
+    //Set the logging level right away
+    Logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Store the parsed parameter values
     params.m_source_file = p_source_file_arg->getValue();
@@ -154,9 +155,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_server = p_server_arg->getValue();
     params.m_port = p_port_arg->getValue();
     LOG_USAGE << "Using server address: '" << params.m_server << "', port: '" << params.m_port << "'" << END_LOG;
-
-    //Set the logging level right away
-    Logger::set_reporting_level(p_debug_level_arg->getValue());
 }
 
 /**

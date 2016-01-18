@@ -101,6 +101,8 @@
           </ccTool>
         </makeTool>
       </makefileType>
+      <item path="build/default.cfg" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/client/translation_client.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">

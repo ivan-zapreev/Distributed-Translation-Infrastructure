@@ -28,7 +28,10 @@
 #include <exception>    // std::exception
 #include <string>       // std::string
 
+#include "components/logging/Logger.hpp"
+
 using namespace std;
+using namespace uva::utils::logging;
 
 namespace uva {
     namespace utils {
@@ -40,8 +43,12 @@ namespace uva {
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
-    msg << __FILE__ << "::" << __FUNCTION__ \
-        << "(...) " << __LINE__ << " : " << (text); \
+    if (Logger::get_reporting_level() >= DebugLevelsEnum::INFO3) { \
+        msg << __FILE__ << "::" << __FUNCTION__ \
+            << "(...) " << __LINE__ << " : " << (text); \
+    } else { \
+        msg << (text); \
+    } \
     throw Exception(msg.str()); \
     }
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
