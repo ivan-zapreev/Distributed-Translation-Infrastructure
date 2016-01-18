@@ -34,7 +34,7 @@
 #include "components/logging/Logger.hpp"
 #include "utils/Exceptions.hpp"
 #include "utils/StringUtils.hpp"
-#include "utils/file/TextPieceReader.hpp"
+#include "utils/file/AFileReader.hpp"
 
 using namespace std;
 using namespace uva::utils::text;

@@ -31,6 +31,7 @@
 #include "common.hpp"
 
 #include "client/translation_client.hpp"
+#include "utils/file/CStyleFileReader.hpp"
 
 #include "utils/Exceptions.hpp"
 
@@ -39,6 +40,7 @@ using namespace TCLAP;
 using namespace uva::smt::decoding::client;
 using namespace uva::smt::decoding::common;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::file;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.0"
@@ -86,7 +88,7 @@ static ValueArg<string> * p_debug_level_arg = NULL;
 void create_arguments_parser() {
     //Declare the command line arguments parser
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
-    
+
     //Add the  parameter - compulsory
     p_source_file_arg = new ValueArg<string>("I", "input-file", "The source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
 
@@ -158,6 +160,30 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 }
 
 /**
+ * Allows to obtain the source text from a file/
+ * @param source_file_name the name of the source file
+ * @return the source file
+ * @throws Exception if the file is not found or it is empty or any other error.
+ */
+string get_source_text(string & source_file_name) {
+    CStyleFileReader source_file(source_file_name.c_str());
+    if (source_file.is_open()) {
+        string source_text;
+        source_file.log_reader_type_usage_info();
+        TextPieceReader line;
+        LOG_DEBUG << "Reading text from the source file: " << END_LOG;
+        while (source_file.get_first_line(line)) {
+            LOG_DEBUG << line.str() << END_LOG;
+            source_text += string("<s>") + line.str() + "</s>\n";
+        }
+        ASSERT_CONDITION_THROW((source_text == ""), string("The source text file: ") + source_file_name + string(" is empty!"));
+        return source_text;
+    } else {
+        THROW_EXCEPTION(string("Could not open the source text file: ") + source_file_name);
+    }
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -182,16 +208,20 @@ int main(int argc, char** argv) {
 
         //Create the translation client
         translation_client client(params.m_server, params.m_port);
-        
+
+        //Read the source corpus from the text file
+        const string source_text = get_source_text(params.m_source_file);
+
         //Connect to the translation server
-        client.connect();
-        
-        //ToDo: Read the source corpus from the text file
-        
-        //ToDo: Query the translation job and wait for the reply
+        if (client.connect()) {
+            //Query the translation job and wait for the reply
+            client.send(params.m_source_lang, source_text, params.m_target_lang);
 
-        //ToDo: Write the translation result to the text file
-
+            //ToDo: Write the translation result to the text file
+        } else {
+            THROW_EXCEPTION(string("Could not open the connection to: ") +
+                    params.m_server + string(":") + std::to_string(params.m_port));
+        }
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.getMessage() << END_LOG;

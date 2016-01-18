@@ -35,7 +35,12 @@
 #include <websocketpp/client.hpp>
 #include <websocketpp/common/thread.hpp>
 
+#include "../utils/Exceptions.hpp"
+#include "components/logging/Logger.hpp"
+
 using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::bind;
@@ -54,7 +59,7 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
 
-                    translation_client(const string & host, const uint16_t port) : m_open(false), m_done(false) {
+                    translation_client(const string & host, const uint16_t port) : m_job_id(1), m_open(false), m_done(false) {
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);
 
@@ -73,25 +78,28 @@ namespace uva {
                         m_client.set_fail_handler(bind(&translation_client::on_fail, this, _1));
                     }
 
+                    /**
+                     * The basic destructor that also stops the client
+                     */
                     ~translation_client() {
-                        if (m_open && !m_done) {
-                            //Close the connection to the server
-                            m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
-                        }
+                        //Stope the client
+                        stop();
                     }
 
                     /**
                      * This method will block until the connection is complete
                      * @param uri the uri to connect to
+                     * @return true if the connection has been established
+                     * 
                      */
-                    void connect() {
+                    bool connect() {
                         // Create a new connection to the given URI
                         websocketpp::lib::error_code ec;
                         client::connection_ptr con = m_client.get_connection(m_uri, ec);
                         if (ec) {
                             m_client.get_alog().write(websocketpp::log::alevel::app,
                                     "Get Connection (" + m_uri + ") Error: " + ec.message());
-                            return;
+                            return false;
                         }
 
                         // Grab a handle for this connection so we can talk to it in a thread
@@ -103,13 +111,50 @@ namespace uva {
                         m_client.connect(con);
 
                         // Create a thread to run the ASIO io_service event loop
-                        websocketpp::lib::thread asio_thread(&client::run, &m_client);
+                        m_asio_thread = websocketpp::lib::thread(&client::run, &m_client);
 
-                        // Create a thread to run the telemetry loop
-                        websocketpp::lib::thread telemetry_thread(&translation_client::telemetry_loop, this);
+                        return wait_connect();
+                    }
 
-                        asio_thread.join();
-                        telemetry_thread.join();
+                    /**
+                     * Allows to close the connection and stop the io service thread
+                     */
+                    void stop() {
+                        m_client.get_alog().write(websocketpp::log::alevel::app,
+                                string("Stopping the client: m_open = ") + to_string(m_open) +
+                                string(", m_done = ") + to_string(m_done));
+                        if (m_open && !m_done) {
+                            //Close the connection to the server
+                            m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
+                        }
+                        //Stop the io service thread
+                        m_client.stop();
+                        //Wait for the thread to exit.
+                        m_asio_thread.join();
+                    }
+
+                    /**
+                     * Attempts to send the translation job
+                     * @param source_lang the source language to translate from
+                     * @param source_text the text to translate
+                     * @param target_text the target language to translate into
+                     */
+                    void send(const string & source_lang, const string & source_text, const string & target_text) {
+                        //Declare the error code
+                        websocketpp::lib::error_code ec;
+
+                        //Form the message string
+                        const string message = to_string(m_job_id++) + string(":") + source_lang + string(">") + target_text + "\n" + source_text;
+
+                        //Try to send the translation job request
+                        m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
+
+                        // The most likely error that we will get is that the connection is
+                        // not in the right state. Usually this means we tried to send a
+                        // message to a connection that was closed or in the process of
+                        // closing. While many errors here can be easily recovered from,
+                        // in this simple example, we'll stop the telemetry loop.
+                        ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
                     }
 
                     /**
@@ -148,58 +193,51 @@ namespace uva {
                         m_done = true;
                     }
 
-                    void telemetry_loop() {
-                        uint64_t count = 0;
-                        std::stringstream val;
-                        websocketpp::lib::error_code ec;
+                protected:
 
+                    /**
+                     * Allows to wait until the connection to the server is established.
+                     * @return true if the connection is successfully established
+                     */
+                    bool wait_connect() {
+                        //Wait until the connection is established
                         while (1) {
-                            bool wait = false;
-
-                            {
-                                scoped_lock guard(m_lock);
-                                // If the connection has been closed, stop generating telemetry
-                                if (m_done) {
-                                    break;
-                                }
-
-                                // If the connection hasn't been opened yet wait a bit and retry
-                                if (!m_open) {
-                                    wait = true;
-                                }
-                            }
-
-                            if (wait) {
-                                sleep(1);
-                                continue;
-                            }
-
-                            val.str("");
-                            val << "count is " << count++;
-
-                            m_client.get_alog().write(websocketpp::log::alevel::app, val.str());
-                            m_client.send(m_hdl, val.str(), websocketpp::frame::opcode::text, ec);
-
-                            // The most likely error that we will get is that the connection is
-                            // not in the right state. Usually this means we tried to send a
-                            // message to a connection that was closed or in the process of
-                            // closing. While many errors here can be easily recovered from,
-                            // in this simple example, we'll stop the telemetry loop.
-                            if (ec) {
+                            scoped_lock guard(m_lock);
+                            //If we did not open the connection and did not fail then  we wait
+                            if (!m_open && !m_done) {
                                 m_client.get_alog().write(websocketpp::log::alevel::app,
-                                        "Send Error: " + ec.message());
+                                        string("Going to sleep, m_open = ") + to_string(m_open) +
+                                        string(", m_done = ") + to_string(m_done));
+                                sleep(1);
+                                m_client.get_alog().write(websocketpp::log::alevel::app, "Done sleeping!");
+                            } else {
                                 break;
                             }
-
-                            sleep(1);
                         }
+
+                        //If the connection is open and is not done then we are nicely connected
+                        const bool result = m_open && !m_done;
+                        m_client.get_alog().write(websocketpp::log::alevel::app,
+                                string("Is connection open: ") + to_string(result) +
+                                string(" (m_open = ") + to_string(m_open) +
+                                string(", m_done = ") + to_string(m_done) + string(")"));
+                        return result;
                     }
+
                 private:
+                    //Stores the next job id
+                    uint32_t m_job_id;
+                    //Stores the client
                     client m_client;
+                    //Stores the io thread
+                    websocketpp::lib::thread m_asio_thread;
+                    //Stores the connection handler
                     websocketpp::connection_hdl m_hdl;
+                    //Stores the synchronization mutex
                     websocketpp::lib::mutex m_lock;
-                    bool m_open;
-                    bool m_done;
+                    //Stores the open and done flags for connection
+                    bool m_open, m_done;
+                    //Stores the server URI
                     string m_uri;
                 };
             }
