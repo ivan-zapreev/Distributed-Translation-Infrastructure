@@ -58,8 +58,26 @@ namespace uva {
                          * message.
                          * @param message the server message to be parsed
                          */
-                        translation_job_reply(string message) {
-                            //ToDo: Implement parse the reply message into the class fields
+                        translation_job_reply(const string & message) {
+                            //De-serialize from the message
+                            de_serialize(message);
+                        }
+
+                        /**
+                         * Allows to de-serialize the job reply from a string
+                         * @param message the string representation of the translation job reply
+                         */
+                        void de_serialize(const string & message) {
+                            //ToDo: Implement
+                        }
+
+                        /**
+                         * Allows to serialize the job reply into a string
+                         * @return the string representation of the translation job reply
+                         */
+                        const string serialize() {
+                            return to_string(m_job_id) + string(":") +
+                                    to_string(m_code) + string(":") + m_text;
                         }
 
                         /**
@@ -90,7 +108,7 @@ namespace uva {
                         const job_result_code get_code() {
                             return m_code;
                         }
-                        
+
                         /**
                          * Allows to get the translation job text. This is either
                          * the text translated into the target language or the error
@@ -100,7 +118,7 @@ namespace uva {
                         const string & get_text() {
                             return m_text;
                         }
-                        
+
                     private:
                         //Stores the translation job id
                         uint32_t m_job_id;
