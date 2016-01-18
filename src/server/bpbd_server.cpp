@@ -167,6 +167,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Get the configuration file name and read the config values from the file
     const string config_file_name = p_config_file_arg->getValue();
+    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
     INI<> ini(config_file_name, false);
 
     //Parse the configuration file
@@ -174,20 +175,31 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         //Get the configuration options from the file
         string section = "Server Options";
         params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
+
         section = "Language Options";
         params.m_source_lang = get_string(ini, section, "source_lang");
         params.m_target_lang = get_string(ini, section, "target_lang");
 
+        LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
+                << params.m_target_lang << "' on port: " << params.m_server_port << END_LOG;
+
         section = "Input Models";
         params.m_language_model = get_string(ini, section, "language_model");
+        LOG_INFO << "Language model file: " << params.m_language_model << END_LOG;
         params.m_translation_model = get_string(ini, section, "translation_model");
+        LOG_INFO << "Translation model file: " << params.m_translation_model << END_LOG;
         params.m_reordering_model = get_string(ini, section, "reordering_model");
+        LOG_INFO << "Reordering model file: " << params.m_reordering_model << END_LOG;
 
         section = "Decoding Options";
         params.m_distortion_limit = get_integer<uint32_t>(ini, section, "distortion_limit");
         params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
         params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
+        LOG_INFO << "Distortion limit: " << params.m_distortion_limit
+                << ", pruning threshold: " << params.m_pruning_threshold
+                << ", stack capacity: " << params.m_stack_capacity << END_LOG;
         params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
+        LOG_INFO << "Expansion strategy: " << params.m_expansion_strategy << END_LOG;
     } else {
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
