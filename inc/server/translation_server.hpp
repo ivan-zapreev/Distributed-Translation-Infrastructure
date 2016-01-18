@@ -55,13 +55,16 @@ namespace uva {
                     translation_server(const uint16_t port) {
                         // Set up access channels to only log interesting things
                         m_server.clear_access_channels(websocketpp::log::alevel::all);
-                        m_server.set_access_channels(websocketpp::log::alevel::connect);
-                        m_server.set_access_channels(websocketpp::log::alevel::disconnect);
                         m_server.set_access_channels(websocketpp::log::alevel::app);
 
                         // Initialize the Asio transport policy
                         m_server.init_asio();
 
+                        //ToDo: Add the handlers for the connection events
+                        //m_server.set_open_handler(bind(&translation_server::on_open, this, _1));
+                        //m_server.set_close_handler(bind(&translation_server::on_close, this, _1));
+                        //m_server.set_fail_handler(bind(&translation_server::on_fail, this, _1));
+                        
                         // Bind the handlers we are using
                         m_server.set_message_handler(bind(&translation_server::on_message, this, _1, _2));
 
@@ -75,8 +78,20 @@ namespace uva {
                     }
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
-                        std::cout << msg->get_payload() << std::endl;
-
+                        //Declare the error code
+                        websocketpp::lib::error_code ec;
+                        
+                        //ToDo: Extract the translation job request
+                        
+                        //Send/schedule the translation job reply
+                        m_server.send(m_hdl, "Got it!", websocketpp::frame::opcode::text, ec);
+                        if( ec ) {
+                            cout << string("Send Error: ") + ec.message();
+                        }
+                        
+                        //ToDo: Make sure that things are synchronized for multiple job requests
+                        
+                        //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
                     }
 
                 private:

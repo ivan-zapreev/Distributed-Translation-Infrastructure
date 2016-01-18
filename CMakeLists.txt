@@ -11,21 +11,21 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64 -Wno-unused-local-typedef")
 
 #Bring the source files into the project
 set(LM_QUERY_SOURCES 
-    src/components/lm/lm_query.cpp
-    src/components/lm/tries/W2CHybridTrie.cpp
-    src/components/lm/tries/W2CArrayTrie.cpp
-    src/components/lm/tries/H2DMapTrie.cpp
-    src/components/lm/tries/G2DMapTrie.cpp
-    src/components/lm/tries/C2WArrayTrie.cpp
-    src/components/lm/tries/C2DMapTrie.cpp
-    src/components/lm/tries/C2DHybridTrie.cpp
-    src/components/lm/ngrams/ByteMGramId.cpp
-    src/components/lm/dictionaries/AWordIndex.cpp
-    src/components/lm/builders/ARPATrieBuilder.cpp
-    src/components/lm/builders/ARPAGramBuilder.cpp
-    src/components/logging/Logger.cpp
-    src/components/statistics/StatisticsMonitor.cpp 
-    src/utils/xxhash.c)
+    src/server/lm/lm_query.cpp
+    src/server/lm/tries/W2CHybridTrie.cpp
+    src/server/lm/tries/W2CArrayTrie.cpp
+    src/server/lm/tries/H2DMapTrie.cpp
+    src/server/lm/tries/G2DMapTrie.cpp
+    src/server/lm/tries/C2WArrayTrie.cpp
+    src/server/lm/tries/C2DMapTrie.cpp
+    src/server/lm/tries/C2DHybridTrie.cpp
+    src/server/lm/ngrams/ByteMGramId.cpp
+    src/server/lm/dictionaries/AWordIndex.cpp
+    src/server/lm/builders/ARPATrieBuilder.cpp
+    src/server/lm/builders/ARPAGramBuilder.cpp
+    src/common/utils/monitore/StatisticsMonitor.cpp 
+    src/common/utils/logging/Logger.cpp
+    src/common/utils/xxhash.c)
 #Define the server executable
 add_executable(lm-query ${LM_QUERY_SOURCES})
 
@@ -33,7 +33,7 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
-    src/components/logging/Logger.cpp)
+    src/common/utils/logging/Logger.cpp)
 #Define the server executable
 add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 
@@ -42,7 +42,7 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 #Manually add the source files if needed
 set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
-    src/components/logging/Logger.cpp)
+    src/common/utils/logging/Logger.cpp)
 #Define the server executable
 add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 

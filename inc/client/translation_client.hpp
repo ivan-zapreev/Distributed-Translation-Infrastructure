@@ -28,6 +28,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <unordered_map>
 
 #define ASIO_STANDALONE
 
@@ -35,14 +36,17 @@
 #include <websocketpp/client.hpp>
 #include <websocketpp/common/thread.hpp>
 
-#include "../utils/Exceptions.hpp"
-#include "components/logging/Logger.hpp"
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
+#include "common/messaging/translation_job_reply.hpp"
+#include "common/messaging/translation_job_request.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 using websocketpp::lib::placeholders::_1;
+using websocketpp::lib::placeholders::_2;
 using websocketpp::lib::bind;
 
 namespace uva {
@@ -76,6 +80,7 @@ namespace uva {
                         m_client.set_open_handler(bind(&translation_client::on_open, this, _1));
                         m_client.set_close_handler(bind(&translation_client::on_close, this, _1));
                         m_client.set_fail_handler(bind(&translation_client::on_fail, this, _1));
+                        m_client.set_message_handler(bind(&translation_client::on_message, this, _1, _2));
                     }
 
                     /**
@@ -84,6 +89,18 @@ namespace uva {
                     ~translation_client() {
                         //Stope the client
                         stop();
+                    }
+
+                    /**
+                     * This method is used to receive the job translation messages
+                     * @param hdl the connection handler
+                     * @param msg the message
+                     */
+                    void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
+                        //ToDo: parse the message into the translation job reply
+
+                        std::cout << msg->get_payload() << std::endl;
+
                     }
 
                     /**
@@ -96,11 +113,7 @@ namespace uva {
                         // Create a new connection to the given URI
                         websocketpp::lib::error_code ec;
                         client::connection_ptr con = m_client.get_connection(m_uri, ec);
-                        if (ec) {
-                            m_client.get_alog().write(websocketpp::log::alevel::app,
-                                    "Get Connection (" + m_uri + ") Error: " + ec.message());
-                            return false;
-                        }
+                        ASSERT_CONDITION_THROW(ec, string("Get Connection (") + m_uri + string(") Error: ") + ec.message());
 
                         // Grab a handle for this connection so we can talk to it in a thread
                         // safe manor after the event loop starts.
@@ -138,13 +151,17 @@ namespace uva {
                      * @param source_lang the source language to translate from
                      * @param source_text the text to translate
                      * @param target_text the target language to translate into
+                     * @result the translation job id
                      */
-                    void send(const string & source_lang, const string & source_text, const string & target_text) {
+                    uint32_t request(const string & source_lang, const string & source_text, const string & target_text) {
+                        //Make sure that message related activity is synchronized
+                        scoped_lock guard(m_lock_msg);
+                        
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
                         //Form the message string
-                        const string message = to_string(m_job_id++) + string(":") + source_lang + string(">") + target_text + "\n" + source_text;
+                        const string message = to_string(m_job_id) + string(":") + source_lang + string(">") + target_text + "\n" + source_text;
 
                         //Try to send the translation job request
                         m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
@@ -152,45 +169,68 @@ namespace uva {
                         // The most likely error that we will get is that the connection is
                         // not in the right state. Usually this means we tried to send a
                         // message to a connection that was closed or in the process of
-                        // closing. While many errors here can be easily recovered from,
-                        // in this simple example, we'll stop the telemetry loop.
+                        // closing.
                         ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
+
+                        //Return the job id and increment to the next one
+                        return m_job_id++;
                     }
 
                     /**
-                     * The open handler will signal that we are ready to start sending telemetry
+                     * Allows to wait (synchronously) for a translation job reply. The method gets a time-out parameter
+                     * @param job_id the translation job id to wait for
+                     * @param target_text the variable to write the translated text into 
+                     * @param timeout_millisec the time out in milliseconds, the default is 0 that means to time out
+                     */
+                    void receive(const uint32_t job_id, string & target_text, const size_t timeout_millisec = 0) {
+                        //Make sure that message related activity is synchronized
+                        scoped_lock guard(m_lock_msg);
+                        
+                        //ToDo: Wait for the job with the given id.
+                    }
+
+                    /**
+                     * The open handler will signal that we are ready to start sending translation job(s)
                      * @param the connection handler
                      */
                     void on_open(websocketpp::connection_hdl hdl) {
                         m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection opened, starting telemetry!");
+                                "Connection opened!");
 
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_lock_con);
                         m_open = true;
                     }
 
                     /**
-                     * The close handler will signal that we should stop sending telemetry
+                     * The close handler will signal that we should stop sending translation job(s)
                      * @param the connection handler
                      */
                     void on_close(websocketpp::connection_hdl hdl) {
                         m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection closed, stopping telemetry!");
+                                "Connection closed!");
 
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_lock_con);
                         m_done = true;
                     }
 
                     /**
-                     * The fail handler will signal that we should stop sending telemetry
+                     * The fail handler will signal that we should stop sending translation job(s)
                      * @param the connection handler
                      */
                     void on_fail(websocketpp::connection_hdl hdl) {
                         m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection failed, stopping translation!");
+                                "Connection failed!");
 
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_lock_con);
                         m_done = true;
+                    }
+
+                    /**
+                     * Allows to get the connection URI
+                     * @return the connection URI
+                     */
+                    const string get_uri() {
+                        return m_uri;
                     }
 
                 protected:
@@ -202,7 +242,7 @@ namespace uva {
                     bool wait_connect() {
                         //Wait until the connection is established
                         while (1) {
-                            scoped_lock guard(m_lock);
+                            scoped_lock guard(m_lock_con);
                             //If we did not open the connection and did not fail then  we wait
                             if (!m_open && !m_done) {
                                 m_client.get_alog().write(websocketpp::log::alevel::app,
@@ -233,12 +273,16 @@ namespace uva {
                     websocketpp::lib::thread m_asio_thread;
                     //Stores the connection handler
                     websocketpp::connection_hdl m_hdl;
-                    //Stores the synchronization mutex
-                    websocketpp::lib::mutex m_lock;
+                    //Stores the synchronization mutex for connection
+                    websocketpp::lib::mutex m_lock_con;
+                    //Stores the synchronization mutex for messaging
+                    websocketpp::lib::mutex m_lock_msg;
                     //Stores the open and done flags for connection
                     bool m_open, m_done;
                     //Stores the server URI
                     string m_uri;
+                    //Stores the requested jobs with the corresponding replies, if any
+                    //unordered_map<uint32_t, translation_job_reply> m_jobs;
                 };
             }
         }

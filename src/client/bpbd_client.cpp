@@ -31,9 +31,8 @@
 #include "common.hpp"
 
 #include "client/translation_client.hpp"
-#include "utils/file/CStyleFileReader.hpp"
-
-#include "utils/Exceptions.hpp"
+#include "common/utils/file/CStyleFileReader.hpp"
+#include "common/utils/Exceptions.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -214,13 +213,16 @@ int main(int argc, char** argv) {
 
         //Connect to the translation server
         if (client.connect()) {
-            //Query the translation job and wait for the reply
-            client.send(params.m_source_lang, source_text, params.m_target_lang);
+            //Query the translation job
+            uint32_t job_id = client.request(params.m_source_lang, source_text, params.m_target_lang);
+
+            //Synchronously wait for the translation job result
+            string target_text;
+            client.receive(job_id, target_text);
 
             //ToDo: Write the translation result to the text file
         } else {
-            THROW_EXCEPTION(string("Could not open the connection to: ") +
-                    params.m_server + string(":") + std::to_string(params.m_port));
+            THROW_EXCEPTION(string("Could not open the connection to: ") + client.get_uri());
         }
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit

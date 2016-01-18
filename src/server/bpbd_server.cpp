@@ -33,7 +33,7 @@
 
 #include "server/translation_server.hpp"
 
-#include "utils/Exceptions.hpp"
+#include "common/utils/Exceptions.hpp"
 
 using namespace std;
 using namespace TCLAP;

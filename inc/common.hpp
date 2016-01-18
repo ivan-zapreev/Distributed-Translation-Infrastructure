@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <execinfo.h>
 
-#include "components/logging/Logger.hpp"
+#include "common/utils/logging/Logger.hpp"
 
 using namespace uva::utils::logging;
 
