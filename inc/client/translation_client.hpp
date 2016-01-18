@@ -44,6 +44,7 @@
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
@@ -281,8 +282,10 @@ namespace uva {
                     bool m_open, m_done;
                     //Stores the server URI
                     string m_uri;
-                    //Stores the requested jobs with the corresponding replies, if any
-                    //unordered_map<uint32_t, translation_job_reply> m_jobs;
+                    //Stores the mappinf from the translation job request id to
+                    //the resulting translation job result, if already received.
+                    //The translation jobs without a reply are mapped to NULL
+                    unordered_map<uint32_t, translation_job_reply *> m_jobs;
                 };
             }
         }
