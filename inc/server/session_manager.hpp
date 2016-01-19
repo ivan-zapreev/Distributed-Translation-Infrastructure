@@ -23,7 +23,7 @@
  * Created on January 19, 2016, 4:02 PM
  */
 
-#include <unordered_map>
+#include <map>
 
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
@@ -58,34 +58,30 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    ~session_manager() {
-                        //ToDo: Destroy the available session objects, this should also stop any pending/running traslation job
+                    virtual ~session_manager() {
+                        //ToDo: Destroy the available session objects, this should also stop any pending/running translation job
                     }
 
                     /**
                      * Allows to create and register a new session object
                      * @param hdl [in] the connection handler
-                     * @param session_ptr [out] the reference to a pointer to assign the address of the newly allocation session object to 
-                     * @return true if the session object has been successfully allocated, otherwise false
+                     * @return the pointer to the newly allocation session object
                      */
-                    bool create_new_session(websocketpp::connection_hdl hdl, session_opject_ptr & session_ptr) {
-                        //Instantiate a new session
-                        session_ptr = new session_object();
-
+                    session_object_ptr create_session(websocketpp::connection_hdl hdl) {
                         //Use the scoped mutex lock to avoid race conditions
-                        scoped_lock guard(m_lock_id);
+                        scoped_lock guard(m_lock);
 
                         //Get the current value stored under the connection handler
-                        session_object_ptr & ptr_ref = m_session[hdl];
+                        session_object_ptr & ptr_ref = m_sessions[hdl];
 
                         //If the value is null then there is no session object yet, as expected
                         if (ptr_ref == NULL) {
                             //Store the pointer to the newly created connection object here
-                            ptr_ref = session_ptr;
-                            return true;
+                            ptr_ref = new session_object();
+                            return ptr_ref;
                         } else {
                             //ToDo: Log the error as we encountered a bas situation.
-                            return false;
+                            return NULL;
                         }
                     }
 
@@ -95,15 +91,18 @@ namespace uva {
                      * @param hdl the session handler to identify the session object.
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
-                    session_object_ptr remove_session(websocketpp::connection_hdl hdl) {
-                        scoped_lock guard(m_lock_id);
-                        //First get the session object pointer
-                        session_object_ptr ptr = m_session[hdl];
+                    void destroy_session(websocketpp::connection_hdl hdl) {
+                        //Use the scoped mutex lock to avoid race conditions
+                        scoped_lock guard(m_lock);
+
+                        //First get the session object pointer and destroy the session object
+                        session_object_ptr ptr = m_sessions[hdl];
+                        if (ptr != NULL) {
+                            delete ptr;
+                        }
+                        
                         //Erase the object from the map
                         m_sessions.erase(hdl);
-
-                        //Return the pointer
-                        return ptr;
                     }
 
                 private:
@@ -111,7 +110,7 @@ namespace uva {
                     websocketpp::lib::mutex m_lock;
 
                     //Stores the sessions information mappings
-                    unordered_map<connection_hdl, session_object_ptr, std::owner_less<connection_hdl>> m_sessions;
+                    map<websocketpp::connection_hdl, session_object_ptr, std::owner_less<websocketpp::connection_hdl>> m_sessions;
                 };
             }
         }

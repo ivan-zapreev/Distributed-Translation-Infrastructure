@@ -37,6 +37,7 @@
 #include "common/messaging/trans_job_reply.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "session_object.hpp"
+#include "session_manager.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -90,7 +91,11 @@ namespace uva {
                      * @param hdl
                      */
                     void on_open(connection_hdl hdl) {
-                        //ToDo: Implement, make it synchronized
+                        //Create a new session object for the handler
+                        session_object_ptr session_ptr = m_manager.create_session(hdl);
+                        if (session_ptr == NULL) {
+                            //ToDo: Report an error with creating the session object and close the connection!
+                        }
                     }
 
                     /**
@@ -98,7 +103,8 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_close(connection_hdl hdl) {
-                        //ToDo: Implement, make it synchronized
+                        //Destroy the session 
+                        m_manager.destroy_session(hdl);
                     }
 
                     /**
@@ -133,6 +139,8 @@ namespace uva {
                 private:
                     //Stores the server object
                     server m_server;
+                    //Stores the session manager object
+                    session_manager m_manager;
                 };
             }
         }

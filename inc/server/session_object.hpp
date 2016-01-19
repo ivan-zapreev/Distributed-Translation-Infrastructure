@@ -23,7 +23,7 @@
  * Created on January 19, 2016, 2:18 PM
  */
 
-#include <unordered_map>
+#include <map>
 
 #include <websocketpp/common/thread.hpp>
 
@@ -55,7 +55,7 @@ namespace uva {
                 class session_object {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
-                    
+
                     //Stores the minimum allowed session job id
                     static constexpr session_id_type MINIMUM_SESSION_ID = 1;
 
@@ -63,6 +63,13 @@ namespace uva {
                      * Allows to create a new session object for the translation client.
                      */
                     session_object() : m_session_id(m_id_mgr.get_next_id()) {
+                    }
+
+                    /**
+                     * The default destructor
+                     */
+                    virtual ~session_object() {
+                        //ToDo: Go through all the remaining pending translation jobs and stop/deallocate them
                     }
 
                     /**
@@ -79,7 +86,7 @@ namespace uva {
                      */
                     void add_job_request(trans_job_request_ptr job_request) {
                         scoped_lock guard(m_lock);
-                        
+
                         //ToDo: Implement
                     }
 
@@ -89,7 +96,7 @@ namespace uva {
                      */
                     void remove_job_request(job_id_type job_id) {
                         scoped_lock guard(m_lock);
-                        
+
                         //ToDo: Implement
                     }
 
@@ -106,7 +113,7 @@ namespace uva {
                     //For all on-going jobs, stores the mapping from the translation
                     //job id to the resulting translation job request.
                     //The request object is owned by the session.
-                    unordered_map<job_id_type, trans_job_request_ptr> m_jobs;
+                    map<job_id_type, trans_job_request_ptr> m_jobs;
                 };
 
                 constexpr session_id_type session_object::MINIMUM_SESSION_ID;
