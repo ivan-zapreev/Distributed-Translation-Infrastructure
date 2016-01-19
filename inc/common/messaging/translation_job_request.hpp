@@ -23,7 +23,7 @@
  * Created on January 18, 2016, 5:05 PM
  */
 
-#include <websocketpp/common/thread.hpp>
+#include "common/messaging/id_manager.hpp"
 
 #ifndef TRANSLATION_JOB_REQUEST_HPP
 #define TRANSLATION_JOB_REQUEST_HPP
@@ -39,10 +39,8 @@ namespace uva {
                      */
                     class translation_job_request {
                     public:
-                        typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
-
-                        //Stores the minimum translation job id 
-                        static constexpr uint32_t MINIMUM_TRANSLATION_JOB_ID = 1;
+                        //Stores the minimum allowed translation job id
+                        static constexpr uint64_t MINIMUM_JOB_ID = 1;
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
@@ -121,7 +119,7 @@ namespace uva {
                          * @param target_lang the target language string
                          */
                         translation_job_request(const string & source_lang, const string & text, const string & target_lang)
-                        : m_job_id(get_next_id()), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        : m_job_id(m_id_mgr.get_next_id()), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
                         }
 
                         /**
@@ -159,11 +157,8 @@ namespace uva {
                         }
 
                     private:
-                        //Stores the next job id to be used on the client
-                        static uint32_t m_next_job_id;
-                        //Stores the synchronization mutex for issuing new ids
-                        static websocketpp::lib::mutex m_lock_id;
-
+                        //Stores the static instance of the id manager
+                        static id_manager<uint64_t> m_id_mgr;
                         //Stores the translation job id
                         uint32_t m_job_id;
                         //Stores the translation job source language string
@@ -172,25 +167,13 @@ namespace uva {
                         string m_target_lang;
                         //Stores the translation job text in the source language.
                         string m_text;
-
-                        /**
-                         * Allows to get the next translation job id.
-                         * This method is thread safe due to mutex locking.
-                         * @return the next job id
-                         */
-                        static inline uint32_t get_next_id() {
-                            scoped_lock guard(m_lock_id);
-
-                            return m_next_job_id++;
-                        }
                     };
 
-                    constexpr uint32_t translation_job_request::MINIMUM_TRANSLATION_JOB_ID;
+                    constexpr uint64_t translation_job_request::MINIMUM_JOB_ID;
                     constexpr char translation_job_request::HEADER_DELIMITER;
                     constexpr char translation_job_request::NEW_LINE_HEADER_ENDING;
 
-                    uint32_t translation_job_request::m_next_job_id = MINIMUM_TRANSLATION_JOB_ID;
-                    websocketpp::lib::mutex translation_job_request::m_lock_id;
+                    id_manager<uint64_t> translation_job_request::m_id_mgr(MINIMUM_JOB_ID);
                 }
             }
         }

@@ -9,11 +9,13 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>id_manager.hpp</in>
           <in>translation_job_reply.hpp</in>
           <in>translation_job_request.hpp</in>
         </df>
       </df>
       <df name="server">
+        <in>session_object.hpp</in>
         <in>translation_server.hpp</in>
       </df>
     </df>
@@ -93,11 +95,16 @@
             </incDir>
           </cTool>
           <ccTool>
+            <standard>8</standard>
             <incDir>
               <pElem>inc</pElem>
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
+            <incFile>
+              <pElem>ext</pElem>
+              <pElem>inc</pElem>
+            </incFile>
           </ccTool>
         </makeTool>
         <preBuild>
@@ -106,6 +113,11 @@
         </preBuild>
       </makefileType>
       <item path="inc/client/translation_client.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/common/messaging/id_manager.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="inc/common/messaging/translation_job_reply.hpp"
             ex="false"
@@ -116,6 +128,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="inc/server/session_object.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">
       </item>

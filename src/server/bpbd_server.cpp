@@ -211,7 +211,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
  */
 int main(int argc, char** argv) {
     //Declare the return code
-    int returnCode = 0;
+    int return_code = 0;
 
     //Set the uncaught exception handler
     std::set_terminate(handler);
@@ -237,12 +237,12 @@ int main(int argc, char** argv) {
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.getMessage() << END_LOG;
-        returnCode = 1;
+        return_code = 1;
     }
 
     //Destroy the command line parameters parser
     destroy_arguments_parser();
 
-    return returnCode;
+    return return_code;
 }
 

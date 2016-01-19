@@ -24,9 +24,10 @@
  */
 
 #ifndef TRANSLATION_SERVER_HPP
-#define	TRANSLATION_SERVER_HPP
+#define TRANSLATION_SERVER_HPP
 
 #include <iostream>
+#include <unordered_map>
 
 #define ASIO_STANDALONE
 
@@ -37,15 +38,21 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/messaging/translation_job_reply.hpp"
 #include "common/messaging/translation_job_request.hpp"
+#include "session_object.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
+using websocketpp::connection_hdl;
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
 using websocketpp::lib::bind;
+using websocketpp::log::alevel;
+using websocketpp::frame::opcode::value;
+using websocketpp::frame::opcode::text;
+using websocketpp::lib::error_code;
 
 namespace uva {
     namespace smt {
@@ -62,22 +69,46 @@ namespace uva {
 
                     translation_server(const uint16_t port) {
                         // Set up access channels to only log interesting things
-                        m_server.clear_access_channels(websocketpp::log::alevel::all);
-                        m_server.set_access_channels(websocketpp::log::alevel::app);
+                        m_server.clear_access_channels(alevel::all);
+                        m_server.set_access_channels(alevel::app);
 
                         // Initialize the Asio transport policy
                         m_server.init_asio();
 
                         //ToDo: Add the handlers for the connection events
-                        //m_server.set_open_handler(bind(&translation_server::on_open, this, _1));
-                        //m_server.set_close_handler(bind(&translation_server::on_close, this, _1));
-                        //m_server.set_fail_handler(bind(&translation_server::on_fail, this, _1));
-                        
+                        m_server.set_open_handler(bind(&translation_server::on_open, this, _1));
+                        m_server.set_close_handler(bind(&translation_server::on_close, this, _1));
+                        m_server.set_fail_handler(bind(&translation_server::on_fail, this, _1));
+
                         // Bind the handlers we are using
                         m_server.set_message_handler(bind(&translation_server::on_message, this, _1, _2));
 
                         // Set the port that the server will listen to
                         m_server.listen(port);
+                    }
+
+                    /**
+                     * Creates a new session object for the new connection/client
+                     * @param hdl
+                     */
+                    void on_open(connection_hdl hdl) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * Removes the session object and also stops the processed translation job requests
+                     * @param the connection handler
+                     */
+                    void on_close(connection_hdl hdl) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * ToDo: Figure out if this handles is needed, for now just do logging
+                     * @param the connection handler
+                     */
+                    void on_fail(connection_hdl hdl) {
+                        m_server.get_alog().write(alevel::app, "Connection failed!");
                     }
 
                     void run() {
@@ -87,28 +118,31 @@ namespace uva {
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         //Declare the error code
-                        websocketpp::lib::error_code ec;
-                        
+                        error_code ec;
+
                         //Extract the translation job request
-                        translation_job_request request(msg->get_payload());
-                        
+                        translation_job_request * request_ptr = new translation_job_request(msg->get_payload());
+
                         //ToDo: schedule a delayed job reply sending in a separate thread
                         //ToDo: Make sure that things are synchronized for multiple job requests
                         //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
-                        
+
                         //Send/schedule the translation job reply
-                        m_server.send(m_hdl, "Got it!", websocketpp::frame::opcode::text, ec);
-                        ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
+                        m_server.send(hdl, "Got it!", text, ec);
+                        LOG_ERROR << "The translation job (session-id/" << request_ptr->get_job_id() << ") reply  send error: " << ec.message() << END_LOG;
                     }
 
                 private:
+                    //Stores the server object
                     server m_server;
-                    websocketpp::connection_hdl m_hdl;
+
+                    //Stores the sessions information mappings
+                    unordered_map<connection_hdl, session_object_ptr, std::owner_less<connection_hdl>> m_sessions;
                 };
             }
         }
     }
 }
 
-#endif	/* TRANSLATION_SERVER_HPP */
+#endif /* TRANSLATION_SERVER_HPP */
 

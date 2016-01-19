@@ -569,6 +569,7 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>id_manager.hpp</in>
           <in>translation_job_reply.hpp</in>
           <in>translation_job_request.hpp</in>
         </df>
@@ -644,6 +645,7 @@
           <in>TrieConfigs.hpp</in>
           <in>TrieConstants.hpp</in>
         </df>
+        <in>session_object.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>

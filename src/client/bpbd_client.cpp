@@ -190,7 +190,7 @@ string get_source_text(string & source_file_name) {
  */
 int main(int argc, char** argv) {
     //Declare the return code
-    int returnCode = 0;
+    int return_code = 0;
 
     //Set the uncaught exception handler
     std::set_terminate(handler);
@@ -220,7 +220,7 @@ int main(int argc, char** argv) {
             translation_job_request request(params.m_source_lang, source_text, params.m_target_lang);
             
             //Query the translation job
-            uint32_t job_id = client.send(request);
+            uint64_t job_id = client.send(request);
 
             //Synchronously wait for the translation job result
             string target_text;
@@ -233,12 +233,12 @@ int main(int argc, char** argv) {
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.getMessage() << END_LOG;
-        returnCode = 1;
+        return_code = 1;
     }
 
     //Destroy the command line parameters parser
     destroy_arguments_parser();
 
-    return returnCode;
+    return return_code;
 }
 

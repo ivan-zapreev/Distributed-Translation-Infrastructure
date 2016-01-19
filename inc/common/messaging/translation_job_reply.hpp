@@ -133,14 +133,14 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        translation_job_reply(uint32_t job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        translation_job_reply(uint64_t job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
                         /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const uint32_t get_job_id() const {
+                        const uint64_t get_job_id() const {
                             return m_job_id;
                         }
 
@@ -172,7 +172,7 @@ namespace uva {
 
                     private:
                         //Stores the translation job id
-                        uint32_t m_job_id;
+                        uint64_t m_job_id;
                         //Stores the translation job result code
                         job_result_code m_code;
                         //Stores the translation job result text, the error
