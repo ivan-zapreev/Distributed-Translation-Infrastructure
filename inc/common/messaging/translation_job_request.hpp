@@ -23,6 +23,8 @@
  * Created on January 18, 2016, 5:05 PM
  */
 
+#include <websocketpp/common/thread.hpp>
+
 #ifndef TRANSLATION_JOB_REQUEST_HPP
 #define TRANSLATION_JOB_REQUEST_HPP
 
@@ -37,6 +39,10 @@ namespace uva {
                      */
                     class translation_job_request {
                     public:
+                        typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+
+                        //Stores the minimum translation job id 
+                        static constexpr uint32_t MINIMUM_TRANSLATION_JOB_ID = 1;
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
@@ -74,7 +80,7 @@ namespace uva {
                                     //Third get the target language string
                                     if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
                                         m_target_lang = text.str();
-                                        
+
                                         //Now the rest is the text to be translated.
                                         m_text = reader.get_rest_str();
 
@@ -110,20 +116,19 @@ namespace uva {
                          * This is the basic class constructor that accepts the
                          * translation job id, the translation text and source
                          * and target language strings.
-                         * @param job_id the client-issued id of the translation job 
                          * @param source_lang the source language string
                          * @param text the text in the source language to translate
                          * @param target_lang the target language string
                          */
-                        translation_job_request(uint32_t job_id, const string & source_lang, const string & text, const string & target_lang)
-                        : m_job_id(job_id), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        translation_job_request(const string & source_lang, const string & text, const string & target_lang)
+                        : m_job_id(get_next_id()), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
                         }
 
                         /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const uint32_t get_job_id() {
+                        const uint32_t get_job_id() const {
                             return m_job_id;
                         }
 
@@ -131,7 +136,7 @@ namespace uva {
                          * Allows to get the translation job source language
                          * @return the translation job source language
                          */
-                        const string get_source_lang() {
+                        const string get_source_lang() const {
                             return m_source_lang;
                         }
 
@@ -139,7 +144,7 @@ namespace uva {
                          * Allows to get the translation job target language
                          * @return the translation job target language
                          */
-                        const string get_target_lang() {
+                        const string get_target_lang() const {
                             return m_target_lang;
                         }
 
@@ -149,11 +154,16 @@ namespace uva {
                          * message for the case of failed translation job request.
                          * @return the translation job text
                          */
-                        const string & get_text() {
+                        const string & get_text() const {
                             return m_text;
                         }
 
                     private:
+                        //Stores the next job id to be used on the client
+                        static uint32_t m_next_job_id;
+                        //Stores the synchronization mutex for issuing new ids
+                        static websocketpp::lib::mutex m_lock_id;
+
                         //Stores the translation job id
                         uint32_t m_job_id;
                         //Stores the translation job source language string
@@ -162,10 +172,25 @@ namespace uva {
                         string m_target_lang;
                         //Stores the translation job text in the source language.
                         string m_text;
+
+                        /**
+                         * Allows to get the next translation job id.
+                         * This method is thread safe due to mutex locking.
+                         * @return the next job id
+                         */
+                        static inline uint32_t get_next_id() {
+                            scoped_lock guard(m_lock_id);
+
+                            return m_next_job_id++;
+                        }
                     };
 
+                    constexpr uint32_t translation_job_request::MINIMUM_TRANSLATION_JOB_ID;
                     constexpr char translation_job_request::HEADER_DELIMITER;
                     constexpr char translation_job_request::NEW_LINE_HEADER_ENDING;
+
+                    uint32_t translation_job_request::m_next_job_id = MINIMUM_TRANSLATION_JOB_ID;
+                    websocketpp::lib::mutex translation_job_request::m_lock_id;
                 }
             }
         }

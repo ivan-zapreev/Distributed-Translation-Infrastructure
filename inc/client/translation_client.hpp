@@ -64,7 +64,7 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
 
-                    translation_client(const string & host, const uint16_t port) : m_job_id(1), m_open(false), m_done(false) {
+                    translation_client(const string & host, const uint16_t port) : m_open(false), m_done(false) {
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);
 
@@ -148,24 +148,19 @@ namespace uva {
                     }
 
                     /**
-                     * Attempts to send the translation job
-                     * @param source_lang the source language to translate from
-                     * @param source_text the text to translate
-                     * @param target_text the target language to translate into
+                     * Attempts to send the translation job request
+                     * @param request thge translation job request
                      * @result the translation job id
                      */
-                    uint32_t send(const string & source_lang, const string & source_text, const string & target_text) {
+                    uint32_t send(translation_job_request & request) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
                         
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
-                        //Form the message string
-                        const string message = to_string(m_job_id) + string(":") + source_lang + string(">") + target_text + "\n" + source_text;
-
                         //Try to send the translation job request
-                        m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
+                        m_client.send(m_hdl, request.serialize(), websocketpp::frame::opcode::text, ec);
 
                         // The most likely error that we will get is that the connection is
                         // not in the right state. Usually this means we tried to send a
@@ -174,7 +169,7 @@ namespace uva {
                         ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
 
                         //Return the job id and increment to the next one
-                        return m_job_id++;
+                        return request.get_job_id();
                     }
 
                     /**
@@ -266,8 +261,6 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the next job id
-                    uint32_t m_job_id;
                     //Stores the client
                     client m_client;
                     //Stores the io thread

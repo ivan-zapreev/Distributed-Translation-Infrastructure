@@ -33,7 +33,15 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
+#include "common/messaging/translation_job_reply.hpp"
+#include "common/messaging/translation_job_request.hpp"
+
 using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
@@ -81,17 +89,16 @@ namespace uva {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
                         
-                        //ToDo: Extract the translation job request
+                        //Extract the translation job request
+                        translation_job_request request(msg->get_payload());
+                        
+                        //ToDo: schedule a delayed job reply sending in a separate thread
+                        //ToDo: Make sure that things are synchronized for multiple job requests
+                        //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
                         
                         //Send/schedule the translation job reply
                         m_server.send(m_hdl, "Got it!", websocketpp::frame::opcode::text, ec);
-                        if( ec ) {
-                            cout << string("Send Error: ") + ec.message();
-                        }
-                        
-                        //ToDo: Make sure that things are synchronized for multiple job requests
-                        
-                        //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
+                        ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
                     }
 
                 private:

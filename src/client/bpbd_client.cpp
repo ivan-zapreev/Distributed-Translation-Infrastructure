@@ -33,11 +33,14 @@
 #include "client/translation_client.hpp"
 #include "common/utils/file/CStyleFileReader.hpp"
 #include "common/utils/Exceptions.hpp"
+#include "common/messaging/translation_job_request.hpp"
+#include "common/messaging/translation_job_reply.hpp"
 
 using namespace std;
 using namespace TCLAP;
 using namespace uva::smt::decoding::client;
 using namespace uva::smt::decoding::common;
+using namespace uva::smt::decoding::common::messaging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
 
@@ -213,8 +216,11 @@ int main(int argc, char** argv) {
 
         //Connect to the translation server
         if (client.connect()) {
+            //Create the translation job request 
+            translation_job_request request(params.m_source_lang, source_text, params.m_target_lang);
+            
             //Query the translation job
-            uint32_t job_id = client.send(params.m_source_lang, source_text, params.m_target_lang);
+            uint32_t job_id = client.send(request);
 
             //Synchronously wait for the translation job result
             string target_text;

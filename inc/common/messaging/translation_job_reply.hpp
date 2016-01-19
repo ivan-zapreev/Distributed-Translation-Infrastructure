@@ -140,7 +140,7 @@ namespace uva {
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const uint32_t get_job_id() {
+                        const uint32_t get_job_id() const {
                             return m_job_id;
                         }
 
@@ -148,7 +148,7 @@ namespace uva {
                          * Allows to check if the reply is good, i.e. contains the translated text and not the error message
                          * @return true if the reply is good and contains the translated text.
                          */
-                        const bool is_good() {
+                        const bool is_good() const {
                             return (m_code == job_result_code::RESULT_OK);
                         }
                         
@@ -156,7 +156,7 @@ namespace uva {
                          * Allows to get the translation job result code
                          * @return the translation job result code
                          */
-                        const job_result_code get_code() {
+                        const job_result_code get_code() const {
                             return m_code;
                         }
 
@@ -166,7 +166,7 @@ namespace uva {
                          * message for the case of failed translation job request.
                          * @return the translation job text
                          */
-                        const string & get_text() {
+                        const string & get_text() const {
                             return m_text;
                         }
 
