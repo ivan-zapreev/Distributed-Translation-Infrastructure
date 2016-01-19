@@ -45,7 +45,7 @@ namespace uva {
         namespace file {
 
             //The maximum length of the text that will be managed by this class as a string convertible
-            static const size_t MAX_TEXT_PIECE_LENGTH = string().max_size();
+            static const size_t MAX_TEXT_PIECE_LENGTH = 1048576;
             //The text is too large string to be used in conversion
             static const string TEXT_TOO_LARGE_STR("<text-too-large>");
             //This stores the NOTHING string to be used in conversion
