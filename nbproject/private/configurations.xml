@@ -645,6 +645,7 @@
           <in>TrieConfigs.hpp</in>
           <in>TrieConstants.hpp</in>
         </df>
+        <in>session_manager.hpp</in>
         <in>session_object.hpp</in>
         <in>translation_server.hpp</in>
       </df>

@@ -27,10 +27,8 @@
 #define TRANSLATION_SERVER_HPP
 
 #include <iostream>
-#include <unordered_map>
 
 #define ASIO_STANDALONE
-
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
@@ -92,7 +90,7 @@ namespace uva {
                      * @param hdl
                      */
                     void on_open(connection_hdl hdl) {
-                        //ToDo: Implement
+                        //ToDo: Implement, make it synchronized
                     }
 
                     /**
@@ -100,7 +98,7 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_close(connection_hdl hdl) {
-                        //ToDo: Implement
+                        //ToDo: Implement, make it synchronized
                     }
 
                     /**
@@ -135,9 +133,6 @@ namespace uva {
                 private:
                     //Stores the server object
                     server m_server;
-
-                    //Stores the sessions information mappings
-                    unordered_map<connection_hdl, session_object_ptr, std::owner_less<connection_hdl>> m_sessions;
                 };
             }
         }
