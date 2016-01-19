@@ -30,7 +30,7 @@
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
-#include "common/messaging/translation_job_request.hpp"
+#include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -63,7 +63,7 @@ namespace uva {
                      * is a translation result for a translation job. This result
                      * can be a text in the target language or it can be an error.
                      */
-                    class translation_job_reply {
+                    class trans_job_reply {
                     public:
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
@@ -76,7 +76,7 @@ namespace uva {
                          * message.
                          * @param message the server message to be parsed
                          */
-                        translation_job_reply(const string & message) {
+                        trans_job_reply(const string & message) {
                             //De-serialize from the message
                             de_serialize(message);
                         }
@@ -135,7 +135,7 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        translation_job_reply(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        trans_job_reply(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
                         /**
@@ -182,8 +182,8 @@ namespace uva {
                         string m_text;
                     };
 
-                    constexpr char translation_job_reply::HEADER_DELIMITER;
-                    constexpr char translation_job_reply::NEW_LINE_HEADER_ENDING;
+                    constexpr char trans_job_reply::HEADER_DELIMITER;
+                    constexpr char trans_job_reply::NEW_LINE_HEADER_ENDING;
                 }
             }
         }

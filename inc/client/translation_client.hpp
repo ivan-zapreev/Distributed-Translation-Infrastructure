@@ -38,8 +38,8 @@
 
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
-#include "common/messaging/translation_job_reply.hpp"
-#include "common/messaging/translation_job_request.hpp"
+#include "common/messaging/trans_job_reply.hpp"
+#include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -152,7 +152,7 @@ namespace uva {
                      * @param request thge translation job request
                      * @result the translation job id
                      */
-                    job_id_type send(translation_job_request & request) {
+                    job_id_type send(trans_job_request & request) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
                         
@@ -278,7 +278,7 @@ namespace uva {
                     //Stores the mapping from the translation job request id to
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
-                    unordered_map<job_id_type, translation_job_reply *> m_jobs;
+                    unordered_map<job_id_type, trans_job_reply *> m_jobs;
                 };
             }
         }

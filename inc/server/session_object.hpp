@@ -28,7 +28,7 @@
 #include <websocketpp/common/thread.hpp>
 
 #include "common/messaging/id_manager.hpp"
-#include "common/messaging/translation_job_request.hpp"
+#include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
@@ -77,7 +77,7 @@ namespace uva {
                      * Allows to add the job request to the session object
                      * @param job_request the translation job request
                      */
-                    void add_job_request(translation_job_request * job_request) {
+                    void add_job_request(trans_job_request_ptr job_request) {
                         scoped_lock guard(m_lock);
                         
                         //ToDo: Implement
@@ -106,7 +106,7 @@ namespace uva {
                     //For all on-going jobs, stores the mapping from the translation
                     //job id to the resulting translation job request.
                     //The request object is owned by the session.
-                    unordered_map<job_id_type, translation_job_request *> m_jobs;
+                    unordered_map<job_id_type, trans_job_request_ptr> m_jobs;
                 };
 
                 constexpr session_id_type session_object::MINIMUM_SESSION_ID;

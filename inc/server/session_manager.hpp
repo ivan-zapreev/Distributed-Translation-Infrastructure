@@ -72,23 +72,20 @@ namespace uva {
                         //Instantiate a new session
                         session_ptr = new session_object();
 
-                        //The next piece of code is to be executed as an atomic operation
-                        {
-                            //Use the scoped mutex lock to avoid race conditions
-                            scoped_lock guard(m_lock_id);
+                        //Use the scoped mutex lock to avoid race conditions
+                        scoped_lock guard(m_lock_id);
 
-                            //Get the current value stored under the connection handler
-                            session_object_ptr & ptr_ref = m_session[hdl];
+                        //Get the current value stored under the connection handler
+                        session_object_ptr & ptr_ref = m_session[hdl];
 
-                            //If the value is null then there is no session object yet, as expected
-                            if (ptr_ref == NULL) {
-                                //Store the pointer to the newly created connection object here
-                                ptr_ref = session_ptr;
-                                return true;
-                            } else {
-                                //ToDo: Log the error as we encountered a bas situation.
-                                return false;
-                            }
+                        //If the value is null then there is no session object yet, as expected
+                        if (ptr_ref == NULL) {
+                            //Store the pointer to the newly created connection object here
+                            ptr_ref = session_ptr;
+                            return true;
+                        } else {
+                            //ToDo: Log the error as we encountered a bas situation.
+                            return false;
                         }
                     }
 
@@ -99,14 +96,11 @@ namespace uva {
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     session_object_ptr remove_session(websocketpp::connection_hdl hdl) {
-                        //The next piece of code is to be executed as an atomic operation
-                        {
-                            scoped_lock guard(m_lock_id);
-                            //First get the session object pointer
-                            session_object_ptr ptr = m_session[hdl];
-                            //Erase the object from the map
-                            m_sessions.erase(hdl);
-                        }
+                        scoped_lock guard(m_lock_id);
+                        //First get the session object pointer
+                        session_object_ptr ptr = m_session[hdl];
+                        //Erase the object from the map
+                        m_sessions.erase(hdl);
 
                         //Return the pointer
                         return ptr;

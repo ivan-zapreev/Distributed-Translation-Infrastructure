@@ -40,11 +40,15 @@ namespace uva {
                     
                     //Make the typedef for the translation job id
                     typedef uint64_t job_id_type;
+                    
+                    //Declare the translation job request pointer type
+                    class trans_job_request;
+                    typedef trans_job_request * trans_job_request_ptr;
 
                     /**
                      * This class represents the translation request message.
                      */
-                    class translation_job_request {
+                    class trans_job_request {
                     public:
                         //Stores the minimum allowed translation job id
                         static constexpr job_id_type MINIMUM_JOB_ID = 1;
@@ -59,7 +63,7 @@ namespace uva {
                          * request.
                          * @param message the client translation request to be parsed
                          */
-                        translation_job_request(const string & message) {
+                        trans_job_request(const string & message) {
                             //De-serialize from the message
                             de_serialize(message);
                         }
@@ -125,7 +129,7 @@ namespace uva {
                          * @param text the text in the source language to translate
                          * @param target_lang the target language string
                          */
-                        translation_job_request(const string & source_lang, const string & text, const string & target_lang)
+                        trans_job_request(const string & source_lang, const string & text, const string & target_lang)
                         : m_job_id(m_id_mgr.get_next_id()), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
                         }
 
@@ -176,11 +180,11 @@ namespace uva {
                         string m_text;
                     };
 
-                    constexpr job_id_type translation_job_request::MINIMUM_JOB_ID;
-                    constexpr char translation_job_request::HEADER_DELIMITER;
-                    constexpr char translation_job_request::NEW_LINE_HEADER_ENDING;
+                    constexpr job_id_type trans_job_request::MINIMUM_JOB_ID;
+                    constexpr char trans_job_request::HEADER_DELIMITER;
+                    constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;
 
-                    id_manager<job_id_type> translation_job_request::m_id_mgr(MINIMUM_JOB_ID);
+                    id_manager<job_id_type> trans_job_request::m_id_mgr(MINIMUM_JOB_ID);
                 }
             }
         }

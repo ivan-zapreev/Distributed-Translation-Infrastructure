@@ -34,8 +34,8 @@
 
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
-#include "common/messaging/translation_job_reply.hpp"
-#include "common/messaging/translation_job_request.hpp"
+#include "common/messaging/trans_job_reply.hpp"
+#include "common/messaging/trans_job_request.hpp"
 #include "session_object.hpp"
 
 using namespace std;
@@ -119,7 +119,7 @@ namespace uva {
                         error_code ec;
 
                         //Extract the translation job request
-                        translation_job_request * request_ptr = new translation_job_request(msg->get_payload());
+                        trans_job_request_ptr request_ptr = new trans_job_request(msg->get_payload());
 
                         //ToDo: schedule a delayed job reply sending in a separate thread
                         //ToDo: Make sure that things are synchronized for multiple job requests

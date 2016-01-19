@@ -10,8 +10,8 @@
       <df name="common">
         <df name="messaging">
           <in>id_manager.hpp</in>
-          <in>translation_job_reply.hpp</in>
-          <in>translation_job_request.hpp</in>
+          <in>trans_job_reply.hpp</in>
+          <in>trans_job_request.hpp</in>
         </df>
       </df>
       <df name="server">
@@ -120,12 +120,12 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/translation_job_reply.hpp"
+      <item path="inc/common/messaging/trans_job_reply.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/translation_job_request.hpp"
+      <item path="inc/common/messaging/trans_job_request.hpp"
             ex="false"
             tool="3"
             flavor2="0">

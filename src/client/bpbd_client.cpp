@@ -33,8 +33,8 @@
 #include "client/translation_client.hpp"
 #include "common/utils/file/CStyleFileReader.hpp"
 #include "common/utils/Exceptions.hpp"
-#include "common/messaging/translation_job_request.hpp"
-#include "common/messaging/translation_job_reply.hpp"
+#include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/trans_job_reply.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -217,7 +217,7 @@ int main(int argc, char** argv) {
         //Connect to the translation server
         if (client.connect()) {
             //Create the translation job request 
-            translation_job_request request(params.m_source_lang, source_text, params.m_target_lang);
+            trans_job_request request(params.m_source_lang, source_text, params.m_target_lang);
             
             //Query the translation job
             job_id_type job_id = client.send(request);
