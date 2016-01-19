@@ -214,7 +214,7 @@ int main(int argc, char** argv) {
         //Connect to the translation server
         if (client.connect()) {
             //Query the translation job
-            uint32_t job_id = client.request(params.m_source_lang, source_text, params.m_target_lang);
+            uint32_t job_id = client.send(params.m_source_lang, source_text, params.m_target_lang);
 
             //Synchronously wait for the translation job result
             string target_text;

@@ -24,7 +24,7 @@
  */
 
 #ifndef TRANSLATION_JOB_REQUEST_HPP
-#define	TRANSLATION_JOB_REQUEST_HPP
+#define TRANSLATION_JOB_REQUEST_HPP
 
 namespace uva {
     namespace smt {
@@ -37,13 +37,140 @@ namespace uva {
                      */
                     class translation_job_request {
                     public:
+                        //The delimiter used in the header of the reply message
+                        static constexpr char HEADER_DELIMITER = ':';
+                        static constexpr char NEW_LINE_HEADER_ENDING = '\n';
+
+                        /**
+                         * This is the basic class constructor that accepts the
+                         * original client message to parse. This constructor is
+                         * to be used on the server to de-serialize the translation
+                         * request.
+                         * @param message the client translation request to be parsed
+                         */
+                        translation_job_request(const string & message) {
+                            //De-serialize from the message
+                            de_serialize(message);
+                        }
+
+                        /**
+                         * Allows to de-serialize the job request from a string
+                         * @param message the string representation of the translation job request
+                         */
+                        void de_serialize(const string & message) {
+                            //Initialize the reader
+                            TextPieceReader reader(message.c_str(), message.length());
+                            LOG_DEBUG1 << "De-serializing request message: '" << reader.str() << "'" << END_LOG;
+
+                            //The text will contain the read text from the reader
+                            TextPieceReader text;
+
+                            //First get the job id
+                            if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                m_job_id = stoi(text.str());
+                                //Second get the source language string
+                                if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                    m_source_lang = text.str();
+                                    //Third get the target language string
+                                    if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                        m_target_lang = text.str();
+                                        
+                                        //Now the rest is the text to be translated.
+                                        m_text = reader.get_rest_str();
+
+                                        LOG_DEBUG << "m_job_id = " << m_job_id << ", m_source_lang = "
+                                                << m_source_lang << ", m_target_lang = " << m_target_lang
+                                                << ", m_text = " << m_text << END_LOG;
+                                    } else {
+                                        THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
+                                    }
+                                } else {
+                                    THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
+                                }
+                            } else {
+                                THROW_EXCEPTION(string("Could not find job_id in the job reply header!"));
+                            }
+                        }
+
+                        /**
+                         * Allows to serialize the job request into a string
+                         * @return the string representation of the translation job request
+                         */
+                        const string serialize() {
+                            string result = to_string(m_job_id) + HEADER_DELIMITER +
+                                    m_source_lang + HEADER_DELIMITER + m_target_lang +
+                                    NEW_LINE_HEADER_ENDING + m_text;
+
+                            LOG_DEBUG1 << "Serializing request message: '" << result << "'" << END_LOG;
+
+                            return result;
+                        }
+
+                        /**
+                         * This is the basic class constructor that accepts the
+                         * translation job id, the translation text and source
+                         * and target language strings.
+                         * @param job_id the client-issued id of the translation job 
+                         * @param source_lang the source language string
+                         * @param text the text in the source language to translate
+                         * @param target_lang the target language string
+                         */
+                        translation_job_request(uint32_t job_id, const string & source_lang, const string & text, const string & target_lang)
+                        : m_job_id(job_id), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        }
+
+                        /**
+                         * Allows to get the client-issued job id
+                         * @return the client-issued job id
+                         */
+                        const uint32_t get_job_id() {
+                            return m_job_id;
+                        }
+
+                        /**
+                         * Allows to get the translation job source language
+                         * @return the translation job source language
+                         */
+                        const string get_source_lang() {
+                            return m_source_lang;
+                        }
+
+                        /**
+                         * Allows to get the translation job target language
+                         * @return the translation job target language
+                         */
+                        const string get_target_lang() {
+                            return m_target_lang;
+                        }
+
+                        /**
+                         * Allows to get the translation job text. This is either
+                         * the text translated into the target language or the error
+                         * message for the case of failed translation job request.
+                         * @return the translation job text
+                         */
+                        const string & get_text() {
+                            return m_text;
+                        }
+
                     private:
+                        //Stores the translation job id
+                        uint32_t m_job_id;
+                        //Stores the translation job source language string
+                        string m_source_lang;
+                        //Stores the translation job target language string
+                        string m_target_lang;
+                        //Stores the translation job text in the source language.
+                        string m_text;
                     };
+
+                    constexpr char translation_job_request::HEADER_DELIMITER;
+                    constexpr char translation_job_request::NEW_LINE_HEADER_ENDING;
                 }
             }
         }
     }
 }
 
-#endif	/* TRANSLATION_JOB_REQUEST_HPP */
+#endif /* TRANSLATION_JOB_REQUEST_HPP */
 

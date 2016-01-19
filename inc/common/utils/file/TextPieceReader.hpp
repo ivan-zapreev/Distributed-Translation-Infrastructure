@@ -29,6 +29,7 @@
 #include <string.h>     // std::memrchr
 #include <cstring>      // std::memchr std::strncpy
 #include <algorithm>    // std::min
+#include <string>
 
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/Exceptions.hpp"
@@ -43,8 +44,8 @@ namespace uva {
     namespace utils {
         namespace file {
 
-            //The maximum length of the text that will be managed by this class as a string convertable
-            static const size_t MAX_N_GRAM_STRING_LENGTH = 2048;
+            //The maximum length of the text that will be managed by this class as a string convertible
+            static const size_t MAX_TEXT_PIECE_LENGTH = string().max_size();
             //The text is too large string to be used in conversion
             static const string TEXT_TOO_LARGE_STR("<text-too-large>");
             //This stores the NOTHING string to be used in conversion
@@ -61,7 +62,7 @@ namespace uva {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
-                const char * m_beginPtr;
+                const char * m_begin_ptr;
                 //The length of the line
                 size_t m_len;
 
@@ -71,7 +72,7 @@ namespace uva {
                 mutable string m_str;
 
                 //The pointer to the unread remainder of the file
-                const char * m_cursor_ptr;
+                const char * m_rest_ptr;
                 //The remaining length of the file to read
                 size_t m_rest_len;
 
@@ -81,7 +82,7 @@ namespace uva {
                  * The basic constructor initializes empty text
                  */
                 TextPieceReader()
-                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursor_ptr(NULL), m_rest_len(0) {
+                : m_begin_ptr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_rest_ptr(NULL), m_rest_len(0) {
                 }
 
                 /**
@@ -89,9 +90,9 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                explicit TextPieceReader(void * beginPtr, const size_t len)
-                : m_beginPtr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_cursor_ptr(NULL), m_rest_len(0) {
-                    set(beginPtr, len);
+                explicit TextPieceReader(const void * begin_ptr, const size_t len)
+                : m_begin_ptr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_rest_ptr(NULL), m_rest_len(0) {
+                    set(begin_ptr, len);
                 }
 
                 /**
@@ -99,11 +100,11 @@ namespace uva {
                  * @param other the const reference to the object to copy from
                  */
                 TextPieceReader(const TextPieceReader & other) {
-                    m_beginPtr = other.m_beginPtr;
+                    m_begin_ptr = other.m_begin_ptr;
                     m_len = other.m_len;
                     m_is_gen_str = other.m_is_gen_str;
                     m_str = other.m_str;
-                    m_cursor_ptr = other.m_cursor_ptr;
+                    m_rest_ptr = other.m_rest_ptr;
                     m_rest_len = other.m_rest_len;
                 }
 
@@ -112,17 +113,17 @@ namespace uva {
                  * @param beginPtr the pointer to the beginning of the text
                  * @param len the length of the text
                  */
-                inline void set(const void * beginPtr, const size_t len) {
-                    m_beginPtr = static_cast<const char *> (beginPtr);
+                inline void set(const void * begin_ptr, const size_t len) {
+                    m_begin_ptr = static_cast<const char *> (begin_ptr);
                     m_len = len;
                     m_is_gen_str = true;
                     m_str.clear();
-                    m_cursor_ptr = m_beginPtr;
+                    m_rest_ptr = m_begin_ptr;
                     m_rest_len = m_len;
 
-                    LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_beginPtr = "
-                            << SSTR(static_cast<const void*> (m_beginPtr)) << ", m_cursorPtr = "
-                            << SSTR(static_cast<const void*> (m_cursor_ptr)) << ", m_is_gen_str = "
+                    LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_begin_ptr = "
+                            << SSTR(static_cast<const void*> (m_begin_ptr)) << ", m_cursorPtr = "
+                            << SSTR(static_cast<const void*> (m_rest_ptr)) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_rest_len) << END_LOG;
                 }
@@ -134,7 +135,7 @@ namespace uva {
                  * @return the pointer to the beginning of the text
                  */
                 inline const char * get_begin_c_str() const {
-                    return m_beginPtr;
+                    return m_begin_ptr;
                 }
 
                 /**
@@ -144,7 +145,17 @@ namespace uva {
                  * @return the pointer to the remainder of the text
                  */
                 inline const char * get_rest_c_str() const {
-                    return m_cursor_ptr;
+                    return m_rest_ptr;
+                }
+
+                /**
+                 * Allows to get the pointer to the remainder of the text
+                 * This is a C string that is returned BUT there is no \0
+                 * termination and it can be Gb long!
+                 * @return the pointer to the remainder of the text
+                 */
+                inline string get_rest_str() const {
+                    return string(m_rest_ptr, m_rest_len);
                 }
 
                 /**
@@ -152,7 +163,7 @@ namespace uva {
                  * @return the pointer to the beginning of the text
                  */
                 inline const void * get_begin_ptr() const {
-                    return (void *) m_beginPtr;
+                    return (void *) m_begin_ptr;
                 }
 
                 /**
@@ -180,10 +191,10 @@ namespace uva {
                         throw Exception(msg.str());
                     } else {
                         //Copy the data
-                        (void) strncpy(const_cast<char *> (m_beginPtr),
-                                other.m_beginPtr, (size_t) other.m_len);
+                        (void) strncpy(const_cast<char *> (m_begin_ptr),
+                                other.m_begin_ptr, (size_t) other.m_len);
                         //Re-set the other members using the available standard method
-                        set(m_beginPtr, other.m_len);
+                        set(m_begin_ptr, other.m_len);
                     }
                 }
 
@@ -192,12 +203,12 @@ namespace uva {
                  * argument delimiter symbol.
                  * @param out the out parameter - the substring until the first next
                  * found delimiter or the entire string if the delimiter was not found
-                 * @return true if a line was read, otherwise false (end of file)
+                 * @return true if a text piece was read, otherwise false (end of file)
                  */
                 template<const char delim>
                 inline bool get_first(TextPieceReader& out) {
                     //The next piece begins where we stopped
-                    const char * out_m_begin_ptr = m_cursor_ptr;
+                    const char * out_m_begin_ptr = m_rest_ptr;
 
                     LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
 
@@ -205,7 +216,7 @@ namespace uva {
                     size_t out_m_len = 0;
 
                     //Search for the next new delimiter from the front
-                    const char * char_ptr = static_cast<const char *> (memchr(m_cursor_ptr, delim, m_rest_len));
+                    const char * char_ptr = static_cast<const char *> (memchr(m_rest_ptr, delim, m_rest_len));
 
                     LOG_DEBUG4 << "Forward searching for the character got: "
                             << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
@@ -213,17 +224,17 @@ namespace uva {
                     //Check if we found something
                     if (char_ptr != NULL) {
                         //Compute the length
-                        size_t found_piece_length = char_ptr - m_cursor_ptr;
+                        size_t found_piece_length = char_ptr - m_rest_ptr;
 
                         LOG_DEBUG4 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
 
                         //Store the pointer to the remaining text piece
-                        m_cursor_ptr = char_ptr + 1;
+                        m_rest_ptr = char_ptr + 1;
                         //Store the remaining length
                         m_rest_len -= (found_piece_length + 1);
 
-                        LOG_DEBUG4 << "Resetting m_cursor_ptr = "
-                                << SSTR(static_cast<const void *> (m_cursor_ptr))
+                        LOG_DEBUG4 << "Resetting m_rest_ptr = "
+                                << SSTR(static_cast<const void *> (m_rest_ptr))
                                 << ", m_rest_len = " << m_rest_len << END_LOG;
 
                         //Set the resulting length
@@ -268,12 +279,12 @@ namespace uva {
                     //The found piece length is first zero
                     size_t out_m_len = 0;
                     
-                    LOG_DEBUG3 << "Start searching for a new delimiter, m_cursor_ptr: "
-                            << SSTR(static_cast<const void *> (m_cursor_ptr))
+                    LOG_DEBUG3 << "Start searching for a new delimiter, m_rest_ptr: "
+                            << SSTR(static_cast<const void *> (m_rest_ptr))
                             << ", m_rest_len: " << m_rest_len << END_LOG;
 
                     //Search for the next new delimiter from the end
-                    const char * out_m_begin_ptr = static_cast<const char *> (memrchr(m_cursor_ptr, delim, m_rest_len));
+                    const char * out_m_begin_ptr = static_cast<const char *> (memrchr(m_rest_ptr, delim, m_rest_len));
 
                     LOG_DEBUG4 << "Backward searching for the character got: "
                             << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
@@ -284,25 +295,25 @@ namespace uva {
                         out_m_len = m_rest_len;
 
                         //Set the new remaining length and move the begin pointer past the delimiter
-                        m_rest_len = (out_m_begin_ptr++ - m_cursor_ptr);
+                        m_rest_len = (out_m_begin_ptr++ - m_rest_ptr);
 
-                        LOG_DEBUG4 << "Resetting m_cursor_ptr = "
-                                << SSTR(static_cast<const void *> (m_cursor_ptr))
+                        LOG_DEBUG4 << "Resetting m_rest_ptr = "
+                                << SSTR(static_cast<const void *> (m_rest_ptr))
                                 << ", m_rest_len = " << m_rest_len << END_LOG;
 
                         //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
-                        if ((delim == '\n') && m_rest_len && (m_cursor_ptr[m_rest_len - 1] == '\r')) {
+                        if ((delim == '\n') && m_rest_len && (m_rest_ptr[m_rest_len - 1] == '\r')) {
                             m_rest_len--;
                             LOG_DEBUG4 << "A \\\\r detected, resetting m_rest_len = " << m_rest_len << END_LOG;
                         }
 
                         //Set the resulting length for the found piece
-                        out_m_len -= (out_m_begin_ptr - m_cursor_ptr);
+                        out_m_len -= (out_m_begin_ptr - m_rest_ptr);
                     } else {
                         //If the pointer is not found then the length if the entire remaining length
                         out_m_len = m_rest_len;
                         //Also the pointer should then point to the beginning of the text we have
-                        out_m_begin_ptr = m_cursor_ptr;
+                        out_m_begin_ptr = m_rest_ptr;
 
                         //If the remaining length is zero then return false as there is nothing to return
                         if (!m_rest_len) {
@@ -390,7 +401,7 @@ namespace uva {
                                 << "' must be within [0, " << m_len << "]!";
                         throw Exception(msg.str());
                     } else {
-                        return m_beginPtr[idx];
+                        return m_begin_ptr[idx];
                     }
                 }
 
@@ -400,7 +411,7 @@ namespace uva {
                  */
                 inline bool operator==(const TextPieceReader & other) const {
                     if (other.m_len == m_len) {
-                        return !strncmp(m_beginPtr, other.m_beginPtr, m_len);
+                        return !strncmp(m_begin_ptr, other.m_begin_ptr, m_len);
                     } else {
                         return false;
                     }
@@ -421,7 +432,7 @@ namespace uva {
                 inline bool operator==(const char * other) const {
                     const size_t len = strlen(other);
                     if (len == m_len) {
-                        return !strncmp(m_beginPtr, other, m_len);
+                        return !strncmp(m_begin_ptr, other, m_len);
                     } else {
                         return false;
                     }
@@ -460,10 +471,10 @@ namespace uva {
                     if (m_is_gen_str) {
                         LOG_DEBUG4 << "m_len = " << m_len << END_LOG;
                         if (m_len > 0) {
-                            if (m_len <= MAX_N_GRAM_STRING_LENGTH) {
-                                LOG_DEBUG4 << "m_beginPtr = " << SSTR(static_cast<const void *> (m_beginPtr))
+                            if (m_len <= MAX_TEXT_PIECE_LENGTH) {
+                                LOG_DEBUG4 << "m_begin_ptr = " << SSTR(static_cast<const void *> (m_begin_ptr))
                                         << ", m_len = " << SSTR(m_len) << END_LOG;
-                                m_str.assign(m_beginPtr, m_len);
+                                m_str.assign(m_begin_ptr, m_len);
                             } else {
                                 m_str = TEXT_TOO_LARGE_STR;
                             }

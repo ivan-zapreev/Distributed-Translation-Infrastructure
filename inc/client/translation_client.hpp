@@ -154,7 +154,7 @@ namespace uva {
                      * @param target_text the target language to translate into
                      * @result the translation job id
                      */
-                    uint32_t request(const string & source_lang, const string & source_text, const string & target_text) {
+                    uint32_t send(const string & source_lang, const string & source_text, const string & target_text) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
                         

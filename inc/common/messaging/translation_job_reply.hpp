@@ -23,8 +23,21 @@
  * Created on January 18, 2016, 5:02 PM
  */
 
+#include <string>
+#include <sstream>
+#include <iostream>
+
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
+#include "common/utils/file/TextPieceReader.hpp"
+
+using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::file;
+
 #ifndef TRANSLATION_JOB_REPLY_HPP
-#define	TRANSLATION_JOB_REPLY_HPP
+#define TRANSLATION_JOB_REPLY_HPP
 
 namespace uva {
     namespace smt {
@@ -50,6 +63,9 @@ namespace uva {
                      */
                     class translation_job_reply {
                     public:
+                        //The delimiter used in the header of the reply message
+                        static constexpr char HEADER_DELIMITER = ':';
+                        static constexpr char NEW_LINE_HEADER_ENDING = '\n';
 
                         /**
                          * This is the basic class constructor that accepts the
@@ -68,7 +84,30 @@ namespace uva {
                          * @param message the string representation of the translation job reply
                          */
                         void de_serialize(const string & message) {
-                            //ToDo: Implement
+                            //Initialize the reader
+                            TextPieceReader reader(message.c_str(), message.length());
+                            LOG_DEBUG1 << "De-serializing reply message: '" << reader.str() << "'" << END_LOG;
+
+                            //The text will contain the read text from the reader
+                            TextPieceReader text;
+
+                            //First get the job id
+                            if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                m_job_id = stoi(text.str());
+                                //Second get the result code
+                                if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                    m_code = (job_result_code) stoi(text.str());
+
+                                    //Now the rest is the translated text or the error message
+                                    m_text = reader.get_rest_str();
+                                    
+                                    LOG_DEBUG << "m_job_id = " << m_job_id << ", m_code = " << m_code << ", m_text = " << m_text << END_LOG;
+                                } else {
+                                    THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
+                                }
+                            } else {
+                                THROW_EXCEPTION(string("Could not find job_id in the job reply header!"));
+                            }
                         }
 
                         /**
@@ -76,8 +115,12 @@ namespace uva {
                          * @return the string representation of the translation job reply
                          */
                         const string serialize() {
-                            return to_string(m_job_id) + string(":") +
-                                    to_string(m_code) + string(":") + m_text;
+                            string result = to_string(m_job_id) + HEADER_DELIMITER +
+                                    to_string(m_code) + NEW_LINE_HEADER_ENDING + m_text;
+
+                            LOG_DEBUG1 << "Serializing reply message: '" << result << "'" << END_LOG;
+
+                            return result;
                         }
 
                         /**
@@ -101,6 +144,14 @@ namespace uva {
                             return m_job_id;
                         }
 
+                        /**
+                         * Allows to check if the reply is good, i.e. contains the translated text and not the error message
+                         * @return true if the reply is good and contains the translated text.
+                         */
+                        const bool is_good() {
+                            return (m_code == job_result_code::RESULT_OK);
+                        }
+                        
                         /**
                          * Allows to get the translation job result code
                          * @return the translation job result code
@@ -128,11 +179,14 @@ namespace uva {
                         //message or the text in the target language.
                         string m_text;
                     };
+
+                    constexpr char translation_job_reply::HEADER_DELIMITER;
+                    constexpr char translation_job_reply::NEW_LINE_HEADER_ENDING;
                 }
             }
         }
     }
 }
 
-#endif	/* TRANSLATION_JOB_REPLY_HPP */
+#endif /* TRANSLATION_JOB_REPLY_HPP */
 

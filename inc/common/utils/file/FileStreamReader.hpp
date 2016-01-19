@@ -63,10 +63,10 @@ namespace uva {
                 : AFileReader(), m_file_stream(fileName, ifstream::in), m_curr_line(NULL) {
                     LOG_DEBUG << "Opened the file '"
                             << fileName << "' is_open: " << (bool) m_file_stream
-                            << ", attempting to allocate " << MAX_N_GRAM_STRING_LENGTH
+                            << ", attempting to allocate " << MAX_TEXT_PIECE_LENGTH
                             << " bytes for a buffer" << END_LOG;
-                    m_curr_line = new char[MAX_N_GRAM_STRING_LENGTH];
-                    LOG_DEBUG << "Allocated " << MAX_N_GRAM_STRING_LENGTH << " bytes for the line buffer" << END_LOG;
+                    m_curr_line = new char[MAX_TEXT_PIECE_LENGTH];
+                    LOG_DEBUG << "Allocated " << MAX_TEXT_PIECE_LENGTH << " bytes for the line buffer" << END_LOG;
                 }
                 
                 /**
@@ -92,7 +92,7 @@ namespace uva {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file
-                    if (m_file_stream.getline(m_curr_line, MAX_N_GRAM_STRING_LENGTH)) {
+                    if (m_file_stream.getline(m_curr_line, MAX_TEXT_PIECE_LENGTH)) {
 
                         //Check that it was properly read
                         if (m_file_stream.bad()) {

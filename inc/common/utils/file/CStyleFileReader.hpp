@@ -64,7 +64,7 @@ namespace uva {
                  * @param fileName the file name
                  */
                 CStyleFileReader(const char * fileName)
-                : AFileReader(), m_file_ptr(NULL), m_buff_ptr(NULL), m_buff_size(MAX_N_GRAM_STRING_LENGTH) {
+                : AFileReader(), m_file_ptr(NULL), m_buff_ptr(NULL), m_buff_size(MAX_TEXT_PIECE_LENGTH) {
                     //Open file for reading
                     m_file_ptr = fopen(fileName, "r");
 
