@@ -152,7 +152,7 @@ namespace uva {
                      * @param request thge translation job request
                      * @result the translation job id
                      */
-                    uint32_t send(translation_job_request & request) {
+                    job_id_type send(translation_job_request & request) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
                         
@@ -178,7 +178,7 @@ namespace uva {
                      * @param target_text the variable to write the translated text into 
                      * @param timeout_millisec the time out in milliseconds, the default is 0 that means to time out
                      */
-                    void receive(const uint64_t job_id, string & target_text, const size_t timeout_millisec = 0) {
+                    void receive(const job_id_type job_id, string & target_text, const size_t timeout_millisec = 0) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
                         
@@ -278,7 +278,7 @@ namespace uva {
                     //Stores the mapping from the translation job request id to
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
-                    unordered_map<uint64_t, translation_job_reply *> m_jobs;
+                    unordered_map<job_id_type, translation_job_reply *> m_jobs;
                 };
             }
         }

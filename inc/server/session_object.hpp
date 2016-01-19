@@ -43,6 +43,9 @@ namespace uva {
                 class session_object;
                 typedef session_object * session_object_ptr;
 
+                //Make the typedef for the translation session id
+                typedef uint64_t session_id_type;
+
                 /**
                  * This is a session object, that contains the connection information
                  * and the scheduled translation job requests information for the connection.
@@ -50,7 +53,7 @@ namespace uva {
                 class session_object {
                 public:
                     //Stores the minimum allowed session job id
-                    static constexpr uint64_t MINIMUM_SESSION_ID = 1;
+                    static constexpr session_id_type MINIMUM_SESSION_ID = 1;
 
                     /**
                      * Allows to create a new session object for the translation client.
@@ -62,26 +65,42 @@ namespace uva {
                      * Allows to retrieve the session id associated with this session object
                      * @return the session id
                      */
-                    inline const uint64_t get_session_id() const {
+                    inline const session_id_type get_session_id() const {
                         return m_session_id;
+                    }
+
+                    /**
+                     * Allows to add the job request to the session object
+                     * @param job_request the translation job request
+                     */
+                    void add_job_request(translation_job_request * job_request) {
+                        //ToDo: Implement, is to be synchronous
+                    }
+
+                    /**
+                     * Allows to remove the job request from the session object
+                     * @param job_id the id of the translation job request to be removed
+                     */
+                    void remove_job_request(job_id_type job_id) {
+                        //ToDo: Implement, is to be synchronous
                     }
 
                 private:
                     //Stores the static instance of the id manager
-                    static id_manager<uint64_t> m_id_mgr;
+                    static id_manager<session_id_type> m_id_mgr;
 
                     //Stores the session id
-                    const uint64_t m_session_id;
+                    const session_id_type m_session_id;
 
                     //For all on-going jobs, stores the mapping from the translation
                     //job id to the resulting translation job request.
                     //The request object is owned by the session.
-                    unordered_map<uint32_t, translation_job_request *> m_jobs;
+                    unordered_map<job_id_type, translation_job_request *> m_jobs;
                 };
 
-                constexpr uint64_t session_object::MINIMUM_SESSION_ID;
+                constexpr session_id_type session_object::MINIMUM_SESSION_ID;
 
-                id_manager<uint64_t> session_object::m_id_mgr(MINIMUM_SESSION_ID);
+                id_manager<session_id_type> session_object::m_id_mgr(MINIMUM_SESSION_ID);
             }
         }
     }

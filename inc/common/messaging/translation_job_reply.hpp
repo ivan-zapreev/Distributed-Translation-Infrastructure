@@ -30,11 +30,13 @@
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
+#include "common/messaging/translation_job_request.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
+using namespace uva::smt::decoding::common::messaging;
 
 #ifndef TRANSLATION_JOB_REPLY_HPP
 #define TRANSLATION_JOB_REPLY_HPP
@@ -133,14 +135,14 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        translation_job_reply(uint64_t job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        translation_job_reply(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
                         /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const uint64_t get_job_id() const {
+                        const job_id_type get_job_id() const {
                             return m_job_id;
                         }
 
@@ -172,7 +174,7 @@ namespace uva {
 
                     private:
                         //Stores the translation job id
-                        uint64_t m_job_id;
+                        job_id_type m_job_id;
                         //Stores the translation job result code
                         job_result_code m_code;
                         //Stores the translation job result text, the error

@@ -220,7 +220,7 @@ int main(int argc, char** argv) {
             translation_job_request request(params.m_source_lang, source_text, params.m_target_lang);
             
             //Query the translation job
-            uint64_t job_id = client.send(request);
+            job_id_type job_id = client.send(request);
 
             //Synchronously wait for the translation job result
             string target_text;

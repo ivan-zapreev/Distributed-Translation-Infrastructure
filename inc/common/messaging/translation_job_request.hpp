@@ -23,7 +23,11 @@
  * Created on January 18, 2016, 5:05 PM
  */
 
+#include "common/utils/file/TextPieceReader.hpp"
 #include "common/messaging/id_manager.hpp"
+
+using namespace std;
+using namespace uva::utils::file;
 
 #ifndef TRANSLATION_JOB_REQUEST_HPP
 #define TRANSLATION_JOB_REQUEST_HPP
@@ -33,6 +37,9 @@ namespace uva {
         namespace decoding {
             namespace common {
                 namespace messaging {
+                    
+                    //Make the typedef for the translation job id
+                    typedef uint64_t job_id_type;
 
                     /**
                      * This class represents the translation request message.
@@ -40,7 +47,7 @@ namespace uva {
                     class translation_job_request {
                     public:
                         //Stores the minimum allowed translation job id
-                        static constexpr uint64_t MINIMUM_JOB_ID = 1;
+                        static constexpr job_id_type MINIMUM_JOB_ID = 1;
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
@@ -126,7 +133,7 @@ namespace uva {
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const uint32_t get_job_id() const {
+                        const job_id_type get_job_id() const {
                             return m_job_id;
                         }
 
@@ -158,9 +165,9 @@ namespace uva {
 
                     private:
                         //Stores the static instance of the id manager
-                        static id_manager<uint64_t> m_id_mgr;
+                        static id_manager<job_id_type> m_id_mgr;
                         //Stores the translation job id
-                        uint32_t m_job_id;
+                        job_id_type m_job_id;
                         //Stores the translation job source language string
                         string m_source_lang;
                         //Stores the translation job target language string
@@ -169,11 +176,11 @@ namespace uva {
                         string m_text;
                     };
 
-                    constexpr uint64_t translation_job_request::MINIMUM_JOB_ID;
+                    constexpr job_id_type translation_job_request::MINIMUM_JOB_ID;
                     constexpr char translation_job_request::HEADER_DELIMITER;
                     constexpr char translation_job_request::NEW_LINE_HEADER_ENDING;
 
-                    id_manager<uint64_t> translation_job_request::m_id_mgr(MINIMUM_JOB_ID);
+                    id_manager<job_id_type> translation_job_request::m_id_mgr(MINIMUM_JOB_ID);
                 }
             }
         }
