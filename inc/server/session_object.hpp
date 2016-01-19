@@ -25,6 +25,8 @@
 
 #include <unordered_map>
 
+#include <websocketpp/common/thread.hpp>
+
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/translation_job_request.hpp"
 
@@ -52,6 +54,8 @@ namespace uva {
                  */
                 class session_object {
                 public:
+                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    
                     //Stores the minimum allowed session job id
                     static constexpr session_id_type MINIMUM_SESSION_ID = 1;
 
@@ -74,7 +78,9 @@ namespace uva {
                      * @param job_request the translation job request
                      */
                     void add_job_request(translation_job_request * job_request) {
-                        //ToDo: Implement, is to be synchronous
+                        scoped_lock guard(m_lock);
+                        
+                        //ToDo: Implement
                     }
 
                     /**
@@ -82,10 +88,15 @@ namespace uva {
                      * @param job_id the id of the translation job request to be removed
                      */
                     void remove_job_request(job_id_type job_id) {
-                        //ToDo: Implement, is to be synchronous
+                        scoped_lock guard(m_lock);
+                        
+                        //ToDo: Implement
                     }
 
                 private:
+                    //Stores the synchronization mutex accessing session object data
+                    websocketpp::lib::mutex m_lock;
+
                     //Stores the static instance of the id manager
                     static id_manager<session_id_type> m_id_mgr;
 

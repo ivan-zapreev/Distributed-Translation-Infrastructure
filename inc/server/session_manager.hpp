@@ -72,6 +72,7 @@ namespace uva {
                         //Instantiate a new session
                         session_ptr = new session_object();
 
+                        //The next piece of code is to be executed as an atomic operation
                         {
                             //Use the scoped mutex lock to avoid race conditions
                             scoped_lock guard(m_lock_id);
@@ -89,6 +90,26 @@ namespace uva {
                                 return false;
                             }
                         }
+                    }
+
+                    /**
+                     * Allows to erase the session object from the map and return the stored object.
+                     *  Returns NULL if there was no session object associated with the given handler.
+                     * @param hdl the session handler to identify the session object.
+                     * @return the session object to be removed, is to be deallocated by the caller.
+                     */
+                    session_object_ptr remove_session(websocketpp::connection_hdl hdl) {
+                        //The next piece of code is to be executed as an atomic operation
+                        {
+                            scoped_lock guard(m_lock_id);
+                            //First get the session object pointer
+                            session_object_ptr ptr = m_session[hdl];
+                            //Erase the object from the map
+                            m_sessions.erase(hdl);
+                        }
+
+                        //Return the pointer
+                        return ptr;
                     }
 
                 private:
