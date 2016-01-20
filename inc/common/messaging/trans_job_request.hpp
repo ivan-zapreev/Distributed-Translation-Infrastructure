@@ -50,6 +50,8 @@ namespace uva {
                      */
                     class trans_job_request {
                     public:
+                        //Stores the undefined value of the translation job id
+                        static constexpr job_id_type UNDEFINED_JOB_ID = 0;
                         //Stores the minimum allowed translation job id
                         static constexpr job_id_type MINIMUM_JOB_ID = 1;
                         //The delimiter used in the header of the reply message
@@ -180,6 +182,7 @@ namespace uva {
                         string m_text;
                     };
 
+                    constexpr job_id_type trans_job_request::UNDEFINED_JOB_ID;
                     constexpr job_id_type trans_job_request::MINIMUM_JOB_ID;
                     constexpr char trans_job_request::HEADER_DELIMITER;
                     constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;

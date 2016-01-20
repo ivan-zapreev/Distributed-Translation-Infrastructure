@@ -92,9 +92,10 @@ namespace uva {
                      */
                     void on_open(connection_hdl hdl) {
                         //Create a new session object for the handler
-                        session_object_ptr session_ptr = m_manager.create_session(hdl);
+                        string err_msg;
+                        session_object_ptr session_ptr = m_manager.create_session(hdl, err_msg);
                         if (session_ptr == NULL) {
-                            //ToDo: Report an error with creating the session object and close the connection!
+                            m_server.close(hdl, websocketpp::close::status::internal_endpoint_error, err_msg);
                         }
                     }
 
@@ -121,19 +122,33 @@ namespace uva {
                     }
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
-                        //Declare the error code
-                        error_code ec;
+                        //Declare the translation job request pointer
+                        trans_job_request_ptr request_ptr = NULL;
+                        try {
+                            //Extract the translation job request
+                            request_ptr = new trans_job_request(msg->get_payload());
 
-                        //Extract the translation job request
-                        trans_job_request_ptr request_ptr = new trans_job_request(msg->get_payload());
+                            //ToDo: schedule a delayed job reply sending in a separate thread
+                            //ToDo: Make sure that things are synchronized for multiple job requests
+                            //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
+                        } catch (Exception & ex) {
+                            //Locally report error
+                            LOG_ERROR << ex.get_message() << END_LOG;
 
-                        //ToDo: schedule a delayed job reply sending in a separate thread
-                        //ToDo: Make sure that things are synchronized for multiple job requests
-                        //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
-
-                        //Send/schedule the translation job reply
-                        m_server.send(hdl, "Got it!", text, ec);
-                        LOG_ERROR << "The translation job (session-id/" << request_ptr->get_job_id() << ") reply  send error: " << ec.message() << END_LOG;
+                            //Create the reply message, with or without job id
+                            const job_id_type job_id = (request_ptr == NULL) ? trans_job_request::UNDEFINED_JOB_ID : request_ptr->get_job_id();
+                            trans_job_reply reply(job_id, job_result_code::RESULT_ERROR, ex.get_message());
+                            const string reply_str = reply.serialize();
+                            
+                            //Declare the error code
+                            error_code ec;
+                            //Send/schedule the translation job reply
+                            m_server.send(hdl, reply_str, text, ec);
+                            //Locally report sending error
+                            if (ec) {
+                                LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
+                            }
+                        }
                     }
 
                 private:

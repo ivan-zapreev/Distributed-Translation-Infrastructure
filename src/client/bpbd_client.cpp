@@ -232,7 +232,7 @@ int main(int argc, char** argv) {
         }
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
-        LOG_ERROR << ex.getMessage() << END_LOG;
+        LOG_ERROR << ex.get_message() << END_LOG;
         return_code = 1;
     }
 

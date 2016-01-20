@@ -145,6 +145,15 @@ namespace uva {
                         const job_id_type get_job_id() const {
                             return m_job_id;
                         }
+                        
+                        /**
+                         * Allows to check whether the job id is defined, is not
+                         * equal to trans_job_request::UNDEFINED_JOB_ID;
+                         * @return true if the job id is defined, otherwise false
+                         */
+                        const bool is_job_id_defined() const {
+                            return (m_job_id != trans_job_request::UNDEFINED_JOB_ID);
+                        }
 
                         /**
                          * Allows to check if the reply is good, i.e. contains the translated text and not the error message

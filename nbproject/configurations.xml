@@ -4,21 +4,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="client">
-        <in>translation_client.hpp</in>
-      </df>
-      <df name="common">
-        <df name="messaging">
-          <in>id_manager.hpp</in>
-          <in>trans_job_reply.hpp</in>
-          <in>trans_job_request.hpp</in>
-        </df>
-      </df>
-      <df name="server">
-        <in>session_manager.hpp</in>
-        <in>session_object.hpp</in>
-        <in>translation_server.hpp</in>
-      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -26,6 +11,12 @@
       </df>
       <df name="common">
         <df name="utils">
+          <df name="logging">
+            <in>Logger.cpp</in>
+          </df>
+          <df name="monitore">
+            <in>StatisticsMonitor.cpp</in>
+          </df>
           <in>xxhash.c</in>
         </df>
       </df>
@@ -102,10 +93,6 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
-            <incFile>
-              <pElem>ext</pElem>
-              <pElem>inc</pElem>
-            </incFile>
           </ccTool>
         </makeTool>
         <preBuild>
@@ -113,30 +100,21 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
-      <item path="inc/client/translation_client.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/id_manager.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_job_reply.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_job_request.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/session_manager.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/session_object.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/translation_server.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/common/utils/logging/Logger.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/common/utils/monitore/StatisticsMonitor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>

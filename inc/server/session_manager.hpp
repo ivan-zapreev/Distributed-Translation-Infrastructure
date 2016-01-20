@@ -63,11 +63,14 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to create and register a new session object
+                     * Allows to create and register a new session object.
+                     * If null is returned then it was not possible to
+                     * create a new session object due to some reason.
                      * @param hdl [in] the connection handler
-                     * @return the pointer to the newly allocation session object
+                     * @param err_msg [out] the occurred error message, or not changed if no error
+                     * @return the pointer to the newly allocation session object, or null if an error has occurred
                      */
-                    session_object_ptr create_session(websocketpp::connection_hdl hdl) {
+                    session_object_ptr create_session(websocketpp::connection_hdl hdl, string & err_msg) {
                         //Use the scoped mutex lock to avoid race conditions
                         scoped_lock guard(m_lock);
 
@@ -80,7 +83,8 @@ namespace uva {
                             ptr_ref = new session_object();
                             return ptr_ref;
                         } else {
-                            //ToDo: Log the error as we encountered a bas situation.
+                            err_msg = "The same connection handler already exists and has a session!";
+                            LOG_ERROR << err_msg << END_LOG;
                             return NULL;
                         }
                     }

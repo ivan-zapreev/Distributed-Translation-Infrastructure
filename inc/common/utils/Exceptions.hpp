@@ -89,7 +89,7 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
                  * This method returns the stored message
                  * @return the reference to a constant error message string
                  */
-                string const & getMessage() const throw () {
+                string const & get_message() const throw () {
                     return msg;
                 }
 
