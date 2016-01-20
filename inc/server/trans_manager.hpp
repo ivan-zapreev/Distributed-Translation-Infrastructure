@@ -30,6 +30,7 @@
 
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/id_manager.hpp"
+#include "trans_session.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
@@ -42,9 +43,6 @@ namespace uva {
         namespace decoding {
             namespace server {
 
-                //Make the typedef for the translation session id
-                typedef uint64_t session_id_type;
-
                 /**
                  * This is a synchronized translation sessions manager class that stores
                  * that keeps track of the open translation sessions and their objects.
@@ -56,16 +54,10 @@ namespace uva {
                     typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
                     typedef std::map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
 
-                    //Stores the undefined session job id value
-                    static constexpr session_id_type UNDEFINED_SESSION_ID = 0;
-
-                    //Stores the minimum allowed session job id
-                    static constexpr session_id_type MINIMUM_SESSION_ID = 1;
-
                     /**
                      * The basic constructor
                      */
-                    trans_manager() : m_session_id_mgr(MINIMUM_SESSION_ID) {
+                    trans_manager() : m_session_id_mgr(session::MINIMUM_SESSION_ID) {
                         //ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
                     }
 
@@ -102,7 +94,7 @@ namespace uva {
                         session_id_type & session_id = m_sessions[hdl];
 
                         //Do a sanity check, that the session id is yet undefined
-                        ASSERT_SANITY_THROW((session_id != UNDEFINED_SESSION_ID),
+                        ASSERT_SANITY_THROW((session_id != session::UNDEFINED_SESSION_ID),
                                 "The same connection handler already exists and has a session!");
 
                         //Issue a session id to that new connection!
@@ -123,7 +115,7 @@ namespace uva {
                      */
                     void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
                         //Declare the session id variable
-                        session_id_type session_id = UNDEFINED_SESSION_ID;
+                        session_id_type session_id = session::UNDEFINED_SESSION_ID;
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
@@ -134,7 +126,7 @@ namespace uva {
                         }
 
                         //Do a sanity check, that there is a session object
-                        ASSERT_SANITY_THROW((session_id == UNDEFINED_SESSION_ID),
+                        ASSERT_SANITY_THROW((session_id == session::UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
                         //ToDo: Schedule a translation job request for the session id
@@ -147,8 +139,8 @@ namespace uva {
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     void close_session(websocketpp::connection_hdl hdl) {
-                        //Declare the session id variable
-                        session_id_type session_id = UNDEFINED_SESSION_ID;
+                        //Declare the session id vari/home/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_manager.hpp:60:56: error: ‘MINIMUM_SESSION_ID’ was not declared in this scopeable
+                        session_id_type session_id = session::UNDEFINED_SESSION_ID;
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
@@ -163,7 +155,7 @@ namespace uva {
                         }
 
                         //Request cancellation of all the translation jobs associated with this connection.
-                        if (session_id != UNDEFINED_SESSION_ID) {
+                        if (session_id != session::UNDEFINED_SESSION_ID) {
                             //NOTE: This can be done outside the synchronization block
                             cancel_trans_job_requests(session_id);
                         }
@@ -231,9 +223,6 @@ namespace uva {
                     //Stores the session id to connection handler mappings
                     handlers_map_type m_handlers;
                 };
-
-                constexpr session_id_type trans_manager::MINIMUM_SESSION_ID;
-                constexpr session_id_type trans_manager::UNDEFINED_SESSION_ID;
             }
         }
     }

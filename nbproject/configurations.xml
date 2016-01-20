@@ -4,6 +4,10 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="server">
+        <in>trans_job_pool.hpp</in>
+        <in>trans_session.hpp</in>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -100,6 +104,10 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
+      <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/trans_session.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
