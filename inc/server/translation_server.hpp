@@ -128,9 +128,9 @@ namespace uva {
                             //Extract the translation job request
                             request_ptr = new trans_job_request(msg->get_payload());
 
-                            //ToDo: schedule a delayed job reply sending in a separate thread
-                            //ToDo: Make sure that things are synchronized for multiple job requests
-                            //ToDo: Make sure that if the connection to the client is lost, then we cancel the translation job.
+                            //Schedule a translation job
+                            session_object_ptr session_ptr = m_manager.get_session(hdl);
+                            session_ptr->add_job_request(request_ptr);
                         } catch (Exception & ex) {
                             //Locally report error
                             LOG_ERROR << ex.get_message() << END_LOG;

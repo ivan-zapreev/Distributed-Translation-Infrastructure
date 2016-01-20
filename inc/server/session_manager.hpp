@@ -63,10 +63,10 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to create and register a new session object.
+                     * Allows to create and register a new session object, synchronized.
                      * If null is returned then it was not possible to
                      * create a new session object due to some reason.
-                     * @param hdl [in] the connection handler
+                     * @param hdl [in] the connection handler to identify the session object.
                      * @param err_msg [out] the occurred error message, or not changed if no error
                      * @return the pointer to the newly allocation session object, or null if an error has occurred
                      */
@@ -90,9 +90,29 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to erase the session object from the map and return the stored object.
-                     *  Returns NULL if there was no session object associated with the given handler.
-                     * @param hdl the session handler to identify the session object.
+                     * Allows to get the session object associated with the connection handler, synchronized.
+                     * @param hdl [in] the connection handler to identify the session object.
+                     * @return 
+                     */
+                    session_object_ptr get_session(websocketpp::connection_hdl hdl) {
+                        //Use the scoped mutex lock to avoid race conditions
+                        scoped_lock guard(m_lock);
+
+                        //Get what ever it is stored
+                        session_object_ptr session_ptr = m_sessions[hdl];
+
+                        //Do a sanity check
+                        ASSERT_CONDITION_THROW((session_ptr == NULL),
+                                "No session object is associated with the connection handler!");
+
+                        //If the session object is not null then return it
+                        return session_ptr;
+                    }
+
+                    /**
+                     * Allows to erase the session object from the map and return the stored object, synchronized.
+                     * Returns NULL if there was no session object associated with the given handler.
+                     * @param hdl the connection handler to identify the session object.
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     void destroy_session(websocketpp::connection_hdl hdl) {
@@ -104,7 +124,7 @@ namespace uva {
                         if (ptr != NULL) {
                             delete ptr;
                         }
-                        
+
                         //Erase the object from the map
                         m_sessions.erase(hdl);
                     }
