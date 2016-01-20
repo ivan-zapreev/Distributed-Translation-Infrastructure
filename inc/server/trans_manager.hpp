@@ -31,9 +31,15 @@
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "trans_session.hpp"
+#include "trans_job_pool.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
+
+using websocketpp::lib::placeholders::_1;
+using websocketpp::lib::placeholders::_2;
+using websocketpp::lib::placeholders::_3;
+using websocketpp::lib::bind;
 
 #ifndef SESSION_MANAGER_HPP
 #define SESSION_MANAGER_HPP
@@ -55,10 +61,13 @@ namespace uva {
                     typedef std::map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
 
                     /**
-                     * The basic constructor
+                     * The basic constructor.
+                     * 
+                     * ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
                      */
                     trans_manager() : m_session_id_mgr(session::MINIMUM_SESSION_ID) {
-                        //ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
+                        //Set the response sender function into the pool
+                        set_response_sender(bind(&trans_manager::send_response(), this, _1, _2, _3));
                     }
 
                     /**
@@ -73,12 +82,8 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~trans_manager() {
-                        //Request stopping of all the running translation jobs
-                        for (handlers_map_type::iterator iter;
-                                iter != m_handlers.end(); ++iter) {
-                            //Cancel the translation jobs for the given session id
-                            cancel_trans_job_requests(iter->first);
-                        }
+                        //No need to do anything the manager is destroyed only when the application is stopped.
+                        //The scheduled jobs will be canceled by the by the trans_job_pool destructor
                     }
 
                     /**
@@ -113,7 +118,7 @@ namespace uva {
                      * @param hdl [in] the connection handler to identify the session object.
                      * @param request_ptr [in] the translation job request to be stored, not NULL
                      */
-                    void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
+                    void translate(websocketpp::connection_hdl hdl, const trans_job_request_ptr request_ptr) {
                         //Declare the session id variable
                         session_id_type session_id = session::UNDEFINED_SESSION_ID;
 
@@ -129,7 +134,8 @@ namespace uva {
                         ASSERT_SANITY_THROW((session_id == session::UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
-                        //ToDo: Schedule a translation job request for the session id
+                        //Schedule a translation job request for the session id
+                        m_jobs_pool.schedule_job(session_id, request_ptr);
                     }
 
                     /**
@@ -157,19 +163,11 @@ namespace uva {
                         //Request cancellation of all the translation jobs associated with this connection.
                         if (session_id != session::UNDEFINED_SESSION_ID) {
                             //NOTE: This can be done outside the synchronization block
-                            cancel_trans_job_requests(session_id);
+                            m_jobs_pool.cancel_jobs(session_id);
                         }
                     }
 
                 protected:
-
-                    /**
-                     * Cancel all translation job requests for the given session
-                     * @param session_id the session id to cancel the translation jobs for.
-                     */
-                    void cancel_trans_job_requests(const session_id_type session_id) {
-                        //ToDo: Implement
-                    }
 
                     /**
                      * Allows to set the non-error translation result,
@@ -178,7 +176,7 @@ namespace uva {
                      * @param job_id the job id
                      * @param text the translated text
                      */
-                    void set_translation(const session_id_type session_id, const job_id_type job_id, const string & text) {
+                    void send_response(const session_id_type session_id, const job_id_type job_id, const string & text) {
                         //Create the translation job response
                         trans_job_response response(job_id, job_result_code::RESULT_OK, text);
 
@@ -208,6 +206,9 @@ namespace uva {
                     }
 
                 private:
+                    //Stores the translation job pool
+                    trans_job_pool m_jobs_pool;
+
                     //Stores the static instance of the id manager
                     id_manager<session_id_type> m_session_id_mgr;
 

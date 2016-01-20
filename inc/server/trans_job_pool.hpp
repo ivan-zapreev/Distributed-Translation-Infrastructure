@@ -23,7 +23,10 @@
  * Created on January 20, 2016, 3:01 PM
  */
 
+#include <websocketpp/server.hpp>
+
 #include "trans_session.hpp"
+#include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
@@ -36,26 +39,70 @@ namespace uva {
         namespace decoding {
             namespace server {
 
+                /**
+                 * This class is used to schedule the translation jobs.
+                 * Each translation job consists of a number of sentences to translate.
+                 * Each sentence will be translated in its own thread with its own decoder instance.
+                 * The job of this class is to split the translation job into a number
+                 * of translation tasks and schedule them. This class is synchronized
+                 * and has its own thread to schedule the translation tasks.
+                 */
                 class trans_job_pool {
                 public:
+                    typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id, const string & text) > response_sender;
 
+                    /**
+                     * The basic constructor
+                     * 
+                     * ToDo: Possibly limit the number of translation jobs to be scheduled
+                     */
                     trans_job_pool() {
                     }
 
+                    /**
+                     * he basic destructor
+                     */
                     virtual ~trans_job_pool() {
+                        //ToDo: Cancel the scheduled translation tasks and stop the internal thread
                     }
 
-                    void add_job() {
+                    /**
+                     * Allows to set the response sender function for sending the replies to the client
+                     * @param sender the s ender functional to be set
+                     */
+                    void set_response_sender(response_sender sender) {
+                        m_sender_func = sender;
                     }
 
-                    void cancel_jobs() {
+                    /**
+                     * Allows to schedule a new translation job. The execution of the job is deferred and asynchronous.
+                     */
+                    void schedule_job(const session_id_type session_id, const trans_job_request_ptr job) {
+                        //ToDo: Implement
                     }
-                    
-                    void cancel_job() {
+
+                    /**
+                     * Allows to cancel all translation jobs for the given session id.
+                     * @param session_id the session id to cancel the jobs for
+                     */
+                    void cancel_jobs(const session_id_type session_id) {
+                        //ToDo: Implement
                     }
                 protected:
+
+                    /**
+                     * Allows to cancel all translation job defined by the session and job ids,
+                     * @param session_id the session id of the translation client
+                     * @param job_id the job id issues by the translation client to a translation job
+                     */
+                    void cancel_job(const session_id_type session_id, const job_id_type job_id) {
+                        //ToDo: Implement
+                    }
                 private:
-                }
+
+                    //Stores the reply sender functional
+                    response_sender m_sender_func;
+                };
 
             }
         }
