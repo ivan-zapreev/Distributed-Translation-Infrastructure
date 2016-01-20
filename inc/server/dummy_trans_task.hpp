@@ -61,17 +61,22 @@ namespace uva {
                          * @param request the pointer to the translation job request, not NULL
                          */
                         dummy_trans_task(const session_id_type session_id, const trans_job_request_ptr request,
-                                response_sender send_response)
+                                response_sender sender_func)
                         : thread(bind(&dummy_trans_task::run_simulation, this)),
-                        is_interrupted(false), m_session_id(session_id), m_request(request), m_send_response(send_response) {
+                        is_interrupted(false), m_session_id(session_id), m_request(request), m_sender_func(sender_func) {
+                            //Do the sanity check asserts
                             ASSERT_SANITY_THROW((m_request == NULL), "Received a NULL pointer translation request!");
+                            ASSERT_SANITY_THROW(!m_sender_func,
+                                    "The sender function of the dummy translation task is not set!");
                         }
 
                         /**
                          * The basic destructor of the dummy translation job
                          */
                         virtual ~dummy_trans_task() {
-                            delete m_request;
+                            if (m_request != NULL) {
+                                delete m_request;
+                            }
                         }
 
                         /**
@@ -104,7 +109,7 @@ namespace uva {
                             }
 
                             // 3. Send the response to the client
-                            m_send_response(m_session_id, m_request->get_job_id(), string("Translation for: ") + m_request->get_text());
+                            m_sender_func(m_session_id, m_request->get_job_id(), string("Translation for: ") + m_request->get_text());
                         }
 
                     private:
@@ -115,7 +120,7 @@ namespace uva {
                         //Stores the pointer to the translation job request, not NULL
                         const trans_job_request_ptr m_request;
                         //Stores the response setter
-                        const response_sender m_send_response;
+                        const response_sender m_sender_func;
                     };
                 }
             }
