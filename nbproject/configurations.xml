@@ -5,6 +5,7 @@
     </df>
     <df root="inc" name="1">
       <df name="server">
+        <in>dummy_trans_task.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_session.hpp</in>
       </df>
@@ -104,6 +105,8 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
+      <item path="inc/server/dummy_trans_task.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_session.hpp" ex="false" tool="3" flavor2="0">

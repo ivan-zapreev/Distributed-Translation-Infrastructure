@@ -51,7 +51,7 @@ add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})
 #In case we are on linux add linking with the rt library
 if(UNIX AND NOT APPLE)
     target_link_libraries(lm-query rt)
-    target_link_libraries(bpbd-server rt)
+    target_link_libraries(bpbd-server rt pthread)
     target_link_libraries(bpbd-client rt pthread)
 endif()
 

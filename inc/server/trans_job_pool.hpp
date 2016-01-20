@@ -23,13 +23,25 @@
  * Created on January 20, 2016, 3:01 PM
  */
 
+#include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
+#include "dummy_trans_task.hpp"
 #include "trans_session.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
+
 using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::decoding::server::dummy;
+
+using websocketpp::lib::bind;
+using websocketpp::lib::placeholders::_1;
+using websocketpp::lib::placeholders::_2;
 
 #ifndef TRANS_JOB_POOL_HPP
 #define TRANS_JOB_POOL_HPP
@@ -38,6 +50,9 @@ namespace uva {
     namespace smt {
         namespace decoding {
             namespace server {
+
+                //Typedef the dummy task id.
+                typedef uint64_t task_id_type;
 
                 /**
                  * This class is used to schedule the translation jobs.
@@ -49,6 +64,7 @@ namespace uva {
                  */
                 class trans_job_pool {
                 public:
+                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
                     typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id, const string & text) > response_sender;
 
                     /**
@@ -78,7 +94,14 @@ namespace uva {
                      * Allows to schedule a new translation job. The execution of the job is deferred and asynchronous.
                      */
                     void schedule_job(const session_id_type session_id, const trans_job_request_ptr job) {
-                        //ToDo: Implement
+                        scoped_lock guard(m_lock);
+
+                        //ToDo: Implement, issue the task id
+
+                        //Instantiate the task
+                        new dummy_trans_task(session_id, job, m_sender_func);
+
+                        //ToDo: Register the task, so that one could cancel it from the jobs canceling method
                     }
 
                     /**
@@ -86,19 +109,14 @@ namespace uva {
                      * @param session_id the session id to cancel the jobs for
                      */
                     void cancel_jobs(const session_id_type session_id) {
-                        //ToDo: Implement
-                    }
-                protected:
+                        scoped_lock guard(m_lock);
 
-                    /**
-                     * Allows to cancel all translation job defined by the session and job ids,
-                     * @param session_id the session id of the translation client
-                     * @param job_id the job id issues by the translation client to a translation job
-                     */
-                    void cancel_job(const session_id_type session_id, const job_id_type job_id) {
                         //ToDo: Implement
                     }
+
                 private:
+                    //Stores the synchronization mutex
+                    websocketpp::lib::mutex m_lock;
 
                     //Stores the reply sender functional
                     response_sender m_sender_func;

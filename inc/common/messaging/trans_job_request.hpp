@@ -23,10 +23,14 @@
  * Created on January 18, 2016, 5:05 PM
  */
 
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
 #include "common/messaging/id_manager.hpp"
 
 using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
 
 #ifndef TRANSLATION_JOB_REQUEST_HPP

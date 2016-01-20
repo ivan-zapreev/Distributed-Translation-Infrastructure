@@ -28,12 +28,16 @@
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
+#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/Logger.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "trans_session.hpp"
 #include "trans_job_pool.hpp"
 
 using namespace std;
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::lib::placeholders::_1;
