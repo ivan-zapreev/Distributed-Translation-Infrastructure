@@ -67,7 +67,7 @@ namespace uva {
                      */
                     trans_manager() : m_session_id_mgr(session::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        set_response_sender(bind(&trans_manager::send_response(), this, _1, _2, _3));
+                        m_job_pool.set_response_sender(bind(&trans_manager::send_response, this, _1, _2, _3));
                     }
 
                     /**
@@ -135,7 +135,7 @@ namespace uva {
                                 "No session object is associated with the connection handler!");
 
                         //Schedule a translation job request for the session id
-                        m_jobs_pool.schedule_job(session_id, request_ptr);
+                        m_job_pool.schedule_job(session_id, request_ptr);
                     }
 
                     /**
@@ -163,7 +163,7 @@ namespace uva {
                         //Request cancellation of all the translation jobs associated with this connection.
                         if (session_id != session::UNDEFINED_SESSION_ID) {
                             //NOTE: This can be done outside the synchronization block
-                            m_jobs_pool.cancel_jobs(session_id);
+                            m_job_pool.cancel_jobs(session_id);
                         }
                     }
 
@@ -207,7 +207,7 @@ namespace uva {
 
                 private:
                     //Stores the translation job pool
-                    trans_job_pool m_jobs_pool;
+                    trans_job_pool m_job_pool;
 
                     //Stores the static instance of the id manager
                     id_manager<session_id_type> m_session_id_mgr;
