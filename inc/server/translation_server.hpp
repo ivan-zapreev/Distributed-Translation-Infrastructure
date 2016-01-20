@@ -36,7 +36,6 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
-#include "trans_session.hpp"
 #include "trans_manager.hpp"
 
 using namespace std;
@@ -90,6 +89,16 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to run the server
+                     */
+                    void run() {
+                        m_server.start_accept();
+                        m_server.run();
+                    }
+
+                protected:
+
+                    /**
                      * Allows to send the translation job response to the client associated with the given connection handler.
                      * @param hdl the connection handler to identify the connection
                      * @param response the translation response object to be used
@@ -99,10 +108,10 @@ namespace uva {
                         const string reply_str = response.serialize();
                         //Declare the error code
                         error_code ec;
-                        
+
                         //Send/schedule the translation job reply
                         m_server.send(hdl, reply_str, text, ec);
-                        
+
                         //Locally report sending error
                         if (ec) {
                             LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
@@ -140,11 +149,6 @@ namespace uva {
                      */
                     void on_fail(connection_hdl hdl) {
                         m_server.get_alog().write(alevel::app, "Connection failed!");
-                    }
-
-                    void run() {
-                        m_server.start_accept();
-                        m_server.run();
                     }
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {

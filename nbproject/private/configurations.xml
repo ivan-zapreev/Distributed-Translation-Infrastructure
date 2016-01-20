@@ -702,7 +702,6 @@
           <in>TrieConstants.hpp</in>
         </df>
         <in>trans_manager.hpp</in>
-        <in>trans_session.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>

@@ -102,7 +102,7 @@ namespace uva {
 
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
-                                    
+
                                     LOG_DEBUG << "m_job_id = " << m_job_id << ", m_code = " << m_code << ", m_text = " << m_text << END_LOG;
                                 } else {
                                     THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
@@ -135,7 +135,8 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        trans_job_response(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        trans_job_response(const job_id_type job_id, const job_result_code code,
+                                const string & text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
                         /**
@@ -145,7 +146,7 @@ namespace uva {
                         const job_id_type get_job_id() const {
                             return m_job_id;
                         }
-                        
+
                         /**
                          * Allows to check whether the job id is defined, is not
                          * equal to trans_job_request::UNDEFINED_JOB_ID;
@@ -162,7 +163,7 @@ namespace uva {
                         const bool is_good() const {
                             return (m_code == job_result_code::RESULT_OK);
                         }
-                        
+
                         /**
                          * Allows to get the translation job result code
                          * @return the translation job result code

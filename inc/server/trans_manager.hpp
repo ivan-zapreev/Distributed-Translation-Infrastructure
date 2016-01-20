@@ -28,8 +28,8 @@
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
-#include "trans_session.hpp"
 #include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/id_manager.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
@@ -42,6 +42,9 @@ namespace uva {
         namespace decoding {
             namespace server {
 
+                //Make the typedef for the translation session id
+                typedef uint64_t session_id_type;
+
                 /**
                  * This is a synchronized translation sessions manager class that stores
                  * that keeps track of the open translation sessions and their objects.
@@ -50,11 +53,19 @@ namespace uva {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
                     typedef websocketpp::lib::function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
+                    typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
+                    typedef std::map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
+
+                    //Stores the undefined session job id value
+                    static constexpr session_id_type UNDEFINED_SESSION_ID = 0;
+
+                    //Stores the minimum allowed session job id
+                    static constexpr session_id_type MINIMUM_SESSION_ID = 1;
 
                     /**
                      * The basic constructor
                      */
-                    trans_manager() {
+                    trans_manager() : m_session_id_mgr(MINIMUM_SESSION_ID) {
                         //ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
                     }
 
@@ -63,14 +74,19 @@ namespace uva {
                      * @param sender the s ender functional to be set
                      */
                     void set_response_sender(response_sender sender) {
-                        m_sender = sender;
+                        m_sender_func = sender;
                     }
 
                     /**
                      * The basic destructor
                      */
                     virtual ~trans_manager() {
-                        //ToDo: Destroy the available session objects, this should also stop any pending/running translation job
+                        //Request stopping of all the running translation jobs
+                        for (handlers_map_type::iterator iter;
+                                iter != m_handlers.end(); ++iter) {
+                            //Cancel the translation jobs for the given session id
+                            cancel_trans_job_requests(iter->first);
+                        }
                     }
 
                     /**
@@ -83,14 +99,17 @@ namespace uva {
                         scoped_lock guard(m_lock);
 
                         //Get the current value stored under the connection handler
-                        trans_session_ptr & ptr_ref = m_sessions[hdl];
+                        session_id_type & session_id = m_sessions[hdl];
 
-                        //Do a sanity check, that there is no session object yet
-                        ASSERT_CONDITION_THROW((ptr_ref != NULL),
+                        //Do a sanity check, that the session id is yet undefined
+                        ASSERT_SANITY_THROW((session_id != UNDEFINED_SESSION_ID),
                                 "The same connection handler already exists and has a session!");
 
-                        //Store the pointer to the newly created connection object here
-                        ptr_ref = new trans_session();
+                        //Issue a session id to that new connection!
+                        session_id = m_session_id_mgr.get_next_id();
+
+                        //Add the handler to session id mapping
+                        m_handlers[session_id] = hdl;
                     }
 
                     /**
@@ -98,23 +117,27 @@ namespace uva {
                      * If there is not session associated with the given connection
                      * handler then will through. The scheduled translation job
                      * request is from this moment on a responsibility of the
-                     * underlying trans_session_object to be managed.
+                     * underlying object to be managed.
                      * @param hdl [in] the connection handler to identify the session object.
                      * @param request_ptr [in] the translation job request to be stored, not NULL
                      */
                     void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
-                        //Use the scoped mutex lock to avoid race conditions
-                        scoped_lock guard(m_lock);
+                        //Declare the session id variable
+                        session_id_type session_id = UNDEFINED_SESSION_ID;
 
-                        //Get what ever it is stored
-                        trans_session_ptr ptr = m_sessions[hdl];
+                        //Use the scoped mutex lock to avoid race conditions
+                        {
+                            scoped_lock guard(m_lock);
+
+                            //Get what ever it is stored
+                            session_id = m_sessions[hdl];
+                        }
 
                         //Do a sanity check, that there is a session object
-                        ASSERT_CONDITION_THROW((ptr == NULL),
+                        ASSERT_SANITY_THROW((session_id == UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
-                        //Schedule a translation job request
-                        ptr->add_job_request(request_ptr);
+                        //ToDo: Schedule a translation job request for the session id
                     }
 
                     /**
@@ -124,36 +147,93 @@ namespace uva {
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     void close_session(websocketpp::connection_hdl hdl) {
-                        trans_session_ptr ptr = NULL;
+                        //Declare the session id variable
+                        session_id_type session_id = UNDEFINED_SESSION_ID;
 
-                        //In the next block we take the session object and erase it from the map.
-                        //The deletion of the object can then be done in an unsynchronized way.
+                        //Use the scoped mutex lock to avoid race conditions
+                        {
+                            scoped_lock guard(m_lock);
+
+                            //Get the session id from the handler
+                            session_id_type session_id = m_sessions[hdl];
+
+                            //Erase the handler and session mappings
+                            m_sessions.erase(hdl);
+                            m_handlers.erase(session_id);
+                        }
+
+                        //Request cancellation of all the translation jobs associated with this connection.
+                        if (session_id != UNDEFINED_SESSION_ID) {
+                            //NOTE: This can be done outside the synchronization block
+                            cancel_trans_job_requests(session_id);
+                        }
+                    }
+
+                protected:
+
+                    /**
+                     * Cancel all translation job requests for the given session
+                     * @param session_id the session id to cancel the translation jobs for.
+                     */
+                    void cancel_trans_job_requests(const session_id_type session_id) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to set the non-error translation result,
+                     * this will also send the response to the client.
+                     * @param session_id the session id
+                     * @param job_id the job id
+                     * @param text the translated text
+                     */
+                    void set_translation(const session_id_type session_id, const job_id_type job_id, const string & text) {
+                        //Create the translation job response
+                        trans_job_response response(job_id, job_result_code::RESULT_OK, text);
+
+                        //Do the sanity check assert
+                        ASSERT_SANITY_THROW(!m_sender_func,
+                                "The sender function of the translation manager is not set!");
+
+                        //Declare the connection handler
+                        websocketpp::connection_hdl hdl;
+
+                        //Retrieve the connection handler based on the session id
                         {
                             //Use the scoped mutex lock to avoid race conditions
                             scoped_lock guard(m_lock);
 
-                            //Get the session object pointer
-                            ptr = m_sessions[hdl];
-
-                            //Erase the object from the map
-                            m_sessions.erase(hdl);
+                            //Get the connection handler for the session
+                            hdl = m_handlers[session_id];
                         }
 
-                        if (ptr != NULL) {
-                            //Destroy the session object
-                            delete ptr;
+                        //If the sender function is present, and the handler is not expired
+                        if (!hdl.expired()) {
+                            m_sender_func(hdl, response);
+                        } else {
+                            LOG_ERROR << "Could not send the translation response for " << session_id
+                                    << "/" << job_id << "as the connection handler has expired!" << END_LOG;
                         }
                     }
 
                 private:
+                    //Stores the static instance of the id manager
+                    id_manager<session_id_type> m_session_id_mgr;
+
                     //Stores the reply sender functional
-                    response_sender m_sender;
-                    //Stores the synchronization mutex accessing session objects
+                    response_sender m_sender_func;
+
+                    //Stores the synchronization mutex
                     websocketpp::lib::mutex m_lock;
 
-                    //Stores the connection handler to sessions information mappings
-                    map<websocketpp::connection_hdl, trans_session_ptr, std::owner_less<websocketpp::connection_hdl>> m_sessions;
+                    //Stores the connection handler to session id mappings
+                    sessions_map_type m_sessions;
+
+                    //Stores the session id to connection handler mappings
+                    handlers_map_type m_handlers;
                 };
+
+                constexpr session_id_type trans_manager::MINIMUM_SESSION_ID;
+                constexpr session_id_type trans_manager::UNDEFINED_SESSION_ID;
             }
         }
     }
