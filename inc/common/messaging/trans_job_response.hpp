@@ -63,7 +63,7 @@ namespace uva {
                      * is a translation result for a translation job. This result
                      * can be a text in the target language or it can be an error.
                      */
-                    class trans_job_reply {
+                    class trans_job_response {
                     public:
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
@@ -76,7 +76,7 @@ namespace uva {
                          * message.
                          * @param message the server message to be parsed
                          */
-                        trans_job_reply(const string & message) {
+                        trans_job_response(const string & message) {
                             //De-serialize from the message
                             de_serialize(message);
                         }
@@ -135,7 +135,7 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        trans_job_reply(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        trans_job_response(job_id_type job_id, job_result_code code, string text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
                         /**
@@ -191,8 +191,8 @@ namespace uva {
                         string m_text;
                     };
 
-                    constexpr char trans_job_reply::HEADER_DELIMITER;
-                    constexpr char trans_job_reply::NEW_LINE_HEADER_ENDING;
+                    constexpr char trans_job_response::HEADER_DELIMITER;
+                    constexpr char trans_job_response::NEW_LINE_HEADER_ENDING;
                 }
             }
         }

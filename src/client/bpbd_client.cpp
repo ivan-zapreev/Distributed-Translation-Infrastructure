@@ -34,7 +34,7 @@
 #include "common/utils/file/CStyleFileReader.hpp"
 #include "common/utils/Exceptions.hpp"
 #include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/trans_job_reply.hpp"
+#include "common/messaging/trans_job_response.hpp"
 
 using namespace std;
 using namespace TCLAP;

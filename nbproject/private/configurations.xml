@@ -626,8 +626,8 @@
       <df name="common">
         <df name="messaging">
           <in>id_manager.hpp</in>
-          <in>trans_job_reply.hpp</in>
           <in>trans_job_request.hpp</in>
+          <in>trans_job_response.hpp</in>
         </df>
         <df name="utils">
           <df name="containers">
@@ -701,8 +701,8 @@
           <in>TrieConfigs.hpp</in>
           <in>TrieConstants.hpp</in>
         </df>
-        <in>session_manager.hpp</in>
-        <in>session_object.hpp</in>
+        <in>trans_manager.hpp</in>
+        <in>trans_session.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>

@@ -34,10 +34,10 @@
 
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
-#include "common/messaging/trans_job_reply.hpp"
+#include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
-#include "session_object.hpp"
-#include "session_manager.hpp"
+#include "trans_session.hpp"
+#include "trans_manager.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -67,23 +67,46 @@ namespace uva {
                     typedef websocketpp::server<websocketpp::config::asio> server;
 
                     translation_server(const uint16_t port) {
-                        // Set up access channels to only log interesting things
+                        //Set up access channels to only log interesting things
                         m_server.clear_access_channels(alevel::all);
                         m_server.set_access_channels(alevel::app);
 
-                        // Initialize the Asio transport policy
+                        //Initialize the Asio transport policy
                         m_server.init_asio();
 
-                        //ToDo: Add the handlers for the connection events
+                        //Add the handlers for the connection events
                         m_server.set_open_handler(bind(&translation_server::on_open, this, _1));
                         m_server.set_close_handler(bind(&translation_server::on_close, this, _1));
                         m_server.set_fail_handler(bind(&translation_server::on_fail, this, _1));
 
-                        // Bind the handlers we are using
+                        //Bind the handlers we are using
                         m_server.set_message_handler(bind(&translation_server::on_message, this, _1, _2));
 
-                        // Set the port that the server will listen to
+                        //Set the reply sending function to the translation manager
+                        m_manager.set_response_sender(bind(&translation_server::send_response, this, _1, _2));
+
+                        //Set the port that the server will listen to
                         m_server.listen(port);
+                    }
+
+                    /**
+                     * Allows to send the translation job response to the client associated with the given connection handler.
+                     * @param hdl the connection handler to identify the connection
+                     * @param response the translation response object to be used
+                     */
+                    void send_response(connection_hdl hdl, trans_job_response & response) {
+                        //Get the response string
+                        const string reply_str = response.serialize();
+                        //Declare the error code
+                        error_code ec;
+                        
+                        //Send/schedule the translation job reply
+                        m_server.send(hdl, reply_str, text, ec);
+                        
+                        //Locally report sending error
+                        if (ec) {
+                            LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
+                        }
                     }
 
                     /**
@@ -91,10 +114,13 @@ namespace uva {
                      * @param hdl
                      */
                     void on_open(connection_hdl hdl) {
-                        //Create a new session object for the handler
-                        string err_msg;
-                        session_object_ptr session_ptr = m_manager.create_session(hdl, err_msg);
-                        if (session_ptr == NULL) {
+                        try {
+                            //Create a new session object for the handler
+                            m_manager.open_session(hdl);
+                        } catch (Exception & ex) {
+                            //Locally report error
+                            string err_msg = ex.get_message();
+                            LOG_ERROR << err_msg << END_LOG;
                             m_server.close(hdl, websocketpp::close::status::internal_endpoint_error, err_msg);
                         }
                     }
@@ -105,7 +131,7 @@ namespace uva {
                      */
                     void on_close(connection_hdl hdl) {
                         //Destroy the session 
-                        m_manager.destroy_session(hdl);
+                        m_manager.close_session(hdl);
                     }
 
                     /**
@@ -129,25 +155,17 @@ namespace uva {
                             request_ptr = new trans_job_request(msg->get_payload());
 
                             //Schedule a translation job
-                            session_object_ptr session_ptr = m_manager.get_session(hdl);
-                            session_ptr->add_job_request(request_ptr);
+                            m_manager.translate(hdl, request_ptr);
                         } catch (Exception & ex) {
                             //Locally report error
                             LOG_ERROR << ex.get_message() << END_LOG;
 
                             //Create the reply message, with or without job id
                             const job_id_type job_id = (request_ptr == NULL) ? trans_job_request::UNDEFINED_JOB_ID : request_ptr->get_job_id();
-                            trans_job_reply reply(job_id, job_result_code::RESULT_ERROR, ex.get_message());
-                            const string reply_str = reply.serialize();
-                            
-                            //Declare the error code
-                            error_code ec;
-                            //Send/schedule the translation job reply
-                            m_server.send(hdl, reply_str, text, ec);
-                            //Locally report sending error
-                            if (ec) {
-                                LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
-                            }
+                            trans_job_response response(job_id, job_result_code::RESULT_ERROR, ex.get_message());
+
+                            //Send the response
+                            send_response(hdl, response);
                         }
                     }
 
@@ -155,7 +173,7 @@ namespace uva {
                     //Stores the server object
                     server m_server;
                     //Stores the session manager object
-                    session_manager m_manager;
+                    trans_manager m_manager;
                 };
             }
         }

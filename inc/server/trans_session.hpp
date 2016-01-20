@@ -42,8 +42,8 @@ namespace uva {
             namespace server {
 
                 //Declare the session object pointer
-                class session_object;
-                typedef session_object * session_object_ptr;
+                class trans_session;
+                typedef trans_session * trans_session_ptr;
 
                 //Make the typedef for the translation session id
                 typedef uint64_t session_id_type;
@@ -52,7 +52,7 @@ namespace uva {
                  * This is a session object, that contains the connection information
                  * and the scheduled translation job requests information for the connection.
                  */
-                class session_object {
+                class trans_session {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
 
@@ -62,13 +62,13 @@ namespace uva {
                     /**
                      * Allows to create a new session object for the translation client.
                      */
-                    session_object() : m_session_id(m_id_mgr.get_next_id()) {
+                    trans_session() : m_session_id(m_id_mgr.get_next_id()) {
                     }
 
                     /**
                      * The default destructor
                      */
-                    virtual ~session_object() {
+                    virtual ~trans_session() {
                         //ToDo: Go through all the remaining pending translation jobs and stop/deallocate them
                     }
 
@@ -116,9 +116,9 @@ namespace uva {
                     map<job_id_type, trans_job_request_ptr> m_jobs;
                 };
 
-                constexpr session_id_type session_object::MINIMUM_SESSION_ID;
+                constexpr session_id_type trans_session::MINIMUM_SESSION_ID;
 
-                id_manager<session_id_type> session_object::m_id_mgr(MINIMUM_SESSION_ID);
+                id_manager<session_id_type> trans_session::m_id_mgr(MINIMUM_SESSION_ID);
             }
         }
     }

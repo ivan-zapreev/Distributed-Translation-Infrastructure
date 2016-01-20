@@ -38,7 +38,7 @@
 
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
-#include "common/messaging/trans_job_reply.hpp"
+#include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
@@ -278,7 +278,7 @@ namespace uva {
                     //Stores the mapping from the translation job request id to
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
-                    unordered_map<job_id_type, trans_job_reply *> m_jobs;
+                    unordered_map<job_id_type, trans_job_response *> m_jobs;
                 };
             }
         }
