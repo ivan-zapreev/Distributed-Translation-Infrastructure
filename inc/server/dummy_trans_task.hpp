@@ -55,6 +55,11 @@ namespace uva {
                     public:
                         typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id, const string & text) > response_sender;
 
+                        //The maximum time the dummy task will be doing translation
+                        static constexpr uint32_t MAX_RUN_SEC = 2 * 60; // 2 minutes
+                        //The maximum time the dummy task will be waiting to start
+                        static constexpr uint32_t MAX_WAIT_SEC = 60; // 1 minute
+
                         /**
                          * This is a basic constructor that receives the 
                          * @param session_id the translation task id
@@ -90,23 +95,35 @@ namespace uva {
                     protected:
 
                         /**
+                         * Allows to run the thread with periodical sleeps, each second
+                         * one will check if the thread is interrupted, if yes then it will stop.
+                         * The time the method will execute is random and is limited by the
+                         * method's argument value +/- overhead.
+                         * @param max_dur_sec the maximum time in seconds to be run.
+                         */
+                        template<uint32_t MAX_DUR_SEC>
+                        void run_interruptable_job() {
+                            if (!is_interrupted) {
+                                const uint32_t time_sec = rand() % MAX_DUR_SEC;
+                                for (uint32_t i = 0; i <= time_sec; ++i) {
+                                    if (is_interrupted) break;
+                                    this_thread::sleep_for(chrono::seconds(1));
+                                }
+                            }
+                        }
+
+                        /**
                          * Allows to start the translation job simulation
                          */
                         void run_simulation() {
                             // 1. The waiting sleep that just sleeps for a random
                             //    number of milliseconds from a range, this should
                             //    emulate the delay before the translation is started
-                            this_thread::sleep_for(chrono::seconds(1));
+                            run_interruptable_job<MAX_WAIT_SEC>();
 
                             // 2. The main loop that emulates the translation job execution.
                             //    This is to emulate the actual decoding process.
-                            if (!is_interrupted) {
-                                const uint32_t num_iterations = rand() % 100;
-                                for (uint32_t i = 0; i <= num_iterations; ++i) {
-                                    if (is_interrupted) break;
-                                    this_thread::sleep_for(chrono::seconds(1));
-                                }
-                            }
+                            run_interruptable_job<MAX_RUN_SEC>();
 
                             // 3. Send the response to the client
                             m_sender_func(m_session_id, m_request->get_job_id(), string("Translation for: ") + m_request->get_text());
@@ -122,6 +139,9 @@ namespace uva {
                         //Stores the response setter
                         const response_sender m_sender_func;
                     };
+
+                    constexpr uint32_t dummy_trans_task::MAX_RUN_SEC;
+                    constexpr uint32_t dummy_trans_task::MAX_WAIT_SEC;
                 }
             }
         }
