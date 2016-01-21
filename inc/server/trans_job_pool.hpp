@@ -23,6 +23,8 @@
  * Created on January 20, 2016, 3:01 PM
  */
 
+#include <map>
+
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
@@ -42,6 +44,8 @@ using namespace uva::smt::decoding::server::dummy;
 using websocketpp::lib::bind;
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
+using websocketpp::lib::placeholders::_3;
+using websocketpp::lib::placeholders::_4;
 
 #ifndef TRANS_JOB_POOL_HPP
 #define TRANS_JOB_POOL_HPP
@@ -50,9 +54,6 @@ namespace uva {
     namespace smt {
         namespace decoding {
             namespace server {
-
-                //Typedef the dummy task id.
-                typedef uint64_t task_id_type;
 
                 /**
                  * This class is used to schedule the translation jobs.
@@ -66,13 +67,15 @@ namespace uva {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
                     typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id, const string & text) > response_sender;
+                    typedef std::map<task_id_type, dummy_trans_task_ptr> tasks_map_type;
+                    typedef std::map<session_id_type, task_id_type> sessions_map_type;
 
                     /**
                      * The basic constructor
                      * 
                      * ToDo: Possibly limit the number of translation jobs to be scheduled
                      */
-                    trans_job_pool() {
+                    trans_job_pool() : m_task_id_mgr(trans_task::MINIMUM_TASK_ID) {
                     }
 
                     /**
@@ -96,12 +99,23 @@ namespace uva {
                     void schedule_job(const session_id_type session_id, const trans_job_request_ptr job) {
                         scoped_lock guard(m_lock);
 
-                        //ToDo: Implement, issue the task id
+                        //ToDo: Split the translation job into translation tasks, per sentence.
 
-                        //Instantiate the task
-                        new dummy_trans_task(session_id, job, m_sender_func);
+                        //ToDo: Add the task id to the list of tasks associated with the given session
 
-                        //ToDo: Register the task, so that one could cancel it from the jobs canceling method
+                        //Issue the new task id
+                        task_id_type task_id = m_task_id_mgr.get_next_id();
+
+                        //Instantiate the new task and add it to the list of running tasks
+                        tasks_map[task_id] = new dummy_trans_task(task_id, session_id, job,
+                                bind(&trans_job_pool::report_task_result, this, _1, _2, _3, _4));
+
+                        //Do sanity check on that there is no other translation task id associated with this session
+                        ASSERT_SANITY_THROW((sessions_map[session_id] != session::UNDEFINED_SESSION_ID),
+                                string("Session ") + to_string(session_id) + " already has a running task!");
+
+                        //Add the session to translation tasks mapping
+                        sessions_map[session_id] = task_id;
                     }
 
                     /**
@@ -111,15 +125,79 @@ namespace uva {
                     void cancel_jobs(const session_id_type session_id) {
                         scoped_lock guard(m_lock);
 
-                        //ToDo: Implement
+                        //Get the tasks associated with the given session
+                        task_id_type task_id = sessions_map[session_id];
+
+                        //Remove the session to task ids mapping
+                        sessions_map.erase(session_id);
+
+                        //if there is a task associated with the given session then cancel it
+                        if (task_id != session::UNDEFINED_SESSION_ID) {
+                            //Stop the translation task
+                            tasks_map[task_id]->stop_simulation();
+                            //Delete the translation task
+                            delete tasks_map[task_id];
+                            //Erase the translation task mapping
+                            tasks_map.erase(task_id);
+                        }
+
+                        //ToDo: Once a session has many jobs and those have many
+                        //tasks the cancellation process shall be made more involved
+                    }
+
+                protected:
+
+                    /**
+                     * Allows to report the translation task report
+                     * @param task_id the translation task id
+                     * @param session_id the session id
+                     * @param job_id the job id
+                     * @param text the translated text
+                     */
+                    void report_task_result(const task_id_type task_id, const session_id_type session_id, const job_id_type job_id, const string & text) {
+                        //Declare the dummy task
+                        dummy_trans_task_ptr trans_task = NULL;
+                        //Do the task retrieval synchronized to avoid collisions
+                        {
+                            scoped_lock guard(m_lock);
+
+                            //Obtain the task from the mapping
+                            trans_task = tasks_map[task_id];
+
+                            //Remove the task from the list of scheduled tasks
+                            tasks_map.erase(task_id);
+
+                            //Remove the session to task id mapping
+                            sessions_map.erase(session_id);
+                        }
+
+                        //If the dummy task was found then send the response and delete it
+                        if (trans_task != NULL) {
+                            //Send the response
+                            m_sender_func(session_id, job_id, text);
+
+                            //Delete the task
+                            delete trans_task;
+                        } else {
+                            LOG_ERROR << "Could not find a dummy task for: " << task_id << "/" << session_id << "/" << job_id << END_LOG;
+                        }
                     }
 
                 private:
                     //Stores the synchronization mutex
                     websocketpp::lib::mutex m_lock;
 
+                    //Stores the instance of the id manager
+                    id_manager<task_id_type> m_task_id_mgr;
+
                     //Stores the reply sender functional
                     response_sender m_sender_func;
+
+                    //Stores the mapping from the translation task id to the translation tasks
+                    tasks_map_type tasks_map;
+
+                    //Stores the mapping from the session id to the translation task ids
+                    sessions_map_type sessions_map;
                 };
 
             }

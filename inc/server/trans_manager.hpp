@@ -213,7 +213,7 @@ namespace uva {
                     //Stores the translation job pool
                     trans_job_pool m_job_pool;
 
-                    //Stores the static instance of the id manager
+                    //Stores the instance of the id manager
                     id_manager<session_id_type> m_session_id_mgr;
 
                     //Stores the reply sender functional

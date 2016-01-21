@@ -705,6 +705,7 @@
         <in>trans_job_pool.hpp</in>
         <in>trans_manager.hpp</in>
         <in>trans_session.hpp</in>
+        <in>trans_task.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>

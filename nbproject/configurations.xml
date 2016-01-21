@@ -8,6 +8,7 @@
         <in>dummy_trans_task.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_session.hpp</in>
+        <in>trans_task.hpp</in>
       </df>
     </df>
     <df root="src" name="2">
@@ -110,6 +111,8 @@
       <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_session.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/trans_task.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
