@@ -1,5 +1,5 @@
 /* 
- * File:   trans_task_result.hpp
+ * File:   trans_job_result.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on January 21, 2016, 3:05 PM
+ * Created on January 21, 2016, 4:08 PM
  */
 
 #include <string>
@@ -31,8 +31,8 @@
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
 
-#ifndef TRANS_TASK_RESULT_HPP
-#define	TRANS_TASK_RESULT_HPP
+#ifndef TRANS_JOB_RESULT_HPP
+#define	TRANS_JOB_RESULT_HPP
 
 namespace uva {
     namespace smt {
@@ -40,25 +40,25 @@ namespace uva {
             namespace server {
 
                 /**
-                 * This class represents the translation task result
+                 * This class represents the translation job result
                  */
-                class trans_task_result : public abs_trans_result {
+                class trans_job_result : public abs_trans_result {
                 public:
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the id of the session from which the translation request is received
                      * @param job_id the translation job id
-                     * @param task_id the id of the translation task within the translation job
+                     * @param task_ids the list of task ids from which this job consists of
                      */
-                    trans_task_result(const session_id_type session_id, const job_id_type job_id, const task_id_type task_id)
-                    : abs_trans_result(session_id, job_id), m_task_id(task_id), m_code(trans_job_result::RESULT_UNDEFINED), m_text("") {
+                    trans_job_result(const session_id_type session_id, const job_id_type job_id)
+                    : abs_trans_result(session_id, job_id) {
                     }
 
                     /**
                      * The basic destructor
                      */
-                    virtual ~trans_task_result() {
+                    virtual ~trans_job_result() {
                         //Nothing to be done
                     }
 
@@ -99,10 +99,10 @@ namespace uva {
                 private:
                     //Stores the translation task id
                     const task_id_type m_task_id;
-                    
+
                     //Stores the translation task result code
                     trans_job_result m_code;
-                    
+
                     //Stores the translation task result text, error message or the translated sentence
                     string m_text;
                 };
@@ -111,5 +111,5 @@ namespace uva {
     }
 }
 
-#endif	/* TRANS_TASK_RESULT_HPP */
+#endif	/* TRANS_JOB_RESULT_HPP */
 

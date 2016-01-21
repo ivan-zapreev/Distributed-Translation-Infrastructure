@@ -10,8 +10,10 @@
         </df>
       </df>
       <df name="server">
+        <in>abs_trans_result.hpp</in>
         <in>dummy_trans_task.hpp</in>
         <in>trans_job_pool.hpp</in>
+        <in>trans_job_result.hpp</in>
         <in>trans_session.hpp</in>
         <in>trans_task.hpp</in>
         <in>trans_task_result.hpp</in>
@@ -113,9 +115,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/abs_trans_result.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/server/dummy_trans_task.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/trans_job_result.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_session.hpp" ex="false" tool="3" flavor2="0">
       </item>
