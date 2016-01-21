@@ -32,6 +32,7 @@
 
 #include "trans_session.hpp"
 #include "trans_task.hpp"
+#include "trans_task_result.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
@@ -47,7 +48,7 @@ namespace uva {
         namespace decoding {
             namespace server {
                 namespace dummy {
-                    
+
                     //Define the pointer to the dummy translation task
                     class dummy_trans_task;
                     typedef dummy_trans_task * dummy_trans_task_ptr;
@@ -58,7 +59,7 @@ namespace uva {
                      */
                     class dummy_trans_task : public thread {
                     public:
-                        typedef websocketpp::lib::function<void(const task_id_type task_id, const session_id_type session_id, const job_id_type job_id, const string & text) > task_result_reporter;
+                        typedef websocketpp::lib::function<void(const trans_task_result & text) > task_result_setter;
 
                         //The maximum time the dummy task will be doing translation
                         static constexpr uint32_t MAX_RUN_SEC = 2 * 60; // 2 minutes
@@ -72,13 +73,13 @@ namespace uva {
                          * @param request the pointer to the translation job request, not NULL
                          */
                         dummy_trans_task(const task_id_type task_id, const session_id_type session_id, const trans_job_request_ptr request,
-                                task_result_reporter sender_func)
+                                task_result_setter sender_func)
                         : thread(bind(&dummy_trans_task::run_simulation, this)),
-                        m_is_interrupted(false), m_task_id(task_id), m_session_id(session_id),
-                        m_request(request), m_report_result_func(sender_func) {
+                        m_is_interrupted(false), m_trans_result(session_id, request->get_job_id(), task_id),
+                        m_request(request), m_set_task_result_func(sender_func) {
                             //Do the sanity check asserts
                             ASSERT_SANITY_THROW((m_request == NULL), "Received a NULL pointer translation request!");
-                            ASSERT_SANITY_THROW(!m_report_result_func,
+                            ASSERT_SANITY_THROW(!m_set_task_result_func,
                                     "The sender function of the dummy translation task is not set!");
                         }
 
@@ -94,7 +95,7 @@ namespace uva {
                         /**
                          * Allows to stop the translation job simulation
                          */
-                        void stop_simulation() {
+                        void cancel() {
                             //Set the interrupted flag
                             m_is_interrupted = true;
                         }
@@ -123,30 +124,36 @@ namespace uva {
                          * Allows to start the translation job simulation
                          */
                         void run_simulation() {
-                            // 1. The waiting sleep that just sleeps for a random
-                            //    number of milliseconds from a range, this should
-                            //    emulate the delay before the translation is started
+                            //The waiting sleep that just sleeps for a random
+                            //number of milliseconds from a range, this should
+                            //emulate the delay before the translation is started
                             run_interruptable_job<MAX_WAIT_SEC>();
 
-                            // 2. The main loop that emulates the translation job execution.
-                            //    This is to emulate the actual decoding process.
+                            //The main loop that emulates the translation job execution.
+                            //This is to emulate the actual decoding process.
                             run_interruptable_job<MAX_RUN_SEC>();
 
-                            // 3. Send the response to the client
-                            m_report_result_func(m_task_id, m_session_id, m_request->get_job_id(), string("Translation for: ") + m_request->get_text());
+                            //Set the data into the translation result, depending
+                            //on whether we were interrupted or not, to it synchronously
+                            if (m_is_interrupted) {
+                                m_trans_result.set_result(trans_job_result::RESULT_ERROR, "Is interrupter!");
+                            } else {
+                                m_trans_result.set_result(trans_job_result::RESULT_OK, "Translated text!");
+                            }
+
+                            //Send the response to the client
+                            m_set_task_result_func(m_trans_result);
                         }
 
                     private:
                         //Stores the interrupted flag
                         bool m_is_interrupted;
-                        //Stores the translation task id
-                        const task_id_type m_task_id;
-                        //Stores the session id
-                        const session_id_type m_session_id;
+                        //Stores the translation result 
+                        trans_task_result m_trans_result;
                         //Stores the pointer to the translation job request, not NULL
                         const trans_job_request_ptr m_request;
                         //Stores the response setter
-                        const task_result_reporter m_report_result_func;
+                        const task_result_setter m_set_task_result_func;
                     };
 
                     constexpr uint32_t dummy_trans_task::MAX_RUN_SEC;

@@ -43,6 +43,7 @@ using namespace uva::smt::decoding::common::messaging;
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
 using websocketpp::lib::placeholders::_3;
+using websocketpp::lib::placeholders::_4;
 using websocketpp::lib::bind;
 
 #ifndef SESSION_MANAGER_HPP
@@ -71,7 +72,7 @@ namespace uva {
                      */
                     trans_manager() : m_session_id_mgr(session::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        m_job_pool.set_response_sender(bind(&trans_manager::send_response, this, _1, _2, _3));
+                        m_job_pool.set_response_sender(bind(&trans_manager::set_job_result, this, _1, _2, _3, _4));
                     }
 
                     /**
@@ -178,11 +179,12 @@ namespace uva {
                      * this will also send the response to the client.
                      * @param session_id the session id
                      * @param job_id the job id
+                     * @param code the response code to indicate the job status
                      * @param text the translated text
                      */
-                    void send_response(const session_id_type session_id, const job_id_type job_id, const string & text) {
+                    void set_job_result(const session_id_type session_id, const job_id_type job_id, const trans_job_result code, const string & text) {
                         //Create the translation job response
-                        trans_job_response response(job_id, job_result_code::RESULT_OK, text);
+                        trans_job_response response(job_id, code, text);
 
                         //Do the sanity check assert
                         ASSERT_SANITY_THROW(!m_sender_func,

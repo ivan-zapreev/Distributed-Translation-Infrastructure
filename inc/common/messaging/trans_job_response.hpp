@@ -31,6 +31,7 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
 #include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/trans_job_result.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -46,17 +47,6 @@ namespace uva {
         namespace decoding {
             namespace common {
                 namespace messaging {
-
-                    /**
-                     * Stores the translation job result codes, currently
-                     * there is just two results possible, the job is
-                     * done - OK; or there was some error - ERROR
-                     */
-                    enum job_result_code {
-                        RESULT_OK = 0,
-                        RESULT_ERROR = RESULT_OK + 1,
-                        size = RESULT_ERROR + 1
-                    };
 
                     /**
                      * This class represents the translation reply message, which
@@ -98,7 +88,7 @@ namespace uva {
                                 m_job_id = stoi(text.str());
                                 //Second get the result code
                                 if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
-                                    m_code = (job_result_code) stoi(text.str());
+                                    m_code = (trans_job_result) stoi(text.str());
 
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
@@ -135,7 +125,7 @@ namespace uva {
                          * the translated text or the error message corresponding
                          * to the error code
                          */
-                        trans_job_response(const job_id_type job_id, const job_result_code code,
+                        trans_job_response(const job_id_type job_id, const trans_job_result code,
                                 const string & text) : m_job_id(job_id), m_code(code), m_text(text) {
                         }
 
@@ -161,14 +151,14 @@ namespace uva {
                          * @return true if the reply is good and contains the translated text.
                          */
                         const bool is_good() const {
-                            return (m_code == job_result_code::RESULT_OK);
+                            return (m_code == trans_job_result::RESULT_OK);
                         }
 
                         /**
                          * Allows to get the translation job result code
                          * @return the translation job result code
                          */
-                        const job_result_code get_code() const {
+                        const trans_job_result get_code() const {
                             return m_code;
                         }
 
@@ -186,7 +176,7 @@ namespace uva {
                         //Stores the translation job id
                         job_id_type m_job_id;
                         //Stores the translation job result code
-                        job_result_code m_code;
+                        trans_job_result m_code;
                         //Stores the translation job result text, the error
                         //message or the text in the target language.
                         string m_text;

@@ -29,6 +29,7 @@
 #include <websocketpp/server.hpp>
 
 #include "dummy_trans_task.hpp"
+#include "trans_task_result.hpp"
 #include "trans_session.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
@@ -43,9 +44,6 @@ using namespace uva::smt::decoding::server::dummy;
 
 using websocketpp::lib::bind;
 using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::placeholders::_3;
-using websocketpp::lib::placeholders::_4;
 
 #ifndef TRANS_JOB_POOL_HPP
 #define TRANS_JOB_POOL_HPP
@@ -66,9 +64,11 @@ namespace uva {
                 class trans_job_pool {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
-                    typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id, const string & text) > response_sender;
+                    typedef websocketpp::lib::function<void(const session_id_type session_id, const job_id_type job_id,
+                            const trans_job_result code, const string & text) > job_result_setter;
                     typedef std::map<task_id_type, dummy_trans_task_ptr> tasks_map_type;
                     typedef std::map<session_id_type, task_id_type> sessions_map_type;
+                    typedef sessions_map_type::iterator sessions_map_iter_type;
 
                     /**
                      * The basic constructor
@@ -82,15 +82,16 @@ namespace uva {
                      * he basic destructor
                      */
                     virtual ~trans_job_pool() {
-                        //ToDo: Cancel the scheduled translation tasks and stop the internal thread
+                        //Cancel all the remaining jobs
+                        cancel_all_jobs();
                     }
 
                     /**
                      * Allows to set the response sender function for sending the replies to the client
-                     * @param sender the s ender functional to be set
+                     * @param set_job_result_func the s ender functional to be set
                      */
-                    void set_response_sender(response_sender sender) {
-                        m_sender_func = sender;
+                    void set_response_sender(job_result_setter set_job_result_func) {
+                        m_set_job_result_func = set_job_result_func;
                     }
 
                     /**
@@ -107,15 +108,28 @@ namespace uva {
                         task_id_type task_id = m_task_id_mgr.get_next_id();
 
                         //Instantiate the new task and add it to the list of running tasks
-                        tasks_map[task_id] = new dummy_trans_task(task_id, session_id, job,
-                                bind(&trans_job_pool::report_task_result, this, _1, _2, _3, _4));
+                        m_tasks_map[task_id] = new dummy_trans_task(task_id, session_id, job,
+                                bind(&trans_job_pool::set_task_result, this, _1));
 
                         //Do sanity check on that there is no other translation task id associated with this session
-                        ASSERT_SANITY_THROW((sessions_map[session_id] != session::UNDEFINED_SESSION_ID),
+                        ASSERT_SANITY_THROW((m_sessions_map[session_id] != session::UNDEFINED_SESSION_ID),
                                 string("Session ") + to_string(session_id) + " already has a running task!");
 
                         //Add the session to translation tasks mapping
-                        sessions_map[session_id] = task_id;
+                        m_sessions_map[session_id] = task_id;
+                    }
+
+                    /**
+                     * Allows to cancel all the currently running translation jobs in the server
+                     */
+                    void cancel_all_jobs() {
+                        scoped_lock guard(m_lock);
+
+                        //Cancel the scheduled translation tasks and stop the internal thread
+                        for (sessions_map_iter_type iter = m_sessions_map.begin(); iter != m_sessions_map.end(); ++iter) {
+                            //Call the canceling method on the task
+                            m_tasks_map[iter->second]->cancel();
+                        }
                     }
 
                     /**
@@ -125,21 +139,8 @@ namespace uva {
                     void cancel_jobs(const session_id_type session_id) {
                         scoped_lock guard(m_lock);
 
-                        //Get the tasks associated with the given session
-                        task_id_type task_id = sessions_map[session_id];
-
-                        //Remove the session to task ids mapping
-                        sessions_map.erase(session_id);
-
-                        //if there is a task associated with the given session then cancel it
-                        if (task_id != session::UNDEFINED_SESSION_ID) {
-                            //Stop the translation task
-                            tasks_map[task_id]->stop_simulation();
-                            //Delete the translation task
-                            delete tasks_map[task_id];
-                            //Erase the translation task mapping
-                            tasks_map.erase(task_id);
-                        }
+                        //Call the canceling method on the task
+                        m_tasks_map[m_sessions_map[session_id]]->cancel();
 
                         //ToDo: Once a session has many jobs and those have many
                         //tasks the cancellation process shall be made more involved
@@ -148,13 +149,15 @@ namespace uva {
                 protected:
 
                     /**
-                     * Allows to report the translation task report
-                     * @param task_id the translation task id
-                     * @param session_id the session id
-                     * @param job_id the job id
-                     * @param text the translated text
+                     * Allows to report the translation task report, will be called from another thread
+                     * @param task_result the translation task result
                      */
-                    void report_task_result(const task_id_type task_id, const session_id_type session_id, const job_id_type job_id, const string & text) {
+                    void set_task_result(const trans_task_result & task_result) {
+                        //Declare and initialize the needed constants
+                        const session_id_type session_id = task_result.get_session_id();
+                        const job_id_type job_id = task_result.get_job_id();
+                        const task_id_type task_id = task_result.get_task_id();
+                        
                         //Declare the dummy task
                         dummy_trans_task_ptr trans_task = NULL;
                         //Do the task retrieval synchronized to avoid collisions
@@ -162,19 +165,19 @@ namespace uva {
                             scoped_lock guard(m_lock);
 
                             //Obtain the task from the mapping
-                            trans_task = tasks_map[task_id];
+                            trans_task = m_tasks_map[task_id];
 
                             //Remove the task from the list of scheduled tasks
-                            tasks_map.erase(task_id);
+                            m_tasks_map.erase(task_id);
 
                             //Remove the session to task id mapping
-                            sessions_map.erase(session_id);
+                            m_sessions_map.erase(session_id);
                         }
 
                         //If the dummy task was found then send the response and delete it
                         if (trans_task != NULL) {
-                            //Send the response
-                            m_sender_func(session_id, job_id, text);
+                            //ToDo: Create a job result and set it if the job is finished!
+                            //m_set_job_result_func(job_result);
 
                             //Delete the task
                             delete trans_task;
@@ -191,13 +194,13 @@ namespace uva {
                     id_manager<task_id_type> m_task_id_mgr;
 
                     //Stores the reply sender functional
-                    response_sender m_sender_func;
+                    job_result_setter m_set_job_result_func;
 
                     //Stores the mapping from the translation task id to the translation tasks
-                    tasks_map_type tasks_map;
+                    tasks_map_type m_tasks_map;
 
                     //Stores the mapping from the session id to the translation task ids
-                    sessions_map_type sessions_map;
+                    sessions_map_type m_sessions_map;
                 };
 
             }
