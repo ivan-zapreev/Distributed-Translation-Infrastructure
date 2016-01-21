@@ -24,7 +24,7 @@
  */
 
 #ifndef TRANSLATION_CLIENT_HPP
-#define	TRANSLATION_CLIENT_HPP
+#define TRANSLATION_CLIENT_HPP
 
 #include <cstdlib>
 #include <string>
@@ -155,7 +155,7 @@ namespace uva {
                     job_id_type send(trans_job_request & request) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
-                        
+
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -181,7 +181,7 @@ namespace uva {
                     void receive(const job_id_type job_id, string & target_text, const size_t timeout_millisec = 0) {
                         //Make sure that message related activity is synchronized
                         scoped_lock guard(m_lock_msg);
-                        
+
                         //ToDo: Wait for the job with the given id.
                     }
 
@@ -236,11 +236,19 @@ namespace uva {
                      * @return true if the connection is successfully established
                      */
                     bool wait_connect() {
+                        //Declare the variable to store the local connection status
+                        bool is_connecting = false;
+                        
                         //Wait until the connection is established
                         while (1) {
-                            scoped_lock guard(m_lock_con);
-                            //If we did not open the connection and did not fail then  we wait
-                            if (!m_open && !m_done) {
+                            //Check the connection status
+                            {
+                                scoped_lock guard(m_lock_con);
+                                is_connecting = !m_open && !m_done;
+                            }
+                            
+                            //If we we are still connecting then sleep, otherwise move on
+                            if (is_connecting) {
                                 m_client.get_alog().write(websocketpp::log::alevel::app,
                                         string("Going to sleep, m_open = ") + to_string(m_open) +
                                         string(", m_done = ") + to_string(m_done));
@@ -285,5 +293,5 @@ namespace uva {
     }
 }
 
-#endif	/* TRANSLATION_CLIENT_HPP */
+#endif /* TRANSLATION_CLIENT_HPP */
 
