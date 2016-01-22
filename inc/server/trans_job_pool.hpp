@@ -28,8 +28,8 @@
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
-#include "dummy_trans_task.hpp"
-#include "trans_task_result.hpp"
+#include "decoder_stub.hpp"
+#include "trans_task.hpp"
 #include "trans_session.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
@@ -95,11 +95,21 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to schedule a new translation job. The execution of the job is deferred and asynchronous.
+                     * Allows to schedule a new translation job.
+                     * The execution of the job is deferred and asynchronous.
+                     * @oaram trans_job the translation job to be scheduled
                      */
-                    void schedule_job(const session_id_type session_id, const trans_job_request_ptr job) {
+                    void schedule_job(trans_job_ptr trans_job) {
                         scoped_lock guard(m_lock);
 
+                        //Create a translation job 
+                        
+                        //Add the translation job to the map
+                        
+                        //Schedule the translation tasks
+
+                        const session_id_type session_id;
+                        
                         //ToDo: Split the translation job into translation tasks, per sentence.
 
                         //ToDo: Add the task id to the list of tasks associated with the given session
@@ -108,7 +118,7 @@ namespace uva {
                         task_id_type task_id = m_task_id_mgr.get_next_id();
 
                         //Instantiate the new task and add it to the list of running tasks
-                        m_tasks_map[task_id] = new dummy_trans_task(task_id, session_id, job,
+                        m_tasks_map[task_id] = new decoder_stub(task_id, session_id, job,
                                 bind(&trans_job_pool::set_task_result, this, _1));
 
                         //Do sanity check on that there is no other translation task id associated with this session
@@ -152,7 +162,7 @@ namespace uva {
                      * Allows to report the translation task report, will be called from another thread
                      * @param task_result the translation task result
                      */
-                    void set_task_result(const trans_task_result & task_result) {
+                    void set_task_result(const trans_task & task_result) {
                         //Declare and initialize the needed constants
                         const session_id_type session_id = task_result.get_session_id();
                         const job_id_type job_id = task_result.get_job_id();

@@ -49,17 +49,17 @@ namespace uva {
             namespace server {
                 namespace dummy {
 
-                    //Define the pointer to the dummy translation task
-                    class dummy_trans_task;
-                    typedef dummy_trans_task * dummy_trans_task_ptr;
+                    //Define the pointer to the dummy decoder
+                    class decoder_stub;
+                    typedef decoder_stub * decoder_stub_ptr;
 
                     /**
-                     * This is a dummy translation task class that is used for the sake of testing only.
-                     * This class inherits from a thread and 
+                     * This is a dummy decoder class that is used for the sake of testing only.
+                     * This class inherits from a thread and represents a decoder instance that
+                     * is supposed to execute a translation job for a sentence.
                      */
-                    class dummy_trans_task : public thread {
+                    class decoder_stub : public thread {
                     public:
-                        typedef websocketpp::lib::function<void(const trans_task_result & text) > task_result_setter;
 
                         //The maximum time the dummy task will be doing translation
                         static constexpr uint32_t MAX_RUN_SEC = 2 * 60; // 2 minutes
@@ -72,9 +72,9 @@ namespace uva {
                          * @param session_id the translation task id
                          * @param request the pointer to the translation job request, not NULL
                          */
-                        dummy_trans_task(const task_id_type task_id, const session_id_type session_id, const trans_job_request_ptr request,
+                        decoder_stub(const task_id_type task_id, const session_id_type session_id, const trans_job_request_ptr request,
                                 task_result_setter sender_func)
-                        : thread(bind(&dummy_trans_task::run_simulation, this)),
+                        : thread(bind(&decoder_stub::run_simulation, this)),
                         m_is_interrupted(false), m_trans_result(session_id, request->get_job_id(), task_id),
                         m_request(request), m_set_task_result_func(sender_func) {
                             //Do the sanity check asserts
@@ -86,7 +86,7 @@ namespace uva {
                         /**
                          * The basic destructor of the dummy translation job
                          */
-                        virtual ~dummy_trans_task() {
+                        virtual ~decoder_stub() {
                             if (m_request != NULL) {
                                 delete m_request;
                             }
@@ -136,9 +136,9 @@ namespace uva {
                             //Set the data into the translation result, depending
                             //on whether we were interrupted or not, to it synchronously
                             if (m_is_interrupted) {
-                                m_trans_result.set_result(trans_job_result::RESULT_ERROR, "Is interrupter!");
+                                m_trans_result.set_translation(trans_job_result::RESULT_ERROR, "Is interrupter!");
                             } else {
-                                m_trans_result.set_result(trans_job_result::RESULT_OK, "Translated text!");
+                                m_trans_result.set_translation(trans_job_result::RESULT_OK, "Translated text!");
                             }
 
                             //Send the response to the client
@@ -149,15 +149,15 @@ namespace uva {
                         //Stores the interrupted flag
                         bool m_is_interrupted;
                         //Stores the translation result 
-                        trans_task_result m_trans_result;
+                        trans_task m_trans_result;
                         //Stores the pointer to the translation job request, not NULL
                         const trans_job_request_ptr m_request;
                         //Stores the response setter
                         const task_result_setter m_set_task_result_func;
                     };
 
-                    constexpr uint32_t dummy_trans_task::MAX_RUN_SEC;
-                    constexpr uint32_t dummy_trans_task::MAX_WAIT_SEC;
+                    constexpr uint32_t decoder_stub::MAX_RUN_SEC;
+                    constexpr uint32_t decoder_stub::MAX_WAIT_SEC;
                 }
             }
         }

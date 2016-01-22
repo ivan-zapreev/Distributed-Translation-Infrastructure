@@ -29,18 +29,19 @@
 namespace uva {
     namespace smt {
         namespace decoding {
-            namespace server {
+            namespace common {
+                namespace messaging {
+                    //Make the typedef for the translation session id
+                    typedef uint64_t session_id_type;
 
-                //Make the typedef for the translation session id
-                typedef uint64_t session_id_type;
+                    namespace session {
 
-                namespace session {
+                        //Stores the undefined session job id value
+                        static constexpr session_id_type UNDEFINED_SESSION_ID = 0;
 
-                    //Stores the undefined session job id value
-                    static constexpr session_id_type UNDEFINED_SESSION_ID = 0;
-
-                    //Stores the minimum allowed session job id
-                    static constexpr session_id_type MINIMUM_SESSION_ID = 1;
+                        //Stores the minimum allowed session job id
+                        static constexpr session_id_type MINIMUM_SESSION_ID = 1;
+                    }
                 }
             }
         }

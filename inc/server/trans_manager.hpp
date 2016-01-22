@@ -123,7 +123,7 @@ namespace uva {
                      * @param hdl [in] the connection handler to identify the session object.
                      * @param request_ptr [in] the translation job request to be stored, not NULL
                      */
-                    void translate(websocketpp::connection_hdl hdl, const trans_job_request_ptr request_ptr) {
+                    void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
                         //Declare the session id variable
                         session_id_type session_id = session::UNDEFINED_SESSION_ID;
 
@@ -139,8 +139,11 @@ namespace uva {
                         ASSERT_SANITY_THROW((session_id == session::UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
+                        //Set the session id into the request
+                        request_ptr->set_session_id(session_id);
+
                         //Schedule a translation job request for the session id
-                        m_job_pool.schedule_job(session_id, request_ptr);
+                        m_job_pool.schedule_job(new trans_job(request_ptr));
                     }
 
                     /**

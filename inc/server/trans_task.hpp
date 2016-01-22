@@ -31,17 +31,102 @@ namespace uva {
     namespace smt {
         namespace decoding {
             namespace server {
+                
+                //Define the translation task pointer
+                class trans_task;
+                typedef trans_task * trans_task_ptr;
+                
                 //Typedef the dummy task id.
                 typedef uint64_t task_id_type;
 
-                namespace trans_task {
+                /**
+                 * This class represents the translation task. Every translation task is a sentence to be translated and its id.
+                 * The source and target language selection is done beforehand and thus this information is not part of the class.
+                 */
+                class trans_task {
+                public:
+                    typedef websocketpp::lib::function<void(const trans_task &) > done_notifier;
 
                     //Stores the undefined task job id value
                     static constexpr task_id_type UNDEFINED_TASK_ID = 0;
 
                     //Stores the minimum allowed task job id
                     static constexpr task_id_type MINIMUM_TASK_ID = 1;
-                }
+
+                    /**
+                     * The basic constructor allowing to initialize the main class constants
+                     * @param task_id the id of the translation task within the translation job
+                     * @param source_sentence the sentence to be translated
+                     */
+                    trans_task(const task_id_type task_id, const string & source_sentence)
+                    : m_task_id(task_id), m_code(trans_job_result::RESULT_UNDEFINED), m_source_sentence(source_sentence), m_target_sentence("") {
+                    }
+
+                    /**
+                     * The basic destructor
+                     */
+                    virtual ~trans_task() {
+                        //Nothing to be done
+                    }
+
+                    /**
+                     * Allows to set the sentence translation result.
+                     * @param code the result code
+                     * @param target_sentence the translated sentence, or an error message if there was an error
+                     */
+                    void set_translation(const trans_job_result code, const string & target_sentence) {
+                        m_code = code;
+                        m_target_sentence = target_sentence;
+                    }
+
+                    /**
+                     * Allows to retrieve the task id
+                     * @return the task id
+                     */
+                    const task_id_type get_task_id() const {
+                        return m_task_id;
+                    }
+
+                    /**
+                     * Allows to retrieve the translation task result code
+                     * @return the translation task result code
+                     */
+                    virtual const trans_job_result get_code() const {
+                        return m_code;
+                    }
+
+                    /**
+                     * Allows to retrieve the sentence in the source language
+                     * @return the sentence in the source language
+                     */
+                    virtual const string & get_source_sentence() const {
+                        return m_source_sentence;
+                    }
+
+                    /**
+                     * Allows to retrieve the sentence in the target language or an error message
+                     * @return the sentence in the target language or an error message
+                     */
+                    virtual const string & get_target_sentence() const {
+                        return m_target_sentence;
+                    }
+
+                private:
+                    //Stores the translation task id
+                    const task_id_type m_task_id;
+
+                    //Stores the sentence to be translated
+                    const string & m_source_sentence;
+
+                    //Stores the translation task result code
+                    trans_job_result m_code;
+
+                    //Stores the translated sentence or an error message
+                    string m_target_sentence;
+                };
+
+                constexpr task_id_type trans_task::UNDEFINED_TASK_ID;
+                constexpr task_id_type trans_task::MINIMUM_TASK_ID;
             }
         }
     }

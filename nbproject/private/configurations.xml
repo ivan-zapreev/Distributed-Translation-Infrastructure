@@ -629,6 +629,7 @@
           <in>trans_job_request.hpp</in>
           <in>trans_job_response.hpp</in>
           <in>trans_job_result.hpp</in>
+          <in>trans_session.hpp</in>
         </df>
         <df name="utils">
           <df name="containers">
@@ -702,14 +703,12 @@
           <in>TrieConfigs.hpp</in>
           <in>TrieConstants.hpp</in>
         </df>
-        <in>abs_trans_result.hpp</in>
-        <in>dummy_trans_task.hpp</in>
+        <in>decoder_stub.hpp</in>
+        <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
-        <in>trans_job_result.hpp</in>
         <in>trans_manager.hpp</in>
-        <in>trans_session.hpp</in>
         <in>trans_task.hpp</in>
-        <in>trans_task_result.hpp</in>
+        <in>trans_task_pool.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>

@@ -27,24 +27,25 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
 #include "common/messaging/id_manager.hpp"
+#include "common/messaging/trans_session.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
 
-#ifndef TRANSLATION_JOB_REQUEST_HPP
-#define TRANSLATION_JOB_REQUEST_HPP
+#ifndef TRANS_JOB_REQUEST_HPP
+#define TRANS_JOB_REQUEST_HPP
 
 namespace uva {
     namespace smt {
         namespace decoding {
             namespace common {
                 namespace messaging {
-                    
+
                     //Make the typedef for the translation job id
                     typedef uint64_t job_id_type;
-                    
+
                     //Declare the translation job request pointer type
                     class trans_job_request;
                     typedef trans_job_request * trans_job_request_ptr;
@@ -136,7 +137,28 @@ namespace uva {
                          * @param target_lang the target language string
                          */
                         trans_job_request(const string & source_lang, const string & text, const string & target_lang)
-                        : m_job_id(m_id_mgr.get_next_id()), m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        : m_session_id(session::UNDEFINED_SESSION_ID), m_job_id(m_id_mgr.get_next_id()),
+                        m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        }
+
+                        /**
+                         * Allows to set the translation session id. This method to be
+                         * used on the client, for the sake of storing the session id
+                         * by the translation job request class.
+                         * @param session_id the session id issued by the server
+                         */
+                        void set_session_id(const session_id_type session_id) {
+                            m_session_id = session_id;
+                        }
+
+                        /**
+                         * Allows to get the translation session id. This method to be
+                         * used on the client, for the sake of storing the session id
+                         * by the translation job request class.
+                         * @return the session id issued by the server
+                         */
+                        const session_id_type get_session_id() const {
+                            return m_session_id;
                         }
 
                         /**
@@ -176,6 +198,7 @@ namespace uva {
                     private:
                         //Stores the static instance of the id manager
                         static id_manager<job_id_type> m_id_mgr;
+                        const session_id_type m_session_id;
                         //Stores the translation job id
                         job_id_type m_job_id;
                         //Stores the translation job source language string
