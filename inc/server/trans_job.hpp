@@ -26,14 +26,15 @@
 #include <string>
 
 #include "trans_task.hpp"
-#include "common/messaging/trans_session.hpp"
+#include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/trans_job_id.hpp"
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
 
 #ifndef TRANS_JOB_HPP
-#define	TRANS_JOB_HPP
+#define TRANS_JOB_HPP
 
 namespace uva {
     namespace smt {
@@ -110,7 +111,7 @@ namespace uva {
                      * Allows to retrieve the translation task result code
                      * @return the translation task result code
                      */
-                    virtual const trans_job get_code() const {
+                    virtual const trans_job_code get_code() const {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
@@ -120,6 +121,14 @@ namespace uva {
                      * @return the translation task result text
                      */
                     virtual const string & get_text() const {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to cancel the given translation job
+                     */
+                    void cancel() {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
@@ -139,12 +148,12 @@ namespace uva {
                     trans_job_request_ptr m_request_ptr;
 
                     //Stores the list of translation tasks of this job
-                    tasks_list_type & m_tasks;
+                    tasks_list_type m_tasks;
                 };
             }
         }
     }
 }
 
-#endif	/* TRANS_JOB_RESULT_HPP */
+#endif /* TRANS_JOB_RESULT_HPP */
 

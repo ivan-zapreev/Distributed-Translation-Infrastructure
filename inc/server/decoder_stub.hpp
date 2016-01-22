@@ -30,9 +30,8 @@
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
 
-#include "trans_session.hpp"
 #include "trans_task.hpp"
-#include "trans_task_result.hpp"
+#include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
@@ -136,9 +135,9 @@ namespace uva {
                             //Set the data into the translation result, depending
                             //on whether we were interrupted or not, to it synchronously
                             if (m_is_interrupted) {
-                                m_trans_result.set_translation(trans_job_result::RESULT_ERROR, "Is interrupter!");
+                                m_trans_result.set_translation(trans_job_code::RESULT_ERROR, "Is interrupter!");
                             } else {
-                                m_trans_result.set_translation(trans_job_result::RESULT_OK, "Translated text!");
+                                m_trans_result.set_translation(trans_job_code::RESULT_OK, "Translated text!");
                             }
 
                             //Send the response to the client

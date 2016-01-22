@@ -32,8 +32,10 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/id_manager.hpp"
-#include "trans_session.hpp"
+#include "common/messaging/trans_session_id.hpp"
+#include "common/messaging/trans_job_id.hpp"
 #include "trans_job_pool.hpp"
+#include "trans_job.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -41,9 +43,6 @@ using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::placeholders::_3;
-using websocketpp::lib::placeholders::_4;
 using websocketpp::lib::bind;
 
 #ifndef SESSION_MANAGER_HPP
@@ -70,9 +69,9 @@ namespace uva {
                      * 
                      * ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
                      */
-                    trans_manager() : m_session_id_mgr(session::MINIMUM_SESSION_ID) {
+                    trans_manager() : m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        m_job_pool.set_response_sender(bind(&trans_manager::set_job_result, this, _1, _2, _3, _4));
+                        m_job_pool.set_response_sender(bind(&trans_manager::set_job_result, this, _1));
                     }
 
                     /**
@@ -104,7 +103,7 @@ namespace uva {
                         session_id_type & session_id = m_sessions[hdl];
 
                         //Do a sanity check, that the session id is yet undefined
-                        ASSERT_SANITY_THROW((session_id != session::UNDEFINED_SESSION_ID),
+                        ASSERT_SANITY_THROW((session_id != session_id::UNDEFINED_SESSION_ID),
                                 "The same connection handler already exists and has a session!");
 
                         //Issue a session id to that new connection!
@@ -125,7 +124,7 @@ namespace uva {
                      */
                     void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
                         //Declare the session id variable
-                        session_id_type session_id = session::UNDEFINED_SESSION_ID;
+                        session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
@@ -135,8 +134,8 @@ namespace uva {
                             session_id = m_sessions[hdl];
                         }
 
-                        //Do a sanity check, that there is a session object
-                        ASSERT_SANITY_THROW((session_id == session::UNDEFINED_SESSION_ID),
+                        //Check that there is a session mapped to this handler
+                        ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
                         //Set the session id into the request
@@ -154,7 +153,7 @@ namespace uva {
                      */
                     void close_session(websocketpp::connection_hdl hdl) {
                         //Declare the session id vari/home/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_manager.hpp:60:56: error: ‘MINIMUM_SESSION_ID’ was not declared in this scopeable
-                        session_id_type session_id = session::UNDEFINED_SESSION_ID;
+                        session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
@@ -169,7 +168,7 @@ namespace uva {
                         }
 
                         //Request cancellation of all the translation jobs associated with this connection.
-                        if (session_id != session::UNDEFINED_SESSION_ID) {
+                        if (session_id != session_id::UNDEFINED_SESSION_ID) {
                             //NOTE: This can be done outside the synchronization block
                             m_job_pool.cancel_jobs(session_id);
                         }
@@ -180,14 +179,16 @@ namespace uva {
                     /**
                      * Allows to set the non-error translation result,
                      * this will also send the response to the client.
-                     * @param session_id the session id
-                     * @param job_id the job id
-                     * @param code the response code to indicate the job status
-                     * @param text the translated text
+                     * WARNING: The translation job then deleted by this method
+                     * @param trans_job the pointer to the finished translation job 
                      */
-                    void set_job_result(const session_id_type session_id, const job_id_type job_id, const trans_job_result code, const string & text) {
+                    void set_job_result(trans_job_ptr trans_job) {
+                        //Declare and initialize session and job id for future use
+                        const job_id_type job_id = trans_job->get_job_id();
+                        const job_id_type session_id = trans_job->get_session_id();
+
                         //Create the translation job response
-                        trans_job_response response(job_id, code, text);
+                        trans_job_response response(job_id, trans_job->get_code(), trans_job->get_text());
 
                         //Do the sanity check assert
                         ASSERT_SANITY_THROW(!m_sender_func,
@@ -212,6 +213,9 @@ namespace uva {
                             LOG_ERROR << "Could not send the translation response for " << session_id
                                     << "/" << job_id << "as the connection handler has expired!" << END_LOG;
                         }
+
+                        //Delete the job as it is not needed any more
+                        delete trans_job;
                     }
 
                 private:

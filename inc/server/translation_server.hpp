@@ -165,8 +165,8 @@ namespace uva {
                             LOG_ERROR << ex.get_message() << END_LOG;
 
                             //Create the reply message, with or without job id
-                            const job_id_type job_id = (request_ptr == NULL) ? trans_job_request::UNDEFINED_JOB_ID : request_ptr->get_job_id();
-                            trans_job_response response(job_id, trans_job_result::RESULT_ERROR, ex.get_message());
+                            const job_id_type job_id = (request_ptr == NULL) ? job_id::UNDEFINED_JOB_ID : request_ptr->get_job_id();
+                            trans_job_response response(job_id, trans_job_code::RESULT_ERROR, ex.get_message());
 
                             //Send the response
                             send_response(hdl, response);

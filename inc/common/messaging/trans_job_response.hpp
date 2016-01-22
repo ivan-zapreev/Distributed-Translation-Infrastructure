@@ -30,8 +30,9 @@
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
+#include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/trans_job_result.hpp"
+#include "common/messaging/trans_job_code.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -72,6 +73,20 @@ namespace uva {
                         }
 
                         /**
+                         * This is the basic class constructor that accepts the
+                         * translation job id, the translation result code and 
+                         * the text.
+                         * @param job_id the client-issued id of the translation job 
+                         * @param code the translation job result code
+                         * @param text the translation job result text, either
+                         * the translated text or the error message corresponding
+                         * to the error code
+                         */
+                        trans_job_response(const job_id_type job_id, const trans_job_code code,
+                                const string & text) : m_job_id(job_id), m_code(code), m_text(text) {
+                        }
+
+                        /**
                          * Allows to de-serialize the job reply from a string
                          * @param message the string representation of the translation job reply
                          */
@@ -88,7 +103,7 @@ namespace uva {
                                 m_job_id = stoi(text.str());
                                 //Second get the result code
                                 if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
-                                    m_code = (trans_job_result) stoi(text.str());
+                                    m_code = (trans_job_code) stoi(text.str());
 
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
@@ -116,20 +131,6 @@ namespace uva {
                         }
 
                         /**
-                         * This is the basic class constructor that accepts the
-                         * translation job id, the translation result code and 
-                         * the text.
-                         * @param job_id the client-issued id of the translation job 
-                         * @param code the translation job result code
-                         * @param text the translation job result text, either
-                         * the translated text or the error message corresponding
-                         * to the error code
-                         */
-                        trans_job_response(const job_id_type job_id, const trans_job_result code,
-                                const string & text) : m_job_id(job_id), m_code(code), m_text(text) {
-                        }
-
-                        /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
@@ -139,11 +140,11 @@ namespace uva {
 
                         /**
                          * Allows to check whether the job id is defined, is not
-                         * equal to trans_job_request::UNDEFINED_JOB_ID;
+                         * equal to job_id::UNDEFINED_JOB_ID;
                          * @return true if the job id is defined, otherwise false
                          */
                         const bool is_job_id_defined() const {
-                            return (m_job_id != trans_job_request::UNDEFINED_JOB_ID);
+                            return (m_job_id != job_id::UNDEFINED_JOB_ID);
                         }
 
                         /**
@@ -151,14 +152,14 @@ namespace uva {
                          * @return true if the reply is good and contains the translated text.
                          */
                         const bool is_good() const {
-                            return (m_code == trans_job_result::RESULT_OK);
+                            return (m_code == trans_job_code::RESULT_OK);
                         }
 
                         /**
                          * Allows to get the translation job result code
                          * @return the translation job result code
                          */
-                        const trans_job_result get_code() const {
+                        const trans_job_code get_code() const {
                             return m_code;
                         }
 
@@ -176,7 +177,7 @@ namespace uva {
                         //Stores the translation job id
                         job_id_type m_job_id;
                         //Stores the translation job result code
-                        trans_job_result m_code;
+                        trans_job_code m_code;
                         //Stores the translation job result text, the error
                         //message or the text in the target language.
                         string m_text;

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
       <df name="common">
         <df name="messaging">
+          <in>trans_job_id.hpp</in>
           <in>trans_job_result.hpp</in>
-          <in>trans_session.hpp</in>
+          <in>trans_session_id.hpp</in>
         </df>
       </df>
       <df name="server">
@@ -15,6 +16,7 @@
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_task.hpp</in>
+        <in>trans_task_id.hpp</in>
         <in>trans_task_pool.hpp</in>
       </df>
     </df>
@@ -108,13 +110,22 @@
             </incDir>
           </ccTool>
         </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
       </makefileType>
+      <item path="inc/common/messaging/trans_job_id.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/messaging/trans_job_result.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/common/messaging/trans_session.hpp"
+      <item path="inc/common/messaging/trans_session_id.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -126,6 +137,8 @@
       <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_task.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/trans_task_id.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_task_pool.hpp" ex="false" tool="3" flavor2="0">
       </item>

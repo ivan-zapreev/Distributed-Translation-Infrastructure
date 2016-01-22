@@ -1,5 +1,5 @@
 /* 
- * File:   trans_session.hpp
+ * File:   trans_session_id.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -34,7 +34,7 @@ namespace uva {
                     //Make the typedef for the translation session id
                     typedef uint64_t session_id_type;
 
-                    namespace session {
+                    namespace session_id {
 
                         //Stores the undefined session job id value
                         static constexpr session_id_type UNDEFINED_SESSION_ID = 0;

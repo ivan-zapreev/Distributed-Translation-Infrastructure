@@ -19,10 +19,11 @@ namespace uva {
                      * there is just two results possible, the job is
                      * done - OK; or there was some error - ERROR
                      */
-                    enum trans_job_result {
+                    enum trans_job_code {
                         RESULT_UNDEFINED = 0,
                         RESULT_OK = RESULT_UNDEFINED + 1,
                         RESULT_ERROR = RESULT_OK + 1,
+                        RESULT_PARTIAL = RESULT_ERROR + 1,
                         size = RESULT_ERROR + 1
                     };
                 }

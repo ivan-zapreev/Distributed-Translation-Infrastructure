@@ -27,7 +27,8 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/utils/file/TextPieceReader.hpp"
 #include "common/messaging/id_manager.hpp"
-#include "common/messaging/trans_session.hpp"
+#include "common/messaging/trans_session_id.hpp"
+#include "common/messaging/trans_job_id.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -43,9 +44,6 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    //Make the typedef for the translation job id
-                    typedef uint64_t job_id_type;
-
                     //Declare the translation job request pointer type
                     class trans_job_request;
                     typedef trans_job_request * trans_job_request_ptr;
@@ -55,10 +53,6 @@ namespace uva {
                      */
                     class trans_job_request {
                     public:
-                        //Stores the undefined value of the translation job id
-                        static constexpr job_id_type UNDEFINED_JOB_ID = 0;
-                        //Stores the minimum allowed translation job id
-                        static constexpr job_id_type MINIMUM_JOB_ID = 1;
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
@@ -70,9 +64,22 @@ namespace uva {
                          * request.
                          * @param message the client translation request to be parsed
                          */
-                        trans_job_request(const string & message) {
+                        trans_job_request(const string & message) : m_session_id(session_id::UNDEFINED_SESSION_ID) {
                             //De-serialize from the message
                             de_serialize(message);
+                        }
+
+                        /**
+                         * This is the basic class constructor that accepts the
+                         * translation job id, the translation text and source
+                         * and target language strings.
+                         * @param source_lang the source language string
+                         * @param text the text in the source language to translate
+                         * @param target_lang the target language string
+                         */
+                        trans_job_request(const string & source_lang, const string & text, const string & target_lang)
+                        : m_session_id(session_id::UNDEFINED_SESSION_ID), m_job_id(m_id_mgr.get_next_id()),
+                        m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
                         }
 
                         /**
@@ -126,19 +133,6 @@ namespace uva {
                             LOG_DEBUG1 << "Serializing request message: '" << result << "'" << END_LOG;
 
                             return result;
-                        }
-
-                        /**
-                         * This is the basic class constructor that accepts the
-                         * translation job id, the translation text and source
-                         * and target language strings.
-                         * @param source_lang the source language string
-                         * @param text the text in the source language to translate
-                         * @param target_lang the target language string
-                         */
-                        trans_job_request(const string & source_lang, const string & text, const string & target_lang)
-                        : m_session_id(session::UNDEFINED_SESSION_ID), m_job_id(m_id_mgr.get_next_id()),
-                        m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
                         }
 
                         /**
@@ -198,7 +192,8 @@ namespace uva {
                     private:
                         //Stores the static instance of the id manager
                         static id_manager<job_id_type> m_id_mgr;
-                        const session_id_type m_session_id;
+                        //Stores the session id, undefined in the first place and always on the client
+                        session_id_type m_session_id;
                         //Stores the translation job id
                         job_id_type m_job_id;
                         //Stores the translation job source language string
@@ -209,12 +204,10 @@ namespace uva {
                         string m_text;
                     };
 
-                    constexpr job_id_type trans_job_request::UNDEFINED_JOB_ID;
-                    constexpr job_id_type trans_job_request::MINIMUM_JOB_ID;
                     constexpr char trans_job_request::HEADER_DELIMITER;
                     constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;
 
-                    id_manager<job_id_type> trans_job_request::m_id_mgr(MINIMUM_JOB_ID);
+                    id_manager<job_id_type> trans_job_request::m_id_mgr(job_id::MINIMUM_JOB_ID);
                 }
             }
         }
