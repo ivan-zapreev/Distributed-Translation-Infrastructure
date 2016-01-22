@@ -25,7 +25,6 @@
 
 #include <map>
 #include <vector>
-#include <thread>
 
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
@@ -69,7 +68,7 @@ namespace uva {
                     //Define the lock type to synchronize map operations
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
                     //Define the unique lock needed for wait/notify
-                    typedef websocketpp::lib::unique_lock<std::mutex> unique_lock;
+                    typedef websocketpp::lib::unique_lock<websocketpp::lib::mutex> unique_lock;
 
                     //Define the function type for the function used to set the translation job resut
                     typedef websocketpp::lib::function<void(trans_job_ptr trans_job) > job_result_setter;
@@ -208,11 +207,7 @@ namespace uva {
                         unique_lock guard_done(m_is_jd_lock);
 
                         //Add the job to the finished jobs list
-                        {
-                            scoped_lock guard_list(m_dj_list_lock);
-
-                            m_done_jobs_list.push_back(trans_job);
-                        }
+                        m_done_jobs_list.push_back(trans_job);
 
                         //Notify the thread that there is a finished job to be processed
                         m_is_job_done.notify_all();
@@ -228,33 +223,30 @@ namespace uva {
                         while (!(m_is_stopping && m_job_count == 0)) {
                             //Wait the thread to be notified
                             m_is_job_done.wait(guard_done);
-                            //the thread is notified, process the finished jobs
-                            {
-                                scoped_lock guard_list(m_dj_list_lock);
 
-                                for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end(); ++iter) {
-                                    //Get the translation job pointer
-                                    trans_job_ptr trans_job = *iter;
+                            //The thread is notified, process the finished jobs
+                            for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end(); ++iter) {
+                                //Get the translation job pointer
+                                trans_job_ptr trans_job = *iter;
 
-                                    //Send the job response
-                                    m_set_job_result_func(trans_job);
+                                //Send the job response
+                                m_set_job_result_func(trans_job);
 
-                                    //Erase the processed job from the list of finished jobs
-                                    m_done_jobs_list.erase(iter);
+                                //Erase the processed job from the list of finished jobs
+                                m_done_jobs_list.erase(iter);
 
-                                    //Remove the job from the pool's administration 
-                                    {
-                                        scoped_lock guard_map(m_s_map_lock);
+                                //Remove the job from the pool's administration 
+                                {
+                                    scoped_lock guard_map(m_s_map_lock);
 
-                                        m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
+                                    m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
 
-                                        //Decrement the jobs count 
-                                        m_job_count--;
-                                    }
-
-                                    //Delete the job as it is not needed any more
-                                    delete trans_job;
+                                    //Decrement the jobs count 
+                                    m_job_count--;
                                 }
+
+                                //Delete the job as it is not needed any more
+                                delete trans_job;
                             }
                         }
                     }
@@ -283,9 +275,6 @@ namespace uva {
 
                     //Stores the thread that manages finished jobs
                     websocketpp::lib::thread m_jobs_thread;
-
-                    //Stores the synchronization mutex for working with the m_done_jobs
-                    websocketpp::lib::mutex m_dj_list_lock;
 
                     //The list of finished jobs pending to be processed
                     jobs_list_type m_done_jobs_list;
