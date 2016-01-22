@@ -570,10 +570,10 @@
       <df name="common">
         <df name="messaging">
           <in>id_manager.hpp</in>
+          <in>trans_job_code.hpp</in>
           <in>trans_job_id.hpp</in>
           <in>trans_job_request.hpp</in>
           <in>trans_job_response.hpp</in>
-          <in>trans_job_result.hpp</in>
           <in>trans_session_id.hpp</in>
         </df>
         <df name="utils">

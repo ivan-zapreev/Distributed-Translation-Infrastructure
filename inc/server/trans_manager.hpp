@@ -71,7 +71,7 @@ namespace uva {
                      */
                     trans_manager() : m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        m_job_pool.set_response_sender(bind(&trans_manager::set_job_result, this, _1));
+                        m_job_pool.set_job_result_setter(bind(&trans_manager::set_job_result, this, _1));
                     }
 
                     /**
@@ -179,7 +179,6 @@ namespace uva {
                     /**
                      * Allows to set the non-error translation result,
                      * this will also send the response to the client.
-                     * WARNING: The translation job then deleted by this method
                      * @param trans_job the pointer to the finished translation job 
                      */
                     void set_job_result(trans_job_ptr trans_job) {
@@ -213,9 +212,6 @@ namespace uva {
                             LOG_ERROR << "Could not send the translation response for " << session_id
                                     << "/" << job_id << "as the connection handler has expired!" << END_LOG;
                         }
-
-                        //Delete the job as it is not needed any more
-                        delete trans_job;
                     }
 
                 private:

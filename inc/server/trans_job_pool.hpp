@@ -24,6 +24,8 @@
  */
 
 #include <map>
+#include <vector>
+#include <thread>
 
 #include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
@@ -64,35 +66,64 @@ namespace uva {
                  */
                 class trans_job_pool {
                 public:
+                    //Define the lock type to synchronize map operations
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    //Define the unique lock needed for wait/notify
+                    typedef websocketpp::lib::std::unique_lock<std::mutex> unique_lock;
+
+                    //Define the function type for the function used to set the translation job resut
                     typedef websocketpp::lib::function<void(trans_job_ptr trans_job) > job_result_setter;
 
+                    //Define the job id to job and session id to jobs maps and iterators thereof
                     typedef std::map<job_id_type, trans_job_ptr> jobs_map_type;
                     typedef jobs_map_type::iterator jobs_map_iter_type;
                     typedef std::map<session_id_type, jobs_map_type> sessions_map_type;
                     typedef sessions_map_type::iterator sessions_map_iter_type;
 
+                    //Define the vector of jobs type and its iterator
+                    typedef vector<trans_job_ptr> jobs_list_type;
+                    typedef jobs_list_type::iterator jobs_list_iter_type;
+
                     /**
-                     * The basic constructor
-                     * 
-                     * ToDo: Possibly limit the number of translation jobs to be scheduled
+                     * The basic constructor,  starts the finished jobs processing thread.
                      */
-                    trans_job_pool() {
+                    trans_job_pool()
+                    : m_is_stopping(false), m_is_stopped(false), m_job_count(0),
+                    m_jobs_thread(bind(&trans_job_pool::process_finished_jobs(), this)) {
                     }
 
                     /**
                      * he basic destructor
                      */
                     virtual ~trans_job_pool() {
+                        //Stop if we have not stopped yet
+                        if(! m_is_stopped) {
+                            stop();
+                        }
+                    }
+                    
+                    /**
+                     * Allows to stop all the running jobs and try to send all the responses and then exit
+                     */
+                    void stop() {
                         //Cancel all the remaining jobs
                         cancel_all_jobs();
+
+                        //Set the stopping flag
+                        m_is_stopping = true;
+
+                        //Wait until the job processing thread finishes
+                        m_jobs_thread.join();
+                        
+                        //We have stopped set the flag
+                        m_is_stopped = true;
                     }
 
                     /**
                      * Allows to set the response sender function for sending the replies to the client
-                     * @param set_job_result_func the s ender functional to be set
+                     * @param set_job_result_func the setter functional to be set
                      */
-                    void set_response_sender(job_result_setter set_job_result_func) {
+                    void set_job_result_setter(job_result_setter set_job_result_func) {
                         m_set_job_result_func = set_job_result_func;
                     }
 
@@ -102,7 +133,10 @@ namespace uva {
                      * @oaram trans_job the translation job to be scheduled
                      */
                     void schedule_job(trans_job_ptr trans_job) {
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_sessions_map_lock);
+                        
+                        //Throw an exception if we are stopping
+                        ASSERT_CONDITION_THROW(m_is_stopping || m_is_stopped, "The server is stopping/stopped, no service!");
 
                         //Get the session id for future use
                         const session_id_type session_id = trans_job->get_session_id();
@@ -123,13 +157,16 @@ namespace uva {
 
                         //The session is present, so we need to add it into the pool
                         m_sessions_map[session_id][trans_job->get_job_id()] = trans_job;
+
+                        //Increment the jobs count
+                        m_job_count++;
                     }
 
                     /**
                      * Allows to cancel all the currently running translation jobs in the server
                      */
                     void cancel_all_jobs() {
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_sessions_map_lock);
 
                         //Cancel the scheduled translation tasks and stop the internal thread
                         for (sessions_map_iter_type iter = m_sessions_map.begin(); iter != m_sessions_map.end(); ++iter) {
@@ -143,7 +180,7 @@ namespace uva {
                      * @param session_id the session id to cancel the jobs for
                      */
                     void cancel_jobs(const session_id_type session_id) {
-                        scoped_lock guard(m_lock);
+                        scoped_lock guard(m_sessions_map_lock);
 
                         //Get the jobs jobs for the given session
                         if (m_sessions_map.find(session_id) != m_sessions_map.end()) {
@@ -153,7 +190,7 @@ namespace uva {
                             //Iterate through the available jobs and cancel them
                             for (jobs_map_iter_type iter = m_jobs_map.begin(); iter != m_jobs_map.end(); ++iter) {
                                 //Call the canceling method on the job
-                               iter->second->cancel();
+                                iter->second->cancel();
                             }
                         } else {
                             LOG_ERROR << "There is no session registered for id: " << session_id << END_LOG;
@@ -163,33 +200,83 @@ namespace uva {
                 protected:
 
                     /**
-                     * Allows to set the non-error translation result,
-                     * this will also send the response to the client.
-                     * WARNING: The translation job then deleted via this method
+                     * Allows notify the job pool that the given job is done.
                      * @param trans_job the pointer to the finished translation job 
                      */
-                    void set_job_result(trans_job_ptr trans_job) {
-                        //ToDo: Remove the job from the pool's administration 
+                    void notify_job_done(trans_job_ptr trans_job) {
+                        //Add the job to the finished jobs list
                         {
-                            scoped_lock guard(m_lock);
+                            scoped_lock guard(m_done_jobs_list_lock);
 
-                            //ToDo: Implement
+                            m_done_jobs_list.push_back(trans_job);
                         }
 
-                        //Call the translation manager to send the translation
-                        //request response. This call will also destroy the job.
-                        m_set_job_result_func(trans_job);
+                        //ToDo: Notify the thread that there is a finished job to be processed
+                    }
+
+                    /**
+                     * Allows to process the finished translation jobs
+                     */
+                    void process_finished_jobs() {
+                        //Stop iteration only when we are stopping and there are no jobs left
+                        while (!(m_is_stopping && m_job_count == 0)) {
+                            scoped_lock guard_list(m_done_jobs_list_lock);
+
+                            for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end(); ++iter) {
+                                //Get the translation job pointer
+                                trans_job_ptr trans_job = *iter;
+
+                                //Send the job response
+                                m_set_job_result_func(trans_job);
+
+                                //Erase the processed job from the list of finished jobs
+                                m_done_jobs_list.erase(iter);
+
+                                //Remove the job from the pool's administration 
+                                {
+                                    scoped_lock guard_map(m_sessions_map_lock);
+
+                                    m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
+
+                                    //Decrement the jobs count 
+                                    m_job_count--;
+                                }
+
+                                //Delete the job as it is not needed any more
+                                delete trans_job;
+                            }
+                        }
                     }
 
                 private:
-                    //Stores the synchronization mutex
-                    websocketpp::lib::mutex m_lock;
+                    //Stores the synchronization mutex for working with the m_sessions_map
+                    websocketpp::lib::mutex m_sessions_map_lock;
+
+                    //Stores the mapping from the session id to the active translation jobs from the session
+                    sessions_map_type m_sessions_map;
 
                     //Stores the reply sender functional
                     job_result_setter m_set_job_result_func;
 
-                    //Stores the mapping from the session id to the active translation jobs from the session
-                    sessions_map_type m_sessions_map;
+                    //Stores the flag that indicates that we are stopping
+                    bool m_is_stopping;
+                    //Stores the flag that indicates we have stopped
+                    bool m_is_stopped;
+                    //Stores the active jobs count
+                    uint64_t m_job_count;
+                    
+                    //Stores the thread that manages finished jobs
+                    websocketpp::lib::thread m_jobs_thread;
+                    //The conditional variable for tracking the done jobs
+                    websocketpp::lib::condition_variable m_is_job_done;
+                    //Stores the synchronization mutex for working with the conditional wait/notify
+                    websocketpp::lib::mutex m_is_job_done_lock;
+
+                    //Stores the synchronization mutex for working with the m_done_jobs
+                    websocketpp::lib::mutex m_done_jobs_list_lock;
+
+                    //The list of finished jobs pending to be processed
+                    jobs_list_type m_done_jobs_list;
                 };
 
             }

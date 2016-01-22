@@ -24,6 +24,7 @@
  */
 
 #include <string>
+#include <vector>
 
 #include "trans_task.hpp"
 #include "common/messaging/trans_session_id.hpp"
