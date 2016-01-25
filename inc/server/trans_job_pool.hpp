@@ -150,6 +150,9 @@ namespace uva {
                         ASSERT_CONDITION_THROW(m_is_stopping,
                                 "The server is stopping/stopped, no service!");
 
+                        //Add the notification handler to the job
+                        trans_job->set_done_job_notifier(bind(&trans_job_pool::notify_job_done, this, _1));
+
                         //Add the translation job into the administration
                         add_job(trans_job);
                     }
@@ -237,10 +240,10 @@ namespace uva {
 
                             //Erase the job from the jobs mapping
                             m_sessions_map[session_id].erase(job_id);
-                            
+
                             //If there are not jobs left for this session,
                             //then remove the mapping to save space.
-                            if( m_sessions_map[session_id].empty() ) {
+                            if (m_sessions_map[session_id].empty()) {
                                 m_sessions_map.erase(session_id);
                             }
 

@@ -26,6 +26,8 @@
 #include <string>
 #include <vector>
 
+#include <websocketpp/common/thread.hpp>
+
 #include "trans_task.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
@@ -34,6 +36,9 @@
 
 using namespace std;
 using namespace uva::smt::decoding::common::messaging;
+
+using websocketpp::lib::bind;
+using websocketpp::lib::placeholders::_1;
 
 #ifndef TRANS_JOB_HPP
 #define TRANS_JOB_HPP
@@ -56,7 +61,13 @@ namespace uva {
                  */
                 class trans_job {
                 public:
-                    typedef websocketpp::lib::function<void(const trans_job &) > done_notifier;
+                    //Define the lock type to synchronize map operations
+                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+
+                    //Define the function type for the function used to set the translation job resut
+                    typedef websocketpp::lib::function<void(trans_job_ptr trans_job) > done_job_notifier;
+
+                    //Declare the tasks list type and its iterator
                     typedef vector<trans_task_ptr> tasks_list_type;
                     typedef tasks_list_type::iterator tasks_iter_type;
 
@@ -66,7 +77,8 @@ namespace uva {
                      * @param job_id the translation job id
                      * @param task_ids the list of task ids from which this job consists of
                      */
-                    trans_job(trans_job_request_ptr request_ptr) : m_request_ptr(request_ptr) {
+                    trans_job(trans_job_request_ptr request_ptr)
+                    : m_request_ptr(request_ptr), m_done_tasks_count(0) {
                         //Get the text to be translated
                         string text = m_request_ptr->get_text();
                         //Obtain the text to be parsed
@@ -77,8 +89,17 @@ namespace uva {
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
                         while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
-                            m_tasks.push_back(new trans_task(m_id_mgr.get_next_id(), sentence.str()));
+                            m_tasks.push_back(new trans_task(m_id_mgr.get_next_id(), sentence.str(),
+                                    bind(&trans_job::notify_task_done, this, _1)));
                         }
+                    }
+
+                    /**
+                     * Allows to set the function that should be called when the job is done
+                     * @param notify_job_done_func
+                     */
+                    void set_done_job_notifier(done_job_notifier notify_job_done_func) {
+                        m_notify_job_done_func = notify_job_done_func;
                     }
 
                     /**
@@ -149,19 +170,52 @@ namespace uva {
                 protected:
 
                     /**
-                     * Is used from the translation task to notify the translation job that the task is ready
+                     * Allows to check if the job is finished by checking the number
+                     * of finished tasks. The check is synchronized.
+                     * @return true if all the job's tasks are finished, otherwise false
+                     */
+                    bool is_job_finished() {
+                        scoped_lock guard_tasks(m_tasks_lock);
+
+                        return (m_done_tasks_count == m_tasks.size());
+                    }
+
+                    /**
+                     * Is used from the translation task to notify the translation
+                     * job that the task is ready. This method is thread safe
                      * @param task the translation task that is finished
                      */
-                    void notify_task_ready(const trans_task& task) {
-                        //ToDo: Implement
+                    void notify_task_done(const trans_task_ptr& task) {
+                        scoped_lock guard_tasks(m_tasks_lock);
+
+                        //ToDo: Do a strict check on the tasks reporting to be finished,
+                        //these should be the onsed from the m_tasks list and they must
+                        //report themselves only ones.
+
+                        //Increment the finished tasks count
+                        m_done_tasks_count++;
+
+                        //If all the tasks are translated then we notify that this job id done
+                        if (is_job_finished()) {
+                            m_notify_job_done_func(this);
+                        }
                     }
 
                 private:
+                    //Stores the synchronization mutex for working with the m_sessions_map
+                    websocketpp::lib::mutex m_tasks_lock;
+
+                    //The done job notifier
+                    done_job_notifier m_notify_job_done_func;
+
                     //Stores the original translation request
                     trans_job_request_ptr m_request_ptr;
 
                     //Stores the list of translation tasks of this job
                     tasks_list_type m_tasks;
+
+                    //The count of the finished tasks
+                    atomic<uint32_t> m_done_tasks_count;
 
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;

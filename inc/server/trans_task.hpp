@@ -44,16 +44,16 @@ namespace uva {
                  */
                 class trans_task {
                 public:
-                    typedef websocketpp::lib::function<void(const trans_task &) > done_notifier;
+                    typedef websocketpp::lib::function<void(trans_task_ptr) > done_task_notifier;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
                      * @param task_id the id of the translation task within the translation job
                      * @param source_sentence the sentence to be translated
                      */
-                    trans_task(const task_id_type task_id, const string & source_sentence)
+                    trans_task(const task_id_type task_id, const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
-                    m_s_sentence(source_sentence), m_t_sentence("") {
+                    m_s_sentence(source_sentence), m_t_sentence(""), m_notify_task_done_func(notify_task_done_func) {
                         LOG_DEBUG << "Creating a translation task with id: " << m_task_id
                                 << ", text: " << m_s_sentence << END_LOG;
                     }
@@ -77,7 +77,7 @@ namespace uva {
                      */
                     void translate() {
                         //ToDo: Implement, implement the translation process
-                        
+
                         if (!m_is_stop) {
                             m_code = trans_job_code::RESULT_CANCELED;
                             m_t_sentence = "The translation task has been canceled!";
@@ -85,6 +85,9 @@ namespace uva {
                             m_code = trans_job_code::RESULT_OK;
                             m_t_sentence = "--------/Some sentence translation/-------";
                         }
+                        
+                        //Call the task-done notification function to report that we are finished!s
+                        m_notify_task_done_func(this);
                     }
 
                     /**
@@ -134,6 +137,9 @@ namespace uva {
 
                     //Stores the translated sentence or an error message
                     string m_t_sentence;
+
+                    //Stores the task-done notifier function for this task
+                    done_task_notifier m_notify_task_done_func;
                 };
             }
         }
