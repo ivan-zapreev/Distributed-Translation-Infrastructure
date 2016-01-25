@@ -95,6 +95,20 @@ namespace uva {
                         m_server.start_accept();
                         m_server.run();
                     }
+                    
+                    /**
+                     * Allows to stop the translation server
+                     */
+                    void stop() {
+                        //Remove the on_close handler
+                        m_server.set_close_handler(NULL);
+                        //Stop listening to the (new) connections
+                        m_server.stop_listening();
+                        //Stop the session manager, this should cancel all the unfinished translation tasks
+                        m_manager.stop();
+                        //Stop the server
+                        m_server.stop();
+                    }
 
                 protected:
 

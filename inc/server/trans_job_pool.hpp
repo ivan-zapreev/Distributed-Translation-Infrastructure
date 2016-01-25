@@ -175,7 +175,7 @@ namespace uva {
                                 iter->second->cancel();
                             }
                         } else {
-                            LOG_ERROR << "There is no session registered for id: " << session_id << END_LOG;
+                            LOG_DEBUG << "Trying to cancel an unknown session with id: " << session_id << END_LOG;
                         }
                     }
 

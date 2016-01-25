@@ -60,9 +60,14 @@ namespace uva {
                 class trans_manager {
                 public:
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+
+                    //Declare the response setting function for the translation job.
                     typedef websocketpp::lib::function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
+
+                    //Declare the session to connection handler maps and iterators;
                     typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
                     typedef std::map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
+                    typedef handlers_map_type::iterator handlers_map_iter_type;
 
                     /**
                      * The basic constructor.
@@ -152,7 +157,7 @@ namespace uva {
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     void close_session(websocketpp::connection_hdl hdl) {
-                        //Declare the session id vari/home/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_manager.hpp:60:56: error: ‘MINIMUM_SESSION_ID’ was not declared in this scopeable
+                        //Declare the session id 
                         session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
                         //Use the scoped mutex lock to avoid race conditions
@@ -172,6 +177,14 @@ namespace uva {
                             //NOTE: This can be done outside the synchronization block
                             m_job_pool.cancel_jobs(session_id);
                         }
+                    }
+
+                    /**
+                     * Allows to stop the translation manager, i.e. cancel all the jobs and move on.
+                     */
+                    void stop() {
+                        //Stop the job's pool, this is blocking until all the jobs are stopped
+                        m_job_pool.stop();
                     }
 
                 protected:

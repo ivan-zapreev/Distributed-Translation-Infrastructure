@@ -23,9 +23,11 @@
  * Created on January 14, 2016, 11:08 AM
  */
 
+#include <cctype>
 #include <cstdlib>
 #include <string>
 
+#include "websocketpp/common/thread.hpp"
 #include "tclap/CmdLine.h"
 #include "INI.h"
 
@@ -41,8 +43,13 @@ using namespace uva::smt::decoding::server;
 using namespace uva::smt::decoding::common;
 using namespace uva::utils::exceptions;
 
+using websocketpp::lib::bind;
+
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.0"
+
+//Declare the program exit letter
+#define PROGRAM_EXIT_LETTER 'q'
 
 /**
  * This structure stores the program execution parameters
@@ -232,8 +239,28 @@ int main(int argc, char** argv) {
         //Instantiate the translation server
         translation_server server(params.m_server_port);
 
-        //Run the translation server
-        server.run();
+        LOG_USAGE << "The server is started, press '" << PROGRAM_EXIT_LETTER << "' to exit!" << END_LOG;
+
+        //Run the translation server in a separate thread
+        thread server_thread(bind(&translation_server::run, &server));
+
+        //Wait until the server is stopped by pressing and exit button
+        while (true) {
+            char letter;
+            cin >> letter;
+            if (tolower(letter) == PROGRAM_EXIT_LETTER) {
+                break;
+            }
+        }
+
+        //Stop the translation server
+        LOG_INFO << "Stopping the server ..." << END_LOG;
+        server.stop();
+
+        //Wait until the server's thread stops
+        server_thread.join();
+
+        LOG_INFO << "The server has stopped!" << END_LOG;
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.get_message() << END_LOG;
