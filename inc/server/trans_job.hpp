@@ -232,7 +232,7 @@ namespace uva {
                                 //Do not append any result, to save on network communication
                             } else {
                                 //Append the next translated sentence,
-                                m_target_text += (*it)->get_target_text() + "\n";
+                                m_target_text += (*it)->get_target_text();
                             }
                             //Add a new line
                             m_target_text += "\n";
@@ -253,6 +253,8 @@ namespace uva {
                                 m_code = trans_job_code::RESULT_PARTIAL;
                             }
                         }
+                        
+                        LOG_DEBUG << "The translation job result is:\n" << m_target_text << END_LOG;
                     }
 
                 private:

@@ -108,7 +108,7 @@ namespace uva {
                      */
                     void translate() {
                         //ToDo: Implement, implement the translation process
-                        string trans_result = "--------/Some sentence translation/-------";
+                        string trans_result = string("--------/Task ") + to_string(m_task_id) + string(" translation/-------");
 
                         LOG_DEBUG << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
