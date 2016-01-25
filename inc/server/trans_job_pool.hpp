@@ -115,12 +115,23 @@ namespace uva {
                             };
                         }
 
+                        LOG_DEBUG << "The stopping flag is set!" << END_LOG;
+
                         //Cancel all the remaining jobs, do that without the stopping lock synchronization
                         //If put inside the above synchronization block will most likely cause a deadlock(?).
                         cancel_all_jobs();
 
+                        LOG_DEBUG << "All the existing jobs are canceled!" << END_LOG;
+
+                        //In case thre is no runnig jobs we need to notify the job processing thread to wake and finish
+                        wake_up_jobs_thread();
+
+                        LOG_DEBUG << "The jobs thread is awaken!" << END_LOG;
+
                         //Wait until the job processing thread finishes
                         m_jobs_thread.join();
+
+                        LOG_DEBUG << "The result processing thread is finished!" << END_LOG;
 
                         //In case that we have stopped with running jobs - report an error
                         if (m_job_count != 0) {
@@ -164,6 +175,8 @@ namespace uva {
                     void cancel_jobs(const session_id_type session_id) {
                         scoped_lock guard_all_jobs(m_all_jobs_lock);
 
+                        LOG_DEBUG << "Canceling the jobs of session with id: " << session_id << END_LOG;
+                        
                         //Get the jobs jobs for the given session
                         if (m_sessions_map.find(session_id) != m_sessions_map.end()) {
                             //Get the known jobs map for the given session
@@ -267,6 +280,16 @@ namespace uva {
 
                         //We shall stop if we are being asked to stop and there are no jobs left
                         return (m_is_stopping && m_job_count == 0);
+                    }
+
+                    /**
+                     * Allows to wake up the jobs thread.
+                     */
+                    void wake_up_jobs_thread() {
+                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
+
+                        //Notify the thread that there is a finished job to be processed
+                        m_is_job_done.notify_one();
                     }
 
                     /**

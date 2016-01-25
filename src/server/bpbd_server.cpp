@@ -239,7 +239,8 @@ int main(int argc, char** argv) {
         //Instantiate the translation server
         translation_server server(params.m_server_port);
 
-        LOG_USAGE << "The server is started, press '" << PROGRAM_EXIT_LETTER << "' to exit!" << END_LOG;
+        LOG_USAGE << "The server is started, press '" << PROGRAM_EXIT_LETTER
+                << " & <enter>' to exit!" << END_LOG;
 
         //Run the translation server in a separate thread
         thread server_thread(bind(&translation_server::run, &server));

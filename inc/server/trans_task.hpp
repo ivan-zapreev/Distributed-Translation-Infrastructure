@@ -59,7 +59,7 @@ namespace uva {
                     trans_task(const task_id_type task_id, const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
                     m_source_text(source_sentence), m_target_text(""), m_notify_task_done_func(notify_task_done_func) {
-                        LOG_DEBUG << "Creating a translation task with id: " << m_task_id
+                        LOG_DEBUG << "New task, id: " << m_task_id
                                 << ", text: " << m_source_text << END_LOG;
                     }
 

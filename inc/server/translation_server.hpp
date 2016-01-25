@@ -95,17 +95,26 @@ namespace uva {
                         m_server.start_accept();
                         m_server.run();
                     }
-                    
+
                     /**
                      * Allows to stop the translation server
                      */
                     void stop() {
+                        LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                         //Remove the on_close handler
                         m_server.set_close_handler(NULL);
+
+                        //NOTE: Somehow stopping to listen to the new connections result in errors
+                        //So for now it is disabled, the ToDo is to figure out why it happens
+                        //LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
-                        m_server.stop_listening();
+                        //m_server.stop_listening();
+
+                        LOG_DEBUG << "Stop the session manager." << END_LOG;
                         //Stop the session manager, this should cancel all the unfinished translation tasks
                         m_manager.stop();
+
+                        LOG_DEBUG << "Stop the WEBSOCKET server." << END_LOG;
                         //Stop the server
                         m_server.stop();
                     }
