@@ -273,6 +273,8 @@ namespace uva {
                             m_job_count--;
                         }
 
+                        LOG_DEBUG << "Delete the object instance" << END_LOG;
+
                         //Delete the job as it is not needed any more
                         delete trans_job;
                     }
@@ -337,14 +339,25 @@ namespace uva {
                                 //Get the translation job pointer
                                 trans_job_ptr trans_job = *iter;
 
+                                //Store the job id for logging
+                                const job_id_type job_id = trans_job->get_job_id();
+
+                                LOG_DEBUG << "Setting the job " << job_id << " result" << END_LOG;
+
                                 //Send the job response
                                 m_set_job_result_func(trans_job);
+
+                                LOG_DEBUG << "Erasing the job " << job_id << " from the done  jobs list" << END_LOG;
 
                                 //Erase the processed job from the list of finished jobs
                                 m_done_jobs_list.erase(iter);
 
+                                LOG_DEBUG << "Deleting the job " << job_id << " instance" << END_LOG;
+
                                 //Remove the job from the pool's administration and destroy
                                 delete_job(trans_job);
+
+                                LOG_DEBUG << "The job " << job_id << " is processed and deleted!" << END_LOG;
                             }
                         }
                     }
