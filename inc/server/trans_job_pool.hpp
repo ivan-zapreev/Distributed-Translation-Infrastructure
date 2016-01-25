@@ -55,8 +55,6 @@ namespace uva {
         namespace decoding {
             namespace server {
 
-                //ToDo: Look at synchronizations! It is not overcomplicated and also the number of jobs count is not synchronized!
-                
                 /**
                  * This class is used to schedule the translation jobs.
                  * Each translation job consists of a number of sentences to translate.
@@ -89,7 +87,7 @@ namespace uva {
                      * The basic constructor,  starts the finished jobs processing thread.
                      */
                     trans_job_pool()
-                    : m_is_stopping(false), m_is_stopped(false), m_job_count(0),
+                    : m_is_stopping(false), m_job_count(0),
                     m_jobs_thread(bind(&trans_job_pool::process_finished_jobs, this)) {
                     }
 
@@ -97,27 +95,38 @@ namespace uva {
                      * he basic destructor
                      */
                     virtual ~trans_job_pool() {
-                        //Stop if we have not stopped yet
-                        if (!m_is_stopped) {
-                            stop();
-                        }
+                        stop();
                     }
 
                     /**
                      * Allows to stop all the running jobs and try to send all the responses and then exit
                      */
                     void stop() {
-                        //Cancel all the remaining jobs
-                        cancel_all_jobs();
+                        //Make sure this does not interfere with any adding new job activity
+                        {
+                            scoped_lock guard_stopping(m_stopping_lock);
 
-                        //Set the stopping flag
-                        m_is_stopping = true;
+                            //If we are not stopping yet, do a stop, else return
+                            if (!m_is_stopping) {
+                                //Set the stopping flag
+                                m_is_stopping = true;
+                            } else {
+                                return;
+                            };
+                        }
+
+                        //Cancel all the remaining jobs, do that without the stopping lock synchronization
+                        //If put inside the above synchronization block will most likely cause a deadlock(?).
+                        cancel_all_jobs();
 
                         //Wait until the job processing thread finishes
                         m_jobs_thread.join();
 
-                        //We have stopped set the flag
-                        m_is_stopped = true;
+                        //In case that we have stopped with running jobs - report an error
+                        if (m_job_count != 0) {
+                            LOG_ERROR << "The jobs pool has stopped but there are still "
+                                    << m_job_count << " running jobs left!" << END_LOG;
+                        }
                     }
 
                     /**
@@ -133,52 +142,16 @@ namespace uva {
                      * The execution of the job is deferred and asynchronous.
                      * @oaram trans_job the translation job to be scheduled
                      */
-                    void schedule_job(trans_job_ptr trans_job) {
-                        scoped_lock guard_map(m_s_map_lock);
+                    void plan_new_job(trans_job_ptr trans_job) {
+                        //Make sure that we are not being stopped before or during this method call
+                        scoped_lock guard_stopping(m_stopping_lock);
 
                         //Throw an exception if we are stopping
-                        ASSERT_CONDITION_THROW((m_is_stopping || m_is_stopped),
+                        ASSERT_CONDITION_THROW(m_is_stopping,
                                 "The server is stopping/stopped, no service!");
 
-                        //Get the session id for future use
-                        const session_id_type session_id = trans_job->get_session_id();
-
-                        //Check if the session with the given id is present
-                        ASSERT_CONDITION_THROW((m_sessions_map.find(session_id) == m_sessions_map.end()),
-                                string("The job: ") + to_string(trans_job->get_job_id()) +
-                                string(" is scheduled for session: ") + to_string(trans_job->get_session_id()) +
-                                string(", the this session does not exist!"));
-
-                        //Get the job id for future use
-                        const job_id_type job_id = trans_job->get_job_id();
-
-                        //Check that the job with the same id does not exist
-                        ASSERT_CONDITION_THROW((m_sessions_map[session_id][job_id] != NULL),
-                                string("The job with id ") + to_string(job_id) + (" for session ") +
-                                to_string(session_id) + (" already exists!"));
-
-                        //The session is present, so we need to add it into the pool
-                        m_sessions_map[session_id][trans_job->get_job_id()] = trans_job;
-
-                        //Increment the jobs count
-                        m_job_count++;
-
-                        //ToDo: Add the job tasks to the tasks' pool
-                        
-                        //ToDo: The tasks pool shall be chosen based on the source and target language
-                    }
-
-                    /**
-                     * Allows to cancel all the currently running translation jobs in the server
-                     */
-                    void cancel_all_jobs() {
-                        scoped_lock guard_map(m_s_map_lock);
-
-                        //Cancel the scheduled translation tasks and stop the internal thread
-                        for (sessions_map_iter_type iter = m_sessions_map.begin(); iter != m_sessions_map.end(); ++iter) {
-                            //Call the canceling method on the task
-                            cancel_jobs(iter->first);
-                        }
+                        //Add the translation job into the administration
+                        add_job(trans_job);
                     }
 
                     /**
@@ -186,7 +159,7 @@ namespace uva {
                      * @param session_id the session id to cancel the jobs for
                      */
                     void cancel_jobs(const session_id_type session_id) {
-                        scoped_lock guard_map(m_s_map_lock);
+                        scoped_lock guard_all_jobs(m_all_jobs_lock);
 
                         //Get the jobs jobs for the given session
                         if (m_sessions_map.find(session_id) != m_sessions_map.end()) {
@@ -206,29 +179,106 @@ namespace uva {
                 protected:
 
                     /**
+                     * Allows to cancel all the currently running translation jobs in the server
+                     */
+                    void cancel_all_jobs() {
+                        scoped_lock guard_all_jobs(m_all_jobs_lock);
+
+                        //Cancel the scheduled translation tasks and stop the internal thread
+                        for (sessions_map_iter_type iter = m_sessions_map.begin(); iter != m_sessions_map.end(); ++iter) {
+                            //Call the canceling method on the task
+                            cancel_jobs(iter->first);
+                        }
+                    }
+
+                    /**
+                     * Allows to add a new job to the administration. In case the
+                     * session is not known or the job id is already in use an
+                     * exception is thrown. Also the job count is incremented
+                     * @param trans_job the job to be added to the administration
+                     */
+                    void add_job(trans_job_ptr trans_job) {
+                        scoped_lock guard_all_jobs(m_all_jobs_lock);
+
+                        //Get the session id for future use
+                        const session_id_type session_id = trans_job->get_session_id();
+                        //Get the job id for future use
+                        const job_id_type job_id = trans_job->get_job_id();
+
+                        //Check that the job with the same id does not exist
+                        ASSERT_CONDITION_THROW((m_sessions_map[session_id][job_id] != NULL),
+                                string("The job with id ") + to_string(job_id) + (" for session ") +
+                                to_string(session_id) + (" already exists!"));
+
+                        //The session is present, so we need to add it into the pool
+                        m_sessions_map[session_id][job_id] = trans_job;
+
+                        //Increment the jobs count
+                        m_job_count++;
+
+                        //ToDo: Add the job tasks to the tasks' pool
+
+                        //ToDo: The tasks pool shall be chosen based on the source and target language
+                    }
+
+                    /**
+                     * Allows to delete the given job from the administration,
+                     * decrement the jobs count and destroy the job object.
+                     * @param trans_job the job to be deleted
+                     */
+                    void delete_job(trans_job_ptr trans_job) {
+                        //Remove the job from the pool's administration 
+                        {
+                            scoped_lock guard_all_jobs(m_all_jobs_lock);
+
+                            m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
+
+                            //Decrement the jobs count 
+                            m_job_count--;
+                        }
+
+                        //Delete the job as it is not needed any more
+                        delete trans_job;
+                    }
+
+                    /**
+                     * Allows to check if the finished jobs processing loop has to stop.
+                     * @return true if the finished jobs processing loop has to stop, otherwise false
+                     */
+                    bool is_stop_running() {
+                        //Make sure that we are not being stopped before or during this method call
+                        scoped_lock guard_stopping(m_stopping_lock);
+                        //Make sure not one adds/removes jobs meanwhile
+                        scoped_lock guard_all_jobs(m_all_jobs_lock);
+
+                        //We shall stop if we are being asked to stop and there are no jobs left
+                        return (m_is_stopping && m_job_count == 0);
+                    }
+
+                    /**
                      * Allows notify the job pool that the given job is done.
                      * @param trans_job the pointer to the finished translation job 
                      */
                     void notify_job_done(trans_job_ptr trans_job) {
-                        unique_lock guard_done(m_is_jd_lock);
+                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
 
                         //Add the job to the finished jobs list
                         m_done_jobs_list.push_back(trans_job);
 
                         //Notify the thread that there is a finished job to be processed
-                        m_is_job_done.notify_all();
+                        m_is_job_done.notify_one();
                     }
 
                     /**
                      * Allows to process the finished translation jobs
                      */
                     void process_finished_jobs() {
-                        unique_lock guard_done(m_is_jd_lock);
+                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
 
                         //Stop iteration only when we are stopping and there are no jobs left
-                        while (!(m_is_stopping && m_job_count == 0)) {
+                        while (!is_stop_running()) {
                             //Wait the thread to be notified
-                            m_is_job_done.wait(guard_done);
+                            m_is_job_done.wait(guard_finished_jobs);
 
                             //The thread is notified, process the finished jobs
                             for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end(); ++iter) {
@@ -241,25 +291,15 @@ namespace uva {
                                 //Erase the processed job from the list of finished jobs
                                 m_done_jobs_list.erase(iter);
 
-                                //Remove the job from the pool's administration 
-                                {
-                                    scoped_lock guard_map(m_s_map_lock);
-
-                                    m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
-
-                                    //Decrement the jobs count 
-                                    m_job_count--;
-                                }
-
-                                //Delete the job as it is not needed any more
-                                delete trans_job;
+                                //Remove the job from the pool's administration and destroy
+                                delete_job(trans_job);
                             }
                         }
                     }
 
                 private:
                     //Stores the synchronization mutex for working with the m_sessions_map
-                    websocketpp::lib::mutex m_s_map_lock;
+                    websocketpp::lib::mutex m_all_jobs_lock;
 
                     //Stores the mapping from the session id to the active translation jobs from the session
                     sessions_map_type m_sessions_map;
@@ -267,15 +307,15 @@ namespace uva {
                     //Stores the reply sender functional
                     job_result_setter m_set_job_result_func;
 
-                    //Stores the flag that indicates that we are stopping
+                    //Stores the synchronization mutex for administering stopping
+                    websocketpp::lib::mutex m_stopping_lock;
+                    //Stores the flag that indicates that we are stopping, made an atomic just in case
                     atomic<bool> m_is_stopping;
-                    //Stores the flag that indicates we have stopped
-                    atomic<bool> m_is_stopped;
-                    //Stores the active jobs count
-                    uint64_t m_job_count;
+                    //Stores the active jobs count, made an atomic just in case
+                    atomic<uint64_t> m_job_count;
 
                     //Stores the synchronization mutex for working with the conditional wait/notify
-                    websocketpp::lib::mutex m_is_jd_lock;
+                    websocketpp::lib::mutex m_finished_jobs_lock;
                     //The conditional variable for tracking the done jobs
                     websocketpp::lib::condition_variable m_is_job_done;
 

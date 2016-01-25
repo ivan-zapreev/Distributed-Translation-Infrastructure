@@ -142,7 +142,7 @@ namespace uva {
                         request_ptr->set_session_id(session_id);
 
                         //Schedule a translation job request for the session id
-                        m_job_pool.schedule_job(new trans_job(request_ptr));
+                        m_job_pool.plan_new_job(new trans_job(request_ptr));
                     }
 
                     /**
