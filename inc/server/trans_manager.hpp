@@ -169,7 +169,9 @@ namespace uva {
 
                             //Erase the handler and session mappings
                             m_sessions.erase(hdl);
-                            m_handlers.erase(session_id);
+                            if (session_id != session_id::UNDEFINED_SESSION_ID) {
+                                m_handlers.erase(session_id);
+                            }
                         }
 
                         //Request cancellation of all the translation jobs associated with this connection.
