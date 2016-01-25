@@ -135,9 +135,9 @@ namespace uva {
                             //Set the data into the translation result, depending
                             //on whether we were interrupted or not, to it synchronously
                             if (m_is_interrupted) {
-                                m_trans_result.set_translation(trans_job_code::RESULT_ERROR, "Is interrupter!");
+                                m_trans_result.set_result(trans_job_code::RESULT_ERROR, "Is interrupter!");
                             } else {
-                                m_trans_result.set_translation(trans_job_code::RESULT_OK, "Translated text!");
+                                m_trans_result.set_result(trans_job_code::RESULT_OK, "Translated text!");
                             }
 
                             //Send the response to the client

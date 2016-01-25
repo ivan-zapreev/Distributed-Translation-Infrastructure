@@ -23,6 +23,10 @@
  * Created on January 21, 2016, 10:39 AM
  */
 
+#include <websocketpp/common/thread.hpp>
+
+using namespace std;
+
 #ifndef TRANS_TASK_HPP
 #define TRANS_TASK_HPP
 
@@ -37,7 +41,6 @@ namespace uva {
 
                 /**
                  * This class represents the translation task. Every translation task is a sentence to be translated and its id.
-                 * The source and target language selection is done beforehand and thus this information is not part of the class.
                  */
                 class trans_task {
                 public:
@@ -49,7 +52,10 @@ namespace uva {
                      * @param source_sentence the sentence to be translated
                      */
                     trans_task(const task_id_type task_id, const string & source_sentence)
-                    : m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_sentence(source_sentence), m_target_sentence("") {
+                    : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
+                    m_s_sentence(source_sentence), m_t_sentence("") {
+                        LOG_DEBUG << "Creating a translation task with id: " << m_task_id
+                                << ", text: " << m_s_sentence << END_LOG;
                     }
 
                     /**
@@ -60,13 +66,25 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to set the sentence translation result.
-                     * @param code the result code
-                     * @param target_sentence the translated sentence, or an error message if there was an error
+                     * Allows to cancel the translation task
                      */
-                    void set_translation(const trans_job_code code, const string & target_sentence) {
-                        m_code = code;
-                        m_target_sentence = target_sentence;
+                    void cancel() {
+                        m_is_stop = true;
+                    }
+
+                    /**
+                     * Performs the translation for the given sentence
+                     */
+                    void translate() {
+                        //ToDo: Implement, implement the translation process
+                        
+                        if (!m_is_stop) {
+                            m_code = trans_job_code::RESULT_CANCELED;
+                            m_t_sentence = "The translation task has been canceled!";
+                        } else {
+                            m_code = trans_job_code::RESULT_OK;
+                            m_t_sentence = "--------/Some sentence translation/-------";
+                        }
                     }
 
                     /**
@@ -90,7 +108,7 @@ namespace uva {
                      * @return the sentence in the source language
                      */
                     virtual const string & get_source_sentence() const {
-                        return m_source_sentence;
+                        return m_s_sentence;
                     }
 
                     /**
@@ -98,10 +116,13 @@ namespace uva {
                      * @return the sentence in the target language or an error message
                      */
                     virtual const string & get_target_sentence() const {
-                        return m_target_sentence;
+                        return m_t_sentence;
                     }
 
                 private:
+                    //Stores the flag that indicates that we need to stop the translation algorithm
+                    atomic<bool> m_is_stop;
+
                     //Stores the translation task id
                     const task_id_type m_task_id;
 
@@ -109,10 +130,10 @@ namespace uva {
                     trans_job_code m_code;
 
                     //Stores the sentence to be translated
-                    const string & m_source_sentence;
+                    const string m_s_sentence;
 
                     //Stores the translated sentence or an error message
-                    string m_target_sentence;
+                    string m_t_sentence;
                 };
             }
         }

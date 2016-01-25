@@ -55,6 +55,8 @@ namespace uva {
         namespace decoding {
             namespace server {
 
+                //ToDo: Look at synchronizations! It is not overcomplicated and also the number of jobs count is not synchronized!
+                
                 /**
                  * This class is used to schedule the translation jobs.
                  * Each translation job consists of a number of sentences to translate.
@@ -88,7 +90,7 @@ namespace uva {
                      */
                     trans_job_pool()
                     : m_is_stopping(false), m_is_stopped(false), m_job_count(0),
-                    m_jobs_thread(bind(&trans_job_pool::monitore_done_jobs, this)) {
+                    m_jobs_thread(bind(&trans_job_pool::process_finished_jobs, this)) {
                     }
 
                     /**
@@ -160,6 +162,10 @@ namespace uva {
 
                         //Increment the jobs count
                         m_job_count++;
+
+                        //ToDo: Add the job tasks to the tasks' pool
+                        
+                        //ToDo: The tasks pool shall be chosen based on the source and target language
                     }
 
                     /**
@@ -216,7 +222,7 @@ namespace uva {
                     /**
                      * Allows to process the finished translation jobs
                      */
-                    void monitore_done_jobs() {
+                    void process_finished_jobs() {
                         unique_lock guard_done(m_is_jd_lock);
 
                         //Stop iteration only when we are stopping and there are no jobs left
@@ -262,9 +268,9 @@ namespace uva {
                     job_result_setter m_set_job_result_func;
 
                     //Stores the flag that indicates that we are stopping
-                    bool m_is_stopping;
+                    atomic<bool> m_is_stopping;
                     //Stores the flag that indicates we have stopped
-                    bool m_is_stopped;
+                    atomic<bool> m_is_stopped;
                     //Stores the active jobs count
                     uint64_t m_job_count;
 
@@ -279,7 +285,6 @@ namespace uva {
                     //The list of finished jobs pending to be processed
                     jobs_list_type m_done_jobs_list;
                 };
-
             }
         }
     }

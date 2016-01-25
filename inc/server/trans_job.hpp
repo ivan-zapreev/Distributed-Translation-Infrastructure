@@ -27,6 +27,7 @@
 #include <vector>
 
 #include "trans_task.hpp"
+#include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_id.hpp"
@@ -66,7 +67,18 @@ namespace uva {
                      * @param task_ids the list of task ids from which this job consists of
                      */
                     trans_job(trans_job_request_ptr request_ptr) : m_request_ptr(request_ptr) {
-                        //ToDo: Split the translation request into a number of translation tasks
+                        //Get the text to be translated
+                        string text = m_request_ptr->get_text();
+                        //Obtain the text to be parsed
+                        TextPieceReader reader(text.c_str(), text.length());
+                        //This reader will store the read text sentence
+                        TextPieceReader sentence;
+
+                        //Read the text line by line, each line must be one sentence
+                        //to translate. For each read line create a translation task.
+                        while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
+                            m_tasks.push_back(new trans_task(m_id_mgr.get_next_id(), sentence.str()));
+                        }
                     }
 
                     /**
@@ -150,7 +162,12 @@ namespace uva {
 
                     //Stores the list of translation tasks of this job
                     tasks_list_type m_tasks;
+
+                    //Stores the static instance of the id manager
+                    static id_manager<task_id_type> m_id_mgr;
                 };
+
+                id_manager<task_id_type> trans_job::m_id_mgr(task_id::MINIMUM_TASK_ID);
             }
         }
     }

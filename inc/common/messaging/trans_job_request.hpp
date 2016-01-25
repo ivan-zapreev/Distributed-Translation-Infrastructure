@@ -56,6 +56,7 @@ namespace uva {
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
+                        static constexpr char TEXT_SENTENCE_DELIMITER = '\n';
 
                         /**
                          * This is the basic class constructor that accepts the
@@ -206,6 +207,7 @@ namespace uva {
 
                     constexpr char trans_job_request::HEADER_DELIMITER;
                     constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;
+                    constexpr char trans_job_request::TEXT_SENTENCE_DELIMITER;
 
                     id_manager<job_id_type> trans_job_request::m_id_mgr(job_id::MINIMUM_JOB_ID);
                 }
