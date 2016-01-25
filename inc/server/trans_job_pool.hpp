@@ -273,7 +273,7 @@ namespace uva {
                             m_job_count--;
                         }
 
-                        LOG_DEBUG << "Delete the object instance" << END_LOG;
+                        LOG_DEBUG << "Delete the job " << job_id << " object instance" << END_LOG;
 
                         //Delete the job as it is not needed any more
                         delete trans_job;

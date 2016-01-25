@@ -29,6 +29,8 @@
 #include <cstdlib>
 #include <string>
 #include <unordered_map>
+#include <mutex>
+#include <condition_variable>
 
 #define ASIO_STANDALONE
 
@@ -63,6 +65,8 @@ namespace uva {
                 public:
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
                     typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    //Define the unique lock needed for wait/notify
+                    typedef unique_lock<mutex> unique_lock;
 
                     translation_client(const string & host, const uint16_t port) : m_open(false), m_done(false) {
                         //Initialize the URI to connect to
@@ -98,10 +102,13 @@ namespace uva {
                      * @param msg the message
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        //ToDo: parse the message into the translation job reply
+                        unique_lock guard(m_lock_msg);
 
+                        //ToDo: parse the message into the translation job reply
                         std::cout << msg->get_payload() << std::endl;
 
+                        //Notify that the message has been received
+                        m_is_msg_received.notify_one();
                     }
 
                     /**
@@ -153,9 +160,6 @@ namespace uva {
                      * @result the translation job id
                      */
                     job_id_type send(trans_job_request & request) {
-                        //Make sure that message related activity is synchronized
-                        scoped_lock guard(m_lock_msg);
-
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -180,9 +184,10 @@ namespace uva {
                      */
                     void receive(const job_id_type job_id, string & target_text, const size_t timeout_millisec = 0) {
                         //Make sure that message related activity is synchronized
-                        scoped_lock guard(m_lock_msg);
+                        unique_lock guard(m_lock_msg);
 
-                        //ToDo: Wait for the job with the given id.
+                        //Wait for the reply message
+                        m_is_msg_received.wait(guard);
                     }
 
                     /**
@@ -238,7 +243,7 @@ namespace uva {
                     bool wait_connect() {
                         //Declare the variable to store the local connection status
                         bool is_connecting = false;
-                        
+
                         //Wait until the connection is established
                         while (1) {
                             //Check the connection status
@@ -246,7 +251,7 @@ namespace uva {
                                 scoped_lock guard(m_lock_con);
                                 is_connecting = !m_open && !m_done;
                             }
-                            
+
                             //If we we are still connecting then sleep, otherwise move on
                             if (is_connecting) {
                                 m_client.get_alog().write(websocketpp::log::alevel::app,
@@ -275,14 +280,22 @@ namespace uva {
                     websocketpp::lib::thread m_asio_thread;
                     //Stores the connection handler
                     websocketpp::connection_hdl m_hdl;
+
                     //Stores the synchronization mutex for connection
                     websocketpp::lib::mutex m_lock_con;
+
                     //Stores the synchronization mutex for messaging
                     websocketpp::lib::mutex m_lock_msg;
+                    //The conditional variable for tracking the reply message
+                    condition_variable m_is_msg_received;
+
                     //Stores the open and done flags for connection
-                    bool m_open, m_done;
+                    atomic<bool> m_open;
+                    atomic<bool> m_done;
+
                     //Stores the server URI
                     string m_uri;
+
                     //Stores the mapping from the translation job request id to
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
