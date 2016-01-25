@@ -655,6 +655,7 @@
         <in>trans_task.hpp</in>
         <in>trans_task_id.hpp</in>
         <in>trans_task_pool.hpp</in>
+        <in>trans_task_pool_worker.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>common.hpp</in>
@@ -698,6 +699,8 @@
           <in>lm_query.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
+        <in>trans_task_pool.cpp</in>
+        <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
   </logicalFolder>

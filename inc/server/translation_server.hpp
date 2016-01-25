@@ -27,6 +27,7 @@
 #define TRANSLATION_SERVER_HPP
 
 #include <iostream>
+#include <functional>
 
 #define ASIO_STANDALONE
 #include <websocketpp/config/asio_no_tls.hpp>
@@ -39,14 +40,12 @@
 #include "trans_manager.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::connection_hdl;
-using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::bind;
 using websocketpp::log::alevel;
 using websocketpp::frame::opcode::value;
 using websocketpp::frame::opcode::text;
@@ -65,7 +64,13 @@ namespace uva {
                 public:
                     typedef websocketpp::server<websocketpp::config::asio> server;
 
-                    translation_server(const uint16_t port) {
+                    /**
+                     * The basic constructor
+                     * @param port the port to listen to
+                     * @param num_threads the number of translation threads to run
+                     */
+                    translation_server(const uint16_t port, const size_t num_threads)
+                    : m_manager(num_threads) {
                         //Set up access channels to only log interesting things
                         m_server.clear_access_channels(alevel::all);
                         m_server.set_access_channels(alevel::app);

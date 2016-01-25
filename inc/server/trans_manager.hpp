@@ -24,8 +24,9 @@
  */
 
 #include <map>
+#include <mutex>
+#include <functional>
 
-#include <websocketpp/common/thread.hpp>
 #include <websocketpp/server.hpp>
 
 #include "common/utils/Exceptions.hpp"
@@ -38,12 +39,10 @@
 #include "trans_job.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
-
-using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::bind;
 
 #ifndef SESSION_MANAGER_HPP
 #define SESSION_MANAGER_HPP
@@ -59,10 +58,10 @@ namespace uva {
                  */
                 class trans_manager {
                 public:
-                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    typedef lock_guard<mutex> scoped_lock;
 
                     //Declare the response setting function for the translation job.
-                    typedef websocketpp::lib::function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
+                    typedef function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
 
                     //Declare the session to connection handler maps and iterators;
                     typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
@@ -71,10 +70,12 @@ namespace uva {
 
                     /**
                      * The basic constructor.
+                     * @param num_threads the number of translation threads to run
                      * 
                      * ToDo: Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts)
                      */
-                    trans_manager() : m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
+                    trans_manager(const size_t num_threads)
+                    : m_job_pool(num_threads), m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
                         m_job_pool.set_job_result_setter(bind(&trans_manager::set_job_result, this, _1));
                     }
@@ -240,7 +241,7 @@ namespace uva {
                     response_sender m_sender_func;
 
                     //Stores the synchronization mutex
-                    websocketpp::lib::mutex m_lock;
+                    mutex m_lock;
 
                     //Stores the connection handler to session id mappings
                     sessions_map_type m_sessions;

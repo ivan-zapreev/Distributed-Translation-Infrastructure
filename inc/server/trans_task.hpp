@@ -23,9 +23,17 @@
  * Created on January 21, 2016, 10:39 AM
  */
 
-#include <websocketpp/common/thread.hpp>
+#include <mutex>
+#include <thread>
+
+#include "common/utils/logging/Logger.hpp"
+#include "common/messaging/trans_job_code.hpp"
+#include "trans_task_id.hpp"
 
 using namespace std;
+
+using namespace uva::smt::decoding::common::messaging;
+using namespace uva::utils::logging;
 
 #ifndef TRANS_TASK_HPP
 #define TRANS_TASK_HPP
@@ -45,11 +53,11 @@ namespace uva {
                 class trans_task {
                 public:
                     //Define the lock type to synchronize map operations
-                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    typedef lock_guard<mutex> scoped_lock;
                     //Define the done job notifier function type
-                    typedef websocketpp::lib::function<void(trans_task_ptr) > done_task_notifier;
+                    typedef function<void(trans_task_ptr) > done_task_notifier;
                     //Define the canceled job notifier function type
-                    typedef websocketpp::lib::function<void(trans_task_ptr) > cancel_task_notifier;
+                    typedef function<void(trans_task_ptr) > cancel_task_notifier;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
@@ -82,13 +90,17 @@ namespace uva {
                      * Allows to cancel the translation task
                      */
                     void cancel() {
-                        scoped_lock guard_cancel(m_cancel_lock);
+                        LOG_DEBUG << "Canceling the task " << m_task_id << " translation ..." << END_LOG;
+                        {
+                            scoped_lock guard_cancel(m_cancel_lock);
 
-                        //Set the stopping flag to true
-                        m_is_stop = true;
+                            //Set the stopping flag to true
+                            m_is_stop = true;
 
-                        //Call the cancel notifier
-                        m_notify_task_cancel_func(this);
+                            //Call the cancel notifier
+                            m_notify_task_cancel_func(this);
+                        }
+                        LOG_DEBUG << "The task " << m_task_id << " translation is canceled!" << END_LOG;
                     }
 
                     /**
@@ -97,6 +109,8 @@ namespace uva {
                     void translate() {
                         //ToDo: Implement, implement the translation process
                         string trans_result = "--------/Some sentence translation/-------";
+
+                        LOG_DEBUG << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //If the task is not canceled at this point yet then prevent it from being canceled in parallel
                         {
@@ -111,8 +125,12 @@ namespace uva {
                             }
                         }
 
+                        LOG_DEBUG << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
+                        
                         //Call the task-done notification function to report that we are finished!s
                         m_notify_task_done_func(this);
+
+                        LOG_DEBUG << "The task " << m_task_id << " translation is finished!" << END_LOG;
                     }
 
                     /**
@@ -127,7 +145,7 @@ namespace uva {
                      * Allows to retrieve the translation task result code
                      * @return the translation task result code
                      */
-                    virtual const trans_job_code get_code() const {
+                    const trans_job_code get_code() const {
                         return m_code;
                     }
 
@@ -135,7 +153,7 @@ namespace uva {
                      * Allows to retrieve the sentence in the source language
                      * @return the sentence in the source language
                      */
-                    virtual const string & get_source_text() const {
+                    const string & get_source_text() const {
                         return m_source_text;
                     }
 
@@ -143,7 +161,7 @@ namespace uva {
                      * Allows to retrieve the sentence in the target language or an error message
                      * @return the sentence in the target language or an error message
                      */
-                    virtual const string & get_target_text() const {
+                    const string & get_target_text() const {
                         return m_target_text;
                     }
 
@@ -167,7 +185,7 @@ namespace uva {
                     done_task_notifier m_notify_task_done_func;
 
                     //Stores the synchronization mutex for synchronization on task cancelling
-                    websocketpp::lib::mutex m_cancel_lock;
+                    mutex m_cancel_lock;
 
                     //Stores the function to be called in case the tasks is cancelled
                     cancel_task_notifier m_notify_task_cancel_func;

@@ -25,8 +25,8 @@
 
 #include <string>
 #include <vector>
-
-#include <websocketpp/common/thread.hpp>
+#include <mutex>
+#include <functional>
 
 #include "trans_task.hpp"
 #include "common/messaging/id_manager.hpp"
@@ -35,10 +35,8 @@
 #include "common/messaging/trans_job_id.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 using namespace uva::smt::decoding::common::messaging;
-
-using websocketpp::lib::bind;
-using websocketpp::lib::placeholders::_1;
 
 #ifndef TRANS_JOB_HPP
 #define TRANS_JOB_HPP
@@ -62,14 +60,15 @@ namespace uva {
                 class trans_job {
                 public:
                     //Define the lock type to synchronize map operations
-                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    typedef lock_guard<recursive_mutex> rec_scoped_lock;
 
                     //Define the function type for the function used to set the translation job resut
-                    typedef websocketpp::lib::function<void(trans_job_ptr trans_job) > done_job_notifier;
+                    typedef function<void(trans_job_ptr trans_job) > done_job_notifier;
 
                     //Declare the tasks list type and its iterator
                     typedef vector<trans_task_ptr> tasks_list_type;
                     typedef tasks_list_type::iterator tasks_iter_type;
+                    typedef tasks_list_type::const_iterator tasks_const_iter_type;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
@@ -137,7 +136,7 @@ namespace uva {
                      * Allows to get the list of translation tasks
                      * @return the list of translation tasks of this job
                      */
-                    vector<trans_task_ptr>& get_tasks() {
+                    const tasks_list_type& get_tasks() {
                         return m_tasks;
                     }
 
@@ -176,9 +175,14 @@ namespace uva {
                      * @return true if all the job's tasks are finished, otherwise false
                      */
                     bool is_job_finished() {
-                        scoped_lock guard_tasks(m_tasks_lock);
+                        LOG_DEBUG << "Checking if the job is finished!" << END_LOG;
+                        {
+                            rec_scoped_lock guard_tasks(m_tasks_lock);
 
-                        return (m_done_tasks_count == m_tasks.size());
+                            LOG_DEBUG << "The number of tasks is: " << m_tasks.size() << END_LOG;
+
+                            return (m_done_tasks_count == m_tasks.size());
+                        }
                     }
 
                     /**
@@ -187,22 +191,28 @@ namespace uva {
                      * @param task the translation task that is finished
                      */
                     void notify_task_done(const trans_task_ptr& task) {
-                        scoped_lock guard_tasks(m_tasks_lock);
+                        LOG_DEBUG << "The task " << task->get_task_id() << " is done!" << END_LOG;
+                        {
+                            rec_scoped_lock guard_tasks(m_tasks_lock);
 
-                        //ToDo: Do a strict check on the tasks reporting to be finished,
-                        //these should be the onsed from the m_tasks list and they must
-                        //report themselves only ones.
+                            //ToDo: Do a strict check on the tasks reporting to be finished,
+                            //these should be the onsed from the m_tasks list and they must
+                            //report themselves only ones.
 
-                        //Increment the finished tasks count
-                        m_done_tasks_count++;
+                            //Increment the finished tasks count
+                            m_done_tasks_count++;
 
-                        //If all the tasks are translated
-                        if (is_job_finished()) {
-                            //Combine the task results into the job result
-                            combine_job_result();
+                            LOG_DEBUG << "The finished tasks count of job " << m_request_ptr->get_job_id()
+                                    << " is " << m_done_tasks_count << END_LOG;
 
-                            //Notify that this job id done
-                            m_notify_job_done_func(this);
+                            //If all the tasks are translated
+                            if (is_job_finished()) {
+                                //Combine the task results into the job result
+                                combine_job_result();
+
+                                //Notify that this job id done
+                                m_notify_job_done_func(this);
+                            }
                         }
                     }
 
@@ -247,7 +257,7 @@ namespace uva {
 
                 private:
                     //Stores the synchronization mutex for working with the m_sessions_map
-                    websocketpp::lib::mutex m_tasks_lock;
+                    recursive_mutex m_tasks_lock;
 
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;

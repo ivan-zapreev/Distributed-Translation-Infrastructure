@@ -27,14 +27,13 @@
 #include <cstdlib>
 #include <string>
 
-#include "websocketpp/common/thread.hpp"
-#include "tclap/CmdLine.h"
-#include "INI.h"
+#include <websocketpp/common/thread.hpp>
+#include <tclap/CmdLine.h>
+#include <INI.h>
 
 #include "common.hpp"
 
 #include "server/translation_server.hpp"
-
 #include "common/utils/Exceptions.hpp"
 
 using namespace std;
@@ -69,6 +68,9 @@ typedef struct {
 
     //The port to listen to
     uint16_t m_server_port;
+    
+    //The number of the translation threads to run
+    size_t m_num_threads;
 
     //The distortion limit to use
     uint32_t m_distortion_limit;
@@ -182,13 +184,15 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         //Get the configuration options from the file
         string section = "Server Options";
         params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
+        params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
 
         section = "Language Options";
         params.m_source_lang = get_string(ini, section, "source_lang");
         params.m_target_lang = get_string(ini, section, "target_lang");
 
         LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
-                << params.m_target_lang << "' on port: " << params.m_server_port << END_LOG;
+                << params.m_target_lang << "' on port: '" << params.m_server_port
+                << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
 
         section = "Input Models";
         params.m_language_model = get_string(ini, section, "language_model");
@@ -237,7 +241,7 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         //Instantiate the translation server
-        translation_server server(params.m_server_port);
+        translation_server server(params.m_server_port, params.m_num_threads);
 
         LOG_USAGE << "The server is started, press '" << PROGRAM_EXIT_LETTER
                 << " & <enter>' to exit!" << END_LOG;

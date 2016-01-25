@@ -18,6 +18,7 @@
         <in>trans_task.hpp</in>
         <in>trans_task_id.hpp</in>
         <in>trans_task_pool.hpp</in>
+        <in>trans_task_pool_worker.hpp</in>
       </df>
     </df>
     <df root="src" name="2">
@@ -59,6 +60,8 @@
           <in>lm_query.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
+        <in>trans_task_pool.cpp</in>
+        <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -141,6 +144,11 @@
       <item path="inc/server/trans_task_id.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_task_pool.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/trans_task_pool_worker.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -237,6 +245,13 @@
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/server/trans_task_pool_worker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
     </conf>
   </confs>

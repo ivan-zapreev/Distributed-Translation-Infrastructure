@@ -26,7 +26,6 @@
 #ifndef TRANS_TASK_ID_HPP
 #define TRANS_TASK_ID_HPP
 
-
 namespace uva {
     namespace smt {
         namespace decoding {
