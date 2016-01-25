@@ -78,7 +78,7 @@ namespace uva {
                      * @param task_ids the list of task ids from which this job consists of
                      */
                     trans_job(trans_job_request_ptr request_ptr)
-                    : m_request_ptr(request_ptr), m_done_tasks_count(0) {
+                    : m_request_ptr(request_ptr), m_done_tasks_count(0), m_code(trans_job_code::RESULT_UNDEFINED), m_target_text("") {
                         //Get the text to be translated
                         string text = m_request_ptr->get_text();
                         //Obtain the text to be parsed
@@ -146,8 +146,7 @@ namespace uva {
                      * @return the translation task result code
                      */
                     virtual const trans_job_code get_code() const {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        return m_code;
                     }
 
                     /**
@@ -155,16 +154,18 @@ namespace uva {
                      * @return the translation task result text
                      */
                     virtual const string & get_text() const {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        return m_target_text;
                     }
 
                     /**
-                     * Allows to cancel the given translation job
+                     * Allows to cancel the given translation job by telling all the translation tasks to stop.
                      */
                     void cancel() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //Iterate through the translation tasks and cancel them
+                        for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
+                            //Cancel the translation task
+                            *it->cancel();
+                        }
                     }
 
                 protected:
@@ -195,9 +196,52 @@ namespace uva {
                         //Increment the finished tasks count
                         m_done_tasks_count++;
 
-                        //If all the tasks are translated then we notify that this job id done
+                        //If all the tasks are translated
                         if (is_job_finished()) {
+                            //Combine the task results into the job result
+                            combine_job_result();
+
+                            //Notify that this job id done
                             m_notify_job_done_func(this);
+                        }
+                    }
+
+                    /**
+                     * Allows to compile the end job result, e.g. based on the task results,
+                     * come up with the job's result code and the translated text.
+                     */
+                    void combine_job_result() {
+                        //Declare the variable for couinting the number of CANCELED tasks
+                        uint32_t num_canceled = 0;
+
+                        //Iterate through the translation tasks and combine the results
+                        for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
+                            //Count the number of canceled tasks and leave text as an empty line then
+                            if (*it->get_code() == trans_job_code::RESULT_CANCELED) {
+                                num_canceled++;
+                                //Do not append any result, to save on network communication
+                            } else {
+                                //Append the next translated sentence,
+                                m_target_text += *it->get_target_sentence() + "\n";
+                            }
+                            //Add a new line
+                            m_target_text += "\n";
+                        }
+
+                        //Decide on the result code
+                        if (num_canceled == 0) {
+                            //If there is no canceled jobs then the result is good
+                            m_code = trans_job_code::RESULT_OK;
+                        } else {
+                            if (num_canceled == m_done_tasks_count) {
+                                //All of the tasks have been canceled
+                                m_code = trans_job_code::RESULT_CANCELED;
+                                //Set the text to be empty, there is not point in sending new line symbols
+                                m_target_text = "";
+                            } else {
+                                //Some of the sentences were translated but not all of them
+                                m_code = trans_job_code::RESULT_PARTIAL;
+                            }
                         }
                     }
 
@@ -216,6 +260,12 @@ namespace uva {
 
                     //The count of the finished tasks
                     atomic<uint32_t> m_done_tasks_count;
+
+                    //Stores the translation job result code
+                    trans_job_code m_code;
+
+                    //Stores the translation job result text
+                    string m_target_text;
 
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;
