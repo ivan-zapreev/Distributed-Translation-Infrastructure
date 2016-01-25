@@ -164,7 +164,7 @@ namespace uva {
                         //Iterate through the translation tasks and cancel them
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Cancel the translation task
-                            *it->cancel();
+                            (*it)->cancel();
                         }
                     }
 
@@ -217,12 +217,12 @@ namespace uva {
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Count the number of canceled tasks and leave text as an empty line then
-                            if (*it->get_code() == trans_job_code::RESULT_CANCELED) {
+                            if ((*it)->get_code() == trans_job_code::RESULT_CANCELED) {
                                 num_canceled++;
                                 //Do not append any result, to save on network communication
                             } else {
                                 //Append the next translated sentence,
-                                m_target_text += *it->get_target_sentence() + "\n";
+                                m_target_text += (*it)->get_target_sentence() + "\n";
                             }
                             //Add a new line
                             m_target_text += "\n";

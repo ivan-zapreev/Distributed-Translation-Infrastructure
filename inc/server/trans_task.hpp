@@ -45,6 +45,7 @@ namespace uva {
                 class trans_task {
                 public:
                     typedef websocketpp::lib::function<void(trans_task_ptr) > done_task_notifier;
+                    typedef websocketpp::lib::function<void(trans_task_ptr) > cancel_task_notifier;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
@@ -66,10 +67,22 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to set the function which must be called by the tasks if it is being cancelled.
+                     * @param notify_task_cancel_func the function to call in case this task is being cancelled.
+                     */
+                    void set_cancel_task_notifier(cancel_task_notifier notify_task_cancel_func) {
+                        m_notify_task_cancel_func = notify_task_cancel_func;
+                    }
+
+                    /**
                      * Allows to cancel the translation task
                      */
                     void cancel() {
+                        //Set the stopping flag to true
                         m_is_stop = true;
+                        
+                        //Call the cancel notifier
+                        m_notify_task_cancel_func(this);
                     }
 
                     /**
@@ -85,7 +98,7 @@ namespace uva {
                             m_code = trans_job_code::RESULT_OK;
                             m_t_sentence = "--------/Some sentence translation/-------";
                         }
-                        
+
                         //Call the task-done notification function to report that we are finished!s
                         m_notify_task_done_func(this);
                     }
@@ -140,6 +153,9 @@ namespace uva {
 
                     //Stores the task-done notifier function for this task
                     done_task_notifier m_notify_task_done_func;
+                    
+                    //Stores the function to be called in case the tasks is cancelled
+                    cancel_task_notifier m_notify_task_cancel_func;
                 };
             }
         }
