@@ -44,7 +44,11 @@ namespace uva {
                  */
                 class trans_task {
                 public:
+                    //Define the lock type to synchronize map operations
+                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    //Define the done job notifier function type
                     typedef websocketpp::lib::function<void(trans_task_ptr) > done_task_notifier;
+                    //Define the canceled job notifier function type
                     typedef websocketpp::lib::function<void(trans_task_ptr) > cancel_task_notifier;
 
                     /**
@@ -54,9 +58,9 @@ namespace uva {
                      */
                     trans_task(const task_id_type task_id, const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
-                    m_s_sentence(source_sentence), m_t_sentence(""), m_notify_task_done_func(notify_task_done_func) {
+                    m_source_text(source_sentence), m_target_text(""), m_notify_task_done_func(notify_task_done_func) {
                         LOG_DEBUG << "Creating a translation task with id: " << m_task_id
-                                << ", text: " << m_s_sentence << END_LOG;
+                                << ", text: " << m_source_text << END_LOG;
                     }
 
                     /**
@@ -78,9 +82,11 @@ namespace uva {
                      * Allows to cancel the translation task
                      */
                     void cancel() {
+                        scoped_lock guard_cancel(m_cancel_lock);
+
                         //Set the stopping flag to true
                         m_is_stop = true;
-                        
+
                         //Call the cancel notifier
                         m_notify_task_cancel_func(this);
                     }
@@ -90,13 +96,19 @@ namespace uva {
                      */
                     void translate() {
                         //ToDo: Implement, implement the translation process
+                        string trans_result = "--------/Some sentence translation/-------";
 
-                        if (!m_is_stop) {
-                            m_code = trans_job_code::RESULT_CANCELED;
-                            m_t_sentence = "The translation task has been canceled!";
-                        } else {
-                            m_code = trans_job_code::RESULT_OK;
-                            m_t_sentence = "--------/Some sentence translation/-------";
+                        //If the task is not canceled at this point yet then prevent it from being canceled in parallel
+                        {
+                            scoped_lock guard_cancel(m_cancel_lock);
+
+                            //Set the task is not canceled then set the result, otherwise set the canceled code.
+                            if (!m_is_stop) {
+                                m_code = trans_job_code::RESULT_OK;
+                                m_target_text = trans_result;
+                            } else {
+                                m_code = trans_job_code::RESULT_CANCELED;
+                            }
                         }
 
                         //Call the task-done notification function to report that we are finished!s
@@ -123,16 +135,16 @@ namespace uva {
                      * Allows to retrieve the sentence in the source language
                      * @return the sentence in the source language
                      */
-                    virtual const string & get_source_sentence() const {
-                        return m_s_sentence;
+                    virtual const string & get_source_text() const {
+                        return m_source_text;
                     }
 
                     /**
                      * Allows to retrieve the sentence in the target language or an error message
                      * @return the sentence in the target language or an error message
                      */
-                    virtual const string & get_target_sentence() const {
-                        return m_t_sentence;
+                    virtual const string & get_target_text() const {
+                        return m_target_text;
                     }
 
                 private:
@@ -146,14 +158,17 @@ namespace uva {
                     trans_job_code m_code;
 
                     //Stores the sentence to be translated
-                    const string m_s_sentence;
+                    const string m_source_text;
 
                     //Stores the translated sentence or an error message
-                    string m_t_sentence;
+                    string m_target_text;
 
                     //Stores the task-done notifier function for this task
                     done_task_notifier m_notify_task_done_func;
-                    
+
+                    //Stores the synchronization mutex for synchronization on task cancelling
+                    websocketpp::lib::mutex m_cancel_lock;
+
                     //Stores the function to be called in case the tasks is cancelled
                     cancel_task_notifier m_notify_task_cancel_func;
                 };

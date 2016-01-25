@@ -222,7 +222,7 @@ namespace uva {
                                 //Do not append any result, to save on network communication
                             } else {
                                 //Append the next translated sentence,
-                                m_target_text += (*it)->get_target_sentence() + "\n";
+                                m_target_text += (*it)->get_target_text() + "\n";
                             }
                             //Add a new line
                             m_target_text += "\n";
