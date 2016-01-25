@@ -105,7 +105,7 @@ namespace uva {
                         m_server.set_close_handler(NULL);
 
                         //NOTE: Somehow stopping to listen to the new connections result in errors
-                        //So for now it is disabled, the ToDo is to figure out why it happens
+                        //ToDo: Figure out why we get asio errors when stopping to listen
                         //LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
                         //m_server.stop_listening();
