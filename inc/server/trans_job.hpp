@@ -184,11 +184,11 @@ namespace uva {
                      * @return true if all the job's tasks are finished, otherwise false
                      */
                     bool is_job_finished() {
-                        LOG_DEBUG << "Checking if the job is finished!" << END_LOG;
+                        LOG_DEBUG1 << "Checking if the job is finished!" << END_LOG;
                         {
                             rec_scoped_lock guard_tasks(m_tasks_lock);
 
-                            LOG_DEBUG << "The number of tasks is: " << m_tasks.size() << END_LOG;
+                            LOG_DEBUG1 << "The number of tasks is: " << m_tasks.size() << END_LOG;
 
                             return (m_done_tasks_count == m_tasks.size());
                         }
@@ -200,7 +200,7 @@ namespace uva {
                      * @param task the translation task that is finished
                      */
                     void notify_task_done(const trans_task_ptr& task) {
-                        LOG_DEBUG << "The task " << task->get_task_id() << " is done!" << END_LOG;
+                        LOG_DEBUG1 << "The task " << task->get_task_id() << " is done!" << END_LOG;
                         {
                             rec_scoped_lock guard_tasks(m_tasks_lock);
 
@@ -211,7 +211,7 @@ namespace uva {
                             //Increment the finished tasks count
                             m_done_tasks_count++;
 
-                            LOG_DEBUG << "The finished tasks count of job " << m_request_ptr->get_job_id()
+                            LOG_DEBUG1 << "The finished tasks count of job " << m_request_ptr->get_job_id()
                                     << " is " << m_done_tasks_count << END_LOG;
 
                             //If all the tasks are translated

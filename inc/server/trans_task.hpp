@@ -67,7 +67,7 @@ namespace uva {
                     trans_task(const task_id_type task_id, const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
                     m_source_text(source_sentence), m_target_text(""), m_notify_task_done_func(notify_task_done_func) {
-                        LOG_DEBUG << "New task, id: " << m_task_id
+                        LOG_DEBUG1 << "New task, id: " << m_task_id
                                 << ", text: " << m_source_text << END_LOG;
                     }
 
@@ -90,7 +90,7 @@ namespace uva {
                      * Allows to cancel the translation task
                      */
                     void cancel() {
-                        LOG_DEBUG << "Canceling the task " << m_task_id << " translation ..." << END_LOG;
+                        LOG_DEBUG1 << "Canceling the task " << m_task_id << " translation ..." << END_LOG;
                         {
                             scoped_lock guard_cancel(m_cancel_lock);
 
@@ -100,7 +100,7 @@ namespace uva {
                             //Call the cancel notifier
                             m_notify_task_cancel_func(this);
                         }
-                        LOG_DEBUG << "The task " << m_task_id << " translation is canceled!" << END_LOG;
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is canceled!" << END_LOG;
                     }
 
                     /**
@@ -110,7 +110,7 @@ namespace uva {
                         //ToDo: Implement, implement the translation process
                         string trans_result = string("--------/Task ") + to_string(m_task_id) + string(" translation/-------");
 
-                        LOG_DEBUG << "Starting the task " << m_task_id << " translation ..." << END_LOG;
+                        LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //If the task is not canceled at this point yet then prevent it from being canceled in parallel
                         {
@@ -125,12 +125,12 @@ namespace uva {
                             }
                         }
 
-                        LOG_DEBUG << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
                         
                         //Call the task-done notification function to report that we are finished!s
                         m_notify_task_done_func(this);
 
-                        LOG_DEBUG << "The task " << m_task_id << " translation is finished!" << END_LOG;
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is finished!" << END_LOG;
                     }
 
                     /**

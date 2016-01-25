@@ -99,7 +99,7 @@ namespace uva {
                             if (reader.get_first<HEADER_DELIMITER>(text)) {
                                 m_job_id = stoi(text.str());
                                 //Second get the source language string
-                                if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                if (reader.get_first<HEADER_DELIMITER>(text)) {
                                     m_source_lang = text.str();
                                     //Third get the target language string
                                     if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
