@@ -227,11 +227,22 @@ namespace uva {
                      * @param trans_job the job to be deleted
                      */
                     void delete_job(trans_job_ptr trans_job) {
+                        //Get and store the session and job ids for later use
+                        const session_id_type session_id = trans_job->get_session_id();
+                        const job_id_type job_id = trans_job->get_job_id();
+
                         //Remove the job from the pool's administration 
                         {
                             scoped_lock guard_all_jobs(m_all_jobs_lock);
 
-                            m_sessions_map[trans_job->get_session_id()].erase(trans_job->get_job_id());
+                            //Erase the job from the jobs mapping
+                            m_sessions_map[session_id].erase(job_id);
+                            
+                            //If there are not jobs left for this session,
+                            //then remove the mapping to save space.
+                            if( m_sessions_map[session_id].empty() ) {
+                                m_sessions_map.erase(session_id);
+                            }
 
                             //Decrement the jobs count 
                             m_job_count--;
