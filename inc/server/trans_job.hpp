@@ -78,6 +78,10 @@ namespace uva {
                      */
                     trans_job(trans_job_request_ptr request_ptr)
                     : m_request_ptr(request_ptr), m_done_tasks_count(0), m_code(trans_job_code::RESULT_UNDEFINED), m_target_text("") {
+                        LOG_DEBUG << "Creating a new translation job " << this << " with job_id: "
+                                << m_request_ptr->get_job_id()<< " session id: "
+                                << m_request_ptr->get_session_id() << END_LOG;
+                        
                         //Get the text to be translated
                         string text = m_request_ptr->get_text();
                         //Obtain the text to be parsed
@@ -105,8 +109,7 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~trans_job() {
-                        
-                        LOG_DEBUG << "Deleting the job request for job " << this << " job_id: "
+                        LOG_DEBUG << "Deleting the translation job " << this << " with job_id: "
                                 << m_request_ptr->get_job_id()<< " session id: "
                                 << m_request_ptr->get_session_id() << END_LOG;
                         
