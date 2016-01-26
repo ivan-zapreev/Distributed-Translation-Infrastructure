@@ -193,7 +193,7 @@ namespace uva {
                                 iter->second->cancel();
                             }
                         } else {
-                            LOG_DEBUG << "Trying to cancel an unknown session with id: " << session_id << END_LOG;
+                            LOG_DEBUG << "The session with id: " << session_id << " has no jobs!" << END_LOG;
                         }
                     }
 

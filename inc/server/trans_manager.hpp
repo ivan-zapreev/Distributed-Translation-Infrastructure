@@ -175,7 +175,7 @@ namespace uva {
                             scoped_lock guard(m_lock);
 
                             //Get the session id from the handler
-                            session_id_type session_id = m_sessions[hdl];
+                            session_id = m_sessions[hdl];
 
                             LOG_DEBUG << "A closing session request for session id: " << session_id << END_LOG;
 
