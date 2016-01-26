@@ -149,7 +149,7 @@ namespace uva {
                             LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
                         }
                         
-                        LOG_DEBUG << "The response for job: " << response.get_job_id() << " is sent!" << END_LOG;
+                        LOG_DEBUG << "The job response: " << &response << " is sent!" << END_LOG;
                     }
 
                     /**
