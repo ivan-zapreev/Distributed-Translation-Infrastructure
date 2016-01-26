@@ -193,6 +193,8 @@ namespace uva {
                             //NOTE: This can be done outside the synchronization block
                             m_job_pool.cancel_jobs(session_id);
                         }
+
+                        LOG_DEBUG << "The session with id: " << session_id << " is closed!" << END_LOG;
                     }
 
                     /**
