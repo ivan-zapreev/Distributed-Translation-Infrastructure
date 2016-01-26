@@ -191,7 +191,8 @@ namespace uva {
                         {
                             rec_scoped_lock guard_tasks(m_tasks_lock);
 
-                            LOG_DEBUG1 << "The number of tasks is: " << m_tasks.size() << END_LOG;
+                            LOG_DEBUG1 << "The number of tasks is for job " << this
+                                    << " is: " << m_tasks.size() << END_LOG;
 
                             return (m_done_tasks_count == m_tasks.size());
                         }
@@ -214,12 +215,12 @@ namespace uva {
                             //Increment the finished tasks count
                             m_done_tasks_count++;
 
-                            LOG_DEBUG1 << "The finished tasks count of job " << m_request_ptr->get_job_id()
+                            LOG_DEBUG1 << "The finished tasks count of job " << this
                                     << " is " << m_done_tasks_count << END_LOG;
 
                             //If all the tasks are translated
                             if (is_job_finished()) {
-                                LOG_DEBUG << "The translation job with ptr: " << this << " is finished, notifying!" << END_LOG;
+                                LOG_DEBUG << "The translation job " << this << " is finished, notifying!" << END_LOG;
                                 
                                 //Combine the task results into the job result
                                 combine_job_result();
@@ -272,7 +273,7 @@ namespace uva {
                             }
                         }
                         
-                        LOG_DEBUG << "The translation job result is:\n" << m_target_text << END_LOG;
+                        LOG_DEBUG << "The translation job " << this << " result is:\n" << m_target_text << END_LOG;
                     }
 
                 private:
