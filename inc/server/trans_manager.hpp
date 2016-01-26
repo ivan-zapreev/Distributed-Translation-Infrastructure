@@ -151,7 +151,7 @@ namespace uva {
 
                         //Instantiate a new translation job
                         trans_job_ptr job = new trans_job(request_ptr);
-                        
+
                         LOG_DEBUG << "Got the finished job ptr: " << job << " to process." << END_LOG;
 
                         //Schedule a translation job request for the session id
@@ -217,6 +217,10 @@ namespace uva {
 
                         //Create the translation job response
                         trans_job_response response(job_id, trans_job->get_code(), trans_job->get_text());
+
+                        LOG_DEBUG << "Created the job response: " << &response << " for job "
+                                << trans_job->get_job_id() << " from session "
+                                << trans_job->get_session_id() << END_LOG;
 
                         //Do the sanity check assert
                         ASSERT_SANITY_THROW(!m_sender_func,

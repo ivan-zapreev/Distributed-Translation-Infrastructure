@@ -221,6 +221,10 @@ namespace uva {
                                 //Combine the task results into the job result
                                 combine_job_result();
 
+                                //Do the sanity check assert
+                                ASSERT_SANITY_THROW(!m_notify_job_done_func,
+                                        "The translation job's result setting function is not set!");
+
                                 //Notify that this job id done
                                 m_notify_job_done_func(this);
                             }

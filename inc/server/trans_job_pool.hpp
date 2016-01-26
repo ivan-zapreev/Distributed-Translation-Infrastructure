@@ -222,7 +222,7 @@ namespace uva {
                         rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool" << END_LOG;
-                        
+
                         //Get the session id for future use
                         const session_id_type session_id = trans_job->get_session_id();
                         //Get the job id for future use
@@ -310,7 +310,8 @@ namespace uva {
                      * @param trans_job the pointer to the finished translation job 
                      */
                     void notify_job_done(trans_job_ptr trans_job) {
-                        LOG_DEBUG1 << "The job " << trans_job->get_job_id() << " has called in finished!" << END_LOG;
+
+                        LOG_DEBUG1 << "The job " << trans_job << " has called in finished!" << END_LOG;
                         {
                             unique_lock guard_finished_jobs(m_finished_jobs_lock);
 
@@ -322,7 +323,7 @@ namespace uva {
                             //Notify the thread that there is a finished job to be processed
                             m_is_job_done.notify_one();
                         }
-                        LOG_DEBUG1 << "The job " << trans_job->get_job_id() << " is marked as finished finished!" << END_LOG;
+                        LOG_DEBUG1 << "The job " << trans_job << " is marked as finished finished!" << END_LOG;
                     }
 
                     /**
@@ -341,31 +342,33 @@ namespace uva {
                             //The thread is notified, process the finished jobs
                             for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end();
                                     /*The shift is done by itself when erasing the element!*/) {
-                                
+
                                 //Get the translation job pointer
                                 trans_job_ptr trans_job = *iter;
 
                                 LOG_DEBUG << "Got the finished job ptr: " << trans_job << " to process." << END_LOG;
 
-                                //Store the job id for logging
-                                const job_id_type job_id = trans_job->get_job_id();
+                                LOG_DEBUG << "The job " << trans_job << " id is " << trans_job->get_job_id() <<
+                                        " session id is " << trans_job->get_session_id() << END_LOG;
 
-                                LOG_DEBUG << "Setting the job " << job_id << " result" << END_LOG;
+                                //Do the sanity check assert
+                                ASSERT_SANITY_THROW(!m_set_job_result_func,
+                                        "The job pool's result setting function is not set!");
 
                                 //Send the job response
                                 m_set_job_result_func(trans_job);
 
-                                LOG_DEBUG << "Erasing the job " << job_id << " from the done  jobs list" << END_LOG;
+                                LOG_DEBUG << "Erasing the job " << trans_job << " from the done jobs list" << END_LOG;
 
                                 //Erase the processed job from the list of finished jobs
                                 m_done_jobs_list.erase(iter);
 
-                                LOG_DEBUG << "Deleting the job " << job_id << " instance" << END_LOG;
+                                LOG_DEBUG << "Deleting the job " << trans_job << " instance" << END_LOG;
 
                                 //Remove the job from the pool's administration and destroy
                                 delete_job(trans_job);
 
-                                LOG_DEBUG << "The job " << job_id << " is processed and deleted!" << END_LOG;
+                                LOG_DEBUG << "The job " << trans_job << " is processed and deleted!" << END_LOG;
                             }
                         }
                     }

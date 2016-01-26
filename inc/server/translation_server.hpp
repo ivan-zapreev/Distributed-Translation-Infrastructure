@@ -134,7 +134,7 @@ namespace uva {
                      * @param response the translation response object to be used
                      */
                     void send_response(connection_hdl hdl, trans_job_response & response) {
-                        LOG_DEBUG << "Sending response for job: " << response.get_job_id() << END_LOG;
+                        LOG_DEBUG << "Sending the job response: " << &response << END_LOG;
                         
                         //Get the response string
                         const string reply_str = response.serialize();
