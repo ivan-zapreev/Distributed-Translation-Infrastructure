@@ -108,7 +108,7 @@ namespace uva {
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
 
-                                    LOG_DEBUG << "m_job_id = " << m_job_id << ", m_code = " << m_code << ", m_text = " << m_text << END_LOG;
+                                    LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_code = " << m_code << ", m_text = \n" << m_text << END_LOG;
                                 } else {
                                     THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
                                 }

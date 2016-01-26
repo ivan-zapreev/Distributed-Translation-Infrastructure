@@ -139,6 +139,8 @@ namespace uva {
                             //Get what ever it is stored
                             session_id = m_sessions[hdl];
                         }
+                        
+                        LOG_DEBUG << "Received a translation request from session: " << session_id << END_LOG;
 
                         //Check that there is a session mapped to this handler
                         ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
@@ -158,6 +160,8 @@ namespace uva {
                      * @return the session object to be removed, is to be deallocated by the caller.
                      */
                     void close_session(websocketpp::connection_hdl hdl) {
+                        LOG_DEBUG << "A closing session request!" << END_LOG;
+
                         //Declare the session id 
                         session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
@@ -168,12 +172,16 @@ namespace uva {
                             //Get the session id from the handler
                             session_id_type session_id = m_sessions[hdl];
 
+                            LOG_DEBUG << "A closing session request for session id: " << session_id << END_LOG;
+
                             //Erase the handler and session mappings
                             m_sessions.erase(hdl);
                             if (session_id != session_id::UNDEFINED_SESSION_ID) {
                                 m_handlers.erase(session_id);
                             }
                         }
+                        LOG_DEBUG << "Session : " << session_id << " internal mappings "
+                                << "are cleaned, canceling the job! " << END_LOG;
 
                         //Request cancellation of all the translation jobs associated with this connection.
                         if (session_id != session_id::UNDEFINED_SESSION_ID) {

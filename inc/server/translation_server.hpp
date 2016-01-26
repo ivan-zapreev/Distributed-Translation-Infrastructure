@@ -122,6 +122,8 @@ namespace uva {
                         LOG_DEBUG << "Stop the WEBSOCKET server." << END_LOG;
                         //Stop the server
                         m_server.stop();
+
+                        LOG_DEBUG << "The WEBSOCKET server is stopped." << END_LOG;
                     }
 
                 protected:
@@ -132,6 +134,8 @@ namespace uva {
                      * @param response the translation response object to be used
                      */
                     void send_response(connection_hdl hdl, trans_job_response & response) {
+                        LOG_DEBUG << "Sending response for job: " << response.get_job_id() << END_LOG;
+                        
                         //Get the response string
                         const string reply_str = response.serialize();
                         //Declare the error code
@@ -144,6 +148,8 @@ namespace uva {
                         if (ec) {
                             LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
                         }
+                        
+                        LOG_DEBUG << "The response for job: " << response.get_job_id() << " is sent!" << END_LOG;
                     }
 
                     /**
@@ -151,6 +157,7 @@ namespace uva {
                      * @param hdl
                      */
                     void on_open(connection_hdl hdl) {
+                        LOG_DEBUG << "Opening connection!" << END_LOG;
                         try {
                             //Create a new session object for the handler
                             m_manager.open_session(hdl);
@@ -167,6 +174,8 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_close(connection_hdl hdl) {
+                        LOG_DEBUG << "Closing connection!" << END_LOG;
+                        
                         //Destroy the session 
                         m_manager.close_session(hdl);
                     }
@@ -176,10 +185,12 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_fail(connection_hdl hdl) {
-                        m_server.get_alog().write(alevel::app, "Connection failed!");
+                        LOG_DEBUG << "Connection failed!" << END_LOG;
                     }
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
+                        LOG_DEBUG << "Received a message!" << END_LOG;
+                        
                         //Declare the translation job request pointer
                         trans_job_request_ptr request_ptr = NULL;
                         try {

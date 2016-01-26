@@ -34,6 +34,7 @@
 #include <sstream>   // std::stringstream
 #include <vector>    // std::vector
 #include <time.h>    // std::clock std::clock_t
+#include <string.h>
 
 using namespace std;
 
@@ -83,12 +84,14 @@ namespace uva {
   else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level)
 
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+
 #define LOGGER_DEBUG(level)                          \
 {                                                    \
   logging_synch::scoped_lock lock(logging_synch::mv);\
   if (level > LOGER_MAX_LEVEL) ;                     \
   else if (level > Logger::get_reporting_level()) ;  \
-       else Logger::get(level, __FILE__, __FUNCTION__, LINE_STRING)
+       else Logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
