@@ -27,8 +27,9 @@
  */
 
 #ifndef LOGGER_HPP
-#define	LOGGER_HPP
+#define LOGGER_HPP
 
+#include <mutex>
 #include <iostream>  // std::cout
 #include <sstream>   // std::stringstream
 #include <vector>    // std::vector
@@ -56,6 +57,13 @@ namespace uva {
             //Defines the log level from which the detailed timing info is available
             static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
 
+            /**
+             * This structures stores the synchronization mutex for logging
+             */
+            struct logging_synch {
+                typedef lock_guard<mutex> scoped_lock;
+                static mutex mv;
+            };
 
             //This Macro is used to convert numerival values to proper strings!
 #define SSTR( x ) std::dec << (x)
@@ -68,14 +76,18 @@ namespace uva {
             //Defines the progress bar update period in CPU seconds
 #define PROGRESS_UPDATE_PERIOD 0.05
 
-#define LOGGER(level)                          \
-  if (level > LOGER_MAX_LEVEL) ;               \
-  else if (level > Logger::get_reporting_level()) ; \
+#define LOGGER(level)                                \
+{                                                    \
+  logging_synch::scoped_lock lock(logging_synch::mv);\
+  if (level > LOGER_MAX_LEVEL) ;                     \
+  else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level)
 
-#define LOGGER_DEBUG(level)                    \
-  if (level > LOGER_MAX_LEVEL) ;               \
-  else if (level > Logger::get_reporting_level()) ; \
+#define LOGGER_DEBUG(level)                          \
+{                                                    \
+  logging_synch::scoped_lock lock(logging_synch::mv);\
+  if (level > LOGER_MAX_LEVEL) ;                     \
+  else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level, __FILE__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
@@ -95,7 +107,9 @@ namespace uva {
 #define LOG_DEBUG2  LOGGER_DEBUG(DebugLevelsEnum::DEBUG2)
 #define LOG_DEBUG3  LOGGER_DEBUG(DebugLevelsEnum::DEBUG3)
 #define LOG_DEBUG4  LOGGER_DEBUG(DebugLevelsEnum::DEBUG4)
-#define END_LOG     endl << flush
+
+#define END_LOG     endl << flush; \
+}
 
 
             //The string representation values for debug levels
@@ -263,5 +277,5 @@ namespace uva {
         }
     }
 }
-#endif	/* LOGGER_HPP */
+#endif /* LOGGER_HPP */
 

@@ -37,6 +37,8 @@ namespace uva {
     namespace utils {
         namespace logging {
 
+            mutex logging_synch::mv;
+            
             std::ostream& operator<<(std::ostream& stream, const unsigned char & value) {
                 return stream << ((uint32_t) value);
             }
