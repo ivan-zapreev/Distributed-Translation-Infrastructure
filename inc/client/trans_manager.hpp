@@ -110,6 +110,8 @@ namespace uva {
                         m_is_all_jobs_sent = false;
                         //Set the receiving flag to false
                         m_is_all_jobs_done = false;
+                        //Set the nuber of done jobs
+                        m_num_done_jobs = 0;
                     }
 
                     /**
@@ -171,6 +173,10 @@ namespace uva {
                         }
                     }
 
+                    /**
+                     * This method allows to stop the translation client and
+                     * to write the resulting translations into the file.
+                     */
                     void stop() {
                         LOG_INFO << "Stopping the translation process!" << END_LOG;
 
@@ -192,10 +198,29 @@ namespace uva {
                      * Allows to process the server job request response
                      * @param trans_job_resp the translation job response coming from the server
                      */
-                    void set_job_response(const trans_job_response & trans_job_resp) {
-                        //ToDo: Process the received job
+                    void set_job_response(trans_job_response * trans_job_resp) {
+                        const job_id_type job_id = trans_job_resp->get_job_id();
 
-                        //ToDo: If we received all the jobs then notify that all the jobs are received!
+                        //Check if the job is valid and if there is something for this job id
+                        if (job_id != job_id::UNDEFINED_JOB_ID) {
+                            //Check if the job with the given id is known
+                            if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
+                                //Register the job in the administration
+                                m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
+
+                                //Increment the number of received jobs
+                                m_num_done_jobs++;
+                            } else {
+                                LOG_ERROR << "The received job response id " << job_id << " is not known!" << END_LOG;
+                            }
+                        } else {
+                            LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
+                        }
+
+                        //If we received all the jobs then notify that all the jobs are received!
+                        if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
+                            notify_jobs_done();
+                        }
                     }
 
                     /**
@@ -203,7 +228,7 @@ namespace uva {
                      */
                     void notify_conn_closed() {
                         //If the connection is closed we should have no new job responses, so start processing the results
-                        notify_jobs_received();
+                        notify_jobs_done();
                     }
 
                     /**
@@ -220,7 +245,7 @@ namespace uva {
                     /**
                      * Allows to notify the threads waiting on the translation jobs to be received
                      */
-                    void notify_jobs_received() {
+                    void notify_jobs_done() {
                         //Make sure that translation-waiting activity is synchronized
                         unique_lock guard(m_jobs_done_lock);
 
@@ -355,6 +380,9 @@ namespace uva {
                     atomic<bool> m_is_all_jobs_sent;
                     //Stores a flag indicating that all the translation jobs are received
                     atomic<bool> m_is_all_jobs_done;
+
+                    //Store the finished jobs count
+                    atomic<uint32_t> m_num_done_jobs;
                 };
 
                 id_manager<job_id_type> trans_manager::m_id_mgr(job_id::MINIMUM_JOB_ID);

@@ -173,11 +173,8 @@ namespace uva {
                      * @param msg the message
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        //Parse the message into the translation job reply
-                        trans_job_response response(msg->get_payload());
-
-                        //Call the result setter function
-                        m_set_response(response);
+                        //Set the newply received job response
+                        m_set_response(new trans_job_response(msg->get_payload()));
                     }
 
                     /**
