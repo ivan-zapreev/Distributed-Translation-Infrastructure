@@ -163,7 +163,7 @@ namespace uva {
                         //Wait until all the jobs are finished or the connection is closed
                         {
                             //Make sure that translation-waiting activity is synchronized
-                            unique_lock guard(m_jobs_received_lock);
+                            unique_lock guard(m_jobs_done_lock);
 
                             //Wait for the translations jobs to be received, use the time out to prevent missing notification
                             while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
@@ -222,7 +222,7 @@ namespace uva {
                      */
                     void notify_jobs_received() {
                         //Make sure that translation-waiting activity is synchronized
-                        unique_lock guard(m_jobs_received_lock);
+                        unique_lock guard(m_jobs_done_lock);
 
                         //Notify that the translation is finished
                         m_jobs_done_cond.notify_all();
@@ -342,7 +342,7 @@ namespace uva {
                     condition_variable m_jobs_sent_cond;
 
                     //Stores the synchronization mutex for notifying that all the translation jobs got responces
-                    mutex m_jobs_received_lock;
+                    mutex m_jobs_done_lock;
                     //The conditional variable for tracking that all the translation jobs got responces
                     condition_variable m_jobs_done_cond;
 
