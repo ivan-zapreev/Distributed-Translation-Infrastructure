@@ -139,7 +139,7 @@ namespace uva {
                             //Get what ever it is stored
                             session_id = m_sessions[hdl];
                         }
-                        
+
                         LOG_DEBUG << "Received a translation request from session: " << session_id << END_LOG;
 
                         //Check that there is a session mapped to this handler
@@ -149,8 +149,13 @@ namespace uva {
                         //Set the session id into the request
                         request_ptr->set_session_id(session_id);
 
+                        //Instantiate a new translation job
+                        trans_job_ptr job = new trans_job(request_ptr);
+                        
+                        LOG_DEBUG << "Got the finished job ptr: " << job << " to process." << END_LOG;
+
                         //Schedule a translation job request for the session id
-                        m_job_pool.plan_new_job(new trans_job(request_ptr));
+                        m_job_pool.plan_new_job(job);
                     }
 
                     /**

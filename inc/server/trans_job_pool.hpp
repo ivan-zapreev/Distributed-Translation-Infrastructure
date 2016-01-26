@@ -221,6 +221,8 @@ namespace uva {
                     void add_job(trans_job_ptr trans_job) {
                         rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
 
+                        LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool" << END_LOG;
+                        
                         //Get the session id for future use
                         const session_id_type session_id = trans_job->get_session_id();
                         //Get the job id for future use
@@ -312,6 +314,8 @@ namespace uva {
                         {
                             unique_lock guard_finished_jobs(m_finished_jobs_lock);
 
+                            LOG_DEBUG << "The job with ptr: " << trans_job << " is finished!" << END_LOG;
+
                             //Add the job to the finished jobs list
                             m_done_jobs_list.push_back(trans_job);
 
@@ -335,9 +339,13 @@ namespace uva {
                             LOG_DEBUG << "Processing finished jobs!" << END_LOG;
 
                             //The thread is notified, process the finished jobs
-                            for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end(); ++iter) {
+                            for (jobs_list_iter_type iter = m_done_jobs_list.begin(); iter != m_done_jobs_list.end();
+                                    /*The shift is done by itself when erasing the element!*/) {
+                                
                                 //Get the translation job pointer
                                 trans_job_ptr trans_job = *iter;
+
+                                LOG_DEBUG << "Got the finished job ptr: " << trans_job << " to process." << END_LOG;
 
                                 //Store the job id for logging
                                 const job_id_type job_id = trans_job->get_job_id();

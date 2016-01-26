@@ -216,6 +216,8 @@ namespace uva {
 
                             //If all the tasks are translated
                             if (is_job_finished()) {
+                                LOG_DEBUG << "The translation job with ptr: " << this << " is finished, notifying!" << END_LOG;
+                                
                                 //Combine the task results into the job result
                                 combine_job_result();
 
