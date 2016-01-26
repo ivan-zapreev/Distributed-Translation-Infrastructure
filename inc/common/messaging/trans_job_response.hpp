@@ -59,6 +59,13 @@ namespace uva {
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
+                        
+                        /**
+                         * The basic no-argument constructor that is needed for the translation client.
+                         * It default-initializes the class with undefined values.
+                         */
+                        trans_job_response()
+                        : m_job_id(job_id::UNDEFINED_JOB_ID), m_code(trans_job_code::RESULT_UNDEFINED), m_text("") {}
 
                         /**
                          * This is the basic class constructor that accepts the

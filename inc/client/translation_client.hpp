@@ -30,13 +30,13 @@
 #include <string>
 #include <unordered_map>
 #include <mutex>
+#include <thread>
 #include <condition_variable>
+#include <functional>
 
 #define ASIO_STANDALONE
-
 #include <websocketpp/config/asio_no_tls_client.hpp>
 #include <websocketpp/client.hpp>
-#include <websocketpp/common/thread.hpp>
 
 #include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
@@ -44,13 +44,10 @@
 #include "common/messaging/trans_job_request.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
-
-using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::bind;
 
 namespace uva {
     namespace smt {
@@ -64,7 +61,7 @@ namespace uva {
                 class translation_client {
                 public:
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
-                    typedef websocketpp::lib::lock_guard<websocketpp::lib::mutex> scoped_lock;
+                    typedef lock_guard<mutex> scoped_lock;
                     //Define the unique lock needed for wait/notify
                     typedef unique_lock<mutex> unique_lock;
 
@@ -93,22 +90,7 @@ namespace uva {
                      */
                     ~translation_client() {
                         //Stope the client
-                        stop();
-                    }
-
-                    /**
-                     * This method is used to receive the job translation messages
-                     * @param hdl the connection handler
-                     * @param msg the message
-                     */
-                    void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        unique_lock guard(m_lock_msg);
-
-                        //ToDo: parse the message into the translation job reply
-                        std::cout << msg->get_payload() << std::endl;
-
-                        //Notify that the message has been received
-                        m_is_msg_received.notify_one();
+                        disconnect();
                     }
 
                     /**
@@ -132,7 +114,7 @@ namespace uva {
                         m_client.connect(con);
 
                         // Create a thread to run the ASIO io_service event loop
-                        m_asio_thread = websocketpp::lib::thread(&client::run, &m_client);
+                        m_asio_thread = thread(&client::run, &m_client);
 
                         return wait_connect();
                     }
@@ -140,7 +122,7 @@ namespace uva {
                     /**
                      * Allows to close the connection and stop the io service thread
                      */
-                    void stop() {
+                    void disconnect() {
                         m_client.get_alog().write(websocketpp::log::alevel::app,
                                 string("Stopping the client: m_open = ") + to_string(m_open) +
                                 string(", m_done = ") + to_string(m_done));
@@ -159,7 +141,7 @@ namespace uva {
                      * @param request thge translation job request
                      * @result the translation job id
                      */
-                    job_id_type send(trans_job_request & request) {
+                    job_id_type send(const trans_job_request & request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -174,6 +156,23 @@ namespace uva {
 
                         //Return the job id and increment to the next one
                         return request.get_job_id();
+                    }
+
+                    /**
+                     * This method is used to receive the job translation messages
+                     * @param hdl the connection handler
+                     * @param msg the message
+                     */
+                    void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
+                        unique_lock guard(m_lock_msg);
+
+                        //Parse the message into the translation job reply
+                        trans_job_response response(msg->get_payload());
+
+                        LOG_RESULT << "RECEIVED!" << END_LOG;
+
+                        //Notify that the message has been received
+                        m_is_msg_received.notify_one();
                     }
 
                     /**
@@ -277,15 +276,15 @@ namespace uva {
                     //Stores the client
                     client m_client;
                     //Stores the io thread
-                    websocketpp::lib::thread m_asio_thread;
+                    thread m_asio_thread;
                     //Stores the connection handler
                     websocketpp::connection_hdl m_hdl;
 
                     //Stores the synchronization mutex for connection
-                    websocketpp::lib::mutex m_lock_con;
+                    mutex m_lock_con;
 
                     //Stores the synchronization mutex for messaging
-                    websocketpp::lib::mutex m_lock_msg;
+                    mutex m_lock_msg;
                     //The conditional variable for tracking the reply message
                     condition_variable m_is_msg_received;
 

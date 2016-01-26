@@ -23,18 +23,14 @@
  * Created on January 14, 2016, 11:07 AM
  */
 
-#include <cstdlib>
 #include <string>
 
 #include "tclap/CmdLine.h"
 
 #include "common.hpp"
-
-#include "client/translation_client.hpp"
-#include "common/utils/file/CStyleFileReader.hpp"
+#include "client/client_config.hpp"
+#include "client/trans_manager.hpp"
 #include "common/utils/Exceptions.hpp"
-#include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/trans_job_response.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -46,24 +42,6 @@ using namespace uva::utils::file;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.0"
-
-/**
- * This structure stores the program execution parameters
- */
-typedef struct {
-    //The source file name with the text to translate
-    string m_source_file;
-    //The language to translate from
-    string m_source_lang;
-    //The target file name to put the translation into
-    string m_target_file;
-    //The language to translate into
-    string m_target_lang;
-    //The server to connect to
-    string m_server;
-    //The server port to connect through
-    uint16_t m_port;
-} TExecutionParams;
 
 /**
  * This functions does nothing more but printing the program header information
@@ -80,6 +58,8 @@ static ValueArg<string> * p_target_file_arg = NULL;
 static ValueArg<string> * p_target_lang_arg = NULL;
 static ValueArg<string> * p_server_arg = NULL;
 static ValueArg<uint16_t> * p_port_arg = NULL;
+static ValueArg<uint32_t> * p_max_sent = NULL;
+static ValueArg<uint32_t> * p_min_sent = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
@@ -109,6 +89,12 @@ void create_arguments_parser() {
     //Add the  parameter - optional, by default is 9002
     p_port_arg = new ValueArg<uint16_t>("p", "port", "The server port to connect to, default is 9002", false, 9002, "server port", *p_cmd_args);
 
+    //Add the  parameter - optional, by default is 100
+    p_max_sent = new ValueArg<uint32_t>("u", "upper-size", "The maximum number of sentences to send per request, default is 100", false, 100, "max #sentences per request", *p_cmd_args);
+
+    //Add the  parameter - optional, by default is 100
+    p_min_sent = new ValueArg<uint32_t>("l", "lower-size", "The minimum number of sentences to send per request, default is 10", false, 10, "min #sentences per request", *p_cmd_args);
+
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     Logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
@@ -125,6 +111,8 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_target_lang_arg);
     SAFE_DESTROY(p_server_arg);
     SAFE_DESTROY(p_port_arg);
+    SAFE_DESTROY(p_max_sent);
+    SAFE_DESTROY(p_min_sent);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
@@ -136,7 +124,7 @@ void destroy_arguments_parser() {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, TExecutionParams & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, client_config & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -159,30 +147,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_server = p_server_arg->getValue();
     params.m_port = p_port_arg->getValue();
     LOG_USAGE << "Using server address: '" << params.m_server << "', port: '" << params.m_port << "'" << END_LOG;
-}
-
-/**
- * Allows to obtain the source text from a file/
- * @param source_file_name the name of the source file
- * @return the source file
- * @throws Exception if the file is not found or it is empty or any other error.
- */
-string get_source_text(string & source_file_name) {
-    CStyleFileReader source_file(source_file_name.c_str());
-    if (source_file.is_open()) {
-        string source_text;
-        source_file.log_reader_type_usage_info();
-        TextPieceReader line;
-        LOG_DEBUG << "Reading text from the source file: " << END_LOG;
-        while (source_file.get_first_line(line)) {
-            LOG_DEBUG << line.str() << END_LOG;
-            source_text += string("<s>") + line.str() + "</s>\n";
-        }
-        ASSERT_CONDITION_THROW((source_text == ""), string("The source text file: ") + source_file_name + string(" is empty!"));
-        return source_text;
-    } else {
-        THROW_EXCEPTION(string("Could not open the source text file: ") + source_file_name);
-    }
+    
+    params.m_max_sent = p_max_sent->getValue();
+    LOG_USAGE << "The maximum number of sentences to sent per request: '" << params.m_max_sent << "'" << END_LOG;
 }
 
 /**
@@ -203,33 +170,22 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        TExecutionParams params = {};
+        client_config params = {};
 
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);
 
-        //Create the translation client
-        translation_client client(params.m_server, params.m_port);
-
-        //Read the source corpus from the text file
-        const string source_text = get_source_text(params.m_source_file);
-
-        //Connect to the translation server
-        if (client.connect()) {
-            //Create the translation job request 
-            trans_job_request request(params.m_source_lang, source_text, params.m_target_lang);
-            
-            //Query the translation job
-            job_id_type job_id = client.send(request);
-
-            //Synchronously wait for the translation job result
-            string target_text;
-            client.receive(job_id, target_text);
-
-            //ToDo: Write the translation result to the text file
-        } else {
-            THROW_EXCEPTION(string("Could not open the connection to: ") + client.get_uri());
-        }
+        //Create the translation manager
+        trans_manager manager(params);
+        
+        //Start the translation manager
+        manager.start();
+        
+        //Wait until the translations are done
+        manager.wait();
+        
+        //Stop the translation manager
+        manager.stop();
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.get_message() << END_LOG;

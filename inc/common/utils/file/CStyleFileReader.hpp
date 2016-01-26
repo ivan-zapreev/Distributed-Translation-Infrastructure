@@ -24,7 +24,7 @@
  */
 
 #ifndef CSTYLEFILEREADER_HPP
-#define	CSTYLEFILEREADER_HPP
+#define CSTYLEFILEREADER_HPP
 
 #include <cstring>  // std::strlen
 #include <cstdio>   // std::fopen std::fseek
@@ -81,6 +81,13 @@ namespace uva {
                 }
 
                 /**
+                 * The basic constructor
+                 * @param file_name the file name
+                 */
+                CStyleFileReader(const string & file_name) : CStyleFileReader(file_name.c_str()) {
+                }
+
+                /**
                  * Allows to log the information about the instantiated file reader type
                  */
                 virtual void log_reader_type_usage_info() {
@@ -105,7 +112,7 @@ namespace uva {
 
                 inline bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG3 << "Searching for a new line, m_file_ptr = " << m_file_ptr << END_LOG;
-                    
+
                     //First read the line from the file
                     ssize_t length = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
 
@@ -156,5 +163,5 @@ namespace uva {
     }
 }
 
-#endif	/* CSTYLEFILEREADER_HPP */
+#endif /* CSTYLEFILEREADER_HPP */
 
