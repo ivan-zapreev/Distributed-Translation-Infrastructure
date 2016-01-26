@@ -49,6 +49,8 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
+using websocketpp::log::alevel;
+
 namespace uva {
     namespace smt {
         namespace decoding {
@@ -77,6 +79,10 @@ namespace uva {
 
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);
+
+                        //Set up access channels to only log interesting things
+                        m_client.clear_access_channels(alevel::all);
+                        m_client.set_access_channels(alevel::app);
 
                         // Initialize the Asio transport policy
                         m_client.init_asio();

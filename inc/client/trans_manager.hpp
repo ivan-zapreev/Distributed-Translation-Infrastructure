@@ -114,6 +114,8 @@ namespace uva {
                      * Allows to start the translation process
                      */
                     void start() {
+                        LOG_INFO << "Starting the translation process!" << END_LOG;
+                        
                         if (m_client.connect()) {
                             //Run the translation job sending thread
                             m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
@@ -126,6 +128,8 @@ namespace uva {
                      * Allows to wait until the translations are done
                      */
                     void wait() {
+                        LOG_INFO << "Waiting for the the translation process to finish ..." << END_LOG;
+                        
                         //Make sure that translation-waiting activity is synchronized
                         unique_lock guard(m_trans_done_lock);
 
@@ -134,6 +138,8 @@ namespace uva {
                     }
 
                     void stop() {
+                        LOG_INFO << "Stopping the translation process!" << END_LOG;
+                        
                         //ToDo: Stop the translation job sending thread
 
                         //Disconnect from the server
@@ -150,6 +156,8 @@ namespace uva {
                      */
                     void set_job_response(const trans_job_response & trans_job_resp) {
                         //ToDo: Implement
+                        
+                        LOG_RESULT << trans_job_resp.get_text() << END_LOG;
                     }
 
                     /**

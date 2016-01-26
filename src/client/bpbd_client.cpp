@@ -148,8 +148,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_port = p_port_arg->getValue();
     LOG_USAGE << "Using server address: '" << params.m_server << "', port: '" << params.m_port << "'" << END_LOG;
     
+    params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
-    LOG_USAGE << "The maximum number of sentences to sent per request: '" << params.m_max_sent << "'" << END_LOG;
+    LOG_USAGE << "The min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
 }
 
 /**
