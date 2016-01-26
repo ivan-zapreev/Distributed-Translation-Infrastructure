@@ -48,6 +48,12 @@ namespace uva {
         namespace decoding {
             namespace common {
                 namespace messaging {
+                    
+                    //Do a forward definition of the class
+                    class trans_job_response;
+                    
+                    //Define the pointer type for the job response
+                    typedef trans_job_response * trans_job_response_ptr;
 
                     /**
                      * This class represents the translation reply message, which

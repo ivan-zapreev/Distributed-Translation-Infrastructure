@@ -24,15 +24,18 @@
  */
 
 #include <string>
+#include <vector>
 #include <unordered_map>
-#include <mutex>
+#include <cstdlib>
 #include <thread>
+#include <chrono>
+#include <mutex>
 #include <condition_variable>
 #include <functional>
-#include <cstdlib>
 
 #include "client_config.hpp"
 #include "translation_client.hpp"
+#include "trans_job.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
@@ -66,6 +69,13 @@ namespace uva {
                     //Define the unique lock needed for wait/notify
                     typedef unique_lock<mutex> unique_lock;
 
+                    //Define the type for the list of the translation data objects
+                    typedef vector<trans_job_data_ptr> jobs_list_type;
+                    typedef jobs_list_type::iterator jobs_list_iter_type;
+                    //Define the type for the map from job id to job data
+                    typedef unordered_map<job_id_type, trans_job_data_ptr> jobs_map_type;
+                    typedef jobs_map_type::iterator jobs_map_iter_type;
+
                     /**
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
@@ -93,6 +103,13 @@ namespace uva {
                         ASSERT_CONDITION_THROW((m_params.m_min_sent < MIN_SENTENCES_PER_REQUEST),
                                 string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
                                 + string(") should be larger or equal than") + to_string(MIN_SENTENCES_PER_REQUEST));
+
+                        //Set the stopping flag to false
+                        m_is_stopping = false;
+                        //Set the sending flag to false
+                        m_is_all_jobs_sent = false;
+                        //Set the receiving flag to false
+                        m_is_all_jobs_done = false;
                     }
 
                     /**
@@ -102,7 +119,10 @@ namespace uva {
                         //Close the source file
                         m_source_file.close();
 
-                        //ToDo: Clean the internal administration
+                        //Clean the internal administration, just delete the translation jobs 
+                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
+                            delete (*it);
+                        }
 
                         //Destroy the translation jobs sending thread
                         if (m_sending_thread_ptr != NULL) {
@@ -115,7 +135,7 @@ namespace uva {
                      */
                     void start() {
                         LOG_INFO << "Starting the translation process!" << END_LOG;
-                        
+
                         if (m_client.connect()) {
                             //Run the translation job sending thread
                             m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
@@ -129,18 +149,36 @@ namespace uva {
                      */
                     void wait() {
                         LOG_INFO << "Waiting for the the translation process to finish ..." << END_LOG;
-                        
-                        //Make sure that translation-waiting activity is synchronized
-                        unique_lock guard(m_trans_done_lock);
 
-                        //Wait for the notification that the translation is finished
-                        m_trans_done_cond.wait(guard);
+                        //Wait until all the jobs are sent
+                        {
+                            //Make sure that translation-waiting activity is synchronized
+                            unique_lock guard(m_jobs_sent_lock);
+
+                            //Wait for the translations jobs to be sent, use the time out to prevent missing notification
+                            while (!m_is_all_jobs_sent && (m_jobs_sent_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
+                            }
+                        }
+
+                        //Wait until all the jobs are finished or the connection is closed
+                        {
+                            //Make sure that translation-waiting activity is synchronized
+                            unique_lock guard(m_jobs_received_lock);
+
+                            //Wait for the translations jobs to be received, use the time out to prevent missing notification
+                            while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
+                            }
+                        }
                     }
 
                     void stop() {
                         LOG_INFO << "Stopping the translation process!" << END_LOG;
-                        
-                        //ToDo: Stop the translation job sending thread
+
+                        //Stop the translation job sending thread
+                        if (m_sending_thread_ptr != NULL) {
+                            m_is_stopping = true;
+                            m_sending_thread_ptr->join();
+                        }
 
                         //Disconnect from the server
                         m_client.disconnect();
@@ -155,27 +193,39 @@ namespace uva {
                      * @param trans_job_resp the translation job response coming from the server
                      */
                     void set_job_response(const trans_job_response & trans_job_resp) {
-                        //ToDo: Implement
-                        
-                        LOG_RESULT << trans_job_resp.get_text() << END_LOG;
+                        //ToDo: Process the received job
+
+                        //ToDo: If we received all the jobs then notify that all the jobs are received!
                     }
 
                     /**
                      * This function will be called if the connection is closed during the translation process
                      */
                     void notify_conn_closed() {
-                        //ToDo: Implement
+                        //If the connection is closed we should have no new job responses, so start processing the results
+                        notify_jobs_received();
                     }
 
                     /**
-                     * Allows to notify the threads waiting on the translation to be finished
+                     * Allows to notify the threads waiting on the translation jobs to be sent
                      */
-                    void notify_translation_done() {
+                    void notify_jobs_sent() {
                         //Make sure that translation-waiting activity is synchronized
-                        unique_lock guard(m_trans_done_lock);
+                        unique_lock guard(m_jobs_sent_lock);
 
                         //Notify that the translation is finished
-                        m_trans_done_cond.notify_all();
+                        m_jobs_sent_cond.notify_all();
+                    }
+
+                    /**
+                     * Allows to notify the threads waiting on the translation jobs to be received
+                     */
+                    void notify_jobs_received() {
+                        //Make sure that translation-waiting activity is synchronized
+                        unique_lock guard(m_jobs_received_lock);
+
+                        //Notify that the translation is finished
+                        m_jobs_done_cond.notify_all();
                     }
 
                     /**
@@ -183,13 +233,11 @@ namespace uva {
                      * @param params the client parameters storing, e.g., the input text file name
                      */
                     void send_translation_jobs() {
-                        //Declare the boolean to store the stop condition
-                        bool is_finished = false;
                         //Declare the variable to store the sentence line
                         TextPieceReader line;
 
                         LOG_DEBUG << "Reading text from the source file: " << END_LOG;
-                        while (!is_finished) {
+                        while (!m_is_stopping) {
                             //Get the number of sentences to send in the next request
                             const uint64_t num_to_sent = get_num_of_sentences();
                             //Stores the number of read sentences
@@ -212,23 +260,48 @@ namespace uva {
                                 //Get the new job id
                                 const job_id_type job_id = m_id_mgr.get_next_id();
 
+                                //Remove the last sentence new line symbol
+                                source_text.substr(0, source_text.size() - 1);
+
+                                //Create the new job data object
+                                trans_job_data_ptr data = new trans_job();
+
                                 //Create the translation job request 
-                                trans_job_request request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
+                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
+                                //Store the number of sentences in the translation request
+                                data->m_num_sent = num_read;
+                                //Mark the job sending as good in the administration
+                                data->m_failed_to_send = trans_job::status::STATUS_REQ_INITIALIZED;
 
-                                try {
-                                    //Send the translation job request
-                                    m_client.send(request);
-
-                                    //ToDo: Add the translation job request into our administration
-                                } catch (Exception e) {
-                                    //ToDo: Mark the translation job request as failed in the administration
-                                }
+                                //Store the translation request
+                                m_jobs_list.push_back(data);
+                                m_ids_to_jobs_map[job_id] = data;
                             } else {
                                 break;
                             }
                         }
 
-                        //ToDo: Notify that all the translation jobs have been sent!
+                        //Send the translation jobs
+                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !m_is_stopping; ++it) {
+                            //Get the pointer to the translation job data
+                            trans_job_data_ptr data = *it;
+                            try {
+                                //Send the translation job request
+                                m_client.send(data->m_request);
+                                //Mark the job sending as good in the administration
+                                data->m_failed_to_send = trans_job::status::STATUS_REQ_SENT_GOOD;
+                            } catch (Exception e) {
+                                //Log the error message
+                                LOG_ERROR << "Error when sending a translation request "
+                                        << data->m_request->get_job_id() << ": "
+                                        << e.get_message() << END_LOG;
+                                //Mark the job sending as failed in the administration
+                                data->m_failed_to_send = trans_job::status::STATUS_REQ_SENT_FAIL;
+                            }
+                        }
+
+                        //The translation jobs have been sent!
+                        notify_jobs_sent();
                     }
 
                     /**
@@ -253,22 +326,35 @@ namespace uva {
                     //Stores the translation client
                     translation_client m_client;
 
-
                     //Stores the source text
                     CStyleFileReader m_source_file;
 
-                    //Stores the mapping from the translation job request id to
-                    //the resulting translation job result, if already received.
-                    //The translation jobs without a reply are mapped to NULL
-                    unordered_map<job_id_type, trans_job_response *> m_jobs;
+                    //Stores the list of the translation job objects in the
+                    //same order as they were created from the input file
+                    jobs_list_type m_jobs_list;
 
-                    //Stores the synchronization mutex for notifying that the text is translated
-                    mutex m_trans_done_lock;
-                    //The conditional variable for tracking the reply message
-                    condition_variable m_trans_done_cond;
+                    //Stores the mapping from the job id to the job data objects
+                    jobs_map_type m_ids_to_jobs_map;
+
+                    //Stores the synchronization mutex for notifying that all the translation jobs were sent
+                    mutex m_jobs_sent_lock;
+                    //The conditional variable for tracking that all the translation jobs were sent
+                    condition_variable m_jobs_sent_cond;
+
+                    //Stores the synchronization mutex for notifying that all the translation jobs got responces
+                    mutex m_jobs_received_lock;
+                    //The conditional variable for tracking that all the translation jobs got responces
+                    condition_variable m_jobs_done_cond;
 
                     //Stores the translation request sending thread
                     thread * m_sending_thread_ptr;
+
+                    //Stores the boolean that is used to notify that we need to stop
+                    atomic<bool> m_is_stopping;
+                    //Stores a flag indicating that all the translation jobs are sent
+                    atomic<bool> m_is_all_jobs_sent;
+                    //Stores a flag indicating that all the translation jobs are received
+                    atomic<bool> m_is_all_jobs_done;
                 };
 
                 id_manager<job_id_type> trans_manager::m_id_mgr(job_id::MINIMUM_JOB_ID);

@@ -153,12 +153,12 @@ namespace uva {
                      * Attempts to send the translation job request
                      * @param request thge translation job request
                      */
-                    void send(const trans_job_request & request) {
+                    void send(const trans_job_request_ptr request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
                         //Try to send the translation job request
-                        m_client.send(m_hdl, request.serialize(), websocketpp::frame::opcode::text, ec);
+                        m_client.send(m_hdl, request->serialize(), websocketpp::frame::opcode::text, ec);
 
                         // The most likely error that we will get is that the connection is
                         // not in the right state. Usually this means we tried to send a

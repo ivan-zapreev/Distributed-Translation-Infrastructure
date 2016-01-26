@@ -6,6 +6,7 @@
     <df root="inc" name="1">
       <df name="client">
         <in>client_config.hpp</in>
+        <in>trans_job.hpp</in>
         <in>trans_manager.hpp</in>
       </df>
       <df name="common">
@@ -123,6 +124,8 @@
         </preBuild>
       </makefileType>
       <item path="inc/client/client_config.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/trans_job.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/client/trans_manager.hpp" ex="false" tool="3" flavor2="0">
       </item>
