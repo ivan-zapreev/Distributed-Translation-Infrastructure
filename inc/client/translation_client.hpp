@@ -62,18 +62,21 @@ namespace uva {
                 public:
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
                     typedef lock_guard<mutex> scoped_lock;
-                    //Define the unique lock needed for wait/notify
-                    typedef unique_lock<mutex> unique_lock;
 
-                    translation_client(const string & host, const uint16_t port) : m_open(false), m_done(false) {
+                    //Define the function type for the function used to set the translation job result
+                    typedef function<void(const trans_job_response & trans_job_resp) > response_setter;
+
+                    //Define the function type for the function used to notify the caller that the connection is closed
+                    typedef function<void() > conn_close_notifier;
+
+                    translation_client(const string & host, const uint16_t port, response_setter set_response, conn_close_notifier notify_conn_close)
+                    : m_open(false), m_done(false), m_set_response(set_response), m_notify_conn_close(notify_conn_close) {
+                        //Assert that the notifiers and setter are defined
+                        ASSERT_CONDITION_THROW(!m_set_response, "The response setter is NULL!");
+                        ASSERT_CONDITION_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
+
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);
-
-                        // Set up access channels to only log interesting things
-                        m_client.clear_access_channels(websocketpp::log::alevel::all);
-                        m_client.set_access_channels(websocketpp::log::alevel::connect);
-                        m_client.set_access_channels(websocketpp::log::alevel::disconnect);
-                        m_client.set_access_channels(websocketpp::log::alevel::app);
 
                         // Initialize the Asio transport policy
                         m_client.init_asio();
@@ -123,15 +126,19 @@ namespace uva {
                      * Allows to close the connection and stop the io service thread
                      */
                     void disconnect() {
-                        m_client.get_alog().write(websocketpp::log::alevel::app,
-                                string("Stopping the client: m_open = ") + to_string(m_open) +
-                                string(", m_done = ") + to_string(m_done));
+                        LOG_DEBUG << "Stopping the client: m_open = " << to_string(m_open) << ", m_done = " << to_string(m_done) << END_LOG;
+
                         if (m_open && !m_done) {
+                            //Invalidate the connection close notifier
+                            m_notify_conn_close = NULL;
+
                             //Close the connection to the server
                             m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
                         }
+
                         //Stop the io service thread
                         m_client.stop();
+
                         //Wait for the thread to exit.
                         m_asio_thread.join();
                     }
@@ -139,9 +146,8 @@ namespace uva {
                     /**
                      * Attempts to send the translation job request
                      * @param request thge translation job request
-                     * @result the translation job id
                      */
-                    job_id_type send(const trans_job_request & request) {
+                    void send(const trans_job_request & request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -153,9 +159,6 @@ namespace uva {
                         // message to a connection that was closed or in the process of
                         // closing.
                         ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
-
-                        //Return the job id and increment to the next one
-                        return request.get_job_id();
                     }
 
                     /**
@@ -164,29 +167,11 @@ namespace uva {
                      * @param msg the message
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        unique_lock guard(m_lock_msg);
-
                         //Parse the message into the translation job reply
                         trans_job_response response(msg->get_payload());
 
-                        LOG_RESULT << "RECEIVED!" << END_LOG;
-
-                        //Notify that the message has been received
-                        m_is_msg_received.notify_one();
-                    }
-
-                    /**
-                     * Allows to wait (synchronously) for a translation job reply. The method gets a time-out parameter
-                     * @param job_id the translation job id to wait for
-                     * @param target_text the variable to write the translated text into 
-                     * @param timeout_millisec the time out in milliseconds, the default is 0 that means to time out
-                     */
-                    void receive(const job_id_type job_id, string & target_text, const size_t timeout_millisec = 0) {
-                        //Make sure that message related activity is synchronized
-                        unique_lock guard(m_lock_msg);
-
-                        //Wait for the reply message
-                        m_is_msg_received.wait(guard);
+                        //Call the result setter function
+                        m_set_response(response);
                     }
 
                     /**
@@ -194,10 +179,10 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_open(websocketpp::connection_hdl hdl) {
-                        m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection opened!");
-
                         scoped_lock guard(m_lock_con);
+
+                        LOG_INFO << "Connection opened!" << END_LOG;
+
                         m_open = true;
                     }
 
@@ -206,11 +191,16 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_close(websocketpp::connection_hdl hdl) {
-                        m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection closed!");
-
                         scoped_lock guard(m_lock_con);
+
+                        LOG_INFO << "Connection closed!" << END_LOG;
+
                         m_done = true;
+
+                        //Notify the client that the connection is closed, if the notifier is still present!
+                        if (m_notify_conn_close) {
+                            m_notify_conn_close();
+                        }
                     }
 
                     /**
@@ -218,11 +208,16 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_fail(websocketpp::connection_hdl hdl) {
-                        m_client.get_alog().write(websocketpp::log::alevel::app,
-                                "Connection failed!");
-
                         scoped_lock guard(m_lock_con);
+
+                        LOG_INFO << "Connection failed!" << END_LOG;
+
                         m_done = true;
+
+                        //Notify the client that the connection is closed, if the notifier is still present!
+                        if (m_notify_conn_close) {
+                            m_notify_conn_close();
+                        }
                     }
 
                     /**
@@ -253,11 +248,10 @@ namespace uva {
 
                             //If we we are still connecting then sleep, otherwise move on
                             if (is_connecting) {
-                                m_client.get_alog().write(websocketpp::log::alevel::app,
-                                        string("Going to sleep, m_open = ") + to_string(m_open) +
-                                        string(", m_done = ") + to_string(m_done));
+                                LOG_DEBUG << "Going to sleep, m_open = " << to_string(m_open)
+                                        << ", m_done = " << to_string(m_done) << END_LOG;
                                 sleep(1);
-                                m_client.get_alog().write(websocketpp::log::alevel::app, "Done sleeping!");
+                                LOG_DEBUG << "Done sleeping!" << END_LOG
                             } else {
                                 break;
                             }
@@ -265,10 +259,8 @@ namespace uva {
 
                         //If the connection is open and is not done then we are nicely connected
                         const bool result = m_open && !m_done;
-                        m_client.get_alog().write(websocketpp::log::alevel::app,
-                                string("Is connection open: ") + to_string(result) +
-                                string(" (m_open = ") + to_string(m_open) +
-                                string(", m_done = ") + to_string(m_done) + string(")"));
+                        LOG_DEBUG << "Is connection open: " << to_string(result) << " (m_open = "
+                                << to_string(m_open) << ", m_done = " << to_string(m_done) << ")" << END_LOG;
                         return result;
                     }
 
@@ -283,14 +275,14 @@ namespace uva {
                     //Stores the synchronization mutex for connection
                     mutex m_lock_con;
 
-                    //Stores the synchronization mutex for messaging
-                    mutex m_lock_msg;
-                    //The conditional variable for tracking the reply message
-                    condition_variable m_is_msg_received;
-
                     //Stores the open and done flags for connection
                     atomic<bool> m_open;
                     atomic<bool> m_done;
+
+                    //Stores the translation job result setting function
+                    response_setter m_set_response;
+                    //Stores the connection close notifier
+                    conn_close_notifier m_notify_conn_close;
 
                     //Stores the server URI
                     string m_uri;

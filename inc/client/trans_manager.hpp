@@ -63,14 +63,20 @@ namespace uva {
                     //Note that if the translation text is smaller then this value is overruled.
                     static constexpr uint64_t MIN_SENTENCES_PER_REQUEST = 5;
 
+                    //Define the unique lock needed for wait/notify
+                    typedef unique_lock<mutex> unique_lock;
+
                     /**
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
                      */
                     trans_manager(const client_config & params)
                     : m_params(params),
-                    m_client(m_params.m_server, m_params.m_port),
-                    m_source_file(params.m_source_file) {
+                    m_client(m_params.m_server, m_params.m_port,
+                    bind(&trans_manager::set_job_response, this, _1),
+                    bind(&trans_manager::notify_conn_closed, this)),
+                    m_source_file(params.m_source_file),
+                    m_sending_thread_ptr(NULL) {
                         //If the input file could not be opened, we through!
                         ASSERT_CONDITION_THROW(!m_source_file.is_open(),
                                 string("Could not open the source text file: ") + params.m_source_file);
@@ -95,6 +101,13 @@ namespace uva {
                     virtual ~trans_manager() {
                         //Close the source file
                         m_source_file.close();
+
+                        //ToDo: Clean the internal administration
+
+                        //Destroy the translation jobs sending thread
+                        if (m_sending_thread_ptr != NULL) {
+                            delete m_sending_thread_ptr;
+                        }
                     }
 
                     /**
@@ -102,7 +115,8 @@ namespace uva {
                      */
                     void start() {
                         if (m_client.connect()) {
-                            //ToDo: Run the translation job sending thread
+                            //Run the translation job sending thread
+                            m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
                         } else {
                             THROW_EXCEPTION(string("Could not open the connection to: ") + m_client.get_uri());
                         }
@@ -112,17 +126,49 @@ namespace uva {
                      * Allows to wait until the translations are done
                      */
                     void wait() {
-                        //ToDo: Wait until we are notified that the translation are done
+                        //Make sure that translation-waiting activity is synchronized
+                        unique_lock guard(m_trans_done_lock);
+
+                        //Wait for the notification that the translation is finished
+                        m_trans_done_cond.wait(guard);
                     }
 
                     void stop() {
                         //ToDo: Stop the translation job sending thread
-                        //ToDo: Close the connection
+
+                        //Disconnect from the server
                         m_client.disconnect();
+
                         //ToDo: Write the translations we have so far into the file
                     };
 
                 protected:
+
+                    /**
+                     * Allows to process the server job request response
+                     * @param trans_job_resp the translation job response coming from the server
+                     */
+                    void set_job_response(const trans_job_response & trans_job_resp) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * This function will be called if the connection is closed during the translation process
+                     */
+                    void notify_conn_closed() {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to notify the threads waiting on the translation to be finished
+                     */
+                    void notify_translation_done() {
+                        //Make sure that translation-waiting activity is synchronized
+                        unique_lock guard(m_trans_done_lock);
+
+                        //Notify that the translation is finished
+                        m_trans_done_cond.notify_all();
+                    }
 
                     /**
                      * This function shall be run in a separate thread and send a number of translation job requests to the server.
@@ -164,7 +210,7 @@ namespace uva {
                                 try {
                                     //Send the translation job request
                                     m_client.send(request);
-                                    
+
                                     //ToDo: Add the translation job request into our administration
                                 } catch (Exception e) {
                                     //ToDo: Mark the translation job request as failed in the administration
@@ -207,6 +253,14 @@ namespace uva {
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
                     unordered_map<job_id_type, trans_job_response *> m_jobs;
+
+                    //Stores the synchronization mutex for notifying that the text is translated
+                    mutex m_trans_done_lock;
+                    //The conditional variable for tracking the reply message
+                    condition_variable m_trans_done_cond;
+
+                    //Stores the translation request sending thread
+                    thread * m_sending_thread_ptr;
                 };
 
                 id_manager<job_id_type> trans_manager::m_id_mgr(job_id::MINIMUM_JOB_ID);
