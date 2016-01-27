@@ -669,6 +669,9 @@
         <in>bpbd_client.cpp</in>
       </df>
       <df name="common">
+        <df name="messaging">
+          <in>trans_job_code.cpp</in>
+        </df>
         <df name="utils">
           <df name="logging">
             <in>Logger.cpp</in>

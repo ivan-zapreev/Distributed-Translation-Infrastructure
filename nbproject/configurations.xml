@@ -32,6 +32,9 @@
         <in>bpbd_client.cpp</in>
       </df>
       <df name="common">
+        <df name="messaging">
+          <in>trans_job_code.cpp</in>
+        </df>
         <df name="utils">
           <df name="logging">
             <in>Logger.cpp</in>
@@ -167,6 +170,11 @@
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/common/messaging/trans_job_code.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/common/utils/logging/Logger.cpp"
             ex="false"

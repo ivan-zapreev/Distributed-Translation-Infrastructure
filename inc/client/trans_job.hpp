@@ -56,7 +56,7 @@ namespace uva {
                      */
                     trans_job()
                     : m_num_sentences(0), m_request(NULL), m_response(NULL),
-                    m_status(trans_job_status::STATUS_INITIAL) {
+                    m_status(trans_job_status::STATUS_UNDEFINED) {
                     }
 
                     /**

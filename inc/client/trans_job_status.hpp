@@ -38,7 +38,7 @@ namespace uva {
 
                     //Define the status strings
 #define STATUS_UNKNOWN_STR "unknown"
-#define STATUS_INITIAL_STR "not-set"
+#define STATUS_UNDEFINED_STR "undefined"
 #define STATUS_REQ_INITIALIZED_STR "not-sent"
 #define STATUS_REQ_SENT_GOOD_STR "not-replied"
 #define STATUS_REQ_SENT_FAIL_STR "send-failed"
@@ -48,8 +48,8 @@ namespace uva {
                      * Stores the possible status values of the client-side translation job
                      */
                     enum trans_job_status {
-                        STATUS_INITIAL = 0, //The job has been created but not initialized
-                        STATUS_REQ_INITIALIZED = STATUS_INITIAL + 1, //Initialized with the translation request
+                        STATUS_UNDEFINED = 0, //The job has been created but not initialized, i.e. undefined
+                        STATUS_REQ_INITIALIZED = STATUS_UNDEFINED + 1, //Initialized with the translation request
                         STATUS_REQ_SENT_GOOD = STATUS_REQ_INITIALIZED + 1, //The translation request is sent
                         STATUS_REQ_SENT_FAIL = STATUS_REQ_SENT_GOOD + 1, //The translation request failed to sent
                         STATUS_RES_RECEIVED = STATUS_REQ_SENT_FAIL + 1, //The translation response was received
@@ -58,7 +58,7 @@ namespace uva {
 
                     //Stores the status to string mappings
                     static const char * const m_status_str[trans_job_status::size] = {
-                        STATUS_INITIAL_STR,
+                        STATUS_UNDEFINED_STR,
                         STATUS_REQ_INITIALIZED_STR,
                         STATUS_REQ_SENT_GOOD_STR,
                         STATUS_REQ_SENT_FAIL_STR,
@@ -67,7 +67,7 @@ namespace uva {
 
                     /**
                      * Allows to get the job status string for reporting
-                     * @return 
+                     * @return the job status string
                      */
                     static const char * const get_status_str(trans_job_status status) {
                         if (status < trans_job_status::size) {

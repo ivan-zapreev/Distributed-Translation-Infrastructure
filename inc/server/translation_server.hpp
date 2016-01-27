@@ -37,6 +37,7 @@
 #include "common/utils/logging/Logger.hpp"
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/trans_job_code.hpp"
 #include "trans_manager.hpp"
 
 using namespace std;

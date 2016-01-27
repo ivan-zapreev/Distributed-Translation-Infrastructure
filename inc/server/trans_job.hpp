@@ -33,6 +33,7 @@
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/trans_job_code.hpp"
 
 using namespace std;
 using namespace std::placeholders;

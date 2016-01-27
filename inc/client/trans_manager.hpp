@@ -205,12 +205,13 @@ namespace uva {
                      * @param fis the first sentence number 
                      * @param lis the last sentence number
                      * @param job the translation job data
-                     * @param myfile the file to write to
+                     * @param target_file the file to write to
                      */
                     void write_received_job_result(const uint32_t fis, const uint32_t lis,
-                            const trans_job_ptr job, ofstream & myfile) {
+                            const trans_job_ptr job, ofstream & target_file) {
                         //The job response is received but it can still be fully or partially canceled or be an error
-                        switch( job->m_response->get_code()){
+                        const trans_job_code code = job->m_response->get_code();
+                        switch( code ){
                             case trans_job_code::RESULT_OK : 
                             case trans_job_code::RESULT_PARTIAL : 
                                 //ToDo: If the result is canceled or partial then just put the text into the file
@@ -218,9 +219,14 @@ namespace uva {
                             case trans_job_code::RESULT_ERROR : 
                             case trans_job_code::RESULT_CANCELED : 
                             default:
-                                //ToDo: Report a warning giving a status and response text
-                                //ToDo: Write the error message to the target file
-                                ;
+                                    //Report a warning
+                                    LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
+                                            << "translated, job code: '" << code << "'" << END_LOG;
+
+                                    //Write data to file
+                                    target_file << "<--------- Error: Sentences [" << fis << ":" << lis
+                                            << "] are not translated, status: '"
+                                            << code << "'-------->";
                         }
                     }
 
@@ -254,7 +260,7 @@ namespace uva {
                                 case trans_job_status::STATUS_REQ_SENT_GOOD:
                                 case trans_job_status::STATUS_REQ_SENT_FAIL:
                                 case trans_job_status::STATUS_REQ_INITIALIZED:
-                                case trans_job_status::STATUS_INITIAL:
+                                case trans_job_status::STATUS_UNDEFINED:
                                 default:
                                     //Report a warning
                                     const char * const status_str = get_status_str(job->m_status);

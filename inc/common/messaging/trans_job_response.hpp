@@ -48,10 +48,10 @@ namespace uva {
         namespace decoding {
             namespace common {
                 namespace messaging {
-                    
+
                     //Do a forward definition of the class
                     class trans_job_response;
-                    
+
                     //Define the pointer type for the job response
                     typedef trans_job_response * trans_job_response_ptr;
 
@@ -65,13 +65,14 @@ namespace uva {
                         //The delimiter used in the header of the reply message
                         static constexpr char HEADER_DELIMITER = ':';
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
-                        
+
                         /**
                          * The basic no-argument constructor that is needed for the translation client.
                          * It default-initializes the class with undefined values.
                          */
                         trans_job_response()
-                        : m_job_id(job_id::UNDEFINED_JOB_ID), m_code(trans_job_code::RESULT_UNDEFINED), m_text("") {}
+                        : m_job_id(job_id::UNDEFINED_JOB_ID), m_code(trans_job_code::RESULT_UNDEFINED), m_text("") {
+                        }
 
                         /**
                          * This is the basic class constructor that accepts the
@@ -116,7 +117,7 @@ namespace uva {
                                 m_job_id = stoi(text.str());
                                 //Second get the result code
                                 if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
-                                    m_code = (trans_job_code) stoi(text.str());
+                                    m_code = trans_job_code(stoi(text.str()));
 
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
@@ -136,7 +137,7 @@ namespace uva {
                          */
                         const string serialize() {
                             string result = to_string(m_job_id) + HEADER_DELIMITER +
-                                    to_string(m_code) + NEW_LINE_HEADER_ENDING + m_text;
+                                    m_code.str() + NEW_LINE_HEADER_ENDING + m_text;
 
                             LOG_DEBUG1 << "Serializing reply message: '" << result << "'" << END_LOG;
 

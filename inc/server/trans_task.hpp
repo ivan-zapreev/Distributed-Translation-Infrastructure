@@ -32,8 +32,8 @@
 
 using namespace std;
 
-using namespace uva::smt::decoding::common::messaging;
 using namespace uva::utils::logging;
+using namespace uva::smt::decoding::common::messaging;
 
 #ifndef TRANS_TASK_HPP
 #define TRANS_TASK_HPP
