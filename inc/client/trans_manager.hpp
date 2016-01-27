@@ -38,6 +38,8 @@
 #include "client_config.hpp"
 #include "translation_client.hpp"
 #include "trans_job.hpp"
+#include "trans_job_status.hpp"
+#include "common/messaging/trans_job_code.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
@@ -45,6 +47,7 @@
 #include "common/utils//file/CStyleFileReader.hpp"
 
 using namespace std;
+using namespace uva::smt::decoding::client::status;
 
 #ifndef TRANS_MANAGER_HPP
 #define TRANS_MANAGER_HPP
@@ -217,6 +220,7 @@ namespace uva {
                             default:
                                 //ToDo: Report a warning giving a status and response text
                                 //ToDo: Write the error message to the target file
+                                ;
                         }
                     }
 
@@ -244,16 +248,16 @@ namespace uva {
 
                             //Check on the translation job status
                             switch (job->m_status) {
-                                case trans_job::STATUS_RES_RECEIVED:
+                                case trans_job_status::STATUS_RES_RECEIVED:
                                     write_received_job_result(fis, lis, job, target_file);
                                     break;
-                                case trans_job::STATUS_REQ_SENT_GOOD:
-                                case trans_job::STATUS_REQ_SENT_FAIL:
-                                case trans_job::STATUS_REQ_INITIALIZED:
-                                case trans_job::STATUS_INITIAL:
+                                case trans_job_status::STATUS_REQ_SENT_GOOD:
+                                case trans_job_status::STATUS_REQ_SENT_FAIL:
+                                case trans_job_status::STATUS_REQ_INITIALIZED:
+                                case trans_job_status::STATUS_INITIAL:
                                 default:
                                     //Report a warning
-                                    const char * const status_str = job->get_status_str();
+                                    const char * const status_str = get_status_str(job->m_status);
                                     LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
                                             << "translated, job status: '" << status_str << "'" << END_LOG;
 
@@ -281,6 +285,9 @@ namespace uva {
                             if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
                                 //Register the job in the administration
                                 m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
+                                
+                                //Set the translation job status as received 
+                                m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
 
                                 //Increment the number of received jobs
                                 m_num_done_jobs++;
@@ -370,7 +377,7 @@ namespace uva {
                                 //Store the number of sentences in the translation request
                                 data->m_num_sentences = num_read;
                                 //Mark the job sending as good in the administration
-                                data->m_status = trans_job::status::STATUS_REQ_INITIALIZED;
+                                data->m_status = trans_job_status::STATUS_REQ_INITIALIZED;
 
                                 //Store the translation request
                                 m_jobs_list.push_back(data);
@@ -388,14 +395,14 @@ namespace uva {
                                 //Send the translation job request
                                 m_client.send(data->m_request);
                                 //Mark the job sending as good in the administration
-                                data->m_status = trans_job::status::STATUS_REQ_SENT_GOOD;
+                                data->m_status = trans_job_status::STATUS_REQ_SENT_GOOD;
                             } catch (Exception e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a translation request "
                                         << data->m_request->get_job_id() << ": "
                                         << e.get_message() << END_LOG;
                                 //Mark the job sending as failed in the administration
-                                data->m_status = trans_job::status::STATUS_REQ_SENT_FAIL;
+                                data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
                             }
                         }
 

@@ -567,6 +567,7 @@
       <df name="client">
         <in>client_config.hpp</in>
         <in>trans_job.hpp</in>
+        <in>trans_job_status.hpp</in>
         <in>trans_manager.hpp</in>
         <in>translation_client.hpp</in>
       </df>
