@@ -140,8 +140,6 @@ namespace uva {
                      * Allows to start the translation process
                      */
                     void start() {
-                        LOG_INFO << "Starting the translation process!" << END_LOG;
-
                         if (m_client.connect()) {
                             //Run the translation job sending thread
                             m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
@@ -154,7 +152,6 @@ namespace uva {
                      * Allows to wait until the translations are done
                      */
                     void wait() {
-                        LOG_INFO << "Waiting for the the translation process to finish ..." << END_LOG;
 
                         //Wait until all the jobs are sent
                         {
@@ -182,7 +179,6 @@ namespace uva {
                      * to write the resulting translations into the file.
                      */
                     void stop() {
-                        LOG_INFO << "Stopping the translation process!" << END_LOG;
 
                         //Stop the translation job sending thread
                         if (m_sending_thread_ptr != NULL) {
@@ -193,12 +189,10 @@ namespace uva {
                         //Disconnect from the server
                         m_client.disconnect();
 
-                        LOG_INFO << "The translation has finished, writing results to: '" << m_params.m_target_file << "'" << END_LOG;
+                        LOG_INFO << "The translation has finished" << END_LOG;
                         
                         //Write the translations we have so far into the file
                         write_result_to_file();
-
-                        LOG_INFO << "The job is done, exiting!" << END_LOG;
                     };
 
                 protected:

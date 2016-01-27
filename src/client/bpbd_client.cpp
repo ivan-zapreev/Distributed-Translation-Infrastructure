@@ -147,7 +147,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_server = p_server_arg->getValue();
     params.m_port = p_port_arg->getValue();
     LOG_USAGE << "Using server address: '" << params.m_server << "', port: '" << params.m_port << "'" << END_LOG;
-    
+
     params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
     LOG_USAGE << "The min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
@@ -178,15 +178,20 @@ int main(int argc, char** argv) {
 
         //Create the translation manager
         trans_manager manager(params);
-        
+
         //Start the translation manager
+        LOG_USAGE << "Starting the translation process ..." << END_LOG;
         manager.start();
-        
+
         //Wait until the translations are done
+        LOG_USAGE << "Waiting for the the translation process to finish ..." << END_LOG;
         manager.wait();
         
         //Stop the translation manager
+        LOG_USAGE << "Finishing the translation process ..." << END_LOG;
         manager.stop();
+
+        LOG_USAGE << "The job is done, the results are in: '" << params.m_target_file << "'" << END_LOG;
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.get_message() << END_LOG;
