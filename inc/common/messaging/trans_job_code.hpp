@@ -75,8 +75,12 @@ namespace uva {
                          * @param code_val the code value to initialize with
                          */
                         trans_job_code(const int32_t code_val) {
+                            //Check that the conversion is possible
                             ASSERT_CONDITION_THROW((code_val < 0 || code_val >= values::size),
                                     string("Improper code value: ") + to_string(code_val));
+                            
+                            //Set the code value
+                            m_code = static_cast<values>(code_val);
                         }
 
                         /**
@@ -130,7 +134,15 @@ namespace uva {
                          * @return the job code string
                          */
                         const char * const str() const;
-                        
+
+                        /**
+                         * Returns the stored code value
+                         * @return the stored code value
+                         */
+                        values val() {
+                            return m_code;
+                        }
+
                     private:
                         //Stores the code value
                         values m_code;

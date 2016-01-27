@@ -72,7 +72,7 @@ namespace uva {
                     typedef function<void() > conn_close_notifier;
 
                     translation_client(const string & host, const uint16_t port, response_setter set_response, conn_close_notifier notify_conn_close)
-                    : m_open(false), m_done(false), m_set_response(set_response), m_notify_conn_close(notify_conn_close) {
+                    : m_started(false), m_stopped(false), m_opened(false), m_closed(false), m_set_response(set_response), m_notify_conn_close(notify_conn_close) {
                         //Assert that the notifiers and setter are defined
                         ASSERT_CONDITION_THROW(!m_set_response, "The response setter is NULL!");
                         ASSERT_CONDITION_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
@@ -125,6 +125,9 @@ namespace uva {
                         // Create a thread to run the ASIO io_service event loop
                         m_asio_thread = thread(&client::run, &m_client);
 
+                        //Set the client as started
+                        m_started = true;
+
                         return wait_connect();
                     }
 
@@ -132,21 +135,30 @@ namespace uva {
                      * Allows to close the connection and stop the io service thread
                      */
                     void disconnect() {
-                        LOG_DEBUG << "Stopping the client: m_open = " << to_string(m_open) << ", m_done = " << to_string(m_done) << END_LOG;
+                        LOG_DEBUG << "Stopping the client: m_open = " << to_string(m_opened) << ", m_done = " << to_string(m_closed) << END_LOG;
 
-                        if (m_open && !m_done) {
+                        if (m_opened && !m_closed) {
                             //Invalidate the connection close notifier
                             m_notify_conn_close = NULL;
 
                             //Close the connection to the server
                             m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
+
+                            //Set the done flag to true as we  are now done
+                            m_closed = true;
                         }
 
-                        //Stop the io service thread
-                        m_client.stop();
+                        //Check if the client is stopped
+                        if (m_started && !m_stopped) {
+                            //Stop the io service thread
+                            m_client.stop();
 
-                        //Wait for the thread to exit.
-                        m_asio_thread.join();
+                            //Wait for the thread to exit.
+                            m_asio_thread.join();
+
+                            //Set the stopped flag to true
+                            m_stopped = true;
+                        }
                     }
 
                     /**
@@ -186,7 +198,7 @@ namespace uva {
 
                         LOG_INFO << "Connection opened!" << END_LOG;
 
-                        m_open = true;
+                        m_opened = true;
                     }
 
                     /**
@@ -198,7 +210,7 @@ namespace uva {
 
                         LOG_INFO << "Connection closed!" << END_LOG;
 
-                        m_done = true;
+                        m_closed = true;
 
                         //Notify the client that the connection is closed, if the notifier is still present!
                         if (m_notify_conn_close) {
@@ -215,7 +227,7 @@ namespace uva {
 
                         LOG_INFO << "Connection failed!" << END_LOG;
 
-                        m_done = true;
+                        m_closed = true;
 
                         //Notify the client that the connection is closed, if the notifier is still present!
                         if (m_notify_conn_close) {
@@ -246,13 +258,13 @@ namespace uva {
                             //Check the connection status
                             {
                                 scoped_lock guard(m_lock_con);
-                                is_connecting = !m_open && !m_done;
+                                is_connecting = !m_opened && !m_closed;
                             }
 
                             //If we we are still connecting then sleep, otherwise move on
                             if (is_connecting) {
-                                LOG_DEBUG << "Going to sleep, m_open = " << to_string(m_open)
-                                        << ", m_done = " << to_string(m_done) << END_LOG;
+                                LOG_DEBUG << "Going to sleep, m_open = " << to_string(m_opened)
+                                        << ", m_done = " << to_string(m_closed) << END_LOG;
                                 sleep(1);
                                 LOG_DEBUG << "Done sleeping!" << END_LOG
                             } else {
@@ -261,9 +273,10 @@ namespace uva {
                         }
 
                         //If the connection is open and is not done then we are nicely connected
-                        const bool result = m_open && !m_done;
+                        const bool result = m_opened && !m_closed;
                         LOG_DEBUG << "Is connection open: " << to_string(result) << " (m_open = "
-                                << to_string(m_open) << ", m_done = " << to_string(m_done) << ")" << END_LOG;
+                                << to_string(m_opened) << ", m_done = " << to_string(m_closed) << ")" << END_LOG;
+
                         return result;
                     }
 
@@ -278,9 +291,13 @@ namespace uva {
                     //Stores the synchronization mutex for connection
                     mutex m_lock_con;
 
+                    //Stores the started and stopped flags for the client
+                    atomic<bool> m_started;
+                    atomic<bool> m_stopped;
+
                     //Stores the open and done flags for connection
-                    atomic<bool> m_open;
-                    atomic<bool> m_done;
+                    atomic<bool> m_opened;
+                    atomic<bool> m_closed;
 
                     //Stores the translation job result setting function
                     response_setter m_set_response;

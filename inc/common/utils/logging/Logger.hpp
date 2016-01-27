@@ -59,11 +59,14 @@ namespace uva {
             static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
 
             /**
-             * This structures stores the synchronization mutex for logging
+             * This structures stores the recursive synchronization mutex for logging.
+             * The mutex is to be recursive as functions called when logging can do the own logging.
              */
             struct logging_synch {
-                typedef lock_guard<mutex> scoped_lock;
-                static mutex mv;
+                //Define the recursive lock quard
+                typedef lock_guard<recursive_mutex> rec_scoped_lock;
+                //The recursive mutex to be used for logging
+                static recursive_mutex mv;
             };
 
             //This Macro is used to convert numerival values to proper strings!
@@ -79,7 +82,7 @@ namespace uva {
 
 #define LOGGER(level)                                \
 {                                                    \
-  logging_synch::scoped_lock lock(logging_synch::mv);\
+  logging_synch::rec_scoped_lock lock(logging_synch::mv);\
   if (level > LOGER_MAX_LEVEL) ;                     \
   else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level)
@@ -88,7 +91,7 @@ namespace uva {
 
 #define LOGGER_DEBUG(level)                          \
 {                                                    \
-  logging_synch::scoped_lock lock(logging_synch::mv);\
+  logging_synch::rec_scoped_lock lock(logging_synch::mv);\
   if (level > LOGER_MAX_LEVEL) ;                     \
   else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)

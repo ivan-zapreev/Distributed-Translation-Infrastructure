@@ -107,22 +107,25 @@ namespace uva {
                         void de_serialize(const string & message) {
                             //Initialize the reader
                             TextPieceReader reader(message.c_str(), message.length());
-                            LOG_DEBUG1 << "De-serializing reply message: '" << reader.str() << "'" << END_LOG;
+                            LOG_DEBUG3 << "De-serializing reply message (" << &message << "): '" << reader.str() << "'" << END_LOG;
 
                             //The text will contain the read text from the reader
                             TextPieceReader text;
 
                             //First get the job id
                             if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                LOG_DEBUG1 << "Message " << &message << ", read the job id: " << text.str() << END_LOG;
                                 m_job_id = stoi(text.str());
                                 //Second get the result code
                                 if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                    LOG_DEBUG1 << "Message " << &message << ", read the job code: " << text.str() << END_LOG;
                                     m_code = trans_job_code(stoi(text.str()));
 
                                     //Now the rest is the translated text or the error message
                                     m_text = reader.get_rest_str();
 
-                                    LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_code = " << m_code << ", m_text = \n" << m_text << END_LOG;
+                                    LOG_DEBUG << "Received message " << &message << ", \nm_job_id = " << m_job_id
+                                            << ", m_code = " << m_code << ", m_text = \n" << m_text << END_LOG;
                                 } else {
                                     THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
                                 }
@@ -137,7 +140,7 @@ namespace uva {
                          */
                         const string serialize() {
                             string result = to_string(m_job_id) + HEADER_DELIMITER +
-                                    m_code.str() + NEW_LINE_HEADER_ENDING + m_text;
+                                    to_string(m_code.val()) + NEW_LINE_HEADER_ENDING + m_text;
 
                             LOG_DEBUG1 << "Serializing reply message: '" << result << "'" << END_LOG;
 

@@ -193,8 +193,12 @@ namespace uva {
                         //Disconnect from the server
                         m_client.disconnect();
 
+                        LOG_INFO << "The translation has finished, writing results to: '" << m_params.m_target_file << "'" << END_LOG;
+                        
                         //Write the translations we have so far into the file
                         write_result_to_file();
+
+                        LOG_INFO << "The job is done, exiting!" << END_LOG;
                     };
 
                 protected:
@@ -210,23 +214,23 @@ namespace uva {
                             const trans_job_ptr job, ofstream & target_file) {
                         //The job response is received but it can still be fully or partially canceled or be an error
                         const trans_job_code & code = job->m_response->get_code();
-                        switch( code ){
-                            case trans_job_code::RESULT_OK : 
-                            case trans_job_code::RESULT_PARTIAL : 
+                        switch (code) {
+                            case trans_job_code::RESULT_OK:
+                            case trans_job_code::RESULT_PARTIAL:
                                 //If the result is ok or partial then just put the text into the file
                                 target_file << job->m_response->get_text();
                                 break;
-                            case trans_job_code::RESULT_ERROR : 
-                            case trans_job_code::RESULT_CANCELED : 
+                            case trans_job_code::RESULT_ERROR:
+                            case trans_job_code::RESULT_CANCELED:
                             default:
-                                    //Report a warning
-                                    LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
-                                            << "translated, job code: '" << code << "'" << END_LOG;
+                                //Report a warning
+                                LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
+                                        << "translated, job code: '" << code << "'" << END_LOG;
 
-                                    //Write data to file
-                                    target_file << "<--------- Error: Sentences [" << fis << ":" << lis
-                                            << "] are not translated, status: '"
-                                            << code << "'-------->\n";
+                                //Write data to file
+                                target_file << "<--------- Error: Sentences [" << fis << ":" << lis
+                                        << "] are not translated, status: '"
+                                        << code << "'-------->\n";
                         }
                     }
 
@@ -291,7 +295,7 @@ namespace uva {
                             if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
                                 //Register the job in the administration
                                 m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
-                                
+
                                 //Set the translation job status as received 
                                 m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
 
@@ -325,6 +329,11 @@ namespace uva {
                         //Make sure that translation-waiting activity is synchronized
                         unique_lock guard(m_jobs_sent_lock);
 
+                        LOG_DEBUG << "Notifying that all the translation job requests are sent ..." << END_LOG;
+
+                        //Setting the translation jobs sent flag 
+                        m_is_all_jobs_sent = true;
+
                         //Notify that the translation is finished
                         m_jobs_sent_cond.notify_all();
                     }
@@ -335,6 +344,11 @@ namespace uva {
                     void notify_jobs_done() {
                         //Make sure that translation-waiting activity is synchronized
                         unique_lock guard(m_jobs_done_lock);
+
+                        LOG_DEBUG << "Notifying that all the translation job replies are received ..." << END_LOG;
+
+                        //Setting the translation jobs done flag 
+                        m_is_all_jobs_done = true;
 
                         //Notify that the translation is finished
                         m_jobs_done_cond.notify_all();
@@ -348,7 +362,7 @@ namespace uva {
                         //Declare the variable to store the sentence line
                         TextPieceReader line;
 
-                        LOG_DEBUG << "Reading text from the source file: " << END_LOG;
+                        LOG_DEBUG << "Reading text from the source file ..." << END_LOG;
                         while (!m_is_stopping) {
                             //Get the number of sentences to send in the next request
                             const uint64_t num_to_sent = get_num_of_sentences();
@@ -357,15 +371,21 @@ namespace uva {
                             //text to send for translation
                             string source_text;
 
+                            LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
+
                             while (m_source_file.get_first_line(line) && (num_read < num_to_sent)) {
-                                LOG_DEBUG << "Read line: '" << line.str() << "'" << END_LOG;
+                                LOG_DEBUG2 << "Read line: '" << line.str() << "'" << END_LOG;
 
                                 //Append the new line to the text to be sent
                                 source_text += line.str() + "\n";
 
                                 //Increment the number of read sentences
                                 ++num_read;
+
+                                LOG_DEBUG2 << "Read " << num_read << " input sentences!" << END_LOG;
                             }
+
+                            LOG_DEBUG1 << "Read " << num_read << " sentences to be sent with the next request" << END_LOG;
 
                             //If there were lines read then do translation
                             if (num_read != 0) {
@@ -393,6 +413,10 @@ namespace uva {
                             }
                         }
 
+                        LOG_DEBUG << "Finished reading text from the source file!" << END_LOG;
+
+                        LOG_DEBUG << "Sending translation job requests ..." << END_LOG;
+
                         //Send the translation jobs
                         for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !m_is_stopping; ++it) {
                             //Get the pointer to the translation job data
@@ -411,6 +435,8 @@ namespace uva {
                                 data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
                             }
                         }
+
+                        LOG_DEBUG << "Finished sending translation job requests ..." << END_LOG;
 
                         //The translation jobs have been sent!
                         notify_jobs_sent();
