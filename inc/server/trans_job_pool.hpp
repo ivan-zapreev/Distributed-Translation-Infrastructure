@@ -130,11 +130,6 @@ namespace uva {
 
                         LOG_DEBUG << "All the existing jobs are canceled!" << END_LOG;
 
-                        //In case thre is no runnig jobs we need to notify the job processing thread to wake and finish
-                        wake_up_jobs_thread();
-
-                        LOG_DEBUG << "The jobs thread is awaken!" << END_LOG;
-
                         //Wait until the job processing thread finishes
                         m_jobs_thread.join();
 
@@ -317,21 +312,13 @@ namespace uva {
                                 //We shall stop if we are being asked to stop and there are no jobs left
                                 const bool result = (m_is_stopping && m_job_count == 0);
 
-                                LOG_DEBUG << "is_stop_running = " << to_string(result) << END_LOG;
+                                LOG_DEBUG << "is_stop_running = " << to_string(result)
+                                        << " is stopping flag: " << to_string(m_is_stopping)
+                                        << " active jobs count: " << m_job_count << END_LOG;
 
                                 return result;
                             }
                         }
-                    }
-
-                    /**
-                     * Allows to wake up the jobs thread.
-                     */
-                    void wake_up_jobs_thread() {
-                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
-
-                        //Notify the thread that there is a finished job to be processed
-                        m_is_job_done.notify_one();
                     }
 
                     /**
@@ -352,17 +339,17 @@ namespace uva {
                             //Notify the thread that there is a finished job to be processed
                             m_is_job_done.notify_one();
                         }
-                        LOG_DEBUG1 << "The job " << trans_job << " is marked as finished finished!" << END_LOG;
+                        LOG_DEBUG1 << "The job " << trans_job << " is marked as finished!" << END_LOG;
                     }
 
                     /**
                      * Allows to process the finished translation jobs
                      */
                     void process_finished_jobs() {
+                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
+
                         //Stop iteration only when we are stopping and there are no jobs left
                         while (!is_stop_running()) {
-                            unique_lock guard_finished_jobs(m_finished_jobs_lock);
-
                             //Wait the thread to be notified
                             m_is_job_done.wait(guard_finished_jobs);
 

@@ -70,7 +70,7 @@ namespace uva {
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id, const task_id_type task_id,
                             const string & source_sentence, done_task_notifier notify_task_done_func)
-                    : m_is_interrupted(false), m_is_finished(false), m_session_id(session_id), m_job_id(job_id),
+                    : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
                     m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
                     m_notify_task_done_func(notify_task_done_func) {
                         LOG_DEBUG1 << "New task, id: " << m_task_id << ", text: " << m_source_text << END_LOG;
@@ -105,20 +105,13 @@ namespace uva {
                         {
                             req_scoped_lock guard_end(m_end_lock);
 
-                            //If the translation is not done yet
-                            if (!m_is_finished) {
-                                LOG_DEBUG1 << "The task " << m_task_id << " is not finished yet, interrupt!" << END_LOG;
+                            LOG_DEBUG1 << "The task " << m_task_id << " is to be interrupted!" << END_LOG;
 
-                                //Set the stopping flag to true
-                                m_is_interrupted = true;
+                            //Set the stopping flag to true
+                            m_is_interrupted = true;
 
-                                //Produce the task result, we call it here as may be this
-                                //task is not executed yet, then it would hand without
-                                //notifying the translation job that it is done.
-                                process_task_result();
-                            } else {
-                                LOG_DEBUG1 << "The task " << m_task_id << " is finished, no need to cancel!" << END_LOG;
-                            }
+                            //Do nothing else, just set the flag, that is needed to avoid deadlocking
+                            //The finished task, and job processing is to be done from a separate thread.
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is canceled!" << END_LOG;
@@ -145,18 +138,10 @@ namespace uva {
                         {
                             req_scoped_lock guard_end(m_end_lock);
 
-                            //If the translation is not interrupted yet
-                            if (!m_is_interrupted) {
-                                LOG_DEBUG1 << "The task " << m_task_id << " is not canceled yet, finishing!" << END_LOG;
+                            LOG_DEBUG1 << "The task " << m_task_id << " is to be finished!" << END_LOG;
 
-                                //Set the finished flag to true
-                                m_is_finished = true;
-
-                                //Produce the task result
-                                process_task_result();
-                            } else {
-                                LOG_DEBUG1 << "The task " << m_task_id << " is canceled, no need to finish!" << END_LOG;
-                            }
+                            //Produce the task result
+                            process_task_result();
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done!" << END_LOG;
@@ -225,8 +210,6 @@ namespace uva {
                 private:
                     //Stores the flag that indicates that we need to stop the translation algorithm
                     atomic<bool> m_is_interrupted;
-                    //Stores the flag that indicates that the translation task is finished
-                    atomic<bool> m_is_finished;
 
                     //Stores the translation task session id, is needed for logging
                     const session_id_type m_session_id;
