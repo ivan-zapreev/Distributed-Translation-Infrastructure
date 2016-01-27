@@ -23,10 +23,12 @@
  * Created on January 26, 2016, 5:24 PM
  */
 
+#include "common/utils/Exceptions.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_response.hpp"
 
 using namespace uva::smt::decoding::common::messaging;
+using namespace uva::utils::exceptions;
 
 #ifndef TRANS_JOB_HPP
 #define TRANS_JOB_HPP
@@ -35,6 +37,20 @@ namespace uva {
     namespace smt {
         namespace decoding {
             namespace client {
+
+                //Define the status strings
+#define STATUS_UNKNOWN_STR "unknown"
+#define STATUS_INITIAL_STR "not-set"
+#define STATUS_REQ_INITIALIZED_STR "not-sent"
+#define STATUS_REQ_SENT_GOOD_STR "not-replied"
+#define STATUS_REQ_SENT_FAIL_STR "send-failed"
+#define STATUS_RES_RECEIVED_STR "replied"
+
+                //Do the forward definition of the class
+                struct trans_job;
+
+                //Define the pointer type for the translation job data
+                typedef trans_job * trans_job_ptr;
 
                 /**
                  * This structure is used for storing the translation job data
@@ -47,16 +63,19 @@ namespace uva {
                         STATUS_REQ_INITIALIZED = STATUS_INITIAL + 1, //Initialized with the translation request
                         STATUS_REQ_SENT_GOOD = STATUS_REQ_INITIALIZED + 1, //The translation request is sent
                         STATUS_REQ_SENT_FAIL = STATUS_REQ_SENT_GOOD + 1, //The translation request failed to sent
-                        STATUS_REQ_RECEIVED = STATUS_REQ_SENT_FAIL + 1, //The translation response received
-                        size = STATUS_REQ_RECEIVED + 1
+                        STATUS_RES_RECEIVED = STATUS_REQ_SENT_FAIL + 1, //The translation response was received
+                        size = STATUS_RES_RECEIVED + 1
                     };
+
+                    //Stores the status to string mappings
+                    static const char * const m_status_str[status::size];
 
                     /**
                      * The basic constructor that does default-initialization of the structure fields
                      */
                     trans_job()
-                    : m_num_sent(0), m_request(NULL), m_response(NULL),
-                    m_failed_to_send(status::STATUS_INITIAL) {
+                    : m_num_sentences(0), m_request(NULL), m_response(NULL),
+                    m_status(status::STATUS_INITIAL) {
                     }
 
                     /**
@@ -72,18 +91,37 @@ namespace uva {
                         }
                     }
 
+                    /**
+                     * Allows to get the job status string for reporting
+                     * @return 
+                     */
+                    const char * const get_status_str() {
+                        if (m_status < status::size) {
+                            return m_status_str[m_status];
+                        } else {
+                            LOG_ERROR << "The job status has not string: " << m_status << END_LOG;
+                            return STATUS_UNKNOWN_STR;
+                        }
+                    }
+
                     //The number of sentences to be translated
-                    uint32_t m_num_sent;
+                    uint32_t m_num_sentences;
                     //The pointer to the job request
                     trans_job_request_ptr m_request;
                     //The pointer to the job response
                     trans_job_response_ptr m_response;
                     //Stores the flag indicating whether the job was failed to send
-                    status m_failed_to_send;
+                    status m_status;
                 };
 
-                //Define the pointer type for the translation job data
-                typedef trans_job * trans_job_data_ptr;
+                const char * const trans_job::m_status_str[status::size] = {
+                    STATUS_INITIAL_STR,
+                    STATUS_REQ_INITIALIZED_STR,
+                    STATUS_REQ_SENT_GOOD_STR,
+                    STATUS_REQ_SENT_FAIL_STR,
+                    STATUS_RES_RECEIVED_STR
+                };
+
             }
         }
     }

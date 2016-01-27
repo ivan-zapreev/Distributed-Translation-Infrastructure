@@ -66,7 +66,7 @@ namespace uva {
                     typedef lock_guard<mutex> scoped_lock;
 
                     //Define the function type for the function used to set the translation job result
-                    typedef function<void(const trans_job_response & trans_job_resp) > response_setter;
+                    typedef function<void(const trans_job_response_ptr trans_job_resp) > response_setter;
 
                     //Define the function type for the function used to notify the caller that the connection is closed
                     typedef function<void() > conn_close_notifier;

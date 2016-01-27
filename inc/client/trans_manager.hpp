@@ -32,6 +32,8 @@
 #include <mutex>
 #include <condition_variable>
 #include <functional>
+#include <iostream>
+#include <fstream>
 
 #include "client_config.hpp"
 #include "translation_client.hpp"
@@ -70,10 +72,10 @@ namespace uva {
                     typedef unique_lock<mutex> unique_lock;
 
                     //Define the type for the list of the translation data objects
-                    typedef vector<trans_job_data_ptr> jobs_list_type;
+                    typedef vector<trans_job_ptr> jobs_list_type;
                     typedef jobs_list_type::iterator jobs_list_iter_type;
                     //Define the type for the map from job id to job data
-                    typedef unordered_map<job_id_type, trans_job_data_ptr> jobs_map_type;
+                    typedef unordered_map<job_id_type, trans_job_ptr> jobs_map_type;
                     typedef jobs_map_type::iterator jobs_map_iter_type;
 
                     /**
@@ -189,10 +191,71 @@ namespace uva {
                         //Disconnect from the server
                         m_client.disconnect();
 
-                        //ToDo: Write the translations we have so far into the file
+                        //Write the translations we have so far into the file
+                        write_result_to_file();
                     };
 
                 protected:
+
+                    /**
+                     * Allows to write the received translation job replies into the file
+                     * @param fis the first sentence number 
+                     * @param lis the last sentence number
+                     * @param job the translation job data
+                     * @param myfile the file to write to
+                     */
+                    void write_received_job_result(const uint32_t fis, const uint32_t lis,
+                            const trans_job_ptr job, ofstream & myfile) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to generate the translation result file.
+                     */
+                    void write_result_to_file() {
+                        //Open the report file
+                        ofstream target_file;
+                        target_file.open(m_params.m_target_file);
+                        //Declare the variable to store the line cursor
+                        uint32_t line_cursor = 0;
+
+                        //Go through the translation job data and write it into the files
+                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
+                            //Get the translation job data
+                            const trans_job_ptr job = *it;
+
+                            //Increment the line cursor
+                            ++line_cursor;
+
+                            //Compute the first and last sentence numbers for the case the job is not completed
+                            const uint32_t fis = line_cursor;
+                            const uint32_t lis = fis + job->m_num_sentences - 1;
+
+                            //Check on the translation job status
+                            switch (job->m_status) {
+                                case trans_job::STATUS_RES_RECEIVED:
+                                    write_received_job_result(fis, lis, job, target_file);
+                                    break;
+                                case trans_job::STATUS_REQ_SENT_GOOD:
+                                case trans_job::STATUS_REQ_SENT_FAIL:
+                                case trans_job::STATUS_REQ_INITIALIZED:
+                                case trans_job::STATUS_INITIAL:
+                                default:
+                                    //Report a warning
+                                    const char * const status_str = job->get_status_str();
+                                    LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
+                                            << "translated, job status: '" << status_str << "'" << END_LOG;
+
+                                    //Write data to file
+                                    target_file << "<--------- Error: Sentences [" << fis << ":" << lis
+                                            << "] are not translated, status: '"
+                                            << status_str << "'-------->";
+                            }
+                        }
+
+                        //Close the report file
+                        target_file.close();
+                    }
 
                     /**
                      * Allows to process the server job request response
@@ -289,14 +352,14 @@ namespace uva {
                                 source_text.substr(0, source_text.size() - 1);
 
                                 //Create the new job data object
-                                trans_job_data_ptr data = new trans_job();
+                                trans_job_ptr data = new trans_job();
 
                                 //Create the translation job request 
                                 data->m_request = new trans_job_request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
                                 //Store the number of sentences in the translation request
-                                data->m_num_sent = num_read;
+                                data->m_num_sentences = num_read;
                                 //Mark the job sending as good in the administration
-                                data->m_failed_to_send = trans_job::status::STATUS_REQ_INITIALIZED;
+                                data->m_status = trans_job::status::STATUS_REQ_INITIALIZED;
 
                                 //Store the translation request
                                 m_jobs_list.push_back(data);
@@ -309,19 +372,19 @@ namespace uva {
                         //Send the translation jobs
                         for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !m_is_stopping; ++it) {
                             //Get the pointer to the translation job data
-                            trans_job_data_ptr data = *it;
+                            trans_job_ptr data = *it;
                             try {
                                 //Send the translation job request
                                 m_client.send(data->m_request);
                                 //Mark the job sending as good in the administration
-                                data->m_failed_to_send = trans_job::status::STATUS_REQ_SENT_GOOD;
+                                data->m_status = trans_job::status::STATUS_REQ_SENT_GOOD;
                             } catch (Exception e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a translation request "
                                         << data->m_request->get_job_id() << ": "
                                         << e.get_message() << END_LOG;
                                 //Mark the job sending as failed in the administration
-                                data->m_failed_to_send = trans_job::status::STATUS_REQ_SENT_FAIL;
+                                data->m_status = trans_job::status::STATUS_REQ_SENT_FAIL;
                             }
                         }
 
