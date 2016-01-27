@@ -112,9 +112,9 @@ namespace uva {
 
                         //NOTE: Somehow stopping to listen to the new connections result in errors
                         //ToDo: Figure out why we get asio errors when stopping to listen
-                        LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
+                        //LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
-                        m_server.stop_listening();
+                        //m_server.stop_listening();
 
                         LOG_DEBUG << "Stop the session manager." << END_LOG;
                         //Stop the session manager, this should cancel all the unfinished translation tasks

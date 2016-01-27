@@ -80,9 +80,9 @@ namespace uva {
                     trans_job(trans_job_request_ptr request_ptr)
                     : m_request_ptr(request_ptr), m_done_tasks_count(0), m_code(trans_job_code::RESULT_UNDEFINED), m_target_text("") {
                         LOG_DEBUG << "Creating a new translation job " << this << " with job_id: "
-                                << m_request_ptr->get_job_id()<< " session id: "
+                                << m_request_ptr->get_job_id() << " session id: "
                                 << m_request_ptr->get_session_id() << END_LOG;
-                        
+
                         //Get the text to be translated
                         string text = m_request_ptr->get_text();
                         //Obtain the text to be parsed
@@ -90,11 +90,15 @@ namespace uva {
                         //This reader will store the read text sentence
                         TextPieceReader sentence;
 
+                        //Get the session and job id for the translation task constructor
+                        const session_id_type session_id = request_ptr->get_session_id();
+                        const job_id_type job_id = request_ptr->get_job_id();
+
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
                         while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
-                            m_tasks.push_back(new trans_task(m_id_mgr.get_next_id(), sentence.str(),
-                                    bind(&trans_job::notify_task_done, this, _1)));
+                            m_tasks.push_back(new trans_task(session_id, job_id, m_id_mgr.get_next_id(),
+                                    sentence.str(), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
 
@@ -111,21 +115,21 @@ namespace uva {
                      */
                     virtual ~trans_job() {
                         LOG_DEBUG << "Deleting the translation job " << this << " with job_id: "
-                                << m_request_ptr->get_job_id()<< " session id: "
+                                << m_request_ptr->get_job_id() << " session id: "
                                 << m_request_ptr->get_session_id() << END_LOG;
-                        
+
                         //If the job is deleted then the request is not needed any more
                         if (m_request_ptr != NULL) {
                             delete m_request_ptr;
                         }
-                        
+
                         LOG_DEBUG << "Start deleting translation tasks of job " << this << END_LOG;
 
                         //Delete the translation tasks
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             delete *it;
                         }
-                        
+
                         LOG_DEBUG << "The translation tasks of job " << this << " are deleted" << END_LOG;
                     }
 
@@ -173,6 +177,9 @@ namespace uva {
                      * Allows to cancel the given translation job by telling all the translation tasks to stop.
                      */
                     void cancel() {
+                        //Note: no need to synchronize this method as the tasks list is
+                        //created in the constructor and deleted in the destructor.
+
                         //Iterate through the translation tasks and cancel them
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Cancel the translation task
@@ -188,12 +195,13 @@ namespace uva {
                      * @return true if all the job's tasks are finished, otherwise false
                      */
                     bool is_job_finished() {
-                        LOG_DEBUG1 << "Checking if the job is finished!" << END_LOG;
+                        LOG_DEBUG1 << "Checking if the job " << this << " is finished!" << END_LOG;
                         {
                             rec_scoped_lock guard_tasks(m_tasks_lock);
 
-                            LOG_DEBUG1 << "The number of tasks is for job " << this
-                                    << " is: " << m_tasks.size() << END_LOG;
+                            LOG_DEBUG1 << "The number of active tasks of job " << this
+                                    << " is: " << (m_tasks.size() - m_done_tasks_count)
+                                    << "/" << m_tasks.size() << END_LOG;
 
                             return (m_done_tasks_count == m_tasks.size());
                         }
@@ -206,6 +214,7 @@ namespace uva {
                      */
                     void notify_task_done(const trans_task_ptr& task) {
                         LOG_DEBUG1 << "The task " << task->get_task_id() << " is done!" << END_LOG;
+
                         {
                             rec_scoped_lock guard_tasks(m_tasks_lock);
 
@@ -216,19 +225,21 @@ namespace uva {
                             //Increment the finished tasks count
                             m_done_tasks_count++;
 
-                            LOG_DEBUG1 << "The finished tasks count of job " << this
-                                    << " is " << m_done_tasks_count << END_LOG;
+                            LOG_DEBUG1 << "The number of finished tasks of job " << this << " is "
+                                    << m_done_tasks_count << "/" << m_tasks.size() << END_LOG;
 
                             //If all the tasks are translated
                             if (is_job_finished()) {
-                                LOG_DEBUG << "The translation job " << this << " is finished, notifying!" << END_LOG;
-                                
+                                LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
+
                                 //Combine the task results into the job result
                                 combine_job_result();
 
                                 //Do the sanity check assert
                                 ASSERT_SANITY_THROW(!m_notify_job_done_func,
                                         "The translation job's result setting function is not set!");
+
+                                LOG_DEBUG << "Notifying the manager that the job " << this << " is finished!" << END_LOG;
 
                                 //Notify that this job id done
                                 m_notify_job_done_func(this);
@@ -241,22 +252,28 @@ namespace uva {
                      * come up with the job's result code and the translated text.
                      */
                     void combine_job_result() {
-                        //Declare the variable for couinting the number of CANCELED tasks
+                        LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
+
+                        //Declare the variable for counting the number of CANCELED tasks
                         uint32_t num_canceled = 0;
 
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
+                            //Get the task pointer for future use
+                            trans_task_ptr task = *it;
                             //Count the number of canceled tasks and leave text as an empty line then
-                            if ((*it)->get_code() == trans_job_code::RESULT_CANCELED) {
+                            if (task->get_code() == trans_job_code::RESULT_CANCELED) {
                                 num_canceled++;
-                                //Do not append any result, to save on network communication
-                            } else {
-                                //Append the next translated sentence,
-                                m_target_text += (*it)->get_target_text();
                             }
-                            //Add a new line
-                            m_target_text += "\n";
+                            //Append the next task result
+                            m_target_text += task->get_target_text() + "\n";
+                            LOG_DEBUG1 << "The target text of task: " << task->get_task_id() << " has been retrieved!" << END_LOG;
                         }
+
+                        LOG_DEBUG2 << "The translation job " << this << " result is:\n" << m_target_text << END_LOG;
+
+                        //Remove the last sentence new line symbol
+                        m_target_text.substr(0, m_target_text.size() - 1);
 
                         //Decide on the result code
                         if (num_canceled == 0) {
@@ -266,15 +283,13 @@ namespace uva {
                             if (num_canceled == m_done_tasks_count) {
                                 //All of the tasks have been canceled
                                 m_code = trans_job_code::RESULT_CANCELED;
-                                //Set the text to be empty, there is not point in sending new line symbols
-                                m_target_text = "";
                             } else {
                                 //Some of the sentences were translated but not all of them
                                 m_code = trans_job_code::RESULT_PARTIAL;
                             }
                         }
-                        
-                        LOG_DEBUG << "The translation job " << this << " result is:\n" << m_target_text << END_LOG;
+
+                        LOG_DEBUG << "The translation job " << this << " result is ready!" << END_LOG;
                     }
 
                 private:

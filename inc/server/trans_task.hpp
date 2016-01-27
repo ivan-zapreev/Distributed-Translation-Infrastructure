@@ -27,6 +27,8 @@
 #include <thread>
 
 #include "common/utils/logging/Logger.hpp"
+#include "common/messaging/trans_session_id.hpp"
+#include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_code.hpp"
 #include "trans_task_id.hpp"
 
@@ -53,7 +55,7 @@ namespace uva {
                 class trans_task {
                 public:
                     //Define the lock type to synchronize map operations
-                    typedef lock_guard<mutex> scoped_lock;
+                    typedef lock_guard<recursive_mutex> req_scoped_lock;
                     //Define the done job notifier function type
                     typedef function<void(trans_task_ptr) > done_task_notifier;
                     //Define the canceled job notifier function type
@@ -61,14 +63,21 @@ namespace uva {
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
+                     * @param session_id the session id of the task, is used for logging
+                     * @param job_id the job id of the task, is used for logging
                      * @param task_id the id of the translation task within the translation job
                      * @param source_sentence the sentence to be translated
                      */
-                    trans_task(const task_id_type task_id, const string & source_sentence, done_task_notifier notify_task_done_func)
-                    : m_is_stop(false), m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED),
-                    m_source_text(source_sentence), m_target_text(""), m_notify_task_done_func(notify_task_done_func) {
-                        LOG_DEBUG1 << "New task, id: " << m_task_id
-                                << ", text: " << m_source_text << END_LOG;
+                    trans_task(const session_id_type session_id, const job_id_type job_id, const task_id_type task_id,
+                            const string & source_sentence, done_task_notifier notify_task_done_func)
+                    : m_is_interrupted(false), m_is_finished(false), m_session_id(session_id), m_job_id(job_id),
+                    m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
+                    m_notify_task_done_func(notify_task_done_func) {
+                        LOG_DEBUG1 << "New task, id: " << m_task_id << ", text: " << m_source_text << END_LOG;
+                        //Assign the target text with the session info, this is needed for debugging purposes.
+                        m_target_text = string("/session id: ") + to_string(m_session_id) +
+                                string(", job id: ") + to_string(m_job_id) + string(", task id: ") +
+                                to_string(m_task_id) + string("/");
                     }
 
                     /**
@@ -91,15 +100,27 @@ namespace uva {
                      */
                     void cancel() {
                         LOG_DEBUG1 << "Canceling the task " << m_task_id << " translation ..." << END_LOG;
+
+                        //Synchronize to avoid canceling the job that is already finished.
                         {
-                            scoped_lock guard_cancel(m_cancel_lock);
+                            req_scoped_lock guard_end(m_end_lock);
 
-                            //Set the stopping flag to true
-                            m_is_stop = true;
+                            //If the translation is not done yet
+                            if (!m_is_finished) {
+                                LOG_DEBUG1 << "The task " << m_task_id << " is not finished yet, interrupt!" << END_LOG;
 
-                            //Call the cancel notifier
-                            m_notify_task_cancel_func(this);
+                                //Set the stopping flag to true
+                                m_is_interrupted = true;
+
+                                //Produce the task result, we call it here as may be this
+                                //task is not executed yet, then it would hand without
+                                //notifying the translation job that it is done.
+                                process_task_result();
+                            } else {
+                                LOG_DEBUG1 << "The task " << m_task_id << " is finished, no need to cancel!" << END_LOG;
+                            }
                         }
+
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is canceled!" << END_LOG;
                     }
 
@@ -107,30 +128,38 @@ namespace uva {
                      * Performs the translation for the given sentence
                      */
                     void translate() {
-                        //ToDo: Implement, implement the translation process
-                        string trans_result = string("--------/Task ") + to_string(m_task_id) + string(" translation/-------");
-
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
-                        //If the task is not canceled at this point yet then prevent it from being canceled in parallel
-                        {
-                            scoped_lock guard_cancel(m_cancel_lock);
-
-                            //Set the task is not canceled then set the result, otherwise set the canceled code.
-                            if (!m_is_stop) {
-                                m_code = trans_job_code::RESULT_OK;
-                                m_target_text = trans_result;
-                            } else {
-                                m_code = trans_job_code::RESULT_CANCELED;
+                        //ToDo: Implement, implement the translation process, the next loop is a temporary measure for testing
+                        if (m_source_text.size() != 0) {
+                            const uint32_t time_sec = rand() % m_source_text.size();
+                            for (uint32_t i = 0; i <= time_sec; ++i) {
+                                if (m_is_interrupted) break;
+                                this_thread::sleep_for(chrono::seconds(1));
                             }
                         }
 
-                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
-                        
-                        //Call the task-done notification function to report that we are finished!s
-                        m_notify_task_done_func(this);
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation part is over." << END_LOG;
 
-                        LOG_DEBUG1 << "The task " << m_task_id << " translation is finished!" << END_LOG;
+                        //Synchronize to avoid canceling the job that is already finished.
+                        {
+                            req_scoped_lock guard_end(m_end_lock);
+
+                            //If the translation is not interrupted yet
+                            if (!m_is_interrupted) {
+                                LOG_DEBUG1 << "The task " << m_task_id << " is not canceled yet, finishing!" << END_LOG;
+
+                                //Set the finished flag to true
+                                m_is_finished = true;
+
+                                //Produce the task result
+                                process_task_result();
+                            } else {
+                                LOG_DEBUG1 << "The task " << m_task_id << " is canceled, no need to finish!" << END_LOG;
+                            }
+                        }
+
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done!" << END_LOG;
                     }
 
                     /**
@@ -161,13 +190,49 @@ namespace uva {
                      * Allows to retrieve the sentence in the target language or an error message
                      * @return the sentence in the target language or an error message
                      */
-                    const string & get_target_text() const {
-                        return m_target_text;
+                    const string & get_target_text() {
+                        LOG_DEBUG1 << "Retrieving the target text of task: " << m_task_id << END_LOG;
+                        {
+                            req_scoped_lock guard_end(m_end_lock);
+
+                            return m_target_text;
+                        }
+                    }
+
+                protected:
+
+                    /**
+                     * Allows to process the translation task result in case of a successful and abnormal task termination.
+                     * This includes sending the notification to the translation job that the task is finished.
+                     * NOTE: This method is not thread safe!
+                     */
+                    void process_task_result() {
+                        //Set the task is not canceled then set the result, otherwise set the canceled code.
+                        if (!m_is_interrupted) {
+                            m_code = trans_job_code::RESULT_OK;
+                            m_target_text = string("<finished>: ") + m_target_text;
+                        } else {
+                            m_code = trans_job_code::RESULT_CANCELED;
+                            m_target_text = string("<canceled>: ") + m_target_text + " " + m_source_text;
+                        }
+
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
+
+                        //Call the task-done notification function to report that we are finished!s
+                        m_notify_task_done_func(this);
                     }
 
                 private:
                     //Stores the flag that indicates that we need to stop the translation algorithm
-                    atomic<bool> m_is_stop;
+                    atomic<bool> m_is_interrupted;
+                    //Stores the flag that indicates that the translation task is finished
+                    atomic<bool> m_is_finished;
+
+                    //Stores the translation task session id, is needed for logging
+                    const session_id_type m_session_id;
+
+                    //Stores the translation task job id, is needed for logging
+                    const job_id_type m_job_id;
 
                     //Stores the translation task id
                     const task_id_type m_task_id;
@@ -178,14 +243,17 @@ namespace uva {
                     //Stores the sentence to be translated
                     const string m_source_text;
 
-                    //Stores the translated sentence or an error message
-                    string m_target_text;
-
                     //Stores the task-done notifier function for this task
                     done_task_notifier m_notify_task_done_func;
 
-                    //Stores the synchronization mutex for synchronization on task cancelling
-                    mutex m_cancel_lock;
+                    //Stores the translated sentence or an error message
+                    string m_target_text;
+
+                    //Stores the synchronization mutex for synchronization on task canceling
+                    //Have a recursive miutex as the last task that will be finished will
+                    //also collect the translation job result into one, this shall recursively
+                    //enter the guarded area
+                    recursive_mutex m_end_lock;
 
                     //Stores the function to be called in case the tasks is cancelled
                     cancel_task_notifier m_notify_task_cancel_func;

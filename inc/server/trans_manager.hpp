@@ -77,7 +77,7 @@ namespace uva {
                     trans_manager(const size_t num_threads)
                     : m_job_pool(num_threads), m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        m_job_pool.set_job_result_setter(bind(&trans_manager::set_job_result, this, _1));
+                        m_job_pool.set_job_result_setter(bind(&trans_manager::notify_job_finished, this, _1));
                     }
 
                     /**
@@ -152,7 +152,7 @@ namespace uva {
                         //Instantiate a new translation job
                         trans_job_ptr job = new trans_job(request_ptr);
 
-                        LOG_DEBUG << "Got the finished job ptr: " << job << " to process." << END_LOG;
+                        LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
                         //Schedule a translation job request for the session id
                         m_job_pool.plan_new_job(job);
@@ -212,7 +212,7 @@ namespace uva {
                      * this will also send the response to the client.
                      * @param trans_job the pointer to the finished translation job 
                      */
-                    void set_job_result(trans_job_ptr trans_job) {
+                    void notify_job_finished(trans_job_ptr trans_job) {
                         //Declare and initialize session and job id for future use
                         const job_id_type job_id = trans_job->get_job_id();
                         const job_id_type session_id = trans_job->get_session_id();

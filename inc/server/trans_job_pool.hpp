@@ -75,7 +75,7 @@ namespace uva {
                     typedef unique_lock<mutex> unique_lock;
 
                     //Define the function type for the function used to set the translation job resut
-                    typedef function<void(trans_job_ptr trans_job) > job_result_setter;
+                    typedef function<void(trans_job_ptr trans_job) > finished_job_notifier;
 
                     //Define the job id to job and session id to jobs maps and iterators thereof
                     typedef std::map<job_id_type, trans_job_ptr> jobs_map_type;
@@ -107,6 +107,8 @@ namespace uva {
                      * Allows to stop all the running jobs and try to send all the responses and then exit
                      */
                     void stop() {
+                        LOG_DEBUG << "Request stopping the job pool!" << END_LOG;
+
                         //Make sure this does not interfere with any adding new job activity
                         {
                             scoped_lock guard_stopping(m_stopping_lock);
@@ -147,10 +149,10 @@ namespace uva {
 
                     /**
                      * Allows to set the response sender function for sending the replies to the client
-                     * @param set_job_result_func the setter functional to be set
+                     * @param notify_job_finished_func the setter functional to be set
                      */
-                    void set_job_result_setter(job_result_setter set_job_result_func) {
-                        m_set_job_result_func = set_job_result_func;
+                    void set_job_result_setter(finished_job_notifier notify_job_finished_func) {
+                        m_notify_job_finished_func = notify_job_finished_func;
                     }
 
                     /**
@@ -161,6 +163,8 @@ namespace uva {
                     void plan_new_job(trans_job_ptr trans_job) {
                         //Make sure that we are not being stopped before or during this method call
                         scoped_lock guard_stopping(m_stopping_lock);
+
+                        LOG_DEBUG << "Request adding a new job " << trans_job << " to the pool!" << END_LOG;
 
                         //Throw an exception if we are stopping
                         ASSERT_CONDITION_THROW(m_is_stopping,
@@ -180,7 +184,7 @@ namespace uva {
                     void cancel_jobs(const session_id_type session_id) {
                         rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
 
-                        LOG_DEBUG << "Canceling the jobs of session with id: " << session_id << END_LOG;
+                        LOG_DEBUG << "Canceling the jobs of session: " << session_id << END_LOG;
 
                         //Get the jobs jobs for the given session
                         if (m_sessions_map.find(session_id) != m_sessions_map.end()) {
@@ -189,9 +193,13 @@ namespace uva {
 
                             //Iterate through the available jobs and cancel them
                             for (jobs_map_iter_type iter = m_jobs_map.begin(); iter != m_jobs_map.end(); ++iter) {
+                                //Get the translation job for future use
+                                trans_job_ptr job = iter->second;
+                                LOG_DEBUG << "Canceling the translation job " << this << " with id " << job->get_job_id() << END_LOG;
                                 //Call the canceling method on the job
-                                iter->second->cancel();
+                                job->cancel();
                             }
+                            LOG_DEBUG << "Finished canceling the jobs of session: " << session_id << END_LOG;
                         } else {
                             LOG_DEBUG << "The session with id: " << session_id << " has no jobs!" << END_LOG;
                         }
@@ -205,11 +213,15 @@ namespace uva {
                     void cancel_all_jobs() {
                         rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
 
+                        LOG_DEBUG << "Start canceling all server jobs" << END_LOG;
+
                         //Cancel the scheduled translation tasks and stop the internal thread
                         for (sessions_map_iter_type iter = m_sessions_map.begin(); iter != m_sessions_map.end(); ++iter) {
                             //Call the canceling method on the task
                             cancel_jobs(iter->first);
                         }
+
+                        LOG_DEBUG << "Finished canceling all server jobs" << END_LOG;
                     }
 
                     /**
@@ -258,6 +270,8 @@ namespace uva {
                         const session_id_type session_id = trans_job->get_session_id();
                         const job_id_type job_id = trans_job->get_job_id();
 
+                        LOG_DEBUG << "Requested the job " << trans_job << " deletion from the administration" << END_LOG;
+
                         //Remove the job from the pool's administration 
                         {
                             rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
@@ -273,12 +287,14 @@ namespace uva {
 
                             //Decrement the jobs count 
                             m_job_count--;
-                        }
 
-                        LOG_DEBUG << "Delete the job " << job_id << " object instance" << END_LOG;
+                            LOG_DEBUG << "Deleted the job " << trans_job << " from the administration, the jobs count is " << m_job_count << END_LOG;
+                        }
 
                         //Delete the job as it is not needed any more
                         delete trans_job;
+
+                        LOG_DEBUG << "Deleted the job " << job_id << " object instance" << END_LOG;
                     }
 
                     /**
@@ -286,13 +302,26 @@ namespace uva {
                      * @return true if the finished jobs processing loop has to stop, otherwise false
                      */
                     bool is_stop_running() {
-                        //Make sure that we are not being stopped before or during this method call
-                        scoped_lock guard_stopping(m_stopping_lock);
-                        //Make sure not one adds/removes jobs meanwhile
-                        rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                        LOG_DEBUG << "is_stop_running check requested" << END_LOG;
+                        {
+                            //Make sure that we are not being stopped before or during this method call
+                            scoped_lock guard_stopping(m_stopping_lock);
 
-                        //We shall stop if we are being asked to stop and there are no jobs left
-                        return (m_is_stopping && m_job_count == 0);
+                            LOG_DEBUG << "m_stopping_lock lock is passed" << END_LOG;
+                            {
+                                //Make sure not one adds/removes jobs meanwhile
+                                rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+
+                                LOG_DEBUG << "m_all_jobs_lock lock is passed" << END_LOG;
+
+                                //We shall stop if we are being asked to stop and there are no jobs left
+                                const bool result = (m_is_stopping && m_job_count == 0);
+
+                                LOG_DEBUG << "is_stop_running = " << to_string(result) << END_LOG;
+
+                                return result;
+                            }
+                        }
                     }
 
                     /**
@@ -315,7 +344,7 @@ namespace uva {
                         {
                             unique_lock guard_finished_jobs(m_finished_jobs_lock);
 
-                            LOG_DEBUG << "The job with ptr: " << trans_job << " is finished!" << END_LOG;
+                            LOG_DEBUG << "The job " << trans_job << " is finished!" << END_LOG;
 
                             //Add the job to the finished jobs list
                             m_done_jobs_list.push_back(trans_job);
@@ -352,11 +381,11 @@ namespace uva {
                                         " session id is " << trans_job->get_session_id() << END_LOG;
 
                                 //Do the sanity check assert
-                                ASSERT_SANITY_THROW(!m_set_job_result_func,
+                                ASSERT_SANITY_THROW(!m_notify_job_finished_func,
                                         "The job pool's result setting function is not set!");
 
                                 //Send the job response
-                                m_set_job_result_func(trans_job);
+                                m_notify_job_finished_func(trans_job);
 
                                 LOG_DEBUG << "Erasing the job " << trans_job << " from the done jobs list" << END_LOG;
 
@@ -370,6 +399,8 @@ namespace uva {
 
                                 LOG_DEBUG << "The job " << trans_job << " is processed and deleted!" << END_LOG;
                             }
+
+                            LOG_DEBUG << "Finished processing finished jobs, back to sleep or stop!" << END_LOG;
                         }
                     }
 
@@ -384,7 +415,7 @@ namespace uva {
                     sessions_map_type m_sessions_map;
 
                     //Stores the reply sender functional
-                    job_result_setter m_set_job_result_func;
+                    finished_job_notifier m_notify_job_finished_func;
 
                     //Stores the synchronization mutex for administering stopping
                     mutex m_stopping_lock;

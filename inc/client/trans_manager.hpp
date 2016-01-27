@@ -190,7 +190,7 @@ namespace uva {
                         m_client.disconnect();
 
                         LOG_INFO << "The translation has finished" << END_LOG;
-                        
+
                         //Write the translations we have so far into the file
                         write_result_to_file();
                     };
@@ -236,15 +236,12 @@ namespace uva {
                         ofstream target_file;
                         target_file.open(m_params.m_target_file);
                         //Declare the variable to store the line cursor
-                        uint32_t line_cursor = 0;
+                        uint32_t line_cursor = 1;
 
                         //Go through the translation job data and write it into the files
                         for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
                             //Get the translation job data
                             const trans_job_ptr job = *it;
-
-                            //Increment the line cursor
-                            ++line_cursor;
 
                             //Compute the first and last sentence numbers for the case the job is not completed
                             const uint32_t fis = line_cursor;
@@ -270,6 +267,9 @@ namespace uva {
                                             << "] are not translated, status: '"
                                             << status << "'-------->\n";
                             }
+
+                            //Set the line cursor to the next line
+                            line_cursor = lis + 1;
                         }
 
                         //Close the report file
