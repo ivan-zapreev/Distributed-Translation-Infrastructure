@@ -48,10 +48,6 @@ namespace uva {
                         RESULT_PARTIAL_STR
                     };
 
-                    /**
-                     * Allows to get the job code string for reporting
-                     * @return the job code string
-                     */
                     const char * const trans_job_code::str() const {
                         if (m_code < values::size) {
                             return m_code_str[m_code];
@@ -60,12 +56,6 @@ namespace uva {
                         }
                     }
 
-                    /**
-                     * The stream output operator for the given translation job code instance
-                     * @param os the output stream
-                     * @param code the code to be output
-                     * @return the output stream
-                     */
                     ostream& operator<<(ostream& os, const trans_job_code& code) {
                         os << code.str();
                         return os;

@@ -23,9 +23,15 @@
  * Created on January 27, 2016, 9:03 AM
  */
 
+#include <string>
+#include <iostream>
+
+#include "common/utils/Exceptions.hpp"
 #include "common/utils/logging/Logger.hpp"
 
+using namespace std;
 using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
 
 #ifndef TRANS_JOB_STATUS_HPP
 #define TRANS_JOB_STATUS_HPP
@@ -34,20 +40,18 @@ namespace uva {
     namespace smt {
         namespace decoding {
             namespace client {
-                namespace status {
 
-                    //Define the status strings
-#define STATUS_UNKNOWN_STR "unknown"
-#define STATUS_UNDEFINED_STR "undefined"
-#define STATUS_REQ_INITIALIZED_STR "not-sent"
-#define STATUS_REQ_SENT_GOOD_STR "not-replied"
-#define STATUS_REQ_SENT_FAIL_STR "send-failed"
-#define STATUS_RES_RECEIVED_STR "replied"
+                /**
+                 * This class represents the translation job status. It is to be used on the client.
+                 * It is needed to trace the client-side translation job status.
+                 */
+                class trans_job_status {
+                public:
 
                     /**
                      * Stores the possible status values of the client-side translation job
                      */
-                    enum trans_job_status {
+                    enum values {
                         STATUS_UNDEFINED = 0, //The job has been created but not initialized, i.e. undefined
                         STATUS_REQ_INITIALIZED = STATUS_UNDEFINED + 1, //Initialized with the translation request
                         STATUS_REQ_SENT_GOOD = STATUS_REQ_INITIALIZED + 1, //The translation request is sent
@@ -56,29 +60,91 @@ namespace uva {
                         size = STATUS_RES_RECEIVED + 1
                     };
 
-                    //Stores the status to string mappings
-                    static const char * const m_status_str[trans_job_status::size] = {
-                        STATUS_UNDEFINED_STR,
-                        STATUS_REQ_INITIALIZED_STR,
-                        STATUS_REQ_SENT_GOOD_STR,
-                        STATUS_REQ_SENT_FAIL_STR,
-                        STATUS_RES_RECEIVED_STR
-                    };
+                    /**
+                     * The basic constructor that allows to initialize the value with the status
+                     * @param status the status value to initialize with
+                     */
+                    trans_job_status(const values status) : m_status(status) {
+                    }
+
+                    /**
+                     * The basic constructor that allows to initialize the value from an integer
+                     * @param status_val the status value to initialize with
+                     */
+                    trans_job_status(const int32_t status_val) {
+                        ASSERT_CONDITION_THROW((status_val < 0 || status_val >= values::size),
+                                string("Improper status value: ") + to_string(status_val));
+                    }
+
+                    /**
+                     * The basic constructor that creates an undefined value
+                     */
+                    trans_job_status() : trans_job_status(STATUS_UNDEFINED) {
+                    }
+
+                    /**
+                     * Overloading the assignment operator for the status
+                     * @param status the status to set
+                     */
+                    void operator=(const values &status) {
+                        m_status = status;
+                    }
+
+                    /**
+                     * Overloading the equality operator for the status
+                     * @param status the status to check equality with
+                     */
+                    bool operator==(const values &status) const {
+                        return (m_status == status);
+                    }
+
+                    /**
+                     * Overloading the comparison operator for the status
+                     * @param status the status to compare with
+                     */
+                    bool operator<(const values &status) const {
+                        return (m_status < status);
+                    }
+
+                    /**
+                     * The operator allowing to convert the value to string
+                     * @return the string representation of the code
+                     */
+                    operator string() const {
+                        return str();
+                    }
+
+                    /**
+                     * The operator allowing to convert the value to an integer
+                     * @return the the integer value
+                     */
+                    operator int() const {
+                        return m_status;
+                    }
 
                     /**
                      * Allows to get the job status string for reporting
                      * @return the job status string
                      */
-                    static const char * const get_status_str(trans_job_status status) {
-                        if (status < trans_job_status::size) {
-                            return m_status_str[status];
-                        } else {
-                            LOG_ERROR << "The job status has not string: " << status << END_LOG;
-                            return STATUS_UNKNOWN_STR;
-                        }
-                    }
+                    const char * const str() const;
 
-                }
+                private:
+                    //Stores the status value
+                    values m_status;
+
+                    //Stores the status to string mappings
+                    static const char * const m_status_str[trans_job_status::size];
+
+                };
+
+                /**
+                 * The stream output operator for the given translation job status instance
+                 * @param os the output stream
+                 * @param status the status to be output
+                 * @return the output stream
+                 */
+                ostream& operator<<(ostream& os, const trans_job_status& status);
+
             }
         }
     }

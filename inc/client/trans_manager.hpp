@@ -47,7 +47,6 @@
 #include "common/utils//file/CStyleFileReader.hpp"
 
 using namespace std;
-using namespace uva::smt::decoding::client::status;
 
 #ifndef TRANS_MANAGER_HPP
 #define TRANS_MANAGER_HPP
@@ -210,7 +209,7 @@ namespace uva {
                     void write_received_job_result(const uint32_t fis, const uint32_t lis,
                             const trans_job_ptr job, ofstream & target_file) {
                         //The job response is received but it can still be fully or partially canceled or be an error
-                        const trans_job_code code = job->m_response->get_code();
+                        const trans_job_code & code = job->m_response->get_code();
                         switch( code ){
                             case trans_job_code::RESULT_OK : 
                             case trans_job_code::RESULT_PARTIAL : 
@@ -253,7 +252,8 @@ namespace uva {
                             const uint32_t lis = fis + job->m_num_sentences - 1;
 
                             //Check on the translation job status
-                            switch (job->m_status) {
+                            const trans_job_status & status = job->m_status;
+                            switch (status) {
                                 case trans_job_status::STATUS_RES_RECEIVED:
                                     write_received_job_result(fis, lis, job, target_file);
                                     break;
@@ -263,14 +263,13 @@ namespace uva {
                                 case trans_job_status::STATUS_UNDEFINED:
                                 default:
                                     //Report a warning
-                                    const char * const status_str = get_status_str(job->m_status);
                                     LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "
-                                            << "translated, job status: '" << status_str << "'" << END_LOG;
+                                            << "translated, job status: '" << status << "'" << END_LOG;
 
                                     //Write data to file
                                     target_file << "<--------- Error: Sentences [" << fis << ":" << lis
                                             << "] are not translated, status: '"
-                                            << status_str << "'-------->";
+                                            << status << "'-------->";
                             }
                         }
 

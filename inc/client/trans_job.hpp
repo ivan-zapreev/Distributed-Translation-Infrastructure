@@ -30,7 +30,6 @@
 
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
-using namespace uva::smt::decoding::client::status;
 
 #ifndef TRANS_JOB_HPP
 #define TRANS_JOB_HPP

@@ -49,6 +49,7 @@ set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
     src/common/utils/logging/Logger.cpp
     src/common/messaging/trans_job_code.cpp
+    src/client/trans_job_status.cpp
 )
 #Define the server executable
 add_executable(bpbd-client ${BPBD_CLIENT_SOURCES})

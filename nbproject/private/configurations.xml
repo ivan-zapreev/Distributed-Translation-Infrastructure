@@ -667,6 +667,7 @@
     <df root="src" name="2">
       <df name="client">
         <in>bpbd_client.cpp</in>
+        <in>trans_job_status.cpp</in>
       </df>
       <df name="common">
         <df name="messaging">

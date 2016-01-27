@@ -43,7 +43,8 @@ namespace uva {
                 namespace messaging {
 
                     /**
-                     * This class represents the translation job result code
+                     * This class represents the translation job result code. This class is used on client and server side.
+                     * It represents the server-side status of a translation job and a translation taks.
                      */
                     class trans_job_code {
                     public:
@@ -66,14 +67,14 @@ namespace uva {
                          * The basic constructor that allows to initialize the value with the code
                          * @param code the code value to initialize with
                          */
-                        trans_job_code(values code) : m_code(code) {
+                        trans_job_code(const values code) : m_code(code) {
                         }
 
                         /**
                          * The basic constructor that allows to initialize the value from an integer
-                         * @param code the code value to initialize with
+                         * @param code_val the code value to initialize with
                          */
-                        trans_job_code(int32_t code_val) {
+                        trans_job_code(const int32_t code_val) {
                             ASSERT_CONDITION_THROW((code_val < 0 || code_val >= values::size),
                                     string("Improper code value: ") + to_string(code_val));
                         }

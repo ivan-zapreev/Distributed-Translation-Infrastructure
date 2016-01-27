@@ -30,6 +30,7 @@
     <df root="src" name="2">
       <df name="client">
         <in>bpbd_client.cpp</in>
+        <in>trans_job_status.cpp</in>
       </df>
       <df name="common">
         <df name="messaging">
@@ -170,6 +171,8 @@
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
