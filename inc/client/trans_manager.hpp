@@ -213,7 +213,8 @@ namespace uva {
                         switch( code ){
                             case trans_job_code::RESULT_OK : 
                             case trans_job_code::RESULT_PARTIAL : 
-                                //ToDo: If the result is canceled or partial then just put the text into the file
+                                //If the result is ok or partial then just put the text into the file
+                                target_file << job->m_response->get_text();
                                 break;
                             case trans_job_code::RESULT_ERROR : 
                             case trans_job_code::RESULT_CANCELED : 
@@ -225,7 +226,7 @@ namespace uva {
                                     //Write data to file
                                     target_file << "<--------- Error: Sentences [" << fis << ":" << lis
                                             << "] are not translated, status: '"
-                                            << code << "'-------->";
+                                            << code << "'-------->\n";
                         }
                     }
 
@@ -269,7 +270,7 @@ namespace uva {
                                     //Write data to file
                                     target_file << "<--------- Error: Sentences [" << fis << ":" << lis
                                             << "] are not translated, status: '"
-                                            << status << "'-------->";
+                                            << status << "'-------->\n";
                             }
                         }
 
