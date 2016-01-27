@@ -81,6 +81,7 @@ namespace uva {
                         trans_job_request(const job_id_type job_id, const string & source_lang, const string & text, const string & target_lang)
                         : m_session_id(session_id::UNDEFINED_SESSION_ID), m_job_id(job_id),
                         m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                            LOG_DEBUG << "Created a translation job request with job id: " << m_job_id << " and text:\n" << m_text << END_LOG;
                         }
 
                         /**

@@ -367,7 +367,7 @@ namespace uva {
 
                             LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
 
-                            while (m_source_file.get_first_line(line) && (num_read < num_to_sent)) {
+                            while ((num_read < num_to_sent) && m_source_file.get_first_line(line)) {
                                 LOG_DEBUG2 << "Read line: '" << line.str() << "'" << END_LOG;
 
                                 //Append the new line to the text to be sent

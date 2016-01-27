@@ -130,6 +130,9 @@ namespace uva {
 
                         LOG_DEBUG << "All the existing jobs are canceled!" << END_LOG;
 
+                        //Wake up the jobs thread for the case there is no jobs being processed
+                        wake_up_jobs_thread();
+
                         //Wait until the job processing thread finishes
                         m_jobs_thread.join();
 
@@ -319,6 +322,16 @@ namespace uva {
                                 return result;
                             }
                         }
+                    }
+
+                    /**
+                     * Allows to wake up the jobs thread.
+                     */
+                    void wake_up_jobs_thread() {
+                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
+
+                        //Notify the thread that there is a finished job to be processed
+                        m_is_job_done.notify_one();
                     }
 
                     /**
