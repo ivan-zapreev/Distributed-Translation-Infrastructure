@@ -30,8 +30,8 @@
 #include <functional> // std::function 
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/file/MemoryMappedFileReader.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/file/memory_mapped_file_reader.hpp"
 
 #include "server/lm/mgrams/ModelMGram.hpp"
 

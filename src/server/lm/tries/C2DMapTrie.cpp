@@ -28,8 +28,8 @@
 #include <sstream>   //std::stringstream
 #include <algorithm> //std::fill
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/StringUtils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"

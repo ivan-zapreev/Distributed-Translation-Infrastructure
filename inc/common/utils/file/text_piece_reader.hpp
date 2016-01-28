@@ -31,9 +31,9 @@
 #include <algorithm>    // std::min
 #include <string>
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/StringUtils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/string_utils.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;

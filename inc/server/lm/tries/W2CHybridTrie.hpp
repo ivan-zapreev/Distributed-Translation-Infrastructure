@@ -29,7 +29,7 @@
 #include <string>   // std::string
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #include "LayeredTrieBase.hpp"
 

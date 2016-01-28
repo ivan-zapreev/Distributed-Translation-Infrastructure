@@ -27,10 +27,10 @@
 
 #include "tclap/CmdLine.h"
 
-#include "common.hpp"
+#include "main.hpp"
 #include "client/client_config.hpp"
 #include "client/trans_manager.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace std;
 using namespace TCLAP;

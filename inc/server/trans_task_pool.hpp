@@ -5,18 +5,17 @@
  * Created on January 21, 2016, 5:00 PM
  */
 
-#include <vector>
-#include <deque>
-#include <mutex>
-#include <thread>
-#include <condition_variable>
-
-#include "trans_task.hpp"
-
-using namespace std;
-
 #ifndef TRANS_TASK_POOL_HPP
 #define TRANS_TASK_POOL_HPP
+
+#include <vector>
+#include <deque>
+
+#include "trans_task.hpp"
+#include "common/utils/threads.hpp"
+
+using namespace std;
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
@@ -30,8 +29,6 @@ namespace uva {
                  */
                 class trans_task_pool {
                 public:
-                    //Define the unique lock needed for wait/notify
-                    typedef unique_lock<mutex> unique_lock;
 
                     //Define the tasks queue type and its iterator
                     typedef deque<trans_task_ptr> tasks_queue_type;

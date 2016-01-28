@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
+    </df>
+    <df root="ext" name="3">
     </df>
     <df root="inc" name="1">
       <df name="client">
@@ -9,13 +11,6 @@
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
         <in>trans_manager.hpp</in>
-      </df>
-      <df name="common">
-        <df name="messaging">
-          <in>trans_job_code.hpp</in>
-          <in>trans_job_id.hpp</in>
-          <in>trans_session_id.hpp</in>
-        </df>
       </df>
       <df name="server">
         <in>decoder_stub.hpp</in>
@@ -27,6 +22,8 @@
         <in>trans_task_pool_worker.hpp</in>
       </df>
     </df>
+    <df root="inc" name="4">
+    </df>
     <df root="src" name="2">
       <df name="client">
         <in>bpbd_client.cpp</in>
@@ -37,12 +34,6 @@
           <in>trans_job_code.cpp</in>
         </df>
         <df name="utils">
-          <df name="logging">
-            <in>Logger.cpp</in>
-          </df>
-          <df name="monitore">
-            <in>StatisticsMonitor.cpp</in>
-          </df>
           <in>xxhash.c</in>
         </df>
       </df>
@@ -74,6 +65,15 @@
         <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
+    <df root="src" name="5">
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>build/Makefile</itemPath>
+    </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
@@ -84,6 +84,9 @@
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -123,10 +126,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="inc/client/client_config.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -136,20 +135,7 @@
       </item>
       <item path="inc/client/trans_manager.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/common/messaging/trans_job_code.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_job_id.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_session_id.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="inc/main.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/decoder_stub.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -179,19 +165,15 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="src/common/utils/logging/Logger.cpp"
+      <item path="src/common/utils/logging/logger.cpp"
             ex="false"
             tool="1"
-            flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
+            flavor2="0">
       </item>
-      <item path="src/common/utils/monitore/StatisticsMonitor.cpp"
+      <item path="src/common/utils/monitore/statistics_monitor.cpp"
             ex="false"
             tool="1"
-            flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
+            flavor2="0">
       </item>
       <item path="src/common/utils/xxhash.c" ex="false" tool="0" flavor2="0">
       </item>

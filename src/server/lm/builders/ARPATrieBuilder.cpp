@@ -27,13 +27,13 @@
 
 #include "server/lm/builders/ARPATrieBuilder.hpp"
 
-#include "common/utils/file/CStyleFileReader.hpp"
-#include "common/utils/file/FileStreamReader.hpp"
-#include "common/utils/file/MemoryMappedFileReader.hpp"
+#include "common/utils/file/cstyle_file_reader.hpp"
+#include "common/utils/file/file_stream_reader.hpp"
+#include "common/utils/file/memory_mapped_file_reader.hpp"
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/StringUtils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
 #include "server/lm/builders/ARPAGramBuilder.hpp"
 #include "server/lm/builders/ARPAGramBuilderFactory.hpp"
 

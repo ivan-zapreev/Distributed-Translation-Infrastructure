@@ -33,8 +33,8 @@
 #include <limits>  // std::numeric_limits
 #include <cstring> // std::memchr
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;

@@ -23,14 +23,16 @@
  * Created on January 19, 2016, 4:02 PM
  */
 
+#ifndef SESSION_MANAGER_HPP
+#define SESSION_MANAGER_HPP
+
 #include <map>
-#include <mutex>
-#include <functional>
 
 #include <websocketpp/server.hpp>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/threads.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
@@ -42,10 +44,8 @@ using namespace std;
 using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::threads;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef SESSION_MANAGER_HPP
-#define SESSION_MANAGER_HPP
 
 namespace uva {
     namespace smt {
@@ -58,7 +58,6 @@ namespace uva {
                  */
                 class trans_manager {
                 public:
-                    typedef lock_guard<mutex> scoped_lock;
 
                     //Declare the response setting function for the translation job.
                     typedef function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
@@ -103,7 +102,7 @@ namespace uva {
                      */
                     void open_session(websocketpp::connection_hdl hdl) {
                         //Use the scoped mutex lock to avoid race conditions
-                        scoped_lock guard(m_lock);
+                        scoped_guard guard(m_lock);
 
                         //Get the current value stored under the connection handler
                         session_id_type & session_id = m_sessions[hdl];
@@ -134,7 +133,7 @@ namespace uva {
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
-                            scoped_lock guard(m_lock);
+                            scoped_guard guard(m_lock);
 
                             //Get what ever it is stored
                             session_id = m_sessions[hdl];
@@ -172,7 +171,7 @@ namespace uva {
 
                         //Use the scoped mutex lock to avoid race conditions
                         {
-                            scoped_lock guard(m_lock);
+                            scoped_guard guard(m_lock);
 
                             //Get the session id from the handler
                             session_id = m_sessions[hdl];
@@ -234,7 +233,7 @@ namespace uva {
                         //Retrieve the connection handler based on the session id
                         {
                             //Use the scoped mutex lock to avoid race conditions
-                            scoped_lock guard(m_lock);
+                            scoped_guard guard(m_lock);
 
                             //Get the connection handler for the session
                             hdl = m_handlers[session_id];

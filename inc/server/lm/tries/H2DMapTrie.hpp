@@ -28,17 +28,17 @@
 #include <string>       // std::string
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/exceptions.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 #include "server/lm/mgrams/ModelMGram.hpp"
 #include "server/lm/mgrams/ByteMGramId.hpp"
 
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 
-#include "common/utils/containers/ArrayUtils.hpp"
-#include "common/utils/containers/FixedSizeHashMap.hpp"
+#include "common/utils/containers/array_utils.hpp"
+#include "common/utils/containers/fixed_size_hashmap.hpp"
 
 #include "GenericTrieBase.hpp"
 

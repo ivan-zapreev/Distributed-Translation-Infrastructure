@@ -23,12 +23,14 @@
  * Created on January 21, 2016, 4:08 PM
  */
 
+#ifndef TRANS_JOB_HPP
+#define TRANS_JOB_HPP
+
 #include <string>
 #include <vector>
-#include <mutex>
-#include <functional>
 
 #include "trans_task.hpp"
+#include "common/utils/threads.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
@@ -38,9 +40,7 @@
 using namespace std;
 using namespace std::placeholders;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef TRANS_JOB_HPP
-#define TRANS_JOB_HPP
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
@@ -60,8 +60,6 @@ namespace uva {
                  */
                 class trans_job {
                 public:
-                    //Define the lock type to synchronize map operations
-                    typedef lock_guard<recursive_mutex> rec_scoped_lock;
 
                     //Define the function type for the function used to set the translation job resut
                     typedef function<void(trans_job_ptr trans_job) > done_job_notifier;
@@ -197,7 +195,7 @@ namespace uva {
                     bool is_job_finished() {
                         LOG_DEBUG1 << "Checking if the job " << this << " is finished!" << END_LOG;
                         {
-                            rec_scoped_lock guard_tasks(m_tasks_lock);
+                            recursive_guard guard_tasks(m_tasks_lock);
 
                             LOG_DEBUG1 << "The number of active tasks of job " << this
                                     << " is: " << (m_tasks.size() - m_done_tasks_count)
@@ -216,7 +214,7 @@ namespace uva {
                         LOG_DEBUG1 << "The task " << task->get_task_id() << " is done!" << END_LOG;
 
                         {
-                            rec_scoped_lock guard_tasks(m_tasks_lock);
+                            recursive_guard guard_tasks(m_tasks_lock);
 
                             //ToDo: Do a strict check on the tasks reporting to be finished,
                             //these should be the onsed from the m_tasks list and they must

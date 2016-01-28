@@ -29,7 +29,7 @@
 #include <inttypes.h>
 #include <string>
 
-#include "common/utils/containers/DynamicMemoryArrays.hpp"
+#include "common/utils/containers/dynamic_memory_arrays.hpp"
 using namespace uva::utils::containers;
 
 namespace uva {

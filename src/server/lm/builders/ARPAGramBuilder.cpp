@@ -29,9 +29,9 @@
 #include <stdexcept> // std::invalid_argument
 #include <algorithm> // std::min
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/StringUtils.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/exceptions.hpp"
 
 using std::invalid_argument;
 using namespace uva::utils::logging;

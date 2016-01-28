@@ -23,21 +23,21 @@
  * Created on August 27, 2015, 20:17 PM
  */
 
+#ifndef DYNAMICMEMORYARRAYS_HPP
+#define	DYNAMICMEMORYARRAYS_HPP
+
 #include <functional>   // std::function 
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/containers/ArrayUtils.hpp"
-#include "common/utils/MathUtils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/containers/array_utils.hpp"
+#include "common/utils/math_utils.hpp"
 
 using namespace std;
 using namespace uva::utils::containers::utils;
 using namespace uva::utils::math::bits;
-
-#ifndef DYNAMICMEMORYARRAYS_HPP
-#define	DYNAMICMEMORYARRAYS_HPP
 
 namespace uva {
     namespace utils {

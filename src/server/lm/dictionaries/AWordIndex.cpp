@@ -27,8 +27,8 @@
 
 #include "server/lm/TrieConstants.hpp"
 #include "server/lm/dictionaries/AWordIndex.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::file;

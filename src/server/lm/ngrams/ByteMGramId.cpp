@@ -29,13 +29,13 @@
 
 #include "server/lm/TrieConstants.hpp"
 #include "server/lm/TrieConfigs.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
-#include "common/utils/HashingUtils.hpp"
-#include "common/utils/MathUtils.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/math_utils.hpp"
 
 using namespace uva::utils::math::log2;
 using namespace uva::utils::math::bits;

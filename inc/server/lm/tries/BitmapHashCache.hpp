@@ -29,12 +29,12 @@
 #include <cstdint>      //  std::uint8_t std::uint32_t 
 #include <bitset>       //  std::bitset
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #include "server/lm/mgrams/ModelMGram.hpp"
-#include "common/utils/HashingUtils.hpp"
-#include "common/utils/MathUtils.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/math_utils.hpp"
 
 using namespace std;
 

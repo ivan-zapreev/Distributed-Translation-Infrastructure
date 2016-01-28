@@ -32,8 +32,8 @@
 
 #include "server/lm/TrieConstants.hpp"
 #include "server/lm/builders/ARPAGramBuilder.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
 using namespace std;
 using namespace uva::utils::exceptions;

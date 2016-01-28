@@ -30,16 +30,16 @@
 #include <cstring>  // std::strncpy std::strncmp
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
-#include "common/utils/MathUtils.hpp"
+#include "common/utils/math_utils.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 
-#include "common/utils/containers/ArrayUtils.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/containers/array_utils.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::math;

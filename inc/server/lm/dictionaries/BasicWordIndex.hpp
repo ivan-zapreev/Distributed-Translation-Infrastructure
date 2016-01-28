@@ -32,13 +32,13 @@
 #include "AWordIndex.hpp"
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
-#include "common/utils/file/TextPieceReader.hpp"
-#include "common/utils/containers/GreedyMemoryAllocator.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
+#include "common/utils/containers/greedy_memory_allocator.hpp"
 
-#include "common/utils/HashingUtils.hpp"
+#include "common/utils/hashing_utils.hpp"
 
 using namespace std;
 using namespace uva::utils::file;

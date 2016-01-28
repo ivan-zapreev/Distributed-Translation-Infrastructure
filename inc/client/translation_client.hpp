@@ -29,17 +29,14 @@
 #include <cstdlib>
 #include <string>
 #include <unordered_map>
-#include <mutex>
-#include <thread>
-#include <condition_variable>
-#include <functional>
 
 #define ASIO_STANDALONE
 #include <websocketpp/config/asio_no_tls_client.hpp>
 #include <websocketpp/client.hpp>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/threads.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
@@ -47,6 +44,7 @@ using namespace std;
 using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::threads;
 using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::log::alevel;
@@ -63,7 +61,6 @@ namespace uva {
                 class translation_client {
                 public:
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
-                    typedef lock_guard<mutex> scoped_lock;
 
                     //Define the function type for the function used to set the translation job result
                     typedef function<void(const trans_job_response_ptr trans_job_resp) > response_setter;
@@ -194,7 +191,7 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_open(websocketpp::connection_hdl hdl) {
-                        scoped_lock guard(m_lock_con);
+                        scoped_guard guard(m_lock_con);
 
                         LOG_INFO << "Connection opened!" << END_LOG;
 
@@ -206,7 +203,7 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_close(websocketpp::connection_hdl hdl) {
-                        scoped_lock guard(m_lock_con);
+                        scoped_guard guard(m_lock_con);
 
                         LOG_INFO << "Connection closed!" << END_LOG;
 
@@ -223,7 +220,7 @@ namespace uva {
                      * @param the connection handler
                      */
                     void on_fail(websocketpp::connection_hdl hdl) {
-                        scoped_lock guard(m_lock_con);
+                        scoped_guard guard(m_lock_con);
 
                         LOG_INFO << "Connection failed!" << END_LOG;
 
@@ -257,7 +254,7 @@ namespace uva {
                         while (1) {
                             //Check the connection status
                             {
-                                scoped_lock guard(m_lock_con);
+                                scoped_guard guard(m_lock_con);
                                 is_connecting = !m_opened && !m_closed;
                             }
 

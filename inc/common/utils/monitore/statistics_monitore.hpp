@@ -26,7 +26,7 @@
 #ifndef STATISTICSMONITOR_HPP
 #define	STATISTICSMONITOR_HPP
 
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace uva::utils::exceptions;
 

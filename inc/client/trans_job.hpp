@@ -23,16 +23,16 @@
  * Created on January 26, 2016, 5:24 PM
  */
 
+#ifndef TRANS_JOB_HPP
+#define TRANS_JOB_HPP
+
 #include "trans_job_status.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/exceptions.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_response.hpp"
 
 using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef TRANS_JOB_HPP
-#define TRANS_JOB_HPP
 
 namespace uva {
     namespace smt {

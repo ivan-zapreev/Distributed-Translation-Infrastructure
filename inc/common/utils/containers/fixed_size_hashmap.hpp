@@ -23,19 +23,19 @@
  * Created on December 2, 2015, 12:17 PM
  */
 
+#ifndef FIXEDSIZEHASHMAP_HPP
+#define	FIXEDSIZEHASHMAP_HPP
+
 #include <functional>   // std::function 
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/containers/ArrayUtils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/containers/array_utils.hpp"
 
 using namespace std;
 using namespace uva::utils::containers::utils;
-
-#ifndef FIXEDSIZEHASHMAP_HPP
-#define	FIXEDSIZEHASHMAP_HPP
 
 namespace uva {
     namespace utils {

@@ -32,9 +32,9 @@
 #include <map>              // std::map
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "server/lm/dictionaries/AWordIndex.hpp"
-#include "common/utils/containers/GreedyMemoryAllocator.hpp"
+#include "common/utils/containers/greedy_memory_allocator.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;

@@ -29,12 +29,12 @@
 #include <string>   // std::string
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 #include "AWordIndex.hpp"
-#include "common/utils/HashingUtils.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::file;

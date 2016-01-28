@@ -23,8 +23,8 @@ set(LM_QUERY_SOURCES
     src/server/lm/dictionaries/AWordIndex.cpp
     src/server/lm/builders/ARPATrieBuilder.cpp
     src/server/lm/builders/ARPAGramBuilder.cpp
-    src/common/utils/monitore/StatisticsMonitor.cpp 
-    src/common/utils/logging/Logger.cpp
+    src/common/utils/monitore/statistics_monitor.cpp 
+    src/common/utils/logging/logger.cpp
     src/common/utils/xxhash.c
 )
 #Define the server executable
@@ -34,7 +34,7 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
-    src/common/utils/logging/Logger.cpp
+    src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp
@@ -47,7 +47,7 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 #Manually add the source files if needed
 set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
-    src/common/utils/logging/Logger.cpp
+    src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
     src/client/trans_job_status.cpp
 )

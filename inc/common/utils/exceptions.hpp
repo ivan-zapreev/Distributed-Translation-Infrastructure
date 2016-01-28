@@ -28,7 +28,7 @@
 #include <exception>    // std::exception
 #include <string>       // std::string
 
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;

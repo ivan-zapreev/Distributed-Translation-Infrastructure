@@ -31,10 +31,10 @@
 
 #include <typeinfo>  //std::typeid
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
-#include "common/utils/containers/GreedyMemoryStorage.hpp"
+#include "common/utils/containers/greedy_memory_storage.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;

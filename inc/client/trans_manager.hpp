@@ -23,15 +23,14 @@
  * Created on January 26, 2016, 1:06 PM
  */
 
+#ifndef TRANS_MANAGER_HPP
+#define TRANS_MANAGER_HPP
+
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <cstdlib>
-#include <thread>
 #include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <functional>
 #include <iostream>
 #include <fstream>
 
@@ -44,12 +43,11 @@
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_response.hpp"
-#include "common/utils//file/CStyleFileReader.hpp"
+#include "common/utils/file/cstyle_file_reader.hpp"
+#include "common/utils/threads.hpp"
 
 using namespace std;
-
-#ifndef TRANS_MANAGER_HPP
-#define TRANS_MANAGER_HPP
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
@@ -69,9 +67,6 @@ namespace uva {
                     //Stores the absolute allowed minimum of sentences to be sent by translation request.
                     //Note that if the translation text is smaller then this value is overruled.
                     static constexpr uint64_t MIN_SENTENCES_PER_REQUEST = 5;
-
-                    //Define the unique lock needed for wait/notify
-                    typedef unique_lock<mutex> unique_lock;
 
                     //Define the type for the list of the translation data objects
                     typedef vector<trans_job_ptr> jobs_list_type;
@@ -156,7 +151,7 @@ namespace uva {
                         //Wait until all the jobs are sent
                         {
                             //Make sure that translation-waiting activity is synchronized
-                            unique_lock guard(m_jobs_sent_lock);
+                            unique_guard guard(m_jobs_sent_lock);
 
                             //Wait for the translations jobs to be sent, use the time out to prevent missing notification
                             while (!m_is_all_jobs_sent && (m_jobs_sent_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
@@ -166,7 +161,7 @@ namespace uva {
                         //Wait until all the jobs are finished or the connection is closed
                         {
                             //Make sure that translation-waiting activity is synchronized
-                            unique_lock guard(m_jobs_done_lock);
+                            unique_guard guard(m_jobs_done_lock);
 
                             //Wait for the translations jobs to be received, use the time out to prevent missing notification
                             while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
@@ -321,7 +316,7 @@ namespace uva {
                      */
                     void notify_jobs_sent() {
                         //Make sure that translation-waiting activity is synchronized
-                        unique_lock guard(m_jobs_sent_lock);
+                        unique_guard guard(m_jobs_sent_lock);
 
                         LOG_DEBUG << "Notifying that all the translation job requests are sent ..." << END_LOG;
 
@@ -337,7 +332,7 @@ namespace uva {
                      */
                     void notify_jobs_done() {
                         //Make sure that translation-waiting activity is synchronized
-                        unique_lock guard(m_jobs_done_lock);
+                        unique_guard guard(m_jobs_done_lock);
 
                         LOG_DEBUG << "Notifying that all the translation job replies are received ..." << END_LOG;
 

@@ -23,10 +23,11 @@
  * Created on January 21, 2016, 10:39 AM
  */
 
-#include <mutex>
-#include <thread>
+#ifndef TRANS_TASK_HPP
+#define TRANS_TASK_HPP
 
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/threads.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_code.hpp"
@@ -34,11 +35,9 @@
 
 using namespace std;
 
+using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef TRANS_TASK_HPP
-#define TRANS_TASK_HPP
 
 namespace uva {
     namespace smt {
@@ -54,8 +53,6 @@ namespace uva {
                  */
                 class trans_task {
                 public:
-                    //Define the lock type to synchronize map operations
-                    typedef lock_guard<recursive_mutex> req_scoped_lock;
                     //Define the done job notifier function type
                     typedef function<void(trans_task_ptr) > done_task_notifier;
                     //Define the canceled job notifier function type
@@ -103,7 +100,7 @@ namespace uva {
 
                         //Synchronize to avoid canceling the job that is already finished.
                         {
-                            req_scoped_lock guard_end(m_end_lock);
+                            recursive_guard guard_end(m_end_lock);
 
                             LOG_DEBUG1 << "The task " << m_task_id << " is to be interrupted!" << END_LOG;
 
@@ -136,7 +133,7 @@ namespace uva {
 
                         //Synchronize to avoid canceling the job that is already finished.
                         {
-                            req_scoped_lock guard_end(m_end_lock);
+                            recursive_guard guard_end(m_end_lock);
 
                             LOG_DEBUG1 << "The task " << m_task_id << " is to be finished!" << END_LOG;
 
@@ -178,7 +175,7 @@ namespace uva {
                     const string & get_target_text() {
                         LOG_DEBUG1 << "Retrieving the target text of task: " << m_task_id << END_LOG;
                         {
-                            req_scoped_lock guard_end(m_end_lock);
+                            recursive_guard guard_end(m_end_lock);
 
                             return m_target_text;
                         }

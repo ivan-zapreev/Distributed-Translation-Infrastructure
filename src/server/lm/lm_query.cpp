@@ -31,18 +31,18 @@
 
 #include "tclap/CmdLine.h"
 
-#include "common.hpp"
+#include "main.hpp"
 
-#include "common/utils/monitore/StatisticsMonitor.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/logging/logger.hpp"
 
-#include "common/utils/StringUtils.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/exceptions.hpp"
 
-#include "common/utils/file/AFileReader.hpp"
-#include "common/utils/file/MemoryMappedFileReader.hpp"
-#include "common/utils/file/FileStreamReader.hpp"
-#include "common/utils/file/CStyleFileReader.hpp"
+#include "common/utils/file/afile_reader.hpp"
+#include "common/utils/file/memory_mapped_file_reader.hpp"
+#include "common/utils/file/file_stream_reader.hpp"
+#include "common/utils/file/cstyle_file_reader.hpp"
 
 #include "server/lm/Executor.hpp"
 

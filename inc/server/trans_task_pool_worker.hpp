@@ -23,14 +23,14 @@
  * Created on January 25, 2016, 1:46 PM
  */
 
-#include <mutex>
-
-#include "trans_task.hpp"
-
-using namespace std;
-
 #ifndef TASK_POOL_WORKER_HPP
 #define TASK_POOL_WORKER_HPP
+
+#include "trans_task.hpp"
+#include "common/utils/threads.hpp"
+
+using namespace std;
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
@@ -49,8 +49,6 @@ namespace uva {
                  */
                 class trans_task_pool_worker {
                 public:
-                    //Define the unique lock needed for wait/notify
-                    typedef unique_lock<mutex> unique_lock;
 
                     /**
                      * This is a basic constructor that needs the thread pool reference as an argument.

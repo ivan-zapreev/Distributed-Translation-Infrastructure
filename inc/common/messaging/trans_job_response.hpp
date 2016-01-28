@@ -23,13 +23,16 @@
  * Created on January 18, 2016, 5:02 PM
  */
 
+#ifndef TRANSLATION_JOB_REPLY_HPP
+#define TRANSLATION_JOB_REPLY_HPP
+
 #include <string>
 #include <sstream>
 #include <iostream>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_code.hpp"
@@ -39,9 +42,6 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef TRANSLATION_JOB_REPLY_HPP
-#define TRANSLATION_JOB_REPLY_HPP
 
 namespace uva {
     namespace smt {

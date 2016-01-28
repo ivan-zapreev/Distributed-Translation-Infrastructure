@@ -38,7 +38,7 @@ namespace uva {
                     while (!m_pool.m_stop) {
                         //Lock the critical waiting section
                         {
-                            unique_lock guard(m_pool.m_queue_mutex);
+                            unique_guard guard(m_pool.m_queue_mutex);
 
                             //Wait for the new task is scheduled or we need to stop
                             while (!m_pool.m_stop && m_pool.m_tasks.empty()) {

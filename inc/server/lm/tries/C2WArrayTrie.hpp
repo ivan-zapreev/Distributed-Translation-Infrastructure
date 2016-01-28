@@ -29,13 +29,13 @@
 #include <string>       // std::string
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #include "LayeredTrieBase.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
-#include "common/utils/containers/ArrayUtils.hpp"
+#include "common/utils/containers/array_utils.hpp"
 
 using namespace std;
 using namespace uva::smt::tries::dictionary;

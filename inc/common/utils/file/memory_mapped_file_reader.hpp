@@ -40,11 +40,11 @@
 #include <cstring>
 #include <errno.h> 
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/StringUtils.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
-#include "common/utils/file/AFileReader.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
+#include "common/utils/file/afile_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::text;

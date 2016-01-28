@@ -30,10 +30,10 @@
 
 #include "server/lm/TrieConstants.hpp"
 
-#include "common/utils/file/TextPieceReader.hpp"
-#include "common/utils/HashingUtils.hpp"
-#include "common/utils/MathUtils.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/math_utils.hpp"
+#include "common/utils/exceptions.hpp"
 
 #include "server/lm/mgrams/BaseMGram.hpp"
 #include "server/lm/mgrams/ByteMGramId.hpp"

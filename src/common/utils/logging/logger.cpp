@@ -28,8 +28,8 @@
 
 #include <algorithm>    // std::transform
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/monitore/StatisticsMonitor.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/monitore/statistics_monitore.hpp"
 
 using namespace uva::utils::monitore;
 

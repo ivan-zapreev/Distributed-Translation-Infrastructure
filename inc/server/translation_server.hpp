@@ -33,8 +33,8 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_code.hpp"

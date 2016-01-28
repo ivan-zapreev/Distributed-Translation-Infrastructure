@@ -31,10 +31,10 @@
 #include <cstring>      // std::memcmp std::memcpy
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"

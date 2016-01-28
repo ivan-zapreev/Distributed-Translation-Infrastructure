@@ -23,9 +23,12 @@
  * Created on January 18, 2016, 5:05 PM
  */
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#ifndef TRANS_JOB_REQUEST_HPP
+#define TRANS_JOB_REQUEST_HPP
+
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 
@@ -33,9 +36,6 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
-
-#ifndef TRANS_JOB_REQUEST_HPP
-#define TRANS_JOB_REQUEST_HPP
 
 namespace uva {
     namespace smt {

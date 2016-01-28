@@ -23,18 +23,18 @@
  * Created on January 27, 2016, 9:03 AM
  */
 
+#ifndef TRANS_JOB_STATUS_HPP
+#define TRANS_JOB_STATUS_HPP
+
 #include <string>
 #include <iostream>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-
-#ifndef TRANS_JOB_STATUS_HPP
-#define TRANS_JOB_STATUS_HPP
 
 namespace uva {
     namespace smt {

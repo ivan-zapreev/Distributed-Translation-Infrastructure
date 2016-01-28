@@ -55,7 +55,7 @@ namespace uva {
                 };
 
                 void trans_task_pool::notify_task_cancel(trans_task_ptr trans_task) {
-                    unique_lock guard(m_queue_mutex);
+                    unique_guard guard(m_queue_mutex);
 
                     LOG_DEBUG << "Request task  " << trans_task << " with id "
                             << trans_task->get_task_id() << " removal from the pool!" << END_LOG;
@@ -89,7 +89,7 @@ namespace uva {
 
                     //Add the task to the pool
                     {
-                        unique_lock guard(m_queue_mutex);
+                        unique_guard guard(m_queue_mutex);
 
                         //Add the translation task to the queue
                         m_tasks.push_back(trans_task);

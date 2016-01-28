@@ -42,13 +42,13 @@
 #include <unordered_map>  // std::unordered_map
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #include "LayeredTrieBase.hpp"
 
-#include "common/utils/containers/GreedyMemoryAllocator.hpp"
-#include "common/utils/HashingUtils.hpp"
-#include "common/utils/file/TextPieceReader.hpp"
+#include "common/utils/containers/greedy_memory_allocator.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/file/text_piece_reader.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 
 using namespace std;

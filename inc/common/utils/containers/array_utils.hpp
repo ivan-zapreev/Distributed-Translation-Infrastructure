@@ -31,8 +31,8 @@
 #include <algorithm>    // std::sort std::abs
 #include <functional>   // std::function
 
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace std;
 using namespace uva::utils::exceptions;

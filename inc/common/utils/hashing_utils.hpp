@@ -30,7 +30,7 @@
 #include <cmath>      // std::floor, std::sqrt
 #include <stdint.h>   // srd::uint32_t
 
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #define XXH_NAMESPACE
 #include "xxhash.h"   // XXH32 XXH64

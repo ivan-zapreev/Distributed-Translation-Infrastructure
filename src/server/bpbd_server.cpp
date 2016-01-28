@@ -31,10 +31,10 @@
 #include <tclap/CmdLine.h>
 #include <INI.h>
 
-#include "common.hpp"
+#include "main.hpp"
 
 #include "server/translation_server.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace std;
 using namespace TCLAP;

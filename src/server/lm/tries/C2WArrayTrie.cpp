@@ -27,8 +27,8 @@
 #include <inttypes.h>       // std::uint32_t
 
 #include "server/lm/TrieConstants.hpp"
-#include "common/utils/logging/Logger.hpp"
-#include "common/utils/Exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"

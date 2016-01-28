@@ -23,10 +23,10 @@
  * Created on January 19, 2016, 2:33 PM
  */
 
-#include <websocketpp/common/thread.hpp>
-
 #ifndef SYNCHRONIZED_ID_MANAGER_HPP
 #define SYNCHRONIZED_ID_MANAGER_HPP
+
+#include <websocketpp/common/thread.hpp>
 
 namespace uva {
     namespace smt {

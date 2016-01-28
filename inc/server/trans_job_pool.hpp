@@ -25,10 +25,6 @@
 
 #include <map>
 #include <vector>
-#include <mutex>
-#include <thread>
-#include <functional>
-#include <condition_variable>
 
 #include <websocketpp/server.hpp>
 
@@ -37,8 +33,9 @@
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/threads.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 #include "trans_task_id.hpp"
 #include "trans_job.hpp"
 #include "trans_task_pool.hpp"
@@ -47,6 +44,7 @@ using namespace std;
 using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::threads;
 using namespace uva::smt::decoding::common::messaging;
 
 #ifndef TRANS_JOB_POOL_HPP
@@ -67,12 +65,6 @@ namespace uva {
                  */
                 class trans_job_pool {
                 public:
-                    //Define the lock type to synchronize map operations
-                    typedef lock_guard<recursive_mutex> rec_scoped_lock;
-                    //Define the lock type to synchronize map operations
-                    typedef lock_guard<mutex> scoped_lock;
-                    //Define the unique lock needed for wait/notify
-                    typedef unique_lock<mutex> unique_lock;
 
                     //Define the function type for the function used to set the translation job resut
                     typedef function<void(trans_job_ptr trans_job) > finished_job_notifier;
@@ -111,7 +103,7 @@ namespace uva {
 
                         //Make sure this does not interfere with any adding new job activity
                         {
-                            scoped_lock guard_stopping(m_stopping_lock);
+                            scoped_guard guard_stopping(m_stopping_lock);
 
                             //If we are not stopping yet, do a stop, else return
                             if (!m_is_stopping) {
@@ -160,7 +152,7 @@ namespace uva {
                      */
                     void plan_new_job(trans_job_ptr trans_job) {
                         //Make sure that we are not being stopped before or during this method call
-                        scoped_lock guard_stopping(m_stopping_lock);
+                        scoped_guard guard_stopping(m_stopping_lock);
 
                         LOG_DEBUG << "Request adding a new job " << trans_job << " to the pool!" << END_LOG;
 
@@ -180,7 +172,7 @@ namespace uva {
                      * @param session_id the session id to cancel the jobs for
                      */
                     void cancel_jobs(const session_id_type session_id) {
-                        rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                        recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Canceling the jobs of session: " << session_id << END_LOG;
 
@@ -209,7 +201,7 @@ namespace uva {
                      * Allows to cancel all the currently running translation jobs in the server
                      */
                     void cancel_all_jobs() {
-                        rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                        recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Start canceling all server jobs" << END_LOG;
 
@@ -229,7 +221,7 @@ namespace uva {
                      * @param trans_job the job to be added to the administration
                      */
                     void add_job(trans_job_ptr trans_job) {
-                        rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                        recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool" << END_LOG;
 
@@ -272,7 +264,7 @@ namespace uva {
 
                         //Remove the job from the pool's administration 
                         {
-                            rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                            recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                             //Erase the job from the jobs mapping
                             m_sessions_map[session_id].erase(job_id);
@@ -303,12 +295,12 @@ namespace uva {
                         LOG_DEBUG << "is_stop_running check requested" << END_LOG;
                         {
                             //Make sure that we are not being stopped before or during this method call
-                            scoped_lock guard_stopping(m_stopping_lock);
+                            scoped_guard guard_stopping(m_stopping_lock);
 
                             LOG_DEBUG << "m_stopping_lock lock is passed" << END_LOG;
                             {
                                 //Make sure not one adds/removes jobs meanwhile
-                                rec_scoped_lock guard_all_jobs(m_all_jobs_lock);
+                                recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                                 LOG_DEBUG << "m_all_jobs_lock lock is passed" << END_LOG;
 
@@ -328,7 +320,7 @@ namespace uva {
                      * Allows to wake up the jobs thread.
                      */
                     void wake_up_jobs_thread() {
-                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
+                        unique_guard guard_finished_jobs(m_finished_jobs_lock);
 
                         //Notify the thread that there is a finished job to be processed
                         m_is_job_done.notify_one();
@@ -342,7 +334,7 @@ namespace uva {
 
                         LOG_DEBUG1 << "The job " << trans_job << " has called in finished!" << END_LOG;
                         {
-                            unique_lock guard_finished_jobs(m_finished_jobs_lock);
+                            unique_guard guard_finished_jobs(m_finished_jobs_lock);
 
                             LOG_DEBUG << "The job " << trans_job << " is finished!" << END_LOG;
 
@@ -359,7 +351,7 @@ namespace uva {
                      * Allows to process the finished translation jobs
                      */
                     void process_finished_jobs() {
-                        unique_lock guard_finished_jobs(m_finished_jobs_lock);
+                        unique_guard guard_finished_jobs(m_finished_jobs_lock);
 
                         //Stop iteration only when we are stopping and there are no jobs left
                         while (!is_stop_running()) {

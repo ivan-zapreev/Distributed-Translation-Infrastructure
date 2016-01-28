@@ -23,12 +23,15 @@
  * Created on January 20, 2016, 6:41 PM
  */
 
+#ifndef DUMMY_TRANS_JOB_HPP
+#define DUMMY_TRANS_JOB_HPP
+
 #include <cstdlib>        // srd::rand
-#include <thread>         // std::thread std::this_thread::sleep_for
 #include <chrono>         // std::chrono::seconds
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/threads.hpp"
 
 #include "trans_task.hpp"
 #include "common/messaging/trans_session_id.hpp"
@@ -37,10 +40,8 @@
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::threads;
 using namespace uva::smt::decoding::common::messaging;
-
-#ifndef DUMMY_TRANS_JOB_HPP
-#define DUMMY_TRANS_JOB_HPP
 
 namespace uva {
     namespace smt {

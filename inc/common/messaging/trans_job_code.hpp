@@ -23,18 +23,18 @@
  * Created on January 21, 2016, 3:07 PM
  */
 
+#ifndef JOB_RESULT_CODE_HPP
+#define JOB_RESULT_CODE_HPP
+
 #include <string>
 #include <iostream>
 
-#include "common/utils/Exceptions.hpp"
-#include "common/utils/logging/Logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-
-#ifndef JOB_RESULT_CODE_HPP
-#define JOB_RESULT_CODE_HPP
 
 namespace uva {
     namespace smt {
