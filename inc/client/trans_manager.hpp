@@ -314,6 +314,8 @@ namespace uva {
                      * This function will be called if the connection is closed during the translation process
                      */
                     void notify_conn_closed() {
+                        LOG_WARNING << "The server has closed the connection!" << END_LOG;
+                        
                         //If the connection is closed we shall be stopping then
                         //The basic client does not support any connection recovery
                         m_is_stopping = true;
