@@ -619,100 +619,6 @@
       <in>INI.h</in>
       <in>asio.hpp</in>
     </df>
-    <df root="ext" name="3">
-      <df name="asio">
-        <df name="detail">
-          <df name="impl">
-          </df>
-        </df>
-        <df name="generic">
-          <df name="detail">
-            <df name="impl">
-            </df>
-          </df>
-        </df>
-        <df name="impl">
-        </df>
-        <df name="ip">
-          <df name="detail">
-            <df name="impl">
-            </df>
-          </df>
-          <df name="impl">
-          </df>
-        </df>
-        <df name="local">
-          <df name="detail">
-            <df name="impl">
-            </df>
-          </df>
-        </df>
-        <df name="posix">
-        </df>
-        <df name="ssl">
-          <df name="detail">
-            <df name="impl">
-            </df>
-          </df>
-          <df name="impl">
-          </df>
-          <df name="old">
-            <df name="detail">
-            </df>
-          </df>
-        </df>
-        <df name="windows">
-        </df>
-      </df>
-      <df name="tclap">
-      </df>
-      <df name="websocketpp">
-        <df name="base64">
-        </df>
-        <df name="common">
-        </df>
-        <df name="concurrency">
-        </df>
-        <df name="config">
-        </df>
-        <df name="extensions">
-          <df name="permessage_deflate">
-          </df>
-        </df>
-        <df name="http">
-          <df name="impl">
-          </df>
-        </df>
-        <df name="impl">
-        </df>
-        <df name="logger">
-        </df>
-        <df name="message_buffer">
-        </df>
-        <df name="processors">
-        </df>
-        <df name="random">
-        </df>
-        <df name="roles">
-        </df>
-        <df name="sha1">
-        </df>
-        <df name="transport">
-          <df name="asio">
-            <df name="security">
-            </df>
-          </df>
-          <df name="base">
-          </df>
-          <df name="debug">
-          </df>
-          <df name="iostream">
-          </df>
-          <df name="stub">
-          </df>
-        </df>
-      </df>
-    </df>
     <df root="inc" name="1">
       <df name="client">
         <in>client_config.hpp</in>
@@ -721,7 +627,43 @@
         <in>trans_manager.hpp</in>
         <in>translation_client.hpp</in>
       </df>
-      <df name="main.hpp">
+      <df name="common">
+        <df name="messaging">
+          <in>id_manager.hpp</in>
+          <in>trans_job_code.hpp</in>
+          <in>trans_job_id.hpp</in>
+          <in>trans_job_request.hpp</in>
+          <in>trans_job_response.hpp</in>
+          <in>trans_session_id.hpp</in>
+        </df>
+        <df name="utils">
+          <df name="containers">
+            <in>array_utils.hpp</in>
+            <in>dynamic_memory_arrays.hpp</in>
+            <in>fixed_size_hashmap.hpp</in>
+            <in>greedy_memory_allocator.hpp</in>
+            <in>greedy_memory_storage.hpp</in>
+          </df>
+          <df name="file">
+            <in>afile_reader.hpp</in>
+            <in>cstyle_file_reader.hpp</in>
+            <in>file_stream_reader.hpp</in>
+            <in>memory_mapped_file_reader.hpp</in>
+            <in>text_piece_reader.hpp</in>
+          </df>
+          <df name="logging">
+            <in>logger.hpp</in>
+          </df>
+          <df name="monitore">
+            <in>statistics_monitore.hpp</in>
+          </df>
+          <in>exceptions.hpp</in>
+          <in>hashing_utils.hpp</in>
+          <in>math_utils.hpp</in>
+          <in>string_utils.hpp</in>
+          <in>threads.hpp</in>
+          <in>xxhash.h</in>
+        </df>
       </df>
       <df name="server">
         <df name="lm">
@@ -777,26 +719,7 @@
         <in>trans_task_pool_worker.hpp</in>
         <in>translation_server.hpp</in>
       </df>
-    </df>
-    <df root="inc" name="4">
-      <df name="client">
-      </df>
-      <df name="main.hpp">
-      </df>
-      <df name="server">
-        <df name="lm">
-          <df name="builders">
-          </df>
-          <df name="dictionaries">
-          </df>
-          <df name="mgrams">
-          </df>
-          <df name="tries">
-            <df name="queries">
-            </df>
-          </df>
-        </df>
-      </df>
+      <in>main.hpp</in>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -809,8 +732,10 @@
         </df>
         <df name="utils">
           <df name="logging">
+            <in>logger.cpp</in>
           </df>
           <df name="monitore">
+            <in>statistics_monitor.cpp</in>
           </df>
           <in>xxhash.c</in>
         </df>
@@ -818,44 +743,29 @@
       <df name="server">
         <df name="lm">
           <df name="builders">
+            <in>arpa_gram_builder.cpp</in>
+            <in>arpa_trie_builder.cpp</in>
           </df>
           <df name="dictionaries">
+            <in>aword_index.cpp</in>
           </df>
           <df name="ngrams">
+            <in>byte_m_gram_id.cpp</in>
           </df>
           <df name="tries">
+            <in>c2d_hybrid_trie.cpp</in>
+            <in>c2d_map_trie.cpp</in>
+            <in>c2w_array_trie.cpp</in>
+            <in>g2d_map_trie.cpp</in>
+            <in>h2d_map_trie.cpp</in>
+            <in>w2c_array_trie.cpp</in>
+            <in>w2c_hybrid_trie.cpp</in>
           </df>
           <in>lm_query.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
         <in>trans_task_pool.cpp</in>
         <in>trans_task_pool_worker.cpp</in>
-      </df>
-    </df>
-    <df root="src" name="5">
-      <df name="client">
-      </df>
-      <df name="common">
-        <df name="messaging">
-        </df>
-        <df name="utils">
-          <df name="logging">
-          </df>
-          <df name="monitore">
-          </df>
-        </df>
-      </df>
-      <df name="server">
-        <df name="lm">
-          <df name="builders">
-          </df>
-          <df name="dictionaries">
-          </df>
-          <df name="ngrams">
-          </df>
-          <df name="tries">
-          </df>
-        </df>
       </df>
     </df>
   </logicalFolder>

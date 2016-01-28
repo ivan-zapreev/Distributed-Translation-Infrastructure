@@ -3,8 +3,6 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
-    <df root="ext" name="3">
-    </df>
     <df root="inc" name="1">
       <df name="client">
         <in>client_config.hpp</in>
@@ -21,8 +19,6 @@
         <in>trans_task_pool.hpp</in>
         <in>trans_task_pool_worker.hpp</in>
       </df>
-    </df>
-    <df root="inc" name="4">
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -46,28 +42,17 @@
         <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
-    <df root="src" name="5">
-    </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>CMakeLists.txt</itemPath>
       <itemPath>build/Makefile</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false"
-                   kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>CMakeLists.txt</itemPath>
-      <itemPath>build/Makefile</itemPath>
+      <itemPath>default.cfg</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
-    <Elem>src</Elem>
-    <Elem>inc</Elem>
-    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -116,8 +101,6 @@
       </item>
       <item path="inc/client/trans_manager.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="inc/main.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="inc/server/decoder_stub.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_job.hpp" ex="false" tool="3" flavor2="0">
@@ -146,80 +129,15 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="src/common/utils/logging/logger.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/common/utils/monitore/statistics_monitor.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="src/common/utils/xxhash.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/server/lm/builders/arpa_gram_builder.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/builders/arpa_trie_builder.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/dictionaries/aword_index.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
-      </item>
-      <item path="src/server/lm/ngrams/byte_m_gram_id.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/c2d_hybrid_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/c2d_map_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/c2w_array_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/g2d_map_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/h2d_map_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/w2c_array_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="src/server/lm/tries/w2c_hybrid_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -111,6 +111,9 @@ namespace uva {
                         m_is_all_jobs_done = false;
                         //Set the nuber of done jobs
                         m_num_done_jobs = 0;
+
+                        //Create the list of translation jobs by reading from the source file
+                        create_translation_jobs();
                     }
 
                     /**
@@ -174,10 +177,11 @@ namespace uva {
                      * to write the resulting translations into the file.
                      */
                     void stop() {
+                        //Set the stopping flag
+                        m_is_stopping = true;
 
-                        //Stop the translation job sending thread
+                        //Wait until the request sending thread is stopped.
                         if (m_sending_thread_ptr != NULL) {
-                            m_is_stopping = true;
                             m_sending_thread_ptr->join();
                         }
 
@@ -276,30 +280,33 @@ namespace uva {
                      * @param trans_job_resp the translation job response coming from the server
                      */
                     void set_job_response(trans_job_response * trans_job_resp) {
-                        const job_id_type job_id = trans_job_resp->get_job_id();
+                        //If we are not stopping then set the response
+                        if (!m_is_stopping) {
+                            const job_id_type job_id = trans_job_resp->get_job_id();
 
-                        //Check if the job is valid and if there is something for this job id
-                        if (job_id != job_id::UNDEFINED_JOB_ID) {
-                            //Check if the job with the given id is known
-                            if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
-                                //Register the job in the administration
-                                m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
+                            //Check if the job is valid and if there is something for this job id
+                            if (job_id != job_id::UNDEFINED_JOB_ID) {
+                                //Check if the job with the given id is known
+                                if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
+                                    //Register the job in the administration
+                                    m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
 
-                                //Set the translation job status as received 
-                                m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
+                                    //Set the translation job status as received 
+                                    m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
 
-                                //Increment the number of received jobs
-                                m_num_done_jobs++;
+                                    //Increment the number of received jobs
+                                    m_num_done_jobs++;
+                                } else {
+                                    LOG_ERROR << "The received job response id " << job_id << " is not known!" << END_LOG;
+                                }
                             } else {
-                                LOG_ERROR << "The received job response id " << job_id << " is not known!" << END_LOG;
+                                LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
                             }
-                        } else {
-                            LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
-                        }
 
-                        //If we received all the jobs then notify that all the jobs are received!
-                        if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
-                            notify_jobs_done();
+                            //If we received all the jobs then notify that all the jobs are received!
+                            if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
+                                notify_jobs_done();
+                            }
                         }
                     }
 
@@ -307,24 +314,17 @@ namespace uva {
                      * This function will be called if the connection is closed during the translation process
                      */
                     void notify_conn_closed() {
-                        //If the connection is closed we should have no new job responses, so start processing the results
+                        //If the connection is closed we shall be stopping then
+                        //The basic client does not support any connection recovery
+                        m_is_stopping = true;
+
+                        //Wait until the request sending thread is stopped.
+                        if (m_sending_thread_ptr != NULL) {
+                            m_sending_thread_ptr->join();
+                        }
+                        
+                        //Notify that we are done with the jobs
                         notify_jobs_done();
-                    }
-
-                    /**
-                     * Allows to notify the threads waiting on the translation jobs to be sent
-                     */
-                    void notify_jobs_sent() {
-                        //Make sure that translation-waiting activity is synchronized
-                        unique_guard guard(m_jobs_sent_lock);
-
-                        LOG_DEBUG << "Notifying that all the translation job requests are sent ..." << END_LOG;
-
-                        //Setting the translation jobs sent flag 
-                        m_is_all_jobs_sent = true;
-
-                        //Notify that the translation is finished
-                        m_jobs_sent_cond.notify_all();
                     }
 
                     /**
@@ -344,66 +344,25 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to notify the threads waiting on the translation jobs to be sent
+                     */
+                    void notify_jobs_sent() {
+                        //Make sure that translation-waiting activity is synchronized
+                        unique_guard guard(m_jobs_sent_lock);
+
+                        LOG_DEBUG << "Notifying that all the translation job requests are sent ..." << END_LOG;
+
+                        //Setting the translation jobs sent flag 
+                        m_is_all_jobs_sent = true;
+
+                        //Notify that the translation is finished
+                        m_jobs_sent_cond.notify_all();
+                    }
+
+                    /**
                      * This function shall be run in a separate thread and send a number of translation job requests to the server.
-                     * @param params the client parameters storing, e.g., the input text file name
                      */
                     void send_translation_jobs() {
-                        //Declare the variable to store the sentence line
-                        TextPieceReader line;
-
-                        LOG_DEBUG << "Reading text from the source file ..." << END_LOG;
-                        while (!m_is_stopping) {
-                            //Get the number of sentences to send in the next request
-                            const uint64_t num_to_sent = get_num_of_sentences();
-                            //Stores the number of read sentences
-                            uint64_t num_read = 0;
-                            //text to send for translation
-                            string source_text;
-
-                            LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
-
-                            while ((num_read < num_to_sent) && m_source_file.get_first_line(line)) {
-                                LOG_DEBUG2 << "Read line: '" << line.str() << "'" << END_LOG;
-
-                                //Append the new line to the text to be sent
-                                source_text += line.str() + "\n";
-
-                                //Increment the number of read sentences
-                                ++num_read;
-
-                                LOG_DEBUG2 << "Read " << num_read << " input sentences!" << END_LOG;
-                            }
-
-                            LOG_DEBUG1 << "Read " << num_read << " sentences to be sent with the next request" << END_LOG;
-
-                            //If there were lines read then do translation
-                            if (num_read != 0) {
-                                //Get the new job id
-                                const job_id_type job_id = m_id_mgr.get_next_id();
-
-                                //Remove the last sentence new line symbol
-                                source_text.substr(0, source_text.size() - 1);
-
-                                //Create the new job data object
-                                trans_job_ptr data = new trans_job();
-
-                                //Create the translation job request 
-                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
-                                //Store the number of sentences in the translation request
-                                data->m_num_sentences = num_read;
-                                //Mark the job sending as good in the administration
-                                data->m_status = trans_job_status::STATUS_REQ_INITIALIZED;
-
-                                //Store the translation request
-                                m_jobs_list.push_back(data);
-                                m_ids_to_jobs_map[job_id] = data;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        LOG_DEBUG << "Finished reading text from the source file!" << END_LOG;
-
                         LOG_DEBUG << "Sending translation job requests ..." << END_LOG;
 
                         //Send the translation jobs
@@ -485,6 +444,68 @@ namespace uva {
 
                     //Store the finished jobs count
                     atomic<uint32_t> m_num_done_jobs;
+
+                    /**
+                     * This function shall be run in a separate thread and create a number of translation jobs.
+                     */
+                    void create_translation_jobs() {
+                        //Declare the variable to store the sentence line
+                        TextPieceReader line;
+
+                        LOG_DEBUG << "Reading text from the source file ..." << END_LOG;
+                        bool is_done = false;
+                        while (!is_done) {
+                            //Get the number of sentences to send in the next request
+                            const uint64_t num_to_sent = get_num_of_sentences();
+                            //Stores the number of read sentences
+                            uint64_t num_read = 0;
+                            //text to send for translation
+                            string source_text;
+
+                            LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
+
+                            while ((num_read < num_to_sent) && m_source_file.get_first_line(line)) {
+                                LOG_DEBUG2 << "Read line: '" << line.str() << "'" << END_LOG;
+
+                                //Append the new line to the text to be sent
+                                source_text += line.str() + "\n";
+
+                                //Increment the number of read sentences
+                                ++num_read;
+
+                                LOG_DEBUG2 << "Read " << num_read << " input sentences!" << END_LOG;
+                            }
+
+                            LOG_DEBUG1 << "Read " << num_read << " sentences to be sent with the next request" << END_LOG;
+
+                            //If there were lines read then do translation
+                            if (num_read != 0) {
+                                //Get the new job id
+                                const job_id_type job_id = m_id_mgr.get_next_id();
+
+                                //Remove the last sentence new line symbol
+                                source_text.substr(0, source_text.size() - 1);
+
+                                //Create the new job data object
+                                trans_job_ptr data = new trans_job();
+
+                                //Create the translation job request 
+                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
+                                //Store the number of sentences in the translation request
+                                data->m_num_sentences = num_read;
+                                //Mark the job sending as good in the administration
+                                data->m_status = trans_job_status::STATUS_REQ_INITIALIZED;
+
+                                //Store the translation request
+                                m_jobs_list.push_back(data);
+                                m_ids_to_jobs_map[job_id] = data;
+                            } else {
+                                is_done = true;
+                            }
+                        }
+
+                        LOG_DEBUG << "Finished reading text from the source file!" << END_LOG;
+                    }
                 };
 
                 id_manager<job_id_type> trans_manager::m_id_mgr(job_id::MINIMUM_JOB_ID);
