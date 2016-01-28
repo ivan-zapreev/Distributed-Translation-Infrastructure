@@ -12,17 +12,17 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64 -Wno-unused-local-typedef")
 #Bring the source files into the project
 set(LM_QUERY_SOURCES 
     src/server/lm/lm_query.cpp
-    src/server/lm/tries/W2CHybridTrie.cpp
-    src/server/lm/tries/W2CArrayTrie.cpp
-    src/server/lm/tries/H2DMapTrie.cpp
-    src/server/lm/tries/G2DMapTrie.cpp
-    src/server/lm/tries/C2WArrayTrie.cpp
-    src/server/lm/tries/C2DMapTrie.cpp
-    src/server/lm/tries/C2DHybridTrie.cpp
-    src/server/lm/ngrams/ByteMGramId.cpp
-    src/server/lm/dictionaries/AWordIndex.cpp
-    src/server/lm/builders/ARPATrieBuilder.cpp
-    src/server/lm/builders/ARPAGramBuilder.cpp
+    src/server/lm/tries/w2c_hybrid_trie.cpp
+    src/server/lm/tries/w2c_array_trie.cpp
+    src/server/lm/tries/h2d_map_trie.cpp
+    src/server/lm/tries/g2d_map_trie.cpp
+    src/server/lm/tries/c2w_array_trie.cpp
+    src/server/lm/tries/c2d_map_trie.cpp
+    src/server/lm/tries/c2d_hybrid_trie.cpp
+    src/server/lm/ngrams/byte_m_gram_id.cpp
+    src/server/lm/dictionaries/aword_index.cpp
+    src/server/lm/builders/arpa_trie_builder.cpp
+    src/server/lm/builders/arpa_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
     src/common/utils/xxhash.c

@@ -818,23 +818,12 @@
       <df name="server">
         <df name="lm">
           <df name="builders">
-            <in>ARPAGramBuilder.cpp</in>
-            <in>ARPATrieBuilder.cpp</in>
           </df>
           <df name="dictionaries">
-            <in>AWordIndex.cpp</in>
           </df>
           <df name="ngrams">
-            <in>ByteMGramId.cpp</in>
           </df>
           <df name="tries">
-            <in>C2DHybridTrie.cpp</in>
-            <in>C2DMapTrie.cpp</in>
-            <in>C2WArrayTrie.cpp</in>
-            <in>G2DMapTrie.cpp</in>
-            <in>H2DMapTrie.cpp</in>
-            <in>W2CArrayTrie.cpp</in>
-            <in>W2CHybridTrie.cpp</in>
           </df>
           <in>lm_query.cpp</in>
         </df>
