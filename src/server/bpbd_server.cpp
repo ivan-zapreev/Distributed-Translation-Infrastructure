@@ -68,7 +68,7 @@ typedef struct {
 
     //The port to listen to
     uint16_t m_server_port;
-    
+
     //The number of the translation threads to run
     size_t m_num_threads;
 
@@ -218,6 +218,21 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 }
 
 /**
+ * Allows to print the prompt
+ */
+void print_the_prompt() {
+    cout << ">> ";
+}
+
+/**
+ * Prints the available server commands
+ */
+void print_server_commands() {
+    LOG_USAGE << "Available server commands: " << END_LOG;
+    LOG_USAGE << "\t'" << PROGRAM_EXIT_LETTER << " & <enter>'  - to exit." << END_LOG;
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -243,11 +258,14 @@ int main(int argc, char** argv) {
         //Instantiate the translation server
         translation_server server(params.m_server_port, params.m_num_threads);
 
-        LOG_USAGE << "The server is started, press '" << PROGRAM_EXIT_LETTER
-                << " & <enter>' to exit!" << END_LOG;
-
         //Run the translation server in a separate thread
         thread server_thread(bind(&translation_server::run, &server));
+
+        LOG_USAGE << "The server is started!" << END_LOG;
+        //Print the server commands menu
+        print_server_commands();
+        //Print the prompt
+        print_the_prompt();
 
         //Wait until the server is stopped by pressing and exit button
         while (true) {
@@ -255,17 +273,23 @@ int main(int argc, char** argv) {
             cin >> letter;
             if (tolower(letter) == PROGRAM_EXIT_LETTER) {
                 break;
+            } else {
+                LOG_ERROR << "The command '" << letter << "' is unknown!" << END_LOG;
+                //Print the server commands menu
+                print_server_commands();
             }
+            //Print the prompt
+            print_the_prompt();
         }
 
         //Stop the translation server
-        LOG_INFO << "Stopping the server ..." << END_LOG;
+        LOG_USAGE << "Stopping the server ..." << END_LOG;
         server.stop();
 
         //Wait until the server's thread stops
         server_thread.join();
 
-        LOG_INFO << "The server has stopped!" << END_LOG;
+        LOG_USAGE << "The server has stopped!" << END_LOG;
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.get_message() << END_LOG;

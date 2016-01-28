@@ -47,6 +47,7 @@ using namespace uva::utils::exceptions;
 using namespace uva::smt::decoding::common::messaging;
 
 using websocketpp::connection_hdl;
+using websocketpp::log::elevel;
 using websocketpp::log::alevel;
 using websocketpp::frame::opcode::value;
 using websocketpp::frame::opcode::text;
@@ -106,6 +107,9 @@ namespace uva {
                      * Allows to stop the translation server
                      */
                     void stop() {
+                        //Disable the errors, as the stop_listen produces asio errors due to stopped acceptance loop!
+                        m_server.clear_error_channels(elevel::all);
+
                         LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                         //Remove the on_close handler
                         m_server.set_close_handler(NULL);
@@ -114,17 +118,15 @@ namespace uva {
                         //ToDo: Figure out why we get asio errors when stopping to listen
                         //LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
-                        //m_server.stop_listening();
+                        m_server.stop_listening();
 
-                        LOG_DEBUG << "Stop the session manager." << END_LOG;
+                        LOG_USAGE << "Stopping the session manager." << END_LOG;
                         //Stop the session manager, this should cancel all the unfinished translation tasks
                         m_manager.stop();
 
-                        LOG_DEBUG << "Stop the WEBSOCKET server." << END_LOG;
+                        LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
                         //Stop the server
                         m_server.stop();
-
-                        LOG_DEBUG << "The WEBSOCKET server is stopped." << END_LOG;
                     }
 
                 protected:
@@ -136,7 +138,7 @@ namespace uva {
                      */
                     void send_response(connection_hdl hdl, trans_job_response & response) {
                         LOG_DEBUG << "Sending the job response: " << &response << END_LOG;
-                        
+
                         //Get the response string
                         const string reply_str = response.serialize();
                         //Declare the error code
@@ -149,7 +151,7 @@ namespace uva {
                         if (ec) {
                             LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
                         }
-                        
+
                         LOG_DEBUG << "The job response: " << &response << " is sent!" << END_LOG;
                     }
 
@@ -176,7 +178,7 @@ namespace uva {
                      */
                     void on_close(connection_hdl hdl) {
                         LOG_DEBUG << "Closing connection!" << END_LOG;
-                        
+
                         //Destroy the session 
                         m_manager.close_session(hdl);
                     }
@@ -191,7 +193,7 @@ namespace uva {
 
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
-                        
+
                         //Declare the translation job request pointer
                         trans_job_request_ptr request_ptr = NULL;
                         try {
