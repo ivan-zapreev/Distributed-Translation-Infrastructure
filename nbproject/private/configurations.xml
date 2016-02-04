@@ -652,10 +652,11 @@
             <in>W2CHybridTrie.hpp</in>
             <in>WordIndexTrieBase.hpp</in>
           </df>
-          <in>Executor.hpp</in>
-          <in>TrieConfigs.hpp</in>
-          <in>TrieConstants.hpp</in>
+          <in>configurator.hpp</in>
+          <in>executor.hpp</in>
           <in>lm_parameters.hpp</in>
+          <in>trie_configs.hpp</in>
+          <in>trie_constants.hpp</in>
         </df>
         <df name="rm">
           <in>rm_parameters.hpp</in>

@@ -10,13 +10,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_job.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/translation_server.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_job_pool.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_task_pool_worker.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/lm/tries/w2c_array_trie.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/bpbd_server.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/lm/lm_parameters.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/tm/tm_parameters.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/lm/lm_query.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/lm/executor.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/server_parameters.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_task.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/trans_task_pool.cpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/lm/configurator.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/decoder_parameters.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/rm_parameters.hpp</file>
         </group>
     </open-files>
 </project-private>

@@ -29,7 +29,7 @@
 #include <fstream>      // std::ifstream
 #include <regex>        // std::regex, std::regex_match
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/file/afile_reader.hpp"
 

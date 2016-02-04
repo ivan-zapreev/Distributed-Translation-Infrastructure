@@ -28,7 +28,7 @@
 
 #include <string>       // std::string
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "common/utils/exceptions.hpp"
 
 #include "server/lm/mgrams/BaseMGram.hpp"

@@ -55,8 +55,8 @@ namespace uva {
                             size_word_index = HASHING_WORD_INDEX + 1
                         };
 
-                        namespace __HashMapWordIndex {
-                            //The unordered map memory factor for the Word index in AHashMapTrie
+                        namespace __AWordIndex {
+                            //The memory factor for any existing word index ....
                             static constexpr float MEMORY_FACTOR = 2.6;
                         }
 

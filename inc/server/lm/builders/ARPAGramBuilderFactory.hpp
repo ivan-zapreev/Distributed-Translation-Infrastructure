@@ -30,7 +30,7 @@
 #include <ios>          //std::hex
 #include <functional>   // std::function
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "server/lm/builders/ARPAGramBuilder.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"

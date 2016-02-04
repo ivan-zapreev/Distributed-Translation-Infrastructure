@@ -26,37 +26,33 @@
 #ifndef LANGUAGE_MODEL_PARAMETERS_HPP
 #define LANGUAGE_MODEL_PARAMETERS_HPP
 
-#include "TrieConfigs.hpp"
+#include "trie_configs.hpp"
 
 namespace uva {
     namespace smt {
         namespace translation {
             namespace server {
                 namespace lm {
-                    namespace __Executor {
 
-                        /**
-                         * This structure is needed to store the language model (query application) parameters
-                         */
-                        typedef struct {
-                            //Stores true if the cumulative probability is to be computed
-                            //for each M-gram, otherwise false, and then we only compute
-                            //one conditional probability for this M-gram
-                            bool is_cumulative_prob;
-                            //The train file name
-                            string m_model_file_name;
-                            //The test file name
-                            string m_queries_file_name;
-                            //The Trie type name
-                            string m_trie_type_name;
-                            //The word index type to be used with the trie
-                            WordIndexTypesEnum m_word_index_type;
-                            //Stores the word index memory factor
-                            float m_word_index_mem_fact;
-                            //The trie type 
-                            TrieTypesEnum m_trie_type;
-                        } lm_parameters;
-                    }
+                    /**
+                     * This structure is needed to store the language model parameters
+                     */
+                    typedef struct {
+                        //The train file name
+                        string m_model_file_name;
+
+                        //The Trie type name
+                        string m_trie_type_name;
+
+                        //The word index type to be used with the trie
+                        WordIndexTypesEnum m_word_index_type;
+
+                        //Stores the word index memory factor
+                        float m_word_index_mem_fact;
+
+                        //The trie type 
+                        TrieTypesEnum m_trie_type;
+                    } lm_parameters;
                 }
             }
         }

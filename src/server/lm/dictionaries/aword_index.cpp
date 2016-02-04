@@ -25,7 +25,7 @@
 
 #include <string>   // std::string
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"

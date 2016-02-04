@@ -32,8 +32,9 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
+#include "server/lm/configurator.hpp"
 #include "server/lm/lm_parameters.hpp"
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
@@ -42,14 +43,6 @@
 
 #include "server/lm/builders/ARPATrieBuilder.hpp"
 #include "server/lm/builders/ARPAGramBuilder.hpp"
-
-#include "server/lm/tries/C2DMapTrie.hpp"
-#include "server/lm/tries/W2CHybridTrie.hpp"
-#include "server/lm/tries/C2WArrayTrie.hpp"
-#include "server/lm/tries/W2CArrayTrie.hpp"
-#include "server/lm/tries/C2DHybridTrie.hpp"
-#include "server/lm/tries/G2DMapTrie.hpp"
-#include "server/lm/tries/H2DMapTrie.hpp"
 
 #include "server/lm/mgrams/QueryMGram.hpp"
 #include "server/lm/tries/queries/MGramCumulativeQuery.hpp"
@@ -68,20 +61,26 @@ namespace uva {
         namespace translation {
             namespace server {
                 namespace lm {
+                    namespace __executor {
 
-                    namespace __Executor {
+                        /**
+                         * This structure is needed to store the language model (query application) parameters
+                         */
+                        typedef struct {
+                            //Stores the language model specific parameters
+                            lm_parameters lm_params;
+                            
+                            //Stores true if the cumulative probability is to be computed
+                            //for each M-gram, otherwise false, and then we only compute
+                            //one conditional probability for this M-gram
+                            bool is_cumulative_prob;
+                            
+                            //The test file name
+                            string m_queries_file_name;
+                        }lm_exec_params;
 
                         //The number of bytes in one Mb
                         const uint32_t BYTES_ONE_MB = 1024u;
-
-                        //Initialize constants
-                        static const string TC2DMapTrie_STR = string("c2dm");
-                        static const string TW2CHybridTrie_STR = string("w2ch");
-                        static const string TC2WArrayTrie_STR = string("c2wa");
-                        static const string TW2CArrayTrie_STR = string("w2ca");
-                        static const string C2DHybridTrie_STR = string("c2dh");
-                        static const string G2DMapTrie_STR = string("g2dm");
-                        static const string H2DMapTrie_STR = string("h2dm");
 
                         /**
                          * Returns the default trie type name string
@@ -207,9 +206,9 @@ namespace uva {
                         }
 
                         template<typename TrieType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
-                        void execute(const __Executor::lm_parameters& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
+                        void execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                             //Get the word index type and make an instance of the word index
-                            typename TrieType::WordIndexType word_index(params.m_word_index_mem_fact);
+                            typename TrieType::WordIndexType word_index(params.lm_params.m_word_index_mem_fact);
                             //Make an instance of the trie
                             TrieType trie(word_index);
                             //Declare time variables for CPU times in seconds
@@ -254,9 +253,9 @@ namespace uva {
                         }
 
                         template<typename WordIndexType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
-                        static void choose_trie_type_and_execute(const __Executor::lm_parameters& params,
+                        static void choose_trie_type_and_execute(const __executor::lm_exec_params& params,
                                 TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            switch (params.m_trie_type) {
+                            switch (params.lm_params.m_trie_type) {
                                 case TrieTypesEnum::C2DH_TRIE:
                                     execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                                     break;
@@ -279,7 +278,7 @@ namespace uva {
                                     execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
                                     break;
                                 default:
-                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.m_trie_type));
+                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.lm_params.m_trie_type));
                             }
                         }
 
@@ -291,13 +290,13 @@ namespace uva {
                          */
                         template<bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
                         static void choose_word_index_and_execute(
-                                __Executor::lm_parameters& params,
+                                __executor::lm_exec_params& params,
                                 TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                             LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
 
                             //Chose the word index type and then the trie type
-                            params.m_word_index_mem_fact = __HashMapWordIndex::MEMORY_FACTOR;
-                            switch (params.m_word_index_type) {
+                            params.lm_params.m_word_index_mem_fact = __AWordIndex::MEMORY_FACTOR;
+                            switch (params.lm_params.m_word_index_type) {
                                 case WordIndexTypesEnum::BASIC_WORD_INDEX:
                                     choose_trie_type_and_execute<BasicWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
                                     break;
@@ -315,7 +314,7 @@ namespace uva {
                                     break;
                                 default:
                                     stringstream msg;
-                                    msg << "Unrecognized word index type: " << params.m_word_index_type;
+                                    msg << "Unrecognized word index type: " << params.lm_params.m_word_index_type;
                                     throw Exception(msg.str());
                             }
                         }
@@ -327,46 +326,12 @@ namespace uva {
                          * @param testFile the open queries file, will be closed within this call stack
                          */
                         template<typename TFileReaderModel, typename TFileReaderQuery>
-                        static void choose_and_execute(__Executor::lm_parameters& params,
+                        static void choose_and_execute(__executor::lm_exec_params& params,
                                 TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            if (params.m_trie_type_name == TC2DMapTrie_STR) {
-                                params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
-                                params.m_trie_type = TrieTypesEnum::C2DM_TRIE;
-                            } else {
-                                if (params.m_trie_type_name == TW2CHybridTrie_STR) {
-                                    params.m_word_index_type = __W2CHybridTrie::WORD_INDEX_TYPE;
-                                    params.m_trie_type = TrieTypesEnum::W2CH_TRIE;
-                                } else {
-                                    if (params.m_trie_type_name == TC2WArrayTrie_STR) {
-                                        params.m_word_index_type = __C2WArrayTrie::WORD_INDEX_TYPE;
-                                        params.m_trie_type = TrieTypesEnum::C2WA_TRIE;
-                                    } else {
-                                        if (params.m_trie_type_name == TW2CArrayTrie_STR) {
-                                            params.m_word_index_type = __W2CArrayTrie::WORD_INDEX_TYPE;
-                                            params.m_trie_type = TrieTypesEnum::W2CA_TRIE;
-                                        } else {
-                                            if (params.m_trie_type_name == C2DHybridTrie_STR) {
-                                                params.m_word_index_type = __C2DHybridTrie::WORD_INDEX_TYPE;
-                                                params.m_trie_type = TrieTypesEnum::C2DH_TRIE;
-                                            } else {
-                                                if (params.m_trie_type_name == G2DMapTrie_STR) {
-                                                    params.m_word_index_type = __G2DMapTrie::WORD_INDEX_TYPE;
-                                                    params.m_trie_type = TrieTypesEnum::G2DM_TRIE;
-                                                } else {
-                                                    if (params.m_trie_type_name == H2DMapTrie_STR) {
-                                                        params.m_word_index_type = __H2DMapTrie::WORD_INDEX_TYPE;
-                                                        params.m_trie_type = TrieTypesEnum::H2DM_TRIE;
-                                                    } else {
-                                                        THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type_name);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            //First set the trie and word index type
+                            __configurator::get_trie_and_word_index_types(params.lm_params);
 
-                            //Choose the word index and trie types and do all the actions
+                            //Instantiate the the proper templates and execute queries
                             if (params.is_cumulative_prob) {
                                 choose_word_index_and_execute<true>(params, modelFile, testFile);
                             } else {
@@ -380,7 +345,7 @@ namespace uva {
                          * file and query the trie for frequencies.
                          * @param params the runtime program parameters
                          */
-                        static void perform_tasks(__Executor::lm_parameters& params) {
+                        static void perform_tasks(__executor::lm_exec_params& params) {
                             //Declare the statistics monitor and its data
                             TMemotyUsage memStatStart = {}, memStatEnd = {};
 
@@ -392,7 +357,7 @@ namespace uva {
                             //ToDo: Add the possibility to choose between the file readers from the command line!
                             //MemoryMappedFileReader modelFile(params.m_model_file_name.c_str());
                             //FileStreamReader modelFile(params.m_model_file_name.c_str());
-                            CStyleFileReader modelFile(params.m_model_file_name.c_str());
+                            CStyleFileReader modelFile(params.lm_params.m_model_file_name.c_str());
                             modelFile.log_reader_type_usage_info();
                             LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
                             StatisticsMonitor::getMemoryStatistics(memStatEnd);
@@ -412,7 +377,7 @@ namespace uva {
                             } else {
                                 stringstream msg;
                                 msg << "One of the input files does not exist: " +
-                                        get_file_exists_string(params.m_model_file_name, (bool)modelFile)
+                                        get_file_exists_string(params.lm_params.m_model_file_name, (bool)modelFile)
                                         + " , " +
                                         get_file_exists_string(params.m_queries_file_name, (bool)testFile);
                                 throw Exception(msg.str());

@@ -29,7 +29,7 @@
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/file/memory_mapped_file_reader.hpp"
 

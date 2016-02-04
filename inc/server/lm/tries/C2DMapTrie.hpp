@@ -41,7 +41,7 @@
 #include <utility>        // std::pair, std::make_pair
 #include <unordered_map>  // std::unordered_map
 
-#include "server/lm/TrieConstants.hpp"
+#include "server/lm/trie_constants.hpp"
 #include "common/utils/logging/logger.hpp"
 
 #include "LayeredTrieBase.hpp"

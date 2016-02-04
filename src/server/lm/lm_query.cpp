@@ -44,7 +44,7 @@
 #include "common/utils/file/file_stream_reader.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
-#include "server/lm/Executor.hpp"
+#include "server/lm/executor.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -93,9 +93,9 @@ void create_arguments_parser() {
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
     //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
-    __Executor::get_trie_types_str(&trie_types);
+    __executor::get_trie_types_str(&trie_types);
     p_trie_types_constr = new ValuesConstraint<string>(trie_types);
-    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __Executor::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
+    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __executor::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
 
     //Add the -c the "cumulative" probability switch - optional, default is cumulative
     p_cumulative_prob_arg = new SwitchArg("c", "cumulative", "Compute the sum of cumulative log probabilities for each query m-gram", *p_cmd_args, false);
@@ -130,7 +130,7 @@ void destroy_arguments_parser() {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, __Executor::lm_parameters & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, __executor::lm_exec_params & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -143,9 +143,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Store the parsed parameter values
     params.is_cumulative_prob = p_cumulative_prob_arg->getValue();
-    params.m_model_file_name = p_model_arg->getValue();
+    params.lm_params.m_model_file_name = p_model_arg->getValue();
     params.m_queries_file_name = p_query_arg->getValue();
-    params.m_trie_type_name = p_trie_type_arg->getValue();
+    params.lm_params.m_trie_type_name = p_trie_type_arg->getValue();
 }
 
 /**
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        __Executor::lm_parameters params = {};
+        __executor::lm_exec_params params = {};
 
         LOG_INFO << "Checking on the program arguments ..." << END_LOG;
 
@@ -174,11 +174,11 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         LOG_DEBUG << "Checking on the provided files \'"
-                << params.m_model_file_name << "\' and \'"
+                << params.lm_params.m_model_file_name << "\' and \'"
                 << params.m_queries_file_name << "\' ..." << END_LOG;
 
         //Do the actual work, read the text corpse, create trie and do queries
-        __Executor::perform_tasks(params);
+        __executor::perform_tasks(params);
 
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
