@@ -107,16 +107,16 @@ namespace uva {
                      * Allows to stop the translation server
                      */
                     void stop() {
-                        //Disable the errors, as the stop_listen produces asio errors due to stopped acceptance loop!
+                        //NOTE: Somehow stopping to listen to the new connections result in errors
+                        //It seems to be an implementation flaw of the library, from what I see in
+                        //the code. The work-around now is that @ stopping the errors are disabled.
                         m_server.clear_error_channels(elevel::all);
 
                         LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                         //Remove the on_close handler
                         m_server.set_close_handler(NULL);
 
-                        //NOTE: Somehow stopping to listen to the new connections result in errors
-                        //ToDo: Figure out why we get asio errors when stopping to listen
-                        //LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
+                        LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
                         m_server.stop_listening();
 
@@ -174,7 +174,7 @@ namespace uva {
 
                     /**
                      * Removes the session object and also stops the processed translation job requests
-                     * @param the connection handler
+                     * @param hdl the connection handler
                      */
                     void on_close(connection_hdl hdl) {
                         LOG_DEBUG << "Closing connection!" << END_LOG;
@@ -184,13 +184,18 @@ namespace uva {
                     }
 
                     /**
-                     * ToDo: Figure out if this handles is needed, for now just do logging
-                     * @param the connection handler
+                     * Is called in case of a websocket error, for now does nothing but logs the error
+                     * @param hdl the connection handler
                      */
                     void on_fail(connection_hdl hdl) {
                         LOG_DEBUG << "Connection failed!" << END_LOG;
                     }
 
+                    /**
+                     * Is called when the message is received by the server
+                     * @param hdl the connection handler
+                     * @param msg the received message
+                     */
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 

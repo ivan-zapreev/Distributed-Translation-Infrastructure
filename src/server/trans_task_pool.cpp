@@ -63,6 +63,7 @@ namespace uva {
                     //ToDo: To improve performance we could try checking if the
                     //tasks is already running, and if not then search the queue.
                     //Or use other data structure for a more efficient task removal.
+                    //This is for the future, in case the performance is affected.
 
                     //Check if the task is in the pool, if yes then remove it
                     for (tasks_queue_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {

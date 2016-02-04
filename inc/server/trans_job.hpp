@@ -217,8 +217,8 @@ namespace uva {
                             recursive_guard guard_tasks(m_tasks_lock);
 
                             //ToDo: Do a strict check on the tasks reporting to be finished,
-                            //these should be the onsed from the m_tasks list and they must
-                            //report themselves only ones.
+                            //these should be the ones from the m_tasks list and they must
+                            //report themselves only ones. (Optional - for safety)
 
                             //Increment the finished tasks count
                             m_done_tasks_count++;

@@ -120,7 +120,8 @@ namespace uva {
                     void translate() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
-                        //ToDo: Implement, implement the translation process, the next loop is a temporary measure for testing
+                        //ToDo: Implement, implement the translation process, the next loop
+                        //is a temporary measure for testing, do the actual decoding steps
                         if (m_source_text.size() != 0) {
                             const uint32_t time_sec = rand() % m_source_text.size();
                             for (uint32_t i = 0; i <= time_sec; ++i) {

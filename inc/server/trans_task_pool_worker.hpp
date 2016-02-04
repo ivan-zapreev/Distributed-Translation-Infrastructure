@@ -61,7 +61,7 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~trans_task_pool_worker(){
-                        //ToDo: Nothing to be done.
+                        //Nothing to be done, the thread is destroyed, no resources to free
                     }
 
                     /**
