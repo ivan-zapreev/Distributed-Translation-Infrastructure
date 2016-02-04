@@ -24,7 +24,7 @@
  */
 
 #ifndef AFILEREADER_HPP
-#define	AFILEREADER_HPP
+#define AFILEREADER_HPP
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -39,26 +39,38 @@ namespace uva {
         namespace file {
 
             /**
+             * THis method creates a string for the "file exists" information
+             * @param fname the file name
+             * @param isPresent true if the file is present
+             * @return the resulting string to be print
+             */
+            string get_file_exists_string(string const & fname, bool isPresent) {
+                string result = ((bool) isPresent ? "is present" : "is missing");
+                return fname + " (" + result + ")";
+            }
+
+            /**
              * This is an abstract base class for the file readers
              * we are going to be using to read model files
              */
-            class AFileReader :  public TextPieceReader {
+            class AFileReader : public TextPieceReader {
             public:
-                
-                AFileReader() : TextPieceReader() {}
-                
+
+                AFileReader() : TextPieceReader() {
+                }
+
                 /**
                  * Allows to check if the file has been open
                  * @return true if the file is open otherwise false
                  */
                 virtual bool is_open() const = 0;
-                
+
                 /**
                  * Allows to convert the file reader to a boolean
                  * @return true if the file exists, otherwise false
                  */
                 virtual operator bool() const = 0;
-                
+
                 /**
                  * Allows to log the information about the instantiated file reader type
                  */
@@ -69,8 +81,9 @@ namespace uva {
                  * the file from th first line again. The default implementation
                  * throws an exception.
                  */
-                virtual void reset() {throw Exception("Not implemented for this File reader type!");};
-                
+                virtual void reset() {
+                    throw Exception("Not implemented for this File reader type!");
+                };
 
                 /**
                  * Each file reader implementation will need to override these method, if needed.
@@ -103,16 +116,17 @@ namespace uva {
                 bool get_first_tab(TextPieceReader& out) {
                     THROW_MUST_OVERRIDE();
                 }
-                
+
                 /**
                  * Allows to close the file
                  */
-                virtual void close() {};
-                
+                virtual void close() {
+                };
+
                 /**
                  * The basic destructor, calls the close method
                  */
-                virtual ~AFileReader(){
+                virtual ~AFileReader() {
                     //Just close the file if it has not been closed yet
                     close();
                 }
@@ -121,5 +135,5 @@ namespace uva {
     }
 }
 
-#endif	/* AFILEREADER_HPP */
+#endif /* AFILEREADER_HPP */
 

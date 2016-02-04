@@ -93,9 +93,9 @@ void create_arguments_parser() {
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
     //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
-    __executor::get_trie_types_str(&trie_types);
+    __configurator::get_trie_types_str(&trie_types);
     p_trie_types_constr = new ValuesConstraint<string>(trie_types);
-    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __executor::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
+    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __configurator::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
 
     //Add the -c the "cumulative" probability switch - optional, default is cumulative
     p_cumulative_prob_arg = new SwitchArg("c", "cumulative", "Compute the sum of cumulative log probabilities for each query m-gram", *p_cmd_args, false);
