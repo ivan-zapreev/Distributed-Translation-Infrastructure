@@ -38,19 +38,22 @@ namespace uva {
                      * This structure is needed to store the language model parameters
                      */
                     typedef struct {
-                        //The train file name
+                        //The train file name, is defined by the used
                         string m_model_file_name;
 
-                        //The Trie type name
+                        //The Trie type name, is defined by the user
                         string m_trie_type_name;
 
-                        //The word index type to be used with the trie
+                        //The word index type to be used with the trie, is
+                        //defined by the implementation from the used input
                         WordIndexTypesEnum m_word_index_type;
 
-                        //Stores the word index memory factor
+                        //Stores the word index memory factor, is defined
+                        //by the implementation
                         float m_word_index_mem_fact;
 
-                        //The trie type 
+                        //The trie type, is defined by the implementation
+                        //from the used input
                         TrieTypesEnum m_trie_type;
                     } lm_parameters;
                 }
