@@ -31,41 +31,31 @@
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 
+using namespace uva::smt::translation::server::decoder;
+using namespace uva::smt::translation::server::tm;
+using namespace uva::smt::translation::server::rm;
+using namespace uva::smt::translation::server::lm;
+
 namespace uva {
     namespace smt {
         namespace translation {
             namespace server {
 
                 /**
-                 * This structure stores the program execution parameters
+                 * This structure stores the translation server parameters
                  */
                 typedef struct {
-                    //The language model file name 
-                    string m_language_model;
-                    //The translation model file name 
-                    string m_translation_model;
-                    //The reordering model file name 
-                    string m_reordering_model;
-
-                    //The target language name
-                    string m_target_lang;
-                    //The source language name
-                    string m_source_lang;
-
-                    //The port to listen to
-                    uint16_t m_server_port;
-
-                    //The number of the translation threads to run
-                    size_t m_num_threads;
-
-                    //The distortion limit to use
-                    uint32_t m_distortion_limit;
-                    //The pruning threshold to be used
-                    float m_pruning_threshold;
-                    //The stack capacity for stack pruning
-                    uint32_t m_stack_capacity;
-                    //The stack expansion strategy
-                    string m_expansion_strategy;
+                    //Stores the translation model parameters
+                    tm_parameters m_tm_params;
+                    
+                    //Stores the reordering model parameters
+                    rm_parameters m_rm_params;
+                    
+                    //Stores the language model parameters
+                    lm_parameters m_lm_params;
+                    
+                    //Stores the decoder parameters
+                    decoder_parameters m_de_params;
                 } server_parameters;
             }
         }

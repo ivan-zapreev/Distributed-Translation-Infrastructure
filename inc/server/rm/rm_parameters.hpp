@@ -26,7 +26,26 @@
 #ifndef RM_PARAMETERS_HPP
 #define RM_PARAMETERS_HPP
 
+#include <string>
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+
+                    /**
+                     * This structure stores the reordering model parameters
+                     */
+                    typedef struct {
+                        //The reordering model file name
+                        string m_model_file_name;
+                    } rm_parameters;
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_PARAMETERS_HPP */
 

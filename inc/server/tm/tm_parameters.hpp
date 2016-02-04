@@ -26,6 +26,26 @@
 #ifndef TM_PARAMETERS_HPP
 #define TM_PARAMETERS_HPP
 
+#include <string>
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+
+                    /**
+                     * This structure stores the translation model parameters
+                     */
+                    typedef struct {
+                        //The translation model file name
+                        string m_model_file_name;
+                    } tm_parameters;
+                }
+            }
+        }
+    }
+}
 
 
 #endif /* TM_PARAMETERS_HPP */

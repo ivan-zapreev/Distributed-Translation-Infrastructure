@@ -26,7 +26,48 @@
 #ifndef DEC_PARAMETERS_HPP
 #define DEC_PARAMETERS_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace decoder {
 
+                    /**
+                     * This structure stores the decoder parameters
+                     */
+                    typedef struct {
+                        //The language model file name 
+                        string m_language_model;
+                        //The translation model file name 
+                        string m_translation_model;
+                        //The reordering model file name 
+                        string m_reordering_model;
+
+                        //The target language name
+                        string m_target_lang;
+                        //The source language name
+                        string m_source_lang;
+
+                        //The port to listen to
+                        uint16_t m_server_port;
+
+                        //The number of the translation threads to run
+                        size_t m_num_threads;
+
+                        //The distortion limit to use
+                        uint32_t m_distortion_limit;
+                        //The pruning threshold to be used
+                        float m_pruning_threshold;
+                        //The stack capacity for stack pruning
+                        uint32_t m_stack_capacity;
+                        //The stack expansion strategy
+                        string m_expansion_strategy;
+                    } decoder_parameters;
+                }
+            }
+        }
+    }
+}
 
 #endif /* DEC_PARAMETERS_HPP */
 
