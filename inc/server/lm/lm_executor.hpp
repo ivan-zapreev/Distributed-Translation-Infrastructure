@@ -140,7 +140,7 @@ namespace uva {
                         template<typename TrieType, typename TFileReaderModel, typename TFileReaderQuery>
                         void load_data____execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                             //Get the word index type and make an instance of the word index
-                            typename TrieType::WordIndexType word_index(params.lm_params.m_word_index_mem_fact);
+                            typename TrieType::WordIndexType word_index(__AWordIndex::MEMORY_FACTOR);
                             //Make an instance of the trie
                             TrieType trie(word_index);
                             //Declare time variables for CPU times in seconds
@@ -268,14 +268,10 @@ namespace uva {
                             }
                         }
 
-                        static void choose_word_index____execute(__executor::lm_exec_params & params) {
+                        static void choose_word_index____execute(const __executor::lm_exec_params & params) {
                             LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
 
-                            //First set the trie and word index type
-                            __configurator::get_trie_and_word_index_types(params.lm_params);
-
                             //Chose the word index type and then the trie type
-                            params.lm_params.m_word_index_mem_fact = __AWordIndex::MEMORY_FACTOR;
                             switch (params.lm_params.m_word_index_type) {
                                 case WordIndexTypesEnum::BASIC_WORD_INDEX:
                                     choose_level____execute<BasicWordIndex>(params);
@@ -305,10 +301,7 @@ namespace uva {
                          * file and query the trie for frequencies.
                          * @param params the runtime program parameters
                          */
-                        static void perform_tasks(__executor::lm_exec_params & params) {
-                            //Set the maximum level from to be constant
-                            //ToDo: Make this an lm_query program argument
-                            params.lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
+                        static void perform_tasks(const __executor::lm_exec_params & params) {
                             choose_word_index____execute(params);
                         }
                     }

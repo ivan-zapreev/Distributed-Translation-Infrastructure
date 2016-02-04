@@ -146,6 +146,13 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.lm_params.m_model_file_name = p_model_arg->getValue();
     params.m_queries_file_name = p_query_arg->getValue();
     params.lm_params.m_trie_type_name = p_trie_type_arg->getValue();
+
+    //Set the maximum level from to be constant
+    //ToDo: Make this an lm_query program argument
+    params.lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
+
+    //Set the trie and word index type
+    __configurator::get_trie_and_word_index_types(params.lm_params);
 }
 
 /**
