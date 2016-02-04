@@ -69,35 +69,15 @@ namespace uva {
                         typedef struct {
                             //Stores the language model specific parameters
                             lm_parameters lm_params;
-                            
+
                             //Stores true if the cumulative probability is to be computed
                             //for each M-gram, otherwise false, and then we only compute
                             //one conditional probability for this M-gram
                             bool is_cumulative_prob;
-                            
+
                             //The test file name
                             string m_queries_file_name;
-                        }lm_exec_params;
-
-                        /**
-                         * This method is used to read from the corpus and initialize the Trie
-                         * @param fstr the file to read data from
-                         * @param trie the trie to put the data into
-                         */
-                        template<typename TrieType, typename TFileReaderModel>
-                        static void fill_in_trie(TFileReaderModel & fstr, TrieType & trie) {
-                            //A trie container and the corps file stream are already instantiated and are given
-
-                            //A.1. Create the TrieBuilder and give the trie to it
-                            ARPATrieBuilder<TrieType, TFileReaderModel> builder(trie, fstr);
-
-                            LOG_INFO3 << "Collision detections are: "
-                                    << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                                    << " !" << END_LOG;
-
-                            //A.2. Build the trie
-                            builder.build();
-                        }
+                        } lm_exec_params;
 
                         /**
                          * Allows to read and execute test queries from the given file on the given trie.
@@ -106,7 +86,7 @@ namespace uva {
                          * @return the CPU seconds used to run the queries, without time needed to read the test file
                          */
                         template<typename TrieType, typename TrieQueryType, typename TFileReaderQuery>
-                        static void read_and_execute_queries(TrieType & trie, TFileReaderQuery &testFile) {
+                        static void execute(TrieType & trie, TFileReaderQuery &testFile) {
                             //Declare time variables for CPU times in seconds
                             double startTime = 0.0, endTime = 0.0;
                             //Will store the read line (word1 word2 word3 word4 word5)
@@ -137,8 +117,28 @@ namespace uva {
                             LOG_USAGE << "Total query execution time is " << (endTime - startTime) << " CPU seconds." << END_LOG;
                         }
 
-                        template<typename TrieType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
-                        void execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
+                        /**
+                         * This method is used to read from the corpus and initialize the Trie
+                         * @param fstr the file to read data from
+                         * @param trie the trie to put the data into
+                         */
+                        template<typename TrieType, typename TFileReaderModel>
+                        static void fill_in_trie(TFileReaderModel & fstr, TrieType & trie) {
+                            //A trie container and the corps file stream are already instantiated and are given
+
+                            //A.1. Create the TrieBuilder and give the trie to it
+                            ARPATrieBuilder<TrieType, TFileReaderModel> builder(trie, fstr);
+
+                            LOG_INFO3 << "Collision detections are: "
+                                    << (DO_SANITY_CHECKS ? "ON" : "OFF")
+                                    << " !" << END_LOG;
+
+                            //A.2. Build the trie
+                            builder.build();
+                        }
+
+                        template<typename TrieType, typename TFileReaderModel, typename TFileReaderQuery>
+                        void load_execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                             //Get the word index type and make an instance of the word index
                             typename TrieType::WordIndexType word_index(params.lm_params.m_word_index_mem_fact);
                             //Make an instance of the trie
@@ -173,10 +173,10 @@ namespace uva {
                             StatisticsMonitor::getMemoryStatistics(memStatEnd);
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-                            if (IS_CUM_QUERY) {
-                                read_and_execute_queries<TrieType, T_M_Gram_Cumulative_Query < TrieType >> (trie, testFile);
+                            if (params.is_cumulative_prob) {
+                                execute<TrieType, T_M_Gram_Cumulative_Query < TrieType >> (trie, testFile);
                             } else {
-                                read_and_execute_queries<TrieType, T_M_Gram_Single_Query < TrieType >> (trie, testFile);
+                                execute<TrieType, T_M_Gram_Single_Query < TrieType >> (trie, testFile);
                             }
                             testFile.close();
 
@@ -184,100 +184,8 @@ namespace uva {
                             LOG_USAGE << "Cleaning up memory ..." << END_LOG;
                         }
 
-                        template<typename WordIndexType, bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
-                        static void choose_trie_type_and_execute(const __executor::lm_exec_params& params,
-                                TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            switch (params.lm_params.m_trie_type) {
-                                case TrieTypesEnum::C2DH_TRIE:
-                                    execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::C2DM_TRIE:
-                                    execute < C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::C2WA_TRIE:
-                                    execute < C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::W2CA_TRIE:
-                                    execute < W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::W2CH_TRIE:
-                                    execute < W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY> (params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::G2DM_TRIE:
-                                    execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case TrieTypesEnum::H2DM_TRIE:
-                                    execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                default:
-                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.lm_params.m_trie_type));
-                            }
-                        }
-
-                        /**
-                         * Allows to execute the trie tasks: create/fill/execute queries
-                         * @param params the execution parameters
-                         * @param modelFile the model file existing and opened, will be closed by this function
-                         * @param testFile the model file existing and opened, will be closed by this function
-                         */
-                        template<bool IS_CUM_QUERY, typename TFileReaderModel, typename TFileReaderQuery>
-                        static void choose_word_index_and_execute(
-                                __executor::lm_exec_params& params,
-                                TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
-
-                            //Chose the word index type and then the trie type
-                            params.lm_params.m_word_index_mem_fact = __AWordIndex::MEMORY_FACTOR;
-                            switch (params.lm_params.m_word_index_type) {
-                                case WordIndexTypesEnum::BASIC_WORD_INDEX:
-                                    choose_trie_type_and_execute<BasicWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case WordIndexTypesEnum::COUNTING_WORD_INDEX:
-                                    choose_trie_type_and_execute<CountingWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX:
-                                    choose_trie_type_and_execute<OptimizingWordIndex<BasicWordIndex>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
-                                    choose_trie_type_and_execute<OptimizingWordIndex<CountingWordIndex>, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                case WordIndexTypesEnum::HASHING_WORD_INDEX:
-                                    choose_trie_type_and_execute<HashingWordIndex, IS_CUM_QUERY>(params, modelFile, testFile);
-                                    break;
-                                default:
-                                    stringstream msg;
-                                    msg << "Unrecognized word index type: " << params.lm_params.m_word_index_type;
-                                    throw Exception(msg.str());
-                            }
-                        }
-
-                        /**
-                         * Allows to specify the remaining parameters and then to construct and trie, fill it with data and execute queries
-                         * @param params the run parameters
-                         * @param modelFile the open model file, will be closed within this call stack
-                         * @param testFile the open queries file, will be closed within this call stack
-                         */
-                        template<typename TFileReaderModel, typename TFileReaderQuery>
-                        static void choose_and_execute(__executor::lm_exec_params& params,
-                                TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            //First set the trie and word index type
-                            __configurator::get_trie_and_word_index_types(params.lm_params);
-
-                            //Instantiate the the proper templates and execute queries
-                            if (params.is_cumulative_prob) {
-                                choose_word_index_and_execute<true>(params, modelFile, testFile);
-                            } else {
-                                choose_word_index_and_execute<false>(params, modelFile, testFile);
-                            }
-                        }
-
-                        /**
-                         * This method will perform the main tasks of this application:
-                         * Read the text corpus and create a trie and then read the test
-                         * file and query the trie for frequencies.
-                         * @param params the runtime program parameters
-                         */
-                        static void perform_tasks(__executor::lm_exec_params& params) {
+                        template<typename TrieType>
+                        void check_load_execute(const __executor::lm_exec_params& params) {
                             //Declare the statistics monitor and its data
                             TMemotyUsage memStatStart = {}, memStatEnd = {};
 
@@ -286,26 +194,18 @@ namespace uva {
                             StatisticsMonitor::getMemoryStatistics(memStatStart);
 
                             //Attempt to open the model file
-                            //ToDo: Add the possibility to choose between the file readers from the command line!
-                            //MemoryMappedFileReader modelFile(params.m_model_file_name.c_str());
-                            //FileStreamReader modelFile(params.m_model_file_name.c_str());
                             CStyleFileReader modelFile(params.lm_params.m_model_file_name.c_str());
                             modelFile.log_reader_type_usage_info();
                             LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
                             StatisticsMonitor::getMemoryStatistics(memStatEnd);
-                            //LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-                            //report_memory_usage("Opening the Language Model file", memStatStart, memStatEnd, false);
 
-                            //ToDo: Add the possibility to choose between the file readers from the command line!
                             //Attempt to open the test file
                             MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
-                            //FileStreamReader testFile(params.m_queries_file_name.c_str());
-                            //CStyleFileReader testFile(params.m_queries_file_name.c_str());
 
                             //If the files could be opened then proceed with training and then testing
                             if ((modelFile.is_open()) && (testFile.is_open())) {
                                 //Choose needed class types and execute the trie tasks: create/fill/execute queries
-                                choose_and_execute(params, modelFile, testFile);
+                                load_execute<TrieType>(params, modelFile, testFile);
                             } else {
                                 stringstream msg;
                                 msg << "One of the input files does not exist: " +
@@ -318,6 +218,75 @@ namespace uva {
                             LOG_INFO << "Done" << END_LOG;
                         }
 
+                        template<typename WordIndexType>
+                        static void choose_trie_check_load_execute(const __executor::lm_exec_params & params) {
+                            switch (params.lm_params.m_trie_type) {
+                                case TrieTypesEnum::C2DH_TRIE:
+                                    check_load_execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::C2DM_TRIE:
+                                    check_load_execute < C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::C2WA_TRIE:
+                                    check_load_execute < C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::W2CA_TRIE:
+                                    check_load_execute < W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::W2CH_TRIE:
+                                    check_load_execute < W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::G2DM_TRIE:
+                                    check_load_execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                case TrieTypesEnum::H2DM_TRIE:
+                                    check_load_execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.lm_params.m_trie_type));
+                            }
+                        }
+
+                        static void choose_word_index_choose_trie_check_load_execute(__executor::lm_exec_params & params) {
+                            LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
+
+                            //First set the trie and word index type
+                            __configurator::get_trie_and_word_index_types(params.lm_params);
+
+                            //Chose the word index type and then the trie type
+                            params.lm_params.m_word_index_mem_fact = __AWordIndex::MEMORY_FACTOR;
+                            switch (params.lm_params.m_word_index_type) {
+                                case WordIndexTypesEnum::BASIC_WORD_INDEX:
+                                    choose_trie_check_load_execute<BasicWordIndex>(params);
+                                    break;
+                                case WordIndexTypesEnum::COUNTING_WORD_INDEX:
+                                    choose_trie_check_load_execute<CountingWordIndex>(params);
+                                    break;
+                                case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX:
+                                    choose_trie_check_load_execute<OptimizingWordIndex < BasicWordIndex >> (params);
+                                    break;
+                                case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
+                                    choose_trie_check_load_execute<OptimizingWordIndex < CountingWordIndex >> (params);
+                                    break;
+                                case WordIndexTypesEnum::HASHING_WORD_INDEX:
+                                    choose_trie_check_load_execute<HashingWordIndex>(params);
+                                    break;
+                                default:
+                                    stringstream msg;
+                                    msg << "Unrecognized word index type: " << params.lm_params.m_word_index_type;
+                                    throw Exception(msg.str());
+                            }
+                        }
+
+                        /**
+                         * This method will perform the main tasks of this application:
+                         * Read the text corpus and create a trie and then read the test
+                         * file and query the trie for frequencies.
+                         * @param params the runtime program parameters
+                         */
+                        static void perform_tasks(__executor::lm_exec_params & params) {
+                            choose_word_index_choose_trie_check_load_execute(params);
+                        }
                     }
                 }
             }

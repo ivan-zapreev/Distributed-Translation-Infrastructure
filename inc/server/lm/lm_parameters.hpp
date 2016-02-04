@@ -27,6 +27,7 @@
 #define LANGUAGE_MODEL_PARAMETERS_HPP
 
 #include "trie_configs.hpp"
+#include "trie_constants.hpp"
 
 namespace uva {
     namespace smt {
@@ -43,6 +44,9 @@ namespace uva {
 
                         //The Trie type name, is defined by the user
                         string m_trie_type_name;
+                        
+                        //Stores the maximum trie level, is defined by the user
+                        TModelLevel m_max_trie_level;
 
                         //The word index type to be used with the trie, is
                         //defined by the implementation from the used input

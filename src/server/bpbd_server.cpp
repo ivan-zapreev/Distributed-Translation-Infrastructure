@@ -163,13 +163,19 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 << params.m_de_params.m_target_lang << "' on port: '" << params.m_de_params.m_server_port
                 << "' translation threads: '" << params.m_de_params.m_num_threads << "'" << END_LOG;
 
-        section = "Input Models";
+        section = "Language Models";
         params.m_lm_params.m_model_file_name = get_string(ini, section, "language_model");
         LOG_INFO << "Language model file: " << params.m_lm_params.m_model_file_name << END_LOG;
         params.m_lm_params.m_trie_type_name = get_string(ini, section, "trie_type_name");
         LOG_INFO << "Trie type name: " << params.m_lm_params.m_trie_type_name << END_LOG;
+        params.m_lm_params.m_max_trie_level = get_integer<uint8_t>(ini, section, "max_trie_level");
+        LOG_INFO << "The trie maximum level: " << params.m_lm_params.m_max_trie_level << END_LOG;
+        
+        section = "Translation Models";
         params.m_tm_params.m_model_file_name = get_string(ini, section, "translation_model");
         LOG_INFO << "Translation model file: " << params.m_tm_params.m_model_file_name << END_LOG;
+        
+        section = "Reordering Models";
         params.m_rm_params.m_model_file_name = get_string(ini, section, "reordering_model");
         LOG_INFO << "Reordering model file: " << params.m_rm_params.m_model_file_name << END_LOG;
 
