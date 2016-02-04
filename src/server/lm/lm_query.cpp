@@ -44,7 +44,7 @@
 #include "common/utils/file/file_stream_reader.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
-#include "server/lm/executor.hpp"
+#include "server/lm/lm_executor.hpp"
 
 using namespace std;
 using namespace TCLAP;

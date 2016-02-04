@@ -15,13 +15,15 @@
           <in>decoder_parameters.hpp</in>
         </df>
         <df name="lm">
-          <in>configurator.hpp</in>
+          <in>lm_configurator.hpp</in>
           <in>lm_parameters.hpp</in>
         </df>
         <df name="rm">
+          <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
+          <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
         <in>server_parameters.hpp</in>
@@ -123,13 +125,17 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/server/lm/configurator.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/server/lm/lm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/lm/lm_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/rm/rm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/rm/rm_parameters.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/server_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/tm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/tm/tm_parameters.hpp" ex="false" tool="3" flavor2="0">
       </item>

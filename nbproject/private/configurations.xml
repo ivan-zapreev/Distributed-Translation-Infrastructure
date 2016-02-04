@@ -652,16 +652,18 @@
             <in>W2CHybridTrie.hpp</in>
             <in>WordIndexTrieBase.hpp</in>
           </df>
-          <in>configurator.hpp</in>
-          <in>executor.hpp</in>
+          <in>lm_configurator.hpp</in>
+          <in>lm_executor.hpp</in>
           <in>lm_parameters.hpp</in>
           <in>trie_configs.hpp</in>
           <in>trie_constants.hpp</in>
         </df>
         <df name="rm">
+          <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
+          <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
         <in>server_parameters.hpp</in>

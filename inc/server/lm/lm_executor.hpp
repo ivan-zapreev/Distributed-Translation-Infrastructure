@@ -23,8 +23,8 @@
  * Created on September 18, 2015, 7:10 PM
  */
 
-#ifndef EXECUTOR_HPP
-#define EXECUTOR_HPP
+#ifndef LM_EXECUTOR_HPP
+#define LM_EXECUTOR_HPP
 
 #include <string>
 #include <vector>
@@ -32,7 +32,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/lm/configurator.hpp"
+#include "server/lm/lm_configurator.hpp"
 #include "server/lm/lm_parameters.hpp"
 #include "server/lm/trie_constants.hpp"
 

@@ -23,8 +23,8 @@
  * Created on February 4, 2016, 1:32 PM
  */
 
-#ifndef CONFIGURATOR_HPP
-#define CONFIGURATOR_HPP
+#ifndef LM_CONFIGURATOR_HPP
+#define LM_CONFIGURATOR_HPP
 
 #include "server/lm/lm_parameters.hpp"
 
