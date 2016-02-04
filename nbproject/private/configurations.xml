@@ -652,6 +652,7 @@
             <in>W2CHybridTrie.hpp</in>
             <in>WordIndexTrieBase.hpp</in>
           </df>
+          <in>lm_config_utils.hpp</in>
           <in>lm_configurator.hpp</in>
           <in>lm_executor.hpp</in>
           <in>lm_parameters.hpp</in>
@@ -718,6 +719,7 @@
             <in>w2c_array_trie.cpp</in>
             <in>w2c_hybrid_trie.cpp</in>
           </df>
+          <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>

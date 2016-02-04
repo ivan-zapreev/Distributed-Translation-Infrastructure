@@ -12,6 +12,7 @@ set(CMAKE_CXX_FLAGS "-std=c++0x -Wall -m64 -Wno-unused-local-typedef")
 #Bring the source files into the project
 set(LM_QUERY_SOURCES 
     src/server/lm/lm_query.cpp
+    src/server/lm/lm_configurator.cpp
     src/server/lm/tries/w2c_hybrid_trie.cpp
     src/server/lm/tries/w2c_array_trie.cpp
     src/server/lm/tries/h2d_map_trie.cpp
@@ -35,6 +36,21 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/common/utils/logging/logger.cpp
+    src/server/lm/lm_configurator.cpp
+    src/server/lm/tries/w2c_hybrid_trie.cpp
+    src/server/lm/tries/w2c_array_trie.cpp
+    src/server/lm/tries/h2d_map_trie.cpp
+    src/server/lm/tries/g2d_map_trie.cpp
+    src/server/lm/tries/c2w_array_trie.cpp
+    src/server/lm/tries/c2d_map_trie.cpp
+    src/server/lm/tries/c2d_hybrid_trie.cpp
+    src/server/lm/ngrams/byte_m_gram_id.cpp
+    src/server/lm/dictionaries/aword_index.cpp
+    src/server/lm/builders/arpa_trie_builder.cpp
+    src/server/lm/builders/arpa_gram_builder.cpp
+    src/common/utils/monitore/statistics_monitor.cpp 
+    src/common/utils/logging/logger.cpp
+    src/common/utils/xxhash.c
     src/common/messaging/trans_job_code.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp

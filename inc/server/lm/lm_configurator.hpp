@@ -26,9 +26,12 @@
 #ifndef LM_CONFIGURATOR_HPP
 #define LM_CONFIGURATOR_HPP
 
-#include "common/utils/monitore/statistics_monitore.hpp"
-
 #include "server/lm/lm_parameters.hpp"
+#include "server/lm/trie_constants.hpp"
+
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/monitore/statistics_monitore.hpp"
 
 #include "server/lm/tries/C2DMapTrie.hpp"
 #include "server/lm/tries/W2CHybridTrie.hpp"
@@ -39,125 +42,112 @@
 #include "server/lm/tries/H2DMapTrie.hpp"
 
 using namespace uva::utils::monitore;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 
 namespace uva {
     namespace smt {
         namespace translation {
             namespace server {
                 namespace lm {
-                    namespace __configurator {
 
-                        //Initialize constants
-                        static const string TC2DMapTrie_STR = string("c2dm");
-                        static const string TW2CHybridTrie_STR = string("w2ch");
-                        static const string TC2WArrayTrie_STR = string("c2wa");
-                        static const string TW2CArrayTrie_STR = string("w2ca");
-                        static const string C2DHybridTrie_STR = string("c2dh");
-                        static const string G2DMapTrie_STR = string("g2dm");
-                        static const string H2DMapTrie_STR = string("h2dm");
+                    //Make a forward declaration of the the lm query executor
+                    class lm_query_executor;
+
+                    /**
+                     * This class represents a singleton that allows to
+                     * configure the language model and then issues.
+                     * query proxy objects for performing the queries
+                     * against the internally encapsulated language model(s).
+                     */
+                    class lm_configurator {
+                    public:
 
                         /**
-                         * Returns the default trie type name string
-                         * @return the default trie type name string
+                         * This method allows to set the configuration parameters
+                         * for the word index trie etc. This method is to be called
+                         * only once! The latter is not checked but is a must.
+                         * @param params the language model parameters to be set.
                          */
-                        string get_default_trie_type_str() {
-                            //ToDo: Make configurable via the Configuration.h or Globals.h
-                            return TC2WArrayTrie_STR;
+                        static void configure(const lm_parameters & params) {
+                            m_params = params;
+
+                            //Detect which trie configuration is to be used
+                            detect_trie_identifier();
+
+                            //Load the trie data from the model file
+                            load_trie_data();
                         }
 
                         /**
-                         * Allows to get a string with all available (known to the factory) trie types
-                         * @param p_supported_tries the pointer to the vector to be filled in with supported tries
+                         * Allows to return an instance of the query executor,
+                         * is to be destroyed by the client class.
+                         * @return an instance of the query executor.
                          */
-                        static inline void get_trie_types_str(vector<string> * p_supported_tries) {
-                            p_supported_tries->push_back(TC2DMapTrie_STR);
-                            p_supported_tries->push_back(TW2CHybridTrie_STR);
-                            p_supported_tries->push_back(TC2WArrayTrie_STR);
-                            p_supported_tries->push_back(TW2CArrayTrie_STR);
-                            p_supported_tries->push_back(C2DHybridTrie_STR);
-                            p_supported_tries->push_back(G2DMapTrie_STR);
-                            p_supported_tries->push_back(H2DMapTrie_STR);
+                        static lm_query_executor * get_query_executor() {
+                            //ToDo: Implement return the query executor proxy class
+                            return NULL;
+                        }
+
+                    protected:
+                        
+                        //static uint32_t compute_trie_id(const uint8_t max_m_gram_level, ){}
+
+                        /**
+                         * Allows to detect the requested trie type, including the needed the word index class
+                         * In case the given combination is not supported an exception is thrown.
+                         */
+                        static void detect_trie_identifier() {
+                            //Check that the trie maximum trie level is supported
+                            ASSERT_CONDITION_THROW((m_params.m_max_trie_level != M_GRAM_LEVEL_MAX),
+                                    string("Unsupported trie max level: ") + std::to_string(m_params.m_max_trie_level));
+                            
+                            //Perform a number of checks on the type of the word index
+                            ASSERT_CONDITION_THROW(
+                                    ((m_params.m_word_index_type <= WordIndexTypesEnum::UNDEFINED_WORD_INDEX) ||
+                                    (m_params.m_word_index_type <= WordIndexTypesEnum::size_word_index)),
+                                    string("Unsupported word index type: ") + std::to_string(m_params.m_word_index_type));
+                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == WordIndexTypesEnum::BASIC_WORD_INDEX),
+                                    string("The basic word index type is not supported"));
+                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == WordIndexTypesEnum::COUNTING_WORD_INDEX),
+                                    string("The counting word index type is not supported"));
+                            
+                            //Check that the trie type is well defined
+                            ASSERT_CONDITION_THROW(
+                                    ((m_params.m_trie_type <= TrieTypesEnum::UNDEFINED_TRIE) ||
+                                    (m_params.m_trie_type <= TrieTypesEnum::size_trie)),
+                                    string("Unsupported trie type: ") + std::to_string(m_params.m_trie_type));
+
+                            //Perform a check that the Hashing based trie is only used with the hashing index
+                            ASSERT_CONDITION_THROW(
+                                    ((m_params.m_word_index_type != WordIndexTypesEnum::COUNTING_WORD_INDEX) &&
+                                    (m_params.m_trie_type == TrieTypesEnum::H2DM_TRIE)),
+                                    string("The h2dm trie is only designed to work with the Hashing Word Index!"));
+                            
+                            //ToDo: based on the parameters detect which trie configuration is to be used
                         }
 
                         /**
-                         * Based on the trie name stored in the parameters allows
-                         * to determine the trie type and the appropriate word
-                         * index for the trie.
-                         * @param params the parameters storing structure in/out
+                         * Allows to load the trie model into the trie instance of the selected class with
+                         * the given word index type
                          */
-                        static void get_trie_and_word_index_types(lm_parameters& params) {
-                            if (params.m_trie_type_name == TC2DMapTrie_STR) {
-                                params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
-                                params.m_trie_type = TrieTypesEnum::C2DM_TRIE;
-                            } else {
-                                if (params.m_trie_type_name == TW2CHybridTrie_STR) {
-                                    params.m_word_index_type = __W2CHybridTrie::WORD_INDEX_TYPE;
-                                    params.m_trie_type = TrieTypesEnum::W2CH_TRIE;
-                                } else {
-                                    if (params.m_trie_type_name == TC2WArrayTrie_STR) {
-                                        params.m_word_index_type = __C2WArrayTrie::WORD_INDEX_TYPE;
-                                        params.m_trie_type = TrieTypesEnum::C2WA_TRIE;
-                                    } else {
-                                        if (params.m_trie_type_name == TW2CArrayTrie_STR) {
-                                            params.m_word_index_type = __W2CArrayTrie::WORD_INDEX_TYPE;
-                                            params.m_trie_type = TrieTypesEnum::W2CA_TRIE;
-                                        } else {
-                                            if (params.m_trie_type_name == C2DHybridTrie_STR) {
-                                                params.m_word_index_type = __C2DHybridTrie::WORD_INDEX_TYPE;
-                                                params.m_trie_type = TrieTypesEnum::C2DH_TRIE;
-                                            } else {
-                                                if (params.m_trie_type_name == G2DMapTrie_STR) {
-                                                    params.m_word_index_type = __G2DMapTrie::WORD_INDEX_TYPE;
-                                                    params.m_trie_type = TrieTypesEnum::G2DM_TRIE;
-                                                } else {
-                                                    if (params.m_trie_type_name == H2DMapTrie_STR) {
-                                                        params.m_word_index_type = __H2DMapTrie::WORD_INDEX_TYPE;
-                                                        params.m_trie_type = TrieTypesEnum::H2DM_TRIE;
-                                                    } else {
-                                                        THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type_name);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        static void load_trie_data() {
+                            //ToDo: load the trie data from the model file
                         }
 
-                        //The number of bytes in one Mb
-                        const uint32_t BYTES_ONE_MB = 1024u;
+                    private:
+                        //Stores the copy of the configuration parameters
+                        static lm_parameters m_params;
+                        //Stores the trie identifier type computed based on the lm parameters
+                        static uint32_t m_trie_id;
 
-                        /**
-                         * This function is meant to give the memory statistics information delta
-                         * @param action the monitored action
-                         * @param msStart the start memory usage statistics
-                         * @param msEnd the end memory usage statistics
-                         * @param isDoInfo true if the memory info may be print
-                         */
-                        static void report_memory_usage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
-                            LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
-                            LOG_DEBUG << "\tmemory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
-                                    << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
-                                    << " Kb, vmhwm=" << SSTR(msStart.vmhwm) << " Kb" << END_LOG;
-                            LOG_DEBUG << "memory after: vmsize=" << SSTR(msEnd.vmsize) << " Kb, vmpeak="
-                                    << SSTR(msEnd.vmpeak) << " Kb, vmrss=" << SSTR(msEnd.vmrss)
-                                    << " Kb, vmhwm=" << SSTR(msEnd.vmhwm) << " Kb" << END_LOG;
+                        //Make instances of all the currently supported word index types
+                        static OptimizingWordIndex < BasicWordIndex > m_opt_basic_wi;
+                        static OptimizingWordIndex < CountingWordIndex > m_opt_count_wi;
+                        static HashingWordIndex m_hashing_wi;
 
-                            int vmsize = ((msEnd.vmsize < msStart.vmsize) ? 0 : msEnd.vmsize - msStart.vmsize) / BYTES_ONE_MB;
-                            int vmpeak = ((msEnd.vmpeak < msStart.vmpeak) ? 0 : msEnd.vmpeak - msStart.vmpeak) / BYTES_ONE_MB;
-                            int vmrss = ((msEnd.vmrss < msStart.vmrss) ? 0 : msEnd.vmrss - msStart.vmrss) / BYTES_ONE_MB;
-                            int vmhwm = ((msEnd.vmhwm < msStart.vmhwm) ? 0 : msEnd.vmhwm - msStart.vmhwm) / BYTES_ONE_MB;
-                            LOG_USAGE << showpos << "vmsize=" << vmsize << " Mb, vmpeak=" << vmpeak
-                                    << " Mb, vmrss=" << vmrss << " Mb, vmhwm=" << vmhwm
-                                    << " Mb" << noshowpos << END_LOG;
-                            if (isDoInfo) {
-                                LOG_INFO << "  vmsize - Virtual memory size; vmpeak - Peak virtual memory size" << END_LOG;
-                                LOG_INFO << "    Virtual memory size is how much virtual memory the process has in total (RAM+SWAP)" << END_LOG;
-                                LOG_INFO << "  vmrss  - Resident set size; vmhwm  - Peak resident set size" << END_LOG;
-                                LOG_INFO << "    Resident set size is how much memory this process currently has in main memory (RAM)" << END_LOG;
-                            }
-                        }
-                    }
+                        //Make instances of all the currently supported trie combinations
+                    };
                 }
             }
         }
