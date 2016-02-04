@@ -138,7 +138,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel, typename TFileReaderQuery>
-                        void load_execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
+                        void load_data____execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
                             //Get the word index type and make an instance of the word index
                             typename TrieType::WordIndexType word_index(params.lm_params.m_word_index_mem_fact);
                             //Make an instance of the trie
@@ -185,7 +185,7 @@ namespace uva {
                         }
 
                         template<typename TrieType>
-                        void check_load_execute(const __executor::lm_exec_params& params) {
+                        void check_files____execute(const __executor::lm_exec_params& params) {
                             //Declare the statistics monitor and its data
                             TMemotyUsage memStatStart = {}, memStatEnd = {};
 
@@ -205,7 +205,7 @@ namespace uva {
                             //If the files could be opened then proceed with training and then testing
                             if ((modelFile.is_open()) && (testFile.is_open())) {
                                 //Choose needed class types and execute the trie tasks: create/fill/execute queries
-                                load_execute<TrieType>(params, modelFile, testFile);
+                                load_data____execute<TrieType>(params, modelFile, testFile);
                             } else {
                                 stringstream msg;
                                 msg << "One of the input files does not exist: " +
@@ -218,36 +218,57 @@ namespace uva {
                             LOG_INFO << "Done" << END_LOG;
                         }
 
-                        template<typename WordIndexType>
-                        static void choose_trie_check_load_execute(const __executor::lm_exec_params & params) {
+                        template<TModelLevel MAX_LEVEL, typename WordIndexType>
+                        static void choose_trie____execute(const __executor::lm_exec_params & params) {
                             switch (params.lm_params.m_trie_type) {
                                 case TrieTypesEnum::C2DH_TRIE:
-                                    check_load_execute < C2DHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < C2DHybridTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::C2DM_TRIE:
-                                    check_load_execute < C2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < C2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::C2WA_TRIE:
-                                    check_load_execute < C2WArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < C2WArrayTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::W2CA_TRIE:
-                                    check_load_execute < W2CArrayTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < W2CArrayTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::W2CH_TRIE:
-                                    check_load_execute < W2CHybridTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < W2CHybridTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::G2DM_TRIE:
-                                    check_load_execute < G2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < G2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 case TrieTypesEnum::H2DM_TRIE:
-                                    check_load_execute < H2DMapTrie<M_GRAM_LEVEL_MAX, WordIndexType >> (params);
+                                    check_files____execute < H2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 default:
                                     THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.lm_params.m_trie_type));
                             }
                         }
 
-                        static void choose_word_index_choose_trie_check_load_execute(__executor::lm_exec_params & params) {
+                        template<typename WordIndexType>
+                        static void choose_level____execute(const __executor::lm_exec_params & params) {
+                            switch (params.lm_params.m_max_trie_level) {
+                                //ToDo: In order to allow for more m-gram levels we need to instantiate more templates in the Trie headers
+                                //case M_GRAM_LEVEL_3:
+                                //    choose_trie____execute < M_GRAM_LEVEL_3, WordIndexType > (params);
+                                //    break;
+                                //case M_GRAM_LEVEL_4:
+                                //    choose_trie____execute < M_GRAM_LEVEL_4, WordIndexType > (params);
+                                //    break;
+                                case M_GRAM_LEVEL_5:
+                                    choose_trie____execute < M_GRAM_LEVEL_5, WordIndexType > (params);
+                                    break;
+                                //case M_GRAM_LEVEL_6:
+                                //    choose_trie____execute < M_GRAM_LEVEL_6, WordIndexType > (params);
+                                //    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported trie max level: ") + std::to_string(params.lm_params.m_max_trie_level));
+                            }
+                        }
+
+                        static void choose_word_index____execute(__executor::lm_exec_params & params) {
                             LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
 
                             //First set the trie and word index type
@@ -257,19 +278,19 @@ namespace uva {
                             params.lm_params.m_word_index_mem_fact = __AWordIndex::MEMORY_FACTOR;
                             switch (params.lm_params.m_word_index_type) {
                                 case WordIndexTypesEnum::BASIC_WORD_INDEX:
-                                    choose_trie_check_load_execute<BasicWordIndex>(params);
+                                    choose_level____execute<BasicWordIndex>(params);
                                     break;
                                 case WordIndexTypesEnum::COUNTING_WORD_INDEX:
-                                    choose_trie_check_load_execute<CountingWordIndex>(params);
+                                    choose_level____execute<CountingWordIndex>(params);
                                     break;
                                 case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX:
-                                    choose_trie_check_load_execute<OptimizingWordIndex < BasicWordIndex >> (params);
+                                    choose_level____execute<OptimizingWordIndex < BasicWordIndex >> (params);
                                     break;
                                 case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
-                                    choose_trie_check_load_execute<OptimizingWordIndex < CountingWordIndex >> (params);
+                                    choose_level____execute<OptimizingWordIndex < CountingWordIndex >> (params);
                                     break;
                                 case WordIndexTypesEnum::HASHING_WORD_INDEX:
-                                    choose_trie_check_load_execute<HashingWordIndex>(params);
+                                    choose_level____execute<HashingWordIndex>(params);
                                     break;
                                 default:
                                     stringstream msg;
@@ -285,7 +306,10 @@ namespace uva {
                          * @param params the runtime program parameters
                          */
                         static void perform_tasks(__executor::lm_exec_params & params) {
-                            choose_word_index_choose_trie_check_load_execute(params);
+                            //Set the maximum level from to be constant
+                            //ToDo: Make this an lm_query program argument
+                            params.lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
+                            choose_word_index____execute(params);
                         }
                     }
                 }
