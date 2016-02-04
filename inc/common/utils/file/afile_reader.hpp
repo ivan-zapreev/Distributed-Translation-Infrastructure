@@ -39,17 +39,6 @@ namespace uva {
         namespace file {
 
             /**
-             * THis method creates a string for the "file exists" information
-             * @param fname the file name
-             * @param isPresent true if the file is present
-             * @return the resulting string to be print
-             */
-            string get_file_exists_string(string const & fname, bool isPresent) {
-                string result = ((bool) isPresent ? "is present" : "is missing");
-                return fname + " (" + result + ")";
-            }
-
-            /**
              * This is an abstract base class for the file readers
              * we are going to be using to read model files
              */
@@ -70,6 +59,18 @@ namespace uva {
                  * @return true if the file exists, otherwise false
                  */
                 virtual operator bool() const = 0;
+
+                /**
+                 * This method creates a string for the "file exists" information
+                 * ToDo: Get rid of the file name parameter, the file name should be known by the class instance!
+                 * @param fname the file name
+                 * @param isPresent true if the file is present
+                 * @return the resulting string to be print
+                 */
+                inline string get_file_exists_string(string const & fname) {
+                    string result = (this->operator bool() ? "is present" : "is missing");
+                    return fname + " (" + result + ")";
+                }
 
                 /**
                  * Allows to log the information about the instantiated file reader type

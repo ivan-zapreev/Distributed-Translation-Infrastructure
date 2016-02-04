@@ -309,9 +309,9 @@ namespace uva {
                             } else {
                                 stringstream msg;
                                 msg << "One of the input files does not exist: " +
-                                        get_file_exists_string(params.lm_params.m_model_file_name, (bool)modelFile)
+                                        modelFile.get_file_exists_string(params.lm_params.m_model_file_name)
                                         + " , " +
-                                        get_file_exists_string(params.m_queries_file_name, (bool)testFile);
+                                        testFile.get_file_exists_string(params.m_queries_file_name);
                                 throw Exception(msg.str());
                             }
 
