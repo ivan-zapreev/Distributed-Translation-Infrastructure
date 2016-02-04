@@ -44,7 +44,7 @@ using namespace std;
 using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::common::messaging;
 
 using websocketpp::connection_hdl;
 using websocketpp::log::elevel;
@@ -55,7 +55,7 @@ using websocketpp::lib::error_code;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace server {
 
                 /**

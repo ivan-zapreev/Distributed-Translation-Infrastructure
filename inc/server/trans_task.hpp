@@ -37,11 +37,11 @@ using namespace std;
 
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::common::messaging;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace server {
 
                 //Define the translation task pointer

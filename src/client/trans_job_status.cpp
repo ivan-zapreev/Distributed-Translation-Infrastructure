@@ -27,7 +27,7 @@
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace client {
 
                 //Define the status strings

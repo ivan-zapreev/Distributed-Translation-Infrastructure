@@ -49,9 +49,9 @@
 using namespace std;
 using namespace TCLAP;
 using namespace uva::smt;
-using namespace uva::smt::decoding::common;
-using namespace uva::smt::tries;
-using namespace uva::smt::tries::dictionary;
+using namespace uva::smt::translation::common;
+using namespace uva::smt::translation::server::lm;
+using namespace uva::smt::translation::server::lm::dictionary;
 using namespace uva::utils::file;
 using namespace uva::utils::logging;
 using namespace uva::utils::text;
@@ -130,7 +130,7 @@ void destroy_arguments_parser() {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, __Executor::TExecutionParams & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, __Executor::lm_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        __Executor::TExecutionParams params = {};
+        __Executor::lm_parameters params = {};
 
         LOG_INFO << "Checking on the program arguments ..." << END_LOG;
 

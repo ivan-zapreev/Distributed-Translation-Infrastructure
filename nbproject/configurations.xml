@@ -11,6 +11,19 @@
         <in>trans_manager.hpp</in>
       </df>
       <df name="server">
+        <df name="decoder">
+          <in>decoder_parameters.hpp</in>
+        </df>
+        <df name="lm">
+          <in>lm_parameters.hpp</in>
+        </df>
+        <df name="rm">
+          <in>rm_parameters.hpp</in>
+        </df>
+        <df name="tm">
+          <in>tm_parameters.hpp</in>
+        </df>
+        <in>server_parameters.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_task.hpp</in>
@@ -103,6 +116,19 @@
       <item path="inc/client/trans_job_status.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/client/trans_manager.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/decoder/decoder_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/lm/lm_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/rm/rm_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/server_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/tm_parameters.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/trans_job.hpp" ex="false" tool="3" flavor2="0">
       </item>

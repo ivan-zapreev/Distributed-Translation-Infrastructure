@@ -51,7 +51,7 @@ using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace client {
 
                 /**

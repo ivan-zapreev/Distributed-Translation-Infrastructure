@@ -17,7 +17,7 @@ using namespace uva::utils::logging;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace common {
 
                 // Check windows

@@ -32,11 +32,11 @@
 #include "common/messaging/trans_job_response.hpp"
 
 using namespace uva::utils::exceptions;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::common::messaging;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace client {
 
                 //Do the forward definition of the class

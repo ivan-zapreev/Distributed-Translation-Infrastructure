@@ -33,13 +33,14 @@
 
 #include "main.hpp"
 
+#include "server/server_parameters.hpp"
 #include "server/translation_server.hpp"
 #include "common/utils/exceptions.hpp"
 
 using namespace std;
 using namespace TCLAP;
-using namespace uva::smt::decoding::server;
-using namespace uva::smt::decoding::common;
+using namespace uva::smt::translation::server;
+using namespace uva::smt::translation::common;
 using namespace uva::utils::exceptions;
 
 using websocketpp::lib::bind;
@@ -49,38 +50,6 @@ using websocketpp::lib::bind;
 
 //Declare the program exit letter
 #define PROGRAM_EXIT_LETTER 'q'
-
-/**
- * This structure stores the program execution parameters
- */
-typedef struct {
-    //The language model file name 
-    string m_language_model;
-    //The translation model file name 
-    string m_translation_model;
-    //The reordering model file name 
-    string m_reordering_model;
-
-    //The target language name
-    string m_target_lang;
-    //The source language name
-    string m_source_lang;
-
-    //The port to listen to
-    uint16_t m_server_port;
-
-    //The number of the translation threads to run
-    size_t m_num_threads;
-
-    //The distortion limit to use
-    uint32_t m_distortion_limit;
-    //The pruning threshold to be used
-    float m_pruning_threshold;
-    //The stack capacity for stack pruning
-    uint32_t m_stack_capacity;
-    //The stack expansion strategy
-    string m_expansion_strategy;
-} TExecutionParams;
 
 /**
  * This functions does nothing more but printing the program header information
@@ -163,7 +132,7 @@ float get_float(INI<> &ini, string section, string key) {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, TExecutionParams & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, server_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -250,7 +219,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        TExecutionParams params = {};
+        server_parameters params = {};
 
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);

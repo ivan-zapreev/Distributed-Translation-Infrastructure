@@ -38,7 +38,7 @@ using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace client {
 
                 /**

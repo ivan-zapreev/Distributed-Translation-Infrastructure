@@ -33,7 +33,7 @@ using namespace std::placeholders;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace server {
 
                 trans_task_pool::trans_task_pool(const size_t num_threads)

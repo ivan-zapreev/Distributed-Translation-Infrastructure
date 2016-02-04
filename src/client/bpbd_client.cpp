@@ -34,9 +34,9 @@
 
 using namespace std;
 using namespace TCLAP;
-using namespace uva::smt::decoding::client;
-using namespace uva::smt::decoding::common;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::client;
+using namespace uva::smt::translation::common;
+using namespace uva::smt::translation::common::messaging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
 

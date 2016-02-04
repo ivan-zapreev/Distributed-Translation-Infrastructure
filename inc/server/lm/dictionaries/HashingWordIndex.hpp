@@ -24,7 +24,7 @@
  */
 
 #ifndef HASHINGWORDINDEX_HPP
-#define	HASHINGWORDINDEX_HPP
+#define HASHINGWORDINDEX_HPP
 
 #include <string>   // std::string
 
@@ -40,106 +40,110 @@ using namespace std;
 using namespace uva::utils::file;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::hashing;
-using namespace uva::smt::tries;
+using namespace uva::smt::translation::server::lm;
 
 namespace uva {
     namespace smt {
-        namespace tries {
-            namespace dictionary {
+        namespace translation {
+            namespace server {
+                namespace lm {
+                    namespace dictionary {
 
-                /**
-                 * This is a hashing word index, it is trivial - each word gets an id which is its hash value.
-                 * This also means that any word is considered to be a known word. Therefore, in the Tries if
-                 * the word id has no associated payload then an unknown word payload is to be used.
-                 * Still the unknown and undefined word ids are reserved nd should not be issued.
-                 */
-                class HashingWordIndex : public AWordIndex<uint64_t> {
-                public:
+                        /**
+                         * This is a hashing word index, it is trivial - each word gets an id which is its hash value.
+                         * This also means that any word is considered to be a known word. Therefore, in the Tries if
+                         * the word id has no associated payload then an unknown word payload is to be used.
+                         * Still the unknown and undefined word ids are reserved nd should not be issued.
+                         */
+                        class HashingWordIndex : public AWordIndex<uint64_t> {
+                        public:
 
-                    /**
-                     * The basic constructor
-                     * @param memory_factor is not used, is here only for interface compliancy
-                     */
-                    HashingWordIndex(const float memory_factor) : AWordIndex<uint64_t>() {
+                            /**
+                             * The basic constructor
+                             * @param memory_factor is not used, is here only for interface compliancy
+                             */
+                            HashingWordIndex(const float memory_factor) : AWordIndex<uint64_t>() {
+                            }
+
+                            /**
+                             * @see AWordIndex
+                             */
+                            inline void reserve(const size_t num_words) {
+                                //does nothing
+                            };
+
+                            /**
+                             * @see AWordIndex
+                             */
+                            inline size_t get_number_of_words(const size_t num_words) const {
+                                return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
+                            };
+
+                            /**
+                             * Does not detect unknown words.
+                             * The returned word id is >= MIN_KNOWN_WORD_ID
+                             * @see AWordIndex
+                             */
+                            inline TWordIdType get_word_id(const TextPieceReader & token) const {
+                                //Return the word index making sure that it is at least
+                                //equal to two. So that the undefined and unknown word
+                                //indexes are not used and no overflow or other checks.
+                                const uint64_t hash_value = compute_hash(token.get_begin_c_str(), token.length());
+                                const TWordIdType word_id = hash_value | (1 << 1);
+                                LOG_DEBUG2 << "Hashing '" << token << "' into: " << hash_value << ", resulting id is: " << word_id << END_LOG;
+                                return word_id;
+                            };
+
+                            /**
+                             * The returned word id is >= MIN_KNOWN_WORD_ID
+                             * @see AWordIndex
+                             */
+                            inline bool is_word_registering_needed() const {
+                                return false;
+                            };
+
+                            /**
+                             * The word registration is not needed, for this word index.
+                             * @see AWordIndex
+                             */
+                            inline TWordIdType register_word(const TextPieceReader & token) {
+                                THROW_MUST_NOT_CALL();
+                            };
+
+                            /**
+                             * @see AWordIndex
+                             */
+                            inline bool is_word_counts_needed() const {
+                                return false;
+                            };
+
+                            /**
+                             * @see AWordIndex
+                             */
+                            inline bool is_post_actions_needed() const {
+                                return false;
+                            };
+
+                            /**
+                             * @see AWordIndex
+                             * @return false - this word index is not continuous.
+                             */
+                            static constexpr inline bool is_word_index_continuous() {
+                                return false;
+                            }
+
+                            /**
+                             * The basic destructor
+                             */
+                            virtual ~HashingWordIndex() {
+                            };
+                        };
                     }
-
-                    /**
-                     * @see AWordIndex
-                     */
-                    inline void reserve(const size_t num_words) {
-                        //does nothing
-                    };
-
-                    /**
-                     * @see AWordIndex
-                     */
-                    inline size_t get_number_of_words(const size_t num_words) const {
-                        return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
-                    };
-
-                    /**
-                     * Does not detect unknown words.
-                     * The returned word id is >= MIN_KNOWN_WORD_ID
-                     * @see AWordIndex
-                     */
-                    inline TWordIdType get_word_id(const TextPieceReader & token) const {
-                        //Return the word index making sure that it is at least
-                        //equal to two. So that the undefined and unknown word
-                        //indexes are not used and no overflow or other checks.
-                        const uint64_t hash_value = compute_hash(token.get_begin_c_str(), token.length());
-                        const TWordIdType word_id = hash_value | (1 << 1);
-                        LOG_DEBUG2 << "Hashing '" << token << "' into: " << hash_value << ", resulting id is: " << word_id << END_LOG;
-                        return word_id;
-                    };
-
-                    /**
-                     * The returned word id is >= MIN_KNOWN_WORD_ID
-                     * @see AWordIndex
-                     */
-                    inline bool is_word_registering_needed() const {
-                        return false;
-                    };
-
-                    /**
-                     * The word registration is not needed, for this word index.
-                     * @see AWordIndex
-                     */
-                    inline TWordIdType register_word(const TextPieceReader & token) {
-                        THROW_MUST_NOT_CALL();
-                    };
-
-                    /**
-                     * @see AWordIndex
-                     */
-                    inline bool is_word_counts_needed() const {
-                        return false;
-                    };
-
-                    /**
-                     * @see AWordIndex
-                     */
-                    inline bool is_post_actions_needed() const {
-                        return false;
-                    };
-
-                    /**
-                     * @see AWordIndex
-                     * @return false - this word index is not continuous.
-                     */
-                    static constexpr inline bool is_word_index_continuous() {
-                        return false;
-                    }
-
-                    /**
-                     * The basic destructor
-                     */
-                    virtual ~HashingWordIndex() {
-                    };
-                };
+                }
             }
         }
     }
 }
 
-#endif	/* HASHINGWORDINDEX_HPP */
+#endif /* HASHINGWORDINDEX_HPP */
 

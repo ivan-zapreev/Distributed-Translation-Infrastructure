@@ -32,39 +32,42 @@
 
 using namespace std;
 using namespace uva::utils::file;
-using namespace uva::smt::tries::identifiers;
+using namespace uva::smt::translation::server::lm::identifiers;
 
 namespace uva {
     namespace smt {
-        namespace tries {
-            namespace dictionary {
+        namespace translation {
+            namespace server {
+                namespace lm {
+                    namespace dictionary {
 
-                //Stores the string representation of an unknown word
-                template<typename TWordIdType>
-                const string AWordIndex<TWordIdType>::UNKNOWN_WORD_STR = "<unk>";
+                        //Stores the string representation of an unknown word
+                        template<typename TWordIdType>
+                        const string AWordIndex<TWordIdType>::UNKNOWN_WORD_STR = "<unk>";
 
-                //Stores the word hash for an unknown word, is 0
-                //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                template<typename TWordIdType>
-                const TWordIdType AWordIndex<TWordIdType>::UNDEFINED_WORD_ID = 0;
+                        //Stores the word hash for an unknown word, is 0
+                        //WARNING! MUST BE 0 as this is the value of a default initialized integer!
+                        template<typename TWordIdType>
+                        const TWordIdType AWordIndex<TWordIdType>::UNDEFINED_WORD_ID = 0;
 
-                //Stores the word id for an unknown word, it must have value 1
-                template<typename TWordIdType>
-                const TWordIdType AWordIndex<TWordIdType>::UNKNOWN_WORD_ID = (AWordIndex::UNDEFINED_WORD_ID + 1);
+                        //Stores the word id for an unknown word, it must have value 1
+                        template<typename TWordIdType>
+                        const TWordIdType AWordIndex<TWordIdType>::UNKNOWN_WORD_ID = (AWordIndex::UNDEFINED_WORD_ID + 1);
 
-                //Stores the minimum known word id, it must have value 2
-                template<typename TWordIdType>
-                const TWordIdType AWordIndex<TWordIdType>::MIN_KNOWN_WORD_ID = (AWordIndex::UNKNOWN_WORD_ID + 1);
+                        //Stores the minimum known word id, it must have value 2
+                        template<typename TWordIdType>
+                        const TWordIdType AWordIndex<TWordIdType>::MIN_KNOWN_WORD_ID = (AWordIndex::UNKNOWN_WORD_ID + 1);
 
-                //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                template<typename TWordIdType>
-                const TWordIdType AWordIndex<TWordIdType>::EXTRA_NUMBER_OF_WORD_IDs = 2;
+                        //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
+                        template<typename TWordIdType>
+                        const TWordIdType AWordIndex<TWordIdType>::EXTRA_NUMBER_OF_WORD_IDs = 2;
 
-                //Make sure at least these template instances are created
-                template class AWordIndex<TShortId>;
-                template class AWordIndex<TLongId>;
+                        //Make sure at least these template instances are created
+                        template class AWordIndex<TShortId>;
+                        template class AWordIndex<TLongId>;
+                    }
+                }
             }
         }
     }
 }
-

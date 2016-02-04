@@ -39,7 +39,7 @@ using namespace uva::utils::file;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace common {
                 namespace messaging {
 

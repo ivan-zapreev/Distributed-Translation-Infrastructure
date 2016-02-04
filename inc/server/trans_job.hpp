@@ -39,12 +39,12 @@
 
 using namespace std;
 using namespace std::placeholders;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::common::messaging;
 using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace server {
 
                 //Declare the translation job pointer

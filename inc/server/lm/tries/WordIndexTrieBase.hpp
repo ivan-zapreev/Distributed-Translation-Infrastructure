@@ -24,7 +24,7 @@
  */
 
 #ifndef WORDINDEXTRIE_HPP
-#define	WORDINDEXTRIE_HPP
+#define WORDINDEXTRIE_HPP
 
 #include <string>       // std::string
 
@@ -41,86 +41,90 @@
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
-using namespace uva::smt::tries::dictionary;
-using namespace uva::smt::tries::m_grams;
+using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::translation::server::lm::m_grams;
 using namespace uva::utils::math::bits;
 
 namespace uva {
     namespace smt {
-        namespace tries {
+        namespace translation {
+            namespace server {
+                namespace lm {
 
-            /**
-             * This is a common base class for all Trie implementations.
-             * The purpose of having this as a template class is performance optimization.
-             * @param N - the maximum level of the considered N-gram, i.e. the N value
-             */
-            template<TModelLevel N, typename WordIndex>
-            class WordIndexTrieBase {
-            public:
-                static const TModelLevel MAX_LEVEL;
-                typedef WordIndex WordIndexType;
+                    /**
+                     * This is a common base class for all Trie implementations.
+                     * The purpose of having this as a template class is performance optimization.
+                     * @param N - the maximum level of the considered N-gram, i.e. the N value
+                     */
+                    template<TModelLevel N, typename WordIndex>
+                    class WordIndexTrieBase {
+                    public:
+                        static const TModelLevel MAX_LEVEL;
+                        typedef WordIndex WordIndexType;
 
-                /**
-                 * The basic constructor
-                 * @param word_index the word index to be used
-                 */
-                explicit WordIndexTrieBase(WordIndexType & word_index)
-                : m_word_index(word_index) {
+                        /**
+                         * The basic constructor
+                         * @param word_index the word index to be used
+                         */
+                        explicit WordIndexTrieBase(WordIndexType & word_index)
+                        : m_word_index(word_index) {
+                        }
+
+                        /**
+                         * This method can be used to provide the N-gram count information
+                         * That should allow for pre-allocation of the memory
+                         * @param counts the array of N-Gram counts counts[0] is for 1-Gram
+                         */
+                        inline void pre_allocate(const size_t counts[N]) {
+                            m_word_index.reserve(counts[0]);
+                            Logger::update_progress_bar();
+                        };
+
+                        /**
+                         * This method allows to check if post processing should be called after
+                         * all the X level grams are read. This method is virtual.
+                         * @param level the level of the X-grams that were finished to be read
+                         */
+                        template<TModelLevel level>
+                        inline bool is_post_grams() const {
+                            return false;
+                        }
+
+                        /**
+                         * This method should be called after all the X level grams are read.
+                         * @param level the level of the X-grams that were finished to be read
+                         */
+                        template<TModelLevel level>
+                        inline void post_grams() {
+                            THROW_MUST_OVERRIDE();
+                        };
+
+                        /**
+                         * Allows to retrieve the stored word index, if any
+                         * @return the pointer to the stored word index or NULL if none
+                         */
+                        inline WordIndexType & get_word_index() const {
+                            return m_word_index;
+                        };
+
+                    protected:
+                        //Stores the reference to the word index to be used
+                        WordIndexType & m_word_index;
+                    };
+
+                    template<TModelLevel N, typename WordIndex>
+                    const TModelLevel WordIndexTrieBase<N, WordIndex>::MAX_LEVEL = N;
+
+                    //Make sure that there will be templates instantiated, at least for the given parameter values
+                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
+                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex>;
+                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
+                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
                 }
-
-                /**
-                 * This method can be used to provide the N-gram count information
-                 * That should allow for pre-allocation of the memory
-                 * @param counts the array of N-Gram counts counts[0] is for 1-Gram
-                 */
-                inline void pre_allocate(const size_t counts[N]) {
-                    m_word_index.reserve(counts[0]);
-                    Logger::update_progress_bar();
-                };
-
-                /**
-                 * This method allows to check if post processing should be called after
-                 * all the X level grams are read. This method is virtual.
-                 * @param level the level of the X-grams that were finished to be read
-                 */
-                template<TModelLevel level>
-                inline bool is_post_grams() const {
-                    return false;
-                }
-
-                /**
-                 * This method should be called after all the X level grams are read.
-                 * @param level the level of the X-grams that were finished to be read
-                 */
-                template<TModelLevel level>
-                inline void post_grams() {
-                    THROW_MUST_OVERRIDE();
-                };
-
-                /**
-                 * Allows to retrieve the stored word index, if any
-                 * @return the pointer to the stored word index or NULL if none
-                 */
-                inline WordIndexType & get_word_index() const {
-                    return m_word_index;
-                };
-
-            protected:
-                //Stores the reference to the word index to be used
-                WordIndexType & m_word_index;
-            };
-
-            template<TModelLevel N, typename WordIndex>
-            const TModelLevel WordIndexTrieBase<N, WordIndex>::MAX_LEVEL = N;
-
-            //Make sure that there will be templates instantiated, at least for the given parameter values
-            template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-            template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-            template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-            template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+            }
         }
     }
 }
 
-#endif	/* WORDINDEXTRIE_HPP */
+#endif /* WORDINDEXTRIE_HPP */
 

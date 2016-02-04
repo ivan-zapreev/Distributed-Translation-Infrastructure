@@ -610,6 +610,9 @@
         </df>
       </df>
       <df name="server">
+        <df name="decoder">
+          <in>decoder_parameters.hpp</in>
+        </df>
         <df name="lm">
           <df name="builders">
             <in>ARPAGramBuilder.hpp</in>
@@ -652,7 +655,15 @@
           <in>Executor.hpp</in>
           <in>TrieConfigs.hpp</in>
           <in>TrieConstants.hpp</in>
+          <in>lm_parameters.hpp</in>
         </df>
+        <df name="rm">
+          <in>rm_parameters.hpp</in>
+        </df>
+        <df name="tm">
+          <in>tm_parameters.hpp</in>
+        </df>
+        <in>server_parameters.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_manager.hpp</in>
@@ -717,7 +728,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

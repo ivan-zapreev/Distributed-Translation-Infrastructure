@@ -1,5 +1,5 @@
 /* 
- * File:   trans_job_id.hpp
+ * File:   tm_parameters.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,32 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on January 22, 2016, 3:53 PM
+ * Created on February 4, 2016, 11:53 AM
  */
 
-#ifndef TRANS_JOB_ID_HPP
-#define TRANS_JOB_ID_HPP
+#ifndef TM_PARAMETERS_HPP
+#define TM_PARAMETERS_HPP
 
-namespace uva {
-    namespace smt {
-        namespace translation {
-            namespace common {
-                namespace messaging {
 
-                    //Make the typedef for the translation job id
-                    typedef uint64_t job_id_type;
 
-                    namespace job_id {
-                        //Stores the undefined value of the translation job id
-                        static constexpr job_id_type UNDEFINED_JOB_ID = 0;
-                        //Stores the minimum allowed translation job id
-                        static constexpr job_id_type MINIMUM_JOB_ID = 1;
-                    }
-                }
-            }
-        }
-    }
-}
-
-#endif /* TRANS_JOB_ID_HPP */
+#endif /* TM_PARAMETERS_HPP */
 

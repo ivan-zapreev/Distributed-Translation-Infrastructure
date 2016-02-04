@@ -45,14 +45,14 @@ using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
-using namespace uva::smt::decoding::common::messaging;
+using namespace uva::smt::translation::common::messaging;
 
 #ifndef TRANS_JOB_POOL_HPP
 #define TRANS_JOB_POOL_HPP
 
 namespace uva {
     namespace smt {
-        namespace decoding {
+        namespace translation {
             namespace server {
 
                 /**
