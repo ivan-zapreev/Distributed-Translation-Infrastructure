@@ -42,8 +42,8 @@
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 
-#include "server/lm/builders/ARPATrieBuilder.hpp"
-#include "server/lm/builders/ARPAGramBuilder.hpp"
+#include "server/lm/builders/arpa_trie_builder.hpp"
+#include "server/lm/builders/arpa_gram_builder.hpp"
 
 #include "server/lm/mgrams/QueryMGram.hpp"
 #include "server/lm/tries/queries/MGramCumulativeQuery.hpp"

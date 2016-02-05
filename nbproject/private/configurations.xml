@@ -615,9 +615,9 @@
         </df>
         <df name="lm">
           <df name="builders">
-            <in>ARPAGramBuilder.hpp</in>
-            <in>ARPAGramBuilderFactory.hpp</in>
-            <in>ARPATrieBuilder.hpp</in>
+            <in>arpa_gram_builder.hpp</in>
+            <in>arpa_gram_builder_factory.hpp</in>
+            <in>arpa_trie_builder.hpp</in>
           </df>
           <df name="dictionaries">
             <in>AWordIndex.hpp</in>
@@ -635,9 +635,9 @@
           </df>
           <df name="proxy">
             <in>lm_query_proxy.hpp</in>
-            <in>lm_query_proxy_impl.hpp</in>
+            <in>lm_query_proxy_local.hpp</in>
             <in>trie_proxy.hpp</in>
-            <in>trie_proxy_impl.hpp</in>
+            <in>trie_proxy_local.hpp</in>
           </df>
           <df name="tries">
             <df name="queries">

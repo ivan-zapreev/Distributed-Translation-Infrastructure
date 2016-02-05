@@ -22,7 +22,7 @@
  *
  * Created on April 18, 2015, 12:02 PM
  */
-#include "server/lm/builders/ARPAGramBuilder.hpp"
+#include "server/lm/builders/arpa_gram_builder.hpp"
 
 #include <string>    // std::string
 #include <vector>    // std::vector

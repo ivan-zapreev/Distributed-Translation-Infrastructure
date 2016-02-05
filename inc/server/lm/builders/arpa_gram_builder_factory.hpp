@@ -31,7 +31,7 @@
 #include <functional>   // std::function
 
 #include "server/lm/trie_constants.hpp"
-#include "server/lm/builders/ARPAGramBuilder.hpp"
+#include "server/lm/builders/arpa_gram_builder.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 

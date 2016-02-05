@@ -39,10 +39,16 @@ namespace uva {
 
                         /**
                          * This class represents a trie query proxy interface class.
+                         * It allows to interact with templated trie queries in a uniform way.
                          * ToDo: Add methods/return values to extract the needed probability data.
                          */
                         class lm_query_proxy {
                         public:
+                            /**
+                             * The basic virtual destructor
+                             */
+                            virtual ~lm_query_proxy(){}
+                            
                             /**
                              * Allows to execute a single query
                              * @param text the m-gram query to be executed

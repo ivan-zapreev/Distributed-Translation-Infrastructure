@@ -26,16 +26,19 @@
 #ifndef LM_CONFIGURATOR_HPP
 #define LM_CONFIGURATOR_HPP
 
-#include "server/lm/lm_parameters.hpp"
-#include "server/lm/trie_constants.hpp"
-
-#include "server/lm/proxy/trie_proxy.hpp"
-#include "server/lm/proxy/trie_proxy_impl.hpp"
-#include "server/lm/proxy/lm_query_proxy.hpp"
-
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
-#include "common/utils/monitore/statistics_monitore.hpp"
+
+#include "server/lm/lm_parameters.hpp"
+
+#include "server/lm/proxy/trie_proxy.hpp"
+#include "server/lm/proxy/trie_proxy_local.hpp"
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
+#include "server/lm/dictionaries/BasicWordIndex.hpp"
+#include "server/lm/dictionaries/CountingWordIndex.hpp"
+#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/HashingWordIndex.hpp"
 
 #include "server/lm/tries/C2DMapTrie.hpp"
 #include "server/lm/tries/W2CHybridTrie.hpp"
@@ -45,11 +48,10 @@
 #include "server/lm/tries/G2DMapTrie.hpp"
 #include "server/lm/tries/H2DMapTrie.hpp"
 
-using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::smt::translation::server::lm::proxy;
-        
+
 namespace uva {
     namespace smt {
         namespace translation {
@@ -71,14 +73,29 @@ namespace uva {
                          * only once! The latter is not checked but is a must.
                          * @param params the language model parameters to be set.
                          */
-                        static void configure(const lm_parameters & params) {
+                        static void connect(const lm_parameters & params) {
+                            //Store the parameters for future use
                             m_params = params;
 
-                            //Detect which trie configuration is to be used
-                            detect_trie_identifier();
+                            //Allows to get the trie class proxy 
+                            get_proxy__choose_word_index(m_params);
 
-                            //Load the trie data from the model file
-                            load_trie_data();
+                            //Connect to the trie instance using the given parameters
+                            m_trie_proxy->connect(m_params);
+                        }
+
+                        /**
+                         * Allows to disconnect from the language model.
+                         * Currently ony calls the destructor of the trie proxy object.
+                         */
+                        static void disconnect() {
+                            if( m_trie_proxy != NULL) {
+                                //Disconnect from the trie
+                                m_trie_proxy->disconnect();
+                                //Delete the object, free the resources
+                                delete m_trie_proxy;
+                                m_trie_proxy = NULL;
+                            }
                         }
 
                         /**
@@ -87,68 +104,108 @@ namespace uva {
                          * @return an instance of the query executor.
                          */
                         static lm_query_proxy * get_query_executor() {
-                            //ToDo: Implement return the query executor proxy class
-                            return NULL;
+                            //Return the query executor as given by the proxy class
+                            return m_trie_proxy->get_query_executor();
                         }
 
                     protected:
-                        
-                        //static uint32_t compute_trie_id(const uint8_t max_m_gram_level, ){}
 
                         /**
-                         * Allows to detect the requested trie type, including the needed the word index class
-                         * In case the given combination is not supported an exception is thrown.
+                         * Allows to the trie type.
+                         * In the end this method call will ensure that a trie proxy is constructed.
+                         * @param params the lm parameters reference
                          */
-                        static void detect_trie_identifier() {
-                            //Check that the trie maximum trie level is supported
-                            ASSERT_CONDITION_THROW((m_params.m_max_trie_level != M_GRAM_LEVEL_MAX),
-                                    string("Unsupported trie max level: ") + std::to_string(m_params.m_max_trie_level));
-                            
-                            //Perform a number of checks on the type of the word index
-                            ASSERT_CONDITION_THROW(
-                                    ((m_params.m_word_index_type <= word_index_types::UNDEFINED_WORD_INDEX) ||
-                                    (m_params.m_word_index_type <= word_index_types::size_word_index)),
-                                    string("Unsupported word index type: ") + std::to_string(m_params.m_word_index_type));
-                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == word_index_types::BASIC_WORD_INDEX),
-                                    string("The basic word index type is not supported"));
-                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == word_index_types::COUNTING_WORD_INDEX),
-                                    string("The counting word index type is not supported"));
-                            
-                            //Check that the trie type is well defined
-                            ASSERT_CONDITION_THROW(
-                                    ((m_params.m_trie_type <= trie_types::UNDEFINED_TRIE) ||
-                                    (m_params.m_trie_type <= trie_types::size_trie)),
-                                    string("Unsupported trie type: ") + std::to_string(m_params.m_trie_type));
-
-                            //Perform a check that the Hashing based trie is only used with the hashing index
-                            ASSERT_CONDITION_THROW(
-                                    ((m_params.m_word_index_type != word_index_types::COUNTING_WORD_INDEX) &&
-                                    (m_params.m_trie_type == trie_types::H2DM_TRIE)),
-                                    string("The h2dm trie is only designed to work with the Hashing Word Index!"));
-                            
-                            //ToDo: based on the parameters detect which trie configuration is to be used
+                        template<TModelLevel MAX_LEVEL, typename word_index_type>
+                        static void get_proxy__choose_trie(const lm_parameters & params) {
+                            switch (params.m_trie_type) {
+                                case trie_types::C2DH_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < C2DHybridTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::C2DM_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < C2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::C2WA_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < C2WArrayTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::W2CA_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < W2CArrayTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::W2CH_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < W2CHybridTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::G2DM_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < G2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                case trie_types::H2DM_TRIE:
+                                    m_trie_proxy = new trie_proxy_local < H2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.m_trie_type));
+                            }
                         }
 
                         /**
-                         * Allows to load the trie model into the trie instance of the selected class with
-                         * the given word index type
+                         * Allows to the maximum level and then the trie type and so forth.
+                         * In the end this method call will ensure that a trie proxy is constructed.
+                         * @param params the lm parameters reference
                          */
-                        static void load_trie_data() {
-                            //ToDo: load the trie data from the model file
+                        template<typename word_index_type>
+                        static void get_proxy__choose_level(const lm_parameters & params) {
+                            switch (params.m_max_trie_level) {
+                                //ToDo: In order to allow for more m-gram levels we need to instantiate more templates in the Trie headers
+                                //case M_GRAM_LEVEL_3:
+                                //    get_proxy__choose_trie < M_GRAM_LEVEL_3, WordIndexType > (params);
+                                //    break;
+                                //case M_GRAM_LEVEL_4:
+                                //    get_proxy__choose_trie < M_GRAM_LEVEL_4, WordIndexType > (params);
+                                //    break;
+                                case M_GRAM_LEVEL_5:
+                                    get_proxy__choose_trie < M_GRAM_LEVEL_5, word_index_type > (params);
+                                    break;
+                                //case M_GRAM_LEVEL_6:
+                                //    get_proxy__choose_trie < M_GRAM_LEVEL_6, WordIndexType > (params);
+                                //    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported trie max level: ") + std::to_string(params.m_max_trie_level));
+                            }
+                        }
+
+                        /**
+                         * Allows to choose the word index type and then the maximum level and so forth.
+                         * In the end this method call will ensure that a trie proxy is constructed.
+                         * @param params the lm parameters reference
+                         */
+                        static void get_proxy__choose_word_index(const lm_parameters & params) {
+                            LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
+
+                            //Chose the word index type and then the trie type
+                            switch (params.m_word_index_type) {
+                                case word_index_types::BASIC_WORD_INDEX:
+                                    get_proxy__choose_level<BasicWordIndex>(params);
+                                    break;
+                                case word_index_types::COUNTING_WORD_INDEX:
+                                    get_proxy__choose_level<CountingWordIndex>(params);
+                                    break;
+                                case word_index_types::OPTIMIZING_BASIC_WORD_INDEX:
+                                    get_proxy__choose_level<OptimizingWordIndex < BasicWordIndex >> (params);
+                                    break;
+                                case word_index_types::OPTIMIZING_COUNTING_WORD_INDEX:
+                                    get_proxy__choose_level<OptimizingWordIndex < CountingWordIndex >> (params);
+                                    break;
+                                case word_index_types::HASHING_WORD_INDEX:
+                                    get_proxy__choose_level<HashingWordIndex>(params);
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unrecognized word index type: ") + to_string(params.m_word_index_type));
+                            }
                         }
 
                     private:
                         //Stores the copy of the configuration parameters
                         static lm_parameters m_params;
-                        //Stores the trie identifier type computed based on the lm parameters
-                        static uint32_t m_trie_id;
-
-                        //Make instances of all the currently supported word index types
-                        static OptimizingWordIndex < BasicWordIndex > m_opt_basic_wi;
-                        static OptimizingWordIndex < CountingWordIndex > m_opt_count_wi;
-                        static HashingWordIndex m_hashing_wi;
-
-                        //Make instances of all the currently supported trie combinations
+                        
+                        //Store the trie proxy object
+                        static trie_proxy * m_trie_proxy;
                     };
                 }
             }

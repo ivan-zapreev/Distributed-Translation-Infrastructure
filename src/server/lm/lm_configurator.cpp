@@ -33,10 +33,8 @@ namespace uva {
                     //Just give a default initialization
                     lm_parameters lm_configurator::m_params = {0,};
                     
-                    //Initialize with the memory factor
-                    OptimizingWordIndex < BasicWordIndex > lm_configurator::m_opt_basic_wi(__AWordIndex::MEMORY_FACTOR);
-                    OptimizingWordIndex < CountingWordIndex > lm_configurator::m_opt_count_wi(__AWordIndex::MEMORY_FACTOR);
-                    HashingWordIndex lm_configurator::m_hashing_wi(__AWordIndex::MEMORY_FACTOR);
+                    //Just give a default initialization
+                    trie_proxy * lm_configurator::m_trie_proxy = NULL;
                 }
             }
         }

@@ -25,7 +25,7 @@
 #include <iostream>
 #include <string>
 
-#include "server/lm/builders/ARPATrieBuilder.hpp"
+#include "server/lm/builders/arpa_trie_builder.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/file/file_stream_reader.hpp"
@@ -34,8 +34,8 @@
 #include "server/lm/trie_constants.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
-#include "server/lm/builders/ARPAGramBuilder.hpp"
-#include "server/lm/builders/ARPAGramBuilderFactory.hpp"
+#include "server/lm/builders/arpa_trie_builder.hpp"
+#include "server/lm/builders/arpa_gram_builder_factory.hpp"
 
 #include "server/lm/tries/C2DMapTrie.hpp"
 #include "server/lm/tries/W2CHybridTrie.hpp"

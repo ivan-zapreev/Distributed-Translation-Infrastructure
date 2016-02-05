@@ -28,6 +28,7 @@
 
 #include "decoder/decoder_parameters.hpp"
 #include "lm/lm_parameters.hpp"
+#include "lm/lm_config_utils.hpp"
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 

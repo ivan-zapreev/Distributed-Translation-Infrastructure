@@ -60,7 +60,7 @@ namespace uva {
                          * Returns the default trie type name string
                          * @return the default trie type name string
                          */
-                        string get_default_trie_type_str() {
+                        static inline string get_default_trie_type_str() {
                             //ToDo: Make configurable via the Configuration.h or Globals.h
                             return TC2WArrayTrie_STR;
                         }
@@ -85,7 +85,7 @@ namespace uva {
                          * index for the trie.
                          * @param params the parameters storing structure in/out
                          */
-                        static void get_trie_and_word_index_types(lm_parameters& params) {
+                        static inline void get_trie_and_word_index_types(lm_parameters& params) {
                             if (params.m_trie_type_name == TC2DMapTrie_STR) {
                                 params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
                                 params.m_trie_type = trie_types::C2DM_TRIE;
@@ -134,7 +134,7 @@ namespace uva {
                          * @param msEnd the end memory usage statistics
                          * @param isDoInfo true if the memory info may be print
                          */
-                        static void report_memory_usage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
+                        static inline void report_memory_usage(const char* action, TMemotyUsage msStart, TMemotyUsage msEnd, const bool isDoInfo) {
                             LOG_USAGE << "Action: \'" << action << "\' memory change:" << END_LOG;
                             LOG_DEBUG << "\tmemory before: vmsize=" << SSTR(msStart.vmsize) << " Kb, vmpeak="
                                     << SSTR(msStart.vmpeak) << " Kb, vmrss=" << SSTR(msStart.vmrss)
