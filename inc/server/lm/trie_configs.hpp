@@ -45,7 +45,7 @@ namespace uva {
 
                         //Stores the possible Word index configurations
 
-                        enum WordIndexTypesEnum {
+                        enum word_index_types {
                             UNDEFINED_WORD_INDEX = 0,
                             BASIC_WORD_INDEX = UNDEFINED_WORD_INDEX + 1,
                             COUNTING_WORD_INDEX = BASIC_WORD_INDEX + 1,
@@ -70,7 +70,7 @@ namespace uva {
 
                     //Stores the possible Trie types
 
-                    enum TrieTypesEnum {
+                    enum trie_types {
                         UNDEFINED_TRIE = 0,
                         C2DH_TRIE = UNDEFINED_TRIE + 1,
                         C2DM_TRIE = C2DH_TRIE + 1,
@@ -90,7 +90,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, the COUNTING
                         //index does not seem to give any performance improvements. The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
                         //With the bitmap hashing we get some 5% performance improvement
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
                     }
@@ -103,7 +103,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, the COUNTING
                         //index does not seem to give any performance improvements. The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
                         //With the bitmap hash caching on we are not faster with this trie
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
                     }
@@ -116,7 +116,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, COUNTING
                         //index is a must to save memory for gram ids! The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                         //With the bitmap hashing we get some 5% performance improvement
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
                     }
@@ -129,7 +129,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, COUNTING
                         //index is a must to save memory for gram ids! The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = HASHING_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = HASHING_WORD_INDEX;
                         //With the bitmap hash caching on we are not faster with this trie
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
                     }
@@ -154,7 +154,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, the  COUNTING
                         //index gives about 5% faster faster querying. The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                         //With the bitmap hashing we get some 5% performance improvement
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
                     }
@@ -163,7 +163,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, the COUNTING
                         //index gives about 5% faster faster querying. The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                         //With the bitmap hashing we get some 5% performance improvement
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
                     }
@@ -175,7 +175,7 @@ namespace uva {
                         //Stores the word index type to be used in this trie, the COUNTING
                         //index gives about 5% faster faster querying. The optimizing
                         //word index gives about 10% performance improvement!
-                        static constexpr WordIndexTypesEnum WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
                         //With the bitmap hashing we get some 5% performance improvement
                         static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
                     }

@@ -222,25 +222,25 @@ namespace uva {
                         template<TModelLevel MAX_LEVEL, typename WordIndexType>
                         static void choose_trie____execute(const __executor::lm_exec_params & params) {
                             switch (params.lm_params.m_trie_type) {
-                                case TrieTypesEnum::C2DH_TRIE:
+                                case trie_types::C2DH_TRIE:
                                     check_files____execute < C2DHybridTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::C2DM_TRIE:
+                                case trie_types::C2DM_TRIE:
                                     check_files____execute < C2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::C2WA_TRIE:
+                                case trie_types::C2WA_TRIE:
                                     check_files____execute < C2WArrayTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::W2CA_TRIE:
+                                case trie_types::W2CA_TRIE:
                                     check_files____execute < W2CArrayTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::W2CH_TRIE:
+                                case trie_types::W2CH_TRIE:
                                     check_files____execute < W2CHybridTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::G2DM_TRIE:
+                                case trie_types::G2DM_TRIE:
                                     check_files____execute < G2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
-                                case TrieTypesEnum::H2DM_TRIE:
+                                case trie_types::H2DM_TRIE:
                                     check_files____execute < H2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
                                     break;
                                 default:
@@ -274,19 +274,19 @@ namespace uva {
 
                             //Chose the word index type and then the trie type
                             switch (params.lm_params.m_word_index_type) {
-                                case WordIndexTypesEnum::BASIC_WORD_INDEX:
+                                case word_index_types::BASIC_WORD_INDEX:
                                     choose_level____execute<BasicWordIndex>(params);
                                     break;
-                                case WordIndexTypesEnum::COUNTING_WORD_INDEX:
+                                case word_index_types::COUNTING_WORD_INDEX:
                                     choose_level____execute<CountingWordIndex>(params);
                                     break;
-                                case WordIndexTypesEnum::OPTIMIZING_BASIC_WORD_INDEX:
+                                case word_index_types::OPTIMIZING_BASIC_WORD_INDEX:
                                     choose_level____execute<OptimizingWordIndex < BasicWordIndex >> (params);
                                     break;
-                                case WordIndexTypesEnum::OPTIMIZING_COUNTING_WORD_INDEX:
+                                case word_index_types::OPTIMIZING_COUNTING_WORD_INDEX:
                                     choose_level____execute<OptimizingWordIndex < CountingWordIndex >> (params);
                                     break;
-                                case WordIndexTypesEnum::HASHING_WORD_INDEX:
+                                case word_index_types::HASHING_WORD_INDEX:
                                     choose_level____execute<HashingWordIndex>(params);
                                     break;
                                 default:

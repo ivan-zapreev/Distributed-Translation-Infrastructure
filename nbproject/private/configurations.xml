@@ -633,6 +633,12 @@
             <in>ModelMGram.hpp</in>
             <in>QueryMGram.hpp</in>
           </df>
+          <df name="proxy">
+            <in>lm_query_proxy.hpp</in>
+            <in>lm_query_proxy_impl.hpp</in>
+            <in>trie_proxy.hpp</in>
+            <in>trie_proxy_impl.hpp</in>
+          </df>
           <df name="tries">
             <df name="queries">
               <in>MGramCumulativeQuery.hpp</in>

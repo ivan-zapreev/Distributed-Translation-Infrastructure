@@ -88,31 +88,31 @@ namespace uva {
                         static void get_trie_and_word_index_types(lm_parameters& params) {
                             if (params.m_trie_type_name == TC2DMapTrie_STR) {
                                 params.m_word_index_type = __C2DMapTrie::WORD_INDEX_TYPE;
-                                params.m_trie_type = TrieTypesEnum::C2DM_TRIE;
+                                params.m_trie_type = trie_types::C2DM_TRIE;
                             } else {
                                 if (params.m_trie_type_name == TW2CHybridTrie_STR) {
                                     params.m_word_index_type = __W2CHybridTrie::WORD_INDEX_TYPE;
-                                    params.m_trie_type = TrieTypesEnum::W2CH_TRIE;
+                                    params.m_trie_type = trie_types::W2CH_TRIE;
                                 } else {
                                     if (params.m_trie_type_name == TC2WArrayTrie_STR) {
                                         params.m_word_index_type = __C2WArrayTrie::WORD_INDEX_TYPE;
-                                        params.m_trie_type = TrieTypesEnum::C2WA_TRIE;
+                                        params.m_trie_type = trie_types::C2WA_TRIE;
                                     } else {
                                         if (params.m_trie_type_name == TW2CArrayTrie_STR) {
                                             params.m_word_index_type = __W2CArrayTrie::WORD_INDEX_TYPE;
-                                            params.m_trie_type = TrieTypesEnum::W2CA_TRIE;
+                                            params.m_trie_type = trie_types::W2CA_TRIE;
                                         } else {
                                             if (params.m_trie_type_name == C2DHybridTrie_STR) {
                                                 params.m_word_index_type = __C2DHybridTrie::WORD_INDEX_TYPE;
-                                                params.m_trie_type = TrieTypesEnum::C2DH_TRIE;
+                                                params.m_trie_type = trie_types::C2DH_TRIE;
                                             } else {
                                                 if (params.m_trie_type_name == G2DMapTrie_STR) {
                                                     params.m_word_index_type = __G2DMapTrie::WORD_INDEX_TYPE;
-                                                    params.m_trie_type = TrieTypesEnum::G2DM_TRIE;
+                                                    params.m_trie_type = trie_types::G2DM_TRIE;
                                                 } else {
                                                     if (params.m_trie_type_name == H2DMapTrie_STR) {
                                                         params.m_word_index_type = __H2DMapTrie::WORD_INDEX_TYPE;
-                                                        params.m_trie_type = TrieTypesEnum::H2DM_TRIE;
+                                                        params.m_trie_type = trie_types::H2DM_TRIE;
                                                     } else {
                                                         THROW_EXCEPTION(string("Unrecognized trie type: ") + params.m_trie_type_name);
                                                     }

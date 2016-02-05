@@ -29,6 +29,10 @@
 #include "server/lm/lm_parameters.hpp"
 #include "server/lm/trie_constants.hpp"
 
+#include "server/lm/proxy/trie_proxy.hpp"
+#include "server/lm/proxy/trie_proxy_impl.hpp"
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/monitore/statistics_monitore.hpp"
@@ -44,15 +48,13 @@
 using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
-
+using namespace uva::smt::translation::server::lm::proxy;
+        
 namespace uva {
     namespace smt {
         namespace translation {
             namespace server {
                 namespace lm {
-
-                    //Make a forward declaration of the the lm query executor
-                    class lm_query_executor;
 
                     /**
                      * This class represents a singleton that allows to
@@ -84,7 +86,7 @@ namespace uva {
                          * is to be destroyed by the client class.
                          * @return an instance of the query executor.
                          */
-                        static lm_query_executor * get_query_executor() {
+                        static lm_query_proxy * get_query_executor() {
                             //ToDo: Implement return the query executor proxy class
                             return NULL;
                         }
@@ -104,24 +106,24 @@ namespace uva {
                             
                             //Perform a number of checks on the type of the word index
                             ASSERT_CONDITION_THROW(
-                                    ((m_params.m_word_index_type <= WordIndexTypesEnum::UNDEFINED_WORD_INDEX) ||
-                                    (m_params.m_word_index_type <= WordIndexTypesEnum::size_word_index)),
+                                    ((m_params.m_word_index_type <= word_index_types::UNDEFINED_WORD_INDEX) ||
+                                    (m_params.m_word_index_type <= word_index_types::size_word_index)),
                                     string("Unsupported word index type: ") + std::to_string(m_params.m_word_index_type));
-                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == WordIndexTypesEnum::BASIC_WORD_INDEX),
+                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == word_index_types::BASIC_WORD_INDEX),
                                     string("The basic word index type is not supported"));
-                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == WordIndexTypesEnum::COUNTING_WORD_INDEX),
+                            ASSERT_CONDITION_THROW((m_params.m_word_index_type == word_index_types::COUNTING_WORD_INDEX),
                                     string("The counting word index type is not supported"));
                             
                             //Check that the trie type is well defined
                             ASSERT_CONDITION_THROW(
-                                    ((m_params.m_trie_type <= TrieTypesEnum::UNDEFINED_TRIE) ||
-                                    (m_params.m_trie_type <= TrieTypesEnum::size_trie)),
+                                    ((m_params.m_trie_type <= trie_types::UNDEFINED_TRIE) ||
+                                    (m_params.m_trie_type <= trie_types::size_trie)),
                                     string("Unsupported trie type: ") + std::to_string(m_params.m_trie_type));
 
                             //Perform a check that the Hashing based trie is only used with the hashing index
                             ASSERT_CONDITION_THROW(
-                                    ((m_params.m_word_index_type != WordIndexTypesEnum::COUNTING_WORD_INDEX) &&
-                                    (m_params.m_trie_type == TrieTypesEnum::H2DM_TRIE)),
+                                    ((m_params.m_word_index_type != word_index_types::COUNTING_WORD_INDEX) &&
+                                    (m_params.m_trie_type == trie_types::H2DM_TRIE)),
                                     string("The h2dm trie is only designed to work with the Hashing Word Index!"));
                             
                             //ToDo: based on the parameters detect which trie configuration is to be used

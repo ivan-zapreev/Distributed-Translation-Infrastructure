@@ -71,7 +71,7 @@ static void print_info() {
 static CmdLine * p_cmd_args = NULL;
 static ValueArg<string> * p_model_arg = NULL;
 static ValueArg<string> * p_query_arg = NULL;
-static vector<string> trie_types;
+static vector<string> trie_types_vec;
 static ValuesConstraint<string> * p_trie_types_constr = NULL;
 static ValueArg<string> * p_trie_type_arg = NULL;
 static SwitchArg * p_cumulative_prob_arg = NULL;
@@ -93,8 +93,8 @@ void create_arguments_parser() {
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
     //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
-    __configurator::get_trie_types_str(&trie_types);
-    p_trie_types_constr = new ValuesConstraint<string>(trie_types);
+    __configurator::get_trie_types_str(&trie_types_vec);
+    p_trie_types_constr = new ValuesConstraint<string>(trie_types_vec);
     p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __configurator::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
 
     //Add the -c the "cumulative" probability switch - optional, default is cumulative

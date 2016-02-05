@@ -50,11 +50,11 @@ namespace uva {
 
                         //The word index type to be used with the trie, is
                         //defined by the implementation from the used input
-                        WordIndexTypesEnum m_word_index_type;
+                        word_index_types m_word_index_type;
 
                         //The trie type, is defined by the implementation
                         //from the used input
-                        TrieTypesEnum m_trie_type;
+                        trie_types m_trie_type;
                     } lm_parameters;
                 }
             }
