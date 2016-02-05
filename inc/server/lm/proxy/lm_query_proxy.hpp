@@ -50,17 +50,15 @@ namespace uva {
                             virtual ~lm_query_proxy(){}
                             
                             /**
-                             * Allows to execute a single query
+                             * Allows to execute a query
                              * @param text the m-gram query to be executed
                              */
-                            virtual void execute_single(TextPieceReader &text) = 0;
+                            virtual void execute(TextPieceReader &text) = 0;
+                            
                             /**
-                             * Allows to execute a cumulative query. The cumulative
-                             * query computes the joined probabilities for the
-                             * sub-m-grams formed from the given one.
-                             * @param text the m-gram query to be executed
+                             * Allows to log the results of the executed query
                              */
-                            virtual void execute_cumulative(TextPieceReader &text) = 0;
+                            virtual void log_results() = 0;
                         };
                     }
                 }

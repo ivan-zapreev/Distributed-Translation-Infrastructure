@@ -36,6 +36,11 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "server/lm/tries/GenericTrieBase.hpp"
 
+#include "server/lm/dictionaries/AWordIndex.hpp"
+#include "server/lm/dictionaries/BasicWordIndex.hpp"
+#include "server/lm/dictionaries/CountingWordIndex.hpp"
+#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
@@ -91,7 +96,116 @@ namespace uva {
                         //stores pointers to the retrieved payloads, stores the computed
                         //conditional probabilities per sub-m-gram and others
                         typename TrieType::T_Query_Exec_Data m_query;
+
+                        /**
+                         * Allows to execute m-gram the query
+                         * @param text the piece containing the m-gram query
+                         */
+                        template<bool is_cumulative, bool is_log_results = false >
+                        inline void execute(TextPieceReader &text) {
+                            LOG_DEBUG << "Starting to execute:" << (string) m_query.m_gram << END_LOG;
+
+                            //Set the text piece into the m-gram
+                            m_query.m_gram.set_m_gram_from_text(text);
+
+                            //Clean the relevant probability entry
+                            if (is_cumulative) {
+                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * MAX_LEVEL);
+                            } else {
+                                m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
+                            }
+                            //Clean the payload pointer entries
+                            memset(m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
+
+                            //If this trie needs getting context ids then clean the data as well
+                            if (m_trie.is_need_getting_ctx_ids()) {
+                                //Clean the payload pointer entries
+                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * MAX_LEVEL);
+                            }
+
+                            //Execute the query
+                            m_trie.template execute<is_cumulative>(m_query);
+
+                            LOG_DEBUG << "Finished executing:" << (string) m_query.m_gram << END_LOG;
+
+                            //Log the results if needed
+                            if (is_log_results) {
+                                if (is_cumulative) {
+                                    log_cumulative_results();
+                                } else {
+                                    log_single_results();
+                                }
+                            }
+                        }
+
+                        /**
+                         * Allows to log the query results after its execution.
+                         * Different logging is done based on enabled logging level
+                         * and the class template parameters.
+                         */
+                        inline void log_single_results() const {
+                            //Print the query results
+                            const string gram_str = m_query.m_gram.get_mgram_prob_str(m_query.m_gram.get_m_gram_level());
+
+                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                    << " ) ) = " << SSTR(m_query.m_probs[m_query.m_gram.get_end_word_idx()]) << END_LOG;
+                            LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[m_query.m_gram.get_end_word_idx()])) << END_LOG;
+
+                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                        }
+
+                        /**
+                         * Allows to log the query results after its execution.
+                         * Different logging is done based on enabled logging level
+                         * and the class template parameters.
+                         */
+                        inline void log_cumulative_results() const {
+                            //Initialize the current index, with the proper start value
+                            TModelLevel curr_idx = m_query.m_gram.get_begin_word_idx();
+                            TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
+
+                            //Print the intermediate results
+                            for (; curr_idx <= m_query.m_gram.get_end_word_idx(); ++curr_idx) {
+                                const string gram_str = m_query.m_gram.get_mgram_prob_str(curr_idx + 1);
+                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        << " ) ) = " << SSTR(m_query.m_probs[curr_idx]) << END_LOG;
+                                LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[curr_idx])) << END_LOG;
+                                if (m_query.m_probs[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
+                                    cumulative_prob += m_query.m_probs[curr_idx];
+                                }
+                            }
+                            LOG_RESULT << "---" << END_LOG;
+
+                            //Print the total cumulative probability if needed
+                            const string gram_str = m_query.m_gram.get_mgram_prob_str();
+                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                    << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
+                            LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
+
+                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                        }
                     };
+
+                    //Make sure that there will be templates instantiated, at least for the given parameter values
+#define INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
+            template class T_M_Gram_Query<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class T_M_Gram_Query<H2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
+
+#define INSTANTIATE_M_GRAM_QUERY_LEVEL(M_GRAM_LEVEL); \
+            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
+            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, CountingWordIndex); \
+            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptBasicWordIndex); \
+            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptCountWordIndex);
+
+                    INSTANTIATE_M_GRAM_QUERY_LEVEL(M_GRAM_LEVEL_MAX);
                 }
             }
         }

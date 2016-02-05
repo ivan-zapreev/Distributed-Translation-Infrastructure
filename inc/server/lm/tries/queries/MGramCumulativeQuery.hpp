@@ -88,31 +88,7 @@ namespace uva {
                          * and the class template parameters.
                          */
                         inline void log_results() const {
-                            //Initialize the current index, with the proper start value
-                            TModelLevel curr_idx = BASE::m_query.m_gram.get_begin_word_idx();
-                            TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
-
-                            //Print the intermediate results
-                            for (; curr_idx <= BASE::m_query.m_gram.get_end_word_idx(); ++curr_idx) {
-                                const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str(curr_idx + 1);
-                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                        << " ) ) = " << SSTR(BASE::m_query.m_probs[curr_idx]) << END_LOG;
-                                LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_query.m_probs[curr_idx])) << END_LOG;
-                                if (BASE::m_query.m_probs[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
-                                    cumulative_prob += BASE::m_query.m_probs[curr_idx];
-                                }
-                            }
-                            LOG_RESULT << "---" << END_LOG;
-
-                            //Print the total cumulative probability if needed
-                            const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str();
-                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                    << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
-                            LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
-
-                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                            BASE::log_cumulative_results();
                         }
 
                         /**
@@ -120,26 +96,7 @@ namespace uva {
                          * @param text the piece containing the m-gram query
                          */
                         inline void execute(TextPieceReader &text) {
-                            LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
-
-                            //Set the text piece into the m-gram
-                            BASE::m_query.m_gram.set_m_gram_from_text(text);
-
-                            //Clean the probability entries
-                            memset(BASE::m_query.m_probs, 0, sizeof (TLogProbBackOff) * MAX_LEVEL);
-                            //Clean the payload pointer entries
-                            memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
-
-                            //If this trie needs getting context ids then clean the data as well
-                            if (BASE::m_trie.is_need_getting_ctx_ids()) {
-                                //Clean the payload pointer entries
-                                memset(BASE::m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * MAX_LEVEL);
-                            }
-
-                            //Execute the query
-                            BASE::m_trie.template execute<true>(BASE::m_query);
-
-                            LOG_DEBUG << "Finished executing:" << (string) BASE::m_query.m_gram << END_LOG;
+                            BASE::template execute<true>(text);
                         }
                     };
 

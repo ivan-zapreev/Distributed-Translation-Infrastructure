@@ -86,15 +86,7 @@ namespace uva {
                          * and the class template parameters.
                          */
                         inline void log_results() const {
-                            //Print the query results
-                            const string gram_str = BASE::m_query.m_gram.get_mgram_prob_str(BASE::m_query.m_gram.get_m_gram_level());
-
-                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                    << " ) ) = " << SSTR(BASE::m_query.m_probs[BASE::m_query.m_gram.get_end_word_idx()]) << END_LOG;
-                            LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, BASE::m_query.m_probs[BASE::m_query.m_gram.get_end_word_idx()])) << END_LOG;
-
-                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                            BASE::log_single_results();
                         }
 
                         /**
@@ -102,26 +94,7 @@ namespace uva {
                          * @param text the piece containing the m-gram query
                          */
                         void execute(TextPieceReader &text) {
-                            LOG_DEBUG << "Starting to execute:" << (string) BASE::m_query.m_gram << END_LOG;
-
-                            //Set the text piece into the m-gram
-                            BASE::m_query.m_gram.set_m_gram_from_text(text);
-
-                            //Clean the relevant probability entry
-                            BASE::m_query.m_probs[ BASE::m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
-                            //Clean the payload pointer entries
-                            memset(BASE::m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
-
-                            //If this trie needs getting context ids then clean the data as well
-                            if (BASE::m_trie.is_need_getting_ctx_ids()) {
-                                //Clean the payload pointer entries
-                                memset(BASE::m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * MAX_LEVEL);
-                            }
-
-                            //Execute the query
-                            BASE::m_trie.template execute<false>(BASE::m_query);
-
-                            LOG_DEBUG << "Finished executing:" << (string) BASE::m_query.m_gram << END_LOG;
+                            BASE::template execute<false>(text);
                         }
                     };
 

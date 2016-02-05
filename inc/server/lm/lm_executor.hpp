@@ -303,6 +303,13 @@ namespace uva {
                          * @param params the runtime program parameters
                          */
                         static void perform_tasks(const __executor::lm_exec_params & params) {
+                            //Connect to the language model
+                            //lm_configurator::connect(params.lm_params);
+                            
+                            //Get the query executor
+                            
+                            //Execute the queries
+                            
                             choose_word_index____execute(params);
                         }
                     }
