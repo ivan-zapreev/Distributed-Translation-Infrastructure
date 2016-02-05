@@ -36,6 +36,7 @@
 #include "server/server_parameters.hpp"
 #include "server/translation_server.hpp"
 #include "common/utils/exceptions.hpp"
+#include "server/lm/lm_configurator.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -213,6 +214,31 @@ void print_server_commands() {
 }
 
 /**
+ * Allows to establish connections to the models: language, translation, reordering
+ * @param params the parameters needed to establish connections to the models
+ */
+void connect_to_models(const server_parameters & params){
+    //Connect to the language model
+    lm_configurator::connect(params.m_lm_params);
+    
+    //ToDo: Connect to the translation model
+    
+    //ToDo: Connect to the reordering model
+}
+
+/**
+ * Allows to disconnect from the models: language, translation, reordering
+ */
+void disconnect_from_models(){
+    //Disconnect from the language model
+    lm_configurator::disconnect();
+    
+    //ToDo: Disconnect from the translation model
+    
+    //ToDo: Disconnect from the reordering model
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -234,6 +260,9 @@ int main(int argc, char** argv) {
 
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);
+
+        //Initialize connections to the used models
+        connect_to_models(params);
 
         //Instantiate the translation server
         translation_server server(params.m_de_params.m_server_port, params.m_de_params.m_num_threads);
@@ -275,6 +304,9 @@ int main(int argc, char** argv) {
         LOG_ERROR << ex.get_message() << END_LOG;
         return_code = 1;
     }
+    
+    //Disconnect from the used models
+    disconnect_from_models();
 
     //Destroy the command line parameters parser
     destroy_arguments_parser();
