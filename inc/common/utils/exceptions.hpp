@@ -44,7 +44,7 @@ namespace uva {
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
     if (Logger::get_reporting_level() >= DebugLevelsEnum::INFO3) { \
-        msg << __FILE__ << "::" << __FUNCTION__ \
+        msg << __FILENAME__ << "::" << __FUNCTION__ \
             << "(...) " << __LINE__ << " : " << (text); \
     } else { \
         msg << (text); \

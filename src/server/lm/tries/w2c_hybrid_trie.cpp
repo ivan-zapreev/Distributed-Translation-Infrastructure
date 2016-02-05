@@ -57,12 +57,11 @@ namespace uva {
                         //the last trie level by storing there probabilities instead of ids! 
                         const size_t float_size = sizeof (TLogProbBackOff);
                         const size_t idx_size = sizeof (TShortId);
-                        if (float_size > idx_size) {
-                            stringstream msg;
-                            msg << "Unable to use " << __FILE__ << " for a trie as it expects ( sizeof(TLogProbBackOff) = "
-                                    << float_size << " ) == ( sizeof(TIndexSize) = " << idx_size << ")!";
-                            throw Exception(msg.str());
-                        }
+
+                        //Assert on sizes
+                        ASSERT_CONDITION_THROW((float_size > idx_size), string("Broken tries, sizeof(TLogProbBackOff) = ") +
+                                to_string(float_size) + string(" is not equal to sizeof(TIndexSize) = ") + to_string(idx_size) +
+                                string("! The implementation has been altered!"));
 
                         //Initialize the array of counters
                         memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
