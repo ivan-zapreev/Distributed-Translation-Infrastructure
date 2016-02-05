@@ -101,8 +101,7 @@ namespace uva {
                              * @see trie_proxy
                              */
                             virtual lm_query_proxy * get_query_executor() {
-                                //ToDo: Implement
-                                return NULL;
+                                return new lm_query_proxy_local<trie_type>(m_trie);
                             }
 
                             /**
@@ -168,7 +167,7 @@ namespace uva {
                         protected:
                             //Stores the word index
                             word_index_type m_word_index;
-                            
+
                             //Stores the trie
                             trie_type m_trie;
                         };

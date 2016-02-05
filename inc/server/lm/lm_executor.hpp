@@ -46,8 +46,7 @@
 #include "server/lm/builders/arpa_gram_builder.hpp"
 
 #include "server/lm/mgrams/QueryMGram.hpp"
-#include "server/lm/tries/queries/MGramCumulativeQuery.hpp"
-#include "server/lm/tries/queries/MGramSingleQuery.hpp"
+#include "server/lm/tries/MGramQuery.hpp"
 
 using namespace std;
 using namespace uva::utils::file;
@@ -86,14 +85,14 @@ namespace uva {
                          * @param testFile the file containing the N-Gram (5-Gram queries)
                          * @return the CPU seconds used to run the queries, without time needed to read the test file
                          */
-                        template<typename TrieType, typename TrieQueryType, typename TFileReaderQuery>
+                        template<typename TrieType, bool is_cumulative, typename TFileReaderQuery>
                         static void execute(TrieType & trie, TFileReaderQuery &testFile) {
                             //Declare time variables for CPU times in seconds
                             double startTime = 0.0, endTime = 0.0;
                             //Will store the read line (word1 word2 word3 word4 word5)
                             TextPieceReader line;
                             //Will store the M-gram query and its internal state
-                            TrieQueryType query(trie);
+                            T_M_Gram_Query<TrieType> query(trie);
 
                             //Start the timer
                             startTime = StatisticsMonitor::getCPUTime();
@@ -104,12 +103,9 @@ namespace uva {
                             //Read the test file line by line
                             while (testFile.get_first_line(line)) {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
-
-                                //Query the Trie for the results
-                                query.execute(line);
-
-                                //Print the results:
-                                query.log_results();
+                                
+                                //Query the Trie for the results and log them
+                                query.template execute<is_cumulative,true>(line);
                             }
 
                             //Stop the timer
@@ -175,9 +171,9 @@ namespace uva {
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
                             if (params.is_cumulative_prob) {
-                                execute<TrieType, T_M_Gram_Cumulative_Query < TrieType >> (trie, testFile);
+                                execute<TrieType, true> (trie, testFile);
                             } else {
-                                execute<TrieType, T_M_Gram_Single_Query < TrieType >> (trie, testFile);
+                                execute<TrieType, false> (trie, testFile);
                             }
                             testFile.close();
 

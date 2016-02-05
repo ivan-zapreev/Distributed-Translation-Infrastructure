@@ -640,11 +640,6 @@
             <in>trie_proxy_local.hpp</in>
           </df>
           <df name="tries">
-            <df name="queries">
-              <in>MGramCumulativeQuery.hpp</in>
-              <in>MGramQuery.hpp</in>
-              <in>MGramSingleQuery.hpp</in>
-            </df>
             <in>BitmapHashCache.hpp</in>
             <in>C2DHybridTrie.hpp</in>
             <in>C2DMapTrie.hpp</in>
@@ -653,6 +648,7 @@
             <in>GenericTrieBase.hpp</in>
             <in>H2DMapTrie.hpp</in>
             <in>LayeredTrieBase.hpp</in>
+            <in>MGramQuery.hpp</in>
             <in>W2CArrayTrie.hpp</in>
             <in>W2CH_UM_Storage.hpp</in>
             <in>W2CHybridTrie.hpp</in>

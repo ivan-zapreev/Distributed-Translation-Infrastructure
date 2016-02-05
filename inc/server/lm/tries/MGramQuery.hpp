@@ -84,18 +84,9 @@ namespace uva {
                          * The basic constructor for the structure
                          * @param trie the reference to the trie object
                          */
-                        T_M_Gram_Query(TrieType & trie)
+                        T_M_Gram_Query(const TrieType & trie)
                         : m_trie(trie), m_query(trie.get_word_index()) {
                         }
-
-                    protected:
-                        //Stores the reference to the constant trie.
-                        const TrieType & m_trie;
-
-                        //Define the query data structure that: stores the query m-gram,
-                        //stores pointers to the retrieved payloads, stores the computed
-                        //conditional probabilities per sub-m-gram and others
-                        typename TrieType::T_Query_Exec_Data m_query;
 
                         /**
                          * Allows to execute m-gram the query
@@ -137,6 +128,15 @@ namespace uva {
                                 }
                             }
                         }
+
+                    protected:
+                        //Stores the reference to the constant trie.
+                        const TrieType & m_trie;
+
+                        //Define the query data structure that: stores the query m-gram,
+                        //stores pointers to the retrieved payloads, stores the computed
+                        //conditional probabilities per sub-m-gram and others
+                        typename TrieType::T_Query_Exec_Data m_query;
 
                         /**
                          * Allows to log the query results after its execution.

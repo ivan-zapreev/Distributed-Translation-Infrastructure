@@ -44,21 +44,63 @@ namespace uva {
                          */
                         class lm_query_proxy {
                         public:
+
                             /**
                              * The basic virtual destructor
                              */
-                            virtual ~lm_query_proxy(){}
-                            
+                            virtual ~lm_query_proxy() {
+                            }
+
                             /**
                              * Allows to execute a query
                              * @param text the m-gram query to be executed
                              */
-                            virtual void execute(TextPieceReader &text) = 0;
-                            
+                            template<bool is_cumulative, bool is_log_result = false >
+                            inline void execute(TextPieceReader &text) {
+                                if (is_cumulative) {
+                                    if (is_log_result) {
+                                        execute_cum_yes_log_yes(text);
+                                    } else {
+                                        execute_cum_yes_log_no(text);
+                                    }
+                                } else {
+                                    if (is_log_result) {
+                                        execute_cum_no_log_yes(text);
+                                    } else {
+                                        execute_cum_no_log_no(text);
+                                    }
+                                }
+                            };
+
+                        protected:
+
                             /**
-                             * Allows to log the results of the executed query
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
                              */
-                            virtual void log_results() = 0;
+                            virtual void execute_cum_yes_log_yes(TextPieceReader &text) = 0;
+
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             */
+                            virtual void execute_cum_yes_log_no(TextPieceReader &text) = 0;
+
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             */
+                            virtual void execute_cum_no_log_yes(TextPieceReader &text) = 0;
+
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             */
+                            virtual void execute_cum_no_log_no(TextPieceReader &text) = 0;
                         };
                     }
                 }
