@@ -61,18 +61,6 @@ namespace uva {
                 virtual operator bool() const = 0;
 
                 /**
-                 * This method creates a string for the "file exists" information
-                 * ToDo: Get rid of the file name parameter, the file name should be known by the class instance!
-                 * @param fname the file name
-                 * @param isPresent true if the file is present
-                 * @return the resulting string to be print
-                 */
-                inline string get_file_exists_string(string const & fname) {
-                    string result = (this->operator bool() ? "is present" : "is missing");
-                    return fname + " (" + result + ")";
-                }
-
-                /**
                  * Allows to log the information about the instantiated file reader type
                  */
                 virtual void log_reader_type_usage_info() = 0;

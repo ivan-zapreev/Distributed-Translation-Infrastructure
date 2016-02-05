@@ -30,8 +30,8 @@ namespace uva {
         namespace translation {
             namespace server {
                 namespace lm {
-                    //Just give a default initialization
-                    lm_parameters lm_configurator::m_params = {0,};
+                    //No default initialization is needed
+                    lm_parameters lm_configurator::m_params;
                     
                     //Just give a default initialization
                     trie_proxy * lm_configurator::m_trie_proxy = NULL;

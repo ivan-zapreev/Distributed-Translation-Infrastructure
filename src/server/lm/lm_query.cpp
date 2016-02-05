@@ -142,17 +142,17 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     Logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Store the parsed parameter values
-    params.is_cumulative_prob = p_cumulative_prob_arg->getValue();
-    params.lm_params.m_model_file_name = p_model_arg->getValue();
-    params.m_queries_file_name = p_query_arg->getValue();
-    params.lm_params.m_trie_type_name = p_trie_type_arg->getValue();
+    params.m_is_cum_prob = p_cumulative_prob_arg->getValue();
+    params.m_lm_params.m_model_file_name = p_model_arg->getValue();
+    params.m_query_file_name = p_query_arg->getValue();
+    params.m_lm_params.m_trie_type_name = p_trie_type_arg->getValue();
 
     //Set the maximum level from to be constant
     //ToDo: Make this an lm_query program argument
-    params.lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
+    params.m_lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
 
     //Set the trie and word index type
-    __configurator::get_trie_and_word_index_types(params.lm_params);
+    __configurator::get_trie_and_word_index_types(params.m_lm_params);
 }
 
 /**
@@ -181,8 +181,8 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         LOG_DEBUG << "Checking on the provided files \'"
-                << params.lm_params.m_model_file_name << "\' and \'"
-                << params.m_queries_file_name << "\' ..." << END_LOG;
+                << params.m_lm_params.m_model_file_name << "\' and \'"
+                << params.m_query_file_name << "\' ..." << END_LOG;
 
         //Do the actual work, read the text corpse, create trie and do queries
         __executor::perform_tasks(params);

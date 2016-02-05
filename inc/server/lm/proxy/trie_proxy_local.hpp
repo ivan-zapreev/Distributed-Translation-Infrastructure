@@ -142,6 +142,10 @@ namespace uva {
                                 LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
                                 start_time = StatisticsMonitor::getCPUTime();
 
+                                //Assert that the model file is opened
+                                ASSERT_CONDITION_THROW(!model_file.is_open(), string("The Language Model file: '")
+                                        + params.m_model_file_name + string("' does not exist!"));
+
                                 //Create the trie builder and give it the trie
                                 ARPATrieBuilder<trie_type, CStyleFileReader> builder(m_trie, model_file);
                                 LOG_INFO3 << "Collision detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;

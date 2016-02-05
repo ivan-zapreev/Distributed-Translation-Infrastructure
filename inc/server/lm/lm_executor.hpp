@@ -37,6 +37,8 @@
 #include "server/lm/lm_parameters.hpp"
 #include "server/lm/trie_constants.hpp"
 
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
@@ -55,6 +57,7 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::monitore;
 using namespace uva::smt::translation::server::lm::dictionary;
 using namespace uva::smt::translation::server::lm::arpa;
+using namespace uva::smt::translation::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -68,228 +71,52 @@ namespace uva {
                          */
                         typedef struct {
                             //Stores the language model specific parameters
-                            lm_parameters lm_params;
+                            lm_parameters m_lm_params;
 
                             //Stores true if the cumulative probability is to be computed
                             //for each M-gram, otherwise false, and then we only compute
                             //one conditional probability for this M-gram
-                            bool is_cumulative_prob;
+                            bool m_is_cum_prob;
 
                             //The test file name
-                            string m_queries_file_name;
+                            string m_query_file_name;
                         } lm_exec_params;
 
                         /**
                          * Allows to read and execute test queries from the given file on the given trie.
-                         * @param trie the given trie, filled in with some data
-                         * @param testFile the file containing the N-Gram (5-Gram queries)
-                         * @return the CPU seconds used to run the queries, without time needed to read the test file
+                         * @param test_file the file containing the N-Gram (5-Gram queries)
                          */
-                        template<typename TrieType, bool is_cumulative, typename TFileReaderQuery>
-                        static void execute(TrieType & trie, TFileReaderQuery &testFile) {
+                        template<bool is_cumulative, typename TFileReaderQuery>
+                        static void execute_queries(TFileReaderQuery &test_file) {
                             //Declare time variables for CPU times in seconds
-                            double startTime = 0.0, endTime = 0.0;
+                            double start_time = 0.0, end_time = 0.0;
+                            
                             //Will store the read line (word1 word2 word3 word4 word5)
                             TextPieceReader line;
-                            //Will store the M-gram query and its internal state
-                            T_M_Gram_Query<TrieType> query(trie);
+
+                            //Get the query executor proxy object
+                            lm_query_proxy * query = lm_configurator::get_query_executor();
+
+                            LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 
                             //Start the timer
-                            startTime = StatisticsMonitor::getCPUTime();
-
-                            //Enable the next line for the pin-point debugging of the querying process
-                            //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG3;
+                            start_time = StatisticsMonitor::getCPUTime();
 
                             //Read the test file line by line
-                            while (testFile.get_first_line(line)) {
+                            while (test_file.get_first_line(line)) {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
-                                
+
                                 //Query the Trie for the results and log them
-                                query.template execute<is_cumulative,true>(line);
+                                query->template execute<is_cumulative, true>(line);
                             }
 
                             //Stop the timer
-                            endTime = StatisticsMonitor::getCPUTime();
+                            end_time = StatisticsMonitor::getCPUTime();
 
-                            LOG_USAGE << "Total query execution time is " << (endTime - startTime) << " CPU seconds." << END_LOG;
-                        }
+                            //Delete the query proxy object
+                            delete query;
 
-                        /**
-                         * This method is used to read from the corpus and initialize the Trie
-                         * @param fstr the file to read data from
-                         * @param trie the trie to put the data into
-                         */
-                        template<typename TrieType, typename TFileReaderModel>
-                        static void fill_in_trie(TFileReaderModel & fstr, TrieType & trie) {
-                            //A trie container and the corps file stream are already instantiated and are given
-
-                            //A.1. Create the TrieBuilder and give the trie to it
-                            ARPATrieBuilder<TrieType, TFileReaderModel> builder(trie, fstr);
-
-                            LOG_INFO3 << "Collision detections are: "
-                                    << (DO_SANITY_CHECKS ? "ON" : "OFF")
-                                    << " !" << END_LOG;
-
-                            //A.2. Build the trie
-                            builder.build();
-                        }
-
-                        template<typename TrieType, typename TFileReaderModel, typename TFileReaderQuery>
-                        void load_data____execute(const __executor::lm_exec_params& params, TFileReaderModel &modelFile, TFileReaderQuery &testFile) {
-                            //Get the word index type and make an instance of the word index
-                            typename TrieType::WordIndexType word_index(__AWordIndex::MEMORY_FACTOR);
-                            //Make an instance of the trie
-                            TrieType trie(word_index);
-                            //Declare time variables for CPU times in seconds
-                            double startTime, endTime;
-                            //Declare the statistics monitor and its data
-                            TMemotyUsage memStatStart = {}, memStatEnd = {};
-
-                            //Log the usage information
-                            trie.log_trie_type_usage_info();
-
-                            LOG_USAGE << "Start creating and loading the Trie ..." << END_LOG;
-                            LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatStart);
-                            LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
-                            startTime = StatisticsMonitor::getCPUTime();
-                            fill_in_trie(modelFile, trie);
-                            LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
-                            endTime = StatisticsMonitor::getCPUTime();
-                            LOG_USAGE << "Reading the Language Model took " << (endTime - startTime) << " CPU seconds." << END_LOG;
-                            LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatEnd);
-                            LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-                            __configurator::report_memory_usage("Creating the Language Model Trie", memStatStart, memStatEnd, true);
-
-                            LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatStart);
-                            LOG_DEBUG << "Closing the model file ..." << END_LOG;
-                            modelFile.close();
-                            LOG_DEBUG << "Getting the memory statistics after closing the Model file ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatEnd);
-
-                            LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
-                            if (params.is_cumulative_prob) {
-                                execute<TrieType, true> (trie, testFile);
-                            } else {
-                                execute<TrieType, false> (trie, testFile);
-                            }
-                            testFile.close();
-
-                            //Deallocate the trie
-                            LOG_USAGE << "Cleaning up memory ..." << END_LOG;
-                        }
-
-                        template<typename TrieType>
-                        void check_files____execute(const __executor::lm_exec_params& params) {
-                            //Declare the statistics monitor and its data
-                            TMemotyUsage memStatStart = {}, memStatEnd = {};
-
-                            //ToDo: Add the possibility to choose between the file readers from the command line!
-                            LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatStart);
-
-                            //Attempt to open the model file
-                            CStyleFileReader modelFile(params.lm_params.m_model_file_name.c_str());
-                            modelFile.log_reader_type_usage_info();
-                            LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
-                            StatisticsMonitor::getMemoryStatistics(memStatEnd);
-
-                            //Attempt to open the test file
-                            MemoryMappedFileReader testFile(params.m_queries_file_name.c_str());
-
-                            //If the files could be opened then proceed with training and then testing
-                            if ((modelFile.is_open()) && (testFile.is_open())) {
-                                //Choose needed class types and execute the trie tasks: create/fill/execute queries
-                                load_data____execute<TrieType>(params, modelFile, testFile);
-                            } else {
-                                stringstream msg;
-                                msg << "One of the input files does not exist: " +
-                                        modelFile.get_file_exists_string(params.lm_params.m_model_file_name)
-                                        + " , " +
-                                        testFile.get_file_exists_string(params.m_queries_file_name);
-                                throw Exception(msg.str());
-                            }
-
-                            LOG_INFO << "Done" << END_LOG;
-                        }
-
-                        template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                        static void choose_trie____execute(const __executor::lm_exec_params & params) {
-                            switch (params.lm_params.m_trie_type) {
-                                case trie_types::C2DH_TRIE:
-                                    check_files____execute < C2DHybridTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::C2DM_TRIE:
-                                    check_files____execute < C2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::C2WA_TRIE:
-                                    check_files____execute < C2WArrayTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::W2CA_TRIE:
-                                    check_files____execute < W2CArrayTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::W2CH_TRIE:
-                                    check_files____execute < W2CHybridTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::G2DM_TRIE:
-                                    check_files____execute < G2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                case trie_types::H2DM_TRIE:
-                                    check_files____execute < H2DMapTrie<MAX_LEVEL, WordIndexType >> (params);
-                                    break;
-                                default:
-                                    THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.lm_params.m_trie_type));
-                            }
-                        }
-
-                        template<typename WordIndexType>
-                        static void choose_level____execute(const __executor::lm_exec_params & params) {
-                            switch (params.lm_params.m_max_trie_level) {
-                                //ToDo: In order to allow for more m-gram levels we need to instantiate more templates in the Trie headers
-                                //case M_GRAM_LEVEL_3:
-                                //    choose_trie____execute < M_GRAM_LEVEL_3, WordIndexType > (params);
-                                //    break;
-                                //case M_GRAM_LEVEL_4:
-                                //    choose_trie____execute < M_GRAM_LEVEL_4, WordIndexType > (params);
-                                //    break;
-                                case M_GRAM_LEVEL_5:
-                                    choose_trie____execute < M_GRAM_LEVEL_5, WordIndexType > (params);
-                                    break;
-                                //case M_GRAM_LEVEL_6:
-                                //    choose_trie____execute < M_GRAM_LEVEL_6, WordIndexType > (params);
-                                //    break;
-                                default:
-                                    THROW_EXCEPTION(string("Unsupported trie max level: ") + std::to_string(params.lm_params.m_max_trie_level));
-                            }
-                        }
-
-                        static void choose_word_index____execute(const __executor::lm_exec_params & params) {
-                            LOG_DEBUG << "Choosing the appropriate Word index type" << END_LOG;
-
-                            //Chose the word index type and then the trie type
-                            switch (params.lm_params.m_word_index_type) {
-                                case word_index_types::BASIC_WORD_INDEX:
-                                    choose_level____execute<BasicWordIndex>(params);
-                                    break;
-                                case word_index_types::COUNTING_WORD_INDEX:
-                                    choose_level____execute<CountingWordIndex>(params);
-                                    break;
-                                case word_index_types::OPTIMIZING_BASIC_WORD_INDEX:
-                                    choose_level____execute<OptimizingWordIndex < BasicWordIndex >> (params);
-                                    break;
-                                case word_index_types::OPTIMIZING_COUNTING_WORD_INDEX:
-                                    choose_level____execute<OptimizingWordIndex < CountingWordIndex >> (params);
-                                    break;
-                                case word_index_types::HASHING_WORD_INDEX:
-                                    choose_level____execute<HashingWordIndex>(params);
-                                    break;
-                                default:
-                                    stringstream msg;
-                                    msg << "Unrecognized word index type: " << params.lm_params.m_word_index_type;
-                                    throw Exception(msg.str());
-                            }
+                            LOG_USAGE << "Total query execution time is " << (end_time - start_time) << " CPU seconds." << END_LOG;
                         }
 
                         /**
@@ -299,14 +126,31 @@ namespace uva {
                          * @param params the runtime program parameters
                          */
                         static void perform_tasks(const __executor::lm_exec_params & params) {
+                            //Attempt to open the test file
+                            MemoryMappedFileReader test_file(params.m_query_file_name.c_str());
+
+                            //Assert that the query file is opened
+                            ASSERT_CONDITION_THROW(!test_file.is_open(), string("The Test Queries file: '")
+                                    + params.m_query_file_name + string("' does not exist!"));
+
                             //Connect to the language model
-                            //lm_configurator::connect(params.lm_params);
-                            
-                            //Get the query executor
-                            
+                            lm_configurator::connect(params.m_lm_params);
+
                             //Execute the queries
+                            if (params.m_is_cum_prob) {
+                                execute_queries<true>(test_file);
+                            } else {
+                                execute_queries<false>(test_file);
+                            }
+
+                            //Deallocate the trie
+                            LOG_USAGE << "Cleaning up memory ..." << END_LOG;
                             
-                            choose_word_index____execute(params);
+                            //Close the test file
+                            test_file.close();
+ 
+                            //Disconnect from the trie
+                            lm_configurator::disconnect();
                         }
                     }
                 }
