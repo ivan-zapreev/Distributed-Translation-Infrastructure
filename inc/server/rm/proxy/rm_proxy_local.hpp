@@ -55,7 +55,7 @@ namespace uva {
                          * This is the reordering model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
                          */
-                        template<typename model_type_name>
+                        template<typename model_type>
                         class rm_proxy_local : public rm_proxy {
                         public:
 
@@ -105,7 +105,7 @@ namespace uva {
                             }
                             
                             private:
-                                model_type_name m_model;
+                                model_type m_model;
                         };
                     }
                 }
