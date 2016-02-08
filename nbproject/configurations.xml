@@ -31,6 +31,8 @@
           </df>
           <df name="models">
             <in>rm_basic_model.hpp</in>
+            <in>rm_entry.hpp</in>
+            <in>rm_query.hpp</in>
           </df>
           <df name="proxy">
             <in>rm_proxy.hpp</in>
@@ -47,6 +49,8 @@
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>
+            <in>tm_entry.hpp</in>
+            <in>tm_query.hpp</in>
           </df>
           <df name="proxy">
             <in>tm_proxy.hpp</in>
@@ -196,6 +200,10 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/rm/models/rm_entry.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/rm/models/rm_query.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/server/rm/proxy/rm_proxy.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/rm/proxy/rm_proxy_local.hpp"
@@ -228,6 +236,10 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="inc/server/tm/models/tm_entry.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/models/tm_query.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/tm/proxy/tm_proxy.hpp" ex="false" tool="3" flavor2="0">
       </item>

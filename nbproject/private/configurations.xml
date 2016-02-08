@@ -667,6 +667,8 @@
           </df>
           <df name="models">
             <in>rm_basic_model.hpp</in>
+            <in>rm_entry.hpp</in>
+            <in>rm_query.hpp</in>
           </df>
           <df name="proxy">
             <in>rm_proxy.hpp</in>
@@ -683,6 +685,8 @@
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>
+            <in>tm_entry.hpp</in>
+            <in>tm_query.hpp</in>
           </df>
           <df name="proxy">
             <in>tm_proxy.hpp</in>
