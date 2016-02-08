@@ -26,7 +26,56 @@
 #ifndef RM_CONFIGURATOR_HPP
 #define RM_CONFIGURATOR_HPP
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
+#include "server/rm/rm_parameters.hpp"
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+
+                    /**
+                     * This class represents a singleton that allows to
+                     * configure the reordering model and then issue a
+                     * proxy object for performing the queries against it.
+                     */
+                    class rm_configurator {
+                    public:
+                        
+                        /**
+                         * This method allows to connect to the reordering model.
+                         * This method is to be called only once! The latter is
+                         * not checked but is a must.
+                         * @param params the reordering model parameters to be set.
+                         */
+                        static void connect(const rm_parameters & params) {
+                            //Store the parameters for future use
+                            m_params = params;
+
+                            //ToDo: Implement
+                        }
+
+                        /**
+                         * Allows to disconnect from the reordering model.
+                         */
+                        static void disconnect() {
+                            //ToDo: Implement
+                        }
+                        
+                    protected:
+                        
+                    private:
+                        //Stores the copy of the configuration parameters
+                        static rm_parameters m_params;
+                    };
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_CONFIGURATOR_HPP */
 

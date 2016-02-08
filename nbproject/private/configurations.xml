@@ -662,10 +662,18 @@
           <in>trie_constants.hpp</in>
         </df>
         <df name="rm">
+          <df name="builders">
+          </df>
+          <df name="proxy">
+          </df>
           <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
+          <df name="builders">
+          </df>
+          <df name="proxy">
+          </df>
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
@@ -723,6 +731,12 @@
           </df>
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>
+        </df>
+        <df name="rm">
+          <in>rm_configurator.cpp</in>
+        </df>
+        <df name="tm">
+          <in>tm_configurator.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
         <in>trans_task_pool.cpp</in>

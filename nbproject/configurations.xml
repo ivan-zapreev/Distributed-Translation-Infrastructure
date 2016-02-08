@@ -60,6 +60,12 @@
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>
         </df>
+        <df name="rm">
+          <in>rm_configurator.cpp</in>
+        </df>
+        <df name="tm">
+          <in>tm_configurator.cpp</in>
+        </df>
         <in>bpbd_server.cpp</in>
         <in>trans_task_pool.cpp</in>
         <in>trans_task_pool_worker.cpp</in>
@@ -203,6 +209,10 @@
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="0">
       </item>

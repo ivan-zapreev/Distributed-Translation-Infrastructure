@@ -37,6 +37,8 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/common/utils/logging/logger.cpp
     src/server/lm/lm_configurator.cpp
+    src/server/tm/tm_configurator.cpp
+    src/server/rm/rm_configurator.cpp
     src/server/lm/tries/w2c_hybrid_trie.cpp
     src/server/lm/tries/w2c_array_trie.cpp
     src/server/lm/tries/h2d_map_trie.cpp

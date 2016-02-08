@@ -37,6 +37,8 @@
 #include "server/translation_server.hpp"
 #include "common/utils/exceptions.hpp"
 #include "server/lm/lm_configurator.hpp"
+#include "server/tm/tm_configurator.hpp"
+#include "server/rm/rm_configurator.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -221,9 +223,11 @@ void connect_to_models(const server_parameters & params){
     //Connect to the language model
     lm_configurator::connect(params.m_lm_params);
     
-    //ToDo: Connect to the translation model
+    //Connect to the translation model
+    tm_configurator::connect(params.m_tm_params);
     
-    //ToDo: Connect to the reordering model
+    //Connect to the reordering model
+    rm_configurator::connect(params.m_rm_params);
 }
 
 /**
@@ -233,9 +237,11 @@ void disconnect_from_models(){
     //Disconnect from the language model
     lm_configurator::disconnect();
     
-    //ToDo: Disconnect from the translation model
+    //Disconnect from the translation model
+    tm_configurator::disconnect();
     
-    //ToDo: Disconnect from the reordering model
+    //Disconnect from the reordering model
+    rm_configurator::disconnect();
 }
 
 /**
