@@ -103,7 +103,7 @@ namespace uva {
                          * is to be destroyed by the client class.
                          * @return an instance of the query executor.
                          */
-                        static lm_query_proxy * get_query_executor() {
+                        static inline lm_query_proxy * get_query_proxy() {
                             //Return the query executor as given by the proxy class
                             return m_trie_proxy->get_query_proxy();
                         }

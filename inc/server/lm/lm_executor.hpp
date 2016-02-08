@@ -95,7 +95,7 @@ namespace uva {
                             TextPieceReader line;
 
                             //Get the query executor proxy object
-                            lm_query_proxy * query = lm_configurator::get_query_executor();
+                            lm_query_proxy * query = lm_configurator::get_query_proxy();
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 

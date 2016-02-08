@@ -82,6 +82,16 @@ namespace uva {
                                 m_model_proxy = NULL;
                             }
                         }
+
+                        /**
+                         * Allows to return an instance of the query proxy,
+                         * is to be destroyed by the client class.
+                         * @return an instance of the query executor.
+                         */
+                        static inline tm_query_proxy * get_query_proxy() {
+                            //Return the query executor as given by the proxy class
+                            return m_model_proxy->get_query_proxy();
+                        }
                         
                     protected:
                         
