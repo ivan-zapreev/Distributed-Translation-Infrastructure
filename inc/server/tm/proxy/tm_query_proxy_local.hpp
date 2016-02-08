@@ -26,7 +26,49 @@
 #ifndef TM_QUERY_PROXY_LOCAL_HPP
 #define TM_QUERY_PROXY_LOCAL_HPP
 
+#include "server/tm/proxy/tm_query_proxy.hpp"
 
+using namespace uva::smt::translation::server::tm;
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace proxy {
+
+                        /**
+                         * This is a local implementation of the translation model query
+                         * This implementation works with the local translation model
+                         */
+                        template<typename model_type>
+                        class tm_query_proxy_local : public tm_query_proxy {
+                        public:
+
+                            /**
+                             * The basic constructor that accepts the translation model reference to query to
+                             * @param model the translation model to query
+                             */
+                            tm_query_proxy_local(const model_type & model) {
+                                //ToDo: Implement
+                            }
+                            
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual ~tm_query_proxy_local(){
+                                //ToDo: Implement
+                            }
+                            
+                        protected:
+                        private:
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* TM_QUERY_PROXY_LOCAL_HPP */
 

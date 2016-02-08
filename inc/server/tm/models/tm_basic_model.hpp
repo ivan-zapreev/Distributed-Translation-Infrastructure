@@ -43,6 +43,14 @@ namespace uva {
                              * The basic class constructor
                              */
                             tm_basic_model() {
+                                //ToDo: Implement
+                            }
+
+                            /**
+                             * Allows to log the model type info
+                             */
+                            void log_model_type_info() {
+                                //ToDo: Implement
                             }
                         protected:
                         private:

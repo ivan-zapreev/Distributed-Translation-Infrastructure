@@ -64,11 +64,6 @@ namespace uva {
                              * @return the trie query proxy object
                              */
                             virtual rm_query_proxy * get_query_proxy() = 0;
-                            
-                            /**
-                             * Allows to log the trie type usage information
-                             */
-                            virtual void log_model_type_info() = 0; 
                         };
                     }
                 }

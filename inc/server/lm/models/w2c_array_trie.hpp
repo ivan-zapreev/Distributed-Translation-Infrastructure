@@ -169,7 +169,7 @@ namespace uva {
                         /**
                          * Allows to log the information about the instantiated trie type
                          */
-                        inline void log_trie_type_usage_info() const {
+                        inline void log_model_type_info() const {
                             LOG_USAGE << "Using the <" << __FILENAME__ << "> model." << END_LOG;
                             LOG_INFO << "Using the " << T_M_GramData::m_mem_strat.get_strategy_info()
                                     << "' memory allocation strategy." << END_LOG;

@@ -59,17 +59,19 @@ namespace uva {
                          * Here we do not connect to remote server or something but rather work
                          * with a locally loaded trie model.
                          */
-                        template<typename trie_type>
+                        template<typename model_type>
                         class lm_proxy_local : public lm_proxy {
                         public:
                             //Make a local declaration of the word index type for convenience
-                            typedef typename trie_type::WordIndexType word_index_type;
+                            typedef typename model_type::WordIndexType word_index_type;
+                            //Define the builder type 
+                            typedef lm_basic_builder<model_type, CStyleFileReader> builder_type;
 
                             /**
                              * The basic constructor of the trie proxy implementation class
                              * @param params the language model parameters
                              */
-                            lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_trie(m_word_index) {
+                            lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_model(m_word_index) {
                             }
 
                             /**
@@ -86,7 +88,7 @@ namespace uva {
                             virtual void connect(const lm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
-                                load_trie_data(params);
+                                load_model_data<builder_type, CStyleFileReader>("Language Model", params.m_model_file_name);
                             }
 
                             /**
@@ -101,71 +103,65 @@ namespace uva {
                              * @see trie_proxy
                              */
                             virtual lm_query_proxy * get_query_proxy() {
-                                return new lm_query_proxy_local<trie_type>(m_trie);
+                                return new lm_query_proxy_local<model_type>(m_model);
                             }
 
-                            /**
-                             * @see trie_proxy
-                             */
-                            virtual void log_model_type_info() {
-                                m_trie.log_trie_type_usage_info();
-                            }
-                            
                         private:
 
                             /**
-                             * Allows to load the trie model into the trie instance of the selected class with
-                             * the given word index type
-                             * @params params the parameters needed to load the language model
+                             * Allows to load the model into the instance of the selected container class
+                             * @param the name of the model being loaded
+                             * @params model_file_name the model file name
                              */
-                            void load_trie_data(const lm_parameters & params) {
+                            template<typename builder_type, typename file_reader_type>
+                            void load_model_data(char const *model_name, const string & model_file_name) {
                                 //Declare time variables for CPU times in seconds
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
                                 TMemotyUsage mem_stat_start = {}, mem_stat_end = {};
 
                                 //ToDo: Add the possibility to choose between the file readers from the command line!
-                                LOG_DEBUG << "Getting the memory statistics before opening the model file ..." << END_LOG;
+                                LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_start);
 
                                 //Attempt to open the model file
-                                CStyleFileReader model_file(params.m_model_file_name.c_str());
-                                model_file.log_reader_type_usage_info();
-                                LOG_DEBUG << "Getting the memory statistics after opening the model file ..." << END_LOG;
+                                file_reader_type model_file(model_file_name.c_str());
+                                model_file.log_reader_type_info();
+                                LOG_DEBUG << "Getting the memory statistics after opening the " << model_name << " file ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_end);
 
                                 //Log the usage information
-                                m_trie.log_trie_type_usage_info();
+                                m_model.log_model_type_info();
 
                                 LOG_USAGE << "Start creating and loading the Trie ..." << END_LOG;
-                                LOG_DEBUG << "Getting the memory statistics before creating the Trie ..." << END_LOG;
+                                LOG_DEBUG << "Getting the memory statistics before loading the " << model_name << " ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_start);
-                                LOG_DEBUG << "Getting the time statistics before creating the Trie ..." << END_LOG;
+                                LOG_DEBUG << "Getting the time statistics before creating the " << model_name << " ..." << END_LOG;
                                 start_time = StatisticsMonitor::getCPUTime();
 
                                 //Assert that the model file is opened
-                                ASSERT_CONDITION_THROW(!model_file.is_open(), string("The Language Model file: '")
-                                        + params.m_model_file_name + string("' does not exist!"));
+                                ASSERT_CONDITION_THROW(!model_file.is_open(), string("The ") + string(model_name) + string(" file: '")
+                                        + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                ARPATrieBuilder<trie_type, CStyleFileReader> builder(m_trie, model_file);
-                                LOG_INFO3 << "Collision detections are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
-                                //Build the trie, from the model file
+                                builder_type builder(m_model, model_file);
+                                //Load the model from the file
                                 builder.build();
 
-                                LOG_DEBUG << "Getting the time statistics after creating the Trie ..." << END_LOG;
+                                LOG_DEBUG << "Getting the time statistics after loading the " << model_name << " ..." << END_LOG;
                                 end_time = StatisticsMonitor::getCPUTime();
-                                LOG_USAGE << "Reading the Language Model took " << (end_time - start_time) << " CPU seconds." << END_LOG;
-                                LOG_DEBUG << "Getting the memory statistics after creating the Trie ..." << END_LOG;
+                                LOG_USAGE << "Reading the " << model_name << " took " << (end_time - start_time) << " CPU seconds." << END_LOG;
+                                LOG_DEBUG << "Getting the memory statistics after loading the " << model_name << " ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_end);
                                 LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
-                                __configurator::report_memory_usage("Creating the Language Model Trie", mem_stat_start, mem_stat_end, true);
+                                const string action_name = string("Loading the ") + string(model_name);
+                                report_memory_usage(action_name.c_str(), mem_stat_start, mem_stat_end, true);
 
-                                LOG_DEBUG << "Getting the memory statistics before closing the Model file ..." << END_LOG;
+                                LOG_DEBUG << "Getting the memory statistics before closing the " << model_name << " file ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_start);
                                 LOG_DEBUG << "Closing the model file ..." << END_LOG;
                                 model_file.close();
-                                LOG_DEBUG << "Getting the memory statistics after closing the Model file ..." << END_LOG;
+                                LOG_DEBUG << "Getting the memory statistics after closing the " << model_name << " file ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_end);
                             }
 
@@ -174,7 +170,7 @@ namespace uva {
                             word_index_type m_word_index;
 
                             //Stores the trie
-                            trie_type m_trie;
+                            model_type m_model;
                         };
                     }
                 }

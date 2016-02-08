@@ -44,6 +44,13 @@ namespace uva {
                              */
                             rm_basic_model() {
                             }
+
+                            /**
+                             * Allows to log the model type info
+                             */
+                            void log_model_type_info() {
+                                //ToDo: Implement
+                            }
                         protected:
                         private:
                         };

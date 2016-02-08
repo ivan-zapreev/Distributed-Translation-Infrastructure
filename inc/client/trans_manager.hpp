@@ -91,7 +91,7 @@ namespace uva {
                                 string("Could not open the source text file: ") + params.m_source_file);
 
                         //Log the source file reader info
-                        m_source_file.log_reader_type_usage_info();
+                        m_source_file.log_reader_type_info();
 
                         //Check that the minimum is not larger than the maximum
                         ASSERT_CONDITION_THROW((m_params.m_max_sent < m_params.m_min_sent),

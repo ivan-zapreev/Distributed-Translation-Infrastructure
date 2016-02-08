@@ -27,6 +27,49 @@
 #define RM_QUERY_PROXY_LOCAL_HPP
 
 
+#include "server/rm/proxy/rm_query_proxy.hpp"
+
+using namespace uva::smt::translation::server::rm;
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+                    namespace proxy {
+
+                        /**
+                         * This is a local implementation of the reordering model query
+                         * This implementation works with the local reordering model
+                         */
+                        template<typename model_type>
+                        class rm_query_proxy_local : public rm_query_proxy {
+                        public:
+
+                            /**
+                             * The basic constructor that accepts the reordering model reference to query to
+                             * @param model the reordering model to query
+                             */
+                            rm_query_proxy_local(const model_type & model) {
+                                //ToDo: Implement
+                            }
+                            
+                            /**
+                             * @see rm_query_proxy
+                             */
+                            virtual ~rm_query_proxy_local(){
+                                //ToDo: Implement
+                            }
+                            
+                        protected:
+                        private:
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_QUERY_PROXY_LOCAL_HPP */
 

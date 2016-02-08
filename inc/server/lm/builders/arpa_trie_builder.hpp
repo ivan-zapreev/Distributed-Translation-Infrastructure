@@ -52,9 +52,11 @@ namespace uva {
                         /**
                          * This is the Trie builder class that reads an input file stream
                          * and creates n-grams and then records them into the provided Trie.
+                         * This is an ARPA format based trie builder,  so it expects that
+                         * the provided model file contains a basic text model in ARPA format.
                          */
                         template<typename TrieType, typename TFileReaderModel>
-                        class ARPATrieBuilder {
+                        class lm_basic_builder {
                         public:
                             static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                             typedef typename TrieType::WordIndexType WordIndexType;
@@ -64,14 +66,14 @@ namespace uva {
                              * @param trie the trie to fill in with data from the text corpus
                              * @param _fstr the file stream to read from
                              */
-                            ARPATrieBuilder(TrieType & trie, TFileReaderModel & file);
+                            lm_basic_builder(TrieType & trie, TFileReaderModel & file);
 
                             /**
                              * This function will read from the file and build the trie
                              */
                             void build();
 
-                            virtual ~ARPATrieBuilder();
+                            virtual ~lm_basic_builder();
                         private:
                             //The reference to the trie to be build
                             TrieType & m_trie;
@@ -88,7 +90,7 @@ namespace uva {
                              * The copy constructor
                              * @param orig the other builder to copy
                              */
-                            ARPATrieBuilder(const ARPATrieBuilder<TrieType, TFileReaderModel>& orig);
+                            lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig);
 
                             /**
                              * This method is used to read and process the ARPA headers
@@ -123,7 +125,7 @@ namespace uva {
                                 /**
                                  * This template is to be used for the level parameter values < MAX_LEVEL
                                  */
-                                static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
+                                static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
                                     LOG_DEBUG2 << "The currently read N-grams level is " << CURR_LEVEL << ", the maximum level is " << MAX_LEVEL
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;
@@ -146,7 +148,7 @@ namespace uva {
                                 /**
                                  * This template specialization is to be used for the level parameter values == MAX_LEVEL
                                  */
-                                static inline void check_and_go_m_grams(ARPATrieBuilder<TrieType, TFileReaderModel> & builder) {
+                                static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
                                     LOG_DEBUG2 << "The currently read N-grams level is " << MAX_LEVEL << ", the maximum level is " << MAX_LEVEL
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;
@@ -218,7 +220,7 @@ namespace uva {
                         };
 
                         template<typename TrieType, typename TFileReaderModel>
-                        constexpr TModelLevel ARPATrieBuilder<TrieType, TFileReaderModel>::MAX_LEVEL;
+                        constexpr TModelLevel lm_basic_builder<TrieType, TFileReaderModel>::MAX_LEVEL;
                     }
                 }
             }

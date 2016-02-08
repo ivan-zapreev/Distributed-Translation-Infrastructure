@@ -1,5 +1,5 @@
 /* 
- * File:   ARPATrieBuilder.cpp
+ * File:   lm_basic_builder.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -57,21 +57,21 @@ namespace uva {
                     namespace arpa {
 
                         template<typename TrieType, typename TFileReaderModel>
-                        ARPATrieBuilder<TrieType, TFileReaderModel>::ARPATrieBuilder(TrieType & trie, TFileReaderModel & file) :
+                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(TrieType & trie, TFileReaderModel & file) :
                         m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        ARPATrieBuilder<TrieType, TFileReaderModel>::ARPATrieBuilder(const ARPATrieBuilder<TrieType, TFileReaderModel>& orig) :
+                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig) :
                         m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        ARPATrieBuilder<TrieType, TFileReaderModel>::~ARPATrieBuilder() {
+                        lm_basic_builder<TrieType, TFileReaderModel>::~lm_basic_builder() {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::read_headers() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::read_headers() {
                             LOG_DEBUG << "Start reading ARPA headers." << END_LOG;
 
                             while (true) {
@@ -107,7 +107,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[MAX_LEVEL]) {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[MAX_LEVEL]) {
                             LOG_INFO << "Expected number of M-grams per level: "
                                     << array_to_string<size_t, MAX_LEVEL>(counts) << END_LOG;
 
@@ -125,7 +125,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::read_data(size_t counts[MAX_LEVEL]) {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::read_data(size_t counts[MAX_LEVEL]) {
                             LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                             //If we are here then it means we just finished reading the
@@ -194,7 +194,7 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         template<TModelLevel CURR_LEVEL>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::read_m_gram_level() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::read_m_gram_level() {
                             //Declare the pointer to the N-Grma builder
                             ARPAGramBuilder<WordIndexType, CURR_LEVEL> *gram_builder_ptr = NULL;
                             ARPAGramBuilderFactory<TrieType>::template get_builder<CURR_LEVEL>(m_trie, &gram_builder_ptr);
@@ -249,7 +249,7 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         template<TModelLevel CURR_LEVEL>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::do_post_m_gram_actions() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::do_post_m_gram_actions() {
                             //Check if the post gram actions are needed! If yes - perform.
                             if (m_trie.template is_post_grams<CURR_LEVEL>()) {
                                 //Do the progress bard indicator
@@ -269,7 +269,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::get_word_counts() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts() {
                             //Check if we need another pass for words counting.
                             if (m_trie.get_word_index().is_word_counts_needed()) {
                                 //Do the progress bard indicator
@@ -292,7 +292,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::do_word_index_post_1_gram_actions() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::do_word_index_post_1_gram_actions() {
                             //Perform the post actions if needed
                             if (m_trie.get_word_index().is_post_actions_needed()) {
                                 //Do the progress bard indicator
@@ -312,7 +312,7 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         template<TModelLevel CURR_LEVEL>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::read_grams() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::read_grams() {
                             stringstream msg;
                             //Do the progress bard indicator
                             msg << "Reading ARPA " << CURR_LEVEL << "-Grams";
@@ -361,7 +361,7 @@ namespace uva {
                          * M-Gram sections and count them with the word index.
                          */
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
                             typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
 
                             //The regular expression for matching the n-grams section
@@ -412,7 +412,7 @@ namespace uva {
                          * reading M-grams and add them to the trie.
                          */
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::return_to_grams() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::return_to_grams() {
                             //Reset the file
                             m_file.reset();
 
@@ -437,7 +437,7 @@ namespace uva {
                         //the maximum N-gram level present in the file.
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void ARPATrieBuilder<TrieType, TFileReaderModel>::build() {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::build() {
                             LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
                             //Declare an array of N-Gram counts, that is to be filled from the
@@ -474,41 +474,41 @@ namespace uva {
 
                         //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_TRIE_BUILDER_FILE_READER(TFileReaderModel) \
-                template class ARPATrieBuilder<TC2DMapTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DMapTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DMapTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DMapTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DMapTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CHybridTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CHybridTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CHybridTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CHybridTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CHybridTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2WArrayTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2WArrayTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2WArrayTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2WArrayTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2WArrayTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CArrayTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CArrayTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CArrayTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CArrayTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TW2CArrayTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DHybridTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DHybridTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DHybridTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DHybridTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TC2DHybridTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TG2DMapTrieHashing, TFileReaderModel>; \
-                template class ARPATrieBuilder<TH2DMapTrieBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TH2DMapTrieCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TH2DMapTrieOptBasic, TFileReaderModel>; \
-                template class ARPATrieBuilder<TH2DMapTrieOptCount, TFileReaderModel>; \
-                template class ARPATrieBuilder<TH2DMapTrieHashing, TFileReaderModel>;
+                template class lm_basic_builder<TC2DMapTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DMapTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DMapTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DMapTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DMapTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CHybridTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CHybridTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CHybridTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CHybridTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CHybridTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TC2WArrayTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2WArrayTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2WArrayTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2WArrayTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2WArrayTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CArrayTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CArrayTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CArrayTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CArrayTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TW2CArrayTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DHybridTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DHybridTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DHybridTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DHybridTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TC2DHybridTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TG2DMapTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TG2DMapTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TG2DMapTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TG2DMapTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TG2DMapTrieHashing, TFileReaderModel>; \
+                template class lm_basic_builder<TH2DMapTrieBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TH2DMapTrieCount, TFileReaderModel>; \
+                template class lm_basic_builder<TH2DMapTrieOptBasic, TFileReaderModel>; \
+                template class lm_basic_builder<TH2DMapTrieOptCount, TFileReaderModel>; \
+                template class lm_basic_builder<TH2DMapTrieHashing, TFileReaderModel>;
 
                         INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
                         INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);

@@ -33,7 +33,41 @@ namespace uva {
                 namespace tm {
                     namespace builders {
 
-                        class tm_basic_builder;
+                        /**
+                         * This class represents a basic reader of the translation model.
+                         * It allows to read a text-formatted translation model and to put
+                         * it into the given instance of the model class. It assumes the
+                         * simple text model format as used by Oyster or Moses.
+                         * See http://www.statmt.org/moses/?n=Moses.Tutorial for some info.
+                         * The translation model is also commonly known as a phrase table.
+                         */
+                        template< typename model_type, typename reader_type>
+                        class tm_basic_builder {
+                        public:
+
+                            /**
+                             * The basic constructor of the builder object
+                             * @param model the model to put the data into
+                             * @param reader the reader to read the data from
+                             */
+                            tm_basic_builder(model_type & model, reader_type & reader)
+                            : m_model(model), m_reader(reader) {
+                            }
+                            
+                            /**
+                             * Allows to build the model by reading the from reader
+                             */
+                            void build(){
+                                //ToDo: Implement
+                            }
+                        protected:
+                            
+                        private:
+                            //Stores the reference to the model
+                            model_type & m_model;
+                            //Stores the reference to the builder;
+                            reader_type & m_reader;
+                        };
                     }
                 }
             }

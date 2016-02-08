@@ -90,7 +90,7 @@ namespace uva {
                 /**
                  * Allows to log the information about the instantiated file reader type
                  */
-                virtual void log_reader_type_usage_info() {
+                virtual void log_reader_type_info() {
                     LOG_USAGE << "Using the <" << __FILENAME__ << "> file reader!" << END_LOG;
                 }
 

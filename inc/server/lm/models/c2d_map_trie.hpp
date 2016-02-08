@@ -129,7 +129,7 @@ namespace uva {
                         /**
                          * Allows to log the information about the instantiated trie type
                          */
-                        inline void log_trie_type_usage_info() const {
+                        inline void log_model_type_info() const {
                             LOG_USAGE << "Using the <" << __FILENAME__ << "> model." << END_LOG;
                         }
 

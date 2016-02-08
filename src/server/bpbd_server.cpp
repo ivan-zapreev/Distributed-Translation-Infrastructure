@@ -194,6 +194,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 << ", stack capacity: " << params.m_de_params.m_stack_capacity << END_LOG;
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
         LOG_INFO << "Expansion strategy: " << params.m_de_params.m_expansion_strategy << END_LOG;
+
+        LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
     } else {
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);

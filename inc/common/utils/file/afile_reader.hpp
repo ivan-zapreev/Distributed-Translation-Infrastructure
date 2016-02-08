@@ -63,7 +63,7 @@ namespace uva {
                 /**
                  * Allows to log the information about the instantiated file reader type
                  */
-                virtual void log_reader_type_usage_info() = 0;
+                virtual void log_reader_type_info() = 0;
 
                 /**
                  * This method allows to reset the reading process and start reading
