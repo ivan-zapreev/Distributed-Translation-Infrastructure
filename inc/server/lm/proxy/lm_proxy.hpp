@@ -26,6 +26,7 @@
 #ifndef TRIE_PROXY_INT_HPP
 #define TRIE_PROXY_INT_HPP
 
+#include "server/lm/lm_parameters.hpp"
 #include "server/lm/proxy/lm_query_proxy.hpp"
 
 namespace uva {
@@ -38,7 +39,7 @@ namespace uva {
                         /**
                          * This is the trie proxy interface class it allows to interact with templated tries in a uniform way.
                          */
-                        class trie_proxy {
+                        class lm_proxy {
                         public:
                             
                             /**
@@ -55,18 +56,18 @@ namespace uva {
                             /**
                              * The basic virtual destructor
                              */
-                            virtual ~trie_proxy(){};
+                            virtual ~lm_proxy(){};
 
                             /**
                              * This method allows to get a query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual lm_query_proxy * get_query_executor() = 0;
+                            virtual lm_query_proxy * get_query_proxy() = 0;
                             
                             /**
                              * Allows to log the trie type usage information
                              */
-                            virtual void log_trie_type_usage_info() = 0; 
+                            virtual void log_model_type_info() = 0; 
                         };
                     }
                 }

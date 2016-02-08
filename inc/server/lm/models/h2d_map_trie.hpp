@@ -40,7 +40,7 @@
 #include "common/utils/containers/array_utils.hpp"
 #include "common/utils/containers/fixed_size_hashmap.hpp"
 
-#include "GenericTrieBase.hpp"
+#include "generic_trie_base.hpp"
 
 using namespace std;
 

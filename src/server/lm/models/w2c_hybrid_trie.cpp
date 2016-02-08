@@ -22,7 +22,7 @@
  *
  * Created on August 21, 2015, 4:18 PM
  */
-#include "server/lm/tries/W2CHybridTrie.hpp"
+#include "server/lm/models/W2CHybridTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 

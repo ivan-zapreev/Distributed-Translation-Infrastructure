@@ -31,8 +31,8 @@
 
 #include "server/lm/lm_parameters.hpp"
 
-#include "server/lm/proxy/trie_proxy.hpp"
-#include "server/lm/proxy/trie_proxy_local.hpp"
+#include "server/lm/proxy/lm_proxy.hpp"
+#include "server/lm/proxy/lm_proxy_local.hpp"
 #include "server/lm/proxy/lm_query_proxy.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
@@ -40,13 +40,13 @@
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 
-#include "server/lm/tries/C2DMapTrie.hpp"
-#include "server/lm/tries/W2CHybridTrie.hpp"
-#include "server/lm/tries/C2WArrayTrie.hpp"
-#include "server/lm/tries/W2CArrayTrie.hpp"
-#include "server/lm/tries/C2DHybridTrie.hpp"
-#include "server/lm/tries/G2DMapTrie.hpp"
-#include "server/lm/tries/H2DMapTrie.hpp"
+#include "server/lm/models/c2d_map_trie.hpp"
+#include "server/lm/models/w2c_hybrid_trie.hpp"
+#include "server/lm/models/c2w_array_trie.hpp"
+#include "server/lm/models/w2c_array_trie.hpp"
+#include "server/lm/models/c2d_hybrid_trie.hpp"
+#include "server/lm/models/g2d_map_trie.hpp"
+#include "server/lm/models/h2d_map_trie.hpp"
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
@@ -105,7 +105,7 @@ namespace uva {
                          */
                         static lm_query_proxy * get_query_executor() {
                             //Return the query executor as given by the proxy class
-                            return m_trie_proxy->get_query_executor();
+                            return m_trie_proxy->get_query_proxy();
                         }
 
                     protected:
@@ -119,25 +119,25 @@ namespace uva {
                         static void get_proxy__choose_trie(const lm_parameters & params) {
                             switch (params.m_trie_type) {
                                 case trie_types::C2DH_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < C2DHybridTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < C2DHybridTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::C2DM_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < C2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < C2DMapTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::C2WA_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < C2WArrayTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < C2WArrayTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::W2CA_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < W2CArrayTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < W2CArrayTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::W2CH_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < W2CHybridTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < W2CHybridTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::G2DM_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < G2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < G2DMapTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 case trie_types::H2DM_TRIE:
-                                    m_trie_proxy = new trie_proxy_local < H2DMapTrie<MAX_LEVEL, word_index_type >> ();
+                                    m_trie_proxy = new lm_proxy_local < H2DMapTrie<MAX_LEVEL, word_index_type >> ();
                                     break;
                                 default:
                                     THROW_EXCEPTION(string("Unrecognized trie type: ") + std::to_string(params.m_trie_type));
@@ -205,7 +205,7 @@ namespace uva {
                         static lm_parameters m_params;
                         
                         //Store the trie proxy object
-                        static trie_proxy * m_trie_proxy;
+                        static lm_proxy * m_trie_proxy;
                     };
                 }
             }

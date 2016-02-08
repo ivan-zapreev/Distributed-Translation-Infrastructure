@@ -41,8 +41,8 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
-#include "server/lm/tries/WordIndexTrieBase.hpp"
-#include "server/lm/tries/BitmapHashCache.hpp"
+#include "server/lm/models/word_index_trie_base.hpp"
+#include "server/lm/models/bitmap_hash_cache.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;

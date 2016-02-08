@@ -22,7 +22,7 @@
  *
  * Created on August 27, 2015, 08:33 PM
  */
-#include "server/lm/tries/W2CArrayTrie.hpp"
+#include "server/lm/models/W2CArrayTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
 

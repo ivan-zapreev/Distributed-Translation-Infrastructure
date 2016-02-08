@@ -26,7 +26,56 @@
 #ifndef TM_PROXY_HPP
 #define TM_PROXY_HPP
 
+#include "server/tm/tm_parameters.hpp"
+#include "server/tm/proxy/tm_query_proxy.hpp"
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace proxy {
+                        
+                        /**
+                         * This is the translation model proxy interface class it allows to
+                         * interact with any sort of local and remote models in a uniform way.
+                         */
+                        class tm_proxy {
+                        public:
+                            
+                            /**
+                             * Allows to connect to the model object based on the given parameters
+                             * @param the parameters defining the model to connect to
+                             */
+                            virtual void connect(const tm_parameters & params) = 0;
+
+                            /**
+                             * Allows to disconnect from the trie
+                             */
+                            virtual void disconnect() = 0;
+                            
+                            /**
+                             * The basic virtual destructor
+                             */
+                            virtual ~tm_proxy(){};
+
+                            /**
+                             * This method allows to get a query executor for the given trie
+                             * @return the trie query proxy object
+                             */
+                            virtual tm_query_proxy * get_query_proxy() = 0;
+                            
+                            /**
+                             * Allows to log the trie type usage information
+                             */
+                            virtual void log_model_type_info() = 0; 
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* TM_PROXY_HPP */
 

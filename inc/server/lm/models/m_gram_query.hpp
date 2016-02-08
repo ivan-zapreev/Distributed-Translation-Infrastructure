@@ -34,7 +34,7 @@
 
 #include "server/lm/mgrams/QueryMGram.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
-#include "server/lm/tries/GenericTrieBase.hpp"
+#include "server/lm/models/generic_trie_base.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"

@@ -26,7 +26,20 @@
 #ifndef TM_BUILDER_HPP
 #define TM_BUILDER_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace builders {
 
+                        class tm_basic_builder;
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* TM_BUILDER_HPP */
 

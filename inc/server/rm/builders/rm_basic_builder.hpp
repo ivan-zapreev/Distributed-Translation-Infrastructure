@@ -26,7 +26,20 @@
 #ifndef RM_BASIC_BUILDER_HPP
 #define RM_BASIC_BUILDER_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+                    namespace builders {
 
+                        class rm_basic_builder;
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_BASIC_BUILDER_HPP */
 

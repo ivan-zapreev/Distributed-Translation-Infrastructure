@@ -26,6 +26,89 @@
 #ifndef RM_PROXY_LOCAL_HPP
 #define RM_PROXY_LOCAL_HPP
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/file/cstyle_file_reader.hpp"
+
+#include "server/rm/proxy/rm_query_proxy.hpp"
+#include "server/rm/proxy/rm_query_proxy_local.hpp"
+
+#include "server/rm/builders/rm_basic_builder.hpp"
+
+using namespace uva::utils::monitore;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::file;
+using namespace uva::smt::translation::server::rm;
+using namespace uva::smt::translation::server::rm::proxy;
+using namespace uva::smt::translation::server::rm::builders;
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+                    namespace proxy {
+
+                        /**
+                         * This is the reordering model proxy interface class it allows to
+                         * interact with any sort of local and remote models in a uniform way.
+                         */
+                        class rm_proxy_local : public rm_proxy {
+                        public:
+
+                            /**
+                             * The basic proxy constructor, currently does nothing except for default initialization
+                             */
+                            rm_proxy_local() {
+                            }
+
+                            /**
+                             * Allows to connect to the model object based on the given parameters
+                             * @param the parameters defining the model to connect to
+                             */
+                            virtual void connect(const rm_parameters & params){
+                                //ToDo: load the translation model into the memory
+                            }
+
+                            /**
+                             * Allows to disconnect from the trie
+                             */
+                            virtual void disconnect() {
+                                //ToDo: Destroy the reordering model, remove it from the memory
+                            }
+
+                            /**
+                             * The basic virtual destructor
+                             */
+                            virtual ~rm_proxy_local() {
+                                //Disconnect, just in case it has not been done before
+                                disconnect();
+                            };
+
+                            /**
+                             * This method allows to get a query executor for the given trie
+                             * @return the trie query proxy object
+                             */
+                            virtual rm_query_proxy * get_query_proxy() {
+                                //ToDo: Return an instance of the query_proxy_local class
+                                return NULL;
+                            }
+
+                            /**
+                             * Allows to log the trie type usage information
+                             */
+                            virtual void log_model_type_info(){
+                                //ToDo: Implement logging the reirdering model information
+                            }
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 #endif /* RM_PROXY_LOCAL_HPP */

@@ -60,7 +60,7 @@ namespace uva {
                          * with a locally loaded trie model.
                          */
                         template<typename trie_type>
-                        class trie_proxy_local : public trie_proxy {
+                        class lm_proxy_local : public lm_proxy {
                         public:
                             //Make a local declaration of the word index type for convenience
                             typedef typename trie_type::WordIndexType word_index_type;
@@ -69,13 +69,13 @@ namespace uva {
                              * The basic constructor of the trie proxy implementation class
                              * @param params the language model parameters
                              */
-                            trie_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_trie(m_word_index) {
+                            lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_trie(m_word_index) {
                             }
 
                             /**
                              * @see trie_proxy
                              */
-                            virtual ~trie_proxy_local() {
+                            virtual ~lm_proxy_local() {
                                 //Call the disconnect, just in case.
                                 disconnect();
                             };
@@ -100,14 +100,14 @@ namespace uva {
                             /**
                              * @see trie_proxy
                              */
-                            virtual lm_query_proxy * get_query_executor() {
+                            virtual lm_query_proxy * get_query_proxy() {
                                 return new lm_query_proxy_local<trie_type>(m_trie);
                             }
 
                             /**
                              * @see trie_proxy
                              */
-                            virtual void log_trie_type_usage_info() {
+                            virtual void log_model_type_info() {
                                 m_trie.log_trie_type_usage_info();
                             }
                         private:

@@ -40,8 +40,8 @@
 #include "common/utils/containers/array_utils.hpp"
 #include "common/utils/containers/fixed_size_hashmap.hpp"
 
-#include "GenericTrieBase.hpp"
-#include "W2CArrayTrie.hpp"
+#include "generic_trie_base.hpp"
+#include "w2c_array_trie.hpp"
 
 using namespace std;
 

@@ -31,11 +31,11 @@
 #include "server/lm/trie_constants.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "LayeredTrieBase.hpp"
+#include "layered_trie_base.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
-#include "server/lm/tries/W2CH_UM_Storage.hpp"
+#include "server/lm/models/w2ch_um_storage.hpp"
 
 using namespace std;
 using namespace uva::smt::translation::server::lm::dictionary;

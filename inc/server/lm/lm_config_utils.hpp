@@ -30,13 +30,13 @@
 
 #include "server/lm/lm_parameters.hpp"
 
-#include "server/lm/tries/C2DMapTrie.hpp"
-#include "server/lm/tries/W2CHybridTrie.hpp"
-#include "server/lm/tries/C2WArrayTrie.hpp"
-#include "server/lm/tries/W2CArrayTrie.hpp"
-#include "server/lm/tries/C2DHybridTrie.hpp"
-#include "server/lm/tries/G2DMapTrie.hpp"
-#include "server/lm/tries/H2DMapTrie.hpp"
+#include "server/lm/models/c2d_map_trie.hpp"
+#include "server/lm/models/w2c_hybrid_trie.hpp"
+#include "server/lm/models/c2w_array_trie.hpp"
+#include "server/lm/models/w2c_array_trie.hpp"
+#include "server/lm/models/c2d_hybrid_trie.hpp"
+#include "server/lm/models/g2d_map_trie.hpp"
+#include "server/lm/models/h2d_map_trie.hpp"
 
 using namespace uva::utils::monitore;
 

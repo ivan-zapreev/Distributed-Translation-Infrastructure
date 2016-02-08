@@ -30,6 +30,13 @@
 #include "common/utils/exceptions.hpp"
 
 #include "server/tm/tm_parameters.hpp"
+#include "server/tm/proxy/tm_proxy.hpp"
+#include "server/tm/proxy/tm_proxy_local.hpp"
+#include "server/tm/proxy/tm_query_proxy.hpp"
+
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::smt::translation::server::tm::proxy;
 
 namespace uva {
     namespace smt {
@@ -55,14 +62,25 @@ namespace uva {
                             //Store the parameters for future use
                             m_params = params;
 
-                            //ToDo: Implement
+                            //At the moment we only support a local proxy,
+                            //no remotely hosted translation models
+                            m_model_proxy = new tm_proxy_local();
+                            
+                            //Connect to the model instance using the given parameters
+                            m_model_proxy->connect(m_params);
                         }
 
                         /**
                          * Allows to disconnect from the translation model.
                          */
                         static void disconnect() {
-                            //ToDo: Implement
+                            if( m_model_proxy != NULL) {
+                                //Disconnect from the model
+                                m_model_proxy->disconnect();
+                                //Delete the object, free the resources
+                                delete m_model_proxy;
+                                m_model_proxy = NULL;
+                            }
                         }
                         
                     protected:
@@ -70,6 +88,9 @@ namespace uva {
                     private:
                         //Stores the copy of the configuration parameters
                         static tm_parameters m_params;
+                        
+                        //Store the trie proxy object
+                        static tm_proxy * m_model_proxy;
                     };
                 }
             }

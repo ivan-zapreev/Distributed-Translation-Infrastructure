@@ -22,7 +22,7 @@
  * Created on September 8, 2015, 11:22 AM
  */
 
-#include "server/lm/tries/G2DMapTrie.hpp"
+#include "server/lm/models/G2DMapTrie.hpp"
 
 #include <inttypes.h>   // std::uint32_t
 #include <algorithm>    // std::max

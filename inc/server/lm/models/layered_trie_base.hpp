@@ -40,7 +40,7 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
-#include "server/lm/tries/GenericTrieBase.hpp"
+#include "server/lm/models/generic_trie_base.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;

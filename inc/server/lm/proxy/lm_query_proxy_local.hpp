@@ -27,7 +27,7 @@
 #define TRIE_QUERY_PROXY_IMPL_HPP
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
-#include "server/lm/tries/MGramQuery.hpp"
+#include "server/lm/models/m_gram_query.hpp"
 
 using namespace uva::smt::translation::server::lm;
 

@@ -30,7 +30,9 @@
 #include "common/utils/exceptions.hpp"
 
 #include "server/rm/rm_parameters.hpp"
-
+#include "server/rm/proxy/rm_proxy.hpp"
+#include "server/rm/proxy/rm_proxy_local.hpp"
+#include "server/rm/proxy/rm_query_proxy.hpp"
 namespace uva {
     namespace smt {
         namespace translation {
@@ -55,14 +57,25 @@ namespace uva {
                             //Store the parameters for future use
                             m_params = params;
 
-                            //ToDo: Implement
+                            //At the moment we only support a local proxy,
+                            //no remotely hosted reirdering models
+                            m_model_proxy = new rm_proxy_local();
+                            
+                            //Connect to the model instance using the given parameters
+                            m_model_proxy->connect(m_params);
                         }
 
                         /**
                          * Allows to disconnect from the reordering model.
                          */
                         static void disconnect() {
-                            //ToDo: Implement
+                            if( m_model_proxy != NULL) {
+                                //Disconnect from the model
+                                m_model_proxy->disconnect();
+                                //Delete the object, free the resources
+                                delete m_model_proxy;
+                                m_model_proxy = NULL;
+                            }
                         }
                         
                     protected:
@@ -70,6 +83,9 @@ namespace uva {
                     private:
                         //Stores the copy of the configuration parameters
                         static rm_parameters m_params;
+                        
+                        //Store the trie proxy object
+                        static rm_proxy * m_model_proxy;
                     };
                 }
             }

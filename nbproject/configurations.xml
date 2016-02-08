@@ -16,10 +16,10 @@
         </df>
         <df name="lm">
           <df name="proxy">
+            <in>lm_proxy.hpp</in>
+            <in>lm_proxy_local.hpp</in>
             <in>lm_query_proxy.hpp</in>
             <in>lm_query_proxy_local.hpp</in>
-            <in>trie_proxy.hpp</in>
-            <in>trie_proxy_local.hpp</in>
           </df>
           <in>lm_config_utils.hpp</in>
           <in>lm_configurator.hpp</in>
@@ -173,19 +173,19 @@
       </item>
       <item path="inc/server/lm/lm_parameters.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/server/lm/proxy/lm_proxy.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/lm/proxy/lm_proxy_local.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/server/lm/proxy/lm_query_proxy.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="inc/server/lm/proxy/lm_query_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/trie_proxy.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/trie_proxy_local.hpp"
             ex="false"
             tool="3"
             flavor2="0">

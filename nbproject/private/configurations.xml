@@ -633,26 +633,26 @@
             <in>ModelMGram.hpp</in>
             <in>QueryMGram.hpp</in>
           </df>
+          <df name="models">
+            <in>bitmap_hash_cache.hpp</in>
+            <in>c2d_hybrid_trie.hpp</in>
+            <in>c2d_map_trie.hpp</in>
+            <in>c2w_array_trie.hpp</in>
+            <in>g2d_map_trie.hpp</in>
+            <in>generic_trie_base.hpp</in>
+            <in>h2d_map_trie.hpp</in>
+            <in>layered_trie_base.hpp</in>
+            <in>m_gram_query.hpp</in>
+            <in>w2c_array_trie.hpp</in>
+            <in>w2c_hybrid_trie.hpp</in>
+            <in>w2ch_um_storage.hpp</in>
+            <in>word_index_trie_base.hpp</in>
+          </df>
           <df name="proxy">
+            <in>lm_proxy.hpp</in>
+            <in>lm_proxy_local.hpp</in>
             <in>lm_query_proxy.hpp</in>
             <in>lm_query_proxy_local.hpp</in>
-            <in>trie_proxy.hpp</in>
-            <in>trie_proxy_local.hpp</in>
-          </df>
-          <df name="tries">
-            <in>BitmapHashCache.hpp</in>
-            <in>C2DHybridTrie.hpp</in>
-            <in>C2DMapTrie.hpp</in>
-            <in>C2WArrayTrie.hpp</in>
-            <in>G2DMapTrie.hpp</in>
-            <in>GenericTrieBase.hpp</in>
-            <in>H2DMapTrie.hpp</in>
-            <in>LayeredTrieBase.hpp</in>
-            <in>MGramQuery.hpp</in>
-            <in>W2CArrayTrie.hpp</in>
-            <in>W2CH_UM_Storage.hpp</in>
-            <in>W2CHybridTrie.hpp</in>
-            <in>WordIndexTrieBase.hpp</in>
           </df>
           <in>lm_config_utils.hpp</in>
           <in>lm_configurator.hpp</in>
@@ -737,10 +737,7 @@
           <df name="dictionaries">
             <in>aword_index.cpp</in>
           </df>
-          <df name="ngrams">
-            <in>byte_m_gram_id.cpp</in>
-          </df>
-          <df name="tries">
+          <df name="models">
             <in>c2d_hybrid_trie.cpp</in>
             <in>c2d_map_trie.cpp</in>
             <in>c2w_array_trie.cpp</in>
@@ -748,6 +745,9 @@
             <in>h2d_map_trie.cpp</in>
             <in>w2c_array_trie.cpp</in>
             <in>w2c_hybrid_trie.cpp</in>
+          </df>
+          <df name="ngrams">
+            <in>byte_m_gram_id.cpp</in>
           </df>
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>

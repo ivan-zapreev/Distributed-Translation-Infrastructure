@@ -26,7 +26,32 @@
 #ifndef TM_QUERY_PROXY_HPP
 #define TM_QUERY_PROXY_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace proxy {
 
+                        /**
+                         * This class represents a translation query proxy interface class.
+                         * It allows to interact with translation model queries in a uniform way.
+                         */
+                        class tm_query_proxy {
+                        public: 
+ 
+                            /**
+                             * The basic virtual destructor
+                             */
+                            virtual ~tm_query_proxy() {
+                            }
+                         };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* TM_QUERY_PROXY_HPP */
 

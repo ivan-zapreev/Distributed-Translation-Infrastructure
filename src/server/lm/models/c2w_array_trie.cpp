@@ -22,7 +22,7 @@
  *
  * Created on August 25, 2015, 11:27 PM
  */
-#include "server/lm/tries/C2WArrayTrie.hpp"
+#include "server/lm/models/C2WArrayTrie.hpp"
 
 #include <inttypes.h>       // std::uint32_t
 

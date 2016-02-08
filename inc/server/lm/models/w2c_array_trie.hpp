@@ -34,7 +34,7 @@
 #include "server/lm/trie_constants.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "LayeredTrieBase.hpp"
+#include "layered_trie_base.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"

@@ -26,7 +26,32 @@
 #ifndef RM_QUERY_PROXY_HPP
 #define RM_QUERY_PROXY_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+                    namespace proxy {
 
+                        /**
+                         * This class represents a reordering query proxy interface class.
+                         * It allows to interact with reordering model queries in a uniform way.
+                         */
+                        class rm_query_proxy {
+                        public: 
+ 
+                            /**
+                             * The basic virtual destructor
+                             */
+                            virtual ~rm_query_proxy() {
+                            }
+                         };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_QUERY_PROXY_HPP */
 
