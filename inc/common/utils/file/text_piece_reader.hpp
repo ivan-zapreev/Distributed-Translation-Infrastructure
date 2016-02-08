@@ -24,7 +24,7 @@
  */
 
 #ifndef TEXTPIECEREADER_HPP
-#define	TEXTPIECEREADER_HPP
+#define TEXTPIECEREADER_HPP
 
 #include <string.h>     // std::memrchr
 #include <cstring>      // std::memchr std::strncpy
@@ -201,25 +201,27 @@ namespace uva {
                 /**
                  * This function searches forward for the first occurrence of the
                  * argument delimiter symbol.
+                 * @param delim the delimiter we are looking for
+                 * @param delim_len the number of times in a row the delimiter shall occur, default is 1
                  * @param out the out parameter - the substring until the first next
                  * found delimiter or the entire string if the delimiter was not found
                  * @return true if a text piece was read, otherwise false (end of file)
                  */
-                template<const char delim>
+                template<const char delim, const uint8_t delim_len = 1 >
                 inline bool get_first(TextPieceReader& out) {
                     //The next piece begins where we stopped
                     const char * out_m_begin_ptr = m_rest_ptr;
 
                     LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
 
-                    //The found piece length is first zero
-                    size_t out_m_len = 0;
-
-                    //Search for the next new delimiter from the front
-                    const char * char_ptr = static_cast<const char *> (memchr(m_rest_ptr, delim, m_rest_len));
+                    //Find the sub-sequence
+                    const char * char_ptr = find_first_subseq<delim, delim_len>();
 
                     LOG_DEBUG4 << "Forward searching for the character got: "
                             << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
+
+                    //The found piece length is first zero
+                    size_t out_m_len = 0;
 
                     //Check if we found something
                     if (char_ptr != NULL) {
@@ -237,8 +239,8 @@ namespace uva {
                                 << SSTR(static_cast<const void *> (m_rest_ptr))
                                 << ", m_rest_len = " << m_rest_len << END_LOG;
 
-                        //Set the resulting length
-                        out_m_len = found_piece_length;
+                        //Set the resulting length, note that the delimiter can be longer than one character
+                        out_m_len = found_piece_length - (delim_len - 1);
 
                         //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
                         if ((delim == '\n') && found_piece_length && (out_m_begin_ptr[found_piece_length - 1]) == '\r') {
@@ -269,16 +271,21 @@ namespace uva {
                 /**
                  * This function searches backwards for the first occurrence of the
                  * argument delimiter symbol.
+                 * @param delim the delimiter we are looking for
+                 * @param delim_card the number of times in a row the delimiter shall occur, default is 1
                  * @param out the out parameter - the substring from the first next
                  * found delimiter till the end of the string or the entire string
                  * if the delimiter was not found
                  * @return true if a line was read, otherwise false (end of file)
                  */
-                template<const char delim>
+                template<const char delim, const uint8_t delim_card = 1 >
                 inline bool get_last(TextPieceReader& out) {
                     //The found piece length is first zero
                     size_t out_m_len = 0;
-                    
+
+                    //Check if we have a proper delimiter parameter
+                    ASSERT_CONDITION_THROW((delim_card != 1), string("Unsupported delimiter cardinality: ") + to_string(delim_card));
+
                     LOG_DEBUG3 << "Start searching for a new delimiter, m_rest_ptr: "
                             << SSTR(static_cast<const void *> (m_rest_ptr))
                             << ", m_rest_len: " << m_rest_len << END_LOG;
@@ -485,6 +492,54 @@ namespace uva {
                     }
                     return m_str;
                 }
+
+            protected:
+
+                /**
+                 * Allows to find a sub-sequence of characters in the forward manner
+                 * @return the pointer to the last character in the subsequence or NULL if nothing is found
+                 */
+                template<const char delim, const uint8_t delim_len>
+                const char * find_first_subseq() {
+                    //Search for the next new delimiter from the front
+                    const char * char_ptr = static_cast<const char *> (memchr(m_rest_ptr, delim, m_rest_len));
+
+                    //In case the delimiter length is more than one
+                    if (delim_len > 1) {
+                        //The pointer to the unread remainder of the file
+                        const char * const end_ptr = m_rest_ptr + m_rest_len - 1;
+                        //Search for a repeating delimiter substring
+                        while (char_ptr != NULL) {
+                            //Store the pointer to the last char in the possible delimiter substring
+                            const char * const last_ptr = (char_ptr + (delim_len - 1));
+                            //If there is enough symbols to check
+                            if (last_ptr <= end_ptr) {
+                                //Search for the substring of delimiters
+                                uint8_t found = 1;
+                                do {
+                                    //Move to the first next symbol and check if it is the right one
+                                    if (*(++char_ptr) == delim) {
+                                        ++found;
+                                    }
+                                } while (char_ptr < last_ptr);
+
+                                //Check if we found enough
+                                if (found == delim_len) {
+                                    //If the number of delimiter elements is exactly as we need then we can stop
+                                    break;
+                                } else {
+                                    //If the number of delimiter elements is less then search on
+                                    char_ptr = static_cast<const char *> (memchr(char_ptr, delim, (end_ptr - char_ptr + 1)));
+                                }
+                            } else {
+                                //There is not enough symbols, we've failed
+                                char_ptr = NULL;
+                            }
+                        }
+                    }
+
+                    return char_ptr;
+                }
             };
 
             /**
@@ -523,5 +578,5 @@ namespace uva {
 }
 
 
-#endif	/* MTEXTFILEPIECE_HPP */
+#endif /* MTEXTFILEPIECE_HPP */
 
