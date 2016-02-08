@@ -39,8 +39,8 @@ namespace uva {
                      * This structure is needed to store the language model parameters
                      */
                     typedef struct {
-                        //The train file name, is defined by the used
-                        string m_model_file_name;
+                        //The the connection string needed to connect to the model
+                        string m_conn_string;
 
                         //The Trie type name, is defined by the user
                         string m_trie_type_name;

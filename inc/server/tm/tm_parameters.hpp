@@ -38,8 +38,8 @@ namespace uva {
                      * This structure stores the translation model parameters
                      */
                     typedef struct {
-                        //The translation model file name
-                        string m_model_file_name;
+                        //The the connection string needed to connect to the model
+                        string m_conn_string;
                     } tm_parameters;
                 }
             }

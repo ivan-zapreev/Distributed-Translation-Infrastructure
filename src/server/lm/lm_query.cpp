@@ -143,7 +143,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Store the parsed parameter values
     params.m_is_cum_prob = p_cumulative_prob_arg->getValue();
-    params.m_lm_params.m_model_file_name = p_model_arg->getValue();
+    params.m_lm_params.m_conn_string = p_model_arg->getValue();
     params.m_query_file_name = p_query_arg->getValue();
     params.m_lm_params.m_trie_type_name = p_trie_type_arg->getValue();
 
@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         LOG_DEBUG << "Checking on the provided files \'"
-                << params.m_lm_params.m_model_file_name << "\' and \'"
+                << params.m_lm_params.m_conn_string << "\' and \'"
                 << params.m_query_file_name << "\' ..." << END_LOG;
 
         //Do the actual work, read the text corpse, create trie and do queries
