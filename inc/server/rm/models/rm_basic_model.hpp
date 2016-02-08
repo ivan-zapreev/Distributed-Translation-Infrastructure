@@ -26,7 +26,33 @@
 #ifndef RM_BASIC_MODEL_HPP
 #define RM_BASIC_MODEL_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace rm {
+                    namespace models {
 
+                        /**
+                         * This class represents a basic reordering model implementation.
+                         */
+                        class rm_basic_model {
+                        public:
+
+                            /**
+                             * The basic class constructor
+                             */
+                            rm_basic_model() {
+                            }
+                        protected:
+                        private:
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_BASIC_MODEL_HPP */
 

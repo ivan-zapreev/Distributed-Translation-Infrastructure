@@ -55,6 +55,7 @@ namespace uva {
                          * This is the reordering model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
                          */
+                        template<typename model_type_name>
                         class rm_proxy_local : public rm_proxy {
                         public:
 
@@ -69,14 +70,14 @@ namespace uva {
                              * @param the parameters defining the model to connect to
                              */
                             virtual void connect(const rm_parameters & params){
-                                //ToDo: load the translation model into the memory
+                                //ToDo: load the reordering model into the memory
                             }
 
                             /**
                              * Allows to disconnect from the trie
                              */
                             virtual void disconnect() {
-                                //ToDo: Destroy the reordering model, remove it from the memory
+                                //Nothing the be done here yet, the model is allocated on the stack
                             }
 
                             /**
@@ -102,6 +103,9 @@ namespace uva {
                             virtual void log_model_type_info(){
                                 //ToDo: Implement logging the reirdering model information
                             }
+                            
+                            private:
+                                model_type_name m_model;
                         };
                     }
                 }

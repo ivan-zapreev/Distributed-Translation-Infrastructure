@@ -33,10 +33,12 @@
 #include "server/tm/proxy/tm_proxy.hpp"
 #include "server/tm/proxy/tm_proxy_local.hpp"
 #include "server/tm/proxy/tm_query_proxy.hpp"
+#include "server/tm/models/tm_basic_model.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::translation::server::tm::proxy;
+using namespace uva::smt::translation::server::tm::models;
 
 namespace uva {
     namespace smt {
@@ -51,7 +53,7 @@ namespace uva {
                      */
                     class tm_configurator {
                     public:
-                        
+
                         /**
                          * This method allows to connect to the translation model.
                          * This method is to be called only once! The latter is
@@ -62,10 +64,10 @@ namespace uva {
                             //Store the parameters for future use
                             m_params = params;
 
-                            //At the moment we only support a local proxy,
-                            //no remotely hosted translation models
-                            m_model_proxy = new tm_proxy_local();
-                            
+                            //At the moment we only support a local proxy, no remotely hosted
+                            //reordering model, also just one basic reordering model type
+                            m_model_proxy = new tm_proxy_local<tm_basic_model>();
+
                             //Connect to the model instance using the given parameters
                             m_model_proxy->connect(m_params);
                         }
@@ -74,7 +76,7 @@ namespace uva {
                          * Allows to disconnect from the translation model.
                          */
                         static void disconnect() {
-                            if( m_model_proxy != NULL) {
+                            if (m_model_proxy != NULL) {
                                 //Disconnect from the model
                                 m_model_proxy->disconnect();
                                 //Delete the object, free the resources
@@ -92,13 +94,13 @@ namespace uva {
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->get_query_proxy();
                         }
-                        
+
                     protected:
-                        
+
                     private:
                         //Stores the copy of the configuration parameters
                         static tm_parameters m_params;
-                        
+
                         //Store the trie proxy object
                         static tm_proxy * m_model_proxy;
                     };

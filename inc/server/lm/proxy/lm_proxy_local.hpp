@@ -110,6 +110,7 @@ namespace uva {
                             virtual void log_model_type_info() {
                                 m_trie.log_trie_type_usage_info();
                             }
+                            
                         private:
 
                             /**

@@ -33,6 +33,13 @@
 #include "server/rm/proxy/rm_proxy.hpp"
 #include "server/rm/proxy/rm_proxy_local.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
+#include "server/rm/models/rm_basic_model.hpp"
+
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::smt::translation::server::rm::proxy;
+using namespace uva::smt::translation::server::rm::models;
+
 namespace uva {
     namespace smt {
         namespace translation {
@@ -57,9 +64,9 @@ namespace uva {
                             //Store the parameters for future use
                             m_params = params;
 
-                            //At the moment we only support a local proxy,
-                            //no remotely hosted reirdering models
-                            m_model_proxy = new rm_proxy_local();
+                            //At the moment we only support a local proxy, no remotely hosted
+                            //reordering model, also just one basic reordering model type
+                            m_model_proxy = new rm_proxy_local<rm_basic_model>();
                             
                             //Connect to the model instance using the given parameters
                             m_model_proxy->connect(m_params);

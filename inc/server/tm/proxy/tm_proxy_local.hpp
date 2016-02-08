@@ -55,6 +55,7 @@ namespace uva {
                          * This is the translation model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
                          */
+                        template<typename model_type_name>
                         class tm_proxy_local : public tm_proxy {
                         public:
 
@@ -76,7 +77,7 @@ namespace uva {
                              * Allows to disconnect from the trie
                              */
                             virtual void disconnect() {
-                                //ToDo: Destroy the translation model, remove it from the memory
+                                //Nothing the be done here yet, the model is allocated on the stack
                             }
 
                             /**
@@ -102,6 +103,9 @@ namespace uva {
                             virtual void log_model_type_info(){
                                 //ToDo: Implement logging the translation model information
                             }
+                            
+                            private:
+                                model_type_name m_model;
                         };
                     }
                 }

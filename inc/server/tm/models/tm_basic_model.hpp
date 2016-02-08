@@ -26,6 +26,33 @@
 #ifndef TM_BASIC_MODEL_HPP
 #define TM_BASIC_MODEL_HPP
 
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace models {
+
+                        /**
+                         * This class represents a basic translation model implementation.
+                         */
+                        class tm_basic_model {
+                        public:
+
+                            /**
+                             * The basic class constructor
+                             */
+                            tm_basic_model() {
+                            }
+                        protected:
+                        private:
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 #endif /* TM_BASIC_MODEL_HPP */
