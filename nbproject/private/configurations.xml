@@ -663,16 +663,32 @@
         </df>
         <df name="rm">
           <df name="builders">
+            <in>rm_basic_builder.hpp</in>
+          </df>
+          <df name="models">
+            <in>rm_basic_model.hpp</in>
           </df>
           <df name="proxy">
+            <in>rm_proxy.hpp</in>
+            <in>rm_proxy_local.hpp</in>
+            <in>rm_query_proxy.hpp</in>
+            <in>rm_query_proxy_local.hpp</in>
           </df>
           <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
           <df name="builders">
+            <in>tm_basic_builder.hpp</in>
+          </df>
+          <df name="models">
+            <in>tm_basic_model.hpp</in>
           </df>
           <df name="proxy">
+            <in>tm_proxy.hpp</in>
+            <in>tm_proxy_local.hpp</in>
+            <in>tm_query_proxy.hpp</in>
+            <in>tm_query_proxy_local.hpp</in>
           </df>
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>

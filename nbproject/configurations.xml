@@ -26,10 +26,34 @@
           <in>lm_parameters.hpp</in>
         </df>
         <df name="rm">
+          <df name="builders">
+            <in>rm_basic_builder.hpp</in>
+          </df>
+          <df name="models">
+            <in>rm_basic_model.hpp</in>
+          </df>
+          <df name="proxy">
+            <in>rm_proxy.hpp</in>
+            <in>rm_proxy_local.hpp</in>
+            <in>rm_query_proxy.hpp</in>
+            <in>rm_query_proxy_local.hpp</in>
+          </df>
           <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
+          <df name="builders">
+            <in>tm_basic_builder.hpp</in>
+          </df>
+          <df name="models">
+            <in>tm_basic_model.hpp</in>
+          </df>
+          <df name="proxy">
+            <in>tm_proxy.hpp</in>
+            <in>tm_proxy_local.hpp</in>
+            <in>tm_query_proxy.hpp</in>
+            <in>tm_query_proxy_local.hpp</in>
+          </df>
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
@@ -162,11 +186,65 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/rm/builders/rm_basic_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/rm/models/rm_basic_model.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/rm/proxy/rm_proxy.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/rm/proxy/rm_proxy_local.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/rm/proxy/rm_query_proxy.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/rm/proxy/rm_query_proxy_local.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/server/rm/rm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/rm/rm_parameters.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/server_parameters.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/builders/tm_basic_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/models/tm_basic_model.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/proxy/tm_proxy.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/proxy/tm_proxy_local.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/proxy/tm_query_proxy.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/proxy/tm_query_proxy_local.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="inc/server/tm/tm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
