@@ -75,6 +75,24 @@ namespace uva {
                 };
 
                 /**
+                 * This function searches forward for the first occurrence of the
+                 * argument delimiter symbol.
+                 */
+                template<const char delim, const uint8_t delim_len = 1 >
+                inline bool get_first(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
+                }
+
+                /**
+                 * This function searches backwards for the first occurrence of the
+                 * argument delimiter symbol.
+                 */
+                template<const char delim, const uint8_t delim_len = 1 >
+                inline bool get_last(TextPieceReader& out) {
+                    THROW_MUST_OVERRIDE();
+                }
+
+                /**
                  * Each file reader implementation will need to override these method, if needed.
                  * The method is non-virtual for performance reasons!
                  */
