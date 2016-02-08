@@ -26,12 +26,10 @@
 #ifndef TRIEBUILDER_HPP
 #define TRIEBUILDER_HPP
 
-#include <fstream>      // std::ifstream
 #include <regex>        // std::regex, std::regex_match
 
 #include "server/lm/trie_constants.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
-#include "common/utils/file/afile_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::file;

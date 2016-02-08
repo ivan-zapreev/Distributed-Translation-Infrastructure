@@ -26,6 +26,11 @@
 #ifndef TM_BUILDER_HPP
 #define TM_BUILDER_HPP
 
+#include "common/utils/file/text_piece_reader.hpp"
+
+using namespace std;
+using namespace uva::utils::file;
+
 namespace uva {
     namespace smt {
         namespace translation {
@@ -33,6 +38,11 @@ namespace uva {
                 namespace tm {
                     namespace builders {
 
+                        //Stores the translation model delimiter character for parsing one line
+#define TM_DELIMITER '|'
+                        //Stores the translation model delimiter character cardinality
+#define TM_DELIMITER_CDTY 3
+                        
                         /**
                          * This class represents a basic reader of the translation model.
                          * It allows to read a text-formatted translation model and to put
@@ -53,15 +63,30 @@ namespace uva {
                             tm_basic_builder(model_type & model, reader_type & reader)
                             : m_model(model), m_reader(reader) {
                             }
-                            
+
                             /**
                              * Allows to build the model by reading the from reader
                              */
-                            void build(){
-                                //ToDo: Implement
+                            void build() {
+                                //Declare the text piece readers for storing the model file line and its parts
+                                TextPieceReader line, source, target, weights;
+
+                                //Start reading the translation model file line by line
+                                while (m_reader.get_first_line(line)) {
+                                    //Read the from phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+                                    //Read the to phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                    //Read the the probability weights
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
+                                    
+                                    LOG_USAGE << source << "|||" << target << "|||" << weights << END_LOG;
+                                    
+                                    //ToDo: Implement
+                                }
                             }
                         protected:
-                            
+
                         private:
                             //Stores the reference to the model
                             model_type & m_model;
