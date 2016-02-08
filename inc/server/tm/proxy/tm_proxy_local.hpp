@@ -105,6 +105,7 @@ namespace uva {
                             }
                             
                             private:
+                                //Stores the translation model instance
                                 model_type m_model;
                         };
                     }

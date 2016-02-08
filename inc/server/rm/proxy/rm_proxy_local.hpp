@@ -105,6 +105,7 @@ namespace uva {
                             }
                             
                             private:
+                                //Stores the reordering model instance
                                 model_type m_model;
                         };
                     }
