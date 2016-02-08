@@ -22,7 +22,7 @@
  *
  * Created on August 14, 2015, 1:53 PM
  */
-#include "server/lm/models/C2DMapTrie.hpp"
+#include "server/lm/models/c2d_map_trie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream

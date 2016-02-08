@@ -37,13 +37,13 @@
 #include "server/lm/builders/arpa_trie_builder.hpp"
 #include "server/lm/builders/arpa_gram_builder_factory.hpp"
 
-#include "server/lm/models/C2DMapTrie.hpp"
-#include "server/lm/models/W2CHybridTrie.hpp"
-#include "server/lm/models/C2WArrayTrie.hpp"
-#include "server/lm/models/W2CArrayTrie.hpp"
-#include "server/lm/models/C2DHybridTrie.hpp"
-#include "server/lm/models/G2DMapTrie.hpp"
-#include "server/lm/models/H2DMapTrie.hpp"
+#include "server/lm/models/c2d_map_trie.hpp"
+#include "server/lm/models/w2c_hybrid_trie.hpp"
+#include "server/lm/models/c2w_array_trie.hpp"
+#include "server/lm/models/w2c_array_trie.hpp"
+#include "server/lm/models/c2d_hybrid_trie.hpp"
+#include "server/lm/models/g2d_map_trie.hpp"
+#include "server/lm/models/h2d_map_trie.hpp"
 
 using namespace uva::smt::translation::server::lm;
 using namespace uva::utils::logging;

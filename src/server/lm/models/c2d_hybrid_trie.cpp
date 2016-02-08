@@ -22,7 +22,7 @@
  *
  * Created on September 1, 2015, 15:15 PM
  */
-#include "server/lm/models/C2DHybridTrie.hpp"
+#include "server/lm/models/c2d_hybrid_trie.hpp"
 
 #include <stdexcept> //std::exception
 #include <sstream>   //std::stringstream
