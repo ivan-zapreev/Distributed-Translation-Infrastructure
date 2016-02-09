@@ -135,7 +135,7 @@ namespace uva {
                  * @param key the key value of the element
                  * @return the pointer to the found element or NULL if nothing is found
                  */
-                const ELEMENT_TYPE * get_element(const uint_fast64_t key_uid, const KEY_TYPE & key) const {
+                ELEMENT_TYPE * get_element(const uint_fast64_t key_uid, const KEY_TYPE & key) const {
                     //Get the bucket index from the hash
                     uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 

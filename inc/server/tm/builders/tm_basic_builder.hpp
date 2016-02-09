@@ -28,7 +28,6 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-
 #include "common/utils/file/text_piece_reader.hpp"
 
 #include "server/tm/models/tm_entry.hpp"
@@ -38,6 +37,8 @@ using namespace std;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
+
+using namespace uva::smt::translation::server::tm::models;
 
 namespace uva {
     namespace smt {
@@ -73,18 +74,56 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to build the model by reading the from reader
+                             * Allows to build the model by reading the from reader.
+                             * This is a two pass process as first we need the number
+                             * of distinct source phrases.
                              */
                             void build() {
-                                //Declare the text piece readers for storing the model file line and its parts
-                                TextPieceReader line;
-
-                                //Start reading the translation model file line by line
-                                while (m_reader.get_first_line(line)) {
-                                    process_translation(line);
+                                //Count and set the number of source phrases if needed
+                                if (m_model.is_num_entries_needed()) {
+                                    set_number_source_phrases();
                                 }
+
+                                //Process the translations
+                                process_source_entries();
                             }
                         protected:
+
+                            /**
+                             * Allows to count and set the number of source phrases
+                             */
+                            inline void set_number_source_phrases() {
+                                //Declare the sizes map
+                                sizes_map * sizes = new sizes_map();
+
+                                //Declare the text piece reader for storing the read line and source phrase
+                                TextPieceReader line, source;
+                                //Stores the number of source entries for logging
+                                size_t num_source = 0;
+
+                                //Compute the source entry sizes
+                                while (m_reader.get_first_line(line)) {
+                                    //Read the source phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+                                    //Get the current source phrase uid
+                                    phrase_uid uid = get_phrase_uid(source.str());
+                                    //Increment the count for the given source uid
+                                    ++sizes->operator[](uid);
+
+                                    if (sizes->operator[](uid) == 1) {
+                                        ++num_source;
+                                        LOG_DEBUG << num_source << ") Source: " << source << " uid: " << uid << END_LOG;
+                                    }
+                                    
+                                    LOG_DEBUG1 << "-> translation count: " << sizes->at(uid) << END_LOG;
+                                }
+
+                                //Set the number of entries into the model
+                                m_model.set_num_entries(sizes);
+
+                                //Re-set the reader to start all over again
+                                m_reader.reset();
+                            }
 
                             /**
                              * The line format assumes source to target and then at least four weights as given by:
@@ -98,19 +137,73 @@ namespace uva {
                              *    phrase penalty (always exp(1) = 2.718) 
                              * The latter is considered optional, all the other elements
                              * followed on the translation line are now skipped.
-                             * @param line stores the line to be parsed into a translation entry
+                             * @param source_entry the pointer to the source entry for which this translation is
+                             * @param rest stores the line to be parsed into a translation entry
                              */
-                            inline void process_translation(TextPieceReader &line) {
-                                TextPieceReader source, target, weights;
-                                
-                                //Read the from phrase
-                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-                                //Read the to phrase
-                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-                                //Read the the probability weights
-                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
+                            inline void process_target_entries(tm_source_entry * source_entry, TextPieceReader &rest) {
+                                TextPieceReader target, weights;
 
-                                LOG_DEBUG3 << source << "|||" << target << "|||" << weights << END_LOG;
+                                //Read the to phrase
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                //Read the the probability weights
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
+
+                                LOG_DEBUG1 << "-> Translation: " << target << "|||" << weights << END_LOG;
+
+                                //ToDo: Implement
+                            }
+
+                            /**
+                             * Allows to process translations.
+                             */
+                            void process_source_entries() {
+                                //Declare the text piece reader for storing the read line and source phrase
+                                TextPieceReader line, source;
+                                //Store the current source and next source uids
+                                phrase_uid curr_source_uid = UNDEFINED_PHRASE_ID;
+                                phrase_uid next_source_uid = UNDEFINED_PHRASE_ID;
+                                //Store the source entry
+                                tm_source_entry * source_entry = NULL;
+                                //Stores the number of source entries for logging
+                                size_t num_source = 0;
+
+                                //Start reading the translation model file line by line
+                                while (m_reader.get_first_line(line)) {
+                                    //Read the source phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+
+                                    //Get the current source phrase uid
+                                    next_source_uid = get_phrase_uid(source.str());
+
+                                    //In case we have a new source, then add a source entry
+                                    if (curr_source_uid != next_source_uid) {
+                                        //Finalize the previous entry if there was one
+                                        if (curr_source_uid != UNDEFINED_PHRASE_ID) {
+                                            m_model.finalize_entry(curr_source_uid);
+                                        }
+                                        //Increment the number of source entries
+                                        ++num_source;
+
+                                        //Store the new source id
+                                        curr_source_uid = next_source_uid;
+
+                                        //Open the new entry
+                                        source_entry = m_model.begin_entry(curr_source_uid);
+                                    }
+
+                                    LOG_DEBUG << num_source << ") Source: " << source << " uid: " << curr_source_uid << END_LOG;
+
+                                    //Parse the rest of the target entry
+                                    process_target_entries(source_entry, line);
+                                }
+
+                                //Finalize the previous entry if there was one
+                                if (curr_source_uid != UNDEFINED_PHRASE_ID) {
+                                    m_model.finalize_entry(curr_source_uid);
+                                }
+
+                                //finalize the model
+                                m_model.finalize();
                             }
 
                         private:

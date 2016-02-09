@@ -59,7 +59,6 @@ namespace uva {
                          */
                         class tm_basic_model {
                         public:
-
                             //Define the translations data map. It represents possible translations for some source phrase.
                             typedef fixed_size_hashmap<tm_source_entry, const phrase_uid &> tm_source_entry_map;
 
@@ -74,6 +73,9 @@ namespace uva {
                              * The basic destructor
                              */
                             ~tm_basic_model() {
+                                //Finalize the model just in case it is not
+                                finalize();
+                                //Delete the model data if any
                                 if (m_trans_data != NULL) {
                                     delete m_trans_data;
                                     m_trans_data = NULL;
@@ -81,25 +83,86 @@ namespace uva {
                             }
 
                             /**
+                             * This method allows to detect if the number of entries
+                             * (source phrases) is needed before the translation
+                             * entries are being added.
+                             * @return true as this model type uses filed-size hash maps 
+                             */
+                            inline bool is_num_entries_needed() {
+                                return true;
+                            }
+
+                            /**
                              * This method is needed to set the number of source phrase entries
                              * This is to be done before adding the translation entries to the model
-                             * @param num_entries the number of source entries
+                             * The memory of the map will be allocated by this class.
+                             * @param sizes the map storing the model sizes
                              */
-                            void set_num_entries(const size_t num_entries) {
-                                m_trans_data = new tm_source_entry_map(__tm_basic_model::BUCKETS_FACTOR, num_entries);
+                            inline void set_num_entries(sizes_map * sizes) {
+                                //Stores the sizes
+                                m_sizes = sizes;
+                                
+                                LOG_DEBUG << "The number of source phrases is: " << sizes->size() << END_LOG;
+                                
+                                //Initialize the source entries map
+                                m_trans_data = new tm_source_entry_map(__tm_basic_model::BUCKETS_FACTOR, sizes->size());
+                            }
+
+                            /**
+                             * Allows to open a new source entry, i.e. the entry for the new source phrase
+                             * @param entry_id the source phrase id for which the entry is to be started
+                             * @return the entry associated with the given id
+                             */
+                            inline tm_source_entry * begin_entry(const phrase_uid & entry_id) {
+                                //Get the new entry from the data storage
+                                tm_source_entry & entry = m_trans_data->add_new_element(entry_id);
+
+                                //Set the source phrase id
+                                entry.set_source_phrase_uid(entry_id);
+
+                                //Initialize the entry with the number of translations
+                                entry.begin(m_sizes->at(entry_id));
+
+                                //Return the entry pointer
+                                return &entry;
+                            }
+
+                            /**
+                             * Allows to finish an entry with the given id. The process
+                             * of finishing might include many things but the purpose of
+                             * it is to indicate that the source entry has been fully read.
+                             * I.e. all the translations for the given source are processed.
+                             * @param entry_id the source phrase id for which the entry is
+                             * to be finished.
+                             */
+                            inline void finalize_entry(const phrase_uid & entry_id) {
+                                //Finish the source entry
+                                m_trans_data->get_element(entry_id, entry_id)->finalize();
+                            }
+
+                            /**
+                             * This method is to be called when the translation model is fully read
+                             */
+                            inline void finalize() {
+                                //Delete the sizes map as it is not needed any more
+                                if (m_sizes != NULL) {
+                                    delete m_sizes;
+                                    m_sizes = NULL;
+                                }
                             }
 
                             /**
                              * Allows to log the model type info
                              */
-                            void log_model_type_info() {
+                            inline void log_model_type_info() {
                                 LOG_USAGE << "Using the hash-based translation model: " << __FILENAME__ << END_LOG;
                             }
 
                         protected:
 
                         private:
-
+                            //The map storing the model sizes
+                            sizes_map * m_sizes;
                             //Stores the translation model data
                             tm_source_entry_map * m_trans_data;
 

@@ -26,8 +26,12 @@
 #ifndef TM_ENTRY_HPP
 #define TM_ENTRY_HPP
 
+#include<unordered_map>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "common/utils/containers/fixed_size_hashmap.hpp"
 
@@ -36,6 +40,8 @@ using namespace std;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::containers;
+using namespace uva::utils::hashing;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -49,6 +55,30 @@ namespace uva {
 
                         //Define the undefined phrase id value
                         static constexpr uint64_t UNDEFINED_PHRASE_ID = 0;
+                        //Contains the minimum valid phrase id value
+                        static constexpr uint64_t MIN_VALID_PHRASE_ID = UNDEFINED_PHRASE_ID + 1;
+
+                        /**
+                         * Allows to get the phrase uid for the given phrase.
+                         * The current implementation uses the hash function to compute the uid.
+                         * Before the computation of the phrase id the phrase string is trimmed.
+                         * @param the phrase to get the uid for
+                         * @return the uid of the phrase
+                         */
+                        static inline phrase_uid get_phrase_uid(string phrase) {
+                            //Trim the phrase
+                            trim(phrase);
+                            //Compute the string hash
+                            phrase_uid uid = compute_hash(phrase);
+                            //If the value is somehow undefined then increase it to the minimum
+                            if (uid == UNDEFINED_PHRASE_ID) {
+                                uid = MIN_VALID_PHRASE_ID;
+                            }
+                            return uid;
+                        }
+                        
+                        //Define the map storing the source phrase ids and the number of translations per phrase
+                        typedef unordered_map<phrase_uid, size_t> sizes_map;
 
                         /**
                          * This structure represents the translation data, i.e. the
@@ -123,12 +153,9 @@ namespace uva {
                          * memory consumption and improve speed. Similar as we did for
                          * the g2dm tried implementation for the language model.
                          */
-                        struct tm_source_entry {
-                            //Stores the unique identifier of the given source
-                            phrase_uid m_phrase_uid;
-                            //Stores the target entries map pointer
-                            tm_target_entry_map * m_targets;
-
+                        class tm_source_entry {
+                        public:
+                            
                             /**
                              * The basic constructor
                              */
@@ -142,6 +169,29 @@ namespace uva {
                             ~tm_source_entry() {
                                 //Clear the entry if it has not been cleared yet.
                                 clear(*this);
+                            }
+                            
+                            /**
+                             * Allows to set the source phrase id
+                             * @param phrase_uid the source phrase id
+                             */
+                            void set_source_phrase_uid(phrase_uid phrase_uid){
+                                m_phrase_uid = phrase_uid;
+                            }
+
+                            /**
+                             * Should be called to start the source entry, i.e. initialize the memory
+                             * @param size the number of translations for this entry
+                             */
+                            void begin(const size_t size) {
+                                //ToDo: Initialize the translations map
+                            }
+
+                            /**
+                             * Should be called to indicate that this source entry is finished, i.e. all the translations have been set.
+                             */
+                            void finalize() {
+                                //ToDo: Implement conversion of the temporary translations storage into the fixed size map
                             }
 
                             /**
@@ -163,6 +213,13 @@ namespace uva {
                                     elem.m_targets = NULL;
                                 }
                             }
+
+                        protected:
+                        private:
+                            //Stores the unique identifier of the given source
+                            phrase_uid m_phrase_uid;
+                            //Stores the target entries map pointer
+                            tm_target_entry_map * m_targets;
                         };
                     }
                 }

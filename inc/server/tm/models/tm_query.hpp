@@ -62,7 +62,7 @@ namespace uva {
                         public:
                             //Define the query map as a mapping from the source phrase
                             //id to the pointer to the constant translation data. 
-                            typedef unordered_map<uint64_t, const tm_source_entry *> query_map;
+                            typedef unordered_map<phrase_uid, const tm_source_entry *> query_map;
                             
                             /**
                              * The basic constructor
