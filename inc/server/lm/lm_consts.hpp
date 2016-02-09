@@ -23,8 +23,8 @@
  * Created on April 20, 2015, 8:58 PM
  */
 
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef LM_CONSTS_HPP
+#define LM_CONSTS_HPP
 
 #include <inttypes.h>
 #include <string>

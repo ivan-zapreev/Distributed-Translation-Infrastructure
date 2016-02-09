@@ -27,8 +27,9 @@
 
 #include <string>       // std::string
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
@@ -237,11 +238,11 @@ namespace uva {
                         T_M_Gram_Payload * m_1_gram_data;
 
                         //This is an array of hash maps for M-Gram levels with 1 < M < N
-                        typedef FixedSizeHashMap<T_M_Gram_PB_Entry, T_Gram_Id_Key> TProbBackMap;
+                        typedef fixed_size_hashmap<T_M_Gram_PB_Entry, T_Gram_Id_Key> TProbBackMap;
                         TProbBackMap * m_m_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                         //This is hash map pointer for the N-Gram level
-                        typedef FixedSizeHashMap<T_M_Gram_Prob_Entry, T_Gram_Id_Key> TProbMap;
+                        typedef fixed_size_hashmap<T_M_Gram_Prob_Entry, T_Gram_Id_Key> TProbMap;
                         TProbMap * m_n_gram_data;
 
                         /**

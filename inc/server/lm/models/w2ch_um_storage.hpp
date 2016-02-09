@@ -31,7 +31,7 @@
 #include <unordered_map>    // std::unordered_map
 #include <map>              // std::map
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "common/utils/containers/greedy_memory_allocator.hpp"

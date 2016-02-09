@@ -31,7 +31,7 @@
 #include "common/utils/monitore/statistics_monitore.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "server/lm/lm_config_utils.hpp"
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
@@ -119,6 +119,9 @@ namespace uva {
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
                                 TMemotyUsage mem_stat_start = {}, mem_stat_end = {};
+                                
+                                LOG_USAGE << "--------------------------------------------------------" << END_LOG;
+                                LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
 
                                 //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
@@ -133,7 +136,6 @@ namespace uva {
                                 //Log the usage information
                                 m_model.log_model_type_info();
 
-                                LOG_USAGE << "Start creating and loading the Trie ..." << END_LOG;
                                 LOG_DEBUG << "Getting the memory statistics before loading the " << model_name << " ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_start);
                                 LOG_DEBUG << "Getting the time statistics before creating the " << model_name << " ..." << END_LOG;

@@ -29,7 +29,7 @@
 #include <string>   // std::string
 #include <cstring>  // std::strncpy std::strncmp
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 

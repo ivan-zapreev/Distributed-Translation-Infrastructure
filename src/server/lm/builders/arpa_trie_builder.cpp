@@ -31,7 +31,7 @@
 #include "common/utils/file/file_stream_reader.hpp"
 #include "common/utils/file/memory_mapped_file_reader.hpp"
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
 #include "server/lm/builders/arpa_trie_builder.hpp"

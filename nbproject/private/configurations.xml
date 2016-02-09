@@ -655,11 +655,11 @@
             <in>lm_query_proxy_local.hpp</in>
           </df>
           <in>lm_config_utils.hpp</in>
+          <in>lm_configs.hpp</in>
           <in>lm_configurator.hpp</in>
+          <in>lm_consts.hpp</in>
           <in>lm_executor.hpp</in>
           <in>lm_parameters.hpp</in>
-          <in>trie_configs.hpp</in>
-          <in>trie_constants.hpp</in>
         </df>
         <df name="rm">
           <df name="builders">
@@ -694,6 +694,7 @@
             <in>tm_query_proxy.hpp</in>
             <in>tm_query_proxy_local.hpp</in>
           </df>
+          <in>tm_configs.hpp</in>
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
@@ -756,6 +757,9 @@
           <in>rm_configurator.cpp</in>
         </df>
         <df name="tm">
+          <df name="models">
+            <in>tm_entry.cpp</in>
+          </df>
           <in>tm_configurator.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>

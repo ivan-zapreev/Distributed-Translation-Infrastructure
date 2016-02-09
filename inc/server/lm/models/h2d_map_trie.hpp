@@ -27,7 +27,7 @@
 
 #include <string>       // std::string
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/exceptions.hpp"
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
@@ -249,11 +249,11 @@ namespace uva {
                         typedef uint16_t TBucketCapacityType;
 
                         //This is an array of hash maps for M-Gram levels with 1 < M < N
-                        typedef FixedSizeHashMap<T_M_Gram_PB_Entry, T_M_Gram_PB_Entry::TM_Gram_Id > TProbBackMap;
+                        typedef fixed_size_hashmap<T_M_Gram_PB_Entry, T_M_Gram_PB_Entry::TM_Gram_Id > TProbBackMap;
                         TProbBackMap * m_m_gram_data[NUM_M_GRAM_LEVELS];
 
                         //This is hash map pointer for the N-Gram level
-                        typedef FixedSizeHashMap<T_M_Gram_Prob_Entry, T_M_Gram_Prob_Entry::TM_Gram_Id > TProbMap;
+                        typedef fixed_size_hashmap<T_M_Gram_Prob_Entry, T_M_Gram_Prob_Entry::TM_Gram_Id > TProbMap;
                         TProbMap * m_n_gram_data;
 
                         //Stores the number of m-gram ids/buckets per level

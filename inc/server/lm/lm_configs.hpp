@@ -23,13 +23,14 @@
  * Created on September 18, 2015, 8:54 AM
  */
 
-#ifndef CONFIGURATION_HPP
-#define CONFIGURATION_HPP
+#ifndef LM_CONFIGS_HPP
+#define LM_CONFIGS_HPP
 
 #include <inttypes.h>
 #include <string>
 
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
+
 using namespace uva::utils::containers;
 
 namespace uva {

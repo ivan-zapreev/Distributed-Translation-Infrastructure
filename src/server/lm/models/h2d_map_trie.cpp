@@ -27,7 +27,7 @@
 #include <inttypes.h>   // std::uint32_t
 #include <algorithm>    // std::max
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 

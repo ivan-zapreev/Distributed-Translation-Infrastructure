@@ -28,8 +28,8 @@
 
 #include <string>   // std::string
 
-#include "server/lm/trie_constants.hpp"
-#include "server/lm/trie_configs.hpp"
+#include "server/lm/lm_consts.hpp"
+#include "server/lm/lm_configs.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 

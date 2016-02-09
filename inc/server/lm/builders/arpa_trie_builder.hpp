@@ -28,7 +28,7 @@
 
 #include <regex>        // std::regex, std::regex_match
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 
 using namespace std;

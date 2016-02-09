@@ -31,7 +31,7 @@
 #include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 
 #include "layered_trie_base.hpp"

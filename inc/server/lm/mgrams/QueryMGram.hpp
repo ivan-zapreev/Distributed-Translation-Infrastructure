@@ -28,7 +28,7 @@
 
 #include <string>       // std::string
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/hashing_utils.hpp"

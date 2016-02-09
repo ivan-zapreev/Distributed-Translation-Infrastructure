@@ -26,15 +26,15 @@
 #ifndef FIXEDSIZEHASHMAP_HPP
 #define	FIXEDSIZEHASHMAP_HPP
 
-#include <functional>   // std::function 
-#include <cmath>        // std::log std::log10
-#include <algorithm>    // std::max
-
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/math_utils.hpp"
+#include "common/utils/hashing_utils.hpp"
 #include "common/utils/containers/array_utils.hpp"
 
 using namespace std;
+using namespace uva::utils::hashing;
+using namespace uva::utils::math;
 using namespace uva::utils::containers::utils;
 
 namespace uva {
@@ -47,14 +47,14 @@ namespace uva {
              * known to be the fastest hash map there is, see:
              * "Fast and Compact Hash Tables for Integer Keys" by Nikolas Askitis
              * 
-             * @param ELEMENT_TYPE the element type, this type is expected to have the following interfase:
+             * @param ELEMENT_TYPE the element type, this type is expected to have the following interface:
              *          1. operator==(const KEY_TYPE &); the comparison operator for the key value
              *          2. static void clear(ELEMENT_TYPE & ); the cleaning method to destroy contents of the element.
              * @param KEY_TYPE the key type for retrieving the element
              * @param IDX_TYPE the index type, is related to the number of elements
              */
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE = uint32_t>
-            class FixedSizeHashMap {
+            class fixed_size_hashmap {
             public:
                 typedef ELEMENT_TYPE TElemType;
 
@@ -66,10 +66,15 @@ namespace uva {
                 const IDX_TYPE MAX_ELEMENT_INDEX;
 
                 /**
-                 * The basic constructor that allows to instantiate the map for the given number of elements
+                 * The basic constructor that allows to instantiate the map for the given number of elements.
+                 * The number of buckets is computed based on the value:
+                 *     buckets_factor * (num_elems + 1)
+                 * The latter is then rounded up to the next integer being a power of two. The latter is needed
+                 * to speed up the internal index computations.
+                 * @param buckets_factor the factor to compute the number of buckets from the number of elements
                  * @param num_elems the number of elements that will be stored in the map
                  */
-                explicit FixedSizeHashMap(const double buckets_factor, const IDX_TYPE num_elems) : MAX_ELEMENT_INDEX(num_elems) {
+                explicit fixed_size_hashmap(const double buckets_factor, const IDX_TYPE num_elems) : MAX_ELEMENT_INDEX(num_elems) {
                     //Compute and set the number of buckets and the buckets divider
                     set_number_of_elements(buckets_factor, num_elems);
                     //Set the current number of stored elements to zero
@@ -83,10 +88,13 @@ namespace uva {
 
                 /**
                  * Allows to add a new element for the given hash value
-                 * @param key_value the key value of the element
+                 * @param key_uid the unique identifier representing the actual
+                 *        key value of the element. It can be e.g. a hash value
+                 *        of the key. Note that if one uses hash for a key uid
+                 *        then he or she has to accept the risk of collisions.
                  * @return the reference to the new element
                  */
-                ELEMENT_TYPE & add_new_element(const uint_fast64_t key_value) {
+                ELEMENT_TYPE & add_new_element(const uint_fast64_t key_uid) {
                     //Check if the capacity is exceeded.
                     if (m_next_elem_idx > MAX_ELEMENT_INDEX) {
                         THROW_EXCEPTION(string("Used up all the elements, the last ") +
@@ -94,10 +102,10 @@ namespace uva {
                     }
 
                     //Get the bucket index from the hash
-                    uint_fast64_t bucket_idx = get_bucket_idx(key_value);
+                    uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 
                     LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
-                            << " for hash value: " << key_value << END_LOG;
+                            << " for uid value: " << key_uid << END_LOG;
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         LOG_DEBUG2 << "The bucket: " << bucket_idx <<
@@ -117,18 +125,21 @@ namespace uva {
                     //Return the element under the index
                     return m_elems[elem_idx];
                 }
-
+                
                 /**
                  * Allows to retrieve the element for the given hash value and key
-                 * @param key_value the key value of the element
+                 * @param key_uid the unique identifier representing the actual
+                 *        key value of the element. It can be e.g. a hash value
+                 *        of the key. Note that if one uses hash for a key uid
+                 *        then he or she has to accept the risk of collisions.
                  * @param key the key value of the element
                  * @return the pointer to the found element or NULL if nothing is found
                  */
-                const ELEMENT_TYPE * get_element(const uint_fast64_t key_value, const KEY_TYPE & key) const {
+                const ELEMENT_TYPE * get_element(const uint_fast64_t key_uid, const KEY_TYPE & key) const {
                     //Get the bucket index from the hash
-                    uint_fast64_t bucket_idx = get_bucket_idx(key_value);
+                    uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 
-                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for hash value: " << key_value << END_LOG;
+                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for uid value: " << key_uid << END_LOG;
 
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
@@ -151,7 +162,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                ~FixedSizeHashMap() {
+                ~fixed_size_hashmap() {
                     if (m_elems != NULL) {
                         //Call the destructors on the allocated objects
                         for (IDX_TYPE idx = MIN_ELEMENT_INDEX; idx < MAX_ELEMENT_INDEX; ++idx) {
@@ -239,10 +250,10 @@ namespace uva {
             };
 
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NO_ELEMENT_INDEX;
+            constexpr IDX_TYPE fixed_size_hashmap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::NO_ELEMENT_INDEX;
 
             template<typename ELEMENT_TYPE, typename KEY_TYPE, typename IDX_TYPE>
-            constexpr IDX_TYPE FixedSizeHashMap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::MIN_ELEMENT_INDEX;
+            constexpr IDX_TYPE fixed_size_hashmap<ELEMENT_TYPE, KEY_TYPE, IDX_TYPE>::MIN_ELEMENT_INDEX;
 
         }
     }

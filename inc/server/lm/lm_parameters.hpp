@@ -26,8 +26,8 @@
 #ifndef LANGUAGE_MODEL_PARAMETERS_HPP
 #define LANGUAGE_MODEL_PARAMETERS_HPP
 
-#include "trie_configs.hpp"
-#include "trie_constants.hpp"
+#include "lm_configs.hpp"
+#include "lm_consts.hpp"
 
 namespace uva {
     namespace smt {

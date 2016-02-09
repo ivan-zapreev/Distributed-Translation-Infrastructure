@@ -30,7 +30,7 @@
 
 #include "BasicWordIndex.hpp"
 
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 

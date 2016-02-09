@@ -35,7 +35,7 @@
 #include "server/lm/lm_config_utils.hpp"
 #include "server/lm/lm_configurator.hpp"
 #include "server/lm/lm_parameters.hpp"
-#include "server/lm/trie_constants.hpp"
+#include "server/lm/lm_consts.hpp"
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
 

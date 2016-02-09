@@ -58,6 +58,7 @@
             <in>tm_query_proxy.hpp</in>
             <in>tm_query_proxy_local.hpp</in>
           </df>
+          <in>tm_configs.hpp</in>
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
@@ -92,6 +93,9 @@
           <in>rm_configurator.cpp</in>
         </df>
         <df name="tm">
+          <df name="models">
+            <in>tm_entry.cpp</in>
+          </df>
           <in>tm_configurator.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
@@ -258,6 +262,8 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/tm/tm_configs.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/server/tm/tm_configurator.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/tm/tm_parameters.hpp" ex="false" tool="3" flavor2="0">
@@ -301,6 +307,8 @@
         </ccTool>
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/server/tm/models/tm_entry.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="0">
       </item>

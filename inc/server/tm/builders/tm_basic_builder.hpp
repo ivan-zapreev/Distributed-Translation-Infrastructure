@@ -26,9 +26,17 @@
 #ifndef TM_BUILDER_HPP
 #define TM_BUILDER_HPP
 
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+
 #include "common/utils/file/text_piece_reader.hpp"
 
+#include "server/tm/models/tm_entry.hpp"
+
 using namespace std;
+
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 using namespace uva::utils::file;
 
 namespace uva {
@@ -42,7 +50,7 @@ namespace uva {
 #define TM_DELIMITER '|'
                         //Stores the translation model delimiter character cardinality
 #define TM_DELIMITER_CDTY 3
-                        
+
                         /**
                          * This class represents a basic reader of the translation model.
                          * It allows to read a text-formatted translation model and to put
@@ -69,23 +77,41 @@ namespace uva {
                              */
                             void build() {
                                 //Declare the text piece readers for storing the model file line and its parts
-                                TextPieceReader line, source, target, weights;
+                                TextPieceReader line;
 
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
-                                    //Read the from phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-                                    //Read the to phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-                                    //Read the the probability weights
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
-                                    
-                                    LOG_USAGE << source << "|||" << target << "|||" << weights << END_LOG;
-                                    
-                                    //ToDo: Implement
+                                    process_translation(line);
                                 }
                             }
                         protected:
+
+                            /**
+                             * The line format assumes source to target and then at least four weights as given by:
+                             *     http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases
+                             * Currently, four different phrase translation scores are computed:
+                             *    inverse phrase translation probability φ(f|e)
+                             *    inverse lexical weighting lex(f|e)
+                             *    direct phrase translation probability φ(e|f)
+                             *    direct lexical weighting lex(e|f) 
+                             * Previously, there was another score:
+                             *    phrase penalty (always exp(1) = 2.718) 
+                             * The latter is considered optional, all the other elements
+                             * followed on the translation line are now skipped.
+                             * @param line stores the line to be parsed into a translation entry
+                             */
+                            inline void process_translation(TextPieceReader &line) {
+                                TextPieceReader source, target, weights;
+                                
+                                //Read the from phrase
+                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+                                //Read the to phrase
+                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                //Read the the probability weights
+                                line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
+
+                                LOG_DEBUG3 << source << "|||" << target << "|||" << weights << END_LOG;
+                            }
 
                         private:
                             //Stores the reference to the model
