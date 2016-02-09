@@ -146,8 +146,9 @@ namespace uva {
              * This function can be used to trim the string
              * @param str the string to be trimmed, it is an in/out parameter
              * @param whitespace the white spaces to be trimmed, the default value is " \t" 
+             * @return the reference to the trimmed string
              */
-            inline void trim(std::string& str,
+            inline std::string& trim(std::string& str,
                     const std::string& whitespace = WHITESPACES) {
                 LOG_DEBUG4 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
                 if (str != "") {
@@ -166,6 +167,7 @@ namespace uva {
                     }
                 }
                 LOG_DEBUG4 << "The trimmed result is '" << str << "'" << END_LOG;
+                return str;
             }
 
             /**

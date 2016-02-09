@@ -29,6 +29,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "server/tm/models/tm_entry.hpp"
 
@@ -37,6 +38,7 @@ using namespace std;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
+using namespace uva::utils::text;
 
 using namespace uva::smt::translation::server::tm::models;
 
@@ -106,15 +108,16 @@ namespace uva {
                                     //Read the source phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
                                     //Get the current source phrase uid
-                                    phrase_uid uid = get_phrase_uid(source.str());
+                                    string source_str = source.str();
+                                    phrase_uid uid = get_phrase_uid(trim(source_str));
                                     //Increment the count for the given source uid
                                     ++sizes->operator[](uid);
 
                                     if (sizes->operator[](uid) == 1) {
                                         ++num_source;
-                                        LOG_DEBUG << num_source << ") Source: " << source << " uid: " << uid << END_LOG;
+                                        LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << uid << END_LOG;
                                     }
-                                    
+
                                     LOG_DEBUG1 << "-> translation count: " << sizes->at(uid) << END_LOG;
                                 }
 
@@ -141,16 +144,42 @@ namespace uva {
                              * @param rest stores the line to be parsed into a translation entry
                              */
                             inline void process_target_entries(tm_source_entry * source_entry, TextPieceReader &rest) {
-                                TextPieceReader target, weights;
+                                LOG_DEBUG2 << "Got translation line to parse: " << rest << END_LOG;
 
-                                //Read the to phrase
+                                TextPieceReader target;
+
+                                //Read the target phrase
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-                                //Read the the probability weights
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
 
-                                LOG_DEBUG1 << "-> Translation: " << target << "|||" << weights << END_LOG;
+                                LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
+                                
+                                //Add the translation entry to the model
+                                string target_str = target.str();
+                                tm_target_entry & target_entry = source_entry->new_translation(trim(target_str));
 
-                                //ToDo: Implement
+                                LOG_DEBUG1 << "-> Translation: " << target_str << END_LOG;
+
+                                //Set the target weights
+                                TextPieceReader token;
+
+                                //Skip the first space
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
+
+                                //Read the second weight 
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the inverse phrase translation probability φ(f|e)!");
+                                fast_s_to_f(target_entry.get_sct_prob(), token.str().c_str());
+
+                                //Read the third weight 
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the inverse lexical weighting lex(f|e)!");
+                                fast_s_to_f(target_entry.get_sct_lex(), token.str().c_str());
+
+                                //Read the fourth weight 
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the direct phrase translation probability φ(e|f)!");
+                                fast_s_to_f(target_entry.get_tcs_prob(), token.str().c_str());
+
+                                //Read the fourth weight 
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the direct lexical weighting lex(e|f)!");
+                                fast_s_to_f(target_entry.get_tcs_lex(), token.str().c_str());
                             }
 
                             /**
@@ -173,7 +202,8 @@ namespace uva {
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
 
                                     //Get the current source phrase uid
-                                    next_source_uid = get_phrase_uid(source.str());
+                                    string source_str = source.str();
+                                    next_source_uid = get_phrase_uid(trim(source_str));
 
                                     //In case we have a new source, then add a source entry
                                     if (curr_source_uid != next_source_uid) {
@@ -191,7 +221,7 @@ namespace uva {
                                         source_entry = m_model.begin_entry(curr_source_uid);
                                     }
 
-                                    LOG_DEBUG << num_source << ") Source: " << source << " uid: " << curr_source_uid << END_LOG;
+                                    LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << curr_source_uid << END_LOG;
 
                                     //Parse the rest of the target entry
                                     process_target_entries(source_entry, line);

@@ -24,7 +24,7 @@
  */
 
 #ifndef FIXEDSIZEHASHMAP_HPP
-#define	FIXEDSIZEHASHMAP_HPP
+#define FIXEDSIZEHASHMAP_HPP
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -79,11 +79,11 @@ namespace uva {
                     set_number_of_elements(buckets_factor, num_elems);
                     //Set the current number of stored elements to zero
                     m_next_elem_idx = MIN_ELEMENT_INDEX;
-                    //Allocate the number of buckets
-                    m_buckets = new IDX_TYPE[m_num_buckets];
+                    //Allocate the number of buckets, with default initialization
+                    m_buckets = new IDX_TYPE[m_num_buckets]();
                     //Allocate the elements, add an extra one, the 0'th 
                     //element will never be used its index is reserved.
-                    m_elems = new ELEMENT_TYPE[num_elems + 1];
+                    m_elems = new ELEMENT_TYPE[num_elems + 1]();
                 }
 
                 /**
@@ -96,16 +96,18 @@ namespace uva {
                  */
                 ELEMENT_TYPE & add_new_element(const uint_fast64_t key_uid) {
                     //Check if the capacity is exceeded.
-                    if (m_next_elem_idx > MAX_ELEMENT_INDEX) {
-                        THROW_EXCEPTION(string("Used up all the elements, the last ") +
-                                string("issued id was: ") + std::to_string(m_next_elem_idx));
-                    }
+                    ASSERT_CONDITION_THROW((m_next_elem_idx > MAX_ELEMENT_INDEX),
+                            string("Used up all the elements, the last ") +
+                            string("issued id was: ") + std::to_string(m_next_elem_idx));
 
                     //Get the bucket index from the hash
                     uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 
-                    LOG_DEBUG2 << "---------------->Got bucket_idx: " << bucket_idx
-                            << " for uid value: " << key_uid << END_LOG;
+                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx
+                            << " for uid value: " << key_uid
+                            << " element idx: " << m_next_elem_idx
+                            << " max index: " << MAX_ELEMENT_INDEX << END_LOG;
+
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         LOG_DEBUG2 << "The bucket: " << bucket_idx <<
@@ -113,7 +115,7 @@ namespace uva {
                         get_next_bucket_idx(bucket_idx);
                     }
 
-                    LOG_DEBUG2 << "<----------------The first empty bucket index is: "
+                    LOG_DEBUG2 << "The first empty bucket index is: "
                             << bucket_idx << END_LOG;
 
                     //Get the element index and increment
@@ -125,7 +127,7 @@ namespace uva {
                     //Return the element under the index
                     return m_elems[elem_idx];
                 }
-                
+
                 /**
                  * Allows to retrieve the element for the given hash value and key
                  * @param key_uid the unique identifier representing the actual
@@ -259,5 +261,5 @@ namespace uva {
     }
 }
 
-#endif	/* FIXEDSIZEHASHMAP_HPP */
+#endif /* FIXEDSIZEHASHMAP_HPP */
 

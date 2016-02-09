@@ -360,9 +360,9 @@ namespace uva {
                 }
 
                 /**
-                 * This function, searches forward for the first end of space char
-                 * or until the end of the text and then sets the data about the found
-                 * region into the provided output parameter.
+                 * This function, searches forward for the first space char
+                 * or until the end of the text and then sets the data about
+                 * the found region into the provided output parameter.
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */

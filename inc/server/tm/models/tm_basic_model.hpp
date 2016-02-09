@@ -105,7 +105,7 @@ namespace uva {
                                 LOG_DEBUG << "The number of source phrases is: " << sizes->size() << END_LOG;
                                 
                                 //Initialize the source entries map
-                                m_trans_data = new tm_source_entry_map(__tm_basic_model::BUCKETS_FACTOR, sizes->size());
+                                m_trans_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, sizes->size());
                             }
 
                             /**

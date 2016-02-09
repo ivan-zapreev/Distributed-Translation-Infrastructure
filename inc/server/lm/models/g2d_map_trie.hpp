@@ -66,6 +66,10 @@ namespace uva {
                          * This template structure is used for storing trie hash map elements
                          * Each element contains and id of the m-gram and its payload -
                          * the probability/back-off data, the latter is the template parameter
+                         * 
+                         * NOTE: In order to save space and increase the speed we could store key to
+                         *       be the hash value of the m-gram, but then we will get the h2dm trie.
+                         * 
                          * @param id stores the M-gram id
                          * @param payload stores the payload which is either probability or probability with back-off
                          */

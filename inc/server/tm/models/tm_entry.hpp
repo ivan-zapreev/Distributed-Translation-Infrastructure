@@ -28,11 +28,11 @@
 
 #include<unordered_map>
 
+#include "server/tm/tm_configs.hpp"
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/hashing_utils.hpp"
-#include "common/utils/string_utils.hpp"
-
 #include "common/utils/containers/fixed_size_hashmap.hpp"
 
 using namespace std;
@@ -41,7 +41,8 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::containers;
 using namespace uva::utils::hashing;
-using namespace uva::utils::text;
+
+using namespace uva::smt::translation::server::tm;
 
 namespace uva {
     namespace smt {
@@ -65,9 +66,7 @@ namespace uva {
                          * @param the phrase to get the uid for
                          * @return the uid of the phrase
                          */
-                        static inline phrase_uid get_phrase_uid(string phrase) {
-                            //Trim the phrase
-                            trim(phrase);
+                        static inline phrase_uid get_phrase_uid(const string phrase) {
                             //Compute the string hash
                             phrase_uid uid = compute_hash(phrase);
                             //If the value is somehow undefined then increase it to the minimum
@@ -76,7 +75,7 @@ namespace uva {
                             }
                             return uid;
                         }
-                        
+
                         //Define the map storing the source phrase ids and the number of translations per phrase
                         typedef unordered_map<phrase_uid, size_t> sizes_map;
 
@@ -89,24 +88,8 @@ namespace uva {
                          * phrase string. The latter can be a hash value but then
                          * there is a possibility for the hash collisions
                          */
-                        struct tm_target_entry {
-                            //Stores the target phrase of the translation which a key value
-                            string m_target_phrase;
-                            //Stores the unique identifier of the given phrase
-                            phrase_uid m_phrase_uid;
-                            //The conditional probability value for source conditioned on target
-                            float m_sct_prob;
-                            //Inverse lexical weighting lex(f|e)
-                            //ToDo: Do we need it for decoding?
-                            float m_sct_lex;
-                            //The conditional probability value for target conditioned on source
-                            float m_tcs_prob;
-                            //Direct lexical weighting lex(e|f)
-                            //ToDo: Do we need it for decoding?
-                            float m_tcs_lex;
-                            //Phrase penalty (always exp(1) = 2.718) therefore is static
-                            //ToDo: Do we need it while decoding?
-                            static float m_phrase_penalty;
+                        class tm_target_entry {
+                        public:
 
                             /**
                              * The basic constructor
@@ -125,6 +108,16 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to set the target phrase and its id
+                             * @param target_phrase the target phrase
+                             * @param uid the target phrase id
+                             */
+                            inline void set_target(string target_phrase, phrase_uid uid) {
+                                m_target_phrase = target_phrase;
+                                m_phrase_uid = uid;
+                            }
+
+                            /**
                              * The comparison operator, allows to compare translation entries
                              * @param phrase_uid the unique identifier of the translation entry to compare with
                              * @return true if the provided uid is equal to the uid of this entry, otherwise false 
@@ -140,6 +133,57 @@ namespace uva {
                             static inline void clear(tm_target_entry & elem) {
                                 //Nothing to be done, no dynamically allocated resources
                             }
+
+                            /**
+                             * Allows to get the reference to the inverse phrase translation probability φ(f|e)
+                             * @return the reference to the inverse phrase translation probability φ(f|e)
+                             */                            
+                            inline float & get_sct_prob() {
+                                return m_sct_prob;
+                            }
+
+                            /**
+                             * Allows to get the reference to the inverse lexical weighting lex(f|e)
+                             * @return the reference to the inverse lexical weighting lex(f|e)
+                             */                            
+                            inline float & get_sct_lex() {
+                                return m_sct_lex;
+                            }
+
+                            /**
+                             * Allows to get the reference to the direct phrase translation probability φ(e|f)
+                             * @return the reference to the direct phrase translation probability φ(e|f)
+                             */                            
+                            inline float & get_tcs_prob() {
+                                return m_tcs_prob;
+                            }
+
+                            /**
+                             * Allows to get the reference to the direct lexical weighting lex(e|f)
+                             * @return the reference to the direct lexical weighting lex(e|f)
+                             */                            
+                            inline float & get_tcs_lex() {
+                                return m_tcs_lex;
+                            }
+
+                        private:
+                            //Stores the target phrase of the translation which a key value
+                            string m_target_phrase;
+                            //Stores the unique identifier of the given phrase
+                            phrase_uid m_phrase_uid;
+                            //The conditional probability value for source conditioned on target
+                            float m_sct_prob;
+                            //Inverse lexical weighting lex(f|e)
+                            //ToDo: Do we need it for decoding?
+                            float m_sct_lex;
+                            //The conditional probability value for target conditioned on source
+                            float m_tcs_prob;
+                            //Direct lexical weighting lex(e|f)
+                            //ToDo: Do we need it for decoding?
+                            float m_tcs_lex;
+                            //Phrase penalty (always exp(1) = 2.718) therefore is static
+                            //ToDo: Do we need it while decoding?
+                            static float m_phrase_penalty;
                         };
 
                         //Define the translations data map. It represents possible translations for some source phrase.
@@ -155,7 +199,7 @@ namespace uva {
                          */
                         class tm_source_entry {
                         public:
-                            
+
                             /**
                              * The basic constructor
                              */
@@ -170,12 +214,12 @@ namespace uva {
                                 //Clear the entry if it has not been cleared yet.
                                 clear(*this);
                             }
-                            
+
                             /**
                              * Allows to set the source phrase id
                              * @param phrase_uid the source phrase id
                              */
-                            void set_source_phrase_uid(phrase_uid phrase_uid){
+                            inline void set_source_phrase_uid(phrase_uid phrase_uid) {
                                 m_phrase_uid = phrase_uid;
                             }
 
@@ -183,15 +227,32 @@ namespace uva {
                              * Should be called to start the source entry, i.e. initialize the memory
                              * @param size the number of translations for this entry
                              */
-                            void begin(const size_t size) {
-                                //ToDo: Initialize the translations map
+                            inline void begin(const size_t size) {
+                                //Instantiate the translation map
+                                m_targets = new tm_target_entry_map(__tm_basic_model::TARGETS_BUCKETS_FACTOR,  size);
                             }
 
                             /**
                              * Should be called to indicate that this source entry is finished, i.e. all the translations have been set.
                              */
-                            void finalize() {
-                                //ToDo: Implement conversion of the temporary translations storage into the fixed size map
+                            inline void finalize() {
+                                //Nothing to be done at the moment
+                            }
+
+                            /**
+                             * Allows to add a new translation to the source entry for the given target phrase
+                             * @param target the target phrase string 
+                             * @return the newly allocated target entry
+                             */
+                            inline tm_target_entry & new_translation(const string & target) {
+                                //Get the target phrase id
+                                phrase_uid uid = get_phrase_uid(target);
+                                //Get the entry for the target phrase
+                                tm_target_entry & entry = m_targets->add_new_element(uid);
+                                //Set the entry's target phrase and its id
+                                entry.set_target(target, uid);
+                                //Return the entry
+                                return entry;
                             }
 
                             /**
