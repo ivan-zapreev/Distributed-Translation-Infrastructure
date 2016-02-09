@@ -2,10 +2,10 @@ cmake_minimum_required (VERSION 2.8.12.2)
 project (Basic-Phrase-Based-Decoding)
 
 #Bring the headers into the project
-include_directories(inc ext)
+include_directories(inc SYSTEM ext)
 
 #Add the required flags
-set(CMAKE_CXX_FLAGS "-pipe -std=c++0x -Wall -m64 -Wno-unused-local-typedef")
+set(CMAKE_CXX_FLAGS "-pipe -std=c++0x -Wall -m64")
 
 ###############################DEFINE THE LM QUERY###################################
 

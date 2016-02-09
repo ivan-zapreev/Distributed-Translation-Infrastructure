@@ -1,77 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="client">
-        <in>client_config.hpp</in>
-        <in>trans_job.hpp</in>
-        <in>trans_job_status.hpp</in>
-        <in>trans_manager.hpp</in>
-      </df>
-      <df name="server">
-        <df name="decoder">
-          <in>decoder_parameters.hpp</in>
-        </df>
-        <df name="lm">
-          <df name="proxy">
-            <in>lm_proxy.hpp</in>
-            <in>lm_proxy_local.hpp</in>
-            <in>lm_query_proxy.hpp</in>
-            <in>lm_query_proxy_local.hpp</in>
-          </df>
-          <in>lm_config_utils.hpp</in>
-          <in>lm_configurator.hpp</in>
-          <in>lm_parameters.hpp</in>
-        </df>
-        <df name="rm">
-          <df name="builders">
-            <in>rm_basic_builder.hpp</in>
-          </df>
-          <df name="models">
-            <in>rm_basic_model.hpp</in>
-            <in>rm_entry.hpp</in>
-            <in>rm_query.hpp</in>
-          </df>
-          <df name="proxy">
-            <in>rm_proxy.hpp</in>
-            <in>rm_proxy_local.hpp</in>
-            <in>rm_query_proxy.hpp</in>
-            <in>rm_query_proxy_local.hpp</in>
-          </df>
-          <in>rm_configurator.hpp</in>
-          <in>rm_parameters.hpp</in>
-        </df>
-        <df name="tm">
-          <df name="builders">
-            <in>tm_basic_builder.hpp</in>
-          </df>
-          <df name="models">
-            <in>tm_basic_model.hpp</in>
-            <in>tm_phrase_id.hpp</in>
-            <in>tm_query.hpp</in>
-            <in>tm_source_entry.hpp</in>
-            <in>tm_target_entry.hpp</in>
-          </df>
-          <df name="proxy">
-            <in>tm_proxy.hpp</in>
-            <in>tm_proxy_local.hpp</in>
-            <in>tm_query_proxy.hpp</in>
-            <in>tm_query_proxy_local.hpp</in>
-          </df>
-          <in>tm_configs.hpp</in>
-          <in>tm_configurator.hpp</in>
-          <in>tm_parameters.hpp</in>
-        </df>
-        <in>server_parameters.hpp</in>
-        <in>trans_job.hpp</in>
-        <in>trans_job_pool.hpp</in>
-        <in>trans_task.hpp</in>
-        <in>trans_task_id.hpp</in>
-        <in>trans_task_pool.hpp</in>
-        <in>trans_task_pool_worker.hpp</in>
-      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -83,11 +15,36 @@
           <in>trans_job_code.cpp</in>
         </df>
         <df name="utils">
+          <df name="logging">
+            <in>logger.cpp</in>
+          </df>
+          <df name="monitore">
+            <in>statistics_monitor.cpp</in>
+          </df>
           <in>xxhash.c</in>
         </df>
       </df>
       <df name="server">
         <df name="lm">
+          <df name="builders">
+            <in>arpa_gram_builder.cpp</in>
+            <in>arpa_trie_builder.cpp</in>
+          </df>
+          <df name="dictionaries">
+            <in>aword_index.cpp</in>
+          </df>
+          <df name="models">
+            <in>c2d_hybrid_trie.cpp</in>
+            <in>c2d_map_trie.cpp</in>
+            <in>c2w_array_trie.cpp</in>
+            <in>g2d_map_trie.cpp</in>
+            <in>h2d_map_trie.cpp</in>
+            <in>w2c_array_trie.cpp</in>
+            <in>w2c_hybrid_trie.cpp</in>
+          </df>
+          <df name="ngrams">
+            <in>byte_m_gram_id.cpp</in>
+          </df>
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>
         </df>
@@ -129,7 +86,8 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <flagsDictionary>
-        <element flagsID="0" commonFlags="-std=c++0x -m64"/>
+        <element flagsID="0" commonFlags="-O3"/>
+        <element flagsID="1" commonFlags="-std=c++0x -m64 -O3"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -145,6 +103,9 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
+            <preprocessorList>
+              <Elem>NDEBUG</Elem>
+            </preprocessorList>
           </cTool>
           <ccTool>
             <standard>8</standard>
@@ -153,189 +114,159 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
+            <preprocessorList>
+              <Elem>NDEBUG</Elem>
+            </preprocessorList>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
-      <item path="inc/client/client_config.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/trans_job.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/trans_job_status.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/trans_manager.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/decoder/decoder_parameters.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/lm_config_utils.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/lm_configurator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/lm_parameters.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_proxy.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_query_proxy.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_query_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/builders/rm_basic_builder.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/models/rm_basic_model.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/models/rm_entry.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/rm/models/rm_query.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/rm/proxy/rm_proxy.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/rm/proxy/rm_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/proxy/rm_query_proxy.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/proxy/rm_query_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/rm_configurator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/rm/rm_parameters.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/server_parameters.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/builders/tm_basic_builder.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/models/tm_basic_model.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/models/tm_phrase_id.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/models/tm_query.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/models/tm_source_entry.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/models/tm_target_entry.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/proxy/tm_proxy.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/proxy/tm_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/proxy/tm_query_proxy.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/proxy/tm_query_proxy_local.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/tm/tm_configs.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/tm_configurator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/tm_parameters.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_job.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_job_pool.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_task.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_task_id.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_task_pool.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/trans_task_pool_worker.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/common/utils/logging/logger.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/common/utils/monitore/statistics_monitor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/common/utils/xxhash.c" ex="false" tool="0" flavor2="0">
+        <cTool flags="0">
+        </cTool>
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="src/server/lm/lm_configurator.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/lm/builders/arpa_gram_builder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/builders/arpa_trie_builder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/dictionaries/aword_index.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/lm_configurator.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/lm/models/c2d_hybrid_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/c2d_map_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/c2w_array_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/g2d_map_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/h2d_map_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/w2c_array_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/models/w2c_hybrid_trie.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/ngrams/byte_m_gram_id.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/server/tm/models/tm_target_entry.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
-      <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
-      <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
     </conf>
   </confs>
