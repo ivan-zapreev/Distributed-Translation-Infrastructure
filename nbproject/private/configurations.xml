@@ -685,8 +685,10 @@
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>
-            <in>tm_entry.hpp</in>
+            <in>tm_phrase_id.hpp</in>
             <in>tm_query.hpp</in>
+            <in>tm_source_entry.hpp</in>
+            <in>tm_target_entry.hpp</in>
           </df>
           <df name="proxy">
             <in>tm_proxy.hpp</in>
@@ -758,7 +760,7 @@
         </df>
         <df name="tm">
           <df name="models">
-            <in>tm_entry.cpp</in>
+            <in>tm_target_entry.cpp</in>
           </df>
           <in>tm_configurator.cpp</in>
         </df>

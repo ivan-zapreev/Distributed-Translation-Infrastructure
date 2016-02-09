@@ -31,7 +31,9 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/string_utils.hpp"
 
-#include "server/tm/models/tm_entry.hpp"
+#include "server/tm/models/tm_phrase_id.hpp"
+#include "server/tm/models/tm_target_entry.hpp"
+#include "server/tm/models/tm_source_entry.hpp"
 
 using namespace std;
 

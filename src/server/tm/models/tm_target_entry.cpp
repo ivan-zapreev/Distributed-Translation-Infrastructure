@@ -23,7 +23,7 @@
  * Created on February 9, 2016, 11:04 AM
  */
 
-#include "server/tm/models/tm_entry.hpp"
+#include "server/tm/models/tm_target_entry.hpp"
 
 namespace uva {
     namespace smt {

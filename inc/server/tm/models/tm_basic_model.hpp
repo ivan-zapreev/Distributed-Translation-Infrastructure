@@ -30,7 +30,7 @@
 #include "common/utils/logging/logger.hpp"
 
 #include "server/tm/tm_configs.hpp"
-#include "server/tm/models/tm_entry.hpp"
+#include "server/tm/models/tm_source_entry.hpp"
 #include "server/tm/models/tm_query.hpp"
 
 #include "common/utils/containers/fixed_size_hashmap.hpp"

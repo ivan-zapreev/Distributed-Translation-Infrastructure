@@ -49,8 +49,10 @@
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>
-            <in>tm_entry.hpp</in>
+            <in>tm_phrase_id.hpp</in>
             <in>tm_query.hpp</in>
+            <in>tm_source_entry.hpp</in>
+            <in>tm_target_entry.hpp</in>
           </df>
           <df name="proxy">
             <in>tm_proxy.hpp</in>
@@ -94,7 +96,7 @@
         </df>
         <df name="tm">
           <df name="models">
-            <in>tm_entry.cpp</in>
+            <in>tm_target_entry.cpp</in>
           </df>
           <in>tm_configurator.cpp</in>
         </df>
@@ -241,9 +243,22 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/server/tm/models/tm_entry.hpp" ex="false" tool="3" flavor2="0">
+      <item path="inc/server/tm/models/tm_phrase_id.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="inc/server/tm/models/tm_query.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/models/tm_source_entry.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/models/tm_target_entry.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="inc/server/tm/proxy/tm_proxy.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -308,7 +323,10 @@
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/server/tm/models/tm_entry.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/tm/models/tm_target_entry.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="0">
       </item>

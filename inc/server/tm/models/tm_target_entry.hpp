@@ -1,0 +1,167 @@
+/* 
+ * File:   tm_target_entry.hpp
+ * Author: Dr. Ivan S. Zapreev
+ *
+ * Visit my Linked-in profile:
+ *      <https://nl.linkedin.com/in/zapreevis>
+ * Visit my GitHub:
+ *      <https://github.com/ivan-zapreev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.#
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Created on February 9, 2016, 5:35 PM
+ */
+
+#ifndef TM_TARGET_ENTRY_HPP
+#define TM_TARGET_ENTRY_HPP
+
+#include <string>
+
+#include "server/tm/tm_configs.hpp"
+
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/hashing_utils.hpp"
+#include "common/utils/containers/fixed_size_hashmap.hpp"
+
+#include "server/tm/models/tm_phrase_id.hpp"
+
+using namespace std;
+
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::hashing;
+
+namespace uva {
+    namespace smt {
+        namespace translation {
+            namespace server {
+                namespace tm {
+                    namespace models {
+
+                        /**
+                         * This structure represents the translation data, i.e. the
+                         * the target phrase plus the probability weights. See:
+                         * http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases
+                         * for more details on the weights. Note that for this entry
+                         * we have a uid that is a unique identifier of the target
+                         * phrase string. The latter can be a hash value but then
+                         * there is a possibility for the hash collisions
+                         */
+                        class tm_target_entry {
+                        public:
+
+                            /**
+                             * The basic constructor
+                             */
+                            tm_target_entry()
+                            : m_target_phrase(""), m_phrase_uid(UNDEFINED_PHRASE_ID), m_sct_prob(0.0),
+                            m_sct_lex(0.0), m_tcs_prob(0.0), m_tcs_lex(0.0) {
+                            }
+
+                            /**
+                             * The basic destructor
+                             */
+                            ~tm_target_entry() {
+                                //Clear the entry if it has not been cleared yet.
+                                clear(*this);
+                            }
+
+                            /**
+                             * Allows to set the target phrase and its id
+                             * @param target_phrase the target phrase
+                             * @param uid the target phrase id
+                             */
+                            inline void set_target(string target_phrase, phrase_uid uid) {
+                                m_target_phrase = target_phrase;
+                                m_phrase_uid = uid;
+                            }
+
+                            /**
+                             * The comparison operator, allows to compare translation entries
+                             * @param phrase_uid the unique identifier of the translation entry to compare with
+                             * @return true if the provided uid is equal to the uid of this entry, otherwise false 
+                             */
+                            inline bool operator==(const phrase_uid & phrase_uid) const {
+                                return (m_phrase_uid == phrase_uid);
+                            }
+
+                            /**
+                             * Allows to clear the data allocated for the given element
+                             * @param elem the element to clear
+                             */
+                            static inline void clear(tm_target_entry & elem) {
+                                //Nothing to be done, no dynamically allocated resources
+                            }
+
+                            /**
+                             * Allows to get the reference to the inverse phrase translation probability φ(f|e)
+                             * @return the reference to the inverse phrase translation probability φ(f|e)
+                             */
+                            inline float & get_sct_prob() {
+                                return m_sct_prob;
+                            }
+
+                            /**
+                             * Allows to get the reference to the inverse lexical weighting lex(f|e)
+                             * @return the reference to the inverse lexical weighting lex(f|e)
+                             */
+                            inline float & get_sct_lex() {
+                                return m_sct_lex;
+                            }
+
+                            /**
+                             * Allows to get the reference to the direct phrase translation probability φ(e|f)
+                             * @return the reference to the direct phrase translation probability φ(e|f)
+                             */
+                            inline float & get_tcs_prob() {
+                                return m_tcs_prob;
+                            }
+
+                            /**
+                             * Allows to get the reference to the direct lexical weighting lex(e|f)
+                             * @return the reference to the direct lexical weighting lex(e|f)
+                             */
+                            inline float & get_tcs_lex() {
+                                return m_tcs_lex;
+                            }
+
+                        private:
+                            //Stores the target phrase of the translation which a key value
+                            string m_target_phrase;
+                            //Stores the unique identifier of the given phrase
+                            phrase_uid m_phrase_uid;
+                            //The conditional probability value for source conditioned on target
+                            float m_sct_prob;
+                            //Inverse lexical weighting lex(f|e)
+                            //ToDo: Do we need it for decoding?
+                            float m_sct_lex;
+                            //The conditional probability value for target conditioned on source
+                            float m_tcs_prob;
+                            //Direct lexical weighting lex(e|f)
+                            //ToDo: Do we need it for decoding?
+                            float m_tcs_lex;
+                            //Phrase penalty (always exp(1) = 2.718) therefore is static
+                            //ToDo: Do we need it while decoding?
+                            static float m_phrase_penalty;
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
+
+#endif /* TM_TARGET_ENTRY_HPP */
+
