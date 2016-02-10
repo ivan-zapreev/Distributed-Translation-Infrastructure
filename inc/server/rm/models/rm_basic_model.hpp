@@ -170,8 +170,6 @@ namespace uva {
                                 LOG_USAGE << "Using the hash-based reordering model: " << __FILENAME__ << END_LOG;
                             }
 
-                        protected:
-
                         private:
                             //Stores the number of entries in the reordering model
                             size_t num_entries;
