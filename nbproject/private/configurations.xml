@@ -731,6 +731,7 @@
             <in>rm_query_proxy.hpp</in>
             <in>rm_query_proxy_local.hpp</in>
           </df>
+          <in>rm_configs.hpp</in>
           <in>rm_configurator.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>

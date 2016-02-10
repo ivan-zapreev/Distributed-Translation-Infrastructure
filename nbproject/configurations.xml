@@ -4,6 +4,11 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="server">
+        <df name="rm">
+          <in>rm_configs.hpp</in>
+        </df>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -121,6 +126,8 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/server/rm/rm_configs.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>

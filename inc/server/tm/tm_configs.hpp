@@ -36,14 +36,9 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace tm {
+                    namespace models {
 
-                    //Stores the configuration parameters for the basic translation model implementation
-                    namespace __tm_basic_model {
-                        //Influences the number of buckets that will be created for the basic model implementations
-                        static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;
-
-                        namespace models {
-
+                        namespace __unk_phrase {
                             //Stores the unknown phrase string, should be configurable
                             static const string UNKNOWN_PHRASE_STR = string("<unk>");
 
@@ -56,13 +51,17 @@ namespace uva {
                             //The Stores the default direct lexical weighting lex(t|s)
                             const float UNK_LTCS_LOG_PROB_WEIGHT = -10.0;
                         }
+
+                        namespace __tm_basic_model {
+                            //Influences the number of buckets that will be created for the basic model implementations
+                            static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;
+                        }
                     }
                 }
             }
         }
     }
 }
-
 
 #endif /* TM_CONFIGS_HPP */
 
