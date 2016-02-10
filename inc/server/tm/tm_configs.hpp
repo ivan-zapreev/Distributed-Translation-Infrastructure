@@ -39,8 +39,6 @@ namespace uva {
                     namespace __tm_basic_model {
                         //Influences the number of buckets that will be created for the basic model implementations
                         static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;
-                        //The target bucket factor is currently set to a small value to reduce the memory consumption
-                        static constexpr double TARGETS_BUCKETS_FACTOR = 1.0;
                     }
                 }
             }

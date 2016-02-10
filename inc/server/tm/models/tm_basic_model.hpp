@@ -66,7 +66,7 @@ namespace uva {
                              * The basic class constructor
                              * @param num_source_entries the number of source language phrases
                              */
-                            tm_basic_model() : m_trans_data(NULL) {
+                            tm_basic_model() : m_sizes(NULL), m_trans_data(NULL) {
                             }
 
                             /**

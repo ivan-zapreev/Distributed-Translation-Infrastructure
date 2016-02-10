@@ -74,7 +74,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_source_entry()
-                            : m_phrase_uid(UNDEFINED_PHRASE_ID), m_targets(NULL) {
+                            : m_phrase_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
                             }
 
                             /**
@@ -95,11 +95,13 @@ namespace uva {
 
                             /**
                              * Should be called to start the source entry, i.e. initialize the memory
-                             * @param size the number of translations for this entry
+                             * @param capacity the number of translations for this entry
                              */
-                            inline void begin(const size_t size) {
-                                //Instantiate the translation map
-                                m_targets = new tm_target_entry_map(__tm_basic_model::TARGETS_BUCKETS_FACTOR, size);
+                            inline void begin(const size_t capacity) {
+                                //Store the number of translation entries
+                                m_capacity = capacity;
+                                //Instantiate the translations array
+                                m_targets = new tm_target_entry[m_capacity]();
                             }
 
                             /**
@@ -115,12 +117,13 @@ namespace uva {
                              * @return the newly allocated target entry
                              */
                             inline tm_target_entry & new_translation(const string & target) {
-                                //Get the target phrase id
-                                phrase_uid uid = get_phrase_uid(target);
-                                //Get the entry for the target phrase
-                                tm_target_entry & entry = m_targets->add_new_element(uid);
+                                //Perform a sanity check
+                                ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
+                                        string("Exceeding the source entry capacity: ") + to_string(m_capacity));
+                                //Get the next free entry for the target phrase
+                                tm_target_entry & entry = m_targets[m_next_idx++];
                                 //Set the entry's target phrase and its id
-                                entry.set_target(target, uid);
+                                entry.set_target(target);
                                 //Return the entry
                                 return entry;
                             }
@@ -149,8 +152,12 @@ namespace uva {
                         private:
                             //Stores the unique identifier of the given source
                             phrase_uid m_phrase_uid;
-                            //Stores the target entries map pointer
-                            tm_target_entry_map * m_targets;
+                            //Stores the number of translation entries
+                            size_t m_capacity;
+                            //Stores the target entries array pointer
+                            tm_target_entry * m_targets;
+                            //Stores the next index for the translation entry
+                            size_t m_next_idx;
                         };
                     }
                 }

@@ -63,7 +63,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_target_entry()
-                            : m_target_phrase(""), m_phrase_uid(UNDEFINED_PHRASE_ID), m_sct_prob(0.0),
+                            : m_target_phrase(""), m_sct_prob(0.0),
                             m_sct_lex(0.0), m_tcs_prob(0.0), m_tcs_lex(0.0) {
                             }
 
@@ -71,35 +71,15 @@ namespace uva {
                              * The basic destructor
                              */
                             ~tm_target_entry() {
-                                //Clear the entry if it has not been cleared yet.
-                                clear(*this);
+                                //Nothing to clean everything is stack allocated.
                             }
 
                             /**
                              * Allows to set the target phrase and its id
                              * @param target_phrase the target phrase
-                             * @param uid the target phrase id
                              */
-                            inline void set_target(string target_phrase, phrase_uid uid) {
+                            inline void set_target(string target_phrase) {
                                 m_target_phrase = target_phrase;
-                                m_phrase_uid = uid;
-                            }
-
-                            /**
-                             * The comparison operator, allows to compare translation entries
-                             * @param phrase_uid the unique identifier of the translation entry to compare with
-                             * @return true if the provided uid is equal to the uid of this entry, otherwise false 
-                             */
-                            inline bool operator==(const phrase_uid & phrase_uid) const {
-                                return (m_phrase_uid == phrase_uid);
-                            }
-
-                            /**
-                             * Allows to clear the data allocated for the given element
-                             * @param elem the element to clear
-                             */
-                            static inline void clear(tm_target_entry & elem) {
-                                //Nothing to be done, no dynamically allocated resources
                             }
 
                             /**
@@ -137,8 +117,6 @@ namespace uva {
                         private:
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
-                            //Stores the unique identifier of the given phrase
-                            phrase_uid m_phrase_uid;
                             //The conditional probability value for source conditioned on target
                             float m_sct_prob;
                             //Inverse lexical weighting lex(f|e)
