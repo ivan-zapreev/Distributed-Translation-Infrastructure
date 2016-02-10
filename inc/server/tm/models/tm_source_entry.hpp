@@ -56,9 +56,6 @@ namespace uva {
                         //Define the map storing the source phrase ids and the number of translations per phrase
                         typedef unordered_map<phrase_uid, size_t> sizes_map;
 
-                        //Define the translations data map. It represents possible translations for some source phrase.
-                        typedef fixed_size_hashmap<tm_target_entry, const phrase_uid &> tm_target_entry_map;
-
                         /**
                          * This is the source entry data structure that contains two things
                          * The source phrase uid, which is the unique identifier of the
@@ -81,8 +78,10 @@ namespace uva {
                              * The basic destructor
                              */
                             ~tm_source_entry() {
-                                //Clear the entry if it has not been cleared yet.
-                                clear(*this);
+                                if (m_targets != NULL) {
+                                    delete[] m_targets;
+                                    m_targets = NULL;
+                                }
                             }
 
                             /**
@@ -137,18 +136,6 @@ namespace uva {
                                 return (m_phrase_uid == phrase_uid);
                             }
 
-                            /**
-                             * Allows to clear the data allocated for the given element
-                             * @param elem the element to clear
-                             */
-                            static inline void clear(tm_source_entry & elem) {
-                                if (elem.m_targets != NULL) {
-                                    delete elem.m_targets;
-                                    elem.m_targets = NULL;
-                                }
-                            }
-
-                        protected:
                         private:
                             //Stores the unique identifier of the given source
                             phrase_uid m_phrase_uid;

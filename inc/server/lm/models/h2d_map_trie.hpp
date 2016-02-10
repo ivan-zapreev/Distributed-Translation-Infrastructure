@@ -85,6 +85,13 @@ namespace uva {
                              */
                             S_M_GramData() : m_id(0) {
                             }
+                            
+                            /**
+                             * The basic destructor
+                             */
+                            ~S_M_GramData(){
+                                //There is nothing to be cleared
+                            }
 
                             /**
                              * The comparison operator, allows to  compare two m-gram ids
@@ -94,15 +101,6 @@ namespace uva {
                             inline bool operator==(const TM_Gram_Id & id) const {
                                 return (m_id == id);
                             }
-
-                            /**
-                             * Allows to clear the data allocated for the given element
-                             * @param elem the element to clear
-                             */
-                            static inline void clear(SELF & elem) {
-                                //There is nothing to be cleared
-                            }
-
                         };
 #pragma pack(pop) //back to whatever the previous packing mode was 
                     }

@@ -166,13 +166,6 @@ namespace uva {
                  */
                 ~fixed_size_hashmap() {
                     if (m_elems != NULL) {
-                        //Call the destructors on the allocated objects
-                        for (IDX_TYPE idx = MIN_ELEMENT_INDEX; idx < MAX_ELEMENT_INDEX; ++idx) {
-
-                            LOG_DEBUG4 << "Deallocating an element [" << SSTR(idx)
-                                    << "]: " << SSTR((void *) &m_elems[idx]) << END_LOG;
-                            ELEMENT_TYPE::clear(m_elems[idx]);
-                        }
                         //Free the allocated arrays
                         delete[] m_elems;
                         delete[] m_buckets;

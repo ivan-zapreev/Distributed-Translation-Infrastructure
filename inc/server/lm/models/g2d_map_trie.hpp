@@ -90,6 +90,15 @@ namespace uva {
                              */
                             S_M_GramData() : m_id(NULL) {
                             }
+                            
+                            /**
+                             * The basic destructor
+                             */
+                            ~S_M_GramData() {
+                                if (m_id != NULL) {
+                                    m_gram_id::destroy(m_id);
+                                }
+                            }
 
                             /**
                              * The comparison operator, allows to  compare two m-gram ids
@@ -98,16 +107,6 @@ namespace uva {
                              */
                             inline bool operator==(const T_Gram_Id_Key & key) const {
                                 return (TM_Gram_Id::compare(key.m_len_bytes, key.m_id, m_id) == 0);
-                            }
-
-                            /**
-                             * Allows to clear the data allocated for the given element
-                             * @param elem the element to clear
-                             */
-                            static inline void clear(SELF & elem) {
-                                if (elem.m_id != NULL) {
-                                    m_gram_id::destroy(elem.m_id);
-                                }
                             }
                         };
 
