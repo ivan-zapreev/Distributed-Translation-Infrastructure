@@ -31,6 +31,7 @@
 #include "common/utils/monitore/statistics_monitore.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
+#include "server/rm/models/rm_basic_model.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy_local.hpp"
 
@@ -40,9 +41,11 @@ using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
+
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::rm::proxy;
 using namespace uva::smt::bpbd::server::rm::builders;
+using namespace uva::smt::bpbd::server::rm::models;
 
 namespace uva {
     namespace smt {
@@ -55,9 +58,11 @@ namespace uva {
                          * This is the reordering model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
                          */
-                        template<typename model_type>
                         class rm_proxy_local : public rm_proxy {
                         public:
+                            //Define the default model type to be used
+                            typedef rm_basic_model model_type;
+                            
                             //Define the builder type 
                             typedef rm_basic_builder<model_type, CStyleFileReader> builder_type;
 
@@ -68,24 +73,7 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to connect to the model object based on the given parameters
-                             * @param the parameters defining the model to connect to
-                             */
-                            virtual void connect(const rm_parameters & params){
-                                //The whole purpose of this method connect here is
-                                //just to load the reordering model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Reordering Model", params.m_conn_string);
-                            }
-
-                            /**
-                             * Allows to disconnect from the trie
-                             */
-                            virtual void disconnect() {
-                                //Nothing the be done here yet, the model is allocated on the stack
-                            }
-
-                            /**
-                             * The basic virtual destructor
+                             * The basic destructor
                              */
                             virtual ~rm_proxy_local() {
                                 //Disconnect, just in case it has not been done before
@@ -93,8 +81,23 @@ namespace uva {
                             };
 
                             /**
-                             * This method allows to get a query executor for the given trie
-                             * @return the trie query proxy object
+                             * @see rm_proxy
+                             */
+                            virtual void connect(const string & conn_str){
+                                //The whole purpose of this method connect here is
+                                //just to load the reordering model into the memory.
+                                load_model_data<builder_type, CStyleFileReader>("Reordering Model", conn_str);
+                            }
+
+                            /**
+                             * @see rm_proxy
+                             */
+                            virtual void disconnect() {
+                                //Nothing the be done here yet, the model is allocated on the stack
+                            }
+
+                            /**
+                             * @see rm_proxy
                              */
                             virtual rm_query_proxy * get_query_proxy() {
                                 //Return an instance of the query_proxy_local class

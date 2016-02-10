@@ -91,24 +91,24 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to get the reference to the inverse lexical weighting lex(f|e)
-                             * @return the reference to the inverse lexical weighting lex(f|e)
+                             * Allows to get the reference to the inverse lexical weighting lex(s|t)
+                             * @return the reference to the inverse lexical weighting lex(s|t)
                              */
                             inline float & get_sct_lex() {
                                 return m_sct_lex;
                             }
 
                             /**
-                             * Allows to get the reference to the direct phrase translation probability φ(e|f)
-                             * @return the reference to the direct phrase translation probability φ(e|f)
+                             * Allows to get the reference to the direct phrase translation probability φ(t|s)
+                             * @return the reference to the direct phrase translation probability φ(t|s)
                              */
                             inline float & get_tcs_prob() {
                                 return m_tcs_prob;
                             }
 
                             /**
-                             * Allows to get the reference to the direct lexical weighting lex(e|f)
-                             * @return the reference to the direct lexical weighting lex(e|f)
+                             * Allows to get the reference to the direct lexical weighting lex(t|s)
+                             * @return the reference to the direct lexical weighting lex(t|s)
                              */
                             inline float & get_tcs_lex() {
                                 return m_tcs_lex;

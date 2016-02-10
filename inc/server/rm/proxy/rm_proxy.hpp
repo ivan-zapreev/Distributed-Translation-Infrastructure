@@ -26,7 +26,6 @@
 #ifndef RM_PROXY_HPP
 #define RM_PROXY_HPP
 
-#include "server/rm/rm_parameters.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 
 namespace uva {
@@ -45,9 +44,9 @@ namespace uva {
                             
                             /**
                              * Allows to connect to the model object based on the given parameters
-                             * @param the parameters defining the model to connect to
+                             * @param conn_str the connection string
                              */
-                            virtual void connect(const rm_parameters & params) = 0;
+                            virtual void connect(const string & conn_str) = 0;
 
                             /**
                              * Allows to disconnect from the trie

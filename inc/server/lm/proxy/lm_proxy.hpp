@@ -1,5 +1,5 @@
 /* 
- * File:   trie_proxy.hpp
+ * File:   lm_proxy.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -26,7 +26,6 @@
 #ifndef TRIE_PROXY_INT_HPP
 #define TRIE_PROXY_INT_HPP
 
-#include "server/lm/lm_parameters.hpp"
 #include "server/lm/proxy/lm_query_proxy.hpp"
 
 namespace uva {
@@ -44,9 +43,9 @@ namespace uva {
                             
                             /**
                              * Allows to connect to the trie object based on the given parameters
-                             * @param the parameters defining the trie model to connect to
+                             * @param conn_str the connection string
                              */
-                            virtual void connect(const lm_parameters & params) = 0;
+                            virtual void connect(const string & conn_str) = 0;
 
                             /**
                              * Allows to disconnect from the trie

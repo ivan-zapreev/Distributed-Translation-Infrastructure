@@ -26,11 +26,11 @@
 #ifndef SERVER_PARAMETERS_HPP
 #define SERVER_PARAMETERS_HPP
 
-#include "decoder/decoder_parameters.hpp"
 #include "lm/lm_parameters.hpp"
-#include "lm/lm_config_utils.hpp"
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
+
+#include "decoder/decoder_parameters.hpp"
 
 using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::tm;

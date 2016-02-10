@@ -34,7 +34,7 @@ namespace uva {
                     lm_parameters lm_configurator::m_params;
                     
                     //Just give a default initialization
-                    lm_proxy * lm_configurator::m_trie_proxy = NULL;
+                    lm_proxy * lm_configurator::m_model_proxy = NULL;
                 }
             }
         }

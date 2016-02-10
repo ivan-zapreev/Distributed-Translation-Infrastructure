@@ -72,8 +72,6 @@ static CmdLine * p_cmd_args = NULL;
 static ValueArg<string> * p_model_arg = NULL;
 static ValueArg<string> * p_query_arg = NULL;
 static vector<string> trie_types_vec;
-static ValuesConstraint<string> * p_trie_types_constr = NULL;
-static ValueArg<string> * p_trie_type_arg = NULL;
 static SwitchArg * p_cumulative_prob_arg = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
@@ -92,11 +90,6 @@ void create_arguments_parser() {
     //Add the -q the input test queries file parameter - compulsory 
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
-    //Add the -t the trie type parameter - optional, default is one of the tries (e.g. c2wa)
-    __configurator::get_trie_types_str(&trie_types_vec);
-    p_trie_types_constr = new ValuesConstraint<string>(trie_types_vec);
-    p_trie_type_arg = new ValueArg<string>("t", "trie", "The trie type to be used", false, __configurator::get_default_trie_type_str(), p_trie_types_constr, *p_cmd_args);
-
     //Add the -c the "cumulative" probability switch - optional, default is cumulative
     p_cumulative_prob_arg = new SwitchArg("c", "cumulative", "Compute the sum of cumulative log probabilities for each query m-gram", *p_cmd_args, false);
 
@@ -112,9 +105,6 @@ void create_arguments_parser() {
 void destroy_arguments_parser() {
     SAFE_DESTROY(p_model_arg);
     SAFE_DESTROY(p_query_arg);
-
-    SAFE_DESTROY(p_trie_types_constr);
-    SAFE_DESTROY(p_trie_type_arg);
 
     SAFE_DESTROY(p_cumulative_prob_arg);
 
@@ -143,16 +133,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Store the parsed parameter values
     params.m_is_cum_prob = p_cumulative_prob_arg->getValue();
-    params.m_lm_params.m_conn_string = p_model_arg->getValue();
     params.m_query_file_name = p_query_arg->getValue();
-    params.m_lm_params.m_trie_type_name = p_trie_type_arg->getValue();
-
-    //Set the maximum level from to be constant
-    //ToDo: Make this an lm_query program argument
-    params.m_lm_params.m_max_trie_level = M_GRAM_LEVEL_MAX;
-
-    //Set the trie and word index type
-    __configurator::get_trie_and_word_index_types(params.m_lm_params);
+    params.m_lm_params.m_conn_string = p_model_arg->getValue();
 }
 
 /**

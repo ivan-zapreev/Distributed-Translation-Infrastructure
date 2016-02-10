@@ -26,8 +26,8 @@
 #ifndef LANGUAGE_MODEL_PARAMETERS_HPP
 #define LANGUAGE_MODEL_PARAMETERS_HPP
 
-#include "lm_configs.hpp"
 #include "lm_consts.hpp"
+#include "lm_configs.hpp"
 
 namespace uva {
     namespace smt {
@@ -41,20 +41,6 @@ namespace uva {
                     typedef struct {
                         //The the connection string needed to connect to the model
                         string m_conn_string;
-
-                        //The Trie type name, is defined by the user
-                        string m_trie_type_name;
-                        
-                        //Stores the maximum trie level, is defined by the user
-                        TModelLevel m_max_trie_level;
-
-                        //The word index type to be used with the trie, is
-                        //defined by the implementation from the used input
-                        word_index_types m_word_index_type;
-
-                        //The trie type, is defined by the implementation
-                        //from the used input
-                        trie_types m_trie_type;
                     } lm_parameters;
                 }
             }

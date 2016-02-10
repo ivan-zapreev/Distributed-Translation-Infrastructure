@@ -41,6 +41,14 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
+#include "server/lm/models/c2d_map_trie.hpp"
+#include "server/lm/models/w2c_hybrid_trie.hpp"
+#include "server/lm/models/c2w_array_trie.hpp"
+#include "server/lm/models/w2c_array_trie.hpp"
+#include "server/lm/models/c2d_hybrid_trie.hpp"
+#include "server/lm/models/g2d_map_trie.hpp"
+#include "server/lm/models/h2d_map_trie.hpp"
+
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;

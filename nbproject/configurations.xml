@@ -86,9 +86,8 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <flagsDictionary>
-        <element flagsID="0" commonFlags="-O3"/>
+        <element flagsID="0" commonFlags="-g"/>
         <element flagsID="1" commonFlags="-std=c++0x -m64"/>
-        <element flagsID="2" commonFlags="-std=c++0x -m64 -O3"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -104,9 +103,6 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
-            <preprocessorList>
-              <Elem>NDEBUG</Elem>
-            </preprocessorList>
           </cTool>
           <ccTool>
             <standard>8</standard>
@@ -144,14 +140,14 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/common/utils/monitore/statistics_monitor.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/common/utils/xxhash.c" ex="false" tool="0" flavor2="2">

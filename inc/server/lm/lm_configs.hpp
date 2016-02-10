@@ -38,7 +38,7 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace lm {
-
+                    
                     //The considered maximum length of the N-gram 
                     constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
 

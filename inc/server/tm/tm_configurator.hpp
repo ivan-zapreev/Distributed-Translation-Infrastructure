@@ -33,12 +33,10 @@
 #include "server/tm/proxy/tm_proxy.hpp"
 #include "server/tm/proxy/tm_proxy_local.hpp"
 #include "server/tm/proxy/tm_query_proxy.hpp"
-#include "server/tm/models/tm_basic_model.hpp"
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::bpbd::server::tm::proxy;
-using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
     namespace smt {
@@ -64,12 +62,11 @@ namespace uva {
                             //Store the parameters for future use
                             m_params = params;
 
-                            //At the moment we only support a local proxy, no remotely hosted
-                            //reordering model, also just one basic reordering model type
-                            m_model_proxy = new tm_proxy_local<tm_basic_model>();
+                            //At the moment we only support a local proxy
+                            m_model_proxy = new tm_proxy_local();
 
                             //Connect to the model instance using the given parameters
-                            m_model_proxy->connect(m_params);
+                            m_model_proxy->connect(m_params.m_conn_string);
                         }
 
                         /**

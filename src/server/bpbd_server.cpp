@@ -167,22 +167,15 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 << "' translation threads: '" << params.m_de_params.m_num_threads << "'" << END_LOG;
 
         section = "Language Models";
-        params.m_lm_params.m_conn_string = get_string(ini, section, "language_model");
+        params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
         LOG_INFO << "Language model file: " << params.m_lm_params.m_conn_string << END_LOG;
-        params.m_lm_params.m_trie_type_name = get_string(ini, section, "trie_type_name");
-        LOG_INFO << "Trie type name: " << params.m_lm_params.m_trie_type_name << END_LOG;
-        params.m_lm_params.m_max_trie_level = get_integer<uint8_t>(ini, section, "max_trie_level");
-        LOG_INFO << "The trie maximum level: " << params.m_lm_params.m_max_trie_level << END_LOG;
-
-        //Set the trie and word index type
-        __configurator::get_trie_and_word_index_types(params.m_lm_params);
 
         section = "Translation Models";
-        params.m_tm_params.m_conn_string = get_string(ini, section, "translation_model");
+        params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
         LOG_INFO << "Translation model file: " << params.m_tm_params.m_conn_string << END_LOG;
 
         section = "Reordering Models";
-        params.m_rm_params.m_conn_string = get_string(ini, section, "reordering_model");
+        params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
         LOG_INFO << "Reordering model file: " << params.m_rm_params.m_conn_string << END_LOG;
 
         section = "Decoding Options";

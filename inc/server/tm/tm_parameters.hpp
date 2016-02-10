@@ -28,6 +28,8 @@
 
 #include <string>
 
+using namespace std;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
