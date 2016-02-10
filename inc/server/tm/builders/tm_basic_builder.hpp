@@ -31,7 +31,7 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/string_utils.hpp"
 
-#include "server/tm/models/tm_phrase_id.hpp"
+#include "server/common/models/phrase_id.hpp"
 #include "server/tm/models/tm_target_entry.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 
@@ -43,6 +43,7 @@ using namespace uva::utils::file;
 using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::tm::models;
+using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
     namespace smt {
@@ -91,6 +92,7 @@ namespace uva {
                                 //Process the translations
                                 process_source_entries();
                             }
+                            
                         protected:
 
                             /**

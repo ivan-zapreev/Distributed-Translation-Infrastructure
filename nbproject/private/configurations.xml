@@ -666,6 +666,11 @@
         </df>
       </df>
       <df name="server">
+        <df name="common">
+          <df name="models">
+            <in>phrase_id.hpp</in>
+          </df>
+        </df>
         <df name="decoder">
           <in>decoder_parameters.hpp</in>
         </df>
@@ -741,7 +746,6 @@
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>
-            <in>tm_phrase_id.hpp</in>
             <in>tm_query.hpp</in>
             <in>tm_source_entry.hpp</in>
             <in>tm_target_entry.hpp</in>

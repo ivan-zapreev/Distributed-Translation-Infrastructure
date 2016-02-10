@@ -32,13 +32,15 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/hashing_utils.hpp"
 
-#include "server/tm/models/tm_phrase_id.hpp"
+#include "server/common/models/phrase_id.hpp"
 
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::hashing;
+
+using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
     namespace smt {

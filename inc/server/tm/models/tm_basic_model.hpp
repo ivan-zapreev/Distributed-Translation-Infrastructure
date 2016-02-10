@@ -41,6 +41,8 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::containers;
 
+using namespace uva::smt::bpbd::server::common::models;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -55,7 +57,7 @@ namespace uva {
                          * tries. This basic model also does not store the phrases as is
                          * but rather the hash values thereof. So it is a hash based
                          * implementation which reduces memory but might occasionally
-                         * provide 
+                         * provide.
                          */
                         class tm_basic_model {
                         public:
@@ -64,9 +66,8 @@ namespace uva {
 
                             /**
                              * The basic class constructor
-                             * @param num_source_entries the number of source language phrases
                              */
-                            tm_basic_model() : m_sizes(NULL), m_trans_data(NULL) {
+                            tm_basic_model() : m_sizes(NULL), m_tm_data(NULL) {
                             }
 
                             /**
@@ -77,9 +78,9 @@ namespace uva {
                                 finalize();
                                 
                                 //Delete the model data if any
-                                if (m_trans_data != NULL) {
-                                    delete m_trans_data;
-                                    m_trans_data = NULL;
+                                if (m_tm_data != NULL) {
+                                    delete m_tm_data;
+                                    m_tm_data = NULL;
                                 }
                             }
 
@@ -106,7 +107,7 @@ namespace uva {
                                 LOG_DEBUG << "The number of source phrases is: " << sizes->size() << END_LOG;
                                 
                                 //Initialize the source entries map
-                                m_trans_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, sizes->size());
+                                m_tm_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, sizes->size());
                             }
 
                             /**
@@ -116,7 +117,7 @@ namespace uva {
                              */
                             inline tm_source_entry * begin_entry(const phrase_uid entry_id) {
                                 //Get the new entry from the data storage
-                                tm_source_entry & entry = m_trans_data->add_new_element(entry_id);
+                                tm_source_entry & entry = m_tm_data->add_new_element(entry_id);
 
                                 //Set the source phrase id
                                 entry.set_source_uid(entry_id);
@@ -138,7 +139,7 @@ namespace uva {
                              */
                             inline void finalize_entry(const phrase_uid entry_id) {
                                 //Finish the source entry
-                                m_trans_data->get_element(entry_id, entry_id)->finalize();
+                                m_tm_data->get_element(entry_id, entry_id)->finalize();
                             }
 
                             /**
@@ -159,7 +160,7 @@ namespace uva {
                              * @return the source phrase entry or NULL if the source phrase id is not found
                              */
                             const tm_source_entry * get_source_entry(const phrase_uid entry_id) const {
-                                return m_trans_data->get_element(entry_id, entry_id);
+                                return m_tm_data->get_element(entry_id, entry_id);
                             }
 
                             /**
@@ -173,7 +174,7 @@ namespace uva {
                             //The map storing the model sizes
                             sizes_map * m_sizes;
                             //Stores the translation model data
-                            tm_source_entry_map * m_trans_data;
+                            tm_source_entry_map * m_tm_data;
 
                         };
                     }

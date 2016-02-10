@@ -92,8 +92,6 @@ namespace uva {
                             return m_model_proxy->get_query_proxy();
                         }
                         
-                    protected:
-                        
                     private:
                         //Stores the copy of the configuration parameters
                         static rm_parameters m_params;

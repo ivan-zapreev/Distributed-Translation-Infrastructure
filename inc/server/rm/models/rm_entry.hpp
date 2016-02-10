@@ -26,7 +26,75 @@
 #ifndef RM_ENTRY_HPP
 #define RM_ENTRY_HPP
 
+#include <string>
 
+#include "server/rm/rm_configs.hpp"
+
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+
+#include "server/common/models/phrase_id.hpp"
+
+using namespace std;
+
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+
+using namespace uva::smt::bpbd::server::common::models;
+
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace server {
+                namespace rm {
+                    namespace models {
+
+                        /**
+                         * This is the reordering entry class it stores the reordering penalties for one source to target phrase.
+                         */
+                        class rm_entry {
+                        public:
+
+                            /**
+                             * The basic constructor
+                             */
+                            rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
+                            }
+
+                            /**
+                             * The basic destructor
+                             */
+                            ~rm_entry() {
+                            }
+
+                            /**
+                             * Allows to set the unique source target entry identifier
+                             * @param uid the unique identifier of the source/target entry
+                             */
+                            inline void set_entry_uid(const phrase_uid & uid) {
+                                m_uid = uid;
+                            }
+
+                            /**
+                             * The comparison operator, allows to compare entries
+                             * @param phrase_uid the unique identifier of the source/target phrase pair entry to compare with
+                             * @return true if the provided uid is equal to the uid of this entry, otherwise false 
+                             */
+                            inline bool operator==(const phrase_uid & uid) const {
+                                return (m_uid == uid);
+                            }
+
+                        protected:
+
+                        private:
+                            phrase_uid m_uid;
+                        };
+                    }
+                }
+            }
+        }
+    }
+}
 
 #endif /* RM_ENTRY_HPP */
 

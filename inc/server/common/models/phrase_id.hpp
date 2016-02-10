@@ -42,9 +42,8 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
-                namespace tm {
+                namespace common {
                     namespace models {
-
                         //Declare the phrase unique identifier type
                         typedef uint64_t phrase_uid;
 
@@ -56,7 +55,7 @@ namespace uva {
                         /**
                          * Allows to get the phrase uid for the given phrase.
                          * The current implementation uses the hash function to compute the uid.
-                         * Before the computation of the phrase id the phrase string is trimmed.
+                         * Before the computation of the phrase id the phrase string is NOT trimmed.
                          * @param the phrase to get the uid for
                          * @return the uid of the phrase
                          */
@@ -68,6 +67,42 @@ namespace uva {
                                 uid = MIN_VALID_PHRASE_ID;
                             }
                             return uid;
+                        }
+
+                        /**
+                         * Allows to get the phrase uid for the given phrase pair.
+                         * The current implementation uses the hash function to compute the uid.
+                         * Before the computation of the phrase id the phrase strings are NOT trimmed.
+                         * @param p1_uid the first phrase uid
+                         * @param p2_uid the second phrase uid
+                         * @return the uid of the phrase
+                         */
+                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const phrase_uid p2_uid) {
+                            return combine_hash(p1_uid, p2_uid);
+                        }
+
+                        /**
+                         * Allows to get the phrase uid for the given phrase pair.
+                         * The current implementation uses the hash function to compute the uid.
+                         * Before the computation of the phrase id the phrase strings are NOT trimmed.
+                         * @param p1_uid the first phrase uid
+                         * @param p2 the second phrase
+                         * @return the uid of the phrase
+                         */
+                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const string p2) {
+                            return combine_hash(p1_uid, get_phrase_uid(p2));
+                        }
+
+                        /**
+                         * Allows to get the phrase uid for the given phrase pair.
+                         * The current implementation uses the hash function to compute the uid.
+                         * Before the computation of the phrase id the phrase strings are NOT trimmed.
+                         * @param p1 the first phrase
+                         * @param p2 the second phrase
+                         * @return the uid of the phrase
+                         */
+                        static inline phrase_uid get_phrase_uid(const string p1, const string p2) {
+                            return get_phrase_uid(get_phrase_uid(p1), p2);
                         }
                     }
                 }

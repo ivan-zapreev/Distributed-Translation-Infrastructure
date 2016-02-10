@@ -33,6 +33,10 @@ namespace uva {
                 namespace rm {
                     namespace builders {
 
+                        //Stores the translation model delimiter character for parsing one line
+#define TM_DELIMITER '|'
+                        //Stores the translation model delimiter character cardinality
+#define TM_DELIMITER_CDTY 3
 
                         /**
                          * This class represents a basic reader of the reordering model.
@@ -61,6 +65,7 @@ namespace uva {
                             void build(){
                                 //ToDo: Implement
                             }
+                            
                         protected:
                             
                         private:

@@ -73,7 +73,6 @@ namespace uva {
 
                         /**
                          * Allows to disconnect from the language model.
-                         * Currently only calls the destructor of the trie proxy object.
                          */
                         static void disconnect() {
                             if( m_model_proxy != NULL) {
