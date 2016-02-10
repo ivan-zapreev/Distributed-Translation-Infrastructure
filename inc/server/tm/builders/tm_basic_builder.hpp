@@ -79,8 +79,8 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to build the model by reading the from reader.
-                             * This is a two pass process as first we need the number
+                             * Allows to build the model by reading from the reader object.
+                             * This is a two step process as first we need the number
                              * of distinct source phrases.
                              */
                             void build() {

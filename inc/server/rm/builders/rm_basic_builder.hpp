@@ -60,13 +60,35 @@ namespace uva {
                             }
                             
                             /**
-                             * Allows to build the model by reading the from reader
+                             * Allows to build the model by reading from the reader object.
+                             * This is a two step process as first we need the number
+                             * of distinct source phrases.
                              */
                             void build(){
-                                //ToDo: Implement
+                                //Count and set the number of source phrases if needed
+                                if (m_model.is_num_entries_needed()) {
+                                    set_number_source_phrases();
+                                }
+
+                                //Process the translations
+                                process_source_entries();
                             }
                             
                         protected:
+
+                            /**
+                             * Allows to count and set the number of source phrases
+                             */
+                            inline void set_number_source_phrases() {
+                                //ToDo: Implement
+                            }
+
+                            /**
+                             * Allows to process translations.
+                             */
+                            void process_source_entries() {
+                                //ToDo: Implement
+                            }
                             
                         private:
                             //Stores the reference to the model

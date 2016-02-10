@@ -82,6 +82,16 @@ namespace uva {
                             }
 
                             /**
+                             * This method allows to detect if the number of
+                             * reordering entries is needed before the entries
+                             * are being added.
+                             * @return true as this model type uses filed-size hash maps 
+                             */
+                            inline bool is_num_entries_needed() const {
+                                return true;
+                            }
+
+                            /**
                              * This method is needed to set the number of reordering entries in the model.
                              * @param num_entries the number of entries in the reordering model
                              */
