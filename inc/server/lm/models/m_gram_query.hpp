@@ -102,10 +102,12 @@ namespace uva {
                          */
                         template<bool is_cumulative, bool is_log_results = false >
                         inline void execute(TextPieceReader &text) {
-                            LOG_DEBUG << "Starting to execute:" << (string) m_query.m_gram << END_LOG;
+                            LOG_DEBUG << "Starting to execute:" << text << END_LOG;
 
                             //Set the text piece into the m-gram
                             m_query.m_gram.set_m_gram_from_text(text);
+
+                            LOG_DEBUG << "The parsed m-gram is:" << (string) m_query.m_gram << END_LOG;
 
                             //Clean the relevant probability entry
                             if (is_cumulative) {

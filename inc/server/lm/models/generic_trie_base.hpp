@@ -201,7 +201,8 @@ namespace uva {
                         inline void is_m_gram_potentially_present(const T_Query_Exec_Data& query,
                                 MGramStatusEnum &status) const {
                             //Do sanity check if needed
-                            ASSERT_SANITY_THROW((query.m_begin_word_idx != query.m_end_word_idx), "Trying the check the bitmap hash cache for a uni-gram!");
+                            ASSERT_SANITY_THROW((query.m_begin_word_idx == query.m_end_word_idx),
+                                    "Trying to check the bitmap hash cache for a uni-gram!");
 
                             //Check if the caching is enabled and needed
                             if (NEEDS_BITMAP_HASH_CACHE) {
