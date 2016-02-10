@@ -42,7 +42,7 @@ using namespace uva::utils::monitore;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace __configurator {

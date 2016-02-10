@@ -29,11 +29,11 @@
 
 #include "server/rm/proxy/rm_query_proxy.hpp"
 
-using namespace uva::smt::translation::server::rm;
+using namespace uva::smt::bpbd::server::rm;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace rm {
                     namespace proxy {

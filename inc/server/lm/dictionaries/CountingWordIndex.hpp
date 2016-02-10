@@ -44,7 +44,7 @@ using namespace uva::utils::containers::utils;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace dictionary {

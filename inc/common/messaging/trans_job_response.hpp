@@ -41,11 +41,11 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
-using namespace uva::smt::translation::common::messaging;
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace common {
                 namespace messaging {
 

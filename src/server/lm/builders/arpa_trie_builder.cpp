@@ -45,13 +45,13 @@
 #include "server/lm/models/g2d_map_trie.hpp"
 #include "server/lm/models/h2d_map_trie.hpp"
 
-using namespace uva::smt::translation::server::lm;
+using namespace uva::smt::bpbd::server::lm;
 using namespace uva::utils::logging;
 using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace arpa {

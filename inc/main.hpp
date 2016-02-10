@@ -17,7 +17,7 @@ using namespace uva::utils::logging;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace common {
 
                 // Check windows

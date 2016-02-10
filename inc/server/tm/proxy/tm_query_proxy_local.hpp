@@ -27,12 +27,14 @@
 #define TM_QUERY_PROXY_LOCAL_HPP
 
 #include "server/tm/proxy/tm_query_proxy.hpp"
+#include "server/tm/models/tm_query.hpp"
 
-using namespace uva::smt::translation::server::tm;
+using namespace uva::smt::bpbd::server::tm;
+using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
                     namespace proxy {
@@ -49,19 +51,54 @@ namespace uva {
                              * The basic constructor that accepts the translation model reference to query to
                              * @param model the translation model to query
                              */
-                            tm_query_proxy_local(const model_type & model) {
-                                //ToDo: Implement
+                            tm_query_proxy_local(const model_type & model) : m_query(model) {
                             }
-                            
+
                             /**
                              * @see tm_query_proxy
                              */
-                            virtual ~tm_query_proxy_local(){
-                                //ToDo: Implement
+                            virtual void add_source(const phrase_uid uid) {
+                                m_query.add_source(uid);
                             }
-                            
-                        protected:
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual void add_source(const string & source) {
+                                m_query.add_source(source);
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual const tm_source_entry * get_targets(const phrase_uid uid) {
+                                return m_query.get_targets(uid);
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual const tm_source_entry * get_targets(const string & source) {
+                                return m_query.get_targets(source);
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual void execute() {
+                                m_query.execute();
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual ~tm_query_proxy_local() {
+                                //Nothing to be done, no dynamically allocated resources
+                            }
+
                         private:
+                            //Stores the actual query
+                            tm_query<model_type> m_query;
                         };
                     }
                 }

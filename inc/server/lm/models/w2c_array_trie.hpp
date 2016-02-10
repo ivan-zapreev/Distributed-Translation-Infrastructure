@@ -42,15 +42,15 @@
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
 
 using namespace std;
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::utils::containers;
 using namespace uva::utils::containers::alloc;
 using namespace uva::utils::containers::utils;
-using namespace uva::smt::translation::server::lm::__W2CArrayTrie;
+using namespace uva::smt::bpbd::server::lm::__W2CArrayTrie;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace __W2CArrayTrie {

@@ -37,12 +37,12 @@
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-using namespace uva::smt::translation::server::tm::proxy;
-using namespace uva::smt::translation::server::tm::models;
+using namespace uva::smt::bpbd::server::tm::proxy;
+using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
 

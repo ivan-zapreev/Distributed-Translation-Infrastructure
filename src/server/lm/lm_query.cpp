@@ -49,9 +49,9 @@
 using namespace std;
 using namespace TCLAP;
 using namespace uva::smt;
-using namespace uva::smt::translation::common;
-using namespace uva::smt::translation::server::lm;
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::common;
+using namespace uva::smt::bpbd::server::lm;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::utils::file;
 using namespace uva::utils::logging;
 using namespace uva::utils::text;

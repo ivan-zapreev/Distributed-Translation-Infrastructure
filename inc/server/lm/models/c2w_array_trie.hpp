@@ -38,12 +38,12 @@
 #include "common/utils/containers/array_utils.hpp"
 
 using namespace std;
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::utils::containers::utils;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace __C2WArrayTrie {

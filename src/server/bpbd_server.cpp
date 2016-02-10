@@ -42,8 +42,8 @@
 
 using namespace std;
 using namespace TCLAP;
-using namespace uva::smt::translation::server;
-using namespace uva::smt::translation::common;
+using namespace uva::smt::bpbd::server;
+using namespace uva::smt::bpbd::common;
 using namespace uva::utils::exceptions;
 
 using websocketpp::lib::bind;

@@ -32,14 +32,14 @@
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 
-using namespace uva::smt::translation::server::decoder;
-using namespace uva::smt::translation::server::tm;
-using namespace uva::smt::translation::server::rm;
-using namespace uva::smt::translation::server::lm;
+using namespace uva::smt::bpbd::server::decoder;
+using namespace uva::smt::bpbd::server::tm;
+using namespace uva::smt::bpbd::server::rm;
+using namespace uva::smt::bpbd::server::lm;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
 
                 /**

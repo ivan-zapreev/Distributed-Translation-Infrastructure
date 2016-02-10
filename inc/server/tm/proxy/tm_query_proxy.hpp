@@ -26,9 +26,13 @@
 #ifndef TM_QUERY_PROXY_HPP
 #define TM_QUERY_PROXY_HPP
 
+#include "server/tm/models/tm_source_entry.hpp"
+
+using namespace uva::smt::bpbd::server::tm::models;
+
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
                     namespace proxy {
@@ -40,6 +44,40 @@ namespace uva {
                         class tm_query_proxy {
                         public: 
  
+                            /**
+                             * Allows to add the source phrase to the query.
+                             * @param uid the source phrase uid
+                             */
+                            virtual void add_source(const phrase_uid uid) = 0;
+
+                            /**
+                             * Allows to add the source phrase to the query.
+                             * Note that the source phrase it taken as is,
+                             * i,e. no additional trimming is done.
+                             * @param source the source phrase to be added to the query
+                             */
+                            virtual void add_source(const string & source) = 0;
+
+                            /**
+                             * Allows to get the target translations for the source phrase
+                             * @param uid the source phrase uid
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the translation was not found.
+                             */
+                            virtual const tm_source_entry * get_targets(const phrase_uid uid) = 0;
+
+                            /**
+                             * Allows to get the target translations for the source phrase
+                             * @param source the source phrase to get translations for
+                             * @return the pointer to the source entry map or NULL if no translation is found
+                             */
+                            virtual const tm_source_entry * get_targets(const string & source) = 0;
+                            
+                            /**
+                             * Allows to execute the query 
+                             */
+                            virtual void execute() = 0;
+                            
                             /**
                              * The basic virtual destructor
                              */

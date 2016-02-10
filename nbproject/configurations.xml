@@ -118,13 +118,6 @@
           </ccTool>
         </makeTool>
       </makefileType>
-      <folder path="2/client">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
       <folder path="2/common">
         <ccTool>
           <preprocessorList>
@@ -132,47 +125,19 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <folder path="2/server/lm/dictionaries">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <folder path="2/server/lm/ngrams">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <folder path="2/server/rm">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <folder path="2/server/tm/models">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/common/utils/logging/logger.cpp"
@@ -201,10 +166,7 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/builders/arpa_trie_builder.cpp"
@@ -218,7 +180,7 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/lm_configurator.cpp" ex="false" tool="1" flavor2="8">
@@ -233,30 +195,21 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2d_map_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2w_array_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/models/g2d_map_trie.cpp"
@@ -277,38 +230,32 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/models/w2c_hybrid_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/lm/ngrams/byte_m_gram_id.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/tm/models/tm_target_entry.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="8">
@@ -316,20 +263,14 @@
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="2">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
+        <ccTool flags="1">
         </ccTool>
       </item>
     </conf>

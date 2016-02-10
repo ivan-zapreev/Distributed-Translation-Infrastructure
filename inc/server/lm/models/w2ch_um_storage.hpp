@@ -37,12 +37,12 @@
 #include "common/utils/containers/greedy_memory_allocator.hpp"
 
 using namespace std;
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::utils::containers::alloc;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

@@ -45,13 +45,13 @@ using namespace std;
 using namespace uva::utils::math;
 using namespace uva::utils::file;
 using namespace uva::utils::exceptions;
-using namespace uva::smt::translation::server::lm;
+using namespace uva::smt::bpbd::server::lm;
 using namespace uva::utils::containers::utils;
 using namespace uva::utils::hashing;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace dictionary {

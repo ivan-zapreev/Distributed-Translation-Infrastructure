@@ -34,7 +34,7 @@ using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
 
                 //Do a forward declaration of the task pool

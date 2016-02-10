@@ -50,11 +50,11 @@
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
-using namespace uva::smt::translation::server::lm::proxy;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

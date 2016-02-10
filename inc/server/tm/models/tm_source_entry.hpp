@@ -48,7 +48,7 @@ using namespace uva::utils::containers;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
                     namespace models {

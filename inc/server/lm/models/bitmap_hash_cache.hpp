@@ -41,12 +41,12 @@ using namespace std;
 using namespace uva::utils::math;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-using namespace uva::smt::translation::server::lm::m_grams;
-using namespace uva::smt::translation::server::lm::identifiers;
+using namespace uva::smt::bpbd::server::lm::m_grams;
+using namespace uva::smt::bpbd::server::lm::identifiers;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace caching {

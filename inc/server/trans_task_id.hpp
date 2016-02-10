@@ -28,7 +28,7 @@
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
 
                 //Define the translation task pointer

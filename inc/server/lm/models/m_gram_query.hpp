@@ -44,15 +44,15 @@
 using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
-using namespace uva::smt::translation::server::lm;
-using namespace uva::smt::translation::server::lm::dictionary;
-using namespace uva::smt::translation::server::lm::m_grams;
+using namespace uva::smt::bpbd::server::lm;
+using namespace uva::smt::bpbd::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::m_grams;
 using namespace uva::utils::math::bits;
 using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

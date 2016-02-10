@@ -42,11 +42,11 @@ using namespace uva::utils::logging;
 using namespace uva::utils::file;
 using namespace uva::utils::text;
 
-using namespace uva::smt::translation::server::tm::models;
+using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
                     namespace builders {

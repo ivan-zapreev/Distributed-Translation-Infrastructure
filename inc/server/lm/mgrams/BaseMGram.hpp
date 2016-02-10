@@ -40,11 +40,11 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
-using namespace uva::smt::translation::server::lm::m_grams::m_gram_id;
+using namespace uva::smt::bpbd::server::lm::m_grams::m_gram_id;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace m_grams {

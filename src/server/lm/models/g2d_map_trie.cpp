@@ -35,12 +35,12 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
-using namespace uva::smt::translation::server::lm::dictionary;
-using namespace uva::smt::translation::server::lm::__G2DMapTrie;
+using namespace uva::smt::bpbd::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::__G2DMapTrie;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

@@ -34,13 +34,13 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 
 using namespace __W2CArrayTrie;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

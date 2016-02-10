@@ -28,7 +28,7 @@
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace common {
                 namespace messaging {
                     //Make the typedef for the translation session id

@@ -27,7 +27,7 @@
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace rm {
                     //No default initialization is needed

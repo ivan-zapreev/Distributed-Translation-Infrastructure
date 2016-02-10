@@ -45,13 +45,13 @@ using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
-using namespace uva::smt::translation::common::messaging;
+using namespace uva::smt::bpbd::common::messaging;
 
 using websocketpp::log::alevel;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace client {
 
                 /**

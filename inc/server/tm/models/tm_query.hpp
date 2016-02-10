@@ -26,6 +26,7 @@
 #ifndef TM_QUERY_HPP
 #define TM_QUERY_HPP
 
+#include<string>
 #include<unordered_map>
 
 #include "common/utils/exceptions.hpp"
@@ -41,7 +42,7 @@ using namespace uva::utils::containers;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace tm {
                     namespace models {
@@ -58,46 +59,84 @@ namespace uva {
                          * collisions, but since this is a local issue it can be
                          * changed in the future.
                          */
+                        template<typename model_type>
                         class tm_query {
                         public:
                             //Define the query map as a mapping from the source phrase
                             //id to the pointer to the constant translation data. 
                             typedef unordered_map<phrase_uid, const tm_source_entry *> query_map;
-                            
+
                             /**
                              * The basic constructor
                              */
-                            tm_query(){}
+                            tm_query(const model_type & model) : m_model(model) {
+                            }
 
                             /**
                              * The basic destructor
                              */
-                            ~tm_query(){}
-                            
+                            ~tm_query() {
+                            }
+
                             /**
-                             * Allows to add the source phrase to the query
-                             * @param source_phrase the source phrase to be added to the query
+                             * Allows to execute the query
                              */
-                            void add_source_phrase(string & source_phrase){
-                                //ToDo: Implement
+                            inline void execute(){
+                                //ToDo: Implement querying the translation model
                             }
                             
+                            /**
+                             * Allows to add the source phrase to the query.
+                             * @param uid the source phrase uid
+                             */
+                            inline void add_source(const phrase_uid uid) {
+                                //Check if there is already a phrase with this id present
+                                query_map::iterator iter = m_query_data.find(uid);
+                                if (iter == m_query_data.end()) {
+                                    //If the id is not present then set the value to NULL in order to add it.
+                                    //ToDo: Set it to point to the UNK source entry right away.
+                                    iter->second = NULL;
+                                }
+                            }
+
+                            /**
+                             * Allows to add the source phrase to the query.
+                             * Note that the source phrase it taken as is,
+                             * i,e. no additional trimming is done.
+                             * @param source the source phrase to be added to the query
+                             */
+                            inline void add_source(const string & source) {
+                                add_source(get_phrase_uid(source));
+                            }
+
                             /**
                              * Allows to get the target translations for the source phrase
-                             * 
-                             * ToDo: What to do if there is no translation? Return some dummy result for the UNK?
-                             * 
-                             * @param source_phrase the source phrase to get translations for
+                             * @param uid the source phrase uid
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the translation was not found.
+                             */
+                            inline const tm_source_entry * get_targets(const phrase_uid uid) {
+                                //Check that the source phrase is present, we are not allowed
+                                //to translate something that was not added to the query!
+                                ASSERT_SANITY_THROW((m_query_data.find(uid) == m_query_data.end()),
+                                        string("The source with uid: ") + to_string(uid) +
+                                        string(" is not part of the translation query!"));
+                                return m_query_data[uid];
+                            }
+
+                            /**
+                             * Allows to get the target translations for the source phrase
+                             * @param source the source phrase to get translations for
                              * @return the pointer to the source entry map or NULL if no translation is found
                              */
-                            const tm_source_entry * get_targets(string & source_phrase) {
-                                //ToDo: Implement
-                                return NULL;
+                            inline const tm_source_entry * get_targets(const string & source) {
+                                return get_targets(get_phrase_uid(source));
                             }
-                            
-                        protected:
+
                         private:
-                            //
+                            //Stores the reference to the translation model
+                            const model_type & m_model;
+                            //Stores the mapping from the source phrase id to the corresponding source entry.
                             query_map m_query_data;
                         };
                     }

@@ -39,7 +39,7 @@ using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace arpa {

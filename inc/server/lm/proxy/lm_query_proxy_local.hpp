@@ -29,11 +29,11 @@
 #include "server/lm/proxy/lm_query_proxy.hpp"
 #include "server/lm/models/m_gram_query.hpp"
 
-using namespace uva::smt::translation::server::lm;
+using namespace uva::smt::bpbd::server::lm;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace proxy {

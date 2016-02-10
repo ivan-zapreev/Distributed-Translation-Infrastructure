@@ -39,7 +39,7 @@ namespace uva {
         //need to disable these warnings in order to be able to build the code.
 #pragma GCC diagnostic ignored "-Warray-bounds"
 
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

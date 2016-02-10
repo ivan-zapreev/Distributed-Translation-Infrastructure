@@ -28,7 +28,7 @@
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
 
                 void trans_task_pool_worker::operator()() {

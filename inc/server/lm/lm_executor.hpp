@@ -55,13 +55,13 @@ using namespace uva::utils::file;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::monitore;
-using namespace uva::smt::translation::server::lm::dictionary;
-using namespace uva::smt::translation::server::lm::arpa;
-using namespace uva::smt::translation::server::lm::proxy;
+using namespace uva::smt::bpbd::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::arpa;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace __executor {

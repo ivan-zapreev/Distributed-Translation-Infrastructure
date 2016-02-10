@@ -19,7 +19,7 @@ using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
 
                 /**

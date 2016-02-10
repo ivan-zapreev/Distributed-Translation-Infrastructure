@@ -38,11 +38,11 @@
 #include "server/lm/models/w2ch_um_storage.hpp"
 
 using namespace std;
-using namespace uva::smt::translation::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::dictionary;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
 

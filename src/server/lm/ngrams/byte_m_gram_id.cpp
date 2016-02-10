@@ -41,14 +41,14 @@ using namespace uva::utils::math::log2;
 using namespace uva::utils::math::bits;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
-using namespace uva::smt::translation::server::lm::dictionary;
-using namespace uva::smt::translation::server::lm::identifiers;
+using namespace uva::smt::bpbd::server::lm::dictionary;
+using namespace uva::smt::bpbd::server::lm::identifiers;
 
 using namespace std;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace m_grams {

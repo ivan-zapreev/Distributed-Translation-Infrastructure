@@ -40,13 +40,13 @@ using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
-using namespace uva::smt::translation::server::rm;
-using namespace uva::smt::translation::server::rm::proxy;
-using namespace uva::smt::translation::server::rm::builders;
+using namespace uva::smt::bpbd::server::rm;
+using namespace uva::smt::bpbd::server::rm::proxy;
+using namespace uva::smt::bpbd::server::rm::builders;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace rm {
                     namespace proxy {

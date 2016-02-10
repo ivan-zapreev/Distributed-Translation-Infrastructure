@@ -35,11 +35,11 @@
 
 using namespace std;
 using namespace uva::utils::file;
-using namespace uva::smt::translation::server::lm::identifiers;
+using namespace uva::smt::bpbd::server::lm::identifiers;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace dictionary {

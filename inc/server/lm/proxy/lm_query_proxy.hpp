@@ -32,7 +32,7 @@ using namespace uva::utils::file;
 
 namespace uva {
     namespace smt {
-        namespace translation {
+        namespace bpbd {
             namespace server {
                 namespace lm {
                     namespace proxy {
