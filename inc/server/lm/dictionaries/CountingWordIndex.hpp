@@ -147,7 +147,7 @@ namespace uva {
 
                                 //00. Remove the <unk> word from the Map as it must get fixed index
                                 LOG_DEBUG2 << "Remove the <unk> word from the Map as it must get fixed index" << END_LOG;
-                                BasicWordIndex::m_word_index_map_ptr->erase(AWordIndex::UNKNOWN_WORD_STR);
+                                BasicWordIndex::m_word_index_map_ptr->erase(UNKNOWN_WORD_STR);
 
                                 //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
                                 LOG_DEBUG2 << "Create an array of words info objects from BasicWordIndex::_pWordIndexMap" << END_LOG;

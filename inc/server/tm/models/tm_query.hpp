@@ -81,10 +81,13 @@ namespace uva {
                             /**
                              * Allows to execute the query
                              */
-                            inline void execute(){
-                                //ToDo: Implement querying the translation model
+                            inline void execute() {
+                                //Iterate through the source phrases and query them
+                                for (query_map::iterator iter = m_query_data.begin(); iter != m_query_data.end(); ++iter) {
+                                    iter->second = m_model.get_source_entry(iter->first);
+                                }
                             }
-                            
+
                             /**
                              * Allows to add the source phrase to the query.
                              * @param uid the source phrase uid
@@ -94,7 +97,6 @@ namespace uva {
                                 query_map::iterator iter = m_query_data.find(uid);
                                 if (iter == m_query_data.end()) {
                                     //If the id is not present then set the value to NULL in order to add it.
-                                    //ToDo: Set it to point to the UNK source entry right away.
                                     iter->second = NULL;
                                 }
                             }
@@ -112,8 +114,8 @@ namespace uva {
                             /**
                              * Allows to get the target translations for the source phrase
                              * @param uid the source phrase uid
-                             * @return the reference to the source entry, might be the one
-                             *         of UNK if the translation was not found.
+                             * @return the pointer to the source entry or NULL if the query
+                             *         was not executed or the source entry is not found.
                              */
                             inline const tm_source_entry * get_targets(const phrase_uid uid) {
                                 //Check that the source phrase is present, we are not allowed

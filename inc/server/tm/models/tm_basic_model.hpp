@@ -75,6 +75,7 @@ namespace uva {
                             ~tm_basic_model() {
                                 //Finalize the model just in case it is not
                                 finalize();
+                                
                                 //Delete the model data if any
                                 if (m_trans_data != NULL) {
                                     delete m_trans_data;
@@ -88,7 +89,7 @@ namespace uva {
                              * entries are being added.
                              * @return true as this model type uses filed-size hash maps 
                              */
-                            inline bool is_num_entries_needed() {
+                            inline bool is_num_entries_needed() const {
                                 return true;
                             }
 
@@ -113,12 +114,12 @@ namespace uva {
                              * @param entry_id the source phrase id for which the entry is to be started
                              * @return the entry associated with the given id
                              */
-                            inline tm_source_entry * begin_entry(const phrase_uid & entry_id) {
+                            inline tm_source_entry * begin_entry(const phrase_uid entry_id) {
                                 //Get the new entry from the data storage
                                 tm_source_entry & entry = m_trans_data->add_new_element(entry_id);
 
                                 //Set the source phrase id
-                                entry.set_source_phrase_uid(entry_id);
+                                entry.set_source_uid(entry_id);
 
                                 //Initialize the entry with the number of translations
                                 entry.begin(m_sizes->at(entry_id));
@@ -135,7 +136,7 @@ namespace uva {
                              * @param entry_id the source phrase id for which the entry is
                              * to be finished.
                              */
-                            inline void finalize_entry(const phrase_uid & entry_id) {
+                            inline void finalize_entry(const phrase_uid entry_id) {
                                 //Finish the source entry
                                 m_trans_data->get_element(entry_id, entry_id)->finalize();
                             }
@@ -150,15 +151,23 @@ namespace uva {
                                     m_sizes = NULL;
                                 }
                             }
+                            
+                            /**
+                             * Allows to get the source entry for the given entry id
+                             * In case the entry is not present we return NULL.
+                             * @param entry_id the source phrase id
+                             * @return the source phrase entry or NULL if the source phrase id is not found
+                             */
+                            const tm_source_entry * get_source_entry(const phrase_uid entry_id) const {
+                                return m_trans_data->get_element(entry_id, entry_id);
+                            }
 
                             /**
                              * Allows to log the model type info
                              */
-                            inline void log_model_type_info() {
+                            inline void log_model_type_info() const {
                                 LOG_USAGE << "Using the hash-based translation model: " << __FILENAME__ << END_LOG;
                             }
-
-                        protected:
 
                         private:
                             //The map storing the model sizes

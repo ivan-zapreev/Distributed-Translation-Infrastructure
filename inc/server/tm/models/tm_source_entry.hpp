@@ -88,7 +88,7 @@ namespace uva {
                              * Allows to set the source phrase id
                              * @param phrase_uid the source phrase id
                              */
-                            inline void set_source_phrase_uid(phrase_uid phrase_uid) {
+                            inline void set_source_uid(phrase_uid phrase_uid) {
                                 m_phrase_uid = phrase_uid;
                             }
 

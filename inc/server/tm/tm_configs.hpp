@@ -43,6 +43,10 @@ namespace uva {
                         static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;
 
                         namespace models {
+
+                            //Stores the unknown phrase string, should be configurable
+                            static const string UNKNOWN_PHRASE_STR = string("<unk>");
+
                             //The default inverse phrase translation probability φ(s|t)
                             const float UNK_SCT_LOG_PROB_WEIGHT = -10.0;
                             //The Stores the default inverse lexical weighting lex(s|t)

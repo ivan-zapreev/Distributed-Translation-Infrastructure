@@ -31,6 +31,8 @@
 
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
 
+using namespace std;
+
 using namespace uva::utils::containers;
 
 namespace uva {
@@ -43,6 +45,9 @@ namespace uva {
                     constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
 
                     namespace dictionary {
+
+                        //Stores the unknown word string, should be configurable
+                        static const string UNKNOWN_WORD_STR = string("<unk>");
 
                         //Stores the possible Word index configurations
 

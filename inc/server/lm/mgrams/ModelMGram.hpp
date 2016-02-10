@@ -110,7 +110,7 @@ namespace uva {
                              */
                             inline bool is_unk_unigram() const {
                                 return ((BASE::m_actual_level == M_GRAM_LEVEL_1) &&
-                                        (BASE::m_tokens[BASE::m_actual_begin_word_idx] == WordIndexType::UNKNOWN_WORD_STR));
+                                        (BASE::m_tokens[BASE::m_actual_begin_word_idx] == UNKNOWN_WORD_STR));
                             }
 
                             /**

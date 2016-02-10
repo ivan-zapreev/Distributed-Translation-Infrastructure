@@ -41,10 +41,6 @@ namespace uva {
                 namespace lm {
                     namespace dictionary {
 
-                        //Stores the string representation of an unknown word
-                        template<typename TWordIdType>
-                        const string AWordIndex<TWordIdType>::UNKNOWN_WORD_STR = "<unk>";
-
                         //Stores the word hash for an unknown word, is 0
                         //WARNING! MUST BE 0 as this is the value of a default initialized integer!
                         template<typename TWordIdType>

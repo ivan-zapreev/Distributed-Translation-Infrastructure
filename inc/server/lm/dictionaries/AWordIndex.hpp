@@ -64,9 +64,6 @@ namespace uva {
                             //The issued id type
                             typedef TIdType TWordIdType;
 
-                            //Stores the string representation of an unknown word
-                            const static string UNKNOWN_WORD_STR;
-
                             //Stores the word hash for an unknown word, is 0
                             //WARNING! MUST BE 0 as this is the value of a default initialized integer!
                             const static TIdType UNDEFINED_WORD_ID;
