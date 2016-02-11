@@ -67,7 +67,7 @@ namespace uva {
                             /**
                              * The basic class constructor
                              */
-                            rm_basic_model() : num_entries(0), m_rm_data(NULL) {
+                            rm_basic_model() : m_rm_data(NULL) {
                             }
 
                             /**
@@ -104,6 +104,9 @@ namespace uva {
 
                             /**
                              * Allows to add a new reordering entry to the model
+                             * @param source the source phrase
+                             * @param target the target phrase
+                             * @return the reference to the newly allocated entry
                              */
                             inline rm_entry & add_entry(const string & source, const string & target) {
                                 //Compute the id
@@ -181,8 +184,6 @@ namespace uva {
                             }
 
                         private:
-                            //Stores the number of entries in the reordering model
-                            size_t num_entries;
                             //Stores the translation model data
                             rm_entry_map * m_rm_data;
                             //Stores the pointer to the UNK entry if found
