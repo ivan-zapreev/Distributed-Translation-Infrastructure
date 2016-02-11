@@ -61,7 +61,7 @@ namespace uva {
                         class rm_proxy_local : public rm_proxy {
                         public:
                             //Define the default model type to be used
-                            typedef rm_basic_model model_type;
+                            typedef rm_basic_model<NUMBER_WEIGHT_ENTRIES> model_type;
                             
                             //Define the builder type 
                             typedef rm_basic_builder<model_type, CStyleFileReader> builder_type;

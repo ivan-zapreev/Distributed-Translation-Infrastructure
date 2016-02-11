@@ -57,7 +57,7 @@ namespace uva {
                          * tries. This basic model also does not store the phrases as is
                          * but rather the hash values thereof. So it is a hash based
                          * implementation which reduces memory but might occasionally
-                         * provide.
+                         * result in collisions, the latter is not checked.
                          */
                         class tm_basic_model {
                         public:
@@ -175,7 +175,6 @@ namespace uva {
                             sizes_map * m_sizes;
                             //Stores the translation model data
                             tm_source_entry_map * m_tm_data;
-
                         };
                     }
                 }

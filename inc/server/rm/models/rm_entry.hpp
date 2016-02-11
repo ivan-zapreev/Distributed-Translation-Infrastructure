@@ -50,10 +50,15 @@ namespace uva {
                     namespace models {
 
                         /**
-                         * This is the reordering entry class it stores the reordering penalties for one source to target phrase.
+                         * This is the reordering entry class it stores the
+                         * reordering penalties for one source to target phrase.
+                         * @param num_weights is the number of reordering weights
                          */
+                        template<size_t num_weights>
                         class rm_entry {
                         public:
+                            //Stores the number of weights for external use
+                            static constexpr size_t NUM_WEIGHTS = num_weights;
 
                             /**
                              * The basic constructor
@@ -89,6 +94,9 @@ namespace uva {
                         private:
                             phrase_uid m_uid;
                         };
+
+                        template<size_t num_weights>
+                        constexpr size_t rm_entry<num_weights>::NUM_WEIGHTS;
                     }
                 }
             }

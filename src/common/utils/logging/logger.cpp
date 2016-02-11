@@ -185,7 +185,8 @@ namespace uva {
                 if (IS_ENOUGH_LOGGING_LEVEL(m_curr_level)) {
                     if (!m_is_pb_on) {
                         stringstream pref;
-                        pref << m_debug_level_str[PROGRESS_ACTIVE_LEVEL] << ":\t" << msg << ":\t";
+                        pref << m_debug_level_str[PROGRESS_ACTIVE_LEVEL] << ":"
+                                << WHITE_SPACE_SEPARATOR << msg << ":" << WHITE_SPACE_SEPARATOR;
                         m_prefix = pref.str();
 
                         //Output the time string

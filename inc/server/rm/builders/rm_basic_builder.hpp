@@ -123,7 +123,17 @@ namespace uva {
                              * @param rest the line to be parsed, starts with a space
                              * @param entry the entry to put the values into
                              */
-                            void process_entry_weights(TextPieceReader & rest, rm_entry & entry) {
+                            void process_entry_weights(TextPieceReader & rest, typename model_type::rm_num_entry & entry) {
+                                //Declare the token to store weights
+                                TextPieceReader token;
+
+                                //Skip the first space
+                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
+
+                                //Read the subsequent weights
+                                while (rest.get_first_space(token)) {
+                                    //ToDo: Implement
+                                }
                                 //ToDo: Implement
                             }
 
@@ -146,7 +156,7 @@ namespace uva {
                                     string target_str = target.str();
                                     trim(target_str);
 
-                                    LOG_DEBUG << " Adding reordering for: " << source_str << " / " << target_str << END_LOG;
+                                    LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
 
                                     //Parse the rest of the target entry
                                     process_entry_weights(line, m_model.add_entry(source_str, target_str));

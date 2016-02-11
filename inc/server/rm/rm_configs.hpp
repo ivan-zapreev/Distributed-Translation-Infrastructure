@@ -6,7 +6,7 @@
  */
 
 #ifndef RM_CONFIGS_HPP
-#define	RM_CONFIGS_HPP
+#define RM_CONFIGS_HPP
 
 #include <inttypes.h>
 #include <string>
@@ -25,6 +25,9 @@ namespace uva {
                             static const string UNKNOWN_PHRASE_STR = string("UNK");
                         }
 
+                        //Store the number of of weights in the reordering model entry
+                        static constexpr size_t NUMBER_WEIGHT_ENTRIES = 6;
+
                         //Stores the configuration parameters for the basic reordering model implementation
                         namespace __rm_basic_model {
                             //Influences the number of buckets that will be created for the basic model implementations
@@ -37,5 +40,5 @@ namespace uva {
     }
 }
 
-#endif	/* RM_CONFIGS_HPP */
+#endif /* RM_CONFIGS_HPP */
 

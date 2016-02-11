@@ -133,6 +133,9 @@ namespace uva {
 #define DEBUG3_PARAM_VALUE "DEBUG3"
 #define DEBUG4_PARAM_VALUE "DEBUG4"
 
+            //Define the white space separator used when logging
+#define WHITE_SPACE_SEPARATOR " "
+
             std::ostream& operator<<(std::ostream& stream, const unsigned char & value);
 
             std::ostream& operator<<(std::ostream& stream, const signed char & value);
@@ -165,7 +168,7 @@ namespace uva {
                  * @return the output stream object
                  */
                 static inline std::ostream& get(DebugLevelsEnum level) {
-                    return cout << m_debug_level_str[level] << ":\t";
+                    return cout << m_debug_level_str[level] << ":" << WHITE_SPACE_SEPARATOR;
                 }
 
                 /**
@@ -174,7 +177,8 @@ namespace uva {
                  * @return the output stream object
                  */
                 static inline std::ostream& get(DebugLevelsEnum level, const char * file, const char * func, const char * line) {
-                    return cout << m_debug_level_str[level] << " \t<" << file << "::" << func << "(...):" << line << ">:\t";
+                    return cout << m_debug_level_str[level] << WHITE_SPACE_SEPARATOR << "<"
+                            << file << "::" << func << "(...):" << line << ">:" << WHITE_SPACE_SEPARATOR;
                 }
 
                 /**
