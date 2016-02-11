@@ -73,6 +73,20 @@ namespace uva {
                             }
 
                             /**
+                             * This operator allows to work with the given reordering entry weights in an array faschion
+                             * @param idx
+                             * @return 
+                             */
+                            inline float & operator[](size_t idx) {
+                                //Chech that the index is within the bounds
+                                ASSERT_SANITY_THROW(idx >= num_weights, string("The index: ") + to_string(idx) +
+                                        string(" is outside the bounds [0, ") + to_string(num_weights - 1) + string("]"));
+                                
+                                //Return the reference to the corresponding weight
+                                return m_weights[idx];
+                            }
+
+                            /**
                              * Allows to set the unique source target entry identifier
                              * @param uid the unique identifier of the source/target entry
                              */
@@ -89,10 +103,11 @@ namespace uva {
                                 return (m_uid == uid);
                             }
 
-                        protected:
-
                         private:
+                            //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
+                            //This is an array of reordering weights
+                            float m_weights[num_weights];
                         };
 
                         template<size_t num_weights>

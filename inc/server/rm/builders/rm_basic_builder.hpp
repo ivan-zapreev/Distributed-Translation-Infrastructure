@@ -130,11 +130,18 @@ namespace uva {
                                 //Skip the first space
                                 ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
 
-                                //Read the subsequent weights
-                                while (rest.get_first_space(token)) {
-                                    //ToDo: Implement
+                                //Read the subsequent weights, check that the number of weights is as expected
+                                size_t idx = 0;
+                                while (rest.get_first_space(token) && (idx < model_type::NUM_WEIGHTS)) {
+                                    //Parse the token into the entry weight
+                                    fast_s_to_f(entry[idx], token.str().c_str());
+                                    //Increment the index 
+                                    ++idx;
                                 }
-                                //ToDo: Implement
+
+                                //Check that the number of weights is as expected
+                                ASSERT_CONDITION_THROW(idx != model_type::NUM_WEIGHTS, string("The number of reordering weights is: ") +
+                                        to_string(idx) + string(" expected ") + to_string(model_type::NUM_WEIGHTS));
                             }
 
                             /**

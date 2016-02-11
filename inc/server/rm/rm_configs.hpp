@@ -26,6 +26,7 @@ namespace uva {
                         }
 
                         //Store the number of of weights in the reordering model entry
+                        //The number of weights is a multiple of 2 
                         static constexpr size_t NUMBER_WEIGHT_ENTRIES = 6;
 
                         //Stores the configuration parameters for the basic reordering model implementation
