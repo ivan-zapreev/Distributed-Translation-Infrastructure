@@ -617,6 +617,7 @@
         </df>
         <df name="decoder">
           <in>de_parameters.hpp</in>
+          <in>sentence_decoder.hpp</in>
         </df>
         <df name="lm">
           <df name="builders">

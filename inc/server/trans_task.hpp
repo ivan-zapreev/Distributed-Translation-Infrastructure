@@ -33,11 +33,15 @@
 #include "common/messaging/trans_job_code.hpp"
 #include "trans_task_id.hpp"
 
+#include "server/decoder/sentence_decoder.hpp"
+
 using namespace std;
 
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
+
 using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::server::decoder;
 
 namespace uva {
     namespace smt {
@@ -120,16 +124,9 @@ namespace uva {
                     void translate() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
-                        //ToDo: Implement, implement the translation process, the next loop
-                        //is a temporary measure for testing, do the actual decoding steps
-                        if (m_source_text.size() != 0) {
-                            const uint32_t time_sec = rand() % m_source_text.size();
-                            for (uint32_t i = 0; i <= time_sec; ++i) {
-                                if (m_is_interrupted) break;
-                                this_thread::sleep_for(chrono::seconds(1));
-                            }
-                        }
-
+                        //Perform the decoding task
+                        sentence_decoder::translate(m_is_interrupted, m_source_text, m_target_text);
+                        
                         LOG_DEBUG1 << "The task " << m_task_id << " translation part is over." << END_LOG;
 
                         //Synchronize to avoid canceling the job that is already finished.
