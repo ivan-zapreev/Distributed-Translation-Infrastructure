@@ -62,7 +62,9 @@ namespace uva {
                         uint32_t m_stack_capacity;
                         //The stack expansion strategy
                         string m_expansion_strategy;
-                    } decoder_parameters;
+                        //The maximum number of words to consider when making phrases
+                        uint8_t m_max_phrase_len;
+                    } de_parameters;
                 }
             }
         }

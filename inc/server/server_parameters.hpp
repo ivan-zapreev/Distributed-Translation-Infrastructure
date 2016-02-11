@@ -56,7 +56,7 @@ namespace uva {
                     lm_parameters m_lm_params;
                     
                     //Stores the decoder parameters
-                    decoder_parameters m_de_params;
+                    de_parameters m_de_params;
                 } server_parameters;
             }
         }

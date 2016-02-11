@@ -30,11 +30,19 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "server/tm/tm_configurator.hpp"
+#include "server/rm/rm_configurator.hpp"
+#include "server/lm/lm_configurator.hpp"
+
 using namespace std;
 
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using namespace uva::smt::bpbd::server::tm;
+using namespace uva::smt::bpbd::server::rm;
+using namespace uva::smt::bpbd::server::lm;
 
 namespace uva {
     namespace smt {
@@ -58,7 +66,7 @@ namespace uva {
                          * @param source_sentence [in] the source language sentence to translate
                          * @param target_sentence [out] the resulting target language sentence
                          */
-                        inline static void translate(const atomic<bool> & is_stop,
+                        inline void translate(const atomic<bool> & is_stop,
                                 const string & source_sentence,
                                 string & target_sentence) {
 

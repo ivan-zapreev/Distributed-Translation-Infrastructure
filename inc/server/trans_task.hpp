@@ -33,6 +33,7 @@
 #include "common/messaging/trans_job_code.hpp"
 #include "trans_task_id.hpp"
 
+#include "server/decoder/de_configurator.hpp"
 #include "server/decoder/sentence_decoder.hpp"
 
 using namespace std;
@@ -124,9 +125,15 @@ namespace uva {
                     void translate() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
+                        //Obtain the new decoder instance
+                        sentence_decoder & dec = de_configurator::allocate_decoder();
+
                         //Perform the decoding task
-                        sentence_decoder::translate(m_is_interrupted, m_source_text, m_target_text);
-                        
+                        dec.translate(m_is_interrupted, m_source_text, m_target_text);
+
+                        //Dispose the decoder instance 
+                        de_configurator::dispose_decoder(dec);
+
                         LOG_DEBUG1 << "The task " << m_task_id << " translation part is over." << END_LOG;
 
                         //Synchronize to avoid canceling the job that is already finished.
