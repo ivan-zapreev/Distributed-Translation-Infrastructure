@@ -55,7 +55,7 @@ namespace uva {
                         public:
                             //Make a local typedef for the rm entry
                             typedef typename model_type::rm_num_entry rm_num_entry;
-                            
+
                             //Define the query map as a mapping from the source/target phrase
                             //uid to the pointer to the constant reordering data. 
                             typedef unordered_map<phrase_uid, const typename model_type::rm_num_entry *> query_map;
@@ -63,15 +63,17 @@ namespace uva {
                             /**
                              * The basic constructor
                              */
-                            rm_query(const model_type & model) : m_model(model), m_st_ids(NULL) {
+                            rm_query(const model_type & model) : m_model(model) {
                             }
-                              
+
                             /**
-                             * Allows to execute the query 
+                             * Allows to execute the query, for the given source/target phrase ids
+                             * @param st_ids is the list of the source/target phrase ids
+                             *               for which the reordering data is needed
                              */
-                            virtual void execute() {
+                            virtual void execute(const vector<phrase_uid> & st_ids) {
                                 //Iterate through the source phrases and query them
-                                for (vector<phrase_uid>::const_iterator iter = m_st_ids->begin(); iter != m_st_ids->end(); ++iter) {
+                                for (vector<phrase_uid>::const_iterator iter = st_ids.begin(); iter != st_ids.end(); ++iter) {
                                     //Get the source/target phrase id
                                     const phrase_uid st_uid = *iter;
                                     //Retrieve the reordering entry from the model
@@ -81,7 +83,7 @@ namespace uva {
                                     ASSERT_SANITY_THROW((entry == NULL),
                                             string("Got a NULL pointer for the ") + to_string(st_uid) +
                                             string(" reordering, broken reordering model implementation!"));
-                                    
+
                                     //Put the reordering into the result map
                                     m_query_data[st_uid] = entry;
                                 }
@@ -92,16 +94,6 @@ namespace uva {
                              */
                             ~rm_query() {
                                 //Nothing to be done
-                            }
-
-                            /**
-                             * Allows to add the source/target phrase identifiers
-                             * for which the reordering data is to be retrieved.
-                             * WARNING: The reference will also be stored as a reference!
-                             * @param st_ids the source/target phrase identifiers
-                             */
-                            virtual void set_st_uids(const vector<phrase_uid> * const st_ids) {
-                                m_st_ids = st_ids;
                             }
 
                             /**
@@ -121,14 +113,12 @@ namespace uva {
                                 //for the null pointer as this is done when the query is executed.
                                 return *m_query_data.at(uid);
                             }
-                            
+
                         private:
                             //Stores the reordering model reference
                             const model_type & m_model;
                             //Stores the mapping from the source/target phrase id to the corresponding reordering entry.
                             query_map m_query_data;
-                            //Stores the reference to the source/target pair ids
-                            const vector<phrase_uid> * m_st_ids;
                         };
                     }
                 }

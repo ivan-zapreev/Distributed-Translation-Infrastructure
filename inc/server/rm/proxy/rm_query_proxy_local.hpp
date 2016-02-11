@@ -48,7 +48,7 @@ namespace uva {
                         public:
                             //Make the base typedef
                             typedef rm_query_proxy<model_type::NUM_WEIGHTS> BASE;
-                            
+
                             //Make a local typedef for the rm entry
                             typedef typename BASE::rm_num_entry rm_num_entry;
 
@@ -58,13 +58,6 @@ namespace uva {
                              */
                             rm_query_proxy_local(const model_type & model) : m_query(model) {
                             }
-  
-                            /**
-                             * @see rm_query_proxy
-                             */
-                            virtual void set_st_uids(const vector<phrase_uid> * const uids) {
-                                m_query.set_st_uids(uids);
-                            }
 
                             /**
                              * @see rm_query_proxy
@@ -72,21 +65,21 @@ namespace uva {
                             virtual const rm_num_entry & get_reordering(const phrase_uid uid) const {
                                 return m_query.get_reordering(uid);
                             }
-                            
+
                             /**
                              * @see rm_query_proxy
                              */
-                            virtual void execute() {
-                                m_query.execute();
+                            virtual void execute(const vector<phrase_uid> & st_ids) {
+                                m_query.execute(st_ids);
                             }
-                            
+
                             /**
                              * @see rm_query_proxy
                              */
-                            virtual ~rm_query_proxy_local(){
+                            virtual ~rm_query_proxy_local() {
                                 //Nothing to be done, no dynamically allocated resources
                             }
-                            
+
                         private:
                             //Stores the actual query
                             rm_query<model_type> m_query;

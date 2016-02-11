@@ -56,13 +56,13 @@ namespace uva {
                               
                             //Typedef the entry with the template parameter
                             typedef rm_entry<num_weights> rm_num_entry;
-
+                            
                             /**
-                             * Allows to set the source/target phrase identifiers
-                             * for which the reordering data is to be retrieved.
-                             * @param uids the source/target phrase identifiers
+                             * Allows to execute the query, for the given source/target phrase ids
+                             * @param st_ids is the list of the source/target phrase ids
+                             *               for which the reordering data is needed
                              */
-                            virtual void set_st_uids(const vector<phrase_uid> * const uids) = 0;
+                            virtual void execute(const vector<phrase_uid> & st_ids) = 0;
 
                             /**
                              * Allows to get the source/target reordering data from the reordering model
@@ -71,11 +71,6 @@ namespace uva {
                              *         of UNK if the reordering was not found.
                              */
                             virtual const rm_num_entry & get_reordering(const phrase_uid uid) const = 0;
-                            
-                            /**
-                             * Allows to execute the query 
-                             */
-                            virtual void execute() = 0;
 
                             /**
                              * The basic virtual destructor
