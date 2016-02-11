@@ -57,11 +57,19 @@ namespace uva {
                         /**
                          * This is the reordering model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
+                         * @param num_weights is the number of reordering weights
                          */
-                        class rm_proxy_local : public rm_proxy {
+                        template<size_t num_weights>
+                        class rm_proxy_local : public rm_proxy<num_weights> {
                         public:
+                            //Make the base typedef
+                            typedef rm_proxy<num_weights> BASE;
+                            
+                            //Make a local typedef for the rm entry
+                            typedef typename BASE::rm_num_query_proxy rm_num_query_proxy;
+                            
                             //Define the default model type to be used
-                            typedef rm_basic_model<NUMBER_WEIGHT_ENTRIES> model_type;
+                            typedef rm_basic_model<num_weights> model_type;
                             
                             //Define the builder type 
                             typedef rm_basic_builder<model_type, CStyleFileReader> builder_type;
@@ -99,7 +107,7 @@ namespace uva {
                             /**
                              * @see rm_proxy
                              */
-                            virtual rm_query_proxy * get_query_proxy() {
+                            virtual rm_num_query_proxy * get_query_proxy() {
                                 //Return an instance of the query_proxy_local class
                                 return new rm_query_proxy_local<model_type>(m_model);
                             }

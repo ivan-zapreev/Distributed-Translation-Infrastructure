@@ -34,7 +34,7 @@ namespace uva {
                     rm_parameters rm_configurator::m_params;
                     
                     //Just give a default initialization
-                    rm_proxy * rm_configurator::m_model_proxy = NULL;
+                    rm_configurator::rm_num_proxy * rm_configurator::m_model_proxy = NULL;
                 }
             }
         }

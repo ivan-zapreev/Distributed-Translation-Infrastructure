@@ -30,7 +30,7 @@
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 
-#include "decoder/decoder_parameters.hpp"
+#include "decoder/de_parameters.hpp"
 
 using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::tm;

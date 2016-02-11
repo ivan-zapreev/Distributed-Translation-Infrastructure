@@ -157,9 +157,10 @@ namespace uva {
                              * Allows to get the source entry for the given entry id
                              * In case the entry is not present we return NULL.
                              * @param entry_id the source phrase id
-                             * @return the source phrase entry or NULL if the source phrase id is not found
+                             * @return the source phrase entry 
                              */
                             const tm_source_entry * get_source_entry(const phrase_uid entry_id) const {
+                                //ToDo: Return the UNK entry in case the entry was not found!
                                 return m_tm_data->get_element(entry_id, entry_id);
                             }
 

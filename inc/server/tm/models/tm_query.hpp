@@ -28,6 +28,7 @@
 
 #include<string>
 #include<unordered_map>
+#include<vector>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -76,6 +77,7 @@ namespace uva {
                              * The basic destructor
                              */
                             ~tm_query() {
+                                //Nothing to be done
                             }
 
                             /**
@@ -85,7 +87,25 @@ namespace uva {
                                 //Iterate through the source phrases and query them
                                 for (query_map::iterator iter = m_query_data.begin(); iter != m_query_data.end(); ++iter) {
                                     iter->second = m_model.get_source_entry(iter->first);
+
+                                    //Perform the sanity check for the sake of safety
+                                    ASSERT_SANITY_THROW((iter->second == NULL),
+                                            string("Got a NULL pointer for the ") + to_string(iter->first) +
+                                            string(" translations, broken translation model implementation!"));
+
+                                    collect_st_uids(iter->second);
                                 }
+                            }
+
+                            /**
+                             * Allows to get all the source/target phrase identifiers
+                             * for the source target translation in this query.
+                             * Note that this method must be called after the query
+                             * is executed, otherwise an empty vector is returned.
+                             * @return the source/target phrase identifiers of the query
+                             */
+                            inline const vector<phrase_uid> & get_st_uids() {
+                                return m_st_ids;
                             }
 
                             /**
@@ -114,25 +134,48 @@ namespace uva {
                             /**
                              * Allows to get the target translations for the source phrase
                              * @param uid the source phrase uid
-                             * @return the pointer to the source entry or NULL if the query
-                             *         was not executed or the source entry is not found.
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the translation was not found.
                              */
-                            inline const tm_source_entry * get_targets(const phrase_uid uid) {
+                            inline const tm_source_entry & get_targets(const phrase_uid uid) {
                                 //Check that the source phrase is present, we are not allowed
                                 //to translate something that was not added to the query!
                                 ASSERT_SANITY_THROW((m_query_data.find(uid) == m_query_data.end()),
                                         string("The source with uid: ") + to_string(uid) +
                                         string(" is not part of the translation query!"));
-                                return m_query_data[uid];
+
+                                //Depending on whether the translation was found
+                                //or not stores the source entry or the UNK
+                                const tm_source_entry * entry = m_query_data[uid];
+
+                                //Do the sanity check on the pointer, in general the
+                                //translation model should make sure there is no NULL
+                                ASSERT_SANITY_THROW((entry == NULL),
+                                        string("Got a NULL pointer for the ") + to_string(uid) +
+                                        string(" translations, the execute was not called?"));
+
+                                return *entry;
                             }
 
                             /**
                              * Allows to get the target translations for the source phrase
                              * @param source the source phrase to get translations for
-                             * @return the pointer to the source entry map or NULL if no translation is found
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the translation was not found.
                              */
-                            inline const tm_source_entry * get_targets(const string & source) {
+                            inline const tm_source_entry & get_targets(const string & source) {
                                 return get_targets(get_phrase_uid(source));
+                            }
+
+                        protected:
+
+                            /**
+                             * Should be called on each new source entry in order
+                             * to collect the source/target phrase pair ids
+                             * @param entry the source entry pointer, not NULL, to collect ids from
+                             */
+                            void collect_st_uids(const tm_source_entry * const entry) {
+                                m_st_ids.insert(m_st_ids.end(), entry->get_st_uids().cbegin(), entry->get_st_uids().cend());
                             }
 
                         private:
@@ -140,6 +183,8 @@ namespace uva {
                             const model_type & m_model;
                             //Stores the mapping from the source phrase id to the corresponding source entry.
                             query_map m_query_data;
+                            //Stores the collected source/target pair ids
+                            vector<phrase_uid> m_st_ids;
                         };
                     }
                 }

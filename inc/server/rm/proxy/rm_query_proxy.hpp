@@ -26,6 +26,18 @@
 #ifndef RM_QUERY_PROXY_HPP
 #define RM_QUERY_PROXY_HPP
 
+#include <vector>
+
+#include "server/common/models/phrase_id.hpp"
+
+#include "server/rm/models/rm_entry.hpp"
+
+using namespace std;
+
+using namespace uva::smt::bpbd::server::common::models;
+
+using namespace uva::smt::bpbd::server::rm::models;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -36,10 +48,35 @@ namespace uva {
                         /**
                          * This class represents a reordering query proxy interface class.
                          * It allows to interact with reordering model queries in a uniform way.
+                         * @param num_weights is the number of reordering weights
                          */
+                        template<size_t num_weights>
                         class rm_query_proxy {
                         public: 
- 
+                              
+                            //Typedef the entry with the template parameter
+                            typedef rm_entry<num_weights> rm_num_entry;
+
+                            /**
+                             * Allows to set the source/target phrase identifiers
+                             * for which the reordering data is to be retrieved.
+                             * @param uids the source/target phrase identifiers
+                             */
+                            virtual void set_st_uids(const vector<phrase_uid> * const uids) = 0;
+
+                            /**
+                             * Allows to get the source/target reordering data from the reordering model
+                             * @param uid the source/target phrase uid
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the reordering was not found.
+                             */
+                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) = 0;
+                            
+                            /**
+                             * Allows to execute the query 
+                             */
+                            virtual void execute() = 0;
+
                             /**
                              * The basic virtual destructor
                              */

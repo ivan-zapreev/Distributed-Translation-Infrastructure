@@ -64,14 +64,15 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the translation was not found.
                              */
-                            virtual const tm_source_entry * get_targets(const phrase_uid uid) = 0;
+                            virtual const tm_source_entry & get_targets(const phrase_uid uid) = 0;
 
                             /**
                              * Allows to get the target translations for the source phrase
-                             * @param source the source phrase to get translations for
-                             * @return the pointer to the source entry map or NULL if no translation is found
+                             * @param source the source phrase
+                             * @return the reference to the source entry, might be the one
+                             *         of UNK if the translation was not found.
                              */
-                            virtual const tm_source_entry * get_targets(const string & source) = 0;
+                            virtual const tm_source_entry & get_targets(const string & source) = 0;
                             
                             /**
                              * Allows to execute the query 

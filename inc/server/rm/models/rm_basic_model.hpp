@@ -67,7 +67,7 @@ namespace uva {
                             static constexpr size_t NUM_WEIGHTS = num_weights;
                             
                             //Typedef the entry with the template parameter
-                            typedef rm_entry<NUM_WEIGHTS> rm_num_entry;
+                            typedef rm_entry<num_weights> rm_num_entry;
                             
                             //Define the translations data map. It represents possible translations for some source phrase.
                             typedef fixed_size_hashmap<rm_num_entry, const phrase_uid &> rm_entry_map;

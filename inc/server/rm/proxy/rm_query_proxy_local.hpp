@@ -26,10 +26,11 @@
 #ifndef RM_QUERY_PROXY_LOCAL_HPP
 #define RM_QUERY_PROXY_LOCAL_HPP
 
-
 #include "server/rm/proxy/rm_query_proxy.hpp"
+#include "server/rm/models/rm_query.hpp"
 
 using namespace uva::smt::bpbd::server::rm;
+using namespace uva::smt::bpbd::server::rm::models;
 
 namespace uva {
     namespace smt {
@@ -43,26 +44,52 @@ namespace uva {
                          * This implementation works with the local reordering model
                          */
                         template<typename model_type>
-                        class rm_query_proxy_local : public rm_query_proxy {
+                        class rm_query_proxy_local : public rm_query_proxy<model_type::NUM_WEIGHTS> {
                         public:
+                            //Make the base typedef
+                            typedef rm_query_proxy<model_type::NUM_WEIGHTS> BASE;
+                            
+                            //Make a local typedef for the rm entry
+                            typedef typename BASE::rm_num_entry rm_num_entry;
 
                             /**
                              * The basic constructor that accepts the reordering model reference to query to
                              * @param model the reordering model to query
                              */
-                            rm_query_proxy_local(const model_type & model) {
-                                //ToDo: Implement
+                            rm_query_proxy_local(const model_type & model) : m_query(model) {
+                            }
+  
+                            /**
+                             * @see rm_query_proxy
+                             */
+                            virtual void set_st_uids(const vector<phrase_uid> * const uids) {
+                                m_query.set_st_uids(uids);
+                            }
+
+                            /**
+                             * @see rm_query_proxy
+                             */
+                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) {
+                                return m_query.get_reordering(uid);
+                            }
+                            
+                            /**
+                             * @see rm_query_proxy
+                             */
+                            virtual void execute() {
+                                m_query.execute();
                             }
                             
                             /**
                              * @see rm_query_proxy
                              */
                             virtual ~rm_query_proxy_local(){
-                                //ToDo: Implement
+                                //Nothing to be done, no dynamically allocated resources
                             }
                             
-                        protected:
                         private:
+                            //Stores the actual query
+                            rm_query<model_type> m_query;
                         };
                     }
                 }

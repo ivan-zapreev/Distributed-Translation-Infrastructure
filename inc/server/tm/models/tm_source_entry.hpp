@@ -71,7 +71,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_source_entry()
-                            : m_phrase_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
+                            : m_s_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
                             }
 
                             /**
@@ -86,10 +86,10 @@ namespace uva {
 
                             /**
                              * Allows to set the source phrase id
-                             * @param phrase_uid the source phrase id
+                             * @param s_uid the source phrase id
                              */
-                            inline void set_source_uid(phrase_uid phrase_uid) {
-                                m_phrase_uid = phrase_uid;
+                            inline void set_source_uid(phrase_uid s_uid) {
+                                m_s_uid = s_uid;
                             }
 
                             /**
@@ -122,9 +122,21 @@ namespace uva {
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
                                 //Set the entry's target phrase and its id
-                                entry.set_target(target);
+                                entry.set_source_target(m_s_uid, target);
+
+                                //Add the source/target uid to the list
+                                m_st_uids.push_back(entry.get_st_uid());
+
                                 //Return the entry
                                 return entry;
+                            }
+
+                            /**
+                             * Allows to get all the source/target phrase ids for the given source entry
+                             * @return all the source/target phrase ids for the given source entry
+                             */
+                            inline const vector<phrase_uid> & get_st_uids() const {
+                                return m_st_uids;
                             }
 
                             /**
@@ -133,18 +145,20 @@ namespace uva {
                              * @return true if the provided uid is equal to the uid of this entry, otherwise false 
                              */
                             inline bool operator==(const phrase_uid & phrase_uid) const {
-                                return (m_phrase_uid == phrase_uid);
+                                return (m_s_uid == phrase_uid);
                             }
 
                         private:
                             //Stores the unique identifier of the given source
-                            phrase_uid m_phrase_uid;
+                            phrase_uid m_s_uid;
                             //Stores the number of translation entries
                             size_t m_capacity;
                             //Stores the target entries array pointer
                             tm_target_entry * m_targets;
                             //Stores the next index for the translation entry
                             size_t m_next_idx;
+                            //Stores the source/target phrase ids of this entry
+                            vector<phrase_uid> m_st_uids;
                         };
                     }
                 }

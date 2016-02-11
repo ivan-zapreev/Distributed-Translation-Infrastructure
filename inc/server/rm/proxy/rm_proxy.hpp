@@ -38,9 +38,16 @@ namespace uva {
                         /**
                          * This is the reordering model proxy interface class it allows to
                          * interact with any sort of local and remote models in a uniform way.
+                         * @param num_weights is the number of reordering weights
                          */
+                        template<size_t num_weights>
                         class rm_proxy {
                         public:
+                            //Stores the number of weights for external use
+                            static constexpr size_t NUM_WEIGHTS = num_weights;
+                            
+                            //Declare the query proxy type
+                            typedef rm_query_proxy<num_weights> rm_num_query_proxy;
                             
                             /**
                              * Allows to connect to the model object based on the given parameters
@@ -62,8 +69,11 @@ namespace uva {
                              * This method allows to get a query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual rm_query_proxy * get_query_proxy() = 0;
+                            virtual rm_num_query_proxy * get_query_proxy() = 0;
                         };
+
+                        template<size_t num_weights>
+                        constexpr size_t rm_proxy<num_weights>::NUM_WEIGHTS;
                     }
                 }
             }

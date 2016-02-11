@@ -65,7 +65,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_target_entry()
-                            : m_target_phrase(""), m_sct_prob(0.0),
+                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""), m_sct_prob(0.0),
                             m_sct_lex(0.0), m_tcs_prob(0.0), m_tcs_lex(0.0) {
                             }
 
@@ -78,10 +78,22 @@ namespace uva {
 
                             /**
                              * Allows to set the target phrase and its id
+                             * @param s_uid store the source uid for being combined with the target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
                              */
-                            inline void set_target(string target_phrase) {
+                            inline void set_source_target(phrase_uid s_uid, string target_phrase) {
+                                //Store the target phrase
                                 m_target_phrase = target_phrase;
+                                //Compute and store the source/target phrase id for future use
+                                m_st_uid = get_phrase_uid(s_uid, target_phrase);
+                            }
+
+                            /**
+                             * Allows to retrieve the source/target phrase pair uid
+                             * @return the source/target phrase pair uid
+                             */
+                            inline phrase_uid get_st_uid() {
+                                return m_st_uid;
                             }
 
                             /**
@@ -117,6 +129,8 @@ namespace uva {
                             }
 
                         private:
+                            //Stores the source/target phrase id
+                            phrase_uid m_st_uid;
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
                             //The conditional probability value for source conditioned on target

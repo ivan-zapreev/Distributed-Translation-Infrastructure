@@ -616,7 +616,7 @@
           </df>
         </df>
         <df name="decoder">
-          <in>decoder_parameters.hpp</in>
+          <in>de_parameters.hpp</in>
         </df>
         <df name="lm">
           <df name="builders">
@@ -779,7 +779,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>
