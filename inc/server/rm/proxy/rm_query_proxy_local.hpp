@@ -69,7 +69,7 @@ namespace uva {
                             /**
                              * @see rm_query_proxy
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) {
+                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const {
                                 return m_query.get_reordering(uid);
                             }
                             

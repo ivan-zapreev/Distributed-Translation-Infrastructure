@@ -70,7 +70,7 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the reordering was not found.
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) = 0;
+                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const = 0;
                             
                             /**
                              * Allows to execute the query 

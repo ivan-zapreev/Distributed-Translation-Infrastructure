@@ -67,7 +67,8 @@ namespace uva {
                             /**
                              * The basic class constructor
                              */
-                            tm_basic_model() : m_sizes(NULL), m_tm_data(NULL) {
+                            tm_basic_model() : m_sizes(NULL), m_tm_data(NULL), m_unk_entry(NULL) {
+                                //ToDo: Initialize the UNK entry
                             }
 
                             /**
@@ -76,7 +77,7 @@ namespace uva {
                             ~tm_basic_model() {
                                 //Finalize the model just in case it is not
                                 finalize();
-                                
+
                                 //Delete the model data if any
                                 if (m_tm_data != NULL) {
                                     delete m_tm_data;
@@ -103,9 +104,9 @@ namespace uva {
                             inline void set_num_entries(sizes_map * sizes) {
                                 //Stores the sizes
                                 m_sizes = sizes;
-                                
+
                                 LOG_DEBUG << "The number of source phrases is: " << sizes->size() << END_LOG;
-                                
+
                                 //Initialize the source entries map
                                 m_tm_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, sizes->size());
                             }
@@ -152,16 +153,20 @@ namespace uva {
                                     m_sizes = NULL;
                                 }
                             }
-                            
+
                             /**
                              * Allows to get the source entry for the given entry id
                              * In case the entry is not present we return NULL.
                              * @param entry_id the source phrase id
-                             * @return the source phrase entry 
+                             * @return the source phrase entry , always NOT NULL!
                              */
                             const tm_source_entry * get_source_entry(const phrase_uid entry_id) const {
-                                //ToDo: Return the UNK entry in case the entry was not found!
-                                return m_tm_data->get_element(entry_id, entry_id);
+                                const tm_source_entry * entry = m_tm_data->get_element(entry_id, entry_id);
+                                if (entry != NULL) {
+                                    return entry;
+                                } else {
+                                    return m_unk_entry;
+                                }
                             }
 
                             /**
@@ -176,6 +181,8 @@ namespace uva {
                             sizes_map * m_sizes;
                             //Stores the translation model data
                             tm_source_entry_map * m_tm_data;
+                            //Stores the pointer to the UNK entry
+                            const tm_source_entry * m_unk_entry;
                         };
                     }
                 }

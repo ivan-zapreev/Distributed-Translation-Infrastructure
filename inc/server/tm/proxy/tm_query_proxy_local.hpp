@@ -71,14 +71,21 @@ namespace uva {
                             /**
                              * @see tm_query_proxy
                              */
-                            virtual const tm_source_entry & get_targets(const phrase_uid uid) {
+                            virtual void get_st_uids(vector<phrase_uid> & st_uids) const {
+                                m_query.get_st_uids(st_uids);
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
+                            virtual const tm_source_entry & get_targets(const phrase_uid uid) const {
                                 return m_query.get_targets(uid);
                             }
 
                             /**
                              * @see tm_query_proxy
                              */
-                            virtual const tm_source_entry & get_targets(const string & source) {
+                            virtual const tm_source_entry & get_targets(const string & source) const {
                                 return m_query.get_targets(source);
                             }
 

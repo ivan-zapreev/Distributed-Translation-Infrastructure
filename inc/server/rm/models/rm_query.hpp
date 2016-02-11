@@ -110,7 +110,7 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the reordering was not found.
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) {
+                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const {
                                 //Check that the source phrase is present, we are not allowed
                                 //to translate something that was not added to the query!
                                 ASSERT_SANITY_THROW((m_query_data.find(uid) == m_query_data.end()),
@@ -119,7 +119,7 @@ namespace uva {
 
                                 //Return the reference the to the entry, there is no need to check
                                 //for the null pointer as this is done when the query is executed.
-                                return *m_query_data[uid];
+                                return *m_query_data.at(uid);
                             }
                             
                         private:

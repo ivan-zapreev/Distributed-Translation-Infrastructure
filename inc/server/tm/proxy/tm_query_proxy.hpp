@@ -59,12 +59,20 @@ namespace uva {
                             virtual void add_source(const string & source) = 0;
 
                             /**
+                             * Allows to get all the source/target phrase identifiers
+                             * for the source target translation in this query.
+                             * Must be called after the query is executed
+                             * @param st_uids the container for the source/target phrase identifiers
+                             */
+                            virtual void get_st_uids(vector<phrase_uid> & st_uids) const = 0;
+
+                            /**
                              * Allows to get the target translations for the source phrase
                              * @param uid the source phrase uid
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the translation was not found.
                              */
-                            virtual const tm_source_entry & get_targets(const phrase_uid uid) = 0;
+                            virtual const tm_source_entry & get_targets(const phrase_uid uid) const = 0;
 
                             /**
                              * Allows to get the target translations for the source phrase
@@ -72,7 +80,7 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the translation was not found.
                              */
-                            virtual const tm_source_entry & get_targets(const string & source) = 0;
+                            virtual const tm_source_entry & get_targets(const string & source) const = 0;
                             
                             /**
                              * Allows to execute the query 

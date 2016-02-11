@@ -135,10 +135,10 @@ namespace uva {
                              */
                             inline void find_unk_entry() {
                                 //Try to find the UNK/UNK entry
-                                unk_entry = get_entry(__unk_phrase::UNKNOWN_PHRASE_STR, __unk_phrase::UNKNOWN_PHRASE_STR);
+                                m_unk_entry = get_entry(__unk_phrase::UNKNOWN_PHRASE_STR, __unk_phrase::UNKNOWN_PHRASE_STR);
                                 
                                 //Assert on that the UNK/UNK entry is found!
-                                ASSERT_CONDITION_THROW((unk_entry == NULL), string("Could not find the ") +
+                                ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
                                         __unk_phrase::UNKNOWN_PHRASE_STR + string("/") + __unk_phrase::UNKNOWN_PHRASE_STR +
                                         string(" entry in the reordering model!"));
                             }
@@ -158,7 +158,7 @@ namespace uva {
                                 if (entry != NULL) {
                                     return entry;
                                 } else {
-                                    return unk_entry;
+                                    return m_unk_entry;
                                 }
                             }
 
@@ -195,7 +195,7 @@ namespace uva {
                             //Stores the translation model data
                             rm_entry_map * m_rm_data;
                             //Stores the pointer to the UNK entry if found
-                            const rm_num_entry * unk_entry;
+                            const rm_num_entry * m_unk_entry;
                         };
 
                         template<size_t num_weights>

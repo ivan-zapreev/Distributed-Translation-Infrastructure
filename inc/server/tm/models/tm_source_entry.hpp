@@ -108,6 +108,10 @@ namespace uva {
                              */
                             inline void finalize() {
                                 //Nothing to be done at the moment
+                                ASSERT_SANITY_THROW((m_next_idx != m_capacity),
+                                        string("The number of translations in the source entry: ") +
+                                        to_string(m_next_idx) + string("is not equal to expected: ") +
+                                        to_string(m_capacity));
                             }
 
                             /**
@@ -124,19 +128,19 @@ namespace uva {
                                 //Set the entry's target phrase and its id
                                 entry.set_source_target(m_s_uid, target);
 
-                                //Add the source/target uid to the list
-                                m_st_uids.push_back(entry.get_st_uid());
-
                                 //Return the entry
                                 return entry;
                             }
 
                             /**
-                             * Allows to get all the source/target phrase ids for the given source entry
-                             * @return all the source/target phrase ids for the given source entry
+                             * Allows to get all the source/target phrase identifiers
+                             * for the source target translation in this query.
+                             * @param st_uids the container for the source/target phrase identifiers
                              */
-                            inline const vector<phrase_uid> & get_st_uids() const {
-                                return m_st_uids;
+                            inline void get_st_uids(vector<phrase_uid> & st_uids) const {
+                                for (size_t idx = 0; idx < m_capacity; ++idx) {
+                                    st_uids.push_back(m_targets[idx].get_st_uid());
+                                }
                             }
 
                             /**
@@ -157,8 +161,6 @@ namespace uva {
                             tm_target_entry * m_targets;
                             //Stores the next index for the translation entry
                             size_t m_next_idx;
-                            //Stores the source/target phrase ids of this entry
-                            vector<phrase_uid> m_st_uids;
                         };
                     }
                 }
