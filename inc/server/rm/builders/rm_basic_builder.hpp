@@ -98,6 +98,8 @@ namespace uva {
                              * Allows to count and set the number of source phrases
                              */
                             inline void set_number_source_phrases() {
+                                Logger::start_progress_bar(string("Counting reordering entries"));
+                                
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
                                 //Stores the number of reordering entries for logging
@@ -107,7 +109,11 @@ namespace uva {
                                 //any new line is just an extra entry so any empty line
                                 //will just insignificantly increase the memory consumption.
                                 while (m_reader.get_first_line(line)) {
+                                    //Increment the counter
                                     ++num_entries;
+                                    
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
                                 }
                                 LOG_DEBUG << "Counter the number of reordering entries: " << num_entries << END_LOG;
 
@@ -116,6 +122,9 @@ namespace uva {
 
                                 //Re-set the reader to start all over again
                                 m_reader.reset();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
                             }
 
                             /**
@@ -148,6 +157,8 @@ namespace uva {
                              * Allows to process translations.
                              */
                             void process_source_entries() {
+                                Logger::start_progress_bar(string("Building reordering model"));
+                                
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source, target;
 
@@ -167,10 +178,16 @@ namespace uva {
 
                                     //Parse the rest of the target entry
                                     process_entry_weights(line, m_model.add_entry(source_str, target_str));
+                                    
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
                                 }
 
                                 //Find the UNK entry, this is needed for performance optimization.
                                 m_model.find_unk_entry();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
                             }
 
                         private:

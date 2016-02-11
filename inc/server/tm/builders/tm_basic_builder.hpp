@@ -92,13 +92,15 @@ namespace uva {
                                 //Process the translations
                                 process_source_entries();
                             }
-                            
+
                         protected:
 
                             /**
                              * Allows to count and set the number of source phrases
                              */
                             inline void set_number_source_phrases() {
+                                Logger::start_progress_bar(string("Counting phrase translations"));
+
                                 //Declare the sizes map
                                 sizes_map * sizes = new sizes_map();
 
@@ -121,6 +123,9 @@ namespace uva {
                                         ++num_source;
                                         LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << uid << END_LOG;
                                     }
+                                    
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
 
                                     LOG_DEBUG1 << "-> translation count: " << sizes->at(uid) << END_LOG;
                                 }
@@ -130,6 +135,9 @@ namespace uva {
 
                                 //Re-set the reader to start all over again
                                 m_reader.reset();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
                             }
 
                             /**
@@ -156,7 +164,7 @@ namespace uva {
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
                                 LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
-                                
+
                                 //Add the translation entry to the model
                                 string target_str = target.str();
                                 tm_target_entry & target_entry = source_entry->new_translation(trim(target_str));
@@ -190,6 +198,8 @@ namespace uva {
                              * Allows to process translations.
                              */
                             void process_source_entries() {
+                                Logger::start_progress_bar(string("Building translation model"));
+
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
                                 //Store the current source and next source uids
@@ -229,6 +239,9 @@ namespace uva {
 
                                     //Parse the rest of the target entry
                                     process_target_entries(source_entry, line);
+                                    
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
                                 }
 
                                 //Finalize the previous entry if there was one
@@ -236,8 +249,11 @@ namespace uva {
                                     m_model.finalize_entry(curr_source_uid);
                                 }
 
-                                //finalize the model
+                                //Finalize the model
                                 m_model.finalize();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
                             }
 
                         private:
