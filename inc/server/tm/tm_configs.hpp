@@ -29,6 +29,10 @@
 #include <inttypes.h>
 #include <string>
 
+#include "server/common/models/phrase_id.hpp"
+
+using namespace std;
+
 using namespace std;
 
 namespace uva {

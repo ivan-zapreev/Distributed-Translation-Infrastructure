@@ -68,7 +68,25 @@ namespace uva {
                              * The basic class constructor
                              */
                             tm_basic_model() : m_sizes(NULL), m_tm_data(NULL), m_unk_entry(NULL) {
-                                //ToDo: Initialize the UNK entry
+                                //Initialize the UNK entry
+                                m_unk_entry = new tm_source_entry();
+                                //Set thew source id
+                                m_unk_entry->set_source_uid(UNKNOWN_PHRASE_ID);
+                                //Start adding the translations to the entry, there will be just one
+                                m_unk_entry->begin(1);
+                                {
+                                    //Add the translation entry
+                                    tm_target_entry & entry = m_unk_entry->new_translation(__unk_phrase::UNKNOWN_PHRASE_STR);
+                                    //Now turn this target into the unknown translation entry
+                                    entry.make_unknown(
+                                            __unk_phrase::UNKNOWN_PHRASE_STR, UNKNOWN_PHRASE_ID,
+                                            __unk_phrase::UNK_SCT_LOG_PROB_WEIGHT,
+                                            __unk_phrase::UNK_LSCT_LOG_PROB_WEIGHT,
+                                            __unk_phrase::UNK_TCS_LOG_PROB_WEIGHT,
+                                            __unk_phrase::UNK_LTCS_LOG_PROB_WEIGHT);
+                                }
+                                //Finalize the source entry
+                                m_unk_entry->finalize();
                             }
 
                             /**
@@ -82,6 +100,12 @@ namespace uva {
                                 if (m_tm_data != NULL) {
                                     delete m_tm_data;
                                     m_tm_data = NULL;
+                                }
+
+                                //Delete the unk entry if any
+                                if (m_unk_entry != NULL) {
+                                    delete m_unk_entry;
+                                    m_unk_entry = NULL;
                                 }
                             }
 
@@ -182,7 +206,7 @@ namespace uva {
                             //Stores the translation model data
                             tm_source_entry_map * m_tm_data;
                             //Stores the pointer to the UNK entry
-                            const tm_source_entry * m_unk_entry;
+                            tm_source_entry * m_unk_entry;
                         };
                     }
                 }

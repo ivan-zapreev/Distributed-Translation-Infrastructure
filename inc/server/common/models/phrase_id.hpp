@@ -27,6 +27,7 @@
 #define TM_PHRASE_ID_HPP
 
 #include <string>
+#include <cstdint>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -49,8 +50,12 @@ namespace uva {
 
                         //Define the undefined phrase id value
                         static constexpr uint64_t UNDEFINED_PHRASE_ID = 0;
+                        //Define the unknown phrase id value
+                        static constexpr uint64_t UNKNOWN_PHRASE_ID = UNDEFINED_PHRASE_ID + 1;
                         //Contains the minimum valid phrase id value
-                        static constexpr uint64_t MIN_VALID_PHRASE_ID = UNDEFINED_PHRASE_ID + 1;
+                        static constexpr uint64_t MIN_VALID_PHRASE_ID = UNKNOWN_PHRASE_ID + 1;
+                        //Contains the maximum valid phrase id value
+                        static constexpr uint64_t MAX_VALID_PHRASE_ID = UINT64_MAX;
 
                         /**
                          * Allows to get the phrase uid for the given phrase.
@@ -62,9 +67,9 @@ namespace uva {
                         static inline phrase_uid get_phrase_uid(const string phrase) {
                             //Compute the string hash
                             phrase_uid uid = compute_hash(phrase);
-                            //If the value is somehow undefined then increase it to the minimum
-                            if (uid == UNDEFINED_PHRASE_ID) {
-                                uid = MIN_VALID_PHRASE_ID;
+                            //If the value is below the minimum then shift it up
+                            if (uid < MIN_VALID_PHRASE_ID) {
+                                uid += MIN_VALID_PHRASE_ID;
                             }
                             return uid;
                         }
