@@ -65,10 +65,10 @@ namespace uva {
                         public:
                             //Stores the number of weights for external use
                             static constexpr size_t NUM_WEIGHTS = num_weights;
-                            
+
                             //Typedef the entry with the template parameter
                             typedef rm_entry<num_weights> rm_num_entry;
-                            
+
                             //Define the translations data map. It represents possible translations for some source phrase.
                             typedef fixed_size_hashmap<rm_num_entry, const phrase_uid &> rm_entry_map;
 
@@ -136,7 +136,7 @@ namespace uva {
                             inline void find_unk_entry() {
                                 //Try to find the UNK/UNK entry
                                 m_unk_entry = get_entry(__unk_phrase::UNKNOWN_PHRASE_STR, __unk_phrase::UNKNOWN_PHRASE_STR);
-                                
+
                                 //Assert on that the UNK/UNK entry is found!
                                 ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
                                         __unk_phrase::UNKNOWN_PHRASE_STR + string("/") + __unk_phrase::UNKNOWN_PHRASE_STR +
@@ -151,12 +151,17 @@ namespace uva {
                              * @return the reordering entry, always NOT NULL!
                              */
                             inline const rm_num_entry * get_entry(const phrase_uid uid) const {
-                                //Get the entry for the given id
-                                rm_num_entry * entry = m_rm_data->get_element(uid, uid);
+                                //If this is not the unknown phrase id then go searching, otherwise return the unk
+                                if (uid != UNKNOWN_PHRASE_ID) {
+                                    //Get the entry for the given id
+                                    rm_num_entry * entry = m_rm_data->get_element(uid, uid);
 
-                                //Check if the entry is not NULL if it is then return the UNK/UNK
-                                if (entry != NULL) {
-                                    return entry;
+                                    //Check if the entry is not NULL if it is then return the UNK/UNK
+                                    if (entry != NULL) {
+                                        return entry;
+                                    } else {
+                                        return m_unk_entry;
+                                    }
                                 } else {
                                     return m_unk_entry;
                                 }
