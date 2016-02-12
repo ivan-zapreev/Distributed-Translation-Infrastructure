@@ -81,18 +81,39 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to execute the query
+                             * Allows to add the source phrase to the query.
+                             * @param uid the source phrase uid
                              */
-                            inline void execute() {
-                                //Iterate through the source phrases and query them
-                                for (query_map::iterator iter = m_query_data.begin(); iter != m_query_data.end(); ++iter) {
-                                    iter->second = m_model.get_source_entry(iter->first);
+                            inline void add_source(const phrase_uid uid) {
+                                //Check if there is already a phrase with this id present
+                                query_map::iterator iter = m_query_data.find(uid);
+                                if (iter == m_query_data.end()) {
+                                    //If the id is not present then retrieve the data right away to reduce complexity
+                                    iter->second = m_model.get_source_entry(uid);
 
                                     //Perform the sanity check for the sake of safety
                                     ASSERT_SANITY_THROW((iter->second == NULL),
                                             string("Got a NULL pointer for the ") + to_string(iter->first) +
                                             string(" translations, broken translation model implementation!"));
                                 }
+                            }
+
+                            /**
+                             * Allows to add the source phrase to the query.
+                             * Note that the source phrase it taken as is,
+                             * i,e. no additional trimming is done.
+                             * @param source the source phrase to be added to the query
+                             */
+                            inline void add_source(const string & source) {
+                                add_source(get_phrase_uid(source));
+                            }
+
+                            /**
+                             * Allows to execute the query
+                             */
+                            inline void execute() {
+                                //Nothing to be done, this implementation does
+                                //an immediate querying of the translation model
                             }
 
                             /**
@@ -105,29 +126,6 @@ namespace uva {
                                 for (query_map::const_iterator iter = m_query_data.begin(); iter != m_query_data.end(); ++iter) {
                                     iter->second->get_st_uids(st_uids);
                                 }
-                            }
-
-                            /**
-                             * Allows to add the source phrase to the query.
-                             * @param uid the source phrase uid
-                             */
-                            inline void add_source(const phrase_uid uid) {
-                                //Check if there is already a phrase with this id present
-                                query_map::iterator iter = m_query_data.find(uid);
-                                if (iter == m_query_data.end()) {
-                                    //If the id is not present then set the value to NULL in order to add it.
-                                    iter->second = NULL;
-                                }
-                            }
-
-                            /**
-                             * Allows to add the source phrase to the query.
-                             * Note that the source phrase it taken as is,
-                             * i,e. no additional trimming is done.
-                             * @param source the source phrase to be added to the query
-                             */
-                            inline void add_source(const string & source) {
-                                add_source(get_phrase_uid(source));
                             }
 
                             /**
