@@ -24,7 +24,7 @@
  */
 
 #ifndef MULTI_THREADING_HPP
-#define	MULTI_THREADING_HPP
+#define MULTI_THREADING_HPP
 
 #include <atomic>
 #include <thread>
@@ -40,15 +40,21 @@ namespace uva {
 
             //Define the lock type to synchronize map operations
             typedef lock_guard<recursive_mutex> recursive_guard;
-            
+
             //Define the lock type to synchronize map operations
             typedef lock_guard<mutex> scoped_guard;
 
             //Define the unique lock needed for wait/notify
             typedef unique_lock<mutex> unique_guard;
+
+            //The atomic read-only boolean flag 
+            typedef atomic<bool> a_bool_flag;
+
+            //The atomic constant reference boolean flag 
+            typedef const a_bool_flag & acr_bool_flag;
         }
     }
 }
 
-#endif	/* MULTI_THREADING_HPP */
+#endif /* MULTI_THREADING_HPP */
 

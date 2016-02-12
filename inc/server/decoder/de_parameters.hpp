@@ -26,6 +26,11 @@
 #ifndef DEC_PARAMETERS_HPP
 #define DEC_PARAMETERS_HPP
 
+#include <string>
+#include <cstdint>
+
+using namespace std;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -46,6 +51,19 @@ namespace uva {
                         string m_expansion_strategy;
                         //The maximum number of words to consider when making phrases
                         uint8_t m_max_phrase_len;
+                        
+                        /**
+                         * The string conversion operator
+                         */
+                        operator string() const {
+                            return string("de_parameters[ distortion_limit: ") +
+                                    to_string(m_distortion_limit) + string(", expansion_strategy: ") +
+                                    m_expansion_strategy + string(", max_phrase_len: ") +
+                                    to_string(m_max_phrase_len) + string(", pruning_threshold: ") +
+                                    to_string(m_pruning_threshold) + string(", stack_capacity: ") +
+                                    to_string(m_stack_capacity) + string(" ]");
+
+                        }
                     } de_parameters;
                 }
             }

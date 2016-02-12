@@ -52,14 +52,14 @@ namespace uva {
                          * @param params the decoder parameters to be used.
                          */
                         static void connect(const de_parameters & params) {
-                            //ToDo: Implement
+                            m_params = params;
                         }
 
                         /**
                          * Allows to disconnect from the decoder, i.e. clean up the memory etc.
                          */
                         static void disconnect() {
-                            //ToDo: Implement
+                            //Nothing to be done, no dynamically allocated resources at the moment.
                         }
  
                         /**
@@ -68,7 +68,7 @@ namespace uva {
                          */
                         static inline sentence_decoder & allocate_decoder() {
                             //ToDo: Pre-allocate decoders, make as many as there are threads
-                            return *(new sentence_decoder());
+                            return *(new sentence_decoder(m_params));
                         }
                         
                         /**
@@ -81,6 +81,8 @@ namespace uva {
                         }
                         
                     private:
+                        //Stores the decoding parameters
+                        static de_parameters m_params;
                     };
                 }
             }

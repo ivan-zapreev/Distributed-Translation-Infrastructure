@@ -36,6 +36,7 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/common/utils/logging/logger.cpp
+    src/server/decoder/de_configurator.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp
     src/server/tm/models/tm_target_entry.cpp

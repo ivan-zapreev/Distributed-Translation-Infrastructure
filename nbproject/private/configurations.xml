@@ -739,6 +739,9 @@
         </df>
       </df>
       <df name="server">
+        <df name="decoder">
+          <in>de_configurator.cpp</in>
+        </df>
         <df name="lm">
           <df name="builders">
             <in>arpa_gram_builder.cpp</in>

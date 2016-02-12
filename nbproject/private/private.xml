@@ -10,13 +10,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/builders/rm_basic_builder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/tm/builders/tm_basic_builder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/rm_configs.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/common/utils/exceptions.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/proxy/rm_query_proxy.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/models/rm_entry.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/lm/builders/arpa_trie_builder.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/bpbd_server.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/CMakeLists.txt</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/de_configurator.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/de/de_configurator.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/de_parameters.hpp</file>
         </group>
     </open-files>
 </project-private>

@@ -35,6 +35,9 @@
         </df>
       </df>
       <df name="server">
+        <df name="decoder">
+          <in>de_configurator.cpp</in>
+        </df>
         <df name="lm">
           <df name="builders">
             <in>arpa_gram_builder.cpp</in>
@@ -185,6 +188,11 @@
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
+      </item>
+      <item path="src/server/decoder/de_configurator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/server/lm/builders/arpa_gram_builder.cpp"
             ex="false"
