@@ -75,7 +75,7 @@ namespace uva {
                          * Allows to disconnect from the language model.
                          */
                         static void disconnect() {
-                            if( m_model_proxy != NULL) {
+                            if (m_model_proxy != NULL) {
                                 //Disconnect from the trie
                                 m_model_proxy->disconnect();
                                 //Delete the object, free the resources
@@ -86,18 +86,26 @@ namespace uva {
 
                         /**
                          * Allows to return an instance of the query executor,
-                         * is to be destroyed by the client class.
+                         * is to be returned by calling the dispose method.
                          * @return an instance of the query executor.
                          */
-                        static inline lm_query_proxy * get_query_proxy() {
+                        static inline lm_query_proxy & allocate_query_proxy() {
                             //Return the query executor as given by the proxy class
-                            return m_model_proxy->get_query_proxy();
+                            return m_model_proxy->allocate_query_proxy();
+                        }
+
+                        /**
+                         * Dispose the previously allocated query object
+                         * @param query the query to dispose
+                         */
+                        static inline void dispose_query_proxy(lm_query_proxy & query) {
+                            m_model_proxy->dispose_query_proxy(query);
                         }
 
                     private:
                         //Stores the copy of the configuration parameters
                         static lm_parameters m_params;
-                        
+
                         //Store the trie proxy object
                         static lm_proxy * m_model_proxy;
                     };

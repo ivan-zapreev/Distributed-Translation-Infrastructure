@@ -62,7 +62,7 @@ namespace uva {
                         public:
                             //Define the default model type to be used
                             typedef tm_basic_model model_type;
-                            
+
                             //Define the builder type 
                             typedef tm_basic_builder<model_type, CStyleFileReader> builder_type;
 
@@ -99,9 +99,18 @@ namespace uva {
                             /**
                              * @see tm_proxy
                              */
-                            virtual tm_query_proxy * get_query_proxy() {
+                            virtual tm_query_proxy & allocate_query_proxy() {
                                 //Return an instance of the query_proxy_local class
-                                return new tm_query_proxy_local<model_type>(m_model);
+                                return *(new tm_query_proxy_local<model_type>(m_model));
+                            }
+
+                            /**
+                             * @see tm_proxy
+                             */
+                            virtual void dispose_query_proxy(tm_query_proxy & query) {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                delete &query;
                             }
 
                         protected:
@@ -117,7 +126,7 @@ namespace uva {
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
                                 TMemotyUsage mem_stat_start = {}, mem_stat_end = {};
-                                
+
                                 LOG_USAGE << "--------------------------------------------------------" << END_LOG;
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
 

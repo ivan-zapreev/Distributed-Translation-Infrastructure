@@ -62,7 +62,13 @@ namespace uva {
                              * This method allows to get a query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual tm_query_proxy * get_query_proxy() = 0;
+                            virtual tm_query_proxy & allocate_query_proxy() = 0;
+
+                            /**
+                             * Dispose the previously allocated query object
+                             * @param query the query to dispose
+                             */
+                            virtual void dispose_query_proxy(tm_query_proxy & query) = 0;
                         };
                     }
                 }

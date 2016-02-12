@@ -63,7 +63,7 @@ namespace uva {
                         public:
                             //Define the default model type to be used
                             typedef rm_basic_model model_type;
-                            
+
                             //Define the builder type 
                             typedef rm_basic_builder<model_type, CStyleFileReader> builder_type;
 
@@ -84,7 +84,7 @@ namespace uva {
                             /**
                              * @see rm_proxy
                              */
-                            virtual void connect(const string & conn_str){
+                            virtual void connect(const string & conn_str) {
                                 //The whole purpose of this method connect here is
                                 //just to load the reordering model into the memory.
                                 load_model_data<builder_type, CStyleFileReader>("Reordering Model", conn_str);
@@ -100,9 +100,20 @@ namespace uva {
                             /**
                              * @see rm_proxy
                              */
-                            virtual rm_query_proxy * get_query_proxy() {
-                                //Return an instance of the query_proxy_local class
-                                return new rm_query_proxy_local<model_type>(m_model);
+                            virtual rm_query_proxy & allocate_query_proxy() {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                return *(new rm_query_proxy_local<model_type>(m_model));
+                            }
+
+                            /**
+                             * Dispose the previously allocated query object
+                             * @param query the query to dispose
+                             */
+                            virtual void dispose_query_proxy(rm_query_proxy & query) {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                delete &query;
                             }
 
                         protected:
@@ -118,7 +129,7 @@ namespace uva {
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
                                 TMemotyUsage mem_stat_start = {}, mem_stat_end = {};
-                                
+
                                 LOG_USAGE << "--------------------------------------------------------" << END_LOG;
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
 
@@ -165,10 +176,10 @@ namespace uva {
                                 LOG_DEBUG << "Getting the memory statistics after closing the " << model_name << " file ..." << END_LOG;
                                 StatisticsMonitor::getMemoryStatistics(mem_stat_end);
                             }
-                            
-                            private:
-                                //Stores the reordering model instance
-                                model_type m_model;
+
+                        private:
+                            //Stores the reordering model instance
+                            model_type m_model;
                         };
                     }
                 }

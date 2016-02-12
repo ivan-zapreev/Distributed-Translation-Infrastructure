@@ -84,12 +84,20 @@ namespace uva {
 
                         /**
                          * Allows to return an instance of the query proxy,
-                         * is to be destroyed by the client class.
+                         * is to be returned by calling the dispose method.
                          * @return an instance of the query executor.
                          */
-                        static inline tm_query_proxy * get_query_proxy() {
+                        static inline tm_query_proxy & allocate_query_proxy() {
                             //Return the query executor as given by the proxy class
-                            return m_model_proxy->get_query_proxy();
+                            return m_model_proxy->allocate_query_proxy();
+                        }
+
+                        /**
+                         * Dispose the previously allocated query object
+                         * @param query the query to dispose
+                         */
+                        static inline void dispose_query_proxy(tm_query_proxy & query) {
+                            m_model_proxy->dispose_query_proxy(query);
                         }
 
                     protected:

@@ -94,7 +94,7 @@ namespace uva {
                             TextPieceReader line;
 
                             //Get the query executor proxy object
-                            lm_query_proxy * query = lm_configurator::get_query_proxy();
+                            lm_query_proxy & query = lm_configurator::allocate_query_proxy();
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 
@@ -106,14 +106,14 @@ namespace uva {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                                 //Query the Trie for the results and log them
-                                query->template execute<is_cumulative, true>(line);
+                                query.template execute<is_cumulative, true>(line);
                             }
 
                             //Stop the timer
                             end_time = StatisticsMonitor::getCPUTime();
 
-                            //Delete the query proxy object
-                            delete query;
+                            //Dispose the query
+                            lm_configurator::dispose_query_proxy(query);
 
                             LOG_USAGE << "Total query execution time is " << (end_time - start_time) << " CPU seconds." << END_LOG;
                         }

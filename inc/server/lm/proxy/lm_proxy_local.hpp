@@ -117,8 +117,19 @@ namespace uva {
                             /**
                              * @see lm_proxy
                              */
-                            virtual lm_query_proxy * get_query_proxy() {
-                                return new lm_query_proxy_local<model_type>(m_model);
+                            virtual lm_query_proxy & allocate_query_proxy() {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                return *(new lm_query_proxy_local<model_type>(m_model));
+                            }
+
+                            /**
+                             * @see lm_proxy
+                             */
+                            virtual void dispose_query_proxy(lm_query_proxy & query) {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                delete &query;
                             }
 
                         private:

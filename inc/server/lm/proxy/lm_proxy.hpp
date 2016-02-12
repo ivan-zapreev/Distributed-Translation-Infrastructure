@@ -34,13 +34,13 @@ namespace uva {
             namespace server {
                 namespace lm {
                     namespace proxy {
-                        
+
                         /**
                          * This is the trie proxy interface class it allows to interact with templated tries in a uniform way.
                          */
                         class lm_proxy {
                         public:
-                            
+
                             /**
                              * Allows to connect to the trie object based on the given parameters
                              * @param conn_str the connection string
@@ -51,17 +51,25 @@ namespace uva {
                              * Allows to disconnect from the trie
                              */
                             virtual void disconnect() = 0;
-                            
+
                             /**
                              * The basic virtual destructor
                              */
-                            virtual ~lm_proxy(){};
+                            virtual ~lm_proxy() {
+                            };
 
                             /**
                              * This method allows to get a query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual lm_query_proxy * get_query_proxy() = 0;
+                            virtual lm_query_proxy & allocate_query_proxy() = 0;
+
+                            /**
+                             * Dispose the previously allocated query object
+                             * @param query the query to dispose
+                             */
+                            virtual void dispose_query_proxy(lm_query_proxy & query) = 0;
+
                         };
                     }
                 }
