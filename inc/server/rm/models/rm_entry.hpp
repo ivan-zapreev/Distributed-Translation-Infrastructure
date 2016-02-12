@@ -54,22 +54,22 @@ namespace uva {
                          * reordering penalties for one source to target phrase.
                          * @param num_weights is the number of reordering weights
                          */
-                        template<size_t num_weights>
-                        class rm_entry {
+                        template<uint8_t num_weights>
+                        class rm_entry_temp {
                         public:
-                            //Stores the number of weights for external use
-                            static constexpr size_t NUM_WEIGHTS = num_weights;
+                            //Define the number of weights constant for the reordering entry
+                            static constexpr uint8_t NUM_WEIGHTS = num_weights;
 
                             /**
                              * The basic constructor
                              */
-                            rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
+                            rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
                             }
 
                             /**
                              * The basic destructor
                              */
-                            ~rm_entry() {
+                            ~rm_entry_temp() {
                             }
 
                             /**
@@ -109,9 +109,12 @@ namespace uva {
                             //This is an array of reordering weights
                             float m_weights[num_weights];
                         };
-
-                        template<size_t num_weights>
-                        constexpr size_t rm_entry<num_weights>::NUM_WEIGHTS;
+                        
+                        template<uint8_t num_weights>
+                        constexpr uint8_t rm_entry_temp<num_weights>::NUM_WEIGHTS;
+                        
+                        //Instantiate template
+                        typedef rm_entry_temp<NUMBER_WEIGHT_ENTRIES> rm_entry;
                     }
                 }
             }

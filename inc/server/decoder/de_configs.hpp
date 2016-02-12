@@ -1,5 +1,5 @@
 /* 
- * File:   rm_configurator.cpp
+ * File:   de_configs.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,23 +20,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on February 08, 2016, 09:38 AM
+ * Created on February 11, 2016, 5:51 PM
  */
 
-#include "server/rm/rm_configurator.hpp"
+#ifndef DE_CONFIGS_HPP
+#define DE_CONFIGS_HPP
+
+#include <inttypes.h>
+#include <string>
+
+#include "server/tm/tm_configs.hpp"
+#include "server/rm/rm_configs.hpp"
+#include "server/lm/lm_configs.hpp"
+
+using namespace std;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
-                namespace rm {
-                    //No default initialization is needed
-                    rm_parameters rm_configurator::m_params;
-                    
-                    //Just give a default initialization
-                    rm_proxy * rm_configurator::m_model_proxy = NULL;
+                namespace decoder {
                 }
             }
         }
     }
 }
+
+#endif /* DE_CONFIGS_HPP */
+

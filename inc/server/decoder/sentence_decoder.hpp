@@ -69,7 +69,16 @@ namespace uva {
                         inline void translate(const atomic<bool> & is_stop,
                                 const string & source_sentence,
                                 string & target_sentence) {
-
+                            
+                            //Obtain the language mode query proxy
+                            //lm_query_proxy *  lm_query = lm_configurator::get_query_proxy();
+                            
+                            //Obtain the language mode query proxy
+                            //tm_query_proxy *  tm_query = tm_configurator::get_query_proxy();
+                            
+                            //Obtain the language mode query proxy
+                            //rm_query_proxy *  rm_query = rm_configurator::get_query_proxy();
+                            
                             //ToDo: Implement, implement the translation process, the next loop
                             //is a temporary measure for testing, do the actual decoding steps
                             if (source_sentence.size() != 0) {

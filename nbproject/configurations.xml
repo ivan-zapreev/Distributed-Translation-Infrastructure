@@ -6,6 +6,7 @@
     <df root="inc" name="1">
       <df name="server">
         <df name="decoder">
+          <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
           <in>sentence_decoder.hpp</in>
         </df>
@@ -134,6 +135,8 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/server/decoder/de_configs.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/server/decoder/de_configurator.hpp"
             ex="false"
             tool="3"

@@ -132,7 +132,7 @@ namespace uva {
                              * @param rest the line to be parsed, starts with a space
                              * @param entry the entry to put the values into
                              */
-                            void process_entry_weights(TextPieceReader & rest, typename model_type::rm_num_entry & entry) {
+                            void process_entry_weights(TextPieceReader & rest, rm_entry & entry) {
                                 //Declare the token to store weights
                                 TextPieceReader token;
 
@@ -141,7 +141,7 @@ namespace uva {
 
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
-                                while (rest.get_first_space(token) && (idx < model_type::NUM_WEIGHTS)) {
+                                while (rest.get_first_space(token) && (idx < rm_entry::NUM_WEIGHTS)) {
                                     //Parse the token into the entry weight
                                     fast_s_to_f(entry[idx], token.str().c_str());
                                     //Increment the index 
@@ -149,8 +149,8 @@ namespace uva {
                                 }
 
                                 //Check that the number of weights is as expected
-                                ASSERT_CONDITION_THROW(idx != model_type::NUM_WEIGHTS, string("The number of reordering weights is: ") +
-                                        to_string(idx) + string(" expected ") + to_string(model_type::NUM_WEIGHTS));
+                                ASSERT_CONDITION_THROW(idx != rm_entry::NUM_WEIGHTS, string("The number of reordering weights is: ") +
+                                        to_string(idx) + string(" expected ") + to_string(rm_entry::NUM_WEIGHTS));
                             }
 
                             /**

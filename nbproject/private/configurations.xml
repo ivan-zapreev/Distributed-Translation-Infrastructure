@@ -616,6 +616,7 @@
           </df>
         </df>
         <df name="decoder">
+          <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
           <in>de_parameters.hpp</in>
           <in>sentence_decoder.hpp</in>

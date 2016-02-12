@@ -27,6 +27,7 @@
 #define RM_QUERY_PROXY_LOCAL_HPP
 
 #include "server/rm/proxy/rm_query_proxy.hpp"
+#include "server/rm/models/rm_entry.hpp"
 #include "server/rm/models/rm_query.hpp"
 
 using namespace uva::smt::bpbd::server::rm;
@@ -44,13 +45,8 @@ namespace uva {
                          * This implementation works with the local reordering model
                          */
                         template<typename model_type>
-                        class rm_query_proxy_local : public rm_query_proxy<model_type::NUM_WEIGHTS> {
+                        class rm_query_proxy_local : public rm_query_proxy {
                         public:
-                            //Make the base typedef
-                            typedef rm_query_proxy<model_type::NUM_WEIGHTS> BASE;
-
-                            //Make a local typedef for the rm entry
-                            typedef typename BASE::rm_num_entry rm_num_entry;
 
                             /**
                              * The basic constructor that accepts the reordering model reference to query to
@@ -62,7 +58,7 @@ namespace uva {
                             /**
                              * @see rm_query_proxy
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const {
+                            virtual const rm_entry & get_reordering(const phrase_uid uid) const {
                                 return m_query.get_reordering(uid);
                             }
 

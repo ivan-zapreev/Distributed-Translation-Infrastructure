@@ -53,12 +53,10 @@ namespace uva {
                         template<typename model_type>
                         class rm_query {
                         public:
-                            //Make a local typedef for the rm entry
-                            typedef typename model_type::rm_num_entry rm_num_entry;
 
                             //Define the query map as a mapping from the source/target phrase
                             //uid to the pointer to the constant reordering data. 
-                            typedef unordered_map<phrase_uid, const typename model_type::rm_num_entry *> query_map;
+                            typedef unordered_map<phrase_uid, const rm_entry *> query_map;
 
                             /**
                              * The basic constructor
@@ -77,7 +75,7 @@ namespace uva {
                                     //Get the source/target phrase id
                                     const phrase_uid st_uid = *iter;
                                     //Retrieve the reordering entry from the model
-                                    const rm_num_entry * entry = m_model.get_entry(st_uid);
+                                    const rm_entry * entry = m_model.get_entry(st_uid);
 
                                     //Perform the sanity check for the sake of safety
                                     ASSERT_SANITY_THROW((entry == NULL),
@@ -102,7 +100,7 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the reordering was not found.
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const {
+                            virtual const rm_entry & get_reordering(const phrase_uid uid) const {
                                 //Check that the source phrase is present, we are not allowed
                                 //to translate something that was not added to the query!
                                 ASSERT_SANITY_THROW((m_query_data.find(uid) == m_query_data.end()),

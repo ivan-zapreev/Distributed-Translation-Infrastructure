@@ -80,7 +80,6 @@ namespace uva {
                             delete &dec;
                         }
                         
-                    protected:
                     private:
                     };
                 }

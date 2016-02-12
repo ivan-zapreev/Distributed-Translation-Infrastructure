@@ -48,14 +48,9 @@ namespace uva {
                         /**
                          * This class represents a reordering query proxy interface class.
                          * It allows to interact with reordering model queries in a uniform way.
-                         * @param num_weights is the number of reordering weights
                          */
-                        template<size_t num_weights>
                         class rm_query_proxy {
                         public: 
-                              
-                            //Typedef the entry with the template parameter
-                            typedef rm_entry<num_weights> rm_num_entry;
                             
                             /**
                              * Allows to execute the query, for the given source/target phrase ids
@@ -70,7 +65,7 @@ namespace uva {
                              * @return the reference to the source entry, might be the one
                              *         of UNK if the reordering was not found.
                              */
-                            virtual const rm_num_entry & get_reordering(const phrase_uid uid) const = 0;
+                            virtual const rm_entry & get_reordering(const phrase_uid uid) const = 0;
 
                             /**
                              * The basic virtual destructor

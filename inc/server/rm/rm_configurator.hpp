@@ -52,9 +52,6 @@ namespace uva {
                      */
                     class rm_configurator {
                     public:
-                        typedef rm_proxy<NUMBER_WEIGHT_ENTRIES> rm_num_proxy;
-                        typedef rm_proxy_local<rm_num_proxy::NUM_WEIGHTS> rm_num_proxy_local;
-                        typedef rm_num_proxy::rm_num_query_proxy rm_num_query_proxy;
                         
                         /**
                          * This method allows to connect to the reordering model.
@@ -67,7 +64,7 @@ namespace uva {
                             m_params = params;
 
                             //At the moment we only support a local proxy
-                            m_model_proxy = new rm_num_proxy_local();
+                            m_model_proxy = new rm_proxy_local();
                             
                             //Connect to the model instance using the given parameters
                             m_model_proxy->connect(m_params.m_conn_string);
@@ -91,7 +88,7 @@ namespace uva {
                          * is to be destroyed by the client class.
                          * @return an instance of the query executor.
                          */
-                        static inline rm_num_query_proxy * get_query_proxy() {
+                        static inline rm_query_proxy * get_query_proxy() {
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->get_query_proxy();
                         }
@@ -101,7 +98,7 @@ namespace uva {
                         static rm_parameters m_params;
                         
                         //Store the trie proxy object
-                        static rm_num_proxy * m_model_proxy;
+                        static rm_proxy * m_model_proxy;
                     };
                 }
             }

@@ -58,19 +58,12 @@ namespace uva {
                          * but rather the hash values thereof. So it is a hash based
                          * implementation which reduces memory but might occasionally
                          * result in collisions, the latter is not checked.
-                         * @param num_weights is the number of reordering weights
                          */
-                        template<size_t num_weights>
                         class rm_basic_model {
                         public:
-                            //Stores the number of weights for external use
-                            static constexpr size_t NUM_WEIGHTS = num_weights;
-
-                            //Typedef the entry with the template parameter
-                            typedef rm_entry<num_weights> rm_num_entry;
 
                             //Define the translations data map. It represents possible translations for some source phrase.
-                            typedef fixed_size_hashmap<rm_num_entry, const phrase_uid &> rm_entry_map;
+                            typedef fixed_size_hashmap<rm_entry, const phrase_uid &> rm_entry_map;
 
                             /**
                              * The basic class constructor
@@ -116,12 +109,12 @@ namespace uva {
                              * @param target the target phrase
                              * @return the reference to the newly allocated entry
                              */
-                            inline rm_num_entry & add_entry(const string & source, const string & target) {
+                            inline rm_entry & add_entry(const string & source, const string & target) {
                                 //Compute the id
                                 const phrase_uid uid = get_phrase_uid(source, target);
 
                                 //Add the new entry end return its reference
-                                rm_num_entry & entry = m_rm_data->add_new_element(uid);
+                                rm_entry & entry = m_rm_data->add_new_element(uid);
 
                                 //Set the identifier into the entry
                                 entry.set_entry_uid(uid);
@@ -150,11 +143,11 @@ namespace uva {
                              * @param uid the source/target phrase pair uid
                              * @return the reordering entry, always NOT NULL!
                              */
-                            inline const rm_num_entry * get_entry(const phrase_uid uid) const {
+                            inline const rm_entry * get_entry(const phrase_uid uid) const {
                                 //If this is not the unknown phrase id then go searching, otherwise return the unk
                                 if (uid != UNKNOWN_PHRASE_ID) {
                                     //Get the entry for the given id
-                                    rm_num_entry * entry = m_rm_data->get_element(uid, uid);
+                                    rm_entry * entry = m_rm_data->get_element(uid, uid);
 
                                     //Check if the entry is not NULL if it is then return the UNK/UNK
                                     if (entry != NULL) {
@@ -174,7 +167,7 @@ namespace uva {
                              * @param target the target phrase
                              * @return the reordering entry, always NOT NULL!
                              */
-                            inline const rm_num_entry * get_entry(const phrase_uid & suid, const string & target) const {
+                            inline const rm_entry * get_entry(const phrase_uid & suid, const string & target) const {
                                 return get_entry(get_phrase_uid(suid, target));
                             }
 
@@ -185,7 +178,7 @@ namespace uva {
                              * @param target the target phrase
                              * @return the reordering entry, always NOT NULL!
                              */
-                            inline const rm_num_entry * get_entry(const string & source, const string & target) const {
+                            inline const rm_entry * get_entry(const string & source, const string & target) const {
                                 return get_entry(get_phrase_uid(source, target));
                             }
 
@@ -200,11 +193,8 @@ namespace uva {
                             //Stores the translation model data
                             rm_entry_map * m_rm_data;
                             //Stores the pointer to the UNK entry if found
-                            const rm_num_entry * m_unk_entry;
+                            const rm_entry * m_unk_entry;
                         };
-
-                        template<size_t num_weights>
-                        constexpr size_t rm_basic_model<num_weights>::NUM_WEIGHTS;
                     }
                 }
             }
