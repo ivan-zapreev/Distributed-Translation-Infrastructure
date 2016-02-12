@@ -24,8 +24,9 @@
  */
 
 #ifndef STRINGUTILS_HPP
-#define	STRINGUTILS_HPP
+#define STRINGUTILS_HPP
 
+#include <locale>  //std::tolower
 #include <string>  // std::string
 #include <vector>  // std::vector
 #include <sstream> // std::stringstream
@@ -76,9 +77,9 @@ namespace uva {
 #endif
 
             //All the possible Whitespaces, including unicode, to be imagined, are to be used for trimming and reduce
-            //const string WHITESPACES = "\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r"
+            const string UTF8_WHITESPACES = "\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r";
             //In the ARPA format we should only consider the basic asci delimiters!
-            const string WHITESPACES = "\t\f\v\n\r ";
+            const string ASCII_WHITESPACES = "\t\f\v\n\r ";
 
             /**
              * This function allows to convert an array of values to a string representation.
@@ -142,14 +143,56 @@ namespace uva {
                 }
             }
 
+            //Stores the known ASCII delimiters
+            const string ASCII_PUNCTUATIONS = ".,?!/'\"`@#$%^&*()[]{}-_+=*<>~|\\;:";
+
+            /**
+             * Allows to surround the given punctuation symbols in the string by the fill in symbols.
+             * After this is done the string might need reduction.
+             * @param str the string in which the delimiters are to be surrounded by the fill symbols
+             * @param fill the fill symbols to put around delimiters, default is just a single space
+             * @param puncts the punctuations to surround with the fill symbols, default are ASCII_PUNCTUATIONS
+             * @return the reference to the (resulting) string
+             */
+            static inline std::string& punctuate(std::string& str,
+                    const std::string& fill = " ",
+                    const std::string& puncts = ASCII_PUNCTUATIONS) {
+                LOG_DEBUG4 << "Tokenizing the string '" << str << "'" << END_LOG;
+                //Find the delimiters and surround them with fill symbols
+                size_t delim_pos = str.find_first_of(puncts);
+                while (delim_pos != std::string::npos) {
+                    //Surround the delimiter with two fill elements
+                    str.replace(delim_pos, 1, fill + str[delim_pos] + fill);
+                    //Search for the next delimiter, skip the positions we just put our new values into
+                    delim_pos = str.find_first_of(puncts, delim_pos + 2 * fill.length() + 1);
+                }
+
+                LOG_DEBUG4 << "The string after tokenizing is '" << str << "'" << END_LOG;
+                return str;
+            }
+
+            /**
+             * Allows to convert the string to lower case 
+             * @param str [in/out] the string to convert
+             * @return the reference to the (converted) string 
+             */
+            static inline std::string& to_lower(std::string& str) {
+                LOG_DEBUG4 << "Lowercasing the string '" << str << "'" << END_LOG;
+                for (unsigned int i = 0; i < str.length(); ++i) {
+                    str[i] = tolower(str[i]);
+                }
+                LOG_DEBUG4 << "The string after lowercasing is '" << str << "'" << END_LOG;
+                return str;
+            }
+
             /**
              * This function can be used to trim the string
              * @param str the string to be trimmed, it is an in/out parameter
              * @param whitespace the white spaces to be trimmed, the default value is " \t" 
              * @return the reference to the trimmed string
              */
-            inline std::string& trim(std::string& str,
-                    const std::string& whitespace = WHITESPACES) {
+            static inline std::string& trim(std::string& str,
+                    const std::string& whitespace = ASCII_WHITESPACES) {
                 LOG_DEBUG4 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
                 if (str != "") {
                     const size_t strBegin = str.find_first_not_of(whitespace);
@@ -177,27 +220,32 @@ namespace uva {
              * @param fill the filling symbol to be used within the string instead of ranges, by default " "
              * @param whitespace the white spaces to be reduced, by default " \t"
              */
-            inline void reduce(std::string& str,
+            static inline std::string& reduce(std::string& str,
                     const std::string& fill = " ",
-                    const std::string& whitespace = WHITESPACES) {
+                    const std::string& whitespace = ASCII_WHITESPACES) {
                 LOG_DEBUG4 << "Reducing the string '" << str << "', with white spaces" << END_LOG;
                 if (str != "") {
                     // trim first
                     trim(str, whitespace);
 
                     // replace sub ranges
-                    size_t beginSpace = str.find_first_of(whitespace);
-                    while (beginSpace != std::string::npos) {
-                        const size_t endSpace = str.find_first_not_of(whitespace, beginSpace);
-                        const size_t range = endSpace - beginSpace;
+                    size_t begin_pos = str.find_first_of(whitespace);
+                    while (begin_pos != std::string::npos) {
+                        LOG_DEBUG4 << "The first whitespace position is: " << begin_pos << END_LOG;
+                        const size_t end_pos = str.find_first_not_of(whitespace, begin_pos + 1);
+                        LOG_DEBUG4 << "The first next non-whitespace position is: " << end_pos << END_LOG;
+                        const size_t length = end_pos - begin_pos;
 
-                        str.replace(beginSpace, range, fill);
+                        str.replace(begin_pos, length, fill);
+                        LOG_DEBUG4 << "Replacement [" << begin_pos << "," << end_pos << "] with '"
+                                << fill << "' results in: '" << str << "'" << END_LOG;
 
-                        const size_t newStart = beginSpace + fill.length();
-                        beginSpace = str.find_first_of(whitespace, newStart);
+                        const size_t next_pos = begin_pos + fill.length();
+                        begin_pos = str.find_first_of(whitespace, next_pos);
                     }
                 }
                 LOG_DEBUG4 << "The reduced result is '" << str << "'" << END_LOG;
+                return str;
             }
 
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')
@@ -227,7 +275,7 @@ namespace uva {
              * @return true if the function thinks it successfully parsed the
              * input, otherwise false.
              */
-            inline bool fast_s_to_f(float & res, const char *p) {
+            static inline bool fast_s_to_f(float & res, const char *p) {
                 uint32_t int_part = 0.0;
                 int c = 0; // counter to check how many numbers we got!
 
@@ -324,5 +372,5 @@ namespace uva {
     }
 }
 
-#endif	/* STRINGUTILS_HPP */
+#endif /* STRINGUTILS_HPP */
 

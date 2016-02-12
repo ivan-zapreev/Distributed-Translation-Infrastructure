@@ -90,12 +90,14 @@ namespace uva {
                          * @param is_stop the flag that will be set to true in case 
                          *                one needs to abort the translation process.
                          * @param source_sent [in] the source language sentence to translate
+                         *                         the source sentence is expected to be
+                         *                         tokenized, reduced, and in the lower case.
                          * @param target_sent [out] the resulting target language sentence
                          */
                         inline void translate(acr_bool_flag is_stop,
                                 string source_sent, string & target_sent) {
-                            //If the trimmed source sentence is not empty then do the translation
-                            if (trim(source_sent).size() != 0) {
+                            //If the reduced source sentence is not empty then do the translation
+                            if (source_sent.size() != 0) {
 
                                 //Prepare the source sentence for being decoded
                                 set_source_sent(is_stop, source_sent);
@@ -116,7 +118,7 @@ namespace uva {
                                 if (is_stop) return;
 
                                 //Perform the translation
-                                perform_translation(is_stop);
+                                perform_translation(is_stop, source_sent, target_sent);
                             }
                         }
 
@@ -124,10 +126,11 @@ namespace uva {
 
                         /**
                          * Allows to set the source sentence, this includes preparing things for decoding
-                         * @param source_sent the source sentence to be set
+                         * @param source_sent the source sentence to be set, accepts a reduced, tokenized,
+                         *                    and in the lower case
                          */
                         inline void set_source_sent(acr_bool_flag is_stop, string & source_sent) {
-                            //ToDo: Implement
+                            //ToDo: Tokenize the sentence string
                         }
 
                         /**
@@ -147,14 +150,17 @@ namespace uva {
                         /**
                          * Performs the sentence translation 
                          */
-                        inline void perform_translation(acr_bool_flag is_stop) {
+                        inline void perform_translation(acr_bool_flag is_stop, const string source_sent, string & target_sent) {
                             //ToDo: Implement
 
-                            const uint32_t time_sec = rand() % 100;
+                            const uint32_t time_sec = rand() % 20;
                             for (uint32_t i = 0; i <= time_sec; ++i) {
                                 if (is_stop) break;
                                 this_thread::sleep_for(chrono::seconds(1));
                             }
+                            
+                            //ToDo: Remove this temporary plug
+                            target_sent = source_sent;
                         }
 
                     private:

@@ -166,8 +166,13 @@ namespace uva {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
+                        //Serialize the message into string
+                        string message = request->serialize();
+                        
+                        LOG_DEBUG << "Serialized translation request: \n" << message << END_LOG;
+                        
                         //Try to send the translation job request
-                        m_client.send(m_hdl, request->serialize(), websocketpp::frame::opcode::text, ec);
+                        m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
 
                         // The most likely error that we will get is that the connection is
                         // not in the right state. Usually this means we tried to send a

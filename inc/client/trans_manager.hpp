@@ -38,16 +38,20 @@
 #include "translation_client.hpp"
 #include "trans_job.hpp"
 #include "trans_job_status.hpp"
+
 #include "common/messaging/trans_job_code.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_response.hpp"
+
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/threads.hpp"
+#include "common/utils/string_utils.hpp"
 
 using namespace std;
 using namespace uva::utils::threads;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -66,7 +70,7 @@ namespace uva {
                 public:
                     //Stores the absolute allowed minimum of sentences to be sent by translation request.
                     //Note that if the translation text is smaller then this value is overruled.
-                    static constexpr uint64_t MIN_SENTENCES_PER_REQUEST = 5;
+                    static constexpr uint64_t MIN_SENTENCES_PER_REQUEST = 1;
 
                     //Define the type for the list of the translation data objects
                     typedef vector<trans_job_ptr> jobs_list_type;
@@ -101,7 +105,7 @@ namespace uva {
                         //Check that the minimum is not too small
                         ASSERT_CONDITION_THROW((m_params.m_min_sent < MIN_SENTENCES_PER_REQUEST),
                                 string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
-                                + string(") should be larger or equal than") + to_string(MIN_SENTENCES_PER_REQUEST));
+                                + string(") should be larger or equal than ") + to_string(MIN_SENTENCES_PER_REQUEST));
 
                         //Set the stopping flag to false
                         m_is_stopping = false;
@@ -276,6 +280,16 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to check if all the jobs are done and then perform a notifying action
+                     */
+                    void check_jobs_done_and_notify() {
+                        //If we received all the jobs then notify that all the jobs are received!
+                        if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
+                            notify_jobs_done();
+                        }
+                    }
+
+                    /**
                      * Allows to process the server job request response
                      * @param trans_job_resp the translation job response coming from the server
                      */
@@ -303,10 +317,8 @@ namespace uva {
                                 LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
                             }
 
-                            //If we received all the jobs then notify that all the jobs are received!
-                            if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
-                                notify_jobs_done();
-                            }
+                            //Check if the jobs are done and notify
+                            check_jobs_done_and_notify();
                         }
                     }
 
@@ -315,7 +327,7 @@ namespace uva {
                      */
                     void notify_conn_closed() {
                         LOG_WARNING << "The server has closed the connection!" << END_LOG;
-                        
+
                         //If the connection is closed we shall be stopping then
                         //The basic client does not support any connection recovery
                         m_is_stopping = true;
@@ -324,7 +336,7 @@ namespace uva {
                         if (m_sending_thread_ptr != NULL) {
                             m_sending_thread_ptr->join();
                         }
-                        
+
                         //Notify that we are done with the jobs
                         notify_jobs_done();
                     }
@@ -383,6 +395,8 @@ namespace uva {
                                         << e.get_message() << END_LOG;
                                 //Mark the job sending as failed in the administration
                                 data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
+                                //Increments the done jobs count
+                                m_num_done_jobs++;
                             }
                         }
 
@@ -390,6 +404,9 @@ namespace uva {
 
                         //The translation jobs have been sent!
                         notify_jobs_sent();
+
+                        //For the case when all jobs failed, we need to check if the jobs are notified
+                        check_jobs_done_and_notify();
                     }
 
                     /**
@@ -467,10 +484,21 @@ namespace uva {
                             LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
 
                             while ((num_read < num_to_sent) && m_source_file.get_first_line(line)) {
-                                LOG_DEBUG2 << "Read line: '" << line.str() << "'" << END_LOG;
+                                //Obtain the read source sentence
+                                string source_sent = line.str();
+
+                                LOG_DEBUG2 << "Read line: '" << source_sent << "'" << END_LOG;
+
+                                //Pre-proces the source sentence:
+                                //1. Lowercase
+                                to_lower(source_sent);
+                                //2. Reduce
+                                reduce(source_sent, " ", UTF8_WHITESPACES);
+                                //3. Punctuate
+                                punctuate(source_sent);
 
                                 //Append the new line to the text to be sent
-                                source_text += line.str() + "\n";
+                                source_text += source_sent + "\n";
 
                                 //Increment the number of read sentences
                                 ++num_read;
