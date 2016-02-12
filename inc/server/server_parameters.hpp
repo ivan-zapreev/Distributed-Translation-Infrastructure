@@ -46,15 +46,26 @@ namespace uva {
                  * This structure stores the translation server parameters
                  */
                 typedef struct {
+                    //The target language name
+                    string m_target_lang;
+                    //The source language name
+                    string m_source_lang;
+
+                    //The port to listen to
+                    uint16_t m_server_port;
+
+                    //The number of the translation threads to run
+                    size_t m_num_threads;
+
                     //Stores the translation model parameters
                     tm_parameters m_tm_params;
-                    
+
                     //Stores the reordering model parameters
                     rm_parameters m_rm_params;
-                    
+
                     //Stores the language model parameters
                     lm_parameters m_lm_params;
-                    
+
                     //Stores the decoder parameters
                     de_parameters m_de_params;
                 } server_parameters;

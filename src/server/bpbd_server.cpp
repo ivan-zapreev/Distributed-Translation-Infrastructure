@@ -164,16 +164,16 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     if (ini.parse()) {
         //Get the configuration options from the file
         string section = "Server Options";
-        params.m_de_params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
-        params.m_de_params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
+        params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
+        params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
 
         section = "Language Options";
-        params.m_de_params.m_source_lang = get_string(ini, section, "source_lang");
-        params.m_de_params.m_target_lang = get_string(ini, section, "target_lang");
+        params.m_source_lang = get_string(ini, section, "source_lang");
+        params.m_target_lang = get_string(ini, section, "target_lang");
 
-        LOG_USAGE << "Translation server from '" << params.m_de_params.m_source_lang << "' into '"
-                << params.m_de_params.m_target_lang << "' on port: '" << params.m_de_params.m_server_port
-                << "' translation threads: '" << params.m_de_params.m_num_threads << "'" << END_LOG;
+        LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
+                << params.m_target_lang << "' on port: '" << params.m_server_port
+                << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
@@ -283,7 +283,7 @@ int main(int argc, char** argv) {
         connect_to_models(params);
 
         //Instantiate the translation server
-        translation_server server(params.m_de_params.m_server_port, params.m_de_params.m_num_threads);
+        translation_server server(params.m_server_port, params.m_num_threads);
 
         //Run the translation server in a separate thread
         thread server_thread(bind(&translation_server::run, &server));

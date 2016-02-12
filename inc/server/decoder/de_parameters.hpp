@@ -36,24 +36,6 @@ namespace uva {
                      * This structure stores the decoder parameters
                      */
                     typedef struct {
-                        //The language model file name 
-                        string m_language_model;
-                        //The translation model file name 
-                        string m_translation_model;
-                        //The reordering model file name 
-                        string m_reordering_model;
-
-                        //The target language name
-                        string m_target_lang;
-                        //The source language name
-                        string m_source_lang;
-
-                        //The port to listen to
-                        uint16_t m_server_port;
-
-                        //The number of the translation threads to run
-                        size_t m_num_threads;
-
                         //The distortion limit to use
                         uint32_t m_distortion_limit;
                         //The pruning threshold to be used
