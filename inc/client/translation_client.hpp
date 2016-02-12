@@ -138,17 +138,25 @@ namespace uva {
                             //Invalidate the connection close notifier
                             m_notify_conn_close = NULL;
 
+                            LOG_INFO << "Closing the server connection..." << END_LOG;
+
                             //Close the connection to the server
                             m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
-
+                            
                             //Set the done flag to true as we  are now done
                             m_closed = true;
                         }
 
                         //Check if the client is stopped
                         if (m_started && !m_stopped) {
+
+                            LOG_INFO << "Stopping the IO service thread..." << END_LOG;
+                            
                             //Stop the io service thread
                             m_client.stop();
+
+                            //Wait until the service is not stopped
+                            while (!m_client.stopped());
 
                             //Wait for the thread to exit.
                             m_asio_thread.join();
@@ -168,9 +176,9 @@ namespace uva {
 
                         //Serialize the message into string
                         string message = request->serialize();
-                        
+
                         LOG_DEBUG << "Serialized translation request: \n" << message << END_LOG;
-                        
+
                         //Try to send the translation job request
                         m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
 

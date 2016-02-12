@@ -42,16 +42,15 @@
 
 using namespace std;
 using namespace std::placeholders;
+
+using namespace websocketpp;
+using namespace websocketpp::frame;
+using namespace websocketpp::lib;
+using namespace websocketpp::log;
+
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::smt::bpbd::common::messaging;
-
-using websocketpp::connection_hdl;
-using websocketpp::log::elevel;
-using websocketpp::log::alevel;
-using websocketpp::frame::opcode::value;
-using websocketpp::frame::opcode::text;
-using websocketpp::lib::error_code;
 
 namespace uva {
     namespace smt {
@@ -74,8 +73,8 @@ namespace uva {
                     translation_server(const uint16_t port, const size_t num_threads)
                     : m_manager(num_threads) {
                         //Set up access channels to only log interesting things
-                        m_server.clear_access_channels(alevel::all);
-                        m_server.set_access_channels(alevel::app);
+                        m_server.clear_access_channels(log::alevel::all);
+                        m_server.set_access_channels(log::alevel::app);
 
                         //Initialize the Asio transport policy
                         m_server.init_asio();
@@ -110,7 +109,7 @@ namespace uva {
                         //NOTE: Somehow stopping to listen to the new connections result in errors
                         //It seems to be an implementation flaw of the library, from what I see in
                         //the code. The work-around now is that @ stopping the errors are disabled.
-                        m_server.clear_error_channels(elevel::all);
+                        m_server.clear_error_channels(log::elevel::all);
 
                         LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                         //Remove the on_close handler
@@ -142,10 +141,10 @@ namespace uva {
                         //Get the response string
                         const string reply_str = response.serialize();
                         //Declare the error code
-                        error_code ec;
+                        lib::error_code ec;
 
                         //Send/schedule the translation job reply
-                        m_server.send(hdl, reply_str, text, ec);
+                        m_server.send(hdl, reply_str, opcode::text, ec);
 
                         //Locally report sending error
                         if (ec) {
