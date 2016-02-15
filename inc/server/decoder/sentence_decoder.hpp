@@ -26,12 +26,17 @@
 #ifndef SENTENCE_DECODER_HPP
 #define SENTENCE_DECODER_HPP
 
+#include <algorithm>
+
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "server/common/models/phrase_uid.hpp"
+
 #include "server/decoder/de_parameters.hpp"
+#include "server/decoder/sentence_data_map.hpp"
 
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
@@ -43,6 +48,8 @@ using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::text;
+
+using namespace uva::smt::bpbd::server::common::models;
 
 using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::rm;
@@ -68,7 +75,7 @@ namespace uva {
                          * @param params the reference to the decoder parameters
                          */
                         sentence_decoder(const de_parameters & params)
-                        : m_params(params),
+                        : m_params(params), m_sent_data(NULL),
                         m_lm_query(lm_configurator::allocate_query_proxy()),
                         m_tm_query(tm_configurator::allocate_query_proxy()),
                         m_rm_query(rm_configurator::allocate_query_proxy()) {
@@ -79,6 +86,11 @@ namespace uva {
                          * The basic destructor
                          */
                         ~sentence_decoder() {
+                            //Destroy the sentence data
+                            if (m_sent_data != NULL) {
+                                delete m_sent_data;
+                                m_sent_data = NULL;
+                            }
                             //Dispose the query objects are they are no longer needed
                             lm_configurator::dispose_query_proxy(m_lm_query);
                             tm_configurator::dispose_query_proxy(m_tm_query);
@@ -130,7 +142,59 @@ namespace uva {
                          *                    and in the lower case
                          */
                         inline void set_source_sent(acr_bool_flag is_stop, string & source_sent) {
-                            //ToDo: Tokenize the sentence string
+                            LOG_USAGE << "Got source sentence to set: " << source_sent << END_LOG;
+
+                            //Compute the number of tokens in the sentence
+                            const size_t num_tokens = std::count(source_sent.begin(), source_sent.end(), ASCII_SPACE_CHAR) + 1;
+
+                            //Instantiate the sentence info matrix
+                            m_sent_data = new sentence_data_map(num_tokens);
+                            sentence_data_map & sent_data(*m_sent_data);
+
+                            //Fill in the matrix with the phrases and their uids
+                            int32_t col_idx = 0;
+                            size_t start = 0, end = source_sent.find_first_of(UTF8_SPACE_STRING);
+
+                            while (end <= std::string::npos && !is_stop) {
+                                //Get the appropriate map entry reference
+                                sent_data_entry & diag_entry = sent_data[col_idx][col_idx];
+
+                                //Store the end word and its id
+                                diag_entry.m_word = source_sent.substr(start, end - start);
+                                diag_entry.m_word_uid = get_phrase_uid(diag_entry.m_word);
+                                diag_entry.m_phrase = diag_entry.m_word;
+                                diag_entry.m_phrase_uid = diag_entry.m_word_uid;
+
+                                LOG_USAGE << "End word: " << diag_entry.m_word << ", uid: " << diag_entry.m_word_uid << END_LOG;
+
+                                //Compute the new phrases and phrase ids for the new column elements,
+                                //Note that, the longest phrase length to consider is defined by the
+                                //decoding parameters. It is the end word plus several previous.
+                                for (int32_t row_idx = max(0, col_idx - m_params.m_max_phrase_len + 1); (row_idx < col_idx) && !is_stop; ++row_idx) {
+                                    //Get the previous column entry
+                                    sent_data_entry & prev_entry = sent_data[row_idx][col_idx - 1];
+                                    //Get the new column entry
+                                    sent_data_entry & new_entry = sent_data[row_idx][col_idx];
+                                    //Create the new phrase
+                                    new_entry.m_phrase = prev_entry.m_phrase + UTF8_SPACE_STRING + diag_entry.m_word;
+                                    //Compute the new phrase id
+                                    new_entry.m_phrase_uid = get_phrase_uid(diag_entry.m_word_uid, prev_entry.m_phrase_uid);
+
+                                    LOG_USAGE << "Phrase: " << new_entry.m_phrase << ", uid: " << new_entry.m_phrase_uid << END_LOG;
+                                }
+
+                                //Check on the stop condition 
+                                if (end == std::string::npos) {
+                                    break;
+                                }
+
+                                //Increment the end word index
+                                ++col_idx;
+
+                                //Search for the next delimiter
+                                start = end + 1;
+                                end = source_sent.find_first_of(UTF8_SPACE_STRING, start);
+                            }
                         }
 
                         /**
@@ -158,7 +222,7 @@ namespace uva {
                                 if (is_stop) break;
                                 this_thread::sleep_for(chrono::seconds(1));
                             }
-                            
+
                             //ToDo: Remove this temporary plug
                             target_sent = source_sent;
                         }
@@ -166,6 +230,8 @@ namespace uva {
                     private:
                         //Stores the reference to the decoder parameters
                         const de_parameters & m_params;
+                        //Stores the pointer to the sentence data map
+                        sentence_data_map * m_sent_data;
                         //The language mode query proxy
                         lm_query_proxy & m_lm_query;
                         //The language mode query proxy

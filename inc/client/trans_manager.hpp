@@ -494,10 +494,10 @@ namespace uva {
                                     //Pre-proces the source sentence:
                                     //1. Lowercase
                                     to_lower(source_sent);
-                                    //2. Reduce
-                                    reduce(source_sent);
-                                    //3. Punctuate
+                                    //2. Punctuate
                                     punctuate(source_sent);
+                                    //3. Reduce
+                                    reduce(source_sent);
                                 }
 
                                 //Append the new line to the text to be sent

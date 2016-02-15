@@ -28,7 +28,7 @@
 
 #include <vector>
 
-#include "server/common/models/phrase_id.hpp"
+#include "server/common/models/phrase_uid.hpp"
 
 #include "server/rm/models/rm_entry.hpp"
 

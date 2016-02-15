@@ -4,10 +4,18 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="common">
+        <df name="utils">
+          <df name="containers">
+            <in>upp_diag_matrix.hpp</in>
+          </df>
+        </df>
+      </df>
       <df name="server">
         <df name="decoder">
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
+          <in>sentence_data_map.hpp</in>
           <in>sentence_decoder.hpp</in>
         </df>
         <df name="rm">
@@ -138,9 +146,19 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/common/utils/containers/upp_diag_matrix.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/server/decoder/de_configs.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/server/decoder/de_configurator.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/decoder/sentence_data_map.hpp"
             ex="false"
             tool="3"
             flavor2="0">

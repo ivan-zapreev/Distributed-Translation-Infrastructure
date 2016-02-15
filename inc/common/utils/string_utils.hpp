@@ -80,6 +80,8 @@ namespace uva {
             const string UTF8_ASCII_WHITESPACES = u8"\t\f\v\n\r ";
             //Stores the known ASCII delimiters
             const string UTF8_ASCII_PUNCTUATIONS = u8".,?!/'\"`@#$%^&*()[]{}-_+=*<>~|\\;:";
+            //Stores the ASCII space char
+            const char ASCII_SPACE_CHAR = ' ';
             //Stores the utf8 space string
             const string UTF8_SPACE_STRING = u8" ";
             //Stores the utf8 empty string
@@ -130,11 +132,13 @@ namespace uva {
 
             /**
              * Tokenise a given string into a vector of strings
-             * @param s the string to tokenise
-             * @param delim the delimiter
-             * @param elems the output array
+             * @param data the string to tokenise
+             * @param elems the vector to fill the data into
+             * @param delim the delimiter string storing the token delimiters, default is UTF8_SPACE_STRING
              */
-            static inline void tokenize(const std::string &data, const char delim, vector<string> & elems) {
+            static inline void tokenize(const std::string &data,
+                    vector<string> & elems,
+                    const string& delim = UTF8_SPACE_STRING) {
                 elems.clear();
                 size_t start = 0;
                 size_t end = data.find_first_of(delim);

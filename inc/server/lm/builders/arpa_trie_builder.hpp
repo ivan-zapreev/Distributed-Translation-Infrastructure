@@ -45,7 +45,7 @@ namespace uva {
                         //The end of ARPA file constant
                         static const string END_OF_ARPA_FILE = "\\end\\";
                         //The N-gram Data Section Amoung delimiter
-                        static const char NGRAM_COUNTS_DELIM = '=';
+                        static const string NGRAM_COUNTS_DELIM = "=";
 
                         /**
                          * This is the Trie builder class that reads an input file stream

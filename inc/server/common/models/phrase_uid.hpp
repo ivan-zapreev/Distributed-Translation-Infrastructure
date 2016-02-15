@@ -27,6 +27,7 @@
 #define TM_PHRASE_ID_HPP
 
 #include <string>
+#include <vector>
 #include <cstdint>
 
 #include "common/utils/exceptions.hpp"
@@ -64,7 +65,7 @@ namespace uva {
                          * @param the phrase to get the uid for
                          * @return the uid of the phrase
                          */
-                        static inline phrase_uid get_phrase_uid(const string phrase) {
+                        static inline phrase_uid get_phrase_uid(const string & phrase) {
                             //Compute the string hash
                             phrase_uid uid = compute_hash(phrase);
                             //If the value is below the minimum then shift it up
@@ -94,7 +95,7 @@ namespace uva {
                          * @param p2 the second phrase
                          * @return the uid of the phrase
                          */
-                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const string p2) {
+                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const string & p2) {
                             return combine_hash(p1_uid, get_phrase_uid(p2));
                         }
 
@@ -106,8 +107,20 @@ namespace uva {
                          * @param p2 the second phrase
                          * @return the uid of the phrase
                          */
-                        static inline phrase_uid get_phrase_uid(const string p1, const string p2) {
+                        static inline phrase_uid get_phrase_uid(const string & p1, const string & p2) {
                             return get_phrase_uid(get_phrase_uid(p1), p2);
+                        }
+
+                        /**
+                         * Allows to convert tokens to 
+                         * @param phrases the vector of phrases to be converted into uids
+                         * @param the corresponding of ours
+                         */
+                        static inline void phrases_to_uids(const vector<string> & phrases, vector<phrase_uid> & uids) {
+                            uids.clear();
+                            for (vector<string>::const_iterator iter = phrases.begin(); iter != phrases.end(); ++iter) {
+                                uids.emplace_back(get_phrase_uid(*iter));
+                            }
                         }
                     }
                 }

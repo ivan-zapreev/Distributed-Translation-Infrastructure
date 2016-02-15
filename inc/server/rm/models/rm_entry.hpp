@@ -33,7 +33,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/common/models/phrase_id.hpp"
+#include "server/common/models/phrase_uid.hpp"
 
 using namespace std;
 

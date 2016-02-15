@@ -97,7 +97,7 @@ void create_arguments_parser() {
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", "The minimum number of sentences to send per request, default is 10", false, 10, "min #sentences per request", *p_cmd_args);
 
     //Add the -p the "preprocess" switch - optional, default is true
-    p_pre_process_arg = new SwitchArg("t", "tokenize", "Tokenize the source language lines: to-lowercase, reduce, punctuate", *p_cmd_args, true);
+    p_pre_process_arg = new SwitchArg("t", "tokenize", "Tokenize the source language lines: to-lowercase, punctuate, reduce", *p_cmd_args, true);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     Logger::get_reporting_levels(&debug_levels);

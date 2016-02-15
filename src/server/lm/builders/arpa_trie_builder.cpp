@@ -156,7 +156,7 @@ namespace uva {
 
                                                 //First tokenize the string
                                                 vector<string> elems;
-                                                tokenize(m_line.str(), NGRAM_COUNTS_DELIM, elems);
+                                                tokenize(m_line.str(), elems, NGRAM_COUNTS_DELIM);
 
                                                 //Parse the second (last) value and store it as the amount
                                                 string & amount = *(--elems.end());

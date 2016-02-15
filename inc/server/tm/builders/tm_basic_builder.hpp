@@ -31,7 +31,7 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/string_utils.hpp"
 
-#include "server/common/models/phrase_id.hpp"
+#include "server/common/models/phrase_uid.hpp"
 #include "server/tm/models/tm_target_entry.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 

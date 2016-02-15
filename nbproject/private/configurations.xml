@@ -587,6 +587,7 @@
             <in>fixed_size_hashmap.hpp</in>
             <in>greedy_memory_allocator.hpp</in>
             <in>greedy_memory_storage.hpp</in>
+            <in>upp_diag_matrix.hpp</in>
           </df>
           <df name="file">
             <in>afile_reader.hpp</in>
@@ -612,13 +613,14 @@
       <df name="server">
         <df name="common">
           <df name="models">
-            <in>phrase_id.hpp</in>
+            <in>phrase_uid.hpp</in>
           </df>
         </df>
         <df name="decoder">
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
           <in>de_parameters.hpp</in>
+          <in>sentence_data_map.hpp</in>
           <in>sentence_decoder.hpp</in>
         </df>
         <df name="lm">
