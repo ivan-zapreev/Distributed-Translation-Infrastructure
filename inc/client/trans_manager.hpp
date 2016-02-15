@@ -489,16 +489,19 @@ namespace uva {
 
                                 LOG_DEBUG2 << "Read line: '" << source_sent << "'" << END_LOG;
 
-                                //Pre-proces the source sentence:
-                                //1. Lowercase
-                                to_lower(source_sent);
-                                //2. Reduce
-                                reduce(source_sent, " ", UTF8_WHITESPACES);
-                                //3. Punctuate
-                                punctuate(source_sent);
+                                //If needed, do the source sentence pre-processing
+                                if (m_params.is_pre_process) {
+                                    //Pre-proces the source sentence:
+                                    //1. Lowercase
+                                    to_lower(source_sent);
+                                    //2. Reduce
+                                    reduce(source_sent);
+                                    //3. Punctuate
+                                    punctuate(source_sent);
+                                }
 
                                 //Append the new line to the text to be sent
-                                source_text += source_sent + "\n";
+                                source_text += source_sent + UTF8_NEW_LINE_STRING;
 
                                 //Increment the number of read sentences
                                 ++num_read;

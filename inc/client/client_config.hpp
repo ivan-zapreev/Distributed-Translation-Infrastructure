@@ -51,6 +51,8 @@ namespace uva {
                     uint64_t m_max_sent;
                     //The minimum number of source sentences to send per translation request
                     uint64_t m_min_sent;
+                    //Stores the flag that indicates whether the source sentence is to be pre-processed
+                    bool is_pre_process;
                 } client_config;
 
             }

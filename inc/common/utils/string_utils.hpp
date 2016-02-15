@@ -76,10 +76,16 @@ namespace uva {
             }
 #endif
 
-            //All the possible Whitespaces, including unicode, to be imagined, are to be used for trimming and reduce
-            const string UTF8_WHITESPACES = "\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000 \t\f\v\n\r";
-            //In the ARPA format we should only consider the basic asci delimiters!
-            const string ASCII_WHITESPACES = "\t\f\v\n\r ";
+            //In the asci whitespaces delimiters!
+            const string UTF8_ASCII_WHITESPACES = u8"\t\f\v\n\r ";
+            //Stores the known ASCII delimiters
+            const string UTF8_ASCII_PUNCTUATIONS = u8".,?!/'\"`@#$%^&*()[]{}-_+=*<>~|\\;:";
+            //Stores the utf8 space string
+            const string UTF8_SPACE_STRING = u8" ";
+            //Stores the utf8 empty string
+            const string UTF8_EMPTY_STRING = u8"";
+            //Stores the utf8 new line string
+            const string UTF8_NEW_LINE_STRING = u8"\n";
 
             /**
              * This function allows to convert an array of values to a string representation.
@@ -89,11 +95,11 @@ namespace uva {
             template<typename T, size_t N>
             static inline string array_to_string(const T values[N]) {
                 stringstream data;
-                data << "[ ";
+                data << u8"[ ";
                 for (size_t idx = 0; idx < N; idx++) {
-                    data << values[idx] << " ";
+                    data << values[idx] << UTF8_SPACE_STRING;
                 }
-                data << "]";
+                data << u8"]";
                 return data.str();
             }
 
@@ -105,11 +111,11 @@ namespace uva {
             template<typename T>
             static inline string vector_to_string(const vector<T> &values) {
                 stringstream data;
-                data << "[ ";
+                data << u8"[ ";
                 for (typename vector<T>::const_iterator it = values.cbegin(); it != values.cend(); ++it) {
-                    data << *it << " ";
+                    data << *it << UTF8_SPACE_STRING;
                 }
-                data << "]";
+                data << u8"]";
                 return data.str();
             }
 
@@ -143,9 +149,6 @@ namespace uva {
                 }
             }
 
-            //Stores the known ASCII delimiters
-            const string ASCII_PUNCTUATIONS = ".,?!/'\"`@#$%^&*()[]{}-_+=*<>~|\\;:";
-
             /**
              * Allows to surround the given punctuation symbols in the string by the fill in symbols.
              * After this is done the string might need reduction.
@@ -155,8 +158,8 @@ namespace uva {
              * @return the reference to the (resulting) string
              */
             static inline std::string& punctuate(std::string& str,
-                    const std::string& fill = " ",
-                    const std::string& puncts = ASCII_PUNCTUATIONS) {
+                    const std::string& fill = UTF8_SPACE_STRING,
+                    const std::string& puncts = UTF8_ASCII_PUNCTUATIONS) {
                 LOG_DEBUG4 << "Tokenizing the string '" << str << "'" << END_LOG;
                 //Find the delimiters and surround them with fill symbols
                 size_t delim_pos = str.find_first_of(puncts);
@@ -188,25 +191,25 @@ namespace uva {
             /**
              * This function can be used to trim the string
              * @param str the string to be trimmed, it is an in/out parameter
-             * @param whitespace the white spaces to be trimmed, the default value is " \t" 
+             * @param whitespace the white spaces to be trimmed, the default value is UTF8_ASCII_WHITESPACES
              * @return the reference to the trimmed string
              */
             static inline std::string& trim(std::string& str,
-                    const std::string& whitespace = ASCII_WHITESPACES) {
+                    const std::string& whitespace = UTF8_ASCII_WHITESPACES) {
                 LOG_DEBUG4 << "Trimming the string '" << str << "', with white spaces " << END_LOG;
-                if (str != "") {
-                    const size_t strBegin = str.find_first_not_of(whitespace);
-                    LOG_DEBUG4 << "First not of whitespaces pos: " << strBegin << END_LOG;
+                if (str != UTF8_EMPTY_STRING) {
+                    const size_t begin_pos = str.find_first_not_of(whitespace);
+                    LOG_DEBUG4 << "First not of whitespaces pos: " << begin_pos << END_LOG;
 
-                    if (strBegin == std::string::npos) {
-                        str = ""; // no content
+                    if (begin_pos == std::string::npos) {
+                        str = UTF8_EMPTY_STRING; // no content
                     } else {
-                        const size_t strEnd = str.find_last_not_of(whitespace);
-                        LOG_DEBUG4 << "Last not of whitespaces pos: " << strEnd << END_LOG;
-                        const size_t strRange = strEnd - strBegin + 1;
-                        LOG_DEBUG4 << "Need a substring: [" << strBegin << ", " << (strBegin + strRange - 1) << "]" << END_LOG;
+                        const size_t end_pos = str.find_last_not_of(whitespace);
+                        LOG_DEBUG4 << "Last not of whitespaces pos: " << end_pos << END_LOG;
+                        const size_t range_len = end_pos - begin_pos + 1;
+                        LOG_DEBUG4 << "Need a substring: [" << begin_pos << ", " << end_pos << "]" << END_LOG;
 
-                        str = str.substr(strBegin, strRange);
+                        str = str.substr(begin_pos, range_len);
                     }
                 }
                 LOG_DEBUG4 << "The trimmed result is '" << str << "'" << END_LOG;
@@ -217,14 +220,14 @@ namespace uva {
              * This is a reduce function that first will trim the string and then
              * reduce the sub-ranges within the string.
              * @param str the string to be reduced, is an in/out parameter
-             * @param fill the filling symbol to be used within the string instead of ranges, by default " "
-             * @param whitespace the white spaces to be reduced, by default " \t"
+             * @param fill the filling symbol to be used within the string instead of ranges, by default UTF8_SPACE_STRING
+             * @param whitespace the white spaces to be reduced, by default UTF8_ASCII_WHITESPACES
              */
             static inline std::string& reduce(std::string& str,
-                    const std::string& fill = " ",
-                    const std::string& whitespace = ASCII_WHITESPACES) {
+                    const std::string& fill = UTF8_SPACE_STRING,
+                    const std::string& whitespace = UTF8_ASCII_WHITESPACES) {
                 LOG_DEBUG4 << "Reducing the string '" << str << "', with white spaces" << END_LOG;
-                if (str != "") {
+                if (str != UTF8_EMPTY_STRING) {
                     // trim first
                     trim(str, whitespace);
 

@@ -63,6 +63,7 @@ static ValueArg<uint32_t> * p_min_sent = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
+static SwitchArg * p_pre_process_arg = NULL;
 
 /**
  * Creates and sets up the command line parameters parser
@@ -95,6 +96,9 @@ void create_arguments_parser() {
     //Add the  parameter - optional, by default is 100
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", "The minimum number of sentences to send per request, default is 10", false, 10, "min #sentences per request", *p_cmd_args);
 
+    //Add the -p the "preprocess" switch - optional, default is true
+    p_pre_process_arg = new SwitchArg("t", "tokenize", "Tokenize the source language lines: to-lowercase, reduce, punctuate", *p_cmd_args, true);
+
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     Logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
@@ -113,6 +117,7 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_port_arg);
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
+    SAFE_DESTROY(p_pre_process_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
@@ -151,6 +156,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
     LOG_USAGE << "The min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
+    
+    params.is_pre_process = p_pre_process_arg->getValue();
+    LOG_USAGE << "The source sentence pre-processing is " << ( params.is_pre_process ? "ON" : "OFF") << END_LOG;
 }
 
 /**
