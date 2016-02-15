@@ -100,14 +100,14 @@ namespace uva {
 
                             /**
                              * Allows to set the target phrase and its id
-                             * @param s_uid store the source uid for being combined with the target phrase into the source/target pair uid
+                             * @param source_uid store the source uid for being combined with the target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
                              */
-                            inline void set_source_target(const phrase_uid s_uid, const string target_phrase) {
+                            inline void set_source_target(const phrase_uid source_uid, const string target_phrase) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
                                 //Compute and store the source/target phrase id for future use
-                                m_st_uid = get_phrase_uid(s_uid, target_phrase);
+                                m_st_uid = get_phrase_uid<true>(source_uid, target_phrase);
                             }
 
                             /**

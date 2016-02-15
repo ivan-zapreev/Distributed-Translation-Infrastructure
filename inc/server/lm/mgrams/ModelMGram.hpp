@@ -37,11 +37,15 @@
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/math_utils.hpp"
 
+#include "server/common/models/phrase_uid.hpp"
+
 #include "server/lm/mgrams/ByteMGramId.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+
+using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
     namespace smt {
@@ -149,7 +153,7 @@ namespace uva {
                                         //Get the next word id
                                         BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
                                         //Compute the next hash value 
-                                        m_hash_values[curr_idx] = combine_hash(BASE::m_word_ids[curr_idx], m_hash_values[curr_idx - 1]);
+                                        m_hash_values[curr_idx] = get_phrase_uid(m_hash_values[curr_idx - 1], BASE::m_word_ids[curr_idx]);
 
                                         LOG_DEBUG1 << "hash[" << SSTR(curr_idx) << "] = combine( word["
                                                 << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]

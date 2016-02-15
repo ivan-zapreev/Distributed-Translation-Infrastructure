@@ -35,11 +35,15 @@
 #include "common/utils/math_utils.hpp"
 #include "common/utils/exceptions.hpp"
 
+#include "server/common/models/phrase_uid.hpp"
+
 #include "server/lm/mgrams/BaseMGram.hpp"
 #include "server/lm/mgrams/ByteMGramId.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+
+using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
     namespace smt {
@@ -115,7 +119,7 @@ namespace uva {
                                     //Iterate on and compute the subsequent hashes, if any
                                     for (; begin_word_idx <= end_word_idx; ++begin_word_idx) {
                                         //Incrementally build up hash, using the previous hash value and the next word id
-                                        hash_row_ref[begin_word_idx] = combine_hash(BASE::m_word_ids[begin_word_idx], hash_row_ref[begin_word_idx - 1]);
+                                        hash_row_ref[begin_word_idx] = get_phrase_uid(hash_row_ref[begin_word_idx - 1], BASE::m_word_ids[begin_word_idx]);
 
                                         LOG_DEBUG1 << "hash[" << SSTR(begin_word_idx) << "] = combine( word["
                                                 << SSTR(begin_word_idx) << "] = " << BASE::m_word_ids[begin_word_idx]

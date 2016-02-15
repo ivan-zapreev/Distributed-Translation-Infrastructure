@@ -141,14 +141,22 @@ namespace uva {
                              * @return the entry associated with the given id
                              */
                             inline tm_source_entry * begin_entry(const phrase_uid entry_id) {
+                                LOG_DEBUG1 << "Adding the new source entry for uid: " << entry_id << END_LOG;
+
                                 //Get the new entry from the data storage
                                 tm_source_entry & entry = m_tm_data->add_new_element(entry_id);
+
+                                LOG_DEBUG1 << "The source entry for uid: " << entry_id << " is added." << END_LOG;
 
                                 //Set the source phrase id
                                 entry.set_source_uid(entry_id);
 
+                                LOG_DEBUG1 << "Initializing the entry: " << entry_id << " with the number of translations." << END_LOG;
+
                                 //Initialize the entry with the number of translations
                                 entry.begin(m_sizes->at(entry_id));
+
+                                LOG_DEBUG1 << "Adding the new source entry for uid: " << entry_id << " - DONE!" << END_LOG;
 
                                 //Return the entry pointer
                                 return &entry;
@@ -187,9 +195,10 @@ namespace uva {
                             tm_const_source_entry_ptr get_source_entry(const phrase_uid entry_id) const {
                                 tm_const_source_entry_ptr entry = m_tm_data->get_element(entry_id, entry_id);
                                 if (entry != NULL) {
+                                    LOG_DEBUG1 << "Found the source entry for the source uid: " << entry_id << END_LOG;
                                     return entry;
                                 } else {
-                                    LOG_DEBUG1 << "Returning the UNK translation source entry!" << END_LOG;
+                                    LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
                                     return m_unk_entry;
                                 }
                             }

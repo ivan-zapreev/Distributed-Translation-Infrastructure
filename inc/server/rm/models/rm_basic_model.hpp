@@ -111,7 +111,7 @@ namespace uva {
                              */
                             inline rm_entry & add_entry(const string & source, const string & target) {
                                 //Compute the id
-                                const phrase_uid uid = get_phrase_uid(source, target);
+                                const phrase_uid uid = get_phrase_uid<false, true>(source, target);
 
                                 //Add the new entry end return its reference
                                 rm_entry & entry = m_rm_data->add_new_element(uid);
@@ -163,12 +163,12 @@ namespace uva {
                             /**
                              * Allows to get the reordering entry for the given source/target pair
                              * In case the entry is not present we return the data for the UNK/UNK pair.
-                             * @param suid the source phrase uid
+                             * @param source_uid the source phrase uid
                              * @param target the target phrase
                              * @return the reordering entry, always NOT NULL!
                              */
-                            inline const rm_entry * get_entry(const phrase_uid & suid, const string & target) const {
-                                return get_entry(get_phrase_uid(suid, target));
+                            inline const rm_entry * get_entry(const phrase_uid & source_uid, const string & target) const {
+                                return get_entry(get_phrase_uid<true>(source_uid, target));
                             }
 
                             /**
@@ -179,7 +179,7 @@ namespace uva {
                              * @return the reordering entry, always NOT NULL!
                              */
                             inline const rm_entry * get_entry(const string & source, const string & target) const {
-                                return get_entry(get_phrase_uid(source, target));
+                                return get_entry(get_phrase_uid<false, true>(source, target));
                             }
 
                             /**
