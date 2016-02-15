@@ -65,7 +65,7 @@ namespace uva {
                         public:
                             //Define the query map as a mapping from the source phrase
                             //id to the pointer to the constant translation data. 
-                            typedef unordered_map<phrase_uid, const tm_source_entry *> query_map;
+                            typedef unordered_map<phrase_uid, tm_const_source_entry_ptr> query_map;
 
                             /**
                              * The basic constructor
@@ -84,28 +84,31 @@ namespace uva {
                              * Allows to add the source phrase to the query.
                              * @param uid the source phrase uid
                              */
-                            inline void add_source(const phrase_uid uid) {
-                                //Check if there is already a phrase with this id present
+                            inline void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) {
+                                LOG_DEBUG1 << "Requesting the translation for the phrase uid: " << uid << END_LOG;
+
+                                //Check if there has been already retrieved data for this uid
                                 query_map::iterator iter = m_query_data.find(uid);
+
+                                //If there has not been retrieved anything for this phrase then ask the model                                
                                 if (iter == m_query_data.end()) {
-                                    //If the id is not present then retrieve the data right away to reduce complexity
-                                    iter->second = m_model.get_source_entry(uid);
+                                    //Search the model and store the pointer to the found entry
+                                    entry_ptr = m_model.get_source_entry(uid);
+                                    
+                                    //Store the pointer into the local map
+                                    m_query_data[uid] = entry_ptr;
+
+                                    LOG_DEBUG1 << "The translation source entry for: " << uid << " is retrieved!" << END_LOG;
 
                                     //Perform the sanity check for the sake of safety
-                                    ASSERT_SANITY_THROW((iter->second == NULL),
-                                            string("Got a NULL pointer for the ") + to_string(iter->first) +
+                                    ASSERT_SANITY_THROW((entry_ptr == NULL),
+                                            string("Got a NULL pointer for the ") + to_string(uid) +
                                             string(" translations, broken translation model implementation!"));
+                                } else {
+                                    LOG_DEBUG1 << "Setting the source entry pointer to the [out] pointer!" << END_LOG;
+                                    //Set the pointer to the proper entry
+                                    entry_ptr = iter->second;
                                 }
-                            }
-
-                            /**
-                             * Allows to add the source phrase to the query.
-                             * Note that the source phrase it taken as is,
-                             * i,e. no additional trimming is done.
-                             * @param source the source phrase to be added to the query
-                             */
-                            inline void add_source(const string & source) {
-                                add_source(get_phrase_uid(source));
                             }
 
                             /**
@@ -126,42 +129,6 @@ namespace uva {
                                 for (query_map::const_iterator iter = m_query_data.begin(); iter != m_query_data.end(); ++iter) {
                                     iter->second->get_st_uids(st_uids);
                                 }
-                            }
-
-                            /**
-                             * Allows to get the target translations for the source phrase
-                             * @param uid the source phrase uid
-                             * @return the reference to the source entry, might be the one
-                             *         of UNK if the translation was not found.
-                             */
-                            inline const tm_source_entry & get_targets(const phrase_uid uid) const {
-                                //Check that the source phrase is present, we are not allowed
-                                //to translate something that was not added to the query!
-                                ASSERT_SANITY_THROW((m_query_data.find(uid) == m_query_data.end()),
-                                        string("The source with uid: ") + to_string(uid) +
-                                        string(" is not part of the translation query!"));
-
-                                //Depending on whether the translation was found
-                                //or not stores the source entry or the UNK
-                                const tm_source_entry * entry = m_query_data.at(uid);
-
-                                //Do the sanity check on the pointer, in general the
-                                //translation model should make sure there is no NULL
-                                ASSERT_SANITY_THROW((entry == NULL),
-                                        string("Got a NULL pointer for the ") + to_string(uid) +
-                                        string(" translations, the execute was not called?"));
-
-                                return *entry;
-                            }
-
-                            /**
-                             * Allows to get the target translations for the source phrase
-                             * @param source the source phrase to get translations for
-                             * @return the reference to the source entry, might be the one
-                             *         of UNK if the translation was not found.
-                             */
-                            inline const tm_source_entry & get_targets(const string & source) const {
-                                return get_targets(get_phrase_uid(source));
                             }
 
                         private:

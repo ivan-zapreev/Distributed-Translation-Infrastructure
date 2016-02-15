@@ -42,21 +42,13 @@ namespace uva {
                          * It allows to interact with translation model queries in a uniform way.
                          */
                         class tm_query_proxy {
-                        public: 
- 
+                        public:
                             /**
                              * Allows to add the source phrase to the query.
                              * @param uid the source phrase uid
+                             * @param entry_ptr the reference to the source entry pointer to be set with the data
                              */
-                            virtual void add_source(const phrase_uid uid) = 0;
-
-                            /**
-                             * Allows to add the source phrase to the query.
-                             * Note that the source phrase it taken as is,
-                             * i,e. no additional trimming is done.
-                             * @param source the source phrase to be added to the query
-                             */
-                            virtual void add_source(const string & source) = 0;
+                            virtual void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
 
                             /**
                              * Allows to get all the source/target phrase identifiers
@@ -67,32 +59,16 @@ namespace uva {
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const = 0;
 
                             /**
-                             * Allows to get the target translations for the source phrase
-                             * @param uid the source phrase uid
-                             * @return the reference to the source entry, might be the one
-                             *         of UNK if the translation was not found.
-                             */
-                            virtual const tm_source_entry & get_targets(const phrase_uid uid) const = 0;
-
-                            /**
-                             * Allows to get the target translations for the source phrase
-                             * @param source the source phrase
-                             * @return the reference to the source entry, might be the one
-                             *         of UNK if the translation was not found.
-                             */
-                            virtual const tm_source_entry & get_targets(const string & source) const = 0;
-                            
-                            /**
                              * Allows to execute the query 
                              */
                             virtual void execute() = 0;
-                            
+
                             /**
                              * The basic virtual destructor
                              */
                             virtual ~tm_query_proxy() {
                             }
-                         };
+                        };
                     }
                 }
             }

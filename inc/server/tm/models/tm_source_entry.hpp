@@ -162,6 +162,12 @@ namespace uva {
                             //Stores the next index for the translation entry
                             size_t m_next_idx;
                         };
+
+                        //Define the pointer to the const source entry
+                        typedef const tm_source_entry * tm_const_source_entry_ptr;
+
+                        //Define the pointer to the source entry
+                        typedef tm_source_entry * tm_source_entry_ptr;
                     }
                 }
             }

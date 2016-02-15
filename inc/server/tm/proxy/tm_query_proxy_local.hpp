@@ -57,15 +57,8 @@ namespace uva {
                             /**
                              * @see tm_query_proxy
                              */
-                            virtual void add_source(const phrase_uid uid) {
-                                m_query.add_source(uid);
-                            }
-
-                            /**
-                             * @see tm_query_proxy
-                             */
-                            virtual void add_source(const string & source) {
-                                m_query.add_source(source);
+                            virtual void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) {
+                                m_query.add_source(uid, entry_ptr);
                             }
 
                             /**
@@ -73,20 +66,6 @@ namespace uva {
                              */
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const {
                                 m_query.get_st_uids(st_uids);
-                            }
-
-                            /**
-                             * @see tm_query_proxy
-                             */
-                            virtual const tm_source_entry & get_targets(const phrase_uid uid) const {
-                                return m_query.get_targets(uid);
-                            }
-
-                            /**
-                             * @see tm_query_proxy
-                             */
-                            virtual const tm_source_entry & get_targets(const string & source) const {
-                                return m_query.get_targets(source);
                             }
 
                             /**

@@ -108,14 +108,11 @@ namespace uva {
                          */
                         inline void translate(acr_bool_flag is_stop,
                                 string source_sent, string & target_sent) {
+                            //Store the data into the class data members
+                            m_source_sent = source_sent;
+
                             //If the reduced source sentence is not empty then do the translation
-                            if (source_sent.size() != 0) {
-
-                                //Prepare the source sentence for being decoded
-                                set_source_sent(is_stop, source_sent);
-
-                                //Return in case we need to stop translating
-                                if (is_stop) return;
+                            if (m_source_sent.size() != 0) {
 
                                 //Query the translation model
                                 query_translation_model(is_stop);
@@ -130,7 +127,7 @@ namespace uva {
                                 if (is_stop) return;
 
                                 //Perform the translation
-                                perform_translation(is_stop, source_sent, target_sent);
+                                perform_translation(is_stop, target_sent);
                             }
                         }
 
@@ -138,14 +135,12 @@ namespace uva {
 
                         /**
                          * Allows to set the source sentence, this includes preparing things for decoding
-                         * @param source_sent the source sentence to be set, accepts a reduced, tokenized,
-                         *                    and in the lower case
                          */
-                        inline void set_source_sent(acr_bool_flag is_stop, string & source_sent) {
-                            LOG_USAGE << "Got source sentence to set: " << source_sent << END_LOG;
+                        inline void query_translation_model(acr_bool_flag is_stop) {
+                            LOG_DEBUG1 << "Got source sentence to set: " << m_source_sent << END_LOG;
 
                             //Compute the number of tokens in the sentence
-                            const size_t num_tokens = std::count(source_sent.begin(), source_sent.end(), ASCII_SPACE_CHAR) + 1;
+                            const size_t num_tokens = std::count(m_source_sent.begin(), m_source_sent.end(), ASCII_SPACE_CHAR) + 1;
 
                             //Instantiate the sentence info matrix
                             m_sent_data = new sentence_data_map(num_tokens);
@@ -153,19 +148,29 @@ namespace uva {
 
                             //Fill in the matrix with the phrases and their uids
                             int32_t col_idx = 0;
-                            size_t start = 0, end = source_sent.find_first_of(UTF8_SPACE_STRING);
+                            //Declare the begin and end character index variables
+                            size_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
 
-                            while (end <= std::string::npos && !is_stop) {
+                            while (ch_e_idx <= std::string::npos && !is_stop) {
                                 //Get the appropriate map entry reference
                                 sent_data_entry & diag_entry = sent_data[col_idx][col_idx];
 
-                                //Store the end word and its id
-                                diag_entry.m_word = source_sent.substr(start, end - start);
-                                diag_entry.m_word_uid = get_phrase_uid(diag_entry.m_word);
-                                diag_entry.m_phrase = diag_entry.m_word;
-                                diag_entry.m_phrase_uid = diag_entry.m_word_uid;
+                                //Store the phrase begin and end indexes
+                                diag_entry.m_begin_idx = ch_b_idx;
+                                diag_entry.m_end_idx = ch_e_idx;
 
-                                LOG_USAGE << "End word: " << diag_entry.m_word << ", uid: " << diag_entry.m_word_uid << END_LOG;
+                                LOG_DEBUG1 << "Found the new token @ [" << ch_b_idx << "," << ch_e_idx << "): "
+                                        << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << END_LOG;
+
+                                //Compute the phrase id
+                                diag_entry.m_phrase_uid = get_phrase_uid(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
+
+                                LOG_DEBUG1 << "The token @ [" << ch_b_idx << "," << ch_e_idx << ") uid is: " << diag_entry.m_phrase_uid << END_LOG;
+
+                                //Add the uni-gram phrase to the query
+                                m_tm_query.add_source(diag_entry.m_phrase_uid, diag_entry.m_source_entry);
+
+                                LOG_DEBUG1 << "End word: " << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << ", uid: " << diag_entry.m_phrase_uid << END_LOG;
 
                                 //Compute the new phrases and phrase ids for the new column elements,
                                 //Note that, the longest phrase length to consider is defined by the
@@ -175,16 +180,19 @@ namespace uva {
                                     sent_data_entry & prev_entry = sent_data[row_idx][col_idx - 1];
                                     //Get the new column entry
                                     sent_data_entry & new_entry = sent_data[row_idx][col_idx];
-                                    //Create the new phrase
-                                    new_entry.m_phrase = prev_entry.m_phrase + UTF8_SPACE_STRING + diag_entry.m_word;
-                                    //Compute the new phrase id
-                                    new_entry.m_phrase_uid = get_phrase_uid(diag_entry.m_word_uid, prev_entry.m_phrase_uid);
+                                    //Initialize the new entry with data
+                                    new_entry.m_begin_idx = prev_entry.m_begin_idx; // All the phrases in the row begin at the same place
+                                    new_entry.m_end_idx = diag_entry.m_end_idx; //All the phrases in the column end at the same places
+                                    new_entry.m_phrase_uid = get_phrase_uid(diag_entry.m_phrase_uid, prev_entry.m_phrase_uid);
 
-                                    LOG_USAGE << "Phrase: " << new_entry.m_phrase << ", uid: " << new_entry.m_phrase_uid << END_LOG;
+                                    //Add the m-gram phrase to the query
+                                    m_tm_query.add_source(new_entry.m_phrase_uid, new_entry.m_source_entry);
+
+                                    LOG_DEBUG1 << "Phrase: " << m_source_sent.substr(new_entry.m_begin_idx, new_entry.m_end_idx - new_entry.m_begin_idx) << ", uid: " << new_entry.m_phrase_uid << END_LOG;
                                 }
 
                                 //Check on the stop condition 
-                                if (end == std::string::npos) {
+                                if (ch_e_idx == std::string::npos) {
                                     break;
                                 }
 
@@ -192,16 +200,9 @@ namespace uva {
                                 ++col_idx;
 
                                 //Search for the next delimiter
-                                start = end + 1;
-                                end = source_sent.find_first_of(UTF8_SPACE_STRING, start);
+                                ch_b_idx = ch_e_idx + 1;
+                                ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING, ch_b_idx);
                             }
-                        }
-
-                        /**
-                         * Allows to query the translation model based on the set sentence phrases
-                         */
-                        inline void query_translation_model(acr_bool_flag is_stop) {
-                            //ToDo: Implement
                         }
 
                         /**
@@ -214,7 +215,7 @@ namespace uva {
                         /**
                          * Performs the sentence translation 
                          */
-                        inline void perform_translation(acr_bool_flag is_stop, const string source_sent, string & target_sent) {
+                        inline void perform_translation(acr_bool_flag is_stop, string & target_sent) {
                             //ToDo: Implement
 
                             const uint32_t time_sec = rand() % 20;
@@ -224,12 +225,14 @@ namespace uva {
                             }
 
                             //ToDo: Remove this temporary plug
-                            target_sent = source_sent;
+                            target_sent = m_source_sent;
                         }
 
                     private:
                         //Stores the reference to the decoder parameters
                         const de_parameters & m_params;
+                        //Stores the source sentence
+                        string m_source_sent;
                         //Stores the pointer to the sentence data map
                         sentence_data_map * m_sent_data;
                         //The language mode query proxy

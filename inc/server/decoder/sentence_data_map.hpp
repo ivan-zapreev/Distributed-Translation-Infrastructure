@@ -60,7 +60,7 @@ namespace uva {
                         /**
                          * The basic constructor, does default initialization of the structure fields
                          */
-                        sent_data_entry() : m_word_uid(UNDEFINED_PHRASE_ID), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
+                        sent_data_entry() : m_begin_idx(0), m_end_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
                         }
 
                         /**
@@ -69,14 +69,10 @@ namespace uva {
                         ~sent_data_entry() {
                         }
                         
-                        //Stores the end word token
-                        string m_word;
-
-                        //Stores the end phrase word uid
-                        phrase_uid m_word_uid;
-
-                        //Stores the phrase token
-                        string m_phrase;
+                        //Stores the phrase first word begin character index
+                        size_t m_begin_idx;
+                        //Stores the phrase last word end character index plus one
+                        size_t m_end_idx;
 
                         //Stores the entire phrase uid
                         phrase_uid m_phrase_uid;

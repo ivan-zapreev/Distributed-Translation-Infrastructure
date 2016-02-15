@@ -184,11 +184,12 @@ namespace uva {
                              * @param entry_id the source phrase id
                              * @return the source phrase entry , always NOT NULL!
                              */
-                            const tm_source_entry * get_source_entry(const phrase_uid entry_id) const {
-                                const tm_source_entry * entry = m_tm_data->get_element(entry_id, entry_id);
+                            tm_const_source_entry_ptr get_source_entry(const phrase_uid entry_id) const {
+                                tm_const_source_entry_ptr entry = m_tm_data->get_element(entry_id, entry_id);
                                 if (entry != NULL) {
                                     return entry;
                                 } else {
+                                    LOG_DEBUG1 << "Returning the UNK translation source entry!" << END_LOG;
                                     return m_unk_entry;
                                 }
                             }
@@ -206,7 +207,7 @@ namespace uva {
                             //Stores the translation model data
                             tm_source_entry_map * m_tm_data;
                             //Stores the pointer to the UNK entry
-                            tm_source_entry * m_unk_entry;
+                            tm_source_entry_ptr m_unk_entry;
                         };
                     }
                 }
