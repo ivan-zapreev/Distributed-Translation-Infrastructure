@@ -1,5 +1,5 @@
 /* 
- * File:   de_configs.hpp
+ * File:   trans_stack.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,20 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on February 11, 2016, 5:51 PM
+ * Created on February 16, 2016, 4:20 PM
  */
 
-#ifndef DE_CONFIGS_HPP
-#define DE_CONFIGS_HPP
+#ifndef TRANS_STACK_HPP
+#define TRANS_STACK_HPP
 
-#include <inttypes.h>
-#include <string>
-
-#include "server/tm/tm_configs.hpp"
-#include "server/rm/rm_configs.hpp"
-#include "server/lm/lm_configs.hpp"
-
-using namespace std;
+#include "server/decoder/stack/multi_state.hpp"
 
 namespace uva {
     namespace smt {
@@ -41,14 +34,27 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
-                        //Stores the maximum considered number of words per sentence
-                        static const size_t MAX_WORDS_PER_SENTENCE = 100;
-                        
-                        //Stores the start of the sentence symbol
-                        static const string BEGIN_SENTENCE_TAG_STR = "<s>";
-                        
-                        //Stores the end of the sentence symbol
-                        static const string END_SENTENCE_TAG_STR = "</s>";
+
+                        /**
+                         * This is the translation stack class that is responsible for the sentence translation
+                         */
+                        class multi_stack {
+                        public:
+
+                            /**
+                             * The basic constructor
+                             */
+                            multi_stack() {
+                            }
+
+                            /**
+                             * The basic destructor
+                             */
+                            ~multi_stack() {
+                            }
+                        private:
+                        protected:
+                        };
                     }
                 }
             }
@@ -56,5 +62,5 @@ namespace uva {
     }
 }
 
-#endif /* DE_CONFIGS_HPP */
+#endif /* TRANS_STACK_HPP */
 

@@ -583,6 +583,7 @@
         <df name="utils">
           <df name="containers">
             <in>array_utils.hpp</in>
+            <in>circular_queue.hpp</in>
             <in>dynamic_memory_arrays.hpp</in>
             <in>fixed_size_hashmap.hpp</in>
             <in>greedy_memory_allocator.hpp</in>
@@ -622,8 +623,8 @@
             <in>sentence_decoder.hpp</in>
           </df>
           <df name="stack">
-            <in>trans_stack.hpp</in>
-            <in>trans_stack_state.hpp</in>
+            <in>multi_stack.hpp</in>
+            <in>multi_state.hpp</in>
           </df>
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>

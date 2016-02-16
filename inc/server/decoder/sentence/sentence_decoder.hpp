@@ -37,6 +37,7 @@
 
 #include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
+#include "server/decoder/stack/multi_state.hpp"
 
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
@@ -56,6 +57,7 @@ using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 
 using namespace uva::smt::bpbd::server::decoder::sentence;
+using namespace uva::smt::bpbd::server::decoder::stack;
 
 namespace uva {
     namespace smt {
