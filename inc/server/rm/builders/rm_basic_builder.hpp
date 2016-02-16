@@ -162,14 +162,26 @@ namespace uva {
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source, target;
 
+                                //Store the cached source string and its uid values
+                                string source_str = "";
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
+                                phrase_uid target_uid = UNDEFINED_PHRASE_ID;
+
                                 //Start reading the translation model file line by line
-                                phrase_uid source_uid = UNDEFINED_PHRASE_ID, target_uid = UNDEFINED_PHRASE_ID;
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-                                    string source_str = source.str();
-                                    trim(source_str);
 
+                                    //Get the current source phrase uids
+                                    string next_source_str = source.str();
+                                    trim(next_source_str);
+                                    if (source_str != next_source_str) {
+                                        //Store the new source string
+                                        source_str = next_source_str;
+                                        //Compute the new source string uid
+                                        source_uid = get_phrase_uid(source_str);
+                                    }
+                                    
                                     //Read the target phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
                                     string target_str = target.str();
@@ -178,7 +190,6 @@ namespace uva {
                                     LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
 
                                     //Parse the rest of the target entry
-                                    source_uid = get_phrase_uid(source_str);
                                     target_uid = get_phrase_uid<true>(target_str);
                                     process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
                                     

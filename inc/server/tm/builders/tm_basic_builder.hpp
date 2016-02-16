@@ -109,25 +109,37 @@ namespace uva {
                                 //Stores the number of source entries for logging
                                 size_t num_source = 0;
 
+                                //Store the cached source string and its uid values
+                                string source_str = "";
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
+
                                 //Compute the source entry sizes
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-                                    //Get the current source phrase uids
-                                    string source_str = source.str();
-                                    phrase_uid uid = get_phrase_uid(trim(source_str));
-                                    //Increment the count for the given source uid
-                                    ++sizes->operator[](uid);
 
-                                    if (sizes->operator[](uid) == 1) {
+                                    //Get the current source phrase uids
+                                    string next_source_str = source.str();
+                                    trim(next_source_str);
+                                    if (source_str != next_source_str) {
+                                        //Store the new source string
+                                        source_str = next_source_str;
+                                        //Compute the new source string uid
+                                        source_uid = get_phrase_uid(source_str);
+                                    }
+
+                                    //Increment the count for the given source uid
+                                    ++sizes->operator[](source_uid);
+
+                                    if (sizes->operator[](source_uid) == 1) {
                                         ++num_source;
-                                        LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << uid << END_LOG;
+                                        LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << source_uid << END_LOG;
                                     }
 
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
 
-                                    LOG_DEBUG1 << "-> translation count: " << sizes->at(uid) << END_LOG;
+                                    LOG_DEBUG1 << "-> translation count: " << sizes->at(source_uid) << END_LOG;
                                 }
 
                                 //Set the number of entries into the model
@@ -172,8 +184,8 @@ namespace uva {
                                 //Compute the target phrase and its uid
                                 const phrase_uid target_uid = get_phrase_uid<true>(target_str);
                                 tm_target_entry & target_entry = source_entry->new_translation(target_str, target_uid);
-                                
-                                LOG_DEBUG1 << "-> Translation: ___" << target_str  << "___" << END_LOG;
+
+                                LOG_DEBUG1 << "-> Translation: ___" << target_str << "___" << END_LOG;
 
                                 //Set the target weights
                                 TextPieceReader token;
@@ -206,42 +218,44 @@ namespace uva {
 
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
-                                //Store the current source and next source uids
-                                phrase_uid curr_source_uid = UNDEFINED_PHRASE_ID;
-                                phrase_uid next_source_uid = UNDEFINED_PHRASE_ID;
+
                                 //Store the source entry
                                 tm_source_entry * source_entry = NULL;
                                 //Stores the number of source entries for logging
                                 size_t num_source = 0;
-                                
+
+                                //Store the cached source string and its uid values
+                                string source_str = "";
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
+
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
 
                                     //Get the current source phrase uid
-                                    string source_str = source.str();
-                                    next_source_uid = get_phrase_uid(trim(source_str));
+                                    string next_source_str = source.str();
+                                    trim(next_source_str);
+                                    if (source_str != next_source_str) {
+                                        //Store the new source string
+                                        source_str = next_source_str;
 
-                                    LOG_DEBUG1 << "Got the source phrase: " << source_str << ", uid: " << next_source_uid << END_LOG;
-
-                                    //In case we have a new source, then add a source entry
-                                    if (curr_source_uid != next_source_uid) {
                                         //Finalize the previous entry if there was one
-                                        if (curr_source_uid != UNDEFINED_PHRASE_ID) {
-                                            m_model.finalize_entry(curr_source_uid);
+                                        if (source_uid != UNDEFINED_PHRASE_ID) {
+                                            m_model.finalize_entry(source_uid);
                                         }
+                                        
                                         //Increment the number of source entries
                                         ++num_source;
 
-                                        //Store the new source id
-                                        curr_source_uid = next_source_uid;
+                                        //Compute the new source string uid
+                                        source_uid = get_phrase_uid(source_str);
 
-                                        //Open the new entry
-                                        source_entry = m_model.begin_entry(curr_source_uid);
+                                        //Open the new source entry
+                                        source_entry = m_model.begin_entry(source_uid);
                                     }
 
-                                    LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << curr_source_uid << END_LOG;
+                                    LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << source_uid << END_LOG;
 
                                     //Parse the rest of the target entry
                                     process_target_entries(source_entry, line);
@@ -251,8 +265,8 @@ namespace uva {
                                 }
 
                                 //Finalize the previous entry if there was one
-                                if (curr_source_uid != UNDEFINED_PHRASE_ID) {
-                                    m_model.finalize_entry(curr_source_uid);
+                                if (source_uid != UNDEFINED_PHRASE_ID) {
+                                    m_model.finalize_entry(source_uid);
                                 }
 
                                 //Finalize the model
