@@ -34,6 +34,9 @@
 #include "server/common/models/phrase_uid.hpp"
 #include "server/tm/models/tm_target_entry.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
+#include "server/lm/lm_configurator.hpp"
+#include "server/lm/proxy/lm_proxy.hpp"
+#include "server/lm/proxy/lm_trie_query_proxy.hpp"
 
 using namespace std;
 
@@ -42,8 +45,10 @@ using namespace uva::utils::logging;
 using namespace uva::utils::file;
 using namespace uva::utils::text;
 
-using namespace uva::smt::bpbd::server::tm::models;
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::tm::models;
+using namespace uva::smt::bpbd::server::lm;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -152,27 +157,37 @@ namespace uva {
                              *    phrase penalty (always exp(1) = 2.718) 
                              * The latter is considered optional, all the other elements
                              * followed on the translation line are now skipped.
+                             * @param lm_query the language model query proxy object
                              * @param source_entry the pointer to the source entry for which this translation is
                              * @param rest stores the line to be parsed into a translation entry
                              */
-                            inline void process_target_entries(tm_source_entry * source_entry, TextPieceReader &rest) {
-                                LOG_DEBUG2 << "Got translation line to parse: " << rest << END_LOG;
+                            inline void process_target_entries(lm_trie_query_proxy & lm_query, tm_source_entry * source_entry, TextPieceReader &rest) {
+                                LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
-                                TextPieceReader target;
+                                //Declare the target entry storing readers
+                                TextPieceReader dirty_target, clean_target;
 
-                                //Read the target phrase
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                //Read the target phrase, it is surrounded by spaces
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(dirty_target);
+                                
+                                //Obtain the clean target by skipping the first space and reading until the next one
+                                dirty_target.get_first_space(clean_target);
+                                dirty_target.get_last_space(clean_target);
 
-                                LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
+                                LOG_DEBUG2 << "The target phrase is: " << clean_target << END_LOG;
 
                                 //Add the translation entry to the model
-                                string target_str = target.str();
-                                trim(target_str);
+                                string target_str = clean_target.str();
                                 //Compute the target phrase and its uid
                                 const phrase_uid target_uid = get_phrase_uid<true>(target_str);
                                 tm_target_entry & target_entry = source_entry->new_translation(target_str, target_uid);
 
-                                LOG_DEBUG1 << "-> Translation: " << target_str << END_LOG;
+                                //Obtain the target phrase probability
+                                //LOG_DEBUG << "Start computing the ___" << target_str << "___ phrase LM probability" << END_LOG;
+                                //float prob = lm_query.execute(clean_target);
+                                //LOG_DEBUG << "Computed the ___" << target_str << "___ phrase LM probability: " << prob << END_LOG;
+                                
+                                LOG_DEBUG1 << "-> Translation: ___" << target_str  << "___" << END_LOG;
 
                                 //Set the target weights
                                 TextPieceReader token;
@@ -213,6 +228,9 @@ namespace uva {
                                 //Stores the number of source entries for logging
                                 size_t num_source = 0;
 
+                                //Obtain the language model query
+                                lm_trie_query_proxy & lm_query = lm_configurator::allocate_query_proxy();
+                                
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
@@ -243,7 +261,7 @@ namespace uva {
                                     LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << curr_source_uid << END_LOG;
 
                                     //Parse the rest of the target entry
-                                    process_target_entries(source_entry, line);
+                                    process_target_entries(lm_query, source_entry, line);
 
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
@@ -256,6 +274,9 @@ namespace uva {
 
                                 //Finalize the model
                                 m_model.finalize();
+                                
+                                //Deallocate the language model query proxy object
+                                lm_configurator::dispose_query_proxy(lm_query);
 
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();

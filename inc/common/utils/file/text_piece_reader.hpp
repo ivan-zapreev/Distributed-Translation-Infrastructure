@@ -121,8 +121,8 @@ namespace uva {
                     m_rest_ptr = m_begin_ptr;
                     m_rest_len = m_len;
 
-                    LOG_DEBUG3 << "Setting the data to BasicTextPiece: m_begin_ptr = "
-                            << SSTR(static_cast<const void*> (m_begin_ptr)) << ", m_cursorPtr = "
+                    LOG_DEBUG3 << "Set data: m_begin_ptr = "
+                            << SSTR(static_cast<const void*> (m_begin_ptr)) << ", m_cursor_ptr = "
                             << SSTR(static_cast<const void*> (m_rest_ptr)) << ", m_is_gen_str = "
                             << m_is_gen_str << ", m_len = " << SSTR(m_len)
                             << ", m_restLen = " << SSTR(m_rest_len) << END_LOG;
@@ -217,7 +217,7 @@ namespace uva {
                     //Find the sub-sequence
                     const char * char_ptr = find_first_subseq<delim, delim_len>();
 
-                    LOG_DEBUG4 << "Forward searching for the character got: "
+                    LOG_DEBUG3 << "Forward searching for the character got: "
                             << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
 
                     //The found piece length is first zero
@@ -228,14 +228,14 @@ namespace uva {
                         //Compute the length
                         size_t found_piece_length = char_ptr - m_rest_ptr;
 
-                        LOG_DEBUG4 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
+                        LOG_DEBUG3 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
 
                         //Store the pointer to the remaining text piece
                         m_rest_ptr = char_ptr + 1;
                         //Store the remaining length
                         m_rest_len -= (found_piece_length + 1);
 
-                        LOG_DEBUG4 << "Resetting m_rest_ptr = "
+                        LOG_DEBUG3 << "Resetting m_rest_ptr = "
                                 << SSTR(static_cast<const void *> (m_rest_ptr))
                                 << ", m_rest_len = " << m_rest_len << END_LOG;
 
@@ -245,7 +245,7 @@ namespace uva {
                         //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
                         if ((delim == '\n') && found_piece_length && (out_m_begin_ptr[found_piece_length - 1]) == '\r') {
                             out_m_len--;
-                            LOG_DEBUG4 << "A \\\\r detected, resetting out_m_len = " << out_m_len << END_LOG;
+                            LOG_DEBUG3 << "A \\\\r detected, resetting out_m_len = " << out_m_len << END_LOG;
                         }
                     } else {
                         //If the pointer is not found then the length if the entire remaining length
@@ -280,63 +280,54 @@ namespace uva {
                  */
                 template<const char delim, const uint8_t delim_card = 1 >
                 inline bool get_last(TextPieceReader& out) {
-                    //The found piece length is first zero
-                    size_t out_m_len = 0;
-
-                    //Check if we have a proper delimiter parameter
-                    ASSERT_CONDITION_THROW((delim_card != 1), string("Unsupported delimiter cardinality: ") + to_string(delim_card));
-
-                    LOG_DEBUG3 << "Start searching for a new delimiter, m_rest_ptr: "
-                            << SSTR(static_cast<const void *> (m_rest_ptr))
-                            << ", m_rest_len: " << m_rest_len << END_LOG;
-
-                    //Search for the next new delimiter from the end
-                    const char * out_m_begin_ptr = static_cast<const char *> (memrchr(m_rest_ptr, delim, m_rest_len));
-
-                    LOG_DEBUG4 << "Backward searching for the character got: "
-                            << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
-
-                    //Check if we found something
-                    if (out_m_begin_ptr != NULL) {
-                        //Store the current remaining length 
-                        out_m_len = m_rest_len;
-
-                        //Set the new remaining length and move the begin pointer past the delimiter
-                        m_rest_len = (out_m_begin_ptr++ - m_rest_ptr);
-
-                        LOG_DEBUG4 << "Resetting m_rest_ptr = "
-                                << SSTR(static_cast<const void *> (m_rest_ptr))
-                                << ", m_rest_len = " << m_rest_len << END_LOG;
-
-                        //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
-                        if ((delim == '\n') && m_rest_len && (m_rest_ptr[m_rest_len - 1] == '\r')) {
-                            m_rest_len--;
-                            LOG_DEBUG4 << "A \\\\r detected, resetting m_rest_len = " << m_rest_len << END_LOG;
-                        }
-
-                        //Set the resulting length for the found piece
-                        out_m_len -= (out_m_begin_ptr - m_rest_ptr);
+                    //If there is no remaining length or the pointer is NULL then return false
+                    if (!m_rest_len || (m_rest_ptr == NULL)) {
+                        return false;
                     } else {
-                        //If the pointer is not found then the length if the entire remaining length
-                        out_m_len = m_rest_len;
-                        //Also the pointer should then point to the beginning of the text we have
-                        out_m_begin_ptr = m_rest_ptr;
+                        //Perform some sanity checks for what we are searching
+                        ASSERT_CONDITION_THROW((delim_card != 1), string("Unsupported delimiter cardinality: ") + to_string(delim_card));
+                        ASSERT_CONDITION_THROW((delim == '\n') || (delim == '\r'), string("Do not support backwards searching for the end of line!"));
 
-                        //If the remaining length is zero then return false as there is nothing to return
-                        if (!m_rest_len) {
-                            return false;
+                        LOG_DEBUG4 << "Start searching for a new delimiter, m_rest_ptr: "
+                                << SSTR(static_cast<const void *> (m_rest_ptr))
+                                << ", m_rest_len: " << m_rest_len << END_LOG;
+
+                        //Search for the next new delimiter from the end
+                        const char * out_m_begin_ptr = static_cast<const char *> (memrchr(m_rest_ptr, delim, m_rest_len));
+
+                        LOG_DEBUG4 << "Backward searching for the character got: "
+                                << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
+
+                        //Check if we found something
+                        if (out_m_begin_ptr != NULL) {
+                            //We shall return the substring from the beginning of 
+                            //the pointer until but excluding the found element
+                            const size_t out_m_len = (out_m_begin_ptr - m_rest_ptr);
+                            out.set(m_rest_ptr, out_m_len);
+
+                            LOG_DEBUG4 << "The delimiter '" << delim << "' was found, out_m_len = " << out_m_len
+                                    << ", m_rest_ptr = " << SSTR(static_cast<const void *> (m_rest_ptr)) << END_LOG;
+                            
+                            //The remaining length will be 
+                            m_rest_len = m_rest_len - (out_m_len + 1);
+                            //The remaining pointer is the found one plus one
+                            m_rest_ptr = out_m_begin_ptr + 1;
+
+                            LOG_DEBUG4 << "Setting the original reader, m_rest_len = " << m_rest_len
+                                    << ", m_rest_ptr = " << SSTR(static_cast<const void *> (m_rest_ptr)) << END_LOG;
+                            
+                            //Return true as the delimiter was found
+                            return true;
                         } else {
-                            //If there was something left then now we read it all.
-                            //Set the remaining length to zero, as there is nothing left.
-                            m_rest_len = 0;
+                            LOG_DEBUG4 << "The delimiter '" << delim << "' was not found! Returning false!" << END_LOG;
+
+                            //Set the return data to NULL values
+                            out.set(NULL, 0);
+
+                            //Return false as the delimiter was not found!
+                            return false;
                         }
                     }
-
-                    //Set the return data
-                    out.set(out_m_begin_ptr, out_m_len);
-
-                    //Return true as we successfully found a delimited substring
-                    return true;
                 }
 
                 /**
@@ -344,7 +335,7 @@ namespace uva {
                  * @return true if there is yet something to read, otherwise false
                  */
                 inline bool has_more() {
-                    return m_rest_len > 0;
+                    return (m_rest_len > 0);
                 }
 
                 /**
@@ -356,6 +347,7 @@ namespace uva {
                  */
                 inline bool get_first_line(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a new line!" << END_LOG;
+
                     return get_first<'\n'>(out);
                 }
 
@@ -368,18 +360,21 @@ namespace uva {
                  */
                 inline bool get_first_space(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a space!" << END_LOG;
+
                     return get_first<' '>(out);
                 }
 
                 /**
-                 * This function, from the current position, searches for the space char
-                 * or until the beginning of the text and then sets the data about the found
-                 * region into the provided output parameter.
+                 * This function, from the end position, searches for the space char
+                 * or until the beginning of the text and then sets the data about the
+                 * found region into the provided output parameter. I.e. we get a sub-string:
+                 *      [begin_index, last_space_idx)
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
                 inline bool get_last_space(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching backward for a space!" << END_LOG;
+
                     return get_last<' '>(out);
                 }
 
@@ -392,6 +387,7 @@ namespace uva {
                  */
                 inline bool get_first_tab(TextPieceReader& out) {
                     LOG_DEBUG4 << "Searching forward for a tab!" << END_LOG;
+
                     return get_first<'\t'>(out);
                 }
 
@@ -408,6 +404,7 @@ namespace uva {
                                 << "' must be within [0, " << m_len << "]!";
                         throw Exception(msg.str());
                     } else {
+
                         return m_begin_ptr[idx];
                     }
                 }
@@ -420,6 +417,7 @@ namespace uva {
                     if (other.m_len == m_len) {
                         return !strncmp(m_begin_ptr, other.m_begin_ptr, m_len);
                     } else {
+
                         return false;
                     }
                 }
@@ -429,6 +427,7 @@ namespace uva {
                  * @param other text piece to compare with
                  */
                 inline bool operator!=(const TextPieceReader & other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -441,6 +440,7 @@ namespace uva {
                     if (len == m_len) {
                         return !strncmp(m_begin_ptr, other, m_len);
                     } else {
+
                         return false;
                     }
                 }
@@ -450,6 +450,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const char * other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -458,6 +459,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator==(const string & other) const {
+
                     return this->operator==(other.c_str());
                 }
 
@@ -466,6 +468,7 @@ namespace uva {
                  * @param other a c_string to compare with
                  */
                 inline bool operator!=(const string & other) const {
+
                     return !this->operator==(other);
                 }
 
@@ -486,6 +489,7 @@ namespace uva {
                                 m_str = TEXT_TOO_LARGE_STR;
                             }
                         } else {
+
                             m_str = TEXT_NOTHING_STR;
                         }
                         m_is_gen_str = false;
@@ -533,6 +537,7 @@ namespace uva {
                                 }
                             } else {
                                 //There is not enough symbols, we've failed
+
                                 char_ptr = NULL;
                             }
                         }

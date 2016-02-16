@@ -65,29 +65,29 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void execute_cum_yes_log_yes(TextPieceReader &text) {
-                                m_query.template execute<true, true>(text);
+                            virtual TLogProbBackOff execute_cum_yes_log_yes(TextPieceReader &text) {
+                                return m_query.template execute<true, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void execute_cum_yes_log_no(TextPieceReader &text) {
-                                m_query.template execute<true, false>(text);
+                            virtual TLogProbBackOff execute_cum_yes_log_no(TextPieceReader &text) {
+                                return m_query.template execute<true, false>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void execute_cum_no_log_yes(TextPieceReader &text) {
-                                m_query.template execute<false, true>(text);
+                            virtual TLogProbBackOff execute_cum_no_log_yes(TextPieceReader &text) {
+                                return m_query.template execute<false, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void execute_cum_no_log_no(TextPieceReader &text) {
-                                m_query.template execute<false, false>(text);
+                            virtual TLogProbBackOff execute_cum_no_log_no(TextPieceReader &text) {
+                                return m_query.template execute<false, false>(text);
                             };
 
                         private:

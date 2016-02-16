@@ -203,12 +203,24 @@ namespace uva {
 
                                 //Read the tokens one by one backwards and decrement the index
                                 while (text.get_first_space(BASE::m_tokens[BASE::m_actual_level])) {
+                                    LOG_DEBUG1 << "Obtained the " << BASE::m_actual_level << "'th m-gram token: ___"
+                                            << BASE::m_tokens[BASE::m_actual_level] << "___" << END_LOG;
+
                                     //Retrieve the word id
                                     BASE::m_word_ids[BASE::m_actual_level] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_level]);
+
                                     LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_level] << "' is: "
                                             << SSTR(BASE::m_word_ids[BASE::m_actual_level]) << "!" << END_LOG;
+
                                     //Increment the counter
                                     ++BASE::m_actual_level;
+
+                                    LOG_DEBUG2 << "The current m-gram level is: " << BASE::m_actual_level
+                                            << ", the maximum is: " << MAX_LEVEL << END_LOG;
+
+                                    ASSERT_SANITY_THROW((BASE::m_actual_level >= MAX_LEVEL),
+                                            string("A broken N-gram query: ") + ((string) * this) +
+                                            string(", level: ") + to_string(BASE::m_actual_level));
                                 }
 
                                 //Set the actual end word index
@@ -217,7 +229,7 @@ namespace uva {
                                 ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
                                         (BASE::m_actual_level > MAX_LEVEL)),
                                         string("A broken N-gram query: ") + ((string) * this) +
-                                        string(", level: ") + std::to_string(BASE::m_actual_level));
+                                        string(", level: ") + to_string(BASE::m_actual_level));
                             }
 
                         private:

@@ -101,8 +101,8 @@ namespace uva {
                          * @param text the piece containing the m-gram query
                          */
                         template<bool is_cumulative, bool is_log_results = false >
-                        inline void execute(TextPieceReader &text) {
-                            LOG_DEBUG << "Starting to execute:" << text << END_LOG;
+                        inline TLogProbBackOff execute(TextPieceReader &text) {
+                            LOG_DEBUG << "Starting to execute: ___" << text << "___" << END_LOG;
 
                             //Set the text piece into the m-gram
                             m_query.m_gram.set_m_gram_from_text(text);
@@ -129,13 +129,11 @@ namespace uva {
 
                             LOG_DEBUG << "Finished executing:" << (string) m_query.m_gram << END_LOG;
 
-                            //Log the results if needed
-                            if (is_log_results) {
-                                if (is_cumulative) {
-                                    log_cumulative_results();
-                                } else {
-                                    log_single_results();
-                                }
+                            //Return the results
+                            if (is_cumulative) {
+                                return get_cumulative_result<is_log_results>();
+                            } else {
+                                return get_single_result<is_log_results>();
                             }
                         }
 
@@ -153,16 +151,24 @@ namespace uva {
                          * Different logging is done based on enabled logging level
                          * and the class template parameters.
                          */
-                        inline void log_single_results() const {
+                        template<bool is_log_results>
+                        inline TLogProbBackOff get_single_result() const {
                             //Print the query results
                             const string gram_str = m_query.m_gram.get_mgram_prob_str(m_query.m_gram.get_m_gram_level());
 
-                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                    << " ) ) = " << SSTR(m_query.m_probs[m_query.m_gram.get_end_word_idx()]) << END_LOG;
-                            LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[m_query.m_gram.get_end_word_idx()])) << END_LOG;
+                            TLogProbBackOff single_prob = m_query.m_probs[m_query.m_gram.get_end_word_idx()];
 
-                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                            if (is_log_results) {
+                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        << " ) ) = " << SSTR(single_prob) << END_LOG;
+                                LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, single_prob)) << END_LOG;
+
+                                LOG_RESULT << "-------------------------------------------" << END_LOG;
+                            }
+
+                            //Return the result
+                            return single_prob;
                         }
 
                         /**
@@ -170,7 +176,8 @@ namespace uva {
                          * Different logging is done based on enabled logging level
                          * and the class template parameters.
                          */
-                        inline void log_cumulative_results() const {
+                        template<bool is_log_results>
+                        inline TLogProbBackOff get_cumulative_result() const {
                             //Initialize the current index, with the proper start value
                             TModelLevel curr_idx = m_query.m_gram.get_begin_word_idx();
                             TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
@@ -178,24 +185,33 @@ namespace uva {
                             //Print the intermediate results
                             for (; curr_idx <= m_query.m_gram.get_end_word_idx(); ++curr_idx) {
                                 const string gram_str = m_query.m_gram.get_mgram_prob_str(curr_idx + 1);
-                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                        << " ) ) = " << SSTR(m_query.m_probs[curr_idx]) << END_LOG;
-                                LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[curr_idx])) << END_LOG;
+
+                                if (is_log_results) {
+                                    LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                            << " ) ) = " << SSTR(m_query.m_probs[curr_idx]) << END_LOG;
+                                    LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[curr_idx])) << END_LOG;
+                                }
+
                                 if (m_query.m_probs[curr_idx] > ZERO_LOG_PROB_WEIGHT) {
                                     cumulative_prob += m_query.m_probs[curr_idx];
                                 }
                             }
-                            LOG_RESULT << "---" << END_LOG;
 
-                            //Print the total cumulative probability if needed
-                            const string gram_str = m_query.m_gram.get_mgram_prob_str();
-                            LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                    << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
-                            LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                    << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
+                            if (is_log_results) {
+                                LOG_RESULT << "---" << END_LOG;
+                                //Print the total cumulative probability if needed
+                                const string gram_str = m_query.m_gram.get_mgram_prob_str();
+                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        << " ) ) = " << SSTR(cumulative_prob) << END_LOG;
+                                LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, cumulative_prob)) << END_LOG;
 
-                            LOG_RESULT << "-------------------------------------------" << END_LOG;
+                                LOG_RESULT << "-------------------------------------------" << END_LOG;
+                            }
+
+                            //Return the result
+                            return cumulative_prob;
                         }
                     };
 

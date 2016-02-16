@@ -268,7 +268,7 @@ namespace uva {
                             WordIndexType & m_word_index;
 
                             //Stores the actual m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
-                            TModelLevel m_actual_level;
+                            uint32_t m_actual_level;
 
                             //Declare the m-gram id container
                             DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, MAX_LEVEL_CAPACITY);

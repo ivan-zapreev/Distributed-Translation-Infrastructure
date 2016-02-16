@@ -28,7 +28,10 @@
 
 #include "common/utils/file/text_piece_reader.hpp"
 
+#include "server/lm/lm_consts.hpp"
+
 using namespace uva::utils::file;
+using namespace uva::smt::bpbd::server::lm;
 
 namespace uva {
     namespace smt {
@@ -55,19 +58,19 @@ namespace uva {
                              * Allows to execute a query
                              * @param text the m-gram query to be executed
                              */
-                            template<bool is_cumulative, bool is_log_result = false >
-                            inline void execute(TextPieceReader &text) {
+                            template<bool is_cumulative = false, bool is_log_result = false >
+                            inline TLogProbBackOff execute(TextPieceReader &text) {
                                 if (is_cumulative) {
                                     if (is_log_result) {
-                                        execute_cum_yes_log_yes(text);
+                                        return execute_cum_yes_log_yes(text);
                                     } else {
-                                        execute_cum_yes_log_no(text);
+                                        return execute_cum_yes_log_no(text);
                                     }
                                 } else {
                                     if (is_log_result) {
-                                        execute_cum_no_log_yes(text);
+                                        return execute_cum_no_log_yes(text);
                                     } else {
-                                        execute_cum_no_log_no(text);
+                                        return execute_cum_no_log_no(text);
                                     }
                                 }
                             };
@@ -79,28 +82,28 @@ namespace uva {
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual void execute_cum_yes_log_yes(TextPieceReader &text) = 0;
+                            virtual TLogProbBackOff execute_cum_yes_log_yes(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual void execute_cum_yes_log_no(TextPieceReader &text) = 0;
+                            virtual TLogProbBackOff execute_cum_yes_log_no(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual void execute_cum_no_log_yes(TextPieceReader &text) = 0;
+                            virtual TLogProbBackOff execute_cum_no_log_yes(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual void execute_cum_no_log_no(TextPieceReader &text) = 0;
+                            virtual TLogProbBackOff execute_cum_no_log_no(TextPieceReader &text) = 0;
                         };
                     }
                 }
