@@ -21,8 +21,10 @@ namespace uva {
                     namespace models {
 
                         namespace __unk_phrase {
-                            //Stores the unknown phrase string, should be configurable
-                            static const string UNKNOWN_PHRASE_STR = string("UNK");
+                            //Stores the unknown source phrase string, should be configurable
+                            static const string UNKNOWN_SOURCE_PHRASE_STR = string("UNK");
+                            //Stores the unknown target phrase string, should be configurable
+                            static const string UNKNOWN_TARGET_PHRASE_STR = string("<unk>");
                         }
 
                         //Store the number of of weights in the reordering model entry

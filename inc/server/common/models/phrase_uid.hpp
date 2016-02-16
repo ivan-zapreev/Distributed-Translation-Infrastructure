@@ -148,19 +148,6 @@ namespace uva {
                         static inline phrase_uid get_phrase_uid(const string & p1, const string & p2) {
                             return get_phrase_uid<is_token_p2>(get_phrase_uid<is_token_p1>(p1), p2);
                         }
-
-                        /**
-                         * Allows to convert tokens to 
-                         * @param phrases the vector of phrases to be converted into uids
-                         * @param the corresponding of ours
-                         */
-                        template<bool is_token>
-                        static inline void phrases_to_uids(const vector<string> & phrases, vector<phrase_uid> & uids) {
-                            uids.clear();
-                            for (vector<string>::const_iterator iter = phrases.begin(); iter != phrases.end(); ++iter) {
-                                uids.emplace_back(get_phrase_uid<is_token>(*iter));
-                            }
-                        }
                     }
                 }
             }

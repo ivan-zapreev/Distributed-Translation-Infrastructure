@@ -163,6 +163,7 @@ namespace uva {
                                 TextPieceReader line, source, target;
 
                                 //Start reading the translation model file line by line
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID, target_uid = UNDEFINED_PHRASE_ID;
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
@@ -177,7 +178,9 @@ namespace uva {
                                     LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
 
                                     //Parse the rest of the target entry
-                                    process_entry_weights(line, m_model.add_entry(source_str, target_str));
+                                    source_uid = get_phrase_uid<false>(source_str);
+                                    target_uid = get_phrase_uid<true>(target_str);
+                                    process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
                                     
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
