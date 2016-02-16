@@ -18,12 +18,6 @@
           <in>sentence_data_map.hpp</in>
           <in>sentence_decoder.hpp</in>
         </df>
-        <df name="lm">
-          <df name="proxy">
-            <in>lm_index_query_proxy.hpp</in>
-            <in>lm_index_query_proxy_local.hpp</in>
-          </df>
-        </df>
         <df name="rm">
           <in>rm_configs.hpp</in>
         </df>
@@ -170,16 +164,6 @@
             flavor2="0">
       </item>
       <item path="inc/server/decoder/sentence_decoder.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_index_query_proxy.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/proxy/lm_index_query_proxy_local.hpp"
             ex="false"
             tool="3"
             flavor2="0">

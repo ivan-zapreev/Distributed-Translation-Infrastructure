@@ -35,16 +35,12 @@
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/string_utils.hpp"
 
-#include "server/lm/proxy/lm_index_query_proxy.hpp"
-
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::hashing;
 using namespace uva::utils::text;
-
-using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -78,7 +74,12 @@ namespace uva {
                                     string("Trying to combine two ids where at least one id undefined, first uid: ") +
                                     to_string(p1_uid) + string(", second uid: ") + to_string(p2_uid));
 
-                            //Compute the combined uid
+                            //Compute the combined uid, make the first uid last:
+                            // Typically the second uid is the next new word id or
+                            // the new target phrase id, so it is more significant
+                            // and many combine hash functions like it more, also if
+                            // it is a word id then it is also smaller which allows
+                            // for smaller hash values in some combine_hash algorithms
                             phrase_uid uid = combine_hash(p2_uid, p1_uid);
 
                             //If the value is below the minimum then shift it up
@@ -89,7 +90,7 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to get the source phrase uid for the given phrase.
+                         * Allows to get the phrase uid for the given phrase.
                          * Note: The current implementation uses the hash function to compute the uid.
                          * Note: The phrase string is taken as is.
                          * @parm is_token if true then the given phrase is treated as one token
@@ -99,7 +100,7 @@ namespace uva {
                          * @return the uid of the phrase
                          */
                         template<bool is_token = false >
-                        static inline phrase_uid get_source_phrase_uid(const string & phrase) {
+                        static inline phrase_uid get_phrase_uid(const string & phrase) {
                             //Declare and default initialize the uid
                             phrase_uid uid = UNDEFINED_PHRASE_ID;
 
@@ -137,27 +138,6 @@ namespace uva {
                                 uid += MIN_VALID_PHRASE_ID;
                             }
                             return uid;
-                        }
-
-                        /**
-                         * Allows to get the target phrase uid for the given phrase.
-                         * Note: The current implementation uses the hash function to compute the uid.
-                         * Note: The phrase string is taken as is.
-                         * ToDo: Use the word index of the language model in order to compute the uid.
-                         * @parm is_token if true then the given phrase is treated as one token
-                         *       if false then it is space separated list of tokens, in the latter
-                         *       case the uid will be computed in a cumulative fashion. Default is false.
-                         * @param phrase the target phrase to get the uid for
-                         * @return the uid of the target phrase
-                         */
-                        template<bool is_token = false, bool is_word_index = true >
-                        static inline phrase_uid get_target_phrase_uid(const string & phrase, lm_index_query_proxy * word_index = NULL) {
-                            ASSERT_SANITY_THROW(is_word_index && (word_index == NULL),
-                                    string("Requesting a target phrase id using the word ") +
-                                    string("index but the word index pointer is NULL!"));
-
-                            //ToDo: Implement using the word index of the language model to get the single token uid
-                            return get_source_phrase_uid<is_token>(phrase);
                         }
                     }
                 }

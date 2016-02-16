@@ -163,7 +163,7 @@ namespace uva {
                                         << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << END_LOG;
 
                                 //Compute the phrase id
-                                diag_entry.m_phrase_uid = get_source_phrase_uid<true>(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
+                                diag_entry.m_phrase_uid = get_phrase_uid<true>(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
 
                                 LOG_DEBUG1 << "The token @ [" << ch_b_idx << "," << ch_e_idx << ") uid is: " << diag_entry.m_phrase_uid << END_LOG;
 

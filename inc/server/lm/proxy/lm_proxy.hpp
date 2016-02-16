@@ -27,7 +27,6 @@
 #define TRIE_PROXY_HPP
 
 #include "server/lm/proxy/lm_trie_query_proxy.hpp"
-#include "server/lm/proxy/lm_index_query_proxy.hpp"
 
 using namespace uva::smt::bpbd::server::lm::proxy;
 
@@ -72,18 +71,6 @@ namespace uva {
                              * @param query the trie query to dispose
                              */
                             virtual void dispose_trie_query_proxy(lm_trie_query_proxy & query) = 0;
-
-                            /**
-                             * This method allows to get a word index query executor for the given trie
-                             * @return the word index query proxy object
-                             */
-                            virtual lm_index_query_proxy & allocate_index_query_proxy() = 0;
-
-                            /**
-                             * Dispose the previously allocated word index query object
-                             * @param query the word index query to dispose
-                             */
-                            virtual void dispose_index_query_proxy(lm_index_query_proxy & query) = 0;
 
                         };
                     }

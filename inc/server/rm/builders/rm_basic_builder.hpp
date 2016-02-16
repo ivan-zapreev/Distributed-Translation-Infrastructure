@@ -178,8 +178,8 @@ namespace uva {
                                     LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
 
                                     //Parse the rest of the target entry
-                                    source_uid = get_source_phrase_uid(source_str);
-                                    target_uid = get_target_phrase_uid(target_str);
+                                    source_uid = get_phrase_uid(source_str);
+                                    target_uid = get_phrase_uid<true>(target_str);
                                     process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
                                     
                                     //Update the progress bar status

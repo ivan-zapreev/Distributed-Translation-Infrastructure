@@ -128,8 +128,8 @@ namespace uva {
                              */
                             inline void find_unk_entry() {
                                 //Try to find the UNK/UNK entry
-                                const phrase_uid s_unk_uid = get_source_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_SOURCE_STR);
-                                const phrase_uid t_unk_uid = get_target_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_TARGET_STR);
+                                const phrase_uid s_unk_uid = get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_SOURCE_STR);
+                                const phrase_uid t_unk_uid = get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_TARGET_STR);
                                 m_unk_entry = get_entry(s_unk_uid, t_unk_uid);
 
                                 //Assert on that the UNK/UNK entry is found!
