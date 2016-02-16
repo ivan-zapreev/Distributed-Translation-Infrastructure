@@ -136,6 +136,7 @@ namespace uva {
                          */
                         template<bool is_token = false>
                         static inline phrase_uid get_target_phrase_uid(const string & phrase) {
+                            //ToDo: Implement using the word index of the language model to get the single token uid
                             return get_source_phrase_uid<is_token>(phrase);
                         }
                     }
