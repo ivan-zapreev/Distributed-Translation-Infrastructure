@@ -34,7 +34,7 @@
 #include "trans_task_id.hpp"
 
 #include "server/decoder/de_configurator.hpp"
-#include "server/decoder/sentence_decoder.hpp"
+#include "server/decoder/sentence/sentence_decoder.hpp"
 
 using namespace std;
 
@@ -42,7 +42,9 @@ using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::common::messaging;
+
 using namespace uva::smt::bpbd::server::decoder;
+using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {

@@ -617,11 +617,17 @@
           </df>
         </df>
         <df name="decoder">
+          <df name="sentence">
+            <in>sentence_data_map.hpp</in>
+            <in>sentence_decoder.hpp</in>
+          </df>
+          <df name="stack">
+            <in>trans_stack.hpp</in>
+            <in>trans_stack_state.hpp</in>
+          </df>
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
           <in>de_parameters.hpp</in>
-          <in>sentence_data_map.hpp</in>
-          <in>sentence_decoder.hpp</in>
         </df>
         <df name="lm">
           <df name="builders">

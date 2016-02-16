@@ -27,9 +27,10 @@
 #define DE_CONFIGURATOR_HPP
 
 #include "server/decoder/de_parameters.hpp"
-#include "server/decoder/sentence_decoder.hpp"
+#include "server/decoder/sentence/sentence_decoder.hpp"
 
 using namespace uva::smt::bpbd::server::decoder;
+using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {

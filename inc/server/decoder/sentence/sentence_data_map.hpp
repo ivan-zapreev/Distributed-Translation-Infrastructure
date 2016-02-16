@@ -51,38 +51,40 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace decoder {
-
-                    /**
-                     * This structure stores the source phrase information data
-                     */
-                    struct sent_data_entry {
+                    namespace sentence {
 
                         /**
-                         * The basic constructor, does default initialization of the structure fields
+                         * This structure stores the source phrase information data
                          */
-                        sent_data_entry() : m_begin_idx(0), m_end_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
-                        }
+                        struct sent_data_entry {
 
-                        /**
-                         * The basic destructor
-                         */
-                        ~sent_data_entry() {
-                        }
-                        
-                        //Stores the phrase first word begin character index
-                        size_t m_begin_idx;
-                        //Stores the phrase last word end character index plus one
-                        size_t m_end_idx;
+                            /**
+                             * The basic constructor, does default initialization of the structure fields
+                             */
+                            sent_data_entry() : m_begin_idx(0), m_end_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
+                            }
 
-                        //Stores the entire phrase uid
-                        phrase_uid m_phrase_uid;
+                            /**
+                             * The basic destructor
+                             */
+                            ~sent_data_entry() {
+                            }
 
-                        //Stores the pointer to the translation model source entry
-                        const tm_source_entry * m_source_entry;
-                    };
+                            //Stores the phrase first word begin character index
+                            size_t m_begin_idx;
+                            //Stores the phrase last word end character index plus one
+                            size_t m_end_idx;
 
-                    //Define the sentence data map that stores some of the sentence related data
-                    typedef upp_diag_matrix<sent_data_entry> sentence_data_map;
+                            //Stores the entire phrase uid
+                            phrase_uid m_phrase_uid;
+
+                            //Stores the pointer to the translation model source entry
+                            const tm_source_entry * m_source_entry;
+                        };
+
+                        //Define the sentence data map that stores some of the sentence related data
+                        typedef upp_diag_matrix<sent_data_entry> sentence_data_map;
+                    }
                 }
             }
         }

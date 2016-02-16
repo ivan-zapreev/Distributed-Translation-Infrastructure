@@ -13,10 +13,16 @@
       </df>
       <df name="server">
         <df name="decoder">
+          <df name="sentence">
+            <in>sentence_data_map.hpp</in>
+            <in>sentence_decoder.hpp</in>
+          </df>
+          <df name="stack">
+            <in>trans_stack.hpp</in>
+            <in>trans_stack_state.hpp</in>
+          </df>
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
-          <in>sentence_data_map.hpp</in>
-          <in>sentence_decoder.hpp</in>
         </df>
         <df name="rm">
           <in>rm_configs.hpp</in>
@@ -158,12 +164,22 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/server/decoder/sentence_data_map.hpp"
+      <item path="inc/server/decoder/sentence/sentence_data_map.hpp"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="inc/server/decoder/sentence_decoder.hpp"
+      <item path="inc/server/decoder/sentence/sentence_decoder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/decoder/stack/trans_stack.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/decoder/stack/trans_stack_state.hpp"
             ex="false"
             tool="3"
             flavor2="0">
