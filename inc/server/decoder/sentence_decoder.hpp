@@ -214,7 +214,18 @@ namespace uva {
                          * Allows to query the reordering model based on the set sentence phrases
                          */
                         inline void query_reordering_model(acr_bool_flag is_stop) {
-                            //ToDo: Implement
+                            //Declare the source-target phrase uid container
+                            vector<phrase_uid> st_uids;
+
+                            //Obtain the list of source-target ids available
+                            if (!is_stop) {
+                                m_tm_query.get_st_uids(st_uids);
+                            }
+
+                            //Execute the reordering model query
+                            if (!is_stop) {
+                                m_rm_query.execute(st_uids);
+                            }
                         }
 
                         /**
