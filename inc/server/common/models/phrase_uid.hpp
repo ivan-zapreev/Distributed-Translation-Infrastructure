@@ -69,7 +69,14 @@ namespace uva {
                          * @return the uid of the phrase
                          */
                         static inline phrase_uid combine_phrase_uids(const phrase_uid p1_uid, const phrase_uid p2_uid) {
-                            return combine_hash(p2_uid, p1_uid);
+                            //Compute the combined uid
+                            phrase_uid uid = combine_hash(p2_uid, p1_uid);
+
+                            //If the value is below the minimum then shift it up
+                            if (uid < MIN_VALID_PHRASE_ID) {
+                                uid += MIN_VALID_PHRASE_ID;
+                            }
+                            return uid;
                         }
 
                         /**

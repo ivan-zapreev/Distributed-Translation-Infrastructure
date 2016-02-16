@@ -123,7 +123,7 @@ namespace uva {
                                         ++num_source;
                                         LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << uid << END_LOG;
                                     }
-                                    
+
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
 
@@ -167,7 +167,10 @@ namespace uva {
 
                                 //Add the translation entry to the model
                                 string target_str = target.str();
-                                tm_target_entry & target_entry = source_entry->new_translation(trim(target_str));
+                                trim(target_str);
+                                //Compute the target phrase and its uid
+                                const phrase_uid target_uid = get_target_phrase_uid(target_str);
+                                tm_target_entry & target_entry = source_entry->new_translation(target_str, target_uid);
 
                                 LOG_DEBUG1 << "-> Translation: " << target_str << END_LOG;
 
@@ -218,7 +221,7 @@ namespace uva {
                                     //Get the current source phrase uid
                                     string source_str = source.str();
                                     next_source_uid = get_source_phrase_uid(trim(source_str));
-                                    
+
                                     LOG_DEBUG1 << "Got the source phrase: " << source_str << ", uid: " << next_source_uid << END_LOG;
 
                                     //In case we have a new source, then add a source entry
@@ -241,7 +244,7 @@ namespace uva {
 
                                     //Parse the rest of the target entry
                                     process_target_entries(source_entry, line);
-                                    
+
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
                                 }

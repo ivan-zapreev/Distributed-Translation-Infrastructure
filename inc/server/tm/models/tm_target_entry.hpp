@@ -77,37 +77,16 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to turn this target entry into the UNK word translation 
-                             * @param target_phrase the unknown phrase string
-                             * @param unk_uid the unknown phrase id
-                             * @param sct_prob the inverse lexical weighting lex(s|t)
-                             * @param sct_lex the inverse lexical weighting lex(s|t)
-                             * @param tcs_prob the direct phrase translation probability φ(t|s)
-                             * @param tcs_lex the direct lexical weighting lex(t|s)
-                             */
-                            inline void make_unknown(const string target_phrase, phrase_uid unk_uid,
-                                    float sct_prob, float sct_lex, float tcs_prob, float tcs_lex) {
-                                //Store the target phrase
-                                m_target_phrase = target_phrase;
-                                //Compute and store the source/target phrase id for future use
-                                m_st_uid = combine_phrase_uids(unk_uid, unk_uid);
-                                //Store the weights
-                                m_sct_prob = sct_prob;
-                                m_sct_lex = sct_lex;
-                                m_tcs_prob = tcs_prob;
-                                m_tcs_lex = tcs_lex;
-                            }
-
-                            /**
                              * Allows to set the target phrase and its id
-                             * @param source_uid store the source uid for being combined with the target phrase into the source/target pair uid
+                             * @param source_uid store the source uid for being combined with the
+                             *                   target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
+                             * @param target_uid the uid of the target phrase
                              */
-                            inline void set_source_target(const phrase_uid source_uid, const string target_phrase) {
+                            inline void set_source_target(const phrase_uid source_uid,
+                                    const string & target_phrase, const phrase_uid target_uid) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
-                                //Compute the target phrase uid
-                                const phrase_uid target_uid = get_target_phrase_uid(target_phrase);
                                 //Compute and store the source/target phrase uid
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
                             }

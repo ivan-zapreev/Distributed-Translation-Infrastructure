@@ -117,16 +117,17 @@ namespace uva {
                             /**
                              * Allows to add a new translation to the source entry for the given target phrase
                              * @param target the target phrase string 
+                             * @param target_uid the uid of the target phrase
                              * @return the newly allocated target entry
                              */
-                            inline tm_target_entry & new_translation(const string & target) {
+                            inline tm_target_entry & new_translation(const string & target, const phrase_uid target_uid) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
                                 //Set the entry's target phrase and its id
-                                entry.set_source_target(m_s_uid, target);
+                                entry.set_source_target(m_s_uid, target, target_uid);
 
                                 //Return the entry
                                 return entry;

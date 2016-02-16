@@ -76,14 +76,13 @@ namespace uva {
                                 m_unk_entry->begin(1);
                                 {
                                     //Add the translation entry
-                                    tm_target_entry & entry = m_unk_entry->new_translation(__unk_phrase::UNKNOWN_PHRASE_STR);
-                                    //Now turn this target into the unknown translation entry
-                                    entry.make_unknown(
-                                            __unk_phrase::UNKNOWN_PHRASE_STR, UNKNOWN_PHRASE_ID,
-                                            __unk_phrase::UNK_SCT_LOG_PROB_WEIGHT,
-                                            __unk_phrase::UNK_LSCT_LOG_PROB_WEIGHT,
-                                            __unk_phrase::UNK_TCS_LOG_PROB_WEIGHT,
-                                            __unk_phrase::UNK_LTCS_LOG_PROB_WEIGHT);
+                                    tm_target_entry & entry = m_unk_entry->new_translation(__unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID);
+
+                                    //Set the unk entry weights
+                                    entry.get_sct_prob() = __unk_phrase::UNK_SCT_LOG_PROB_WEIGHT;
+                                    entry.get_sct_lex() = __unk_phrase::UNK_LSCT_LOG_PROB_WEIGHT;
+                                    entry.get_tcs_prob() = __unk_phrase::UNK_TCS_LOG_PROB_WEIGHT;
+                                    entry.get_tcs_lex() = __unk_phrase::UNK_LTCS_LOG_PROB_WEIGHT;
                                 }
                                 //Finalize the source entry
                                 m_unk_entry->finalize();

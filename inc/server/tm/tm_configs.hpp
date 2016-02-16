@@ -43,8 +43,10 @@ namespace uva {
                     namespace models {
 
                         namespace __unk_phrase {
-                            //Stores the unknown phrase string, should be configurable
-                            static const string UNKNOWN_PHRASE_STR = string("<unk>");
+                            //Stores the unknown source phrase string, should be configurable
+                            static const string TM_UNKNOWN_SOURCE_STR = string("UNK");
+                            //Stores the unknown target phrase string, should be configurable
+                            static const string TM_UNKNOWN_TARGET_STR = string("<unk>");
 
                             //The default inverse phrase translation probability φ(s|t)
                             const float UNK_SCT_LOG_PROB_WEIGHT = -10.0;

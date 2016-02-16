@@ -170,7 +170,11 @@ namespace uva {
                              * @return the reordering entry, always NOT NULL!
                              */
                             inline const rm_entry * get_entry(const phrase_uid & source_uid, const phrase_uid & target_uid) const {
-                                return get_entry(combine_phrase_uids(source_uid, target_uid));
+                                if ((source_uid != UNKNOWN_PHRASE_ID) && (target_uid != UNKNOWN_PHRASE_ID)) {
+                                    return get_entry(combine_phrase_uids(source_uid, target_uid));
+                                } else {
+                                    return m_unk_entry;
+                                }
                             }
 
                             /**
