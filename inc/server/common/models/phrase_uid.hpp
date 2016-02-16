@@ -68,22 +68,22 @@ namespace uva {
                          * @param p2_uid the second phrase uid
                          * @return the uid of the phrase
                          */
-                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const phrase_uid p2_uid) {
+                        static inline phrase_uid combine_phrase_uids(const phrase_uid p1_uid, const phrase_uid p2_uid) {
                             return combine_hash(p2_uid, p1_uid);
                         }
 
                         /**
-                         * Allows to get the phrase uid for the given phrase.
-                         * The current implementation uses the hash function to compute the uid.
-                         * Before the computation of the phrase id the phrase string is NOT trimmed.
+                         * Allows to get the source phrase uid for the given phrase.
+                         * Note: The current implementation uses the hash function to compute the uid.
+                         * Note: The phrase string is taken as is.
                          * @parm is_token if true then the given phrase is treated as one token
                          *       if false then it is space separated list of tokens, in the latter
-                         *       case the uid will be computed in a cumulative faschion
+                         *       case the uid will be computed in a cumulative fashion. Default is false.
                          * @param the phrase to get the uid for
                          * @return the uid of the phrase
                          */
-                        template<bool is_token>
-                        static inline phrase_uid get_phrase_uid(const string & phrase) {
+                        template<bool is_token = false>
+                        static inline phrase_uid get_source_phrase_uid(const string & phrase) {
                             //Declare and default initialize the uid
                             phrase_uid uid = UNDEFINED_PHRASE_ID;
 
@@ -105,7 +105,7 @@ namespace uva {
                                     start = end + 1;
                                     end = phrase.find_first_of(delim, start);
                                     while (end <= std::string::npos) {
-                                        uid = get_phrase_uid(uid, compute_hash(phrase.substr(start, end - start)));
+                                        uid = combine_phrase_uids(uid, compute_hash(phrase.substr(start, end - start)));
                                         if (end != std::string::npos) {
                                             start = end + 1;
                                             end = phrase.find_first_of(delim, start);
@@ -122,31 +122,21 @@ namespace uva {
                             }
                             return uid;
                         }
-
+                        
                         /**
-                         * Allows to get the phrase uid for the given phrase pair.
-                         * The current implementation uses the hash function to compute the uid.
-                         * Before the computation of the phrase id the phrase strings are NOT trimmed.
-                         * @param p1_uid the first phrase uid
-                         * @param p2 the second phrase
-                         * @return the uid of the phrase
+                         * Allows to get the target phrase uid for the given phrase.
+                         * Note: The current implementation uses the hash function to compute the uid.
+                         * Note: The phrase string is taken as is.
+                         * ToDo: Use the word index of the language model in order to compute the uid.
+                         * @parm is_token if true then the given phrase is treated as one token
+                         *       if false then it is space separated list of tokens, in the latter
+                         *       case the uid will be computed in a cumulative fashion. Default is false.
+                         * @param phrase the target phrase to get the uid for
+                         * @return the uid of the target phrase
                          */
-                        template<bool is_token>
-                        static inline phrase_uid get_phrase_uid(const phrase_uid p1_uid, const string & p2) {
-                            return get_phrase_uid(p1_uid, get_phrase_uid<is_token>(p2));
-                        }
-
-                        /**
-                         * Allows to get the phrase uid for the given phrase pair.
-                         * The current implementation uses the hash function to compute the uid.
-                         * Before the computation of the phrase id the phrase strings are NOT trimmed.
-                         * @param p1 the first phrase
-                         * @param p2 the second phrase
-                         * @return the uid of the phrase
-                         */
-                        template<bool is_token_p1, bool is_token_p2>
-                        static inline phrase_uid get_phrase_uid(const string & p1, const string & p2) {
-                            return get_phrase_uid<is_token_p2>(get_phrase_uid<is_token_p1>(p1), p2);
+                        template<bool is_token = false>
+                        static inline phrase_uid get_target_phrase_uid(const string & phrase) {
+                            return get_source_phrase_uid<is_token>(phrase);
                         }
                     }
                 }

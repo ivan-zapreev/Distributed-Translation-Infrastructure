@@ -163,7 +163,7 @@ namespace uva {
                                         << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << END_LOG;
 
                                 //Compute the phrase id
-                                diag_entry.m_phrase_uid = get_phrase_uid<true>(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
+                                diag_entry.m_phrase_uid = get_source_phrase_uid<true>(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
 
                                 LOG_DEBUG1 << "The token @ [" << ch_b_idx << "," << ch_e_idx << ") uid is: " << diag_entry.m_phrase_uid << END_LOG;
 
@@ -183,7 +183,7 @@ namespace uva {
                                     //Initialize the new entry with data
                                     new_entry.m_begin_idx = prev_entry.m_begin_idx; // All the phrases in the row begin at the same place
                                     new_entry.m_end_idx = diag_entry.m_end_idx; //All the phrases in the column end at the same places
-                                    new_entry.m_phrase_uid = get_phrase_uid(prev_entry.m_phrase_uid, diag_entry.m_phrase_uid);
+                                    new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, diag_entry.m_phrase_uid);
 
                                     //Add the m-gram phrase to the query
                                     m_tm_query.add_source(new_entry.m_phrase_uid, new_entry.m_source_entry);

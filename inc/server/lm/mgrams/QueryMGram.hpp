@@ -119,7 +119,7 @@ namespace uva {
                                     //Iterate on and compute the subsequent hashes, if any
                                     for (; begin_word_idx <= end_word_idx; ++begin_word_idx) {
                                         //Incrementally build up hash, using the previous hash value and the next word id
-                                        hash_row_ref[begin_word_idx] = get_phrase_uid(hash_row_ref[begin_word_idx - 1], BASE::m_word_ids[begin_word_idx]);
+                                        hash_row_ref[begin_word_idx] = combine_phrase_uids(hash_row_ref[begin_word_idx - 1], BASE::m_word_ids[begin_word_idx]);
 
                                         LOG_DEBUG1 << "hash[" << SSTR(begin_word_idx) << "] = combine( word["
                                                 << SSTR(begin_word_idx) << "] = " << BASE::m_word_ids[begin_word_idx]

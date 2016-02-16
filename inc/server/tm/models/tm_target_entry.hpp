@@ -90,7 +90,7 @@ namespace uva {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
                                 //Compute and store the source/target phrase id for future use
-                                m_st_uid = get_phrase_uid(unk_uid, unk_uid);
+                                m_st_uid = combine_phrase_uids(unk_uid, unk_uid);
                                 //Store the weights
                                 m_sct_prob = sct_prob;
                                 m_sct_lex = sct_lex;
@@ -106,8 +106,10 @@ namespace uva {
                             inline void set_source_target(const phrase_uid source_uid, const string target_phrase) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
-                                //Compute and store the source/target phrase id for future use
-                                m_st_uid = get_phrase_uid<true>(source_uid, target_phrase);
+                                //Compute the target phrase uid
+                                const phrase_uid target_uid = get_target_phrase_uid(target_phrase);
+                                //Compute and store the source/target phrase uid
+                                m_st_uid = combine_phrase_uids(source_uid, target_uid);
                             }
 
                             /**

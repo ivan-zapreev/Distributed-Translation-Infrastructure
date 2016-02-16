@@ -153,7 +153,7 @@ namespace uva {
                                         //Get the next word id
                                         BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
                                         //Compute the next hash value 
-                                        m_hash_values[curr_idx] = get_phrase_uid(m_hash_values[curr_idx - 1], BASE::m_word_ids[curr_idx]);
+                                        m_hash_values[curr_idx] = combine_phrase_uids(m_hash_values[curr_idx - 1], BASE::m_word_ids[curr_idx]);
 
                                         LOG_DEBUG1 << "hash[" << SSTR(curr_idx) << "] = combine( word["
                                                 << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]

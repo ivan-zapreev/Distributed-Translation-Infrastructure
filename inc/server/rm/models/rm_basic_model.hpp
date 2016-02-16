@@ -111,7 +111,7 @@ namespace uva {
                              */
                             inline rm_entry & add_entry(const phrase_uid & source_uid, const phrase_uid & target_uid) {
                                 //Compute the id
-                                const phrase_uid uid = get_phrase_uid(source_uid, target_uid);
+                                const phrase_uid uid = combine_phrase_uids(source_uid, target_uid);
 
                                 //Add the new entry end return its reference
                                 rm_entry & entry = m_rm_data->add_new_element(uid);
@@ -128,8 +128,8 @@ namespace uva {
                              */
                             inline void find_unk_entry() {
                                 //Try to find the UNK/UNK entry
-                                const phrase_uid s_unk_uid = get_phrase_uid<true>(__unk_phrase::UNKNOWN_SOURCE_PHRASE_STR);
-                                const phrase_uid t_unk_uid = get_phrase_uid<true>(__unk_phrase::UNKNOWN_TARGET_PHRASE_STR);
+                                const phrase_uid s_unk_uid = get_source_phrase_uid<true>(__unk_phrase::UNKNOWN_SOURCE_PHRASE_STR);
+                                const phrase_uid t_unk_uid = get_target_phrase_uid<true>(__unk_phrase::UNKNOWN_TARGET_PHRASE_STR);
                                 m_unk_entry = get_entry(s_unk_uid, t_unk_uid);
 
                                 //Assert on that the UNK/UNK entry is found!
@@ -170,7 +170,7 @@ namespace uva {
                              * @return the reordering entry, always NOT NULL!
                              */
                             inline const rm_entry * get_entry(const phrase_uid & source_uid, const phrase_uid & target_uid) const {
-                                return get_entry(get_phrase_uid(source_uid, target_uid));
+                                return get_entry(combine_phrase_uids(source_uid, target_uid));
                             }
 
                             /**
