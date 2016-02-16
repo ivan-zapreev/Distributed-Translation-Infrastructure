@@ -69,6 +69,11 @@ namespace uva {
                          * @return the uid of the phrase
                          */
                         static inline phrase_uid combine_phrase_uids(const phrase_uid p1_uid, const phrase_uid p2_uid) {
+                            //ASSERT that the ids are not undefined
+                            ASSERT_SANITY_THROW((p1_uid == UNDEFINED_PHRASE_ID) || (p2_uid == UNDEFINED_PHRASE_ID),
+                                    string("Trying to combine two ids where at least one id undefined, first uid: ") +
+                                    to_string(p1_uid) + string(", second uid: ") + to_string(p2_uid));
+
                             //Compute the combined uid
                             phrase_uid uid = combine_hash(p2_uid, p1_uid);
 
@@ -89,7 +94,7 @@ namespace uva {
                          * @param the phrase to get the uid for
                          * @return the uid of the phrase
                          */
-                        template<bool is_token = false>
+                        template<bool is_token = false >
                         static inline phrase_uid get_source_phrase_uid(const string & phrase) {
                             //Declare and default initialize the uid
                             phrase_uid uid = UNDEFINED_PHRASE_ID;
@@ -129,7 +134,7 @@ namespace uva {
                             }
                             return uid;
                         }
-                        
+
                         /**
                          * Allows to get the target phrase uid for the given phrase.
                          * Note: The current implementation uses the hash function to compute the uid.
@@ -141,7 +146,7 @@ namespace uva {
                          * @param phrase the target phrase to get the uid for
                          * @return the uid of the target phrase
                          */
-                        template<bool is_token = false>
+                        template<bool is_token = false >
                         static inline phrase_uid get_target_phrase_uid(const string & phrase) {
                             //ToDo: Implement using the word index of the language model to get the single token uid
                             return get_source_phrase_uid<is_token>(phrase);
