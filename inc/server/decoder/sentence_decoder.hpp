@@ -252,7 +252,7 @@ namespace uva {
                         //Stores the pointer to the sentence data map
                         sentence_data_map * m_sent_data;
                         //The language mode query proxy
-                        lm_query_proxy & m_lm_query;
+                        lm_trie_query_proxy & m_lm_query;
                         //The language mode query proxy
                         tm_query_proxy & m_tm_query;
                         //The language mode query proxy

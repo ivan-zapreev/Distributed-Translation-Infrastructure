@@ -23,10 +23,13 @@
  * Created on February 5, 2016, 8:43 AM
  */
 
-#ifndef TRIE_PROXY_INT_HPP
-#define TRIE_PROXY_INT_HPP
+#ifndef TRIE_PROXY_HPP
+#define TRIE_PROXY_HPP
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_trie_query_proxy.hpp"
+#include "server/lm/proxy/lm_index_query_proxy.hpp"
+
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -59,16 +62,28 @@ namespace uva {
                             };
 
                             /**
-                             * This method allows to get a query executor for the given trie
+                             * This method allows to get a trie query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual lm_query_proxy & allocate_query_proxy() = 0;
+                            virtual lm_trie_query_proxy & allocate_trie_query_proxy() = 0;
 
                             /**
-                             * Dispose the previously allocated query object
-                             * @param query the query to dispose
+                             * Dispose the previously allocated trie query object
+                             * @param query the trie query to dispose
                              */
-                            virtual void dispose_query_proxy(lm_query_proxy & query) = 0;
+                            virtual void dispose_trie_query_proxy(lm_trie_query_proxy & query) = 0;
+
+                            /**
+                             * This method allows to get a word index query executor for the given trie
+                             * @return the word index query proxy object
+                             */
+                            virtual lm_index_query_proxy & allocate_index_query_proxy() = 0;
+
+                            /**
+                             * Dispose the previously allocated word index query object
+                             * @param query the word index query to dispose
+                             */
+                            virtual void dispose_index_query_proxy(lm_index_query_proxy & query) = 0;
 
                         };
                     }

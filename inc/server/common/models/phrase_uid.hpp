@@ -35,12 +35,16 @@
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "server/lm/proxy/lm_index_query_proxy.hpp"
+
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::hashing;
 using namespace uva::utils::text;
+
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -146,8 +150,12 @@ namespace uva {
                          * @param phrase the target phrase to get the uid for
                          * @return the uid of the target phrase
                          */
-                        template<bool is_token = false >
-                        static inline phrase_uid get_target_phrase_uid(const string & phrase) {
+                        template<bool is_token = false, bool is_word_index = true >
+                        static inline phrase_uid get_target_phrase_uid(const string & phrase, lm_index_query_proxy * word_index = NULL) {
+                            ASSERT_SANITY_THROW(is_word_index && (word_index == NULL),
+                                    string("Requesting a target phrase id using the word ") +
+                                    string("index but the word index pointer is NULL!"));
+
                             //ToDo: Implement using the word index of the language model to get the single token uid
                             return get_source_phrase_uid<is_token>(phrase);
                         }

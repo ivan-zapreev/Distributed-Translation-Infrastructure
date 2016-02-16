@@ -36,7 +36,7 @@
 #include "server/lm/lm_parameters.hpp"
 #include "server/lm/lm_configurator.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_trie_query_proxy.hpp"
 
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
@@ -94,7 +94,7 @@ namespace uva {
                             TextPieceReader line;
 
                             //Get the query executor proxy object
-                            lm_query_proxy & query = lm_configurator::allocate_query_proxy();
+                            lm_trie_query_proxy & query = lm_configurator::allocate_query_proxy();
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 

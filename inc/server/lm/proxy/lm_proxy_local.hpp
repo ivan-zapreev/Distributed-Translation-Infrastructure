@@ -33,23 +33,12 @@
 
 #include "server/lm/lm_consts.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
-#include "server/lm/proxy/lm_query_proxy_local.hpp"
+#include "server/lm/proxy/lm_trie_query_proxy.hpp"
+#include "server/lm/proxy/lm_trie_query_proxy_local.hpp"
+#include "server/lm/proxy/lm_index_query_proxy.hpp"
+#include "server/lm/proxy/lm_index_query_proxy_local.hpp"
 
 #include "server/lm/builders/arpa_trie_builder.hpp"
-
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
-
-#include "server/lm/models/c2d_map_trie.hpp"
-#include "server/lm/models/w2c_hybrid_trie.hpp"
-#include "server/lm/models/c2w_array_trie.hpp"
-#include "server/lm/models/w2c_array_trie.hpp"
-#include "server/lm/models/c2d_hybrid_trie.hpp"
-#include "server/lm/models/g2d_map_trie.hpp"
-#include "server/lm/models/h2d_map_trie.hpp"
 
 using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
@@ -75,10 +64,10 @@ namespace uva {
                         public:
                             //Here we have a default word index, see the lm_confgs for the recommended word index information!
                             typedef HashingWordIndex word_index_type;
-                            
+
                             //Here we have a default trie type
                             typedef H2DMapTrie<M_GRAM_LEVEL_MAX, word_index_type> model_type;
-                            
+
                             //Define the builder type 
                             typedef lm_basic_builder<model_type, CStyleFileReader> builder_type;
 
@@ -117,16 +106,34 @@ namespace uva {
                             /**
                              * @see lm_proxy
                              */
-                            virtual lm_query_proxy & allocate_query_proxy() {
+                            virtual lm_trie_query_proxy & allocate_trie_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new lm_query_proxy_local<model_type>(m_model));
+                                return *(new lm_trie_query_proxy_local<model_type>(m_model));
                             }
 
                             /**
                              * @see lm_proxy
                              */
-                            virtual void dispose_query_proxy(lm_query_proxy & query) {
+                            virtual void dispose_trie_query_proxy(lm_trie_query_proxy & query) {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                delete &query;
+                            }
+
+                            /**
+                             * @see lm_proxy
+                             */
+                            virtual lm_index_query_proxy & allocate_index_query_proxy() {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                return *(new lm_index_query_proxy_local<model_type::WordIndexType>(m_model.get_word_index()));
+                            }
+
+                            /**
+                             * @see lm_proxy
+                             */
+                            virtual void dispose_index_query_proxy(lm_index_query_proxy & query) {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
                                 delete &query;
@@ -145,7 +152,7 @@ namespace uva {
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
                                 TMemotyUsage mem_stat_start = {}, mem_stat_end = {};
-                                
+
                                 LOG_USAGE << "--------------------------------------------------------" << END_LOG;
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
 
