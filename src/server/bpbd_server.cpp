@@ -191,11 +191,13 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_distortion_limit = get_integer<uint32_t>(ini, section, "distortion_limit");
         params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
-        params.m_de_params.m_max_phrase_len = get_integer<uint8_t>(ini, section, "max_phrase_length");
+        params.m_de_params.m_max_s_phrase_len = get_integer<uint8_t>(ini, section, "max_source_phrase_length");
+        params.m_de_params.m_max_t_phrase_len = get_integer<uint8_t>(ini, section, "max_target_phrase_length");
         LOG_INFO << "Distortion limit: " << params.m_de_params.m_distortion_limit
                 << ", pruning threshold: " << params.m_de_params.m_pruning_threshold
                 << ", stack capacity: " << params.m_de_params.m_stack_capacity
-                << ", phrase length: " << params.m_de_params.m_max_phrase_len << END_LOG;
+                << ", source phrase length: " << params.m_de_params.m_max_s_phrase_len
+                << ", target phrase length: " << params.m_de_params.m_max_t_phrase_len << END_LOG;
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
         LOG_INFO << "Expansion strategy: " << params.m_de_params.m_expansion_strategy << END_LOG;
 

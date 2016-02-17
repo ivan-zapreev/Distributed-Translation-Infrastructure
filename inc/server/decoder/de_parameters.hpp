@@ -50,7 +50,9 @@ namespace uva {
                         //The stack expansion strategy
                         string m_expansion_strategy;
                         //The maximum number of words to consider when making phrases
-                        uint8_t m_max_phrase_len;
+                        uint8_t m_max_s_phrase_len;
+                        //The maximum number of words to consider when making phrases
+                        uint8_t m_max_t_phrase_len;
                         
                         /**
                          * The string conversion operator
@@ -58,8 +60,9 @@ namespace uva {
                         operator string() const {
                             return string("de_parameters[ distortion_limit: ") +
                                     to_string(m_distortion_limit) + string(", expansion_strategy: ") +
-                                    m_expansion_strategy + string(", max_phrase_len: ") +
-                                    to_string(m_max_phrase_len) + string(", pruning_threshold: ") +
+                                    m_expansion_strategy + string(", m_max_source_phrase_len: ") +
+                                    to_string(m_max_s_phrase_len) + string(", m_max_target_phrase_len: ") +
+                                    to_string(m_max_t_phrase_len) + string(", pruning_threshold: ") +
                                     to_string(m_pruning_threshold) + string(", stack_capacity: ") +
                                     to_string(m_stack_capacity) + string(" ]");
 

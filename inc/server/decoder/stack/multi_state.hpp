@@ -46,18 +46,22 @@ namespace uva {
                 namespace decoder {
                     namespace stack {
 
-                        //Typedef the string pointer
-                        typedef string * string_ptr;
-                        
+                        //Forward declaration of the class
+                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        class multi_state_templ;
+
+                        //Typedef the multi state and instantiate it with the maximum number of words per sentence
+                        typedef multi_state_templ<MAX_WORDS_PER_SENTENCE> multi_state;
+
+                        //Define the multi state pointer
+                        typedef multi_state * multi_state_ptr;
+
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_TARGET_PHRASE_LENGTH>
-                        class multi_state {
+                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        class multi_state_templ {
                         public:
-
-                        //Define the stack state pointer
-                        typedef multi_state<NUM_WORDS_PER_SENTENCE, MAX_TARGET_PHRASE_LENGTH> * multi_state_ptr;
 
                             //Stores the undefined word index
                             static constexpr int32_t UNDEFINED_WORD_IDX = -1;
@@ -65,10 +69,12 @@ namespace uva {
 
                             /**
                              * The basic constructor for the root stack state
+                             * @param max_target_phrase_len the maximum target phrase length
                              */
-                            multi_state()
+                            multi_state_templ(const de_parameters & params)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
-                            m_covered(), m_last_covered(ZERRO_WORD_IDX), m_history(), m_prob(0.0) {
+                            m_covered(), m_last_covered(ZERRO_WORD_IDX),
+                            m_history(params.m_max_t_phrase_len - 1), m_prob(0.0) {
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
                                 //Add the sentence start to the target
@@ -79,15 +85,16 @@ namespace uva {
                              * The basic constructor for the non-root stack state
                              * @param parent the pointer to the parent element
                              */
-                            multi_state(multi_state_ptr parent)
+                            multi_state_templ(const de_parameters & params, multi_state_ptr parent)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
-                            m_covered(), m_last_covered(UNDEFINED_WORD_IDX), m_history(), m_prob(0.0) {
+                            m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
+                            m_history(params.m_max_t_phrase_len - 1), m_prob(0.0) {
                             }
 
                             /**
                              * The basic destructor
                              */
-                            ~multi_state() {
+                            ~multi_state_templ() {
                             }
 
                         private:
@@ -111,17 +118,17 @@ namespace uva {
                             int32_t m_last_covered;
 
                             //Stores the N-1 previously translated words
-                            circular_queue<string_ptr, MAX_TARGET_PHRASE_LENGTH - 1 > m_history;
+                            circular_queue<const string> m_history;
 
                             //Stores the logarithmic probability weight
                             float m_prob;
                         };
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_TARGET_PHRASE_LENGTH>
-                        constexpr int32_t multi_state<NUM_WORDS_PER_SENTENCE, MAX_TARGET_PHRASE_LENGTH>::UNDEFINED_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        constexpr int32_t multi_state_templ<NUM_WORDS_PER_SENTENCE>::UNDEFINED_WORD_IDX;
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_TARGET_PHRASE_LENGTH>
-                        constexpr int32_t multi_state<NUM_WORDS_PER_SENTENCE, MAX_TARGET_PHRASE_LENGTH>::ZERRO_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        constexpr int32_t multi_state_templ<NUM_WORDS_PER_SENTENCE>::ZERRO_WORD_IDX;
                     }
                 }
             }

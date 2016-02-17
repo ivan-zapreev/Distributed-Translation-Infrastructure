@@ -46,14 +46,14 @@ namespace uva {
              * WARNING: This class is not responsible for destroying
              * the elements it stores pointers to.
              */
-            template<typename elem_type, size_t MAX_NUM_ELEMS>
+            template<typename elem_type>
             class circular_queue {
             public:
 
                 /**
                  * The basic constructor
                  */
-                circular_queue() {
+                circular_queue(const size_t capacity) : m_capacity(capacity) {
                 }
 
                 /**
@@ -70,12 +70,14 @@ namespace uva {
                  * NOTE: The queue qill only store the pointer to the element but not the object!
                  * @param elem the element pointer to which will be stored inside the queue
                  */
-                void push_back(const elem_type & elem){
+                void push_back(elem_type & elem){
                     //ToDo: Implement
                 }
                 
             protected:
             private:
+                //Stores the queue capacity
+                const size_t m_capacity;
             };
         }
     }

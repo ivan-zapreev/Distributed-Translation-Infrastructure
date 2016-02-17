@@ -89,7 +89,7 @@ namespace uva {
                             m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
-                            m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query) {
+                            m_stack(m_params, m_is_stop, m_sent_data, m_rm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << (string) m_params << END_LOG;
                             }
 
@@ -135,7 +135,7 @@ namespace uva {
                              */
                             static inline size_t count_words(const string & sentence) {
                                 LOG_DEBUG1 << "Got source sentence: __" << sentence << "___ to count tokens" << END_LOG;
-                                
+
                                 //Compute the number of tokens in the sentence
                                 const size_t num_tokens = std::count(sentence.begin(), sentence.end(), ASCII_SPACE_CHAR) + 1;
 
@@ -182,7 +182,7 @@ namespace uva {
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
-                                    int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_phrase_len + 1);
+                                    int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_s_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx) && !m_is_stop; ++begin_wd_idx) {
                                         //Get the previous column entry
                                         sent_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];

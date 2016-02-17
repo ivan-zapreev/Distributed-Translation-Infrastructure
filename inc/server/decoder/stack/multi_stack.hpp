@@ -27,6 +27,7 @@
 #define TRANS_STACK_HPP
 
 #include <string>
+#include <queue>
 
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -62,20 +63,28 @@ namespace uva {
                          */
                         class multi_stack {
                         public:
+                            //Define the stack type
+                            typedef priority_queue<multi_state_ptr> stack_type;
 
                             /**
                              * The basic constructor
+                             * @param num_words the number of words in the sentence
+                             * @param params the decoder parameters, stores the reference to it
+                             * @param is_stop the stop flag
+                             * @param sent_data the retrieved sentence data
+                             * @param rm_query the reordering model query
                              */
                             multi_stack(const de_parameters & params,
                                     acr_bool_flag is_stop,
-                                    const string & source_sent,
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query)
-                            : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
-                            m_sent_data(sent_data), m_rm_query(rm_query),
+                            : m_root_state(params), m_stacks(NULL), m_params(params),
+                            m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
                             m_lm_query(lm_configurator::allocate_query_proxy()) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << (string) m_params << END_LOG;
-                                LOG_DEBUG1 << "The source sentence is: " << m_source_sent << END_LOG;
+                                //Instantiate the proper number of stacks, the same number as
+                                //there is words plus one. The last stack is for </s> words.
+                                m_stacks = new stack_type[m_sent_data.get_dim() + 1]();
                             }
 
                             /**
@@ -84,6 +93,11 @@ namespace uva {
                             ~multi_stack() {
                                 //Dispose the language query object
                                 lm_configurator::dispose_query_proxy(m_lm_query);
+                                //Dispose the stacks
+                                if (m_stacks != NULL) {
+                                    delete[] m_stacks;
+                                    m_stacks = NULL;
+                                }
                             }
 
                             /**
@@ -96,7 +110,7 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to extend the hypothesis
+                             * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
                             void extend() {
                                 //ToDo: Implement
@@ -121,13 +135,15 @@ namespace uva {
                         protected:
 
                         private:
+                            //Stores the root multi-stack state element
+                            multi_state m_root_state;
+                            //Stores the stacks containing ordered states
+                            stack_type * m_stacks;
+
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;
                             //Stores the stopping flag
                             acr_bool_flag m_is_stop;
-
-                            //Stores the reference to the source sentence
-                            const string & m_source_sent;
 
                             //The reference to the sentence data map
                             const sentence_data_map & m_sent_data;
