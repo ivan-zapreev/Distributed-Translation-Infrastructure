@@ -76,7 +76,7 @@ namespace uva {
                          */
                         trans_job_code(const int32_t code_val) {
                             //Check that the conversion is possible
-                            ASSERT_CONDITION_THROW((code_val < 0 || code_val >= values::size),
+                            ASSERT_SANITY_THROW((code_val < values::RESULT_UNDEFINED || code_val >= values::size),
                                     string("Improper code value: ") + to_string(code_val));
                             
                             //Set the code value

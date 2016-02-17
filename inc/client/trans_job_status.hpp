@@ -73,7 +73,7 @@ namespace uva {
                      */
                     trans_job_status(const int32_t status_val) {
                         //Check that the conversion is possible
-                        ASSERT_CONDITION_THROW((status_val < 0 || status_val >= values::size),
+                        ASSERT_SANITY_THROW((status_val < values::STATUS_UNDEFINED || status_val >= values::size),
                                 string("Improper status value: ") + to_string(status_val));
                         
                         //Set the status value

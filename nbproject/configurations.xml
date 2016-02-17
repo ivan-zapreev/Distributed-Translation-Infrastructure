@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="common">
-        <df name="utils">
-          <df name="containers">
-            <in>circular_queue.hpp</in>
-            <in>upp_diag_matrix.hpp</in>
-          </df>
-        </df>
-      </df>
-      <df name="server">
-        <df name="decoder">
-          <df name="sentence">
-            <in>sentence_data_map.hpp</in>
-            <in>sentence_decoder.hpp</in>
-          </df>
-          <df name="stack">
-            <in>multi_stack.hpp</in>
-            <in>multi_state.hpp</in>
-          </df>
-          <in>de_configs.hpp</in>
-          <in>de_configurator.hpp</in>
-        </df>
-        <df name="rm">
-          <in>rm_configs.hpp</in>
-        </df>
-      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -141,10 +116,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <folder path="2/common">
         <ccTool>
@@ -153,45 +124,6 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <item path="inc/common/utils/containers/circular_queue.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/utils/containers/upp_diag_matrix.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/de_configs.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/decoder/de_configurator.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/sentence/sentence_data_map.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/sentence/sentence_decoder.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/stack/multi_stack.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/stack/multi_state.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/rm/rm_configs.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -232,7 +164,9 @@
       <item path="src/server/decoder/de_configurator.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
       </item>
       <item path="src/server/lm/builders/arpa_gram_builder.cpp"
             ex="false"

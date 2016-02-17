@@ -90,7 +90,7 @@ namespace uva {
                              */
                             CountingWordIndex(const float wordIndexMemFactor) : BasicWordIndex(wordIndexMemFactor) {
                                 ASSERT_CONDITION_THROW(BasicWordIndex::is_word_counts_needed(),
-                                        "The BasicWordIndex must needs word counts! Update CountingWordIndex!");
+                                        "The BasicWordIndex needs word counts! Update CountingWordIndex!");
                                 ASSERT_CONDITION_THROW(sizeof (TWordIdType) != sizeof (TLogProbBackOff),
                                         "The same size TWordIdType and TLogProbBackOff types are required!");
                             }

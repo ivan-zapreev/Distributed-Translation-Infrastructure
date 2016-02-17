@@ -96,7 +96,7 @@ namespace uva {
                  */
                 ELEMENT_TYPE & add_new_element(const uint_fast64_t key_uid) {
                     //Check if the capacity is exceeded.
-                    ASSERT_CONDITION_THROW((m_next_elem_idx > MAX_ELEMENT_INDEX),
+                    ASSERT_SANITY_THROW((m_next_elem_idx > MAX_ELEMENT_INDEX),
                             string("Used up all the elements, the last ") +
                             string("issued id was: ") + std::to_string(m_next_elem_idx));
 

@@ -71,8 +71,8 @@ namespace uva {
                     translation_client(const string & host, const uint16_t port, response_setter set_response, conn_close_notifier notify_conn_close)
                     : m_started(false), m_stopped(false), m_opened(false), m_closed(false), m_set_response(set_response), m_notify_conn_close(notify_conn_close) {
                         //Assert that the notifiers and setter are defined
-                        ASSERT_CONDITION_THROW(!m_set_response, "The response setter is NULL!");
-                        ASSERT_CONDITION_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
+                        ASSERT_SANITY_THROW(!m_set_response, "The response setter is NULL!");
+                        ASSERT_SANITY_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
 
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);

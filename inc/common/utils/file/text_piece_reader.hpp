@@ -285,8 +285,8 @@ namespace uva {
                         return false;
                     } else {
                         //Perform some sanity checks for what we are searching
-                        ASSERT_CONDITION_THROW((delim_card != 1), string("Unsupported delimiter cardinality: ") + to_string(delim_card));
-                        ASSERT_CONDITION_THROW((delim == '\n') || (delim == '\r'), string("Do not support backwards searching for the end of line!"));
+                        ASSERT_SANITY_THROW((delim_card != 1), string("Unsupported delimiter cardinality: ") + to_string(delim_card));
+                        ASSERT_SANITY_THROW((delim == '\n') || (delim == '\r'), string("Do not support backwards searching for the end of line!"));
 
                         LOG_DEBUG4 << "Start searching for a new delimiter, m_rest_ptr: "
                                 << SSTR(static_cast<const void *> (m_rest_ptr))
