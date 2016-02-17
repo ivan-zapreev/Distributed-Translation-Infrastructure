@@ -27,7 +27,6 @@
 #define TRANS_STACK_HPP
 
 #include <string>
-#include <queue>
 
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -36,8 +35,10 @@
 #include "server/lm/lm_configurator.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 
+#include "server/decoder/de_configs.hpp"
+#include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
-#include "server/decoder/stack/multi_state.hpp"
+#include "server/decoder/stack/multi_level.hpp"
 
 using namespace std;
 
@@ -49,6 +50,7 @@ using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
 
+using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
@@ -63,8 +65,6 @@ namespace uva {
                          */
                         class multi_stack {
                         public:
-                            //Define the stack type
-                            typedef priority_queue<multi_state_ptr> stack_type;
 
                             /**
                              * The basic constructor
@@ -85,7 +85,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << (string) m_params << END_LOG;
                                 //Instantiate the proper number of stacks, the same number as
                                 //there is words plus one. The last stack is for </s> words.
-                                m_stacks = new stack_type[m_sent_data.get_dim() + 1]();
+                                m_stacks = new multi_level[m_sent_data.get_dim() + 1]();
                             }
 
                             /**
@@ -139,8 +139,8 @@ namespace uva {
                         private:
                             //Stores the root multi-stack state element
                             multi_state m_root_state;
-                            //Stores the stacks containing ordered states
-                            stack_type * m_stacks;
+                            //This is a pointer to the array of stacks, one stack per number of covered words.
+                            multi_level * m_stacks;
 
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;

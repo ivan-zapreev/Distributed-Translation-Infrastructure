@@ -32,6 +32,7 @@
 #include "common/utils/containers/circular_queue.hpp"
 
 #include "server/decoder/de_configs.hpp"
+#include "server/decoder/de_parameters.hpp"
 
 using namespace std;
 
@@ -95,6 +96,42 @@ namespace uva {
                              * The basic destructor
                              */
                             ~multi_state_templ() {
+                            }
+
+                            /**
+                             * Allows to get the next multi-state
+                             * @return the poniter to the next multi-state in the list
+                             */
+                            inline multi_state_ptr get_next() {
+                                return m_next;
+                            }
+
+                            /**
+                             * Allows to set the next multi-state
+                             * @param next the poniter to the next multi-state in the list
+                             */
+                            inline void set_next(multi_state_ptr next) {
+                                return m_next = next;
+                            }
+                            
+                            /**
+                             * Allows to compare two states
+                             * @param other the other state to compare with
+                             * @return true if this state is smaller than the other one
+                             */
+                            inline bool operator<(const multi_state & other) const {
+                                //ToDo: Implement the state compare
+                                return true;
+                            }
+                            
+                            /**
+                             * Allows to compare two states
+                             * @param other the other state to compare with
+                             * @return true if this state is equal to the other one
+                             */
+                            inline bool operator==(const multi_state & other) const {
+                                //ToDo: Implement the state compare
+                                return false;
                             }
 
                         private:

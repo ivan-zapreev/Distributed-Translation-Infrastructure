@@ -679,6 +679,7 @@
             <in>sentence_decoder.hpp</in>
           </df>
           <df name="stack">
+            <in>multi_level.hpp</in>
             <in>multi_stack.hpp</in>
             <in>multi_state.hpp</in>
           </df>
