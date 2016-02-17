@@ -56,7 +56,8 @@ namespace uva {
                          * This method allows to connect to the translation model.
                          * This method is to be called only once! The latter is
                          * not checked but is a must.
-                         * @param params the translation model parameters to be set.
+                         * @param params the translation model parameters to be set,
+                         * this class only stores the referent to the parameters.
                          */
                         static void connect(const tm_parameters & params) {
                             //Store the parameters for future use

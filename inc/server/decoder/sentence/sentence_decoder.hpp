@@ -37,11 +37,10 @@
 
 #include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
-#include "server/decoder/stack/multi_state.hpp"
+#include "server/decoder/stack/multi_stack.hpp"
 
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
-#include "server/lm/lm_configurator.hpp"
 
 using namespace std;
 
@@ -54,7 +53,6 @@ using namespace uva::smt::bpbd::server::common::models;
 
 using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::rm;
-using namespace uva::smt::bpbd::server::lm;
 
 using namespace uva::smt::bpbd::server::decoder::sentence;
 using namespace uva::smt::bpbd::server::decoder::stack;
@@ -78,12 +76,20 @@ namespace uva {
                             /**
                              * The basic constructor
                              * @param params the reference to the decoder parameters
+                             * @param is_stop the flag that will be set to true in case 
+                             *                one needs to abort the translation process.
+                             * @param source_sent [in] the source language sentence to translate
+                             *                         the source sentence is expected to be
+                             *                         tokenized, reduced, and in the lower case.
+                             * @param target_sent [out] the resulting target language sentence
                              */
-                            sentence_decoder(const de_parameters & params)
-                            : m_params(params), m_sent_data(NULL),
-                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            sentence_decoder(const de_parameters & params, acr_bool_flag is_stop,
+                                    const string & source_sent, string & target_sent)
+                            : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
+                            m_target_sent(target_sent), m_sent_data(NULL),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
-                            m_rm_query(rm_configurator::allocate_query_proxy()) {
+                            m_rm_query(rm_configurator::allocate_query_proxy()),
+                            m_stack(m_params, m_is_stop, m_source_sent, m_tm_query, m_rm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << (string) m_params << END_LOG;
                             }
 
@@ -97,42 +103,31 @@ namespace uva {
                                     m_sent_data = NULL;
                                 }
                                 //Dispose the query objects are they are no longer needed
-                                lm_configurator::dispose_query_proxy(m_lm_query);
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
                             }
 
                             /**
                              * This is the main method needed to be called for translating a sentence.
-                             * @param is_stop the flag that will be set to true in case 
-                             *                one needs to abort the translation process.
-                             * @param source_sent [in] the source language sentence to translate
-                             *                         the source sentence is expected to be
-                             *                         tokenized, reduced, and in the lower case.
-                             * @param target_sent [out] the resulting target language sentence
                              */
-                            inline void translate(acr_bool_flag is_stop,
-                                    string source_sent, string & target_sent) {
-                                //Store the data into the class data members
-                                m_source_sent = source_sent;
-
+                            inline void translate() {
                                 //If the reduced source sentence is not empty then do the translation
                                 if (m_source_sent.size() != 0) {
 
                                     //Query the translation model
-                                    query_translation_model(is_stop);
+                                    query_translation_model();
 
                                     //Return in case we need to stop translating
-                                    if (is_stop) return;
+                                    if (m_is_stop) return;
 
                                     //Query the reordering model
-                                    query_reordering_model(is_stop);
+                                    query_reordering_model();
 
                                     //Return in case we need to stop translating
-                                    if (is_stop) return;
+                                    if (m_is_stop) return;
 
                                     //Perform the translation
-                                    perform_translation(is_stop, target_sent);
+                                    perform_translation();
                                 }
                             }
 
@@ -141,7 +136,7 @@ namespace uva {
                             /**
                              * Allows to set the source sentence, this includes preparing things for decoding
                              */
-                            inline void query_translation_model(acr_bool_flag is_stop) {
+                            inline void query_translation_model() {
                                 LOG_DEBUG1 << "Got source sentence to set: " << m_source_sent << END_LOG;
 
                                 //Compute the number of tokens in the sentence
@@ -156,7 +151,7 @@ namespace uva {
                                 //Declare the begin and end character index variables
                                 size_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
 
-                                while (ch_e_idx <= std::string::npos && !is_stop) {
+                                while (ch_e_idx <= std::string::npos && !m_is_stop) {
                                     //Get the appropriate map entry reference
                                     sent_data_entry & diag_entry = sent_data[col_idx][col_idx];
 
@@ -180,7 +175,7 @@ namespace uva {
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
-                                    for (int32_t row_idx = max(0, col_idx - m_params.m_max_phrase_len + 1); (row_idx < col_idx) && !is_stop; ++row_idx) {
+                                    for (int32_t row_idx = max(0, col_idx - m_params.m_max_phrase_len + 1); (row_idx < col_idx) && !m_is_stop; ++row_idx) {
                                         //Get the previous column entry
                                         sent_data_entry & prev_entry = sent_data[row_idx][col_idx - 1];
                                         //Get the new column entry
@@ -210,7 +205,7 @@ namespace uva {
                                 }
 
                                 //Execute the query if we are not stopping
-                                if (!is_stop) {
+                                if (!m_is_stop) {
                                     m_tm_query.execute();
                                 }
                             }
@@ -218,17 +213,17 @@ namespace uva {
                             /**
                              * Allows to query the reordering model based on the set sentence phrases
                              */
-                            inline void query_reordering_model(acr_bool_flag is_stop) {
+                            inline void query_reordering_model() {
                                 //Declare the source-target phrase uid container
                                 vector<phrase_uid> st_uids;
 
                                 //Obtain the list of source-target ids available
-                                if (!is_stop) {
+                                if (!m_is_stop) {
                                     m_tm_query.get_st_uids(st_uids);
                                 }
 
                                 //Execute the reordering model query
-                                if (!is_stop) {
+                                if (!m_is_stop) {
                                     m_rm_query.execute(st_uids);
                                 }
                             }
@@ -236,32 +231,44 @@ namespace uva {
                             /**
                              * Performs the sentence translation 
                              */
-                            inline void perform_translation(acr_bool_flag is_stop, string & target_sent) {
-                                //ToDo: Implement
-
-                                const uint32_t time_sec = rand() % 20;
-                                for (uint32_t i = 0; i <= time_sec; ++i) {
-                                    if (is_stop) break;
-                                    this_thread::sleep_for(chrono::seconds(1));
+                            inline void perform_translation() {
+                                //Perform the decoding process on the level of the stack
+                                while (!m_stack.has_finished() && !m_is_stop) {
+                                    //Extend the stack
+                                    m_stack.extend();
+                                    //Prune the stack
+                                    m_stack.prune();
                                 }
 
-                                //ToDo: Remove this temporary plug
-                                target_sent = m_source_sent;
+                                //If we are finished then retrieve the best translation
+                                if (!m_is_stop) {
+                                    m_stack.get_best_translation(m_target_sent);
+                                } else {
+                                    m_target_sent = m_source_sent;
+                                }
                             }
 
                         private:
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;
-                            //Stores the source sentence
-                            string m_source_sent;
+                            //Stores the stopping flag
+                            acr_bool_flag m_is_stop;
+
+                            //Stores the reference to the source sentence
+                            const string & m_source_sent;
+                            //Stores the reference to the target sentence
+                            string & m_target_sent;
+
                             //Stores the pointer to the sentence data map
                             sentence_data_map * m_sent_data;
-                            //The language mode query proxy
-                            lm_trie_query_proxy & m_lm_query;
+
                             //The language mode query proxy
                             tm_query_proxy & m_tm_query;
                             //The language mode query proxy
                             rm_query_proxy & m_rm_query;
+
+                            //Stores the multi-stack
+                            multi_stack m_stack;
                         };
                     }
                 }

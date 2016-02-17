@@ -128,10 +128,10 @@ namespace uva {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //Obtain the new decoder instance
-                        sentence_decoder & dec = de_configurator::allocate_decoder();
+                        sentence_decoder & dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
 
                         //Perform the decoding task
-                        dec.translate(m_is_interrupted, m_source_text, m_target_text);
+                        dec.translate();
 
                         //Dispose the decoder instance 
                         de_configurator::dispose_decoder(dec);

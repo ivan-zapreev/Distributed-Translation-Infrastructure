@@ -57,7 +57,8 @@ namespace uva {
                          * This method allows to connect to the reordering model.
                          * This method is to be called only once! The latter is
                          * not checked but is a must.
-                         * @param params the reordering model parameters to be set.
+                         * @param params the reordering model parameters to be set, 
+                         * this class only stores the referent to the parameters.
                          */
                         static void connect(const rm_parameters & params) {
                             //Store the parameters for future use

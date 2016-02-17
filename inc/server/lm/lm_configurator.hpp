@@ -58,7 +58,8 @@ namespace uva {
                          * This method allows to set the configuration parameters
                          * for the word index trie etc. This method is to be called
                          * only once! The latter is not checked but is a must.
-                         * @param params the language model parameters to be set.
+                         * @param params the language model parameters to be set,
+                         * this class only stores the referent to the parameters.
                          */
                         static void connect(const lm_parameters & params) {
                             //Store the parameters for future use

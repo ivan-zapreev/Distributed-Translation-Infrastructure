@@ -225,16 +225,16 @@ void print_server_commands() {
  * Allows to establish connections to the models: language, translation, reordering
  * @param params the parameters needed to establish connections to the models
  */
-void connect_to_models(const server_parameters & params){
+void connect_to_models(const server_parameters & params) {
     //Connect to the language model
     lm_configurator::connect(params.m_lm_params);
-    
+
     //Connect to the translation model
     tm_configurator::connect(params.m_tm_params);
-    
+
     //Connect to the reordering model
     rm_configurator::connect(params.m_rm_params);
-    
+
     //Connect to the decoder
     de_configurator::connect(params.m_de_params);
 }
@@ -242,16 +242,16 @@ void connect_to_models(const server_parameters & params){
 /**
  * Allows to disconnect from the models: language, translation, reordering
  */
-void disconnect_from_models(){
+void disconnect_from_models() {
     //Disconnect from the language model
     lm_configurator::disconnect();
-    
+
     //Disconnect from the translation model
     tm_configurator::disconnect();
-    
+
     //Disconnect from the reordering model
     rm_configurator::disconnect();
-    
+
     //Disconnect from the decoder
     de_configurator::disconnect();
 }
@@ -322,7 +322,7 @@ int main(int argc, char** argv) {
         LOG_ERROR << ex.get_message() << END_LOG;
         return_code = 1;
     }
-    
+
     //Disconnect from the used models
     disconnect_from_models();
 

@@ -47,10 +47,12 @@ namespace uva {
                      */
                     class de_configurator {
                     public:
+
                         /**
                          * This method allows to "connect" to the decoder.
                          * The latter means configure it using the given data.
-                         * @param params the decoder parameters to be used.
+                         * @param params the decoder parameters to be used, this
+                         * class only stores the referent to the parameters.
                          */
                         static void connect(const de_parameters & params) {
                             m_params = params;
@@ -62,16 +64,25 @@ namespace uva {
                         static void disconnect() {
                             //Nothing to be done, no dynamically allocated resources at the moment.
                         }
- 
+
                         /**
                          * Allows to get an instance of the decoder object.
+                         * @param is_stop the flag that will be set to true in case 
+                         *                one needs to abort the translation process.
+                         * @param source_sent [in] the source language sentence to translate
+                         *                         the source sentence is expected to be
+                         *                         tokenized, reduced, and in the lower case.
+                         * @param target_sent [out] the resulting target language sentence
                          * @return an instance of the decoder object.
                          */
-                        static inline sentence_decoder & allocate_decoder() {
+                        static inline sentence_decoder & allocate_decoder(
+                                acr_bool_flag is_stop,
+                                const string & source_sent,
+                                string & target_sent) {
                             //ToDo: Pre-allocate decoders, make as many as there are threads
-                            return *(new sentence_decoder(m_params));
+                            return *(new sentence_decoder(m_params, is_stop, source_sent, target_sent));
                         }
-                        
+
                         /**
                          * Allows to dispose the decoder
                          * @param dec the decoder to be returned
@@ -80,7 +91,7 @@ namespace uva {
                             //ToDo: Mark the decoder instance as available
                             delete &dec;
                         }
-                        
+
                     private:
                         //Stores the decoding parameters
                         static de_parameters m_params;
