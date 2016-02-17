@@ -26,15 +26,17 @@
 #ifndef TRANS_STACK_HPP
 #define TRANS_STACK_HPP
 
+#include <string>
+
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/decoder/stack/multi_state.hpp"
-
 #include "server/lm/lm_configurator.hpp"
-#include "server/tm/proxy/tm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
+
+#include "server/decoder/sentence/sentence_data_map.hpp"
+#include "server/decoder/stack/multi_state.hpp"
 
 using namespace std;
 
@@ -44,8 +46,9 @@ using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
-using namespace uva::smt::bpbd::server::tm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
+
+using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {
@@ -66,10 +69,10 @@ namespace uva {
                             multi_stack(const de_parameters & params,
                                     acr_bool_flag is_stop,
                                     const string & source_sent,
-                                    const tm_query_proxy & tm_query,
+                                    const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query)
                             : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
-                            m_tm_query(tm_query), m_rm_query(rm_query),
+                            m_sent_data(sent_data), m_rm_query(rm_query),
                             m_lm_query(lm_configurator::allocate_query_proxy()) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << (string) m_params << END_LOG;
                                 LOG_DEBUG1 << "The source sentence is: " << m_source_sent << END_LOG;
@@ -126,9 +129,9 @@ namespace uva {
                             //Stores the reference to the source sentence
                             const string & m_source_sent;
 
-                            //The language mode query proxy
-                            const tm_query_proxy & m_tm_query;
-                            //The language mode query proxy
+                            //The reference to the sentence data map
+                            const sentence_data_map & m_sent_data;
+                            //The reference to the reordering mode query data
                             const rm_query_proxy & m_rm_query;
 
                             //Sores the language mode query proxy

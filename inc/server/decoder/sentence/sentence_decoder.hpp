@@ -86,10 +86,10 @@ namespace uva {
                             sentence_decoder(const de_parameters & params, acr_bool_flag is_stop,
                                     const string & source_sent, string & target_sent)
                             : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
-                            m_target_sent(target_sent), m_sent_data(NULL),
+                            m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
-                            m_stack(m_params, m_is_stop, m_source_sent, m_tm_query, m_rm_query) {
+                            m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << (string) m_params << END_LOG;
                             }
 
@@ -97,11 +97,6 @@ namespace uva {
                              * The basic destructor
                              */
                             ~sentence_decoder() {
-                                //Destroy the sentence data
-                                if (m_sent_data != NULL) {
-                                    delete m_sent_data;
-                                    m_sent_data = NULL;
-                                }
                                 //Dispose the query objects are they are no longer needed
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
@@ -134,13 +129,15 @@ namespace uva {
                         protected:
 
                             /**
-                             * Allows to set the source sentence, this includes preparing things for decoding
+                             * Allows to count the number of tokens/words in the given sentence
+                             * @param sentence the sentence to count the words in
+                             * @return the number of words
                              */
-                            inline void query_translation_model() {
-                                LOG_DEBUG1 << "Got source sentence to set: " << m_source_sent << END_LOG;
-
+                            static inline size_t count_words(const string & sentence) {
+                                LOG_DEBUG1 << "Got source sentence: __" << sentence << "___ to count tokens" << END_LOG;
+                                
                                 //Compute the number of tokens in the sentence
-                                const size_t num_tokens = std::count(m_source_sent.begin(), m_source_sent.end(), ASCII_SPACE_CHAR) + 1;
+                                const size_t num_tokens = std::count(sentence.begin(), sentence.end(), ASCII_SPACE_CHAR) + 1;
 
                                 //ToDo: The sentence length must be limited!
                                 //Check the sanity, the used number of words can not be larger than the max
@@ -149,10 +146,13 @@ namespace uva {
                                         string(") exceeds the maximum allowed number of words per sentence (") +
                                         to_string(MAX_WORDS_PER_SENTENCE));
 
-                                //Instantiate the sentence info matrix
-                                m_sent_data = new sentence_data_map(num_tokens);
-                                sentence_data_map & sent_data(*m_sent_data);
+                                return num_tokens;
+                            }
 
+                            /**
+                             * Allows to set the source sentence, this includes preparing things for decoding
+                             */
+                            inline void query_translation_model() {
                                 //Fill in the matrix with the phrases and their uids
                                 int32_t end_wd_idx = MIN_SENT_WORD_INDEX;
                                 //Declare the begin and end character index variables
@@ -160,7 +160,7 @@ namespace uva {
 
                                 while (ch_e_idx <= std::string::npos && !m_is_stop) {
                                     //Get the appropriate map entry reference
-                                    sent_data_entry & diag_entry = sent_data[end_wd_idx][end_wd_idx];
+                                    sent_data_entry & diag_entry = m_sent_data[end_wd_idx][end_wd_idx];
 
                                     //Store the phrase begin and end character indexes
                                     diag_entry.m_begin_ch_idx = ch_b_idx;
@@ -185,9 +185,9 @@ namespace uva {
                                     int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx) && !m_is_stop; ++begin_wd_idx) {
                                         //Get the previous column entry
-                                        sent_data_entry & prev_entry = sent_data[begin_wd_idx][end_wd_idx - 1];
+                                        sent_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
                                         //Get the new column entry
-                                        sent_data_entry & new_entry = sent_data[begin_wd_idx][end_wd_idx];
+                                        sent_data_entry & new_entry = m_sent_data[begin_wd_idx][end_wd_idx];
 
                                         //Store the phrase begin and end character indexes
                                         new_entry.m_begin_ch_idx = prev_entry.m_begin_ch_idx; // All the phrases in the row begin at the same place
@@ -275,11 +275,11 @@ namespace uva {
                             string & m_target_sent;
 
                             //Stores the pointer to the sentence data map
-                            sentence_data_map * m_sent_data;
+                            sentence_data_map m_sent_data;
 
-                            //The language mode query proxy
+                            //The reference to the translation model query proxy
                             tm_query_proxy & m_tm_query;
-                            //The language mode query proxy
+                            //The reference to the reordering model query proxy
                             rm_query_proxy & m_rm_query;
 
                             //Stores the multi-stack
