@@ -142,22 +142,29 @@ namespace uva {
                                 //Compute the number of tokens in the sentence
                                 const size_t num_tokens = std::count(m_source_sent.begin(), m_source_sent.end(), ASCII_SPACE_CHAR) + 1;
 
+                                //ToDo: The sentence length must be limited!
+                                //Check the sanity, the used number of words can not be larger than the max
+                                ASSERT_SANITY_THROW((num_tokens > MAX_WORDS_PER_SENTENCE),
+                                        string("The number of words in the sentence (") + to_string(num_tokens) +
+                                        string(") exceeds the maximum allowed number of words per sentence (") +
+                                        to_string(MAX_WORDS_PER_SENTENCE));
+
                                 //Instantiate the sentence info matrix
                                 m_sent_data = new sentence_data_map(num_tokens);
                                 sentence_data_map & sent_data(*m_sent_data);
 
                                 //Fill in the matrix with the phrases and their uids
-                                int32_t col_idx = 0;
+                                int32_t end_wd_idx = MIN_SENT_WORD_INDEX;
                                 //Declare the begin and end character index variables
-                                size_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
+                                uint32_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
 
                                 while (ch_e_idx <= std::string::npos && !m_is_stop) {
                                     //Get the appropriate map entry reference
-                                    sent_data_entry & diag_entry = sent_data[col_idx][col_idx];
+                                    sent_data_entry & diag_entry = sent_data[end_wd_idx][end_wd_idx];
 
-                                    //Store the phrase begin and end indexes
-                                    diag_entry.m_begin_idx = ch_b_idx;
-                                    diag_entry.m_end_idx = ch_e_idx;
+                                    //Store the phrase begin and end character indexes
+                                    diag_entry.m_begin_ch_idx = ch_b_idx;
+                                    diag_entry.m_end_ch_idx = ch_e_idx;
 
                                     LOG_DEBUG1 << "Found the new token @ [" << ch_b_idx << "," << ch_e_idx << "): "
                                             << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << END_LOG;
@@ -175,20 +182,28 @@ namespace uva {
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
-                                    for (int32_t row_idx = max(0, col_idx - m_params.m_max_phrase_len + 1); (row_idx < col_idx) && !m_is_stop; ++row_idx) {
+                                    int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_phrase_len + 1);
+                                    for (; (begin_wd_idx < end_wd_idx) && !m_is_stop; ++begin_wd_idx) {
                                         //Get the previous column entry
-                                        sent_data_entry & prev_entry = sent_data[row_idx][col_idx - 1];
+                                        sent_data_entry & prev_entry = sent_data[begin_wd_idx][end_wd_idx - 1];
                                         //Get the new column entry
-                                        sent_data_entry & new_entry = sent_data[row_idx][col_idx];
-                                        //Initialize the new entry with data
-                                        new_entry.m_begin_idx = prev_entry.m_begin_idx; // All the phrases in the row begin at the same place
-                                        new_entry.m_end_idx = diag_entry.m_end_idx; //All the phrases in the column end at the same places
+                                        sent_data_entry & new_entry = sent_data[begin_wd_idx][end_wd_idx];
+
+                                        //Store the phrase begin and end character indexes
+                                        new_entry.m_begin_ch_idx = prev_entry.m_begin_ch_idx; // All the phrases in the row begin at the same place
+                                        new_entry.m_end_ch_idx = diag_entry.m_end_ch_idx; //All the phrases in the column end at the same place
+
+                                        //Compute the phrase uid
                                         new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, diag_entry.m_phrase_uid);
 
                                         //Add the m-gram phrase to the query
                                         m_tm_query.add_source(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
-                                        LOG_DEBUG1 << "Phrase: " << m_source_sent.substr(new_entry.m_begin_idx, new_entry.m_end_idx - new_entry.m_begin_idx) << ", uid: " << new_entry.m_phrase_uid << END_LOG;
+                                        //Do logging 
+                                        {
+                                            string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
+                                            LOG_DEBUG1 << "Phrase: " << phrase << ", uid: " << new_entry.m_phrase_uid << END_LOG;
+                                        }
                                     }
 
                                     //Check on the stop condition 
@@ -197,7 +212,7 @@ namespace uva {
                                     }
 
                                     //Increment the end word index
-                                    ++col_idx;
+                                    ++end_wd_idx;
 
                                     //Search for the next delimiter
                                     ch_b_idx = ch_e_idx + 1;

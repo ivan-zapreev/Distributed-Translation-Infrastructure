@@ -52,16 +52,22 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace sentence {
+                        //Declare the minimum word index in the sentence
+                        static constexpr int32_t MIN_SENT_WORD_INDEX = 0;
 
                         /**
-                         * This structure stores the source phrase information data
+                         * This structure stores the source phrase information
+                         * data. This data is the begin and end character position
+                         * of the phrase in the original sentence, also the first
+                         * and the last word indexes, the phrase id and the available
+                         * translation, i.e. source entry.
                          */
                         struct sent_data_entry {
 
                             /**
                              * The basic constructor, does default initialization of the structure fields
                              */
-                            sent_data_entry() : m_begin_idx(0), m_end_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
+                            sent_data_entry() : m_begin_ch_idx(0), m_end_ch_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
                             }
 
                             /**
@@ -71,9 +77,9 @@ namespace uva {
                             }
 
                             //Stores the phrase first word begin character index
-                            size_t m_begin_idx;
+                            uint32_t m_begin_ch_idx;
                             //Stores the phrase last word end character index plus one
-                            size_t m_end_idx;
+                            uint32_t m_end_ch_idx;
 
                             //Stores the entire phrase uid
                             phrase_uid m_phrase_uid;

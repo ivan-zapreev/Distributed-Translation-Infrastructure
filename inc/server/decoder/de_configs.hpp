@@ -27,6 +27,7 @@
 #define DE_CONFIGS_HPP
 
 #include <inttypes.h>
+#include <cstdint>
 #include <string>
 
 #include "server/tm/tm_configs.hpp"
@@ -43,10 +44,10 @@ namespace uva {
                     namespace stack {
                         //Stores the maximum considered number of words per sentence
                         static const size_t MAX_WORDS_PER_SENTENCE = 100;
-                        
+
                         //Stores the start of the sentence symbol
                         static const string BEGIN_SENTENCE_TAG_STR = "<s>";
-                        
+
                         //Stores the end of the sentence symbol
                         static const string END_SENTENCE_TAG_STR = "</s>";
                     }
