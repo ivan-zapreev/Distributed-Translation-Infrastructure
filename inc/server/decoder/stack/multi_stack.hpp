@@ -80,7 +80,8 @@ namespace uva {
                                     const rm_query_proxy & rm_query)
                             : m_root_state(params), m_stacks(NULL), m_params(params),
                             m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
-                            m_lm_query(lm_configurator::allocate_query_proxy()) {
+                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            m_las_stack_idx(m_sent_data.get_dim() - 1), m_last_exp_stack_idx(-1) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << (string) m_params << END_LOG;
                                 //Instantiate the proper number of stacks, the same number as
                                 //there is words plus one. The last stack is for </s> words.
@@ -106,7 +107,7 @@ namespace uva {
                              */
                             bool has_finished() {
                                 //ToDo: Implement
-                                return true;
+                                return (m_last_exp_stack_idx >= m_las_stack_idx);
                             }
 
                             /**
@@ -114,6 +115,7 @@ namespace uva {
                              */
                             void extend() {
                                 //ToDo: Implement
+                                ++m_last_exp_stack_idx;
                             }
 
                             /**
@@ -152,6 +154,12 @@ namespace uva {
 
                             //Sores the language mode query proxy
                             lm_trie_query_proxy & m_lm_query;
+                            
+                            //Stores the last stack index
+                            int32_t m_las_stack_idx;
+
+                            //Stores the last expanded stack id
+                            int32_t m_last_exp_stack_idx;
                         };
                     }
                 }
