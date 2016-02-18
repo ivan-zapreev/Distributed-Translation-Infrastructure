@@ -135,6 +135,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_is_cum_prob = p_cumulative_prob_arg->getValue();
     params.m_query_file_name = p_query_arg->getValue();
     params.m_lm_params.m_conn_string = p_model_arg->getValue();
+    params.m_lm_params.num_lm_weights = 0;
 }
 
 /**

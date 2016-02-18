@@ -325,9 +325,7 @@ namespace uva {
                             //Check if the line that was input is the header of the N-grams section for N=level
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Check if we need to multiply with the m-gram weight
-                                const bool is_mult_weight = ((m_params.get_lm_weight() != 1.0) && (m_params.get_lm_weight() != 0.0));
-
-                                if (is_mult_weight) {
+                                if ( params.is_lm_weight()) {
                                     //Read the M-grams of the given level
                                     read_m_gram_level<CURR_LEVEL, true>();
                                 } else {
