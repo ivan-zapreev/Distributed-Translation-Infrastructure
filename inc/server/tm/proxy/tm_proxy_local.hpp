@@ -86,7 +86,7 @@ namespace uva {
                             virtual void connect(const tm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the translation model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Translation Model", params.m_conn_string);
+                                load_model_data<builder_type, CStyleFileReader>("Translation Model", params);
                             }
 
                             /**
@@ -118,10 +118,12 @@ namespace uva {
                             /**
                              * Allows to load the model into the instance of the selected container class
                              * @param the name of the model being loaded
-                             * @params model_file_name the model file name
+                             * @params params the model parameters
                              */
                             template<typename builder_type, typename file_reader_type>
-                            void load_model_data(char const *model_name, const string & model_file_name) {
+                            void load_model_data(char const *model_name, const tm_parameters & params) {
+                                const string & model_file_name = params.m_conn_string;
+                                
                                 //Declare time variables for CPU times in seconds
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
