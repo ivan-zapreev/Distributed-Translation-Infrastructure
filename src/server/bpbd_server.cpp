@@ -187,6 +187,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 params.m_tm_params.tm_weights,
                 params.m_tm_params.num_tm_weights,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
+        params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_translation_probability");
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
@@ -205,8 +207,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_max_t_phrase_len = get_integer<uint8_t>(ini, section, "max_target_phrase_length");
         params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
         params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
-        params.m_de_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
-        params.m_de_params.m_min_tran_prob = get_float(ini, section, "min_translation_probability");
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
         LOG_INFO << params.m_de_params << END_LOG;
 

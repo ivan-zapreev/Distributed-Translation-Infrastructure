@@ -36,10 +36,6 @@
           <in>de_configurator.cpp</in>
         </df>
         <df name="lm">
-          <df name="builders">
-            <in>arpa_gram_builder.cpp</in>
-            <in>arpa_trie_builder.cpp</in>
-          </df>
           <df name="dictionaries">
             <in>aword_index.cpp</in>
           </df>
@@ -140,6 +136,21 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/lm/builders/lm_basic_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/lm/builders/lm_gram_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/lm/builders/lm_gram_builder_factory.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -184,19 +195,15 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="src/server/lm/builders/arpa_gram_builder.cpp"
+      <item path="src/server/lm/builders/lm_basic_builder.cpp"
             ex="false"
             tool="1"
-            flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
+            flavor2="0">
       </item>
-      <item path="src/server/lm/builders/arpa_trie_builder.cpp"
+      <item path="src/server/lm/builders/lm_gram_builder.cpp"
             ex="false"
             tool="1"
-            flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
+            flavor2="0">
       </item>
       <item path="src/server/lm/dictionaries/aword_index.cpp"
             ex="false"

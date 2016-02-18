@@ -36,7 +36,7 @@
 #include "server/lm/proxy/lm_trie_query_proxy.hpp"
 #include "server/lm/proxy/lm_trie_query_proxy_local.hpp"
 
-#include "server/lm/builders/arpa_trie_builder.hpp"
+#include "server/lm/builders/lm_basic_builder.hpp"
 
 using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
@@ -161,7 +161,7 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                builder_type builder(m_model, model_file);
+                                builder_type builder(params, m_model, model_file);
                                 //Load the model from the file
                                 builder.build();
 

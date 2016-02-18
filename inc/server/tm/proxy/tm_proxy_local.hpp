@@ -155,7 +155,7 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                builder_type builder(m_model, model_file);
+                                builder_type builder(params, m_model, model_file);
                                 //Load the model from the file
                                 builder.build();
 

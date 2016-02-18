@@ -32,6 +32,7 @@
 #include "common/utils/string_utils.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
+#include "server/rm/rm_parameters.hpp"
 #include "server/rm/models/rm_entry.hpp"
 
 using namespace std;
@@ -41,6 +42,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::file;
 using namespace uva::utils::text;
 
+using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::rm::models;
 using namespace uva::smt::bpbd::server::common::models;
 
@@ -70,11 +72,12 @@ namespace uva {
 
                             /**
                              * The basic constructor of the builder object
+                             * @params params the model parameters
                              * @param model the model to put the data into
                              * @param reader the reader to read the data from
                              */
-                            rm_basic_builder(model_type & model, reader_type & reader)
-                            : m_model(model), m_reader(reader) {
+                            rm_basic_builder(const rm_parameters & params, model_type & model, reader_type & reader)
+                            : m_params(params), m_model(model), m_reader(reader) {
                             }
 
                             /**
@@ -99,7 +102,7 @@ namespace uva {
                              */
                             inline void set_number_source_phrases() {
                                 Logger::start_progress_bar(string("Counting reordering entries"));
-                                
+
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
                                 //Stores the number of reordering entries for logging
@@ -111,7 +114,7 @@ namespace uva {
                                 while (m_reader.get_first_line(line)) {
                                     //Increment the counter
                                     ++num_entries;
-                                    
+
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
                                 }
@@ -158,7 +161,7 @@ namespace uva {
                              */
                             void process_source_entries() {
                                 Logger::start_progress_bar(string("Building reordering model"));
-                                
+
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source, target;
 
@@ -181,7 +184,7 @@ namespace uva {
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
                                     }
-                                    
+
                                     //Read the target phrase
                                     line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
                                     string target_str = target.str();
@@ -192,7 +195,7 @@ namespace uva {
                                     //Parse the rest of the target entry
                                     target_uid = get_phrase_uid<true>(target_str);
                                     process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
-                                    
+
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
                                 }
@@ -205,6 +208,8 @@ namespace uva {
                             }
 
                         private:
+                            //Stores the reference to the model parameters
+                            const rm_parameters & m_params;
                             //Stores the reference to the model
                             model_type & m_model;
                             //Stores the reference to the builder;

@@ -23,15 +23,15 @@
  * Created on July 27, 2015, 11:17 PM
  */
 
-#ifndef ARPANGRAMBUILDERFACTORY_HPP
-#define ARPANGRAMBUILDERFACTORY_HPP
+#ifndef LM_GRAM_BUILDER_FACTORY_HPP
+#define LM_GRAM_BUILDER_FACTORY_HPP
 
 #include <string>       // std::stringstream
 #include <ios>          //std::hex
 #include <functional>   // std::function
 
 #include "server/lm/lm_consts.hpp"
-#include "server/lm/builders/arpa_gram_builder.hpp"
+#include "server/lm/builders/lm_gram_builder.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -57,7 +57,7 @@ namespace uva {
                          * as regular N-grams.
                          */
                         template<typename TrieType>
-                        class ARPAGramBuilderFactory {
+                        class lm_gram_builder_factory {
                         public:
                             static const TModelLevel MAX_LEVEL;
                             typedef typename TrieType::WordIndexType WordIndexType;
@@ -78,7 +78,7 @@ namespace uva {
                              * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                              */
                             template<TModelLevel CURR_LEVEL>
-                            static inline void get_builder(TrieType & trie, ARPAGramBuilder<WordIndexType, CURR_LEVEL> **ppBuilder) {
+                            static inline void get_builder(TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL> **ppBuilder) {
                                 //First reset the pointer to NULL
                                 *ppBuilder = NULL;
                                 LOG_DEBUG << "Requested a " << CURR_LEVEL << "-Gram builder, the maximum level is " << MAX_LEVEL << END_LOG;
@@ -95,7 +95,7 @@ namespace uva {
                                     //Here we are to get the builder instance
                                     LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new ARPAGramBuilder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
+                                    *ppBuilder = new lm_gram_builder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
                                             [&] (const T_Model_M_Gram<WordIndexType> & gram) {
                                                 trie.template add_m_gram<CURR_LEVEL>(gram);
                                             });
@@ -104,19 +104,19 @@ namespace uva {
                                 LOG_DEBUG << "The " << CURR_LEVEL << "-Gram builder (" << hex << long(*ppBuilder) << ") is produced!" << END_LOG;
                             }
 
-                            virtual ~ARPAGramBuilderFactory() {
+                            virtual ~lm_gram_builder_factory() {
                             }
                         private:
 
-                            ARPAGramBuilderFactory() {
+                            lm_gram_builder_factory() {
                             }
 
-                            ARPAGramBuilderFactory(const ARPAGramBuilderFactory & other) {
+                            lm_gram_builder_factory(const lm_gram_builder_factory & other) {
                             }
                         };
 
                         template<typename TrieType>
-                        const TModelLevel ARPAGramBuilderFactory<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
+                        const TModelLevel lm_gram_builder_factory<TrieType>::MAX_LEVEL = TrieType::MAX_LEVEL;
                     }
                 }
             }

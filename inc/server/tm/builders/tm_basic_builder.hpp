@@ -32,6 +32,7 @@
 #include "common/utils/string_utils.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
+#include "server/tm/tm_parameters.hpp"
 #include "server/tm/models/tm_target_entry.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 
@@ -43,6 +44,7 @@ using namespace uva::utils::file;
 using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
@@ -71,11 +73,12 @@ namespace uva {
 
                             /**
                              * The basic constructor of the builder object
+                             * @params params the model parameters
                              * @param model the model to put the data into
                              * @param reader the reader to read the data from
                              */
-                            tm_basic_builder(model_type & model, reader_type & reader)
-                            : m_model(model), m_reader(reader) {
+                            tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
+                            : m_params(params), m_model(model), m_reader(reader) {
                             }
 
                             /**
@@ -277,6 +280,8 @@ namespace uva {
                             }
 
                         private:
+                            //Stores the reference to the model parameters
+                            const tm_parameters & m_params;
                             //Stores the reference to the model
                             model_type & m_model;
                             //Stores the reference to the builder;

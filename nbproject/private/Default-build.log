@@ -1,5 +1,5 @@
 Scanning dependencies of target bpbd-server
-[  6%] Building CXX object CMakeFiles/bpbd-server.dir/src/ARPAGramBuilder.cpp.o
+[  6%] Building CXX object CMakeFiles/bpbd-server.dir/src/lm_gram_builder.cpp.o
 [ 13%] Building CXX object CMakeFiles/bpbd-server.dir/src/ARPATrieBuilder.cpp.o
 [ 20%] Building CXX object CMakeFiles/bpbd-server.dir/src/AWordIndex.cpp.o
 [ 26%] Building CXX object CMakeFiles/bpbd-server.dir/src/ByteMGramId.cpp.o

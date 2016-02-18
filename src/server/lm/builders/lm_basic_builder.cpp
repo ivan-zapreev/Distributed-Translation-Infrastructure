@@ -25,7 +25,7 @@
 #include <iostream>
 #include <string>
 
-#include "server/lm/builders/arpa_trie_builder.hpp"
+#include "server/lm/builders/lm_basic_builder.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/file/file_stream_reader.hpp"
@@ -34,8 +34,8 @@
 #include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
-#include "server/lm/builders/arpa_trie_builder.hpp"
-#include "server/lm/builders/arpa_gram_builder_factory.hpp"
+#include "server/lm/builders/lm_basic_builder.hpp"
+#include "server/lm/builders/lm_gram_builder_factory.hpp"
 
 #include "server/lm/models/c2d_map_trie.hpp"
 #include "server/lm/models/w2c_hybrid_trie.hpp"
@@ -57,13 +57,13 @@ namespace uva {
                     namespace arpa {
 
                         template<typename TrieType, typename TFileReaderModel>
-                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(TrieType & trie, TFileReaderModel & file) :
-                        m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
+                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_parameters & params, TrieType & trie, TFileReaderModel & file)
+                        : m_params(params), m_trie(trie), m_file(file), m_line(), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig) :
-                        m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
+                        lm_basic_builder<TrieType, TFileReaderModel>::lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig)
+                        : m_params(orig.m_params), m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
@@ -196,8 +196,8 @@ namespace uva {
                         template<TModelLevel CURR_LEVEL>
                         void lm_basic_builder<TrieType, TFileReaderModel>::read_m_gram_level() {
                             //Declare the pointer to the N-Grma builder
-                            ARPAGramBuilder<WordIndexType, CURR_LEVEL> *gram_builder_ptr = NULL;
-                            ARPAGramBuilderFactory<TrieType>::template get_builder<CURR_LEVEL>(m_trie, &gram_builder_ptr);
+                            lm_gram_builder<WordIndexType, CURR_LEVEL> *gram_builder_ptr = NULL;
+                            lm_gram_builder_factory<TrieType>::template get_builder<CURR_LEVEL>(m_trie, &gram_builder_ptr);
 
                             try {
                                 //The counter of the N-grams
@@ -344,13 +344,11 @@ namespace uva {
                                 //The obtained string is something else than the next n-grams section header
                                 //So the only thing it is allowed to be is the end of file, let's check on
                                 //it and otherwise report an error
-                                if (m_line != END_OF_ARPA_FILE) {
-                                    stringstream msg;
-                                    msg << "Incorrect ARPA format: Got '" << m_line
-                                            << "' when trying to read the " << CURR_LEVEL
-                                            << "-grams section!";
-                                    throw Exception(msg.str());
-                                }
+
+                                ASSERT_CONDITION_THROW((m_line != END_OF_ARPA_FILE),
+                                        string("Incorrect ARPA format: Got '") + m_line +
+                                        string("' when trying to read the ") + to_string(CURR_LEVEL)
+                                        string("-grams section!");
                             }
                         }
 
@@ -361,33 +359,33 @@ namespace uva {
                          * M-Gram sections and count them with the word index.
                          */
                         template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
+                                void lm_basic_builder<TrieType, TFileReaderModel>::get_word_counts_from_unigrams() {
                             typename TrieType::WordIndexType & word_index = m_trie.get_word_index();
 
-                            //The regular expression for matching the n-grams section
-                            stringstream regexpStr;
-                            regexpStr << "\\\\" << M_GRAM_LEVEL_1 << "\\-grams\\:";
-                            LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
-                            const regex n_gram_sect_reg_exp(regexpStr.str());
+                                    //The regular expression for matching the n-grams section
+                                    stringstream regexpStr;
+                                    regexpStr << "\\\\" << M_GRAM_LEVEL_1 << "\\-grams\\:";
+                                    LOG_DEBUG1 << "The N-gram section reg-exp: '" << regexpStr.str() << "'" << END_LOG;
+                                    const regex n_gram_sect_reg_exp(regexpStr.str());
 
-                            //Check if the line that was input is the header of the N-grams section for N=level
+                                    //Check if the line that was input is the header of the N-grams section for N=level
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Declare the variables needed to get the word counts
                                 TextPieceReader word;
-                                TLogProbBackOff prob;
+                                        TLogProbBackOff prob;
 
-                                //Read the current level N-grams and add them to the trie
+                                        //Read the current level N-grams and add them to the trie
                                 while (m_file.get_first_line(m_line)) {
                                     LOG_DEBUG1 << "Reading " << SSTR(M_GRAM_LEVEL_1) << "-gram, got: [" << m_line.str() << "]" << END_LOG;
-                                    //If this is not an empty line
+                                            //If this is not an empty line
                                     if (m_line.has_more()) {
                                         //Parse line to words without probabilities and back-offs
                                         //If it is not the M-gram line then we stop break
-                                        if (ARPAGramBuilder<WordIndexType, M_GRAM_LEVEL_1>::unigram_to_prob(m_line, word, prob)) {
+                                        if (lm_gram_builder<WordIndexType, M_GRAM_LEVEL_1>::unigram_to_prob(m_line, word, prob)) {
                                             //Set the word with its probability into the word index
                                             word_index.count_word(word, prob);
-                                            //Update the progress bar status
-                                            Logger::update_progress_bar();
+                                                    //Update the progress bar status
+                                                    Logger::update_progress_bar();
                                         } else {
                                             //This is not an expected M-gram
                                             LOG_DEBUG1 << "Stopping words counting in M-gram level: " << SSTR(M_GRAM_LEVEL_1) << END_LOG;
@@ -396,8 +394,9 @@ namespace uva {
                                     }
                                 }
                                 LOG_DEBUG3 << "Line : " << m_line.str() << END_LOG;
-                                LOG_DEBUG1 << "Finished counting words in " << SSTR(M_GRAM_LEVEL_1) << "-grams" << END_LOG;
+                                        LOG_DEBUG1 << "Finished counting words in " << SSTR(M_GRAM_LEVEL_1) << "-grams" << END_LOG;
                             } else {
+
                                 THROW_EXCEPTION("Could not count words, did not get a match with for the beginning of the 1-gram section!");
                             }
 
@@ -412,20 +411,21 @@ namespace uva {
                          * reading M-grams and add them to the trie.
                          */
                         template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::return_to_grams() {
+                                void lm_basic_builder<TrieType, TFileReaderModel>::return_to_grams() {
                             //Reset the file
+
                             m_file.reset();
 
-                            //Read the first line from the file
-                            m_file.get_first_line(m_line);
+                                    //Read the first line from the file
+                                    m_file.get_first_line(m_line);
 
-                            //Skip on ARPA headers
-                            read_headers();
+                                    //Skip on ARPA headers
+                                    read_headers();
 
-                            //Read the DATA section of ARPA
-                            size_t counts[MAX_LEVEL];
-                            memset(counts, 0, MAX_LEVEL * sizeof (size_t));
-                            read_data(counts);
+                                    //Read the DATA section of ARPA
+                                    size_t counts[MAX_LEVEL];
+                                    memset(counts, 0, MAX_LEVEL * sizeof (size_t));
+                                    read_data(counts);
                         }
 
 
@@ -437,36 +437,36 @@ namespace uva {
                         //the maximum N-gram level present in the file.
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::build() {
+                                void lm_basic_builder<TrieType, TFileReaderModel>::build() {
                             LOG_DEBUG << "Starting to read the file and build the trie ..." << END_LOG;
 
-                            //Declare an array of N-Gram counts, that is to be filled from the
-                            //headers. This data will be used to pre-allocate memory for the Trie 
-                            size_t counts[MAX_LEVEL];
-                            memset(counts, 0, MAX_LEVEL * sizeof (size_t));
+                                    //Declare an array of N-Gram counts, that is to be filled from the
+                                    //headers. This data will be used to pre-allocate memory for the Trie 
+                                    size_t counts[MAX_LEVEL];
+                                    memset(counts, 0, MAX_LEVEL * sizeof (size_t));
 
                             try {
                                 //Read the first line from the file
                                 m_file.get_first_line(m_line);
 
-                                //Skip on ARPA headers
-                                read_headers();
+                                        //Skip on ARPA headers
+                                        read_headers();
 
-                                //Read the DATA section of ARPA
-                                read_data(counts);
+                                        //Read the DATA section of ARPA
+                                        read_data(counts);
 
-                                //Pre-allocate memory
-                                pre_allocate(counts);
+                                        //Pre-allocate memory
+                                        pre_allocate(counts);
 
-                                //Get the word counts, if needed
-                                get_word_counts();
+                                        //Get the word counts, if needed
+                                        get_word_counts();
 
-                                //Read the N-grams, starting from 1-Grams
-                                read_grams<M_GRAM_LEVEL_1>();
+                                        //Read the N-grams, starting from 1-Grams
+                                        read_grams<M_GRAM_LEVEL_1>();
                             } catch (...) {
                                 //Stop the progress bar in case of an exception
                                 Logger::stop_progress_bar();
-                                throw;
+                                        throw;
                             }
 
                             LOG_DEBUG << "Done reading the file and building the trie." << END_LOG;
@@ -511,8 +511,8 @@ namespace uva {
                 template class lm_basic_builder<TH2DMapTrieHashing, TFileReaderModel>;
 
                         INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
-                        INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);
-                        INSTANTIATE_TRIE_BUILDER_FILE_READER(MemoryMappedFileReader);
+                                INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);
+                                INSTANTIATE_TRIE_BUILDER_FILE_READER(MemoryMappedFileReader);
                     }
                 }
             }

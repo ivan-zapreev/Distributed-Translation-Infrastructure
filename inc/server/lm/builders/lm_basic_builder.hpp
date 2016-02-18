@@ -23,16 +23,18 @@
  * Created on April 18, 2015, 11:58 AM
  */
 
-#ifndef TRIEBUILDER_HPP
-#define TRIEBUILDER_HPP
+#ifndef LM_BASIC_BUILDER_HPP
+#define LM_BASIC_BUILDER_HPP
 
 #include <regex>        // std::regex, std::regex_match
 
 #include "server/lm/lm_consts.hpp"
+#include "server/lm/lm_parameters.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 
 using namespace std;
 using namespace uva::utils::file;
+using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::identifiers;
 
 namespace uva {
@@ -61,10 +63,11 @@ namespace uva {
 
                             /**
                              * The basic constructor that accepts a trie to be build up and the file stream to read from
+                             * @params params the model parameters
                              * @param trie the trie to fill in with data from the text corpus
                              * @param _fstr the file stream to read from
                              */
-                            lm_basic_builder(TrieType & trie, TFileReaderModel & file);
+                            lm_basic_builder(const lm_parameters & params, TrieType & trie, TFileReaderModel & file);
 
                             /**
                              * This function will read from the file and build the trie
@@ -73,6 +76,8 @@ namespace uva {
 
                             virtual ~lm_basic_builder();
                         private:
+                            //Stores the reference to the model parameters
+                            const lm_parameters & m_params;
                             //The reference to the trie to be build
                             TrieType & m_trie;
                             //The reference to the input file with language model

@@ -22,8 +22,8 @@ set(LM_QUERY_SOURCES
     src/server/lm/models/c2d_hybrid_trie.cpp
     src/server/lm/ngrams/byte_m_gram_id.cpp
     src/server/lm/dictionaries/aword_index.cpp
-    src/server/lm/builders/arpa_trie_builder.cpp
-    src/server/lm/builders/arpa_gram_builder.cpp
+    src/server/lm/builders/lm_basic_builder.cpp
+    src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
     src/common/utils/xxhash.c
@@ -50,8 +50,8 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/lm/models/c2d_hybrid_trie.cpp
     src/server/lm/ngrams/byte_m_gram_id.cpp
     src/server/lm/dictionaries/aword_index.cpp
-    src/server/lm/builders/arpa_trie_builder.cpp
-    src/server/lm/builders/arpa_gram_builder.cpp
+    src/server/lm/builders/lm_basic_builder.cpp
+    src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
     src/common/utils/xxhash.c

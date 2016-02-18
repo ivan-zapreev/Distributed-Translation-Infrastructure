@@ -633,9 +633,6 @@
         </df>
         <df name="lm">
           <df name="builders">
-            <in>arpa_gram_builder.hpp</in>
-            <in>arpa_gram_builder_factory.hpp</in>
-            <in>arpa_trie_builder.hpp</in>
           </df>
           <df name="dictionaries">
             <in>AWordIndex.hpp</in>
@@ -754,8 +751,6 @@
         </df>
         <df name="lm">
           <df name="builders">
-            <in>arpa_gram_builder.cpp</in>
-            <in>arpa_trie_builder.cpp</in>
           </df>
           <df name="dictionaries">
             <in>aword_index.cpp</in>
@@ -795,7 +790,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

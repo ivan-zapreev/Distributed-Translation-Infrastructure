@@ -55,6 +55,16 @@ namespace uva {
                         
                         //Stores the translation model weights
                         float tm_weights[MAX_NUM_TM_FEATURES];
+
+                        //Stores the translation limit - the number of top translation
+                        //to be read from the translation model file per source phrase
+                        size_t m_trans_limit;
+
+                        //The minimum translation probability limit - defines the
+                        //translation entries that are to be ignored when reading
+                        //model, this is not log probability, and also is used for
+                        //without feature weights
+                        float m_min_tran_prob;
                     } tm_parameters;
 
                     /**
@@ -68,6 +78,8 @@ namespace uva {
                                 << ", num_tm_weights = " << params.num_tm_weights
                                 << ", tm_weights = " << array_to_string<float>(params.num_tm_weights,
                                 params.tm_weights, TM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", translation_limit = " << params.m_trans_limit
+                                << ", min_translation_probability = " << params.m_min_tran_prob
                                 << " ]";
                     }
                 }

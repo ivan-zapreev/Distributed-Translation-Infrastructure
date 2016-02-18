@@ -23,8 +23,8 @@
  * Created on April 18, 2015, 12:02 PM
  */
 
-#ifndef NGRAMBUILDER_HPP
-#define NGRAMBUILDER_HPP
+#ifndef LM_GRAM_BUILDER_HPP
+#define LM_GRAM_BUILDER_HPP
 
 #include <regex>      // std::regex, std::regex_match
 #include <functional> // std::function 
@@ -54,7 +54,7 @@ namespace uva {
                          * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                          */
                         template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        class ARPAGramBuilder {
+                        class lm_gram_builder {
                         public:
 
                             /**
@@ -63,7 +63,7 @@ namespace uva {
                              * @param level the level of the N-grams to be processed
                              * @param addGarmFunc the strategy for adding the N-grams
                              */
-                            ARPAGramBuilder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
+                            lm_gram_builder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
 
                             /**
                              * This pure virtual method is supposed to parse the N-Gram
@@ -117,7 +117,7 @@ namespace uva {
                                 }
                             }
 
-                            virtual ~ARPAGramBuilder();
+                            virtual ~lm_gram_builder();
                         protected:
                             //The function that is to be used to add an N-gram to a trie
                             typename TAddGramFunct<WordIndexType>::func m_add_garm_func;
@@ -143,7 +143,7 @@ namespace uva {
                              * The copy constructor
                              * @param orig the other builder to copy
                              */
-                            ARPAGramBuilder(const ARPAGramBuilder & orig);
+                            lm_gram_builder(const lm_gram_builder & orig);
 
                         };
                     }

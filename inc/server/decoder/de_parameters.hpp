@@ -61,14 +61,6 @@ namespace uva {
                         float m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
                         float m_phrase_penalty;
-                        //Stores the translation limit - the number of top translation
-                        //to be read from the translation model file per source phrase
-                        size_t m_trans_limit;
-                        //The minimum translation probability limit - defines the
-                        //translation entries that are to be ignored when reading
-                        //model, this is not log probability, and also is used for
-                        //without feature weights
-                        float m_min_tran_prob;
                     } de_parameters;
 
                     /**
@@ -86,8 +78,6 @@ namespace uva {
                                 << ", stack_capacity = " << params.m_stack_capacity
                                 << ", word_penalty = " << params.m_word_penalty
                                 << ", phrase_penalty = " << params.m_phrase_penalty
-                                << ", translation_limit = " << params.m_trans_limit
-                                << ", min_translation_probability = " << params.m_min_tran_prob
                                 << " ]";
                     }
                 }
