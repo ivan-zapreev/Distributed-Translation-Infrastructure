@@ -68,7 +68,7 @@ namespace uva {
                             m_model_proxy = new rm_proxy_local();
                             
                             //Connect to the model instance using the given parameters
-                            m_model_proxy->connect(m_params.m_conn_string);
+                            m_model_proxy->connect(m_params);
                         }
 
                         /**

@@ -83,10 +83,10 @@ namespace uva {
                             /**
                              * @see tm_proxy
                              */
-                            virtual void connect(const string & conn_str) {
+                            virtual void connect(const tm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the translation model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Translation Model", conn_str);
+                                load_model_data<builder_type, CStyleFileReader>("Translation Model", params.m_conn_string);
                             }
 
                             /**

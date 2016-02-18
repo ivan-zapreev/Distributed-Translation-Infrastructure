@@ -69,7 +69,7 @@ namespace uva {
                             m_model_proxy = new lm_proxy_local();
 
                             //Connect to the trie instance using the given parameters
-                            m_model_proxy->connect(m_params.m_conn_string);
+                            m_model_proxy->connect(m_params);
                         }
 
                         /**

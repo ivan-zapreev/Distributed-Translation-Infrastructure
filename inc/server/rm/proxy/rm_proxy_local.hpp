@@ -84,10 +84,10 @@ namespace uva {
                             /**
                              * @see rm_proxy
                              */
-                            virtual void connect(const string & conn_str) {
+                            virtual void connect(const rm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the reordering model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Reordering Model", conn_str);
+                                load_model_data<builder_type, CStyleFileReader>("Reordering Model", params.m_conn_string);
                             }
 
                             /**

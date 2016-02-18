@@ -87,10 +87,10 @@ namespace uva {
                             /**
                              * @see lm_proxy
                              */
-                            virtual void connect(const string & conn_str) {
+                            virtual void connect(const lm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Language Model", conn_str);
+                                load_model_data<builder_type, CStyleFileReader>("Language Model", params.m_conn_string);
                             }
 
                             /**

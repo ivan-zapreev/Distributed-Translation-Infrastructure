@@ -45,9 +45,9 @@ namespace uva {
 
                             /**
                              * Allows to connect to the trie object based on the given parameters
-                             * @param conn_str the connection string
+                             * @param params the model parameters
                              */
-                            virtual void connect(const string & conn_str) = 0;
+                            virtual void connect(const lm_parameters & params) = 0;
 
                             /**
                              * Allows to disconnect from the trie
