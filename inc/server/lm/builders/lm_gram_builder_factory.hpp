@@ -30,12 +30,15 @@
 #include <ios>          //std::hex
 #include <functional>   // std::function
 
-#include "server/lm/lm_consts.hpp"
-#include "server/lm/builders/lm_gram_builder.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "server/lm/lm_consts.hpp"
+#include "server/lm/lm_parameters.hpp"
+#include "server/lm/builders/lm_gram_builder.hpp"
+
 using namespace std;
+
 using namespace uva::utils::exceptions;
 
 namespace uva {
@@ -74,11 +77,13 @@ namespace uva {
                              * builder is to be freed by the caller!
                              * 
                              * @param CURR_LEVEL the level of the N-gram we currently need the builder for.
+                             * @param params the model parameters
+                             * weights are to be multiplies with the language model m-gram weight
                              * @param trie the trie to be filled in with the N-grams
                              * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                              */
-                            template<TModelLevel CURR_LEVEL>
-                            static inline void get_builder(TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL> **ppBuilder) {
+                            template<TModelLevel CURR_LEVEL, bool is_mult_weight>
+                            static inline void get_builder(const lm_parameters & params, TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> **ppBuilder) {
                                 //First reset the pointer to NULL
                                 *ppBuilder = NULL;
                                 LOG_DEBUG << "Requested a " << CURR_LEVEL << "-Gram builder, the maximum level is " << MAX_LEVEL << END_LOG;
@@ -95,7 +100,7 @@ namespace uva {
                                     //Here we are to get the builder instance
                                     LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
-                                    *ppBuilder = new lm_gram_builder<WordIndexType, CURR_LEVEL>(trie.get_word_index(),
+                                    *ppBuilder = new lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>(params, trie.get_word_index(),
                                             [&] (const T_Model_M_Gram<WordIndexType> & gram) {
                                                 trie.template add_m_gram<CURR_LEVEL>(gram);
                                             });

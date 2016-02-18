@@ -56,6 +56,14 @@ namespace uva {
 
                         //Stores the language model weights
                         float lm_weights[MAX_NUM_LM_FEATURES];
+                        
+                        /**
+                         * Allows to retrieve the language model m-gram weight
+                         * @return the language model m-gram weight
+                         */
+                        inline const float & get_lm_weight() const {
+                            return lm_weights[0];
+                        }
                     } lm_parameters;
 
                     /**

@@ -118,8 +118,11 @@ namespace uva {
                             /**
                              * Allows to read the given Trie level M-grams from the file
                              * @param level the currently read M-gram level M
+                             * @param is_mult_weight true if we need to multiply the lm
+                             * probabilities and back-off weights with the language model
+                             * weight from the model properties
                              */
-                            template<TModelLevel CURR_LEVEL>
+                            template<TModelLevel CURR_LEVEL, bool is_mult_weight>
                             void read_m_gram_level();
 
                             template<TModelLevel CURR_LEVEL, typename DUMMY = void>

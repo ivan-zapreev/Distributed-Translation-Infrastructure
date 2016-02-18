@@ -44,33 +44,39 @@ namespace uva {
                 namespace lm {
                     namespace arpa {
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL>::MAX_NUM_TOKENS_NGRAM_STR = 3;
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::MIN_NUM_TOKENS_NGRAM_STR = 2;
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        lm_gram_builder<WordIndexType, CURR_LEVEL>::lm_gram_builder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc)
-                        : m_add_garm_func(addGarmFunc), m_token(), m_m_gram(word_index, CURR_LEVEL) {
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_parameters & params, WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func add_garm_func)
+                        : m_params(params), m_add_garm_func(add_garm_func), m_token(), m_m_gram(word_index, CURR_LEVEL) {
                             LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << CURR_LEVEL << ", trie)" << END_LOG;
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        lm_gram_builder<WordIndexType, CURR_LEVEL>::lm_gram_builder(const lm_gram_builder<WordIndexType, CURR_LEVEL>& orig)
-                        : m_add_garm_func(orig.m_add_garm_func), m_token(), m_m_gram(orig.m_m_gram.get_word_index(), CURR_LEVEL) {
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>& orig)
+                        : m_params(orig.m_params), m_add_garm_func(orig.m_add_garm_func), m_token(), m_m_gram(orig.m_m_gram.get_word_index(), CURR_LEVEL) {
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        lm_gram_builder<WordIndexType, CURR_LEVEL>::~lm_gram_builder() {
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::~lm_gram_builder() {
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        bool lm_gram_builder<WordIndexType, CURR_LEVEL>::parse_to_gram(TextPieceReader &line) {
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_to_gram(TextPieceReader &line) {
                             //Read the first element until the tab, we read until the tab because it should be the probability
                             if (line.get_first_tab(m_token)) {
-                                //Try to parse it float
+                                //Try to parse the probability to float
                                 if (fast_s_to_f(m_m_gram.m_payload.m_prob, m_token.get_rest_c_str())) {
                                     LOG_DEBUG2 << "Parsed the N-gram probability: " << m_m_gram.m_payload.m_prob << END_LOG;
+
+                                    //In case we need to multiply with the lambda weight do it now;
+                                    if (is_mult_weight) {
+                                        m_m_gram.m_payload.m_prob *= m_params.get_lm_weight();
+                                        LOG_DEBUG2 << "Weighted N-gram probability: " << m_m_gram.m_payload.m_back << END_LOG;
+                                    }
 
                                     //Start the new m-gram
                                     m_m_gram.start_new_m_gram();
@@ -105,6 +111,12 @@ namespace uva {
                                             return false;
                                         }
                                         LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_m_gram.m_payload.m_back << END_LOG;
+
+                                        //In case we need to multiply with the lambda weight do it now;
+                                        if (is_mult_weight) {
+                                            m_m_gram.m_payload.m_back *= m_params.get_lm_weight();
+                                            LOG_DEBUG2 << "Weighted N-gram back-off weight: " << m_m_gram.m_payload.m_back << END_LOG;
+                                        }
                                     } else {
                                         //There is no back-off so set it to zero
                                         m_m_gram.m_payload.m_back = ZERO_BACK_OFF_WEIGHT;
@@ -133,8 +145,8 @@ namespace uva {
                             }
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
-                        bool lm_gram_builder<WordIndexType, CURR_LEVEL>::parse_line(TextPieceReader & line) {
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_line(TextPieceReader & line) {
                             LOG_DEBUG << "Processing the " << CURR_LEVEL << "-Gram (?) line: '" << line << "'" << END_LOG;
                             //We expect a good input, so the result is set to false by default.
                             bool result = false;
@@ -163,12 +175,16 @@ namespace uva {
 
                         //Make sure that there will be templates instantiated, at least for the given parameter values
 
+#define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT(LEVEL, IS_MULT_WEIGHT) \
+                template class lm_gram_builder<BasicWordIndex, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<CountingWordIndex, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<HashingWordIndex, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<TOptBasicWordIndex, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<TOptCountWordIndex, LEVEL, IS_MULT_WEIGHT>;
+
 #define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(LEVEL) \
-                template class lm_gram_builder<BasicWordIndex, LEVEL>; \
-                template class lm_gram_builder<CountingWordIndex, LEVEL>; \
-                template class lm_gram_builder<HashingWordIndex, LEVEL>; \
-                template class lm_gram_builder<TOptBasicWordIndex, LEVEL>; \
-                template class lm_gram_builder<TOptCountWordIndex, LEVEL>;
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT(LEVEL, true); \
+                INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT(LEVEL, false);
 
                         INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_1);
                         INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(M_GRAM_LEVEL_2);

@@ -33,6 +33,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/file/memory_mapped_file_reader.hpp"
 
+#include "server/lm/lm_parameters.hpp"
 #include "server/lm/mgrams/ModelMGram.hpp"
 
 using namespace std;
@@ -53,7 +54,7 @@ namespace uva {
                         /**
                          * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                          */
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL>
+                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
                         class lm_gram_builder {
                         public:
 
@@ -63,7 +64,7 @@ namespace uva {
                              * @param level the level of the N-grams to be processed
                              * @param addGarmFunc the strategy for adding the N-grams
                              */
-                            lm_gram_builder(WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
+                            lm_gram_builder(const lm_parameters & params, WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func addGarmFunc);
 
                             /**
                              * This pure virtual method is supposed to parse the N-Gram
@@ -119,6 +120,9 @@ namespace uva {
 
                             virtual ~lm_gram_builder();
                         protected:
+                            //Stores the  reference to the language model parameters
+                            const lm_parameters & m_params;
+                            
                             //The function that is to be used to add an N-gram to a trie
                             typename TAddGramFunct<WordIndexType>::func m_add_garm_func;
 

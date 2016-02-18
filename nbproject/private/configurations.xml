@@ -633,6 +633,9 @@
         </df>
         <df name="lm">
           <df name="builders">
+            <in>lm_basic_builder.hpp</in>
+            <in>lm_gram_builder.hpp</in>
+            <in>lm_gram_builder_factory.hpp</in>
           </df>
           <df name="dictionaries">
             <in>AWordIndex.hpp</in>
@@ -751,6 +754,8 @@
         </df>
         <df name="lm">
           <df name="builders">
+            <in>lm_basic_builder.cpp</in>
+            <in>lm_gram_builder.cpp</in>
           </df>
           <df name="dictionaries">
             <in>aword_index.cpp</in>
