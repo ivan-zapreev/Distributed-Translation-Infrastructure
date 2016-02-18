@@ -218,7 +218,7 @@ namespace uva {
                                     LOG_DEBUG2 << "The current m-gram level is: " << BASE::m_actual_level
                                             << ", the maximum is: " << MAX_LEVEL << END_LOG;
 
-                                    ASSERT_SANITY_THROW((BASE::m_actual_level >= MAX_LEVEL),
+                                    ASSERT_SANITY_THROW((BASE::m_actual_level > MAX_LEVEL),
                                             string("A broken N-gram query: ") + ((string) * this) +
                                             string(", level: ") + to_string(BASE::m_actual_level));
                                 }

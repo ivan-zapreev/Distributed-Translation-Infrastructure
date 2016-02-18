@@ -61,7 +61,7 @@ namespace uva {
                          * Allows to detect that the lm weight is set and needs to be used
                          * @return the lm weight
                          */
-                        bool is_lm_weight() {
+                        bool is_lm_weight() const {
                             return (num_lm_weights >=1) && (lm_weights[0] != 1.0) && (lm_weights[0] != 0.0);
                         }
                         
