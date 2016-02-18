@@ -82,7 +82,7 @@ namespace uva {
                             m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
                             m_lm_query(lm_configurator::allocate_query_proxy()),
                             m_las_stack_idx(m_sent_data.get_dim() - 1), m_last_exp_stack_idx(-1) {
-                                LOG_DEBUG1 << "Created a multi stack with parameters: " << (string) m_params << END_LOG;
+                                LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
                                 //Instantiate the proper number of stacks, the same number as
                                 //there is words plus one. The last stack is for </s> words.
                                 m_stacks = new multi_level[m_sent_data.get_dim() + 1]();
@@ -106,23 +106,31 @@ namespace uva {
                              * @return true if the translation is dinished
                              */
                             bool has_finished() {
-                                //ToDo: Implement
-                                return (m_last_exp_stack_idx >= m_las_stack_idx);
+                                if (!m_is_stop) {
+                                    //ToDo: Implement
+                                    return (m_last_exp_stack_idx >= m_las_stack_idx);
+                                } else {
+                                    return true;
+                                }
                             }
 
                             /**
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
-                            void extend() {
-                                //ToDo: Implement
-                                ++m_last_exp_stack_idx;
+                            void expand() {
+                                if (!m_is_stop) {
+                                    //ToDo: Implement
+                                    ++m_last_exp_stack_idx;
+                                }
                             }
 
                             /**
                              * Allows to prune the hypothesis
                              */
                             void prune() {
-                                //ToDo: Implement
+                                if (!m_is_stop) {
+                                    //ToDo: Implement
+                                }
                             }
 
                             /**
@@ -154,7 +162,7 @@ namespace uva {
 
                             //Sores the language mode query proxy
                             lm_trie_query_proxy & m_lm_query;
-                            
+
                             //Stores the last stack index
                             int32_t m_las_stack_idx;
 

@@ -40,6 +40,13 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace tm {
+
+                    //Define the feature weights delimiter string for the config file
+                    static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+
+                    //Stores the maximum number of the translation model features
+                    static const size_t MAX_NUM_TM_FEATURES = 5;
+
                     namespace models {
 
                         namespace __unk_phrase {

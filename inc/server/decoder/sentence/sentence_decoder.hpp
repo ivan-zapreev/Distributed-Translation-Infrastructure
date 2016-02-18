@@ -90,7 +90,7 @@ namespace uva {
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
                             m_stack(m_params, m_is_stop, m_sent_data, m_rm_query) {
-                                LOG_DEBUG << "Created a sentence decoder " << (string) m_params << END_LOG;
+                                LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
                             }
 
                             /**
@@ -156,7 +156,7 @@ namespace uva {
                                 //Fill in the matrix with the phrases and their uids
                                 int32_t end_wd_idx = MIN_SENT_WORD_INDEX;
                                 //Declare the begin and end character index variables
-                                uint32_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
+                                size_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
 
                                 while (ch_e_idx <= std::string::npos && !m_is_stop) {
                                     //Get the appropriate map entry reference
@@ -248,9 +248,9 @@ namespace uva {
                              */
                             inline void perform_translation() {
                                 //Perform the decoding process on the level of the stack
-                                while (!m_stack.has_finished() && !m_is_stop) {
+                                while (!m_stack.has_finished()) {
                                     //Extend the stack
-                                    m_stack.extend();
+                                    m_stack.expand();
                                     //Prune the stack
                                     m_stack.prune();
                                 }

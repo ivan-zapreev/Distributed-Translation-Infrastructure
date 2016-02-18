@@ -26,8 +26,16 @@
 #ifndef LANGUAGE_MODEL_PARAMETERS_HPP
 #define LANGUAGE_MODEL_PARAMETERS_HPP
 
-#include "lm_consts.hpp"
-#include "lm_configs.hpp"
+#include <string>
+#include <ostream>
+
+#include "common/utils/string_utils.hpp"
+
+#include "server/lm/lm_configs.hpp"
+
+using namespace std;
+
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -41,7 +49,28 @@ namespace uva {
                     typedef struct {
                         //The the connection string needed to connect to the model
                         string m_conn_string;
+
+
+                        //Stores the number of language model weights
+                        size_t num_lm_weights;
+
+                        //Stores the language model weights
+                        float lm_weights[MAX_NUM_LM_FEATURES];
                     } lm_parameters;
+
+                    /**
+                     * Allows to output the parameters object to the stream
+                     * @param stream the stream to output into
+                     * @param params the parameters object
+                     * @return the stream that we output into
+                     */
+                    static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
+                        return stream << "LM parameters: [ conn_string = " << params.m_conn_string
+                                << ", num_lm_weights = " << params.num_lm_weights
+                                << ", lm_weights = " << array_to_string<float>(params.num_lm_weights,
+                                params.lm_weights, LM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << " ]";
+                    }
                 }
             }
         }

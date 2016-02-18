@@ -44,6 +44,9 @@ namespace uva {
     namespace utils {
         namespace text {
 
+            //A forward declaration of the parsinig function
+            static inline bool fast_s_to_f(float & res, const char *p);
+
 #ifdef __APPLE__
 
             /*
@@ -94,15 +97,27 @@ namespace uva {
              * @param values the array of values to print
              * @return the resulting string
              */
-            template<typename T, size_t N>
-            static inline string array_to_string(const T values[N]) {
+            template<typename T>
+            static inline string array_to_string(const size_t N, const T *values,
+                    const string& delim = UTF8_SPACE_STRING) {
                 stringstream data;
                 data << u8"[ ";
                 for (size_t idx = 0; idx < N; idx++) {
-                    data << values[idx] << UTF8_SPACE_STRING;
+                    data << values[idx] << ((idx != (N - 1)) ? delim : u8"");
                 }
-                data << u8"]";
+                data << u8" ]";
                 return data.str();
+            }
+
+            /**
+             * This function allows to convert an array of values to a string representation.
+             * @param values the array of values to print
+             * @return the resulting string
+             */
+            template<typename T, size_t N>
+            static inline string array_to_string(const T values[N],
+                    const string& delim = UTF8_SPACE_STRING) {
+                return array_to_string(N, values, delim);
             }
 
             /**
@@ -128,6 +143,41 @@ namespace uva {
              */
             static inline string tokens_to_string(const vector<string> &values) {
                 return vector_to_string<string>(values);
+            }
+
+            /**
+             * Tokenise a given string into a a bunch of strings each of which will be parsed into a float
+             * @param data the string to tokenise
+             * @param elems the array to fill the data into
+             * @param num_elems the actual number of elements
+             * @param delim the delimiter string storing the token delimiters, default is UTF8_SPACE_STRING
+             */
+            template<size_t MAX_NUM_ELEMS>
+            static inline void tokenize_s_t_f(const std::string &data,
+                    float elems[MAX_NUM_ELEMS], size_t & num_elems,
+                    const string& delim = UTF8_SPACE_STRING) {
+                size_t start = 0;
+                size_t end = data.find_first_of(delim);
+
+                //Initialize the number of elements with zero
+                num_elems = 0;
+
+                //Search for the delimiter and make tokens
+                while (end <= std::string::npos) {
+                    //Check that the number of elements is not exceeded
+                    ASSERT_CONDITION_THROW((num_elems > MAX_NUM_ELEMS),
+                            string("Exceeding the maximum allowed number of elements: ")
+                            + to_string(MAX_NUM_ELEMS) + string(" when parsing: ") + data);
+
+                    //Parse the next token into the float
+                    fast_s_to_f(elems[num_elems++], data.substr(start, end - start).c_str());
+                    if (end != std::string::npos) {
+                        start = end + 1;
+                        end = data.find_first_of(delim, start);
+                    } else {
+                        break;
+                    }
+                }
             }
 
             /**

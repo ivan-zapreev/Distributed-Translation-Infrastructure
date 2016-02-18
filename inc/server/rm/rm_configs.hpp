@@ -18,6 +18,13 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace rm {
+
+                    //Define the feature weights delimiter string for the config file
+                    static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+                    
+                    //Stores the maximum number of the reordering model features
+                    static const size_t MAX_NUM_RM_FEATURES = 8;
+
                     namespace models {
 
                         namespace __unk_phrase {

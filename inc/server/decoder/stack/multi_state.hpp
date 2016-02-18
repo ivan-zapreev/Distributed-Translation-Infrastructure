@@ -75,7 +75,9 @@ namespace uva {
                             multi_state_templ(const de_parameters & params)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(ZERRO_WORD_IDX),
-                            m_history(params.m_max_t_phrase_len - 1), m_prob(0.0) {
+                            m_history(params.m_max_t_phrase_len - 1),
+                            m_partial_score(ZERO_LOG_PROB_WEIGHT),
+                            m_future_cost(ZERO_LOG_PROB_WEIGHT) {
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
                                 //Add the sentence start to the target
@@ -89,7 +91,13 @@ namespace uva {
                             multi_state_templ(const de_parameters & params, multi_state_ptr parent)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
-                            m_history(params.m_max_t_phrase_len - 1), m_prob(0.0) {
+                            m_history(params.m_max_t_phrase_len - 1),
+                            m_partial_score(ZERO_LOG_PROB_WEIGHT),
+                            m_future_cost(ZERO_LOG_PROB_WEIGHT) {
+                                //Compute the partial score;
+                                compute_partial_score();
+                                //Compute the future costs;
+                                compute_future_cost();
                             }
 
                             /**
@@ -113,7 +121,7 @@ namespace uva {
                             inline void set_next(multi_state_ptr next) {
                                 return m_next = next;
                             }
-                            
+
                             /**
                              * Allows to compare two states
                              * @param other the other state to compare with
@@ -123,7 +131,7 @@ namespace uva {
                                 //ToDo: Implement the state compare
                                 return true;
                             }
-                            
+
                             /**
                              * Allows to compare two states
                              * @param other the other state to compare with
@@ -134,7 +142,29 @@ namespace uva {
                                 return false;
                             }
 
+                            inline float get_partial_score() {
+                                return m_partial_score;
+                            }
+
+                            inline float get_future_cost() {
+                                return m_future_cost;
+                            }
+
                         private:
+
+                            /**
+                             * Allows to compute the partial score of the current hypothesis
+                             */
+                            inline void compute_partial_score() {
+                                //ToDo: Implement
+                            }
+
+                            /**
+                             * Allows to compute the future score of the current hypothesis
+                             */
+                            inline void compute_future_cost() {
+                                //ToDo: Implement
+                            }
 
                         protected:
                             //This variable stores the pointer to the parent state or NULL if it is the root state
@@ -145,6 +175,7 @@ namespace uva {
 
                             //This vector stores the list of states recombined into this state
                             vector<multi_state_ptr> m_recomb_from;
+
                             //This variable stores to which state this state was recombined or NULL
                             multi_state_ptr m_recomb_to;
 
@@ -157,8 +188,11 @@ namespace uva {
                             //Stores the N-1 previously translated words
                             circular_queue<const string> m_history;
 
-                            //Stores the logarithmic probability weight
-                            float m_prob;
+                            //Stores the logarithmic partial score of the current hypothesis
+                            float m_partial_score;
+
+                            //Stores the logarithmic future cost of the current hypothesis
+                            float m_future_cost;
                         };
 
                         template<size_t NUM_WORDS_PER_SENTENCE>

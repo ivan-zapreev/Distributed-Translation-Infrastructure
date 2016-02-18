@@ -40,7 +40,13 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace lm {
-                    
+
+                    //Define the feature weights delimiter string for the config file
+                    static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+
+                    //Stores the maximum number of the language model features
+                    static const size_t MAX_NUM_LM_FEATURES = 1;
+
                     //The considered maximum length of the N-gram 
                     constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
 

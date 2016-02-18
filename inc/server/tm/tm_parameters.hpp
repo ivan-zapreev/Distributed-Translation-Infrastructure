@@ -27,8 +27,15 @@
 #define TM_PARAMETERS_HPP
 
 #include <string>
+#include <ostream>
+
+#include "common/utils/string_utils.hpp"
+
+#include "server/tm/tm_configs.hpp"
 
 using namespace std;
+
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -42,7 +49,27 @@ namespace uva {
                     typedef struct {
                         //The the connection string needed to connect to the model
                         string m_conn_string;
+                        
+                        //Stores the number of translation model weights
+                        size_t num_tm_weights;
+                        
+                        //Stores the translation model weights
+                        float tm_weights[MAX_NUM_TM_FEATURES];
                     } tm_parameters;
+
+                    /**
+                     * Allows to output the parameters object to the stream
+                     * @param stream the stream to output into
+                     * @param params the parameters object
+                     * @return the stream that we output into
+                     */
+                    static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
+                        return stream << "TM parameters: [ conn_string = " << params.m_conn_string
+                                << ", num_tm_weights = " << params.num_tm_weights
+                                << ", tm_weights = " << array_to_string<float>(params.num_tm_weights,
+                                params.tm_weights, TM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << " ]";
+                    }
                 }
             }
         }

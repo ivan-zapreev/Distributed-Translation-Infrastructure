@@ -26,11 +26,16 @@
 #ifndef SERVER_PARAMETERS_HPP
 #define SERVER_PARAMETERS_HPP
 
+#include <string>
+#include <ostream>
+
 #include "lm/lm_parameters.hpp"
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 
 #include "decoder/de_parameters.hpp"
+
+using namespace std;
 
 using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::tm;
@@ -46,10 +51,10 @@ namespace uva {
                  * This structure stores the translation server parameters
                  */
                 typedef struct {
-                    //The target language name
-                    string m_target_lang;
                     //The source language name
                     string m_source_lang;
+                    //The target language name
+                    string m_target_lang;
 
                     //The port to listen to
                     uint16_t m_server_port;
@@ -69,6 +74,24 @@ namespace uva {
                     //Stores the decoder parameters
                     de_parameters m_de_params;
                 } server_parameters;
+
+                /**
+                 * Allows to output the parameters object to the stream
+                 * @param stream the stream to output into
+                 * @param params the parameters object
+                 * @return the stream that we output into
+                 */
+                static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
+                    return stream << "Server parameters: [ source_lang = " << params.m_source_lang
+                            << ", target_lang = " << params.m_target_lang
+                            << ", server_port = " << params.m_server_port
+                            << ", num_threads = " << params.m_num_threads
+                            << ", " << params.m_de_params
+                            << ", " << params.m_lm_params
+                            << ", " << params.m_tm_params
+                            << ", " << params.m_rm_params
+                            << " ]";
+                }
             }
         }
     }

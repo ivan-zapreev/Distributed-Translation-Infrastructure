@@ -166,8 +166,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         string section = "Server Options";
         params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
         params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
-
-        section = "Language Options";
         params.m_source_lang = get_string(ini, section, "source_lang");
         params.m_target_lang = get_string(ini, section, "target_lang");
 
@@ -177,15 +175,27 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
-        LOG_INFO << "Language model file: " << params.m_lm_params.m_conn_string << END_LOG;
+        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(get_string(ini, section, "lm_weights"),
+                params.m_lm_params.lm_weights,
+                params.m_lm_params.num_lm_weights,
+                LM_FEATURE_WEIGHTS_DELIMITER_STR);
+        LOG_INFO << params.m_lm_params << END_LOG;
 
         section = "Translation Models";
         params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
-        LOG_INFO << "Translation model file: " << params.m_tm_params.m_conn_string << END_LOG;
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_weights"),
+                params.m_tm_params.tm_weights,
+                params.m_tm_params.num_tm_weights,
+                TM_FEATURE_WEIGHTS_DELIMITER_STR);
+        LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
         params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
-        LOG_INFO << "Reordering model file: " << params.m_rm_params.m_conn_string << END_LOG;
+        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(get_string(ini, section, "rm_weights"),
+                params.m_rm_params.rm_weights,
+                params.m_rm_params.num_rm_weights,
+                RM_FEATURE_WEIGHTS_DELIMITER_STR);
+        LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
         params.m_de_params.m_distortion_limit = get_integer<uint32_t>(ini, section, "distortion_limit");
@@ -193,13 +203,12 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
         params.m_de_params.m_max_s_phrase_len = get_integer<uint8_t>(ini, section, "max_source_phrase_length");
         params.m_de_params.m_max_t_phrase_len = get_integer<uint8_t>(ini, section, "max_target_phrase_length");
-        LOG_INFO << "Distortion limit: " << params.m_de_params.m_distortion_limit
-                << ", pruning threshold: " << params.m_de_params.m_pruning_threshold
-                << ", stack capacity: " << params.m_de_params.m_stack_capacity
-                << ", source phrase length: " << params.m_de_params.m_max_s_phrase_len
-                << ", target phrase length: " << params.m_de_params.m_max_t_phrase_len << END_LOG;
+        params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
+        params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
+        params.m_de_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
+        params.m_de_params.m_min_tran_prob = get_float(ini, section, "min_translation_probability");
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
-        LOG_INFO << "Expansion strategy: " << params.m_de_params.m_expansion_strategy << END_LOG;
+        LOG_INFO << params.m_de_params << END_LOG;
 
         LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
     } else {

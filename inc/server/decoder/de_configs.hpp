@@ -42,6 +42,9 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
+                        //Stores the zero log probability for the partial score or future cost
+                        static const float ZERO_LOG_PROB_WEIGHT = -1000.0;
+                        
                         //Stores the maximum considered number of words per sentence
                         static const size_t MAX_WORDS_PER_SENTENCE = 100;
 
