@@ -319,12 +319,12 @@ int main(int argc, char** argv) {
 
         //Wait until the server is stopped by pressing and exit button
         while (true) {
-            char letter;
-            cin >> letter;
-            if (tolower(letter) == PROGRAM_EXIT_LETTER) {
+            char command[256];
+            cin.getline(command, 256);
+            if ((strlen(command) == 1) && tolower(command[0]) == PROGRAM_EXIT_LETTER) {
                 break;
             } else {
-                LOG_ERROR << "The command '" << letter << "' is unknown!" << END_LOG;
+                LOG_ERROR << "The command '" << string(command) << "' is unknown!" << END_LOG;
                 //Print the server commands menu
                 print_server_commands();
             }
