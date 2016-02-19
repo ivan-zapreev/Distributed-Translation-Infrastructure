@@ -117,11 +117,12 @@ namespace uva {
                              * @param num_features the number of features in the next array
                              * @param weights the features to put into the entry
                              */
-                            inline void new_translation(const string & target, const phrase_uid target_uid,
+                            inline void add_translation(const string & target, const phrase_uid target_uid,
                                     const size_t num_features, const feature_array features) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
+                                
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
 

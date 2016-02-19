@@ -231,7 +231,7 @@ namespace uva {
                                     const phrase_uid target_uid = get_phrase_uid<true>(target_str);
 
                                     //Initiate a new target entry
-                                    source_entry->new_translation(target_str, target_uid, tmp_features_size, tmp_features);
+                                    source_entry->add_translation(target_str, target_uid, tmp_features_size, tmp_features);
 
                                     //Reduce the counter
                                     count_ref--;

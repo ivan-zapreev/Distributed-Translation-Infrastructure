@@ -100,7 +100,7 @@ namespace uva {
                                 //Start adding the translations to the entry, there will be just one
                                 m_unk_entry->begin(1);
                                 //Add the translation entry
-                                m_unk_entry->new_translation(
+                                m_unk_entry->add_translation(
                                         __unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
                                         num_unk_features, unk_features);
                                 //Finalize the source entry

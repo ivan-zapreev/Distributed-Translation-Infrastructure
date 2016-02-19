@@ -100,7 +100,7 @@ namespace uva {
                             //If there was failure during reading the return a failed flag
                             return false;
                         } else {
-                            LOG_DEBUG2 << "Read line '" << m_curr_line << "', length: "
+                            LOG_DEBUG3 << "Read line '" << m_curr_line << "', length: "
                                     << SSTR(strlen(m_curr_line)) << END_LOG;
 
                             //The line was properly read, set the values into the output variable
@@ -110,7 +110,7 @@ namespace uva {
                             return true;
                         }
                     } else {
-                        LOG_DEBUG2 << "Got end of file!" << END_LOG;
+                        LOG_DEBUG3 << "Got end of file!" << END_LOG;
                         //This is the end of file or something...
                         return false;
                     }

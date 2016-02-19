@@ -122,13 +122,13 @@ namespace uva {
                             length = length - 1;
                         }
 
-                        LOG_DEBUG2 << "Read " << length << " symbols: '" << m_buff_ptr << "' !" << END_LOG;
+                        LOG_DEBUG3 << "Read " << length << " symbols: '" << m_buff_ptr << "' !" << END_LOG;
                         //Store the data into the text piece reader
                         out.set(m_buff_ptr, length);
-                        LOG_DEBUG2 << "The line has been read!" << END_LOG;
+                        LOG_DEBUG3 << "The line has been read!" << END_LOG;
                         return true;
                     } else {
-                        LOG_DEBUG2 << "The end of file is reached or an error has occurred!" << END_LOG;
+                        LOG_DEBUG3 << "The end of file is reached or an error has occurred!" << END_LOG;
                         //If the end of file is reached or an error occurred -1 is returned 
                         return false;
                     }

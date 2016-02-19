@@ -180,7 +180,8 @@ namespace uva {
                                             //Check if we shall ignore this source
                                             is_good_source = (source_entry != NULL);
                                             
-                                            LOG_DEBUG1 << "Got a TM source entry for " << source_uid << END_LOG;
+                                            LOG_DEBUG1 << "The TM source entry for " << source_uid << " is "
+                                                    << (is_good_source? "": "not") << " found!" << END_LOG;
                                         }
                                     }
 

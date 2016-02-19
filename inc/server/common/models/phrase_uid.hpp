@@ -86,6 +86,8 @@ namespace uva {
                             if (uid < MIN_VALID_PHRASE_ID) {
                                 uid += MIN_VALID_PHRASE_ID;
                             }
+                            
+                            LOG_DEBUG2 << "Combined " << p1_uid << " and " << p2_uid << " into " << uid << END_LOG;
                             return uid;
                         }
 
@@ -137,6 +139,9 @@ namespace uva {
                             if (uid < MIN_VALID_PHRASE_ID) {
                                 uid += MIN_VALID_PHRASE_ID;
                             }
+                            
+                            LOG_DEBUG2 << "Phrase ___" << phrase << "___ got id " << uid << END_LOG;
+                            
                             return uid;
                         }
                     }
