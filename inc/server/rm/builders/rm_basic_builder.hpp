@@ -168,10 +168,16 @@ namespace uva {
                                         source_str = next_source_str;
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
-                                        //Obtain the new source entry
-                                        source_entry = query.get_source_entry(source_uid);
-                                        //Check if we shall ignore this source
-                                        is_good_source = (source_entry != NULL);
+                                        //Check if the have an UNK
+                                        if (source_uid == m_model.SOURCE_UNK_UID) {
+                                            //The UNK source is always good
+                                            is_good_source = true;
+                                        } else {
+                                            //Obtain the new source entry
+                                            source_entry = query.get_source_entry(source_uid);
+                                            //Check if we shall ignore this source
+                                            is_good_source = (source_entry != NULL);
+                                        }
                                     }
 
                                     //If the source is present then count the entry
@@ -185,8 +191,10 @@ namespace uva {
 
                                         //Parse the rest of the target entry
                                         target_uid = get_phrase_uid<true>(target_str);
+
                                         //Check if the given translation phrase is known
-                                        if (source_entry->has_translation(target_uid)) {
+                                        if ((target_uid == m_model.TARGET_UNK_UID) ||
+                                                source_entry->has_translation(target_uid)) {
                                             if (count_or_build) {
                                                 //Increment the counter
                                                 ++m_num_entries;

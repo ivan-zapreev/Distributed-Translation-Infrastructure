@@ -61,6 +61,10 @@ namespace uva {
                          */
                         class rm_basic_model {
                         public:
+                            //Store the UNK source phrase id 
+                            const phrase_uid SOURCE_UNK_UID;
+                            //Store the UNK target phrase id 
+                            const phrase_uid TARGET_UNK_UID;
 
                             //Define the translations data map. It represents possible translations for some source phrase.
                             typedef fixed_size_hashmap<rm_entry, const phrase_uid &> rm_entry_map;
@@ -68,7 +72,10 @@ namespace uva {
                             /**
                              * The basic class constructor
                              */
-                            rm_basic_model() : m_rm_data(NULL) {
+                            rm_basic_model()
+                            : SOURCE_UNK_UID(get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_SOURCE_STR)),
+                            TARGET_UNK_UID(get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_TARGET_STR)),
+                            m_rm_data(NULL), m_unk_entry(NULL) {
                             }
 
                             /**
@@ -128,9 +135,7 @@ namespace uva {
                              */
                             inline void find_unk_entry() {
                                 //Try to find the UNK/UNK entry
-                                const phrase_uid s_unk_uid = get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_SOURCE_STR);
-                                const phrase_uid t_unk_uid = get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_TARGET_STR);
-                                m_unk_entry = get_entry(s_unk_uid, t_unk_uid);
+                                m_unk_entry = get_entry(SOURCE_UNK_UID, TARGET_UNK_UID);
 
                                 //Assert on that the UNK/UNK entry is found!
                                 ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
