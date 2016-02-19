@@ -68,24 +68,6 @@ namespace uva {
                              * The basic class constructor
                              */
                             tm_basic_model() : m_tm_data(NULL), m_unk_entry(NULL) {
-                                //Initialize the UNK entry
-                                m_unk_entry = new tm_source_entry();
-                                //Set thew source id
-                                m_unk_entry->set_source_uid(UNKNOWN_PHRASE_ID);
-                                //Start adding the translations to the entry, there will be just one
-                                m_unk_entry->begin(1);
-                                {
-                                    //Add the translation entry
-                                    tm_target_entry & entry = m_unk_entry->new_translation(__unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID);
-
-                                    //Set the unk entry weights
-                                    entry.get_sct_prob() = __unk_phrase::UNK_SCT_LOG_PROB_WEIGHT;
-                                    entry.get_sct_lex() = __unk_phrase::UNK_LSCT_LOG_PROB_WEIGHT;
-                                    entry.get_tcs_prob() = __unk_phrase::UNK_TCS_LOG_PROB_WEIGHT;
-                                    entry.get_tcs_lex() = __unk_phrase::UNK_LTCS_LOG_PROB_WEIGHT;
-                                }
-                                //Finalize the source entry
-                                m_unk_entry->finalize();
                             }
 
                             /**
@@ -103,6 +85,26 @@ namespace uva {
                                     delete m_unk_entry;
                                     m_unk_entry = NULL;
                                 }
+                            }
+
+                            /**
+                             * Should be called to add the unk entry to the model
+                             * @param num_unk_features the number of initialized unk features
+                             * @param unk_features the unk entry features
+                             */
+                            void set_unk_entry(const size_t num_unk_features, feature_array unk_features) {
+                                //Initialize the UNK entry
+                                m_unk_entry = new tm_source_entry();
+                                //Set thew source id
+                                m_unk_entry->set_source_uid(UNKNOWN_PHRASE_ID);
+                                //Start adding the translations to the entry, there will be just one
+                                m_unk_entry->begin(1);
+                                //Add the translation entry
+                                m_unk_entry->new_translation(
+                                        __unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
+                                        num_unk_features, unk_features);
+                                //Finalize the source entry
+                                m_unk_entry->finalize();
                             }
 
                             /**
@@ -164,8 +166,12 @@ namespace uva {
                              * to be finished.
                              */
                             inline void finalize_entry(const phrase_uid entry_id) {
+                                LOG_DEBUG1 << "Finiziling the source entry: " << entry_id << END_LOG;
+
                                 //Finish the source entry
                                 m_tm_data->get_element(entry_id, entry_id)->finalize();
+
+                                LOG_DEBUG1 << "Finiziling the source entry: " << entry_id << " - DONE!" << END_LOG;
                             }
 
                             /**

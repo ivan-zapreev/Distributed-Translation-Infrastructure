@@ -56,17 +56,17 @@ namespace uva {
 
 
                         //Stores the number of language model weights
-                        size_t num_lm_weights;
+                        size_t m_num_lambdas;
 
                         //Stores the language model weights
-                        float lm_weights[MAX_NUM_LM_FEATURES];
+                        float m_lambdas[MAX_NUM_LM_FEATURES];
                         
                         /**
                          * Allows to detect that the lm weight is set and needs to be used
                          * @return the lm weight
                          */
                         bool is_lm_weight() const {
-                            return (num_lm_weights >=1) && (lm_weights[0] != 1.0) && (lm_weights[0] != 0.0);
+                            return (m_num_lambdas >=1) && (m_lambdas[0] != 1.0) && (m_lambdas[0] != 0.0);
                         }
                         
                         /**
@@ -74,15 +74,15 @@ namespace uva {
                          * @return the language model m-gram weight
                          */
                         inline const float & get_lm_weight() const {
-                            return lm_weights[0];
+                            return m_lambdas[0];
                         }
 
                         /**
                          * Allows to verify the parameters to be correct.
                          */
                         void verify() {
-                            ASSERT_CONDITION_THROW((num_lm_weights > MAX_NUM_LM_FEATURES),
-                                    string("The number of LM features: ") + to_string(num_lm_weights) +
+                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_LM_FEATURES),
+                                    string("The number of LM features: ") + to_string(m_num_lambdas) +
                                     string(" must be <= ") + to_string(MAX_NUM_LM_FEATURES));
                         }
                     } lm_parameters;
@@ -95,9 +95,9 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
                         return stream << "LM parameters: [ conn_string = " << params.m_conn_string
-                                << ", num_lm_weights = " << params.num_lm_weights
-                                << ", lm_weights = " << array_to_string<float>(params.num_lm_weights,
-                                params.lm_weights, LM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", num_lm_feature_weights = " << params.m_num_lambdas
+                                << ", lm_feature_weights = " << array_to_string<float>(params.m_num_lambdas,
+                                params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";
                     }
                 }

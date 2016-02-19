@@ -58,18 +58,17 @@ namespace uva {
                          * phrase string. The latter can be a hash value but then
                          * there is a possibility for the hash collisions
                          */
-                        template<uint8_t num_features>
+                        template<uint8_t max_num_features>
                         class tm_target_entry_temp {
                         public:
                             //Define the number of weights constant for the reordering entry
-                            static constexpr uint8_t NUM_FEATURES = num_features;
+                            static constexpr uint8_t NUM_FEATURES = max_num_features;
 
                             /**
                              * The basic constructor
                              */
                             tm_target_entry_temp()
-                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase("") {
-                                memset(m_weights, 0, NUM_FEATURES * sizeof(float));
+                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""), m_total_weight(0.0) {
                             }
 
                             /**
@@ -103,49 +102,32 @@ namespace uva {
                             }
 
                             /**
-                             * This operator allows to work with the given translation entry weights in an array fashion
-                             * @param idx the index of the feature
-                             * @return the feature value
+                             * Allows to get the total weight of the entry
+                             * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline float & operator[](size_t idx) {
-                                //Chech that the index is within the bounds
-                                ASSERT_SANITY_THROW(idx >= num_features, string("The index: ") + to_string(idx) +
-                                        string(" is outside the bounds [0, ") + to_string(num_features - 1) + string("]"));
+                            inline float get_total_weight() {
+                                return m_total_weight;
+                            }
+
+                            /**
+                             * Allows to set the weights into the target entry
+                             * @param num_features the number of weights to be set
+                             * @param features the weights to be set into the entry
+                             * This is an array of translation weights, as we have here:
+                             * m_weights[0] = p(f|e);
+                             * m_weights[1] = lex(p(f|e));
+                             * m_weights[2] = p(e|f);
+                             * m_weights[3] = lex(p(e|f));
+                             * m_weights[4] = phrase penalty; // optional
+                             */
+                            inline void set_features(const size_t num_features, const float * features) {
+                                ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
+                                        to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
                                 
-                                //Return the reference to the corresponding weight
-                                return m_weights[idx];
-                            }
-
-                            /**
-                             * Allows to get the reference to the inverse phrase translation probability φ(f|e)
-                             * @return the reference to the inverse phrase translation probability φ(f|e)
-                             */
-                            inline float & get_sct_prob() {
-                                return m_weights[0];
-                            }
-
-                            /**
-                             * Allows to get the reference to the inverse lexical weighting lex(s|t)
-                             * @return the reference to the inverse lexical weighting lex(s|t)
-                             */
-                            inline float & get_sct_lex() {
-                                return m_weights[1];
-                            }
-
-                            /**
-                             * Allows to get the reference to the direct phrase translation probability φ(t|s)
-                             * @return the reference to the direct phrase translation probability φ(t|s)
-                             */
-                            inline float & get_tcs_prob() {
-                                return m_weights[2];
-                            }
-
-                            /**
-                             * Allows to get the reference to the direct lexical weighting lex(t|s)
-                             * @return the reference to the direct lexical weighting lex(t|s)
-                             */
-                            inline float & get_tcs_lex() {
-                                return m_weights[3];
+                                //Compute the total weight
+                                for (size_t idx = 0; idx < num_features; ++idx) {
+                                    m_total_weight += features[idx];
+                                }
                             }
 
                         private:
@@ -153,20 +135,18 @@ namespace uva {
                             phrase_uid m_st_uid;
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
-                            //This is an array of translation weights, as we have here:
-                            //m_weights[0] = p(f|e);
-                            //m_weights[1] = lex(p(f|e));
-                            //m_weights[2] = p(e|f);
-                            //m_weights[3] = lex(p(e|f));
-                            //m_weights[4] = phrase penalty; // optional
-                            float m_weights[num_features];
+                            //Stores the total weight of the entity
+                            float m_total_weight;
                         };
-                        
+
                         template<uint8_t num_features>
                         constexpr uint8_t tm_target_entry_temp<num_features>::NUM_FEATURES;
-                        
+
                         //Instantiate template
                         typedef tm_target_entry_temp<MAX_NUM_TM_FEATURES> tm_target_entry;
+
+                        //Typedef an array of weights
+                        typedef float feature_array[tm_target_entry::NUM_FEATURES];
                     }
                 }
             }

@@ -27,7 +27,6 @@
 #define TM_SOURCE_ENTRY_HPP
 
 #include <string>
-#include <unordered_map>
 
 #include "server/tm/tm_configs.hpp"
 
@@ -52,9 +51,6 @@ namespace uva {
             namespace server {
                 namespace tm {
                     namespace models {
-
-                        //Define the map storing the source phrase ids and the number of translations per phrase
-                        typedef unordered_map<phrase_uid, size_t> sizes_map;
 
                         /**
                          * This is the source entry data structure that contains two things
@@ -118,19 +114,22 @@ namespace uva {
                              * Allows to add a new translation to the source entry for the given target phrase
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
-                             * @return the newly allocated target entry
+                             * @param num_features the number of features in the next array
+                             * @param weights the features to put into the entry
                              */
-                            inline tm_target_entry & new_translation(const string & target, const phrase_uid target_uid) {
+                            inline void new_translation(const string & target, const phrase_uid target_uid,
+                                    const size_t num_features, const feature_array features) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
+
+                                //Copy the array memory
+                                entry.set_features(num_features, features);
+
                                 //Set the entry's target phrase and its id
                                 entry.set_source_target(m_s_uid, target, target_uid);
-
-                                //Return the entry
-                                return entry;
                             }
 
                             /**

@@ -55,22 +55,22 @@ namespace uva {
                         string m_conn_string;
 
                         //Stores the number of reordering model weights
-                        size_t num_rm_weights;
+                        size_t m_num_lambdas;
 
                         //Stores the reordering model weights
-                        float rm_weights[MAX_NUM_RM_FEATURES];
+                        float m_lambdas[MAX_NUM_RM_FEATURES];
 
                         /**
                          * Allows to verify the parameters to be correct.
                          */
                         void verify() {
-                            ASSERT_CONDITION_THROW((num_rm_weights > MAX_NUM_RM_FEATURES),
-                                    string("The number of RM features: ") + to_string(num_rm_weights) +
+                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_RM_FEATURES),
+                                    string("The number of RM features: ") + to_string(m_num_lambdas) +
                                     string(" must be <= ") + to_string(MAX_NUM_RM_FEATURES));
                             ASSERT_CONDITION_THROW(
-                                    (num_rm_weights != SIX_RM_FEATURES) &&
-                                    (num_rm_weights != EIGHT_RM_FEATURES),
-                                    string("The number of RM features: ") + to_string(num_rm_weights) +
+                                    (m_num_lambdas != SIX_RM_FEATURES) &&
+                                    (m_num_lambdas != EIGHT_RM_FEATURES),
+                                    string("The number of RM features: ") + to_string(m_num_lambdas) +
                                     string(" must be ") + to_string(SIX_RM_FEATURES) +
                                     string(" or ") + to_string(EIGHT_RM_FEATURES) );
                         }
@@ -84,9 +84,9 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const rm_parameters & params) {
                         return stream << "RM parameters: [ conn_string = " << params.m_conn_string
-                                << ", num_rm_weights = " << params.num_rm_weights
-                                << ", rm_weights = " << array_to_string<float>(params.num_rm_weights,
-                                params.rm_weights, RM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", num_rm_feature_weights = " << params.m_num_lambdas
+                                << ", rm_feature_weights = " << array_to_string<float>(params.m_num_lambdas,
+                                params.m_lambdas, RM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";
                     }
                 }

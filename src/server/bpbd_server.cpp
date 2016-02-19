@@ -176,29 +176,33 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(get_string(ini, section, "lm_weights"),
-                params.m_lm_params.lm_weights,
-                params.m_lm_params.num_lm_weights,
+        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(get_string(ini, section, "lm_feature_weights"),
+                params.m_lm_params.m_lambdas,
+                params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_lm_params.verify();
         LOG_INFO << params.m_lm_params << END_LOG;
 
         section = "Translation Models";
         params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_weights"),
-                params.m_tm_params.tm_weights,
-                params.m_tm_params.num_tm_weights,
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_feature_weights"),
+                params.m_tm_params.m_lambdas,
+                params.m_tm_params.m_num_lambdas,
+                TM_FEATURE_WEIGHTS_DELIMITER_STR);
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_unk_features"),
+                params.m_tm_params.m_unk_features,
+                params.m_tm_params.m_num_unk_features,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
-        params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_translation_probability");
+        params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_trans_prob");
         params.m_tm_params.verify();
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
         params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(get_string(ini, section, "rm_weights"),
-                params.m_rm_params.rm_weights,
-                params.m_rm_params.num_rm_weights,
+        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(get_string(ini, section, "rm_feature_weights"),
+                params.m_rm_params.m_lambdas,
+                params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_rm_params.verify();
         LOG_INFO << params.m_rm_params << END_LOG;

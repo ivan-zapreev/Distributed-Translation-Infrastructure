@@ -148,9 +148,10 @@ namespace uva {
                                 size_t idx = 0;
                                 while (rest.get_first_space(token) && (idx < rm_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
-                                    fast_s_to_f(entry[idx], token.str().c_str());
+                                    ASSERT_CONDITION_THROW(!fast_s_to_f(entry[idx], token.str().c_str()),
+                                            string("Could not parse the token: ") + token.str());
                                     //Now convert to the log probability and multiply with the appropriate weight
-                                    entry[idx] = log10(entry[idx]) * m_params.rm_weights[idx];
+                                    entry[idx] = log10(entry[idx]) * m_params.m_lambdas[idx];
                                     //Increment the index 
                                     ++idx;
                                 }

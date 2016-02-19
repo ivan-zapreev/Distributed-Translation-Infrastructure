@@ -55,11 +55,17 @@ namespace uva {
                         string m_conn_string;
                         
                         //Stores the number of translation model weights
-                        size_t num_tm_weights;
+                        size_t m_num_lambdas;
                         
                         //Stores the translation model weights
-                        float tm_weights[MAX_NUM_TM_FEATURES];
+                        float m_lambdas[MAX_NUM_TM_FEATURES];
 
+                        //Stores the number of unk entry features
+                        size_t m_num_unk_features;
+                        
+                        //Stores the unk entry features
+                        float m_unk_features[MAX_NUM_TM_FEATURES];
+                        
                         //Stores the translation limit - the number of top translation
                         //to be read from the translation model file per source phrase
                         size_t m_trans_limit;
@@ -74,11 +80,17 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void verify() {
-                            ASSERT_CONDITION_THROW((num_tm_weights > MAX_NUM_TM_FEATURES),
-                                    string("The number of TM features: ") + to_string(num_tm_weights) +
+                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_TM_FEATURES),
+                                    string("The number of TM features: ") + to_string(m_num_lambdas) +
                                     string(" must be <= ") + to_string(MAX_NUM_TM_FEATURES));
-                            ASSERT_CONDITION_THROW((num_tm_weights != FOUR_TM_FEATURES),
-                                    string("The number of TM features: ") + to_string(num_tm_weights) +
+                            ASSERT_CONDITION_THROW((m_num_lambdas != FOUR_TM_FEATURES),
+                                    string("The number of TM features: ") + to_string(m_num_lambdas) +
+                                    string(" is not supported, we support only: ") + to_string(FOUR_TM_FEATURES));
+                            ASSERT_CONDITION_THROW((m_num_unk_features > MAX_NUM_TM_FEATURES),
+                                    string("The number of TM unk features: ") + to_string(m_num_unk_features) +
+                                    string(" must be <= ") + to_string(MAX_NUM_TM_FEATURES));
+                            ASSERT_CONDITION_THROW((m_num_unk_features != FOUR_TM_FEATURES),
+                                    string("The number of TM unk features: ") + to_string(m_num_unk_features) +
                                     string(" is not supported, we support only: ") + to_string(FOUR_TM_FEATURES));
                         }
                     } tm_parameters;
@@ -91,11 +103,11 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
                         return stream << "TM parameters: [ conn_string = " << params.m_conn_string
-                                << ", num_tm_weights = " << params.num_tm_weights
-                                << ", tm_weights = " << array_to_string<float>(params.num_tm_weights,
-                                params.tm_weights, TM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", num_tm_feature_weights = " << params.m_num_lambdas
+                                << ", tm_feature_weights = " << array_to_string<float>(params.m_num_lambdas,
+                                params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", translation_limit = " << params.m_trans_limit
-                                << ", min_translation_probability = " << params.m_min_tran_prob
+                                << ", min_trans_prob = " << params.m_min_tran_prob
                                 << " ]";
                     }
                 }

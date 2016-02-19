@@ -126,7 +126,7 @@ namespace uva {
                     //Set the bucket to point to the given element
                     m_buckets[bucket_idx] = elem_idx;
 
-                    LOG_DEBUG2 << "Returning the reference to the element: "<< elem_idx << END_LOG;
+                    LOG_DEBUG2 << "Returning the reference to the element: " << elem_idx << END_LOG;
 
                     //Return the element under the index
                     return m_elems[elem_idx];
@@ -160,7 +160,8 @@ namespace uva {
                         get_next_bucket_idx(bucket_idx);
                     }
 
-                    LOG_DEBUG2 << "Encountered an empty bucket, the word is unknown!" << END_LOG;
+                    LOG_DEBUG2 << "Could not find an element for key uid: " << key_uid
+                            << ", last bucket index: " << bucket_idx << END_LOG;
 
                     return NULL;
                 }

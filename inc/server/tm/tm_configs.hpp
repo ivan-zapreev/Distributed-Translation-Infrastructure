@@ -56,15 +56,6 @@ namespace uva {
                             static const string TM_UNKNOWN_SOURCE_STR = string("UNK");
                             //Stores the unknown target phrase string, should be configurable
                             static const string TM_UNKNOWN_TARGET_STR = string("<unk>");
-
-                            //The default inverse phrase translation probability φ(s|t)
-                            const float UNK_SCT_LOG_PROB_WEIGHT = -10.0;
-                            //The Stores the default inverse lexical weighting lex(s|t)
-                            const float UNK_LSCT_LOG_PROB_WEIGHT = -10.0;
-                            //The Stores the default direct phrase translation probability φ(t | s)
-                            const float UNK_TCS_LOG_PROB_WEIGHT = -10.0;
-                            //The Stores the default direct lexical weighting lex(t|s)
-                            const float UNK_LTCS_LOG_PROB_WEIGHT = -10.0;
                         }
 
                         namespace __tm_basic_model {

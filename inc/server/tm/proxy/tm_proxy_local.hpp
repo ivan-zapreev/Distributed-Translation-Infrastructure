@@ -69,7 +69,8 @@ namespace uva {
                             /**
                              * The basic proxy constructor, currently does nothing except for default initialization
                              */
-                            tm_proxy_local() {
+                            tm_proxy_local()
+                            : m_model() {
                             }
 
                             /**

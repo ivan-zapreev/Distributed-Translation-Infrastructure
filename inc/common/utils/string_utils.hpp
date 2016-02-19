@@ -170,7 +170,10 @@ namespace uva {
                             + to_string(MAX_NUM_ELEMS) + string(" when parsing: ") + data);
 
                     //Parse the next token into the float
-                    fast_s_to_f(elems[num_elems++], data.substr(start, end - start).c_str());
+                    string str = data.substr(start, end - start);
+                    ASSERT_CONDITION_THROW(!fast_s_to_f(elems[num_elems++], str.c_str()),
+                                            string("Could not parse the token: ") + str);
+                    
                     if (end != std::string::npos) {
                         start = end + 1;
                         end = data.find_first_of(delim, start);
