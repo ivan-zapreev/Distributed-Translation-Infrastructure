@@ -112,6 +112,17 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to check whether the given source phrase has translation
+                             * @param uid the unique identifier of the source phrase
+                             * @return true if the translations of this phrase are known, otherwise false
+                             */
+                            inline tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) {
+                                LOG_DEBUG1 << "Getting translations for the phrase uid: " << uid << END_LOG;
+
+                                return m_model.template get_source_entry<false>(uid);
+                            }
+
+                            /**
                              * Allows to execute the query
                              */
                             inline void execute() {

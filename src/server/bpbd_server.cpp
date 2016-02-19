@@ -315,7 +315,7 @@ int main(int argc, char** argv) {
         print_the_prompt();
 
         //Override the reporting level for testing purposes
-        Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
+        //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
         while (true) {

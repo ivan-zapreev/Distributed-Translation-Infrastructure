@@ -64,6 +64,13 @@ namespace uva {
                             /**
                              * @see tm_query_proxy
                              */
+                            virtual tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) {
+                                return m_query.get_source_entry(uid);
+                            }
+
+                            /**
+                             * @see tm_query_proxy
+                             */
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const {
                                 m_query.get_st_uids(st_uids);
                             }

@@ -67,7 +67,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_source_entry()
-                            : m_s_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
+                            : m_source_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
                             }
 
                             /**
@@ -85,7 +85,7 @@ namespace uva {
                              * @param s_uid the source phrase id
                              */
                             inline void set_source_uid(phrase_uid s_uid) {
-                                m_s_uid = s_uid;
+                                m_source_uid = s_uid;
                             }
 
                             /**
@@ -129,7 +129,27 @@ namespace uva {
                                 entry.set_features(num_features, features);
 
                                 //Set the entry's target phrase and its id
-                                entry.set_source_target(m_s_uid, target, target_uid);
+                                entry.set_source_target(m_source_uid, target, target_uid);
+                            }
+
+                            /**
+                             * Allows to check if the translation of the given target is present.
+                             * NOTE: This check is not optimal a better data structure for storing
+                             * entries might be needed, although this method is only used when
+                             * building the Reordering model.
+                             * @param target_uid the unique identifier of the taret
+                             * @return true if the target is known, otherwise false
+                             */
+                            bool has_translation(const phrase_uid target_uid) const {
+                                //Compute the source/target uid
+                                const phrase_uid m_st_uid = combine_phrase_uids(m_source_uid, target_uid);
+                                //Search for the uid in the array
+                                for (size_t idx =0; idx < m_capacity; ++ idx) {
+                                    if(m_targets[idx].get_st_uid() == m_st_uid ) {
+                                        return true;
+                                    }
+                                }
+                                return false;
                             }
 
                             /**
@@ -149,12 +169,12 @@ namespace uva {
                              * @return true if the provided uid is equal to the uid of this entry, otherwise false 
                              */
                             inline bool operator==(const phrase_uid & phrase_uid) const {
-                                return (m_s_uid == phrase_uid);
+                                return (m_source_uid == phrase_uid);
                             }
 
                         private:
                             //Stores the unique identifier of the given source
-                            phrase_uid m_s_uid;
+                            phrase_uid m_source_uid;
                             //Stores the number of translation entries
                             size_t m_capacity;
                             //Stores the target entries array pointer

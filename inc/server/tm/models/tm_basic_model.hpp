@@ -183,18 +183,25 @@ namespace uva {
 
                             /**
                              * Allows to get the source entry for the given entry id
-                             * In case the entry is not present we return NULL.
+                             * @param do_unk if true then if the entry is not present we return UNK
+                             *               if false then if the entry is not present we return NULL
+                             *               The default value is true.
                              * @param entry_id the source phrase id
-                             * @return the source phrase entry , always NOT NULL!
+                             * @return the source phrase entry or UNK or NULL
                              */
+                            template<bool do_unk = true >
                             tm_const_source_entry_ptr get_source_entry(const phrase_uid entry_id) const {
                                 tm_const_source_entry_ptr entry = m_tm_data->get_element(entry_id, entry_id);
-                                if (entry != NULL) {
-                                    LOG_DEBUG1 << "Found the source entry for the source uid: " << entry_id << END_LOG;
-                                    return entry;
+                                if (do_unk) {
+                                    if (entry != NULL) {
+                                        LOG_DEBUG1 << "Found the source entry for the source uid: " << entry_id << END_LOG;
+                                        return entry;
+                                    } else {
+                                        LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
+                                        return m_unk_entry;
+                                    }
                                 } else {
-                                    LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
-                                    return m_unk_entry;
+                                    return entry;
                                 }
                             }
 

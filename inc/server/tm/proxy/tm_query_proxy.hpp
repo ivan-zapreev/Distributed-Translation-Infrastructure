@@ -51,6 +51,13 @@ namespace uva {
                             virtual void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
 
                             /**
+                             * Allows retrieve the translations of the given source entry
+                             * @param uid the unique identifier of the source phrase
+                             * @return the pointer to the source entry or NULL if the entry is not present
+                             */
+                            virtual tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) = 0;
+                            
+                            /**
                              * Allows to get all the source/target phrase identifiers
                              * for the source target translation in this query.
                              * Must be called after the query is executed

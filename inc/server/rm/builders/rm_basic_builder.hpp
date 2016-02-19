@@ -33,6 +33,9 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "server/tm/tm_configurator.hpp"
+#include "server/tm/proxy/tm_query_proxy.hpp"
+
 #include "server/common/models/phrase_uid.hpp"
 #include "server/rm/rm_parameters.hpp"
 #include "server/rm/models/rm_entry.hpp"
@@ -46,6 +49,7 @@ using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::rm::models;
+using namespace uva::smt::bpbd::server::rm::proxy;
 using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
@@ -79,7 +83,7 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             rm_basic_builder(const rm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_model(model), m_reader(reader) {
+                            : m_params(params), m_model(model), m_reader(reader), m_num_entries(0) {
                             }
 
                             /**
@@ -88,49 +92,22 @@ namespace uva {
                              * of distinct source phrases.
                              */
                             void build() {
+                                //Obtains the query proxy
+                                tm_query_proxy & query = tm_configurator::allocate_query_proxy();
+
                                 //Count and set the number of source phrases if needed
                                 if (m_model.is_num_entries_needed()) {
-                                    set_number_source_phrases();
+                                    set_number_source_phrases(query);
                                 }
 
                                 //Process the translations
-                                process_source_entries();
+                                process_source_entries(query);
+
+                                //Dispose the query proxy
+                                tm_configurator::dispose_query_proxy(query);
                             }
 
                         protected:
-
-                            /**
-                             * Allows to count and set the number of source phrases
-                             */
-                            inline void set_number_source_phrases() {
-                                Logger::start_progress_bar(string("Counting reordering entries"));
-
-                                //Declare the text piece reader for storing the read line and source phrase
-                                TextPieceReader line, source;
-                                //Stores the number of reordering entries for logging
-                                size_t num_entries = 0;
-
-                                //Compute the number of reordering entries. Note that,
-                                //any new line is just an extra entry so any empty line
-                                //will just insignificantly increase the memory consumption.
-                                while (m_reader.get_first_line(line)) {
-                                    //Increment the counter
-                                    ++num_entries;
-
-                                    //Update the progress bar status
-                                    Logger::update_progress_bar();
-                                }
-                                LOG_DEBUG << "Counter the number of reordering entries: " << num_entries << END_LOG;
-
-                                //Set the number of entries into the model
-                                m_model.set_num_entries(num_entries);
-
-                                //Re-set the reader to start all over again
-                                m_reader.reset();
-
-                                //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
-                            }
 
                             /**
                              * Allows to parse the reordering weights and set them into the reordering entry
@@ -158,11 +135,16 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to process translations.
+                             * Allows to parse the RM model file and do two things depending on the value of the template parameter:
+                             * 1. Count the number of valid entries
+                             * 2. Build the RM model
+                             * NOTE: This two pass parsing is not optimal but we have to do it as we need to know
+                             *       the number of valid entries beforehand, an optimization might be needed!
+                             * @param count_or_build if true then count if false then build
+                             * @param query the TM query to check if the source/taret are known
                              */
-                            void process_source_entries() {
-                                Logger::start_progress_bar(string("Building reordering model"));
-
+                            template<bool count_or_build>
+                            inline void parse_rm_file(tm_query_proxy & query) {
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source, target;
 
@@ -170,6 +152,8 @@ namespace uva {
                                 string source_str = "";
                                 phrase_uid source_uid = UNDEFINED_PHRASE_ID;
                                 phrase_uid target_uid = UNDEFINED_PHRASE_ID;
+                                tm_const_source_entry_ptr source_entry = NULL;
+                                bool is_good_source = false;
 
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
@@ -184,22 +168,75 @@ namespace uva {
                                         source_str = next_source_str;
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
+                                        //Obtain the new source entry
+                                        source_entry = query.get_source_entry(source_uid);
+                                        //Check if we shall ignore this source
+                                        is_good_source = (source_entry != NULL);
                                     }
 
-                                    //Read the target phrase
-                                    line.get_first<RM_DELIMITER, RM_DELIMITER_CDTY>(target);
-                                    string target_str = target.str();
-                                    trim(target_str);
+                                    //If the source is present then count the entry
+                                    if (is_good_source) {
+                                        //Read the target phrase
+                                        line.get_first<RM_DELIMITER, RM_DELIMITER_CDTY>(target);
+                                        string target_str = target.str();
+                                        trim(target_str);
 
-                                    LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
+                                        LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
 
-                                    //Parse the rest of the target entry
-                                    target_uid = get_phrase_uid<true>(target_str);
-                                    process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
+                                        //Parse the rest of the target entry
+                                        target_uid = get_phrase_uid<true>(target_str);
+                                        //Check if the given translation phrase is known
+                                        if (source_entry->has_translation(target_uid)) {
+                                            if (count_or_build) {
+                                                //Increment the counter
+                                                ++m_num_entries;
+                                            } else {
+                                                //If the target translation is present then process the features
+                                                process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
+                                            }
+                                        }
+                                    }
 
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
                                 }
+                            }
+
+                            /**
+                             * Allows to count and set the number of source phrases
+                             * @param count_or_build if true then we do count entries
+                             *                       if false then we do build be model
+                             * @param query the translation model query object to
+                             * query the translation model for present entries
+                             */
+                            inline void set_number_source_phrases(tm_query_proxy & query) {
+                                Logger::start_progress_bar(string("Counting reordering entries"));
+
+                                //Count the number of valid entries
+                                parse_rm_file<true>(query);
+
+                                LOG_INFO << "The number of RM entries matching TM is: " << m_num_entries << END_LOG;
+
+                                //Set the number of entries into the model
+                                m_model.set_num_entries(m_num_entries);
+
+                                //Re-set the reader to start all over again
+                                m_reader.reset();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
+                            }
+
+                            /**
+                             * Allows to process translations.
+                             * @param query the translation model query object to
+                             * query the translation model for present entries
+                             */
+                            void process_source_entries(tm_query_proxy & query) {
+                                Logger::start_progress_bar(string("Building reordering model"));
+
+                                //Build the RM model
+                                parse_rm_file<false>(query);
 
                                 //Find the UNK entry, this is needed for performance optimization.
                                 m_model.find_unk_entry();
@@ -215,6 +252,8 @@ namespace uva {
                             model_type & m_model;
                             //Stores the reference to the builder;
                             reader_type & m_reader;
+                            //Stores the number of valid RM model entries
+                            size_t m_num_entries;
                         };
                     }
                 }

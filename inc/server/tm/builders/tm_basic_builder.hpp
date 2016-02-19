@@ -150,7 +150,7 @@ namespace uva {
 
                                 //Skip the first space
                                 weights.get_first_space(token);
-                                
+
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 while (weights.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
@@ -254,7 +254,7 @@ namespace uva {
                                     m_sizes.erase(source_uid);
                                 }
 
-                                LOG_DEBUG << "Got " << m_sizes.size() << " non-empty source entries" << END_LOG;
+                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
 
                                 //Set the number of entries into the model
                                 m_model.set_num_entries(m_sizes.size());
@@ -313,10 +313,15 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to process translations.
+                             * Allows to parse the TM model file and do two things depending on the value of the template parameter:
+                             * 1. Count the number of valid entries
+                             * 2. Build the TM model
+                             * NOTE: This two pass parsing is not optimal but we have to do it as we need to know
+                             *       the number of valid entries beforehand, an optimization might be needed!
+                             * @param count_or_build if true then count if false then build
                              */
-                            void process_source_entries() {
-                                Logger::start_progress_bar(string("Building translation model"));
+                            template<bool count_or_build>
+                            inline void parse_rm_file() {
 
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
@@ -328,7 +333,7 @@ namespace uva {
                                 string source_str = "";
                                 phrase_uid source_uid = UNDEFINED_PHRASE_ID;
                                 size_t & count_ref = m_sizes[source_uid];
-                                bool is_skip_entry = true;
+                                bool is_good_source = false;
 
                                 //Declare an array of weights for temporary use
                                 feature_array tmp_features;
@@ -343,27 +348,132 @@ namespace uva {
                                     string next_source_str = source.str();
                                     trim(next_source_str);
                                     if (source_str != next_source_str) {
+                                        if (count_or_build) {
+                                            //Remove the previous entry if the count is zero
+                                            if (count_ref == 0) {
+                                                m_sizes.erase(source_uid);
+                                            }
+                                        } else {
+                                            //Finalize the previous entry if there was one
+                                            if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
+                                                LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
+                                                        << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
+
+                                                m_model.finalize_entry(source_uid);
+                                            }
+                                        }
                                         //Store the new source string
                                         source_str = next_source_str;
+                                        //Compute the new source string uid
+                                        source_uid = get_phrase_uid(source_str);
+                                        //Change the counter reference
+                                        count_ref = m_sizes[source_uid];
 
+                                        if (!count_or_build) {
+                                            //Check if the new entry is to be entirely skipped
+                                            is_good_source = (count_ref != 0);
+
+                                            if (is_good_source) {
+                                                //Open the new source entry
+                                                source_entry = m_model.begin_entry(source_uid, count_ref);
+
+                                                LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
+                                                        << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
+                                            } else {
+                                                //This source is skipped and if it is the
+                                                //last one then we do not need to finalize it
+                                                source_uid = UNDEFINED_PHRASE_ID;
+                                            }
+                                        }
+                                    }
+
+                                    if (count_or_build) {
+                                        //Check that the filter conditions hold
+                                        if ((count_ref < m_params.m_trans_limit) &&
+                                                is_good_features(line, tmp_features_size, tmp_features)) {
+                                            //Increment the count for the given source uid
+                                            ++count_ref;
+                                        }
+                                    } else {
+                                        //If the source entry is not to be skipped, parse 
+                                        if (is_good_source && (count_ref > 0)) {
+                                            //Parse the rest of the target entry
+                                            process_target_entry(source_entry, line, count_ref, tmp_features_size, tmp_features);
+                                        } else {
+                                            LOG_DEBUG << "Skipping source-target entry: " << line << END_LOG;
+                                        }
+                                    }
+
+                                    //Update the progress bar status
+                                    Logger::update_progress_bar();
+                                }
+
+                                if (count_or_build) {
+                                    //Check if the last entry resulted in zero score, if yes then remove it
+                                    if (count_ref == 0) {
+                                        m_sizes.erase(source_uid);
+                                    }
+                                } else {
+                                    //Finalize the previous entry if there was one
+                                    if (source_uid != UNDEFINED_PHRASE_ID) {
+                                        m_model.finalize_entry(source_uid);
+                                    }
+
+                                    //Finalize the model
+                                    m_model.finalize();
+                                }
+                            }
+
+                            /**
+                             * Allows to process translations.
+                             */
+                            inline void process_source_entries() {
+                                Logger::start_progress_bar(string("Building translation model"));
+
+                                //Declare the text piece reader for storing the read line and source phrase
+                                TextPieceReader line, source;
+
+                                //Store the source entry
+                                tm_source_entry * source_entry = NULL;
+
+                                //Store the cached source string and its uid values
+                                string source_str = "";
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
+                                size_t & count_ref = m_sizes[source_uid];
+                                bool is_good_source = false;
+
+                                //Declare an array of weights for temporary use
+                                feature_array tmp_features;
+                                size_t tmp_features_size;
+
+                                //Start reading the translation model file line by line
+                                while (m_reader.get_first_line(line)) {
+                                    //Read the source phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+
+                                    //Get the current source phrase uid
+                                    string next_source_str = source.str();
+                                    trim(next_source_str);
+                                    if (source_str != next_source_str) {
                                         //Finalize the previous entry if there was one
-                                        if (!is_skip_entry && (source_uid != UNDEFINED_PHRASE_ID)) {
+                                        if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
                                             LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
                                                     << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
 
                                             m_model.finalize_entry(source_uid);
                                         }
 
+                                        //Store the new source string
+                                        source_str = next_source_str;
                                         //Compute the new source string uid
-                                        phrase_uid new_source_uid = get_phrase_uid(source_str);
-
-                                        //Update the source id reference
+                                        const phrase_uid new_source_uid = get_phrase_uid(source_str);
+                                        //Change the counter reference
                                         count_ref = m_sizes[new_source_uid];
 
                                         //Check if the new entry is to be entirely skipped
-                                        is_skip_entry = (count_ref == 0);
+                                        is_good_source = (count_ref != 0);
 
-                                        if (!is_skip_entry) {
+                                        if (is_good_source) {
                                             //Set the source entry id
                                             source_uid = new_source_uid;
 
@@ -372,11 +482,15 @@ namespace uva {
 
                                             LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
                                                     << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
+                                        } else {
+                                            //This source is skipped and if it is the
+                                            //last one then we do not need to finalize it
+                                            source_uid = UNDEFINED_PHRASE_ID;
                                         }
                                     }
 
                                     //If the source entry is not to be skipped, parse 
-                                    if (!is_skip_entry && (count_ref > 0)) {
+                                    if (is_good_source && (count_ref > 0)) {
                                         //Parse the rest of the target entry
                                         process_target_entry(source_entry, line, count_ref, tmp_features_size, tmp_features);
                                     } else {
@@ -411,7 +525,7 @@ namespace uva {
                                     //Now convert to the log probability and multiply with the appropriate weight
                                     unk_features[idx] = post_process_feature(m_params.m_unk_features[idx], m_params.m_lambdas[idx]);
                                 }
-                                
+
                                 //Set the unk features to the model
                                 m_model.set_unk_entry(m_params.m_num_unk_features, unk_features);
                             }
