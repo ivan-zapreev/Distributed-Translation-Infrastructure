@@ -141,12 +141,16 @@ namespace uva {
                             inline bool process_features(TextPieceReader weights, size_t & num_features, feature_array storage) {
                                 //Declare the token
                                 TextPieceReader token;
-
                                 //Store the read probability weight
                                 size_t idx = 0;
                                 //Store the read weight value
                                 float feature;
 
+                                LOG_DEBUG << "Reading the weights from: " << weights << END_LOG;
+
+                                //Skip the first space
+                                weights.get_first_space(token);
+                                
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 while (weights.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
@@ -180,10 +184,10 @@ namespace uva {
                              * @return true if the conditions are satisfied, otherwise false
                              */
                             inline bool is_good_features(TextPieceReader rest, size_t & tmp_features_size, feature_array tmp_features) {
-                                TextPieceReader token;
+                                TextPieceReader target;
 
                                 //Skip the target phrase with its end delimiter
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(token);
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
                                 //Process the weights
                                 return process_features<false>(rest, tmp_features_size, tmp_features);

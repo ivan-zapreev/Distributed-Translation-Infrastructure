@@ -169,7 +169,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_source_lang = get_string(ini, section, "source_lang");
         params.m_target_lang = get_string(ini, section, "target_lang");
         params.verify();
-        
+
         LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
                 << params.m_target_lang << "' on port: '" << params.m_server_port
                 << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
@@ -316,7 +316,7 @@ int main(int argc, char** argv) {
 
         //Override the reporting level for testing purposes
         //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
-        
+
         //Wait until the server is stopped by pressing and exit button
         while (true) {
             char letter;
