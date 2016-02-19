@@ -139,9 +139,8 @@ namespace uva {
                                 //Compute the number of tokens in the sentence
                                 const size_t num_tokens = std::count(sentence.begin(), sentence.end(), ASCII_SPACE_CHAR) + 1;
 
-                                //ToDo: The sentence length must be limited!
                                 //Check the sanity, the used number of words can not be larger than the max
-                                ASSERT_SANITY_THROW((num_tokens > MAX_WORDS_PER_SENTENCE),
+                                ASSERT_CONDITION_THROW((num_tokens > MAX_WORDS_PER_SENTENCE),
                                         string("The number of words in the sentence (") + to_string(num_tokens) +
                                         string(") exceeds the maximum allowed number of words per sentence (") +
                                         to_string(MAX_WORDS_PER_SENTENCE));
